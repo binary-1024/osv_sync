@@ -1,0 +1,350 @@
+{
+  "id": "GHSA-xf96-w227-r7c4",
+  "summary": "Spring Boot Welcome Page Denial of Service",
+  "details": "In Spring Boot versions 3.0.0 - 3.0.6, 2.7.0 - 2.7.11, 2.6.0 - 2.6.14, 2.5.0 - 2.5.14 and older unsupported versions, there is potential for a denial-of-service (DoS) attack if Spring MVC is used together with a reverse proxy cache.\n\nSpecifically, an application is vulnerable if all of the conditions are true:\n\n* The application has Spring MVC auto-configuration enabled. This is the case by default if Spring MVC is on the classpath.\n* The application makes use of Spring Boot's welcome page support, either static or templated.\n* Your application is deployed behind a proxy which caches 404 responses.\n\nYour application is NOT vulnerable if any of the following are true:\n\n* Spring MVC auto-configuration is disabled. This is true if WebMvcAutoConfiguration is explicitly excluded, if Spring MVC is not on the classpath, or if spring.main.web-application-type is set to a value other than SERVLET.\n* The application does not use Spring Boot's welcome page support.\n* You do not have a proxy which caches 404 responses.\n\n\nAffected Spring Products and Versions\n\nSpring Boot\n\n3.0.0 to 3.0.6 2.7.0 to 2.7.11 2.6.0 to 2.6.14 2.5.0 to 2.5.14\n\nOlder, unsupported versions are also affected\nMitigation\n\nUsers of affected versions should apply the following mitigations:\n\n* 3.0.x users should upgrade to 3.0.7+\n* 2.7.x users should upgrade to 2.7.12+\n* 2.6.x users should upgrade to 2.6.15+\n* 2.5.x users should upgrade to 2.5.15+\n\nUsers of older, unsupported versions should upgrade to 3.0.7+ or 2.7.12+.\n\nWorkarounds: configure the reverse proxy not to cache 404 responses and/or not to cache responses to requests to the root (/) of the application.",
+  "aliases": [
+    "CVE-2023-20883"
+  ],
+  "modified": "2024-02-21T05:36:07.942864Z",
+  "published": "2023-05-26T18:30:21Z",
+  "database_specific": {
+    "nvd_published_at": "2023-05-26T17:15:14Z",
+    "cwe_ids": [
+      "CWE-400"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-05-26T22:09:06Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-20883"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/spring-projects/spring-boot/issues/35552"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/spring-projects/spring-boot/commit/418dd1ba5bdad79b55a043000164bfcbda2acd78"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/spring-projects/spring-boot"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/spring-projects/spring-boot/releases/tag/v2.5.15"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/spring-projects/spring-boot/releases/tag/v2.6.15"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/spring-projects/spring-boot/releases/tag/v2.7.12"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20230703-0008"
+    },
+    {
+      "type": "WEB",
+      "url": "https://spring.io/security/cve-2023-20883"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.springframework.boot:spring-boot-autoconfigure",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.springframework.boot/spring-boot-autoconfigure"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "3.0.0"
+            },
+            {
+              "fixed": "3.0.7"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.0.0",
+        "3.0.1",
+        "3.0.2",
+        "3.0.3",
+        "3.0.4",
+        "3.0.5",
+        "3.0.6"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/05/GHSA-xf96-w227-r7c4/GHSA-xf96-w227-r7c4.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.springframework.boot:spring-boot-autoconfigure",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.springframework.boot/spring-boot-autoconfigure"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.7.0"
+            },
+            {
+              "fixed": "2.7.12"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.7.0",
+        "2.7.1",
+        "2.7.10",
+        "2.7.11",
+        "2.7.2",
+        "2.7.3",
+        "2.7.4",
+        "2.7.5",
+        "2.7.6",
+        "2.7.7",
+        "2.7.8",
+        "2.7.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/05/GHSA-xf96-w227-r7c4/GHSA-xf96-w227-r7c4.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.springframework.boot:spring-boot-autoconfigure",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.springframework.boot/spring-boot-autoconfigure"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.6.0"
+            },
+            {
+              "fixed": "2.6.15"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.6.0",
+        "2.6.1",
+        "2.6.10",
+        "2.6.11",
+        "2.6.12",
+        "2.6.13",
+        "2.6.14",
+        "2.6.2",
+        "2.6.3",
+        "2.6.4",
+        "2.6.5",
+        "2.6.6",
+        "2.6.7",
+        "2.6.8",
+        "2.6.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/05/GHSA-xf96-w227-r7c4/GHSA-xf96-w227-r7c4.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.springframework.boot:spring-boot-autoconfigure",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.springframework.boot/spring-boot-autoconfigure"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.5.15"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0.RELEASE",
+        "1.0.1.RELEASE",
+        "1.0.2.RELEASE",
+        "1.1.0.RELEASE",
+        "1.1.1.RELEASE",
+        "1.1.10.RELEASE",
+        "1.1.11.RELEASE",
+        "1.1.12.RELEASE",
+        "1.1.2.RELEASE",
+        "1.1.3.RELEASE",
+        "1.1.4.RELEASE",
+        "1.1.5.RELEASE",
+        "1.1.6.RELEASE",
+        "1.1.7.RELEASE",
+        "1.1.8.RELEASE",
+        "1.1.9.RELEASE",
+        "1.2.0.RELEASE",
+        "1.2.1.RELEASE",
+        "1.2.2.RELEASE",
+        "1.2.3.RELEASE",
+        "1.2.4.RELEASE",
+        "1.2.5.RELEASE",
+        "1.2.6.RELEASE",
+        "1.2.7.RELEASE",
+        "1.2.8.RELEASE",
+        "1.3.0.RELEASE",
+        "1.3.1.RELEASE",
+        "1.3.2.RELEASE",
+        "1.3.3.RELEASE",
+        "1.3.4.RELEASE",
+        "1.3.5.RELEASE",
+        "1.3.6.RELEASE",
+        "1.3.7.RELEASE",
+        "1.3.8.RELEASE",
+        "1.4.0.RELEASE",
+        "1.4.1.RELEASE",
+        "1.4.2.RELEASE",
+        "1.4.3.RELEASE",
+        "1.4.4.RELEASE",
+        "1.4.5.RELEASE",
+        "1.4.6.RELEASE",
+        "1.4.7.RELEASE",
+        "1.5.0.RELEASE",
+        "1.5.1.RELEASE",
+        "1.5.10.RELEASE",
+        "1.5.11.RELEASE",
+        "1.5.12.RELEASE",
+        "1.5.13.RELEASE",
+        "1.5.14.RELEASE",
+        "1.5.15.RELEASE",
+        "1.5.16.RELEASE",
+        "1.5.17.RELEASE",
+        "1.5.18.RELEASE",
+        "1.5.19.RELEASE",
+        "1.5.2.RELEASE",
+        "1.5.20.RELEASE",
+        "1.5.21.RELEASE",
+        "1.5.22.RELEASE",
+        "1.5.3.RELEASE",
+        "1.5.4.RELEASE",
+        "1.5.5.RELEASE",
+        "1.5.6.RELEASE",
+        "1.5.7.RELEASE",
+        "1.5.8.RELEASE",
+        "1.5.9.RELEASE",
+        "2.0.0.RELEASE",
+        "2.0.1.RELEASE",
+        "2.0.2.RELEASE",
+        "2.0.3.RELEASE",
+        "2.0.4.RELEASE",
+        "2.0.5.RELEASE",
+        "2.0.6.RELEASE",
+        "2.0.7.RELEASE",
+        "2.0.8.RELEASE",
+        "2.0.9.RELEASE",
+        "2.1.0.RELEASE",
+        "2.1.1.RELEASE",
+        "2.1.10.RELEASE",
+        "2.1.11.RELEASE",
+        "2.1.12.RELEASE",
+        "2.1.13.RELEASE",
+        "2.1.14.RELEASE",
+        "2.1.15.RELEASE",
+        "2.1.16.RELEASE",
+        "2.1.17.RELEASE",
+        "2.1.18.RELEASE",
+        "2.1.2.RELEASE",
+        "2.1.3.RELEASE",
+        "2.1.4.RELEASE",
+        "2.1.5.RELEASE",
+        "2.1.6.RELEASE",
+        "2.1.7.RELEASE",
+        "2.1.8.RELEASE",
+        "2.1.9.RELEASE",
+        "2.2.0.RELEASE",
+        "2.2.1.RELEASE",
+        "2.2.10.RELEASE",
+        "2.2.11.RELEASE",
+        "2.2.12.RELEASE",
+        "2.2.13.RELEASE",
+        "2.2.2.RELEASE",
+        "2.2.3.RELEASE",
+        "2.2.4.RELEASE",
+        "2.2.5.RELEASE",
+        "2.2.6.RELEASE",
+        "2.2.7.RELEASE",
+        "2.2.8.RELEASE",
+        "2.2.9.RELEASE",
+        "2.3.0.RELEASE",
+        "2.3.1.RELEASE",
+        "2.3.10.RELEASE",
+        "2.3.11.RELEASE",
+        "2.3.12.RELEASE",
+        "2.3.2.RELEASE",
+        "2.3.3.RELEASE",
+        "2.3.4.RELEASE",
+        "2.3.5.RELEASE",
+        "2.3.6.RELEASE",
+        "2.3.7.RELEASE",
+        "2.3.8.RELEASE",
+        "2.3.9.RELEASE",
+        "2.4.0",
+        "2.4.1",
+        "2.4.10",
+        "2.4.11",
+        "2.4.12",
+        "2.4.13",
+        "2.4.2",
+        "2.4.3",
+        "2.4.4",
+        "2.4.5",
+        "2.4.6",
+        "2.4.7",
+        "2.4.8",
+        "2.4.9",
+        "2.5.0",
+        "2.5.1",
+        "2.5.10",
+        "2.5.11",
+        "2.5.12",
+        "2.5.13",
+        "2.5.14",
+        "2.5.2",
+        "2.5.3",
+        "2.5.4",
+        "2.5.5",
+        "2.5.6",
+        "2.5.7",
+        "2.5.8",
+        "2.5.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/05/GHSA-xf96-w227-r7c4/GHSA-xf96-w227-r7c4.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

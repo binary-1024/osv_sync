@@ -1,0 +1,172 @@
+{
+  "id": "GHSA-hh6f-6fp5-gfpv",
+  "summary": "Untrusted users can modify some Pipeline libraries in Jenkins Pipeline: Deprecated Groovy Libraries Plugin",
+  "details": "Multibranch Pipelines by default limit who can change the Pipeline definition from the Jenkinsfile. This is useful for SCMs like GitHub: Jenkins can build content from users without commit access, but who can submit pull requests, without granting them the ability to modify the Pipeline definition. In that case, Jenkins will just use the Pipeline definition in the pull request\u2019s destination branch instead.\n\nIn Pipeline: Deprecated Groovy Libraries Plugin 564.ve62a_4eb_b_e039 and earlier the same protection does not apply to uses of the `library` step with a `retriever` argument pointing to a library in the current build\u2019s repository and branch (e.g., `library(\u2026, retriever: legacySCM(scm))`). This allows attackers able to submit pull requests (or equivalent), but not able to commit directly to the configured SCM, to effectively change the Pipeline behavior by changing the library behavior in their pull request, even if the Pipeline is configured to not trust them.\n\nPipeline: Deprecated Groovy Libraries Plugin 566.vd0a_a_3334a_555 and 2.21.3 aborts library retrieval if the library would be retrieved from the same repository and revision as the current build, and the revision being built is untrusted.",
+  "aliases": [
+    "CVE-2022-29047"
+  ],
+  "modified": "2023-11-08T04:09:07.458812Z",
+  "published": "2022-04-13T00:00:17Z",
+  "database_specific": {
+    "nvd_published_at": "2022-04-12T20:15:00Z",
+    "github_reviewed_at": "2022-12-02T21:35:05Z",
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "cwe_ids": [
+      "CWE-863"
+    ]
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29047"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/workflow-cps-global-lib-plugin/commit/97bf32458e60ad252cfe5e7949bacf04459cee64"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/workflow-cps-global-lib-plugin/commit/bae59b46cb524549d7f346ba73d3161804c97331"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.jenkins.io/security/advisory/2022-04-12/#SECURITY-1951"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.jenkins-ci.plugins.workflow:workflow-cps-global-lib",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.jenkins-ci.plugins.workflow/workflow-cps-global-lib"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.21.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1-beta-5",
+        "0.1-beta-6",
+        "0.1-beta-7",
+        "0.1-beta-8",
+        "1.0",
+        "1.0-beta-1",
+        "1.1",
+        "1.10",
+        "1.10-beta-1",
+        "1.10.1",
+        "1.11",
+        "1.11-beta-1",
+        "1.11-beta-2",
+        "1.11-beta-3",
+        "1.11-beta-4",
+        "1.12",
+        "1.12-beta-1",
+        "1.12-beta-2",
+        "1.12-beta-3",
+        "1.13",
+        "1.14",
+        "1.14-beta-1",
+        "1.14.1",
+        "1.14.1-beta-1",
+        "1.14.2",
+        "1.15",
+        "1.15-beta-1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.4.1",
+        "1.4.2",
+        "1.4.3",
+        "1.4.3-beta-1",
+        "1.5",
+        "1.6",
+        "1.6-alpha-1",
+        "1.7",
+        "1.7-alpha-1",
+        "1.8",
+        "1.9",
+        "1.9-beta-1",
+        "2.0",
+        "2.1",
+        "2.10",
+        "2.11",
+        "2.12",
+        "2.12.1",
+        "2.13",
+        "2.13.1",
+        "2.14",
+        "2.15",
+        "2.16",
+        "2.17",
+        "2.18",
+        "2.18.1",
+        "2.19",
+        "2.2",
+        "2.20",
+        "2.21",
+        "2.21.1",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "2.7",
+        "2.8",
+        "2.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/04/GHSA-hh6f-6fp5-gfpv/GHSA-hh6f-6fp5-gfpv.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.jenkins-ci.plugins.workflow:workflow-cps-global-lib",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.jenkins-ci.plugins.workflow/workflow-cps-global-lib"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "544.vff04fa68714d"
+            },
+            {
+              "fixed": "566.vd0a"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "544.vff04fa68714d",
+        "545.v7b28cce323cf",
+        "548.v9085a486966a",
+        "552.554.vdba55efb9e88",
+        "552.vd9cc05b8a2e1",
+        "561.va_ce0de3c2d69",
+        "564.ve62a_4eb_b_e039"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 564.ve62a",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/04/GHSA-hh6f-6fp5-gfpv/GHSA-hh6f-6fp5-gfpv.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+    }
+  ]
+}

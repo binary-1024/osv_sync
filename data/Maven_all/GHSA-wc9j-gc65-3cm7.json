@@ -1,0 +1,164 @@
+{
+  "id": "GHSA-wc9j-gc65-3cm7",
+  "summary": "DDFFileParser is vulnerable to XXE Attacks",
+  "details": "### Impact\n`DDFFileParser` and `DefaultDDFFileValidator` (and so `ObjectLoader`) are vulnerable to [XXE Attacks](https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing).\n\n[DDF file](https://github.com/eclipse-leshan/leshan/wiki/Adding-new-objects#the-lwm2m-model) is a LWM2M format used to store LWM2M object description.   \nLeshan users are impacted only if they parse untrusted DDF files (e.g. if they let external users provide their own model), in that case they MUST upgrade to fixed version.\nIf you parse only trusted DDF file and validate only with trusted xml schema, upgrading is not mandatory. \n\n### Patches\nThis is fixed in **v1.5.0** and **2.0.0-M13**.\n\n### Workarounds\nNo easy way. Eventually writing your own `DDFFileParser`/`DefaultDDFFileValidator` (and so `ObjectLoader`) creating a `DocumentBuilderFactory` with : \n```java\n// For DDFFileParser\nDocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();\nfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);\nfactory.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true); // Disable DTDs\nfactory.setXIncludeAware(false); // Disable XML Inclusions\nfactory.setExpandEntityReferences(false); // disable expand entity reference nodes\n\n// For DefaultDDFFileValidator\nSchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);\nfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);\nfactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, \"\");\nfactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, \"\");\n``` \n\n### References\n- https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing\n- https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html\n- https://semgrep.dev/docs/cheat-sheets/java-xxe/\n- https://community.veracode.com/s/article/Java-Remediation-Guidance-for-XXE",
+  "aliases": [
+    "CVE-2023-41034"
+  ],
+  "modified": "2024-02-16T08:11:26.907209Z",
+  "published": "2023-08-31T21:47:28Z",
+  "related": [
+    "CVE-2023-41034"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2023-08-31T18:15:09Z",
+    "cwe_ids": [
+      "CWE-611"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-08-31T21:47:28Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse-leshan/leshan/security/advisories/GHSA-wc9j-gc65-3cm7"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-41034"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse-leshan/leshan/commit/29577d2879ba8e7674c3b216a7f01193fc7ae013"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse-leshan/leshan/commit/4d3e63ac271a817f81fba3e3229c519af7a3049c"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/eclipse-leshan/leshan"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse-leshan/leshan/wiki/Adding-new-objects#the-lwm2m-model"
+    },
+    {
+      "type": "WEB",
+      "url": "https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.eclipse.leshan:leshan-core",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.leshan/leshan-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.5.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1.10",
+        "0.1.11-M1",
+        "0.1.11-M10",
+        "0.1.11-M11",
+        "0.1.11-M12",
+        "0.1.11-M13",
+        "0.1.11-M14",
+        "0.1.11-M2",
+        "0.1.11-M3",
+        "0.1.11-M4",
+        "0.1.11-M5",
+        "0.1.11-M6",
+        "0.1.11-M7",
+        "0.1.11-M8",
+        "0.1.11-M9",
+        "1.0.0",
+        "1.0.0-M1",
+        "1.0.0-M10",
+        "1.0.0-M11",
+        "1.0.0-M12",
+        "1.0.0-M13",
+        "1.0.0-M2",
+        "1.0.0-M3",
+        "1.0.0-M4",
+        "1.0.0-M5",
+        "1.0.0-M6",
+        "1.0.0-M7",
+        "1.0.0-M8",
+        "1.0.0-M9",
+        "1.0.0-RC1",
+        "1.0.0-RC2",
+        "1.0.1",
+        "1.0.2",
+        "1.1.0",
+        "1.2.0",
+        "1.3.0",
+        "1.3.1",
+        "1.3.2",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/08/GHSA-wc9j-gc65-3cm7/GHSA-wc9j-gc65-3cm7.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.leshan:leshan-core",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.leshan/leshan-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0-M1"
+            },
+            {
+              "fixed": "2.0.0-M13"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.0-M1",
+        "2.0.0-M10",
+        "2.0.0-M11",
+        "2.0.0-M12",
+        "2.0.0-M2",
+        "2.0.0-M3",
+        "2.0.0-M4",
+        "2.0.0-M5",
+        "2.0.0-M6",
+        "2.0.0-M7",
+        "2.0.0-M8",
+        "2.0.0-M9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/08/GHSA-wc9j-gc65-3cm7/GHSA-wc9j-gc65-3cm7.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:N"
+    }
+  ]
+}

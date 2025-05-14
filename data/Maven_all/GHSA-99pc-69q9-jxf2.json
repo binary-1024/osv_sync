@@ -1,0 +1,191 @@
+{
+  "id": "GHSA-99pc-69q9-jxf2",
+  "summary": "Elasticsearch allows insertion of sensitive information into log files when using deprecated URIs",
+  "details": "Elasticsearch generally filters out sensitive information and credentials before logging to the audit log. It was found that this filtering was not applied when requests to Elasticsearch use certain deprecated URIs for APIs. The impact of this flaw is that sensitive information such as passwords and tokens might be printed in cleartext in Elasticsearch audit logs. Note that audit logging is disabled by default and needs to be explicitly enabled and even when audit logging is enabled, request bodies that could contain sensitive information are not printed to the audit log unless explicitly configured.\n\nThe `_xpack/security` APIs have been deprecated in Elasticsearch 7.x and were entirely removed in 8.0.0 and later. The only way for a client to use them in Elasticsearch 8.0.0 and later is to provide the `Accept: application/json; compatible-with=7` header. Elasticsearch official clients do not use these deprecated APIs.\n\nThe list of affected, deprecated APIs, is the following:\n\n`POST /_xpack/security/user/{username}`\n`PUT /_xpack/security/user/{username}`\n`PUT /_xpack/security/user/{username}/_password`\n`POST /_xpack/security/user/{username}/_password`\n`PUT /_xpack/security/user/_password`\n`POST /_xpack/security/user/_password`\n`POST /_xpack/security/oauth2/token`\n`DELETE /_xpack/security/oauth2/token`\n`POST /_xpack/security/saml/authenticate`",
+  "aliases": [
+    "BIT-elasticsearch-2023-31417",
+    "CVE-2023-31417"
+  ],
+  "modified": "2025-02-13T19:34:53.628006Z",
+  "published": "2023-10-26T18:30:23Z",
+  "database_specific": {
+    "nvd_published_at": "2023-10-26T18:15:08Z",
+    "cwe_ids": [
+      "CWE-532"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-10-30T15:14:03Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-31417"
+    },
+    {
+      "type": "WEB",
+      "url": "https://discuss.elastic.co/t/elasticsearch-8-9-2-and-7-17-13-security-update/342479"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20231130-0006"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.elastic.co/community/security"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.elasticsearch:elasticsearch",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.elasticsearch/elasticsearch"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "7.0.0"
+            },
+            {
+              "fixed": "7.17.13"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "7.0.0",
+        "7.0.1",
+        "7.1.0",
+        "7.1.1",
+        "7.10.0",
+        "7.10.1",
+        "7.10.2",
+        "7.11.0",
+        "7.11.1",
+        "7.11.2",
+        "7.12.0",
+        "7.12.1",
+        "7.13.0",
+        "7.13.1",
+        "7.13.2",
+        "7.13.3",
+        "7.13.4",
+        "7.14.0",
+        "7.14.1",
+        "7.14.2",
+        "7.15.0",
+        "7.15.1",
+        "7.15.2",
+        "7.16.0",
+        "7.16.1",
+        "7.16.2",
+        "7.16.3",
+        "7.17.0",
+        "7.17.1",
+        "7.17.10",
+        "7.17.11",
+        "7.17.12",
+        "7.17.2",
+        "7.17.3",
+        "7.17.4",
+        "7.17.5",
+        "7.17.6",
+        "7.17.7",
+        "7.17.8",
+        "7.17.9",
+        "7.2.0",
+        "7.2.1",
+        "7.3.0",
+        "7.3.1",
+        "7.3.2",
+        "7.4.0",
+        "7.4.1",
+        "7.4.2",
+        "7.5.0",
+        "7.5.1",
+        "7.5.2",
+        "7.6.0",
+        "7.6.1",
+        "7.6.2",
+        "7.7.0",
+        "7.7.1",
+        "7.8.0",
+        "7.8.1",
+        "7.9.0",
+        "7.9.1",
+        "7.9.2",
+        "7.9.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-99pc-69q9-jxf2/GHSA-99pc-69q9-jxf2.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.elasticsearch:elasticsearch",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.elasticsearch/elasticsearch"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "8.0.0"
+            },
+            {
+              "fixed": "8.9.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "8.0.0",
+        "8.0.1",
+        "8.1.0",
+        "8.1.1",
+        "8.1.2",
+        "8.1.3",
+        "8.2.0",
+        "8.2.1",
+        "8.2.2",
+        "8.2.3",
+        "8.3.0",
+        "8.3.1",
+        "8.3.2",
+        "8.3.3",
+        "8.4.0",
+        "8.4.1",
+        "8.4.2",
+        "8.4.3",
+        "8.5.0",
+        "8.5.1",
+        "8.5.2",
+        "8.5.3",
+        "8.6.0",
+        "8.6.1",
+        "8.6.2",
+        "8.7.0",
+        "8.7.1",
+        "8.8.0",
+        "8.8.1",
+        "8.8.2",
+        "8.9.0",
+        "8.9.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-99pc-69q9-jxf2/GHSA-99pc-69q9-jxf2.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}
