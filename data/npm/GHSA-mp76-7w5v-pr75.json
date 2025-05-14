@@ -1,0 +1,177 @@
+{
+  "id": "GHSA-mp76-7w5v-pr75",
+  "summary": "TurboBoost Commands vulnerable to arbitrary method invocation",
+  "details": "### Impact\nTurboBoost Commands has existing protections in place to guarantee that only public methods on Command classes can be invoked; however, the existing checks aren't as robust as they should be. It's possible for a sophisticated attacker to invoke more methods than should be permitted depending on the the strictness of authorization checks that individual applications enforce. Being able to call some of these methods can have security implications.\n\n#### Details\nCommands verify that the class must be a `Command` and that the method requested is defined as a public method; however, this isn't robust enough to guard against all unwanted code execution. The library should more strictly enforce which methods are considered safe before allowing them to be executed.  \n\n### Patches\nPatched in the following versions.\n- 0.1.3\n  - [NPM Package](https://www.npmjs.com/package/@turbo-boost/commands/v/0.1.3)\n  - [Ruby GEM](https://rubygems.org/gems/turbo_boost-commands/versions/0.1.3)\n- 0.2.2\n  - [NPM Package](https://www.npmjs.com/package/@turbo-boost/commands/v/0.2.2)\n  - [Ruby GEM](https://rubygems.org/gems/turbo_boost-commands/versions/0.2.2)\n\n\n### Workarounds\nYou can add this guard to mitigate the issue if running an unpatched version of the library.\n\n```ruby\nclass ApplicationCommand < TurboBoost::Commands::Command\n  before_command do\n    method_name = params[:name].include?(\"#\") ? params[:name].split(\"#\").last : :perform\n    ancestors = self.class.ancestors[0..self.class.ancestors.index(TurboBoost::Commands::Command) - 1]\n    allowed = ancestors.any? { |a| a.public_instance_methods(false).any? method_name.to_sym }\n    throw :abort unless allowed # \u2190 blocks invocation\n    # raise \"Invalid Command\" unless allowed # \u2190 blocks invocation\n  end\nend\n```\n",
+  "aliases": [
+    "CVE-2024-28181"
+  ],
+  "modified": "2024-03-18T17:01:02.372145Z",
+  "published": "2024-03-15T19:53:50Z",
+  "related": [
+    "CVE-2024-28181"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-03-14T18:15:07Z",
+    "cwe_ids": [
+      "CWE-74"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-03-15T19:53:50Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/hopsoft/turbo_boost-commands/security/advisories/GHSA-mp76-7w5v-pr75"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-28181"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/hopsoft/turbo_boost-commands/commit/337cda7d9222f1f449905454a7374222017a7477"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/hopsoft/turbo_boost-commands/commit/88af4fc0ac39cc1799d16c49fab52f6dfbcec9ba"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/hopsoft/turbo_boost-commands"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/turbo_boost-commands/CVE-2024-28181.yml"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "turbo_boost-commands",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/turbo_boost-commands"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.1.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.0.1",
+        "0.0.10",
+        "0.0.11",
+        "0.0.12",
+        "0.0.13",
+        "0.0.14",
+        "0.0.15",
+        "0.0.16",
+        "0.0.17",
+        "0.0.18",
+        "0.0.2",
+        "0.0.3",
+        "0.0.4",
+        "0.0.5",
+        "0.0.6",
+        "0.0.7",
+        "0.0.8",
+        "0.0.9",
+        "0.1.0",
+        "0.1.1",
+        "0.1.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-mp76-7w5v-pr75/GHSA-mp76-7w5v-pr75.json"
+      }
+    },
+    {
+      "package": {
+        "name": "turbo_boost-commands",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/turbo_boost-commands"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.2.0"
+            },
+            {
+              "fixed": "0.2.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.2.0",
+        "0.2.1",
+        "0.2.1.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-mp76-7w5v-pr75/GHSA-mp76-7w5v-pr75.json"
+      }
+    },
+    {
+      "package": {
+        "name": "@turbo-boost/commands",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/%40turbo-boost/commands"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.1.3"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-mp76-7w5v-pr75/GHSA-mp76-7w5v-pr75.json"
+      }
+    },
+    {
+      "package": {
+        "name": "@turbo-boost/commands",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/%40turbo-boost/commands"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.2.0"
+            },
+            {
+              "fixed": "0.2.2"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-mp76-7w5v-pr75/GHSA-mp76-7w5v-pr75.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

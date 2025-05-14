@@ -1,0 +1,106 @@
+{
+  "id": "SUSE-SU-2017:1718-1",
+  "summary": "Security update for openvpn-openssl1",
+  "details": "This update for openvpn-openssl1 fixes the following issues:\n\n- Some parts of the certificate-parsing code did not always clear all allocated\n  memory. This would have allowed clients to leak a few bytes of memory for\n  each connection attempt, thereby facilitating a (quite inefficient) DoS\n  attack on the server. [bsc#1044947, CVE-2017-7521]\n\n- The ASN1 parsing code contained a bug that could have resulted in some\n  buffers being free()d twice, and this issue could have potentially been\n  triggered remotely by a VPN peer. [bsc#1044947, CVE-2017-7521]\n\n- If clients used a HTTP proxy with NTLM authentication, a man-in-the-middle\n  attacker between client and proxy could cause the client to crash or disclose\n  at most 96 bytes of stack memory. The disclosed stack memory was likely to\n  contain the proxy password. If the proxy password had not been reused, this\n  was unlikely to compromise the security of the OpenVPN tunnel itself. Clients\n  who did not use the --http-proxy option with ntlm2 authentication were not\n  affected. [bsc#1044947, CVE-2017-7520]\n\n- It was possible to trigger an assertion by sending a malformed IPv6 packet.\n  That issue could have been abused to remotely shutdown an openvpn server or\n  client, if IPv6 and --mssfix were enabled and if the IPv6 networks used\n  inside the VPN were known. [bsc#1044947, CVE-2017-7508]\n\n- The installed sample configuration file was updated to comply to FIPS\n  requirements. [bsc#988522]\n\n- Remedy large latencies on the openVPN server during authentication process.\n  [bsc#959511]\n\n- Fix potential denial-of-service attacks found during independent audits.\n  [bsc#1038713, bsc#1038709, CVE-2017-7478, bsc#1038711, CVE-2017-7479]\n",
+  "modified": "2025-05-02T04:07:01.775808Z",
+  "published": "2017-06-29T11:41:38Z",
+  "related": [
+    "CVE-2017-7478",
+    "CVE-2017-7479",
+    "CVE-2017-7508",
+    "CVE-2017-7520",
+    "CVE-2017-7521"
+  ],
+  "upstream": [
+    "CVE-2017-7478",
+    "CVE-2017-7479",
+    "CVE-2017-7508",
+    "CVE-2017-7520",
+    "CVE-2017-7521"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2017/suse-su-20171718-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1038709"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1038711"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1038713"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1044947"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/959511"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/988522"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7478"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7479"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7508"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7520"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7521"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openvpn-openssl1",
+        "ecosystem": "SUSE:Linux Enterprise Server 11-SECURITY",
+        "purl": "pkg:rpm/suse/openvpn-openssl1&distro=SUSE%20Linux%20Enterprise%20Server%2011-SECURITY"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.3.2-0.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "openvpn-openssl1": "2.3.2-0.9.1",
+            "openvpn-openssl1-down-root-plugin": "2.3.2-0.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1718-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

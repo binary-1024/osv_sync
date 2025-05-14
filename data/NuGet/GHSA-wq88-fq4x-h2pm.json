@@ -1,0 +1,126 @@
+{
+  "id": "GHSA-wq88-fq4x-h2pm",
+  "summary": "WiX Burn-based bundles are vulnerable to binary hijack when run as SYSTEM",
+  "details": "# Summary\n\nBurn uses an unprotected C:\\Windows\\Temp directory to copy binaries and run them from there. This directory is not entirely protected against low privilege users.\n\n# Details\n\nWhen a bundle runs as SYSTEM user, Burn uses GetTempPathW which points to an insecure directory C:\\Windows\\Temp to drop and load multiple binaries. Standard users can hijack the binary before it's loaded in the application resulting in elevation of privileges.\n\n```\nicacls c:\\windows\\temp\n\nBUILTIN\\Users:(CI)(S,WD,AD,X)\nBUILTIN\\Administrators:(F)\nBUILTIN\\Administrators:(OI)(CI)(IO)(F)\nNT AUTHORITY\\SYSTEM:(F)\nNT AUTHORITY\\SYSTEM:(OI)(CI)(IO)(F)\nCREATOR OWNER:(OI)(CI)(IO)(F)\n```\n\nBuilt in users(non-administrators) have special permissions to this folder and can create files and write to this directory. While they do not have explicit read permissions, there is a way they can monitor the changes to this directory using ReadDirectoryChangesW API and thus figure out randomized folder names created inside this directory as wel\n \n# PoC\n\nPoC works against the against visual studio enterprise with update 3 installer\n\n## Reproduction steps\n\nAs a standard user, run the poc.\nMount the iso and run visual studio [installer ](https://myvs.download.prss.microsoft.com/dbazure/en_visual_studio_enterprise_2015_with_update_3_x86_x64_dvd_8923288.iso?t=8132cd54-4b83-4478-8b73-fd9eb93437bf&P1=1709239640&P2=601&P3=2&P4=iorgKPv%2bG8n2NANTPUVoB92rr8t3W4XM594%2f9BtQQJrYrr8SwxGDxV%2fj%2f2F6Ulto0bXrIaFoZUr4yV37YAsOZVpM29IMtQEO0673AbDVuTe93qDb6wb7xdlpZSse0LZURUwwIFw5cwHQS2ZtvkunXE0osgXtEBT2IzVbPwVH39%2fum854xb4e2Dp61wgNrMZcOLLluBbeA3KX1sP3mm7WAWXBvlFiQWEnTfR5XH5mlLyPy2qfqCXWCjl84jNX7uY%2bpLR1IbfeD2JlcIQNeW2QrvmmqRrRbGvvaCA97IaSjM16XcDqVjvAEGW3sWXUc7y%2fEf68WZIyT7iilaEDUvaqqA%3d%3d&su=1)as local system account.\nThe PoC should hijack the the binaries dropped by vs installer and a child process \"notepad.exe\" will be running.\n\n# Impact\n\nThis is an Elevation of Privilege Vulnerability where a low privileged user can hijack binaries in an unprotected path C:\\Windows\\Temp to elevate to the SYSTEM user privileges.",
+  "modified": "2024-12-05T05:34:30.717200Z",
+  "published": "2024-03-25T19:35:53Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-03-25T19:35:53Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/nirbar/wix3/security/advisories/GHSA-wq88-fq4x-h2pm"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nirbar/wix3/commit/99e754bbc717c61f18862aefd98c035f5e2f848d"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/nirbar/wix3"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "PanelSW.Custom.WiX",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/PanelSW.Custom.WiX"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.15.0-a46"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.12.0-b100",
+        "3.12.0-b45",
+        "3.12.0-b48",
+        "3.12.0-b53",
+        "3.12.0-b57",
+        "3.12.0-b59",
+        "3.12.0-b60",
+        "3.12.0-b69",
+        "3.12.0-b82",
+        "3.12.0-b83",
+        "3.12.0-b84",
+        "3.12.0-b85",
+        "3.12.0-b86",
+        "3.12.0-b88",
+        "3.12.0-b89",
+        "3.12.0-b91",
+        "3.12.0-b92",
+        "3.12.0-b93",
+        "3.12.0-b99",
+        "3.12.0-c101",
+        "3.12.0-c104",
+        "3.12.0-c105",
+        "3.12.0-c106",
+        "3.12.0-c107",
+        "3.12.0-c108",
+        "3.12.0-c110",
+        "3.12.0-c111",
+        "3.12.0-c112",
+        "3.12.0-c113",
+        "3.12.0-c114",
+        "3.12.0-c115",
+        "3.12.0-c116",
+        "3.12.0-c117",
+        "3.12.0-c121",
+        "3.12.0-c123",
+        "3.12.0-c124",
+        "3.12.0-c126",
+        "3.12.0-c127",
+        "3.12.0-c129",
+        "3.12.0-c130",
+        "3.12.0-c135",
+        "3.12.0-c150",
+        "3.12.0-c156",
+        "3.12.0-c158",
+        "3.12.0-c161",
+        "3.12.0-c162",
+        "3.12.0-c165",
+        "3.12.0-c166",
+        "3.12.0-c167",
+        "3.12.0-c176",
+        "3.12.0-c177",
+        "3.12.0-c182",
+        "3.12.0-c183",
+        "3.12.0-c185",
+        "3.12.0-c186",
+        "3.12.0-c187",
+        "3.12.0-c188",
+        "3.12.0-c189",
+        "3.12.0-c190",
+        "3.12.0-c193",
+        "3.12.0-c194",
+        "3.15.0-a44",
+        "3.15.0-a45"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.15.0-a45",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-wq88-fq4x-h2pm/GHSA-wq88-fq4x-h2pm.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

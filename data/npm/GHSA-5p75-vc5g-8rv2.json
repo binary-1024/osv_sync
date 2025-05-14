@@ -1,0 +1,77 @@
+{
+  "id": "GHSA-5p75-vc5g-8rv2",
+  "summary": "SvelteKit vulnerable to Cross-Site Request Forgery",
+  "details": "### Summary\nThe SvelteKit framework offers developers an option to create simple REST APIs. This is done by defining a `+server.js` file, containing endpoint handlers for different HTTP methods.\n\nSvelteKit provides out-of-the-box cross-site request forgery (CSRF) protection to it\u2019s users. The protection is implemented at `kit/src/runtime/server/respond.js#L52`. While the implementation does a sufficient job in mitigating common CSRF attacks, the protection can be bypassed by simply specifying a different `Content-Type` header value.\n\n### Details\nThe CSRF protection is implemented using the code shown below.\n\n```js\nconst forbidden =\n  // (1)\n  request.method === 'POST' &&\n  // (2)\n  request.headers.get('origin') !== url.origin &&\n  // (3)\n  is_form_content_type(request);\n\nif (forbidden) {\n  // (4)\n  const csrf_error = error(403, `Cross-site ${request.method} form submissions are forbidden`);\n  if (request.headers.get('accept') === 'application/json') {\n    return json(csrf_error.body, { status: csrf_error.status });\n  }\n  return text(csrf_error.body.message, { status: csrf_error.status });\n}\n```\nIf the incoming request specifies a POST method (1), the protection will compare the server\u2019s origin with the value of the HTTP `Origin` header (2). A mismatch between these values signals that a potential attack has been detected. The final check is performed on the request\u2019s `Content-Type` header (3) whether the value is either `application/x-www-form-urlencoded` or `multipart/form-data` (`kit/src/utils/http.js#L71`). If all the previous checks pass, the request will be rejected with an 403 error response (4).\n\nThe `is_form_content_type` validation is not sufficient to mitigate all possible variations of this type of attack. If a CSRF attack is performed with the `Content-Type` header set to `text/plain`, the protection will be circumvented and the request will be processed by the endpoint handler.\n<!--\n### PoC\nTo reproduce this issue, create and run a simple server (by default running on `localhost:3000`) with a POST endpoint handler such as:\n\n```js\nexport async function POST({ request }) {\n    const data = await request.json(); \n    console.log(JSON.stringify(data));\n    return new Response(String('success'));\n}\n```\n\nNext, save the malicious HTML page:\n\n```html\n<!DOCTYPE html>\n<html>\n<head></head>\n<body>\n  <h1 id=\"name\"></h1>\n  <form action=\"http://localhost:3000/api/test\" method=\"POST\" enctype=\"text/plain\">\n    <input type=\"hidden\" name=\"&#123;&quot;name&quot;&#58;&quot;test\" value=\"&quot;&#44;&quot;age&quot;&#58;123&#125;\" />\n    <input type=\"submit\" value=\"Submit\" />\n  </form>\n</body>\n</html>\n```\n\nin a file named `index.html`. Run another web server, using Python\u2019s built in http.server module (`python -m http.server`, by default running on `localhost:8000`), navigate to [http://localhost:8000/index.html](http://localhost:8000/index.html) and click the `Submit` button. \n\nVerify that the browser\u2019s URL has changed to `localhost:3000` and that the text `success` is displayed on the screen. Additionally, inspect the console of the SvelteKit web server and verify that the request body (`{\"name\":\"test=\",\"age\":123}`) was parsed as valid JSON and printed out. \n\nIt's worth noting that this attack is possible only for JSON request bodies. Form data sent using `text/plain` will be rejected by the server. \n-->\n### Impact\n\nIf abused, this issue will allow malicious requests to be submitted from third-party domains, which can allow execution of operations within the context of the victim's session, and in extreme scenarios can lead to unauthorized access to users\u2019 accounts.\n\n### Remediation\n\nSvelteKit 1.15.1 updates the `is_form_content_type` function call in the CSRF protection logic to include `text/plain`.\n\nAs additional hardening of the CSRF protection mechanism against potential method overrides, SvelteKit 1.15.1 is now performing validation on PUT, PATCH and DELETE methods as well. This latter hardening is only needed to protect users who have put in some sort of `?_method=` override feature themselves in their `handle` hook, so that the request that `resolve` sees could be `PUT`/`PATCH`/`DELETE` when the browser issues a `POST` request.",
+  "aliases": [
+    "CVE-2023-29003"
+  ],
+  "modified": "2023-11-08T04:12:15.803002Z",
+  "published": "2023-04-04T21:20:47Z",
+  "related": [
+    "CVE-2023-29003"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2023-04-04T22:15:00Z",
+    "cwe_ids": [
+      "CWE-184",
+      "CWE-352"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-04-04T21:20:47Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/sveltejs/kit/security/advisories/GHSA-5p75-vc5g-8rv2"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-29003"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sveltejs/kit/commit/bb2253d51d00aba2e4353952d4fb0dcde6c77123"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/sveltejs/kit"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sveltejs/kit/releases/tag/%40sveltejs%2Fkit%401.15.1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "@sveltejs/kit",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/%40sveltejs/kit"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.15.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-5p75-vc5g-8rv2/GHSA-5p75-vc5g-8rv2.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

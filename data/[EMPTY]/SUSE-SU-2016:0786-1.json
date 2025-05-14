@@ -1,0 +1,208 @@
+{
+  "id": "SUSE-SU-2016:0786-1",
+  "summary": "Security update for sles12-docker-image",
+  "details": "\nThis update for sles12-docker-image fixes issues with binaries and libraries included in the image\nwhere security updates have been made available in the last weeks.\n\nglibc security issues fixed:\n- CVE-2015-7547: A stack-based buffer overflow in getaddrinfo allowed remote attackers to cause a crash or execute arbitrary code via crafted and timed DNS responses (bsc#961721)\n- CVE-2015-8777: Insufficient checking of LD_POINTER_GUARD environment variable allowed local attackers to bypass the pointer guarding protection of the dynamic loader on set-user-ID and set-group-ID programs (bsc#950944)\n- CVE-2015-8776: Out-of-range time values passed to the strftime function may cause it to crash, leading to a denial of service, or potentially disclosure information (bsc#962736)\n- CVE-2015-8778: Integer overflow in hcreate and hcreate_r could have caused an out-of-bound memory access. leading to application crashes or, potentially, arbitrary code execution (bsc#962737)\n- CVE-2014-9761: A stack overflow (unbounded alloca) could have caused applications which process long strings with the nan function to crash or, potentially, execute arbitrary code. (bsc#962738)\n- CVE-2015-8779: A stack overflow (unbounded alloca) in the catopen function could have caused applications which pass long strings to the catopen function to crash or, potentially execute arbitrary code. (bsc#962739)\n\nglibc bugs fixed:\n- bsc#955647: Resource leak in resolver\n- bsc#956716: Don't do lock elision on an error checking mutex\n- bsc#958315: Reinitialize dl_load_write_lock on fork\n\nopenssl security bugs fixed:\nSecurity issues fixed:\n- CVE-2016-0800 aka the 'DROWN' attack (bsc#968046):\n  OpenSSL was vulnerable to a cross-protocol attack that could lead to\n  decryption of TLS sessions by using a server supporting SSLv2 and\n  EXPORT cipher suites as a Bleichenbacher RSA padding oracle.\n\n  This update changes the openssl library to:\n\n  * Disable SSLv2 protocol support by default.\n\n    This can be overridden by setting the environment variable\n    'OPENSSL_ALLOW_SSL2' or by using SSL_CTX_clear_options using the\n    SSL_OP_NO_SSLv2 flag.\n\n    Note that various services and clients had already disabled SSL\n    protocol 2 by default previously.\n\n  * Disable all weak EXPORT ciphers by default. These can be reenabled\n    if required by old legacy software using the environment variable\n    'OPENSSL_ALLOW_EXPORT'.\n\n- CVE-2016-0702 aka the 'CacheBleed' attack. (bsc#968050)\n  Various changes in the modular exponentation code were added that\n  make sure that it is not possible to recover RSA secret keys by\n  analyzing cache-bank conflicts on the Intel Sandy-Bridge microarchitecture.\n\n  Note that this was only exploitable if the malicious code was running\n  on the same hyper threaded Intel Sandy Bridge processor as the victim\n  thread performing decryptions.\n\n- CVE-2016-0705 (bnc#968047):\n  A double free() bug in the DSA ASN1 parser code was fixed that could\n  be abused to facilitate a denial-of-service attack.\n\n- CVE-2016-0797 (bnc#968048):\n  The BN_hex2bn() and BN_dec2bn() functions had a bug that could result\n  in an attempt to de-reference a NULL pointer leading to crashes.\n  This could have security consequences if these functions were ever\n  called by user applications with large untrusted hex/decimal data. Also,\n  internal usage of these functions in OpenSSL uses data from config files\n  or application command line arguments. If user developed applications\n  generated config file data based on untrusted data, then this could\n  have had security consequences as well.\n\n- CVE-2016-0798 (bnc#968265)\n  The SRP user database lookup method SRP_VBASE_get_by_user() had a memory\n  leak that attackers could abuse to facility DoS attacks. To mitigate\n  the issue, the seed handling in SRP_VBASE_get_by_user() was disabled\n  even if the user has configured a seed. Applications are advised to\n  migrate to SRP_VBASE_get1_by_user().\n\n- CVE-2016-0799 (bnc#968374)\n  On many 64 bit systems, the internal fmtstr() and doapr_outch()\n  functions could miscalculate the length of a string and attempt to\n  access out-of-bounds memory locations. These problems could have\n  enabled attacks where large amounts of untrusted data is passed to\n  the BIO_*printf functions. If applications use these functions in\n  this way then they could have been vulnerable. OpenSSL itself uses\n  these functions when printing out human-readable dumps of ASN.1\n  data. Therefore applications that print this data could have been\n  vulnerable if the data is from untrusted sources. OpenSSL command line\n  applications could also have been vulnerable when they print out ASN.1\n  data, or if untrusted data is passed as command line arguments. Libssl\n  is not considered directly vulnerable.\n\n- CVE-2015-3197 (bsc#963415):\n  The SSLv2 protocol did not block disabled ciphers.\n\nNote that the March 1st 2016 release also references following CVEs\nthat were fixed by us with CVE-2015-0293 in 2015:\n\n- CVE-2016-0703 (bsc#968051): This issue only affected versions of\n  OpenSSL prior to March 19th 2015 at which time the code was refactored\n  to address vulnerability CVE-2015-0293. It would have made the above\n  'DROWN' attack much easier.\n- CVE-2016-0704 (bsc#968053): 'Bleichenbacher oracle in SSLv2'\n  This issue only affected versions of OpenSSL prior to March 19th\n  2015 at which time the code was refactored to address vulnerability\n  CVE-2015-0293. It would have made the above 'DROWN' attack much easier.\n\n- CVE-2015-3194: The signature verification routines will crash with a\n  NULL pointer dereference if presented with an ASN.1 signature using the\n  RSA PSS algorithm and absent mask generation function parameter. Since\n  these routines are used to verify certificate signature algorithms\n  this can be used to crash any certificate verification operation and\n  exploited in a DoS attack. Any application which performs certificate\n  verification is vulnerable including OpenSSL clients and servers which\n  enable client authentication. (bsc#957815)\n- CVE-2015-3195: When presented with a malformed X509_ATTRIBUTE structure OpenSSL would leak\n  memory. This structure is used by the PKCS#7 and CMS routines so any\n  application which reads PKCS#7 or CMS data from untrusted sources is affected.\n  SSL/TLS is not affected. (bsc#957812)\n- CVE-2015-3196: If PSK identity hints are received by a multi-threaded client then\n  the values were wrongly updated in the parent SSL_CTX structure. This could\n  result in a race condition potentially leading to a double free of the\n  identify hint data.  (bsc#957813)\n\nopenssl bugs fixed:\n- Avoid running OPENSSL_config twice. This avoids breaking\n  engine loading. (bsc#952871)\n- Ensure that OpenSSL doesn't fall back to the default digest\n  algorithm (SHA1) in case a non-FIPS algorithm was negotiated while\n  running in FIPS mode. Instead, OpenSSL will refuse the digest.\n  (bnc#958501)\n- Clear the error after setting non-fips mode (bsc#947104)\n- Improve S/390 performance on IBM z196 and z13 (bsc#954256)\n- Add support for 'ciphers' providing no encryption (bsc#937085)\n\nlibxml2 security issues fixed:\n- CVE-2015-8710: Parsing short unclosed HTML comment could cause uninitialized memory access, which allowed remote attackers to read contents from previous HTTP requests depending on the application [bsc#960674]\n- CVE-2015-1819 Enforce the reader to run in constant memory [bnc#928193]\n- CVE-2015-7941 Fix out of bound read with crafted xml input by stopping parsing on entities boundaries errors [bnc#951734]\n- CVE-2015-7942 Fix another variation of overflow in Conditional sections [bnc#951735]\n- CVE-2015-8241 Avoid extra processing of MarkupDecl when EOF [bnc#956018]\n- CVE-2015-8242 Buffer overead with HTML parser in push mode [bnc#956021]\n- CVE-2015-8317 Return if the encoding declaration is broken or encoding conversion failed [bnc#956260]\n- CVE-2015-5312 Fix another entity expansion issue [bnc#957105]\n- CVE-2015-7497 Avoid an heap buffer overflow in xmlDictComputeFastQKey [bnc#957106]\n- CVE-2015-7498 Processes entities after encoding conversion failures [bnc#957107]\n- CVE-2015-7499 Add xmlHaltParser() to stop the parser / Detect incoherency on GROW [bnc#957109]\n- CVE-2015-8317 Multiple out-of-bound read could lead to denial of service [bnc#956260]\n- CVE-2015-8035 DoS when parsing specially crafted XML document if XZ support is enabled [bnc#954429]\n- CVE-2015-7500 Fix memory access error due to incorrect entities boundaries [bnc#957110]\n\nAnd other security and non-security updates found in the SUSE Linux Enterprise 12 GA line.\n",
+  "modified": "2025-05-02T04:04:16.403763Z",
+  "published": "2016-03-16T10:28:25Z",
+  "related": [
+    "CVE-2014-9761",
+    "CVE-2015-1819",
+    "CVE-2015-3194",
+    "CVE-2015-3195",
+    "CVE-2015-3196",
+    "CVE-2015-3197",
+    "CVE-2015-5312",
+    "CVE-2015-7497",
+    "CVE-2015-7498",
+    "CVE-2015-7499",
+    "CVE-2015-7500",
+    "CVE-2015-7547",
+    "CVE-2015-7941",
+    "CVE-2015-7942",
+    "CVE-2015-8035",
+    "CVE-2015-8241",
+    "CVE-2015-8242",
+    "CVE-2015-8317",
+    "CVE-2015-8710",
+    "CVE-2015-8776",
+    "CVE-2015-8777",
+    "CVE-2015-8778",
+    "CVE-2015-8779",
+    "CVE-2016-0702",
+    "CVE-2016-0703",
+    "CVE-2016-0704",
+    "CVE-2016-0705",
+    "CVE-2016-0797",
+    "CVE-2016-0798",
+    "CVE-2016-0799",
+    "CVE-2016-0800"
+  ],
+  "upstream": [
+    "CVE-2014-9761",
+    "CVE-2015-1819",
+    "CVE-2015-3194",
+    "CVE-2015-3195",
+    "CVE-2015-3196",
+    "CVE-2015-3197",
+    "CVE-2015-5312",
+    "CVE-2015-7497",
+    "CVE-2015-7498",
+    "CVE-2015-7499",
+    "CVE-2015-7500",
+    "CVE-2015-7547",
+    "CVE-2015-7941",
+    "CVE-2015-7942",
+    "CVE-2015-8035",
+    "CVE-2015-8241",
+    "CVE-2015-8242",
+    "CVE-2015-8317",
+    "CVE-2015-8710",
+    "CVE-2015-8776",
+    "CVE-2015-8777",
+    "CVE-2015-8778",
+    "CVE-2015-8779",
+    "CVE-2016-0702",
+    "CVE-2016-0703",
+    "CVE-2016-0704",
+    "CVE-2016-0705",
+    "CVE-2016-0797",
+    "CVE-2016-0798",
+    "CVE-2016-0799",
+    "CVE-2016-0800"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2016/suse-su-20160786-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/969591"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2014-9761"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-1819"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-3194"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-3195"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-3196"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-3197"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-5312"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7497"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7498"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7499"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7500"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7547"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7941"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7942"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8035"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8241"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8242"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8317"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8710"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8776"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8777"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8778"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8779"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0702"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0703"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0704"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0705"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0797"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0798"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0799"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0800"
+    }
+  ],
+  "schema_version": "1.6.0"
+}

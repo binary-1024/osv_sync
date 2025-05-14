@@ -1,0 +1,333 @@
+{
+  "id": "GHSA-4qrp-27r3-66fj",
+  "summary": "Improper sanitize of SVG files during content upload ('Cross-site Scripting') in sylius/sylius",
+  "details": "### Impact\nThere is a possibility to upload an SVG file containing XSS code in the admin panel. In order to perform an XSS attack, the file itself has to be opened in a new card (or loaded outside of the IMG tag). The problem applies both to the files opened on the admin panel and shop pages.\n\n### Patches\nThe issue is fixed in versions: 1.9.10, 1.10.11, 1.11.2, and above.\n\n### Workarounds\nIf there is a need to upload an SVG image type, on-upload sanitization has to be added. The way to achieve this is to require a library that will do the trick:\n\n```\ncomposer require enshrined/svg-sanitize\n```\n\nThe second step is all about performing a file content sanitization before writing it to the filesystem. It can be done by overwriting the service:\n\n```php\n<?php\n\ndeclare(strict_types=1);\n\nnamespace App\\Uploader;\n\nuse enshrined\\svgSanitize\\Sanitizer;\nuse Gaufrette\\Filesystem;\nuse Sylius\\Component\\Core\\Generator\\ImagePathGeneratorInterface;\nuse Sylius\\Component\\Core\\Generator\\UploadedImagePathGenerator;\nuse Sylius\\Component\\Core\\Model\\ImageInterface;\nuse Sylius\\Component\\Core\\Uploader\\ImageUploaderInterface;\nuse Symfony\\Component\\HttpFoundation\\File\\File;\nuse Webmozart\\Assert\\Assert;\n\nfinal class ImageUploader implements ImageUploaderInterface\n{\n    private const MIME_SVG_XML = 'image/svg+xml';\n    private const MIME_SVG = 'image/svg';\n\n    /** @var Filesystem */\n    protected $filesystem;\n\n    /** @var ImagePathGeneratorInterface */\n    protected $imagePathGenerator;\n\n    /** @var Sanitizer */\n    protected $sanitizer;\n\n    public function __construct(\n        Filesystem $filesystem,\n        ?ImagePathGeneratorInterface $imagePathGenerator = null\n    ) {\n        $this->filesystem = $filesystem;\n\n        if ($imagePathGenerator === null) {\n            @trigger_error(sprintf(\n                'Not passing an $imagePathGenerator to %s constructor is deprecated since Sylius 1.6 and will be not possible in Sylius 2.0.', self::class\n            ), \\E_USER_DEPRECATED);\n        }\n\n        $this->imagePathGenerator = $imagePathGenerator ?? new UploadedImagePathGenerator();\n        $this->sanitizer = new Sanitizer();\n    }\n\n    public function upload(ImageInterface $image): void\n    {\n        if (!$image->hasFile()) {\n            return;\n        }\n\n        /** @var File $file */\n        $file = $image->getFile();\n\n        Assert::isInstanceOf($file, File::class);\n\n        $fileContent = $this->sanitizeContent(file_get_contents($file->getPathname()), $file->getMimeType());\n\n        if (null !== $image->getPath() && $this->has($image->getPath())) {\n            $this->remove($image->getPath());\n        }\n\n        do {\n            $path = $this->imagePathGenerator->generate($image);\n        } while ($this->isAdBlockingProne($path) || $this->filesystem->has($path));\n\n        $image->setPath($path);\n\n        $this->filesystem->write($image->getPath(), $fileContent);\n    }\n\n    public function remove(string $path): bool\n    {\n        if ($this->filesystem->has($path)) {\n            return $this->filesystem->delete($path);\n        }\n\n        return false;\n    }\n\n    protected function sanitizeContent(string $fileContent, string $mimeType): string\n    {\n        if (self::MIME_SVG_XML === $mimeType || self::MIME_SVG === $mimeType) {\n            $fileContent = $this->sanitizer->sanitize($fileContent);\n        }\n\n        return $fileContent;\n    }\n\n    private function has(string $path): bool\n    {\n        return $this->filesystem->has($path);\n    }\n\n    /**\n     * Will return true if the path is prone to be blocked by ad blockers\n     */\n    private function isAdBlockingProne(string $path): bool\n    {\n        return strpos($path, 'ad') !== false;\n    }\n}\n```\n\nAfter that, register service in the container:\n\n```yaml\nservices:\n    sylius.image_uploader:\n        class: App\\Uploader\\ImageUploader\n        arguments:\n            - '@gaufrette.sylius_image_filesystem'\n            - '@Sylius\\Component\\Core\\Generator\\ImagePathGeneratorInterface'\n```\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [Sylius issues](https://github.com/Sylius/Sylius/issues)\n* Email us at security@sylius.com\n",
+  "aliases": [
+    "CVE-2022-24749"
+  ],
+  "modified": "2023-11-08T04:08:35.125122Z",
+  "published": "2022-03-14T22:38:14Z",
+  "related": [
+    "CVE-2022-24749"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2022-03-14T22:15:00Z",
+    "github_reviewed_at": "2022-03-14T22:38:14Z",
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "cwe_ids": [
+      "CWE-434",
+      "CWE-79",
+      "CWE-80"
+    ]
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/Sylius/security/advisories/GHSA-4qrp-27r3-66fj"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-24749"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Sylius/Sylius"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/Sylius/releases/tag/v1.10.11"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/Sylius/releases/tag/v1.11.2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/Sylius/releases/tag/v1.9.10"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "sylius/sylius",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/sylius/sylius"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.9.10"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v0.1.0",
+        "v0.10.0",
+        "v0.11.0",
+        "v0.12.0",
+        "v0.13.0",
+        "v0.14.0",
+        "v0.15.0",
+        "v0.16.0",
+        "v0.17.0",
+        "v0.18.0",
+        "v0.19.0",
+        "v0.2.0",
+        "v0.3.0",
+        "v0.5.0",
+        "v0.6.0",
+        "v0.7.0",
+        "v0.8.0",
+        "v0.9.0",
+        "v1.0.0",
+        "v1.0.0-alpha.1",
+        "v1.0.0-alpha.2",
+        "v1.0.0-beta.1",
+        "v1.0.0-beta.2",
+        "v1.0.0-beta.3",
+        "v1.0.0-rc.1",
+        "v1.0.0-rc.2",
+        "v1.0.1",
+        "v1.0.10",
+        "v1.0.11",
+        "v1.0.12",
+        "v1.0.13",
+        "v1.0.14",
+        "v1.0.15",
+        "v1.0.16",
+        "v1.0.17",
+        "v1.0.18",
+        "v1.0.2",
+        "v1.0.3",
+        "v1.0.4",
+        "v1.0.5",
+        "v1.0.6",
+        "v1.0.7",
+        "v1.0.8",
+        "v1.0.9",
+        "v1.1.0",
+        "v1.1.0-RC",
+        "v1.1.1",
+        "v1.1.10",
+        "v1.1.11",
+        "v1.1.12",
+        "v1.1.13",
+        "v1.1.14",
+        "v1.1.15",
+        "v1.1.16",
+        "v1.1.17",
+        "v1.1.18",
+        "v1.1.2",
+        "v1.1.3",
+        "v1.1.4",
+        "v1.1.5",
+        "v1.1.6",
+        "v1.1.7",
+        "v1.1.8",
+        "v1.1.9",
+        "v1.2.0",
+        "v1.2.0-BETA",
+        "v1.2.0-RC",
+        "v1.2.1",
+        "v1.2.10",
+        "v1.2.11",
+        "v1.2.12",
+        "v1.2.13",
+        "v1.2.14",
+        "v1.2.15",
+        "v1.2.16",
+        "v1.2.17",
+        "v1.2.2",
+        "v1.2.3",
+        "v1.2.4",
+        "v1.2.5",
+        "v1.2.6",
+        "v1.2.7",
+        "v1.2.8",
+        "v1.2.9",
+        "v1.3.0",
+        "v1.3.0-BETA",
+        "v1.3.1",
+        "v1.3.10",
+        "v1.3.11",
+        "v1.3.12",
+        "v1.3.13",
+        "v1.3.14",
+        "v1.3.15",
+        "v1.3.16",
+        "v1.3.2",
+        "v1.3.3",
+        "v1.3.4",
+        "v1.3.5",
+        "v1.3.6",
+        "v1.3.7",
+        "v1.3.8",
+        "v1.3.9",
+        "v1.4.0",
+        "v1.4.0-BETA.1",
+        "v1.4.1",
+        "v1.4.10",
+        "v1.4.11",
+        "v1.4.12",
+        "v1.4.2",
+        "v1.4.3",
+        "v1.4.4",
+        "v1.4.5",
+        "v1.4.6",
+        "v1.4.7",
+        "v1.4.8",
+        "v1.4.9",
+        "v1.5.0",
+        "v1.5.0-RC.1",
+        "v1.5.1",
+        "v1.5.2",
+        "v1.5.3",
+        "v1.5.4",
+        "v1.5.5",
+        "v1.5.6",
+        "v1.5.7",
+        "v1.5.8",
+        "v1.5.9",
+        "v1.6.0",
+        "v1.6.0-ALPHA.1",
+        "v1.6.0-ALPHA.2",
+        "v1.6.0-RC.1",
+        "v1.6.1",
+        "v1.6.2",
+        "v1.6.3",
+        "v1.6.4",
+        "v1.6.5",
+        "v1.6.6",
+        "v1.6.7",
+        "v1.6.8",
+        "v1.6.9",
+        "v1.7.0",
+        "v1.7.0-ALPHA.1",
+        "v1.7.0-ALPHA.2",
+        "v1.7.0-RC.1",
+        "v1.7.1",
+        "v1.7.10",
+        "v1.7.11",
+        "v1.7.2",
+        "v1.7.3",
+        "v1.7.4",
+        "v1.7.5",
+        "v1.7.6",
+        "v1.7.7",
+        "v1.7.8",
+        "v1.7.9",
+        "v1.8.0",
+        "v1.8.0-RC.1",
+        "v1.8.1",
+        "v1.8.10",
+        "v1.8.11",
+        "v1.8.12",
+        "v1.8.2",
+        "v1.8.3",
+        "v1.8.4",
+        "v1.8.5",
+        "v1.8.6",
+        "v1.8.7",
+        "v1.8.8",
+        "v1.8.9",
+        "v1.9.0",
+        "v1.9.0-ALPHA.1",
+        "v1.9.0-ALPHA.2",
+        "v1.9.0-BETA.1",
+        "v1.9.0-BETA.2",
+        "v1.9.0-BETA.3",
+        "v1.9.0-RC.1",
+        "v1.9.0-RC.2",
+        "v1.9.1",
+        "v1.9.2",
+        "v1.9.3",
+        "v1.9.4",
+        "v1.9.5",
+        "v1.9.6",
+        "v1.9.7",
+        "v1.9.8",
+        "v1.9.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/03/GHSA-4qrp-27r3-66fj/GHSA-4qrp-27r3-66fj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "sylius/sylius",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/sylius/sylius"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.10.0"
+            },
+            {
+              "fixed": "1.10.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.10.0",
+        "v1.10.1",
+        "v1.10.10",
+        "v1.10.2",
+        "v1.10.3",
+        "v1.10.4",
+        "v1.10.5",
+        "v1.10.6",
+        "v1.10.7",
+        "v1.10.8",
+        "v1.10.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/03/GHSA-4qrp-27r3-66fj/GHSA-4qrp-27r3-66fj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "sylius/sylius",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/sylius/sylius"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.11.0"
+            },
+            {
+              "fixed": "1.11.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.11.0",
+        "v1.11.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/03/GHSA-4qrp-27r3-66fj/GHSA-4qrp-27r3-66fj.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

@@ -1,0 +1,934 @@
+{
+  "id": "SUSE-SU-2019:1534-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 12 SP2 kernel version 4.4.121 was updated to receive\nvarious security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2019-11477: A sequence of SACKs may have been crafted by a remote\n  attacker such that one can trigger an integer overflow, leading to a kernel\n  panic. (bsc#1137586).\n\n- CVE-2019-11478: It was possible to send a crafted sequence of SACKs which\n  would fragment the TCP retransmission queue. A remote attacker may have been\n  able to further exploit the fragmented queue to cause an expensive linked-list\n  walk for subsequent SACKs received for that same TCP connection.\n\n- CVE-2019-11479: It was possible to send a crafted sequence of SACKs which\n  would fragment the RACK send map. A remote attacker may be able to further\n  exploit the fragmented send map to cause an expensive linked-list walk for\n  subsequent SACKs received for that same TCP connection. This would have\n  resulted in excess resource consumption due to low mss values.\n\n- CVE-2019-3846: A flaw that allowed an attacker to corrupt memory and possibly\n  escalate privileges was found in the mwifiex kernel module while connecting\n  to a malicious wireless network. (bnc#1136424)\n\n- CVE-2019-12382: An issue was discovered in drm_load_edid_firmware in\n  drivers/gpu/drm/drm_edid_load.c in the Linux kernel There is an unchecked\n  kstrdup of fwstr, which may have allowed an attacker to cause a denial of service\n  (NULL pointer dereference and system crash). (bnc#1136586)\n\n- CVE-2019-5489: The mincore() implementation in mm/mincore.c in the Linux\n  kernel allowed local attackers to observe page cache access patterns of other\n  processes on the same system, potentially allowing sniffing of secret\n  information. (Fixing this affects the output of the fincore program.) Limited\n  remote exploitation may have been possible, as demonstrated by latency differences\n  in accessing public files from an Apache HTTP Server. (bnc#1120843)\n\n- CVE-2019-11833: fs/ext4/extents.c in the Linux kernel did not zero out the\n  unused memory region in the extent tree block, which might have allowed local users\n  to obtain sensitive information by reading uninitialized data in the\n  filesystem. (bnc#1135281)\n\n- CVE-2018-7191: In the tun subsystem in the Linux kernel, dev_get_valid_name was\n  not called before register_netdevice. This allowed local users to cause a denial of \n  service (NULL pointer dereference and panic) via an ioctl(TUNSETIFF) call with a dev\n  name containing a / character. This is similar to CVE-2013-4343. (bnc#1135603)\n\n- CVE-2019-11190: The Linux kernel allowed local users to bypass ASLR on setuid\n  programs (such as /bin/su) because install_exec_creds() is called too late in\n  load_elf_binary() in fs/binfmt_elf.c, and thus the ptrace_may_access() check\n  had a race condition when reading /proc/pid/stat. (bnc#1131543)\n\n- CVE-2019-11815: An issue was discovered in rds_tcp_kill_sock in net/rds/tcp.c\n  in the Linux kernel There was a race condition leading to a use-after-free,\n  related to net namespace cleanup. (bnc#1134537)\n\n- CVE-2019-11884: The do_hidp_sock_ioctl function in net/bluetooth/hidp/sock.c\n  in the Linux kernel allowed a local user to obtain potentially sensitive\n  information from kernel stack memory via a HIDPCONNADD command, because a\n  name field may not have ended with a '\\0' character. (bnc#1134848)\n\n- CVE-2018-17972: An issue was discovered in the proc_pid_stack function in\n  fs/proc/base.c in the Linux kernel It did not ensure that only root may\n  inspect the kernel stack of an arbitrary task, allowing a local attacker to\n  exploit racy stack unwinding and leak kernel task stack contents.\n  (bnc#1110785)\n\nThe following non-security bugs were fixed:\n\n- cifs: keep FileInfo handle live during oplock break (bsc#1106284, bsc#1131565).\n- ftrace/x86_64: Emulate call function while updating in breakpoint handler (bsc#1099658).\n- kabi: drop LINUX_MIB_TCPWQUEUETOOBIG snmp counter (bsc#1137586).\n- kabi: move sysctl_tcp_min_snd_mss to preserve struct net layout (bsc#1137586).\n- mwifiex: Fix heap overflow in mwifiex_uap_parse_tail_ies() (bsc#1136935).\n- tcp: add tcp_min_snd_mss sysctl (bsc#1137586).\n- tcp: enforce tcp_min_snd_mss in tcp_mtu_probing() (bsc#1137586).\n- tcp: limit payload size of sacked skbs (bsc#1137586).\n- tcp: tcp_fragment() should apply sane memory limits (bsc#1137586).\n- x86_64: Add gap to int3 to allow for call emulation (bsc#1099658).\n- x86_64: Allow breakpoints to emulate call instructions (bsc#1099658).\n- xen-swiotlb: fix the check condition for xen_swiotlb_free_coherent (bnc#1134596).\n- xen-swiotlb: use actually allocated size on check physical continuous (bnc#1134596).\n",
+  "modified": "2025-05-02T04:08:01.765955Z",
+  "published": "2019-06-17T17:22:06Z",
+  "related": [
+    "CVE-2018-17972",
+    "CVE-2018-7191",
+    "CVE-2019-11190",
+    "CVE-2019-11477",
+    "CVE-2019-11478",
+    "CVE-2019-11479",
+    "CVE-2019-11815",
+    "CVE-2019-11833",
+    "CVE-2019-11884",
+    "CVE-2019-12382",
+    "CVE-2019-3846",
+    "CVE-2019-5489"
+  ],
+  "upstream": [
+    "CVE-2018-17972",
+    "CVE-2018-7191",
+    "CVE-2019-11190",
+    "CVE-2019-11477",
+    "CVE-2019-11478",
+    "CVE-2019-11479",
+    "CVE-2019-11815",
+    "CVE-2019-11833",
+    "CVE-2019-11884",
+    "CVE-2019-12382",
+    "CVE-2019-3846",
+    "CVE-2019-5489"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2019/suse-su-20191534-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099658"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106284"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1110785"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1113769"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1120843"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1120885"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1131543"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1131565"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1132374"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1132472"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1134537"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1134596"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1134848"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1135281"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1135603"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1136424"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1136446"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1136586"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1136935"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1137586"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-17972"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-7191"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11190"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11477"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11478"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11479"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11815"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11833"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11884"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-12382"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-3846"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-5489"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default-man": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default-man": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default-man": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_30",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_30&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.5.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default-man": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 12 SP2",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "dlm-kmp-default": "4.4.121-92.114.1",
+            "gfs2-kmp-default": "4.4.121-92.114.1",
+            "cluster-network-kmp-default": "4.4.121-92.114.1",
+            "ocfs2-kmp-default": "4.4.121-92.114.1",
+            "cluster-md-kmp-default": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_30",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_30&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.5.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default-man": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default-man": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default-man": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_30",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_30&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.5.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default-man": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.114.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_30",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_30&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.5.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.114.1",
+            "kernel-devel": "4.4.121-92.114.1",
+            "kernel-default-base": "4.4.121-92.114.1",
+            "kernel-source": "4.4.121-92.114.1",
+            "kgraft-patch-4_4_121-92_114-default": "1-3.5.1",
+            "kernel-default": "4.4.121-92.114.1",
+            "kernel-syms": "4.4.121-92.114.1",
+            "kernel-default-devel": "4.4.121-92.114.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1534-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

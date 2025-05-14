@@ -1,0 +1,2181 @@
+{
+  "id": "SUSE-SU-2019:1006-1",
+  "summary": "Security update for SUSE Manager Server 3.2",
+  "details": "\nThis update includes the following new features:\n\n  to the repository metadata (fate#325676)\n\nThis update fixes the following issues:\n\napache-commons-lang3:\n\n- Run fdupes on javadoc\n- Specify java target and source level 1.6\n  to make package compatible with JDK >= 1.8\n\ncobbler:\n\n- Fixes case where distribution detection returns None (bsc#1130658)\n- SUSE texmode fix (bsc#1109316)\n\ndrools:\n\n- Update Drools to 7.17.0\n- Release Notes: https://issues.jboss.org/secure/ReleaseNote.jspa\n- Fixes for SLE 15 compatibility \n\nguava:\n\n- Updated from 13.0.1 to 27.0.1\n- Changes between 13.0.1 and 23.0:\n  https://github.com/google/guava/wiki/Release14\n  https://github.com/google/guava/wiki/Release15\n  https://github.com/google/guava/wiki/Release16\n  https://github.com/google/guava/wiki/Release17\n  https://github.com/google/guava/wiki/Release18\n  https://github.com/google/guava/wiki/Release19\n  https://github.com/google/guava/wiki/Release23\n- Changes between 23.0 and 27.0.1:\n  see https://github.com/google/guava/releases\n\njade4j:\n\n- Conditional java/java-devel requires based on os version \n- Update dependency version for commons-lang3 to 3.4\n- Fix building javadoc\n\nkie-api:\n\n- Update KIE to 7.17.0 \n- Release notes: https://issues.jboss.org/secure/ReleaseNote.jspa\n\noptaplanner:\n\n- Update Optaplanner to 7.17.0\n\npy26-compat-salt:\n\n- Fix minion arguments assign via sysctl (bsc#1124290)\n\nsmdba:\n\n- Make 'smdba space-overview' postgresql version\n  agnostic (bsc#1129956)\n- Fix version mismatch\n\nspacecmd:\n\n- Fix system_delete with SSM (bsc#1125744)\n\nspacewalk-admin:\n\n- Fix encoding bug in salt event processing (bsc#1129851)\n\nspacewalk-backend:\n\n- Fix linking of packages in reposync (bsc#1131677)\n- Fix: handle non-standard filenames for comps.xml (bsc#1120242)\n- Mgr-sign-metadata can optionally clear-sign metadata files\n\nspacewalk-branding:\n\n- Introduce a description label for the new 'minion-checkin' Taskomatic job (bsc#1122837)\n\nspacewalk-certs-tools:\n\n- Add support for Ubuntu to bootstrap script\n- Clean up downloaded gpg keys after bootstrap (bsc#1126075)\n\nspacewalk-java:\n\n- Fix base channel selection for Ubuntu systems (bsc#1132579)\n- Fix retrieval of build time for .deb repositories (bsc#1131721)\n- Allow access to susemanager tools channels without res subscription (bsc#1127542)\n- Add support for SLES 15 live patches in CVE audit\n- Add a Taskomatic job to perform minion check-in regularly, drop use of Salt's Mine (bsc#1122837)\n- Fix errata_details to return details correctly (bsc#1128228)\n- Support ubuntu products and debian architectures in mgr-sync\n- Adapt check for available repositories to debian style repositories\n- Add support for custom username when bootstrapping with Salt-SSH\n- Read and update running kernel release value at each startup of minion (bsc#1122381)\n- Add error message on sync refresh when there are no scc credentials\n- Fix apidoc issues \n- Fix deleting server when minion_formulas.json is empty (bsc#1122230)\n- Minion-action-cleanup Taskomatic task: do not clean actions younger than one hour\n- Schedule full package refresh only once per action chain if needed (bsc#1126518)\n- Check and schedule package refresh in response to events independently of what originates them (bsc#1126099)\n- Add configuration option to limit the number of changelog entries added\n  to the repository metadata (fate#325676)\n- Generate InRelease file for Debian/Ubuntu repos when metadata signing is enabled\n\nspacewalk-web:\n\n- Show undetected subscription-matching message object as a string anyway (bsc#1125600)\n- Fix action scheduler time picker prefill when the server is on  'UTC/GMT' timezone (bsc#1121195)\n- Allow username input on bootstrap page when using Salt-SSH\n- Add cache buster for static files (js/css) to fix caching issues after upgrading.\n\nsubscription-matcher:\n\n- Update dependencies (Drools, Optaplanner, Guava, Xstream)\n- Make the java and java-devel requirements variable\n- Relax the requirement condition on apache-commons-lang3\n\nsusemanager:\n\n- Support creating bootstrap repos for Ubuntu 18.04 and 16.04.\n- Allow alternative names for bootstrap packages, to allow\n  using old client tools after package renames\n- Feat: create Ubuntu empty repository\n- Fix creation of bootstrap repositories for SLE12 (no SP) by\n  requiring python-setuptools only for SLE12 >= SP1 (bsc#1129765)\n- Add bootstrap repo definition for SLE15 SP1\n\nsusemanager-docs_en:\n\n- Update text and image files.\n- Fix bad link.\n- Update Manual Backup and smdba sections.\n- Troubleshooting Salt clients.\n- Fix package endpoint in salt pillar content.\n- Ubuntu Clients supported.\n- Change License to GFL 1.2, as it is the real license for the doc\n  since 3.2.0\n\nsusemanager-schema:\n\n- Add a Taskomatic job to perform minion check-in regularly, drop use of Salt's Mine (bsc#1122837)\n- Fix performance regression in inter-server-sync (bsc#1128781)\n- Set minion-action-cleanup run frequency from hourly to daily at midnight\n\nsusemanager-sls:\n\n- Update get_kernel_live_version module to support older Salt versions (bsc#1131490)\n- Update get_kernel_live_version module to support SLES 15 live patches\n- Do not configure Salt Mine in newly registered minions (bsc#1122837)\n- Fix Salt error related to remove_traditional_stack when bootstrapping an Ubuntu\n  minion (bsc#1128724)\n- Automatically trust SUSE GPG key for client tools channels on Ubuntu systems\n- Util.systeminfo sls has been added to perform different actions at minion startup(bsc#1122381) \n\nsusemanager-sync-data:\n\n- Allow access to susemanager tools channels without res subscription (bsc#1127542)\n- Add Ubuntu product definitions\n- Adapt to SCC changes\n- Add CaaSP 4 Toolchain\n\nxstream:\n\n- Update xstream to 1.4.10\n- Major changes:\n- CVE-2017-7957: XStream could cause a Denial of Service when unmarshalling void. (bsc#1070731)\n- New XStream artifact with -java7 appended as version suffix for a library explicitly without the Java 8 stuff (lambda expression support, converters for java.time.* package).\n- Improve performance by minimizing call stack of mapper chain.\n- XSTR-774: Add converters for types of java.time, java.time.chrono, and java.time.temporal packages (converters for LocalDate, LocalDateTime, LocalTime, OffsetDateTime, and ZonedDateTime by Matej Cimbora).\n- JavaBeanConverter does not respect ignored unknown elements.\n- Add XStream.setupDefaultSecurity to initialize security framework with defaults of XStream 1.5.x.\n- Emit error warning if security framework has not been initialized and the XStream instance is vulnerable to known exploits.\n- Feat: modify patch to be compatible with JDK 11 building\n- Fixes for SLE 15 compatibility\n\n",
+  "modified": "2025-05-02T04:07:06.323004Z",
+  "published": "2019-04-24T10:06:34Z",
+  "related": [
+    "CVE-2017-7957"
+  ],
+  "upstream": [
+    "CVE-2017-7957"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2019/suse-su-20191006-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1070731"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1109316"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1120242"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1121195"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1122230"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1122381"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1122837"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1124290"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1125600"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1125744"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1126075"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1126099"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1126518"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1127542"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1128228"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1128724"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1128781"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129765"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129851"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129956"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1130658"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1131490"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1131677"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1131721"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1132579"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7957"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "spacewalk-backend",
+        "ecosystem": "SUSE:Manager Proxy 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-backend&distro=SUSE%20Manager%20Proxy%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.57.14-3.25.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacewalk-certs-tools",
+        "ecosystem": "SUSE:Manager Proxy 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-certs-tools&distro=SUSE%20Manager%20Proxy%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.8.7-3.6.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacewalk-web",
+        "ecosystem": "SUSE:Manager Proxy 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-web&distro=SUSE%20Manager%20Proxy%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.7.15-3.24.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "apache-commons-lang3",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/apache-commons-lang3&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.4-3.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "cobbler",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/cobbler&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.6.6-6.16.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "drools",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/drools&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.17.0-3.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "guava",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/guava&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "27.0.1-3.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "jade4j",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/jade4j&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.7-3.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kie-api",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/kie-api&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.17.0-3.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kie-soup",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/kie-soup&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.17.0.Final-2.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "optaplanner",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/optaplanner&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.17.0-3.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "py26-compat-salt",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/py26-compat-salt&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2016.11.10-6.21.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "reprepro",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/reprepro&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.0-2.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "smdba",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/smdba&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.6.4-0.3.9.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacecmd",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/spacecmd&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.25.10-3.20.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacewalk-admin",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-admin&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.4.4-3.6.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacewalk-backend",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-backend&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.57.14-3.25.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacewalk-branding",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-branding&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.5.15-3.19.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacewalk-certs-tools",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-certs-tools&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.8.7-3.6.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacewalk-java",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-java&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.78.21-3.29.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "spacewalk-web",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/spacewalk-web&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.7.15-3.24.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "subscription-matcher",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/subscription-matcher&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.23-4.12.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "susemanager",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/susemanager&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.2.17-3.22.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "susemanager-schema",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/susemanager-schema&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.2.18-3.22.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "susemanager-sls",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/susemanager-sls&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.2.23-3.26.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "susemanager-sync-data",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/susemanager-sync-data&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.2.14-3.20.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "xstream",
+        "ecosystem": "SUSE:Manager Server 3.2",
+        "purl": "pkg:rpm/suse/xstream&distro=SUSE%20Manager%20Server%203.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.10-4.3.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "spacewalk-base": "2.8.7.15-3.24.3",
+            "spacewalk-backend-sql-postgresql": "2.8.57.14-3.25.3",
+            "spacewalk-backend-config-files-tool": "2.8.57.14-3.25.3",
+            "susemanager-tools": "3.2.17-3.22.4",
+            "susemanager-sls": "3.2.23-3.26.3",
+            "spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "spacewalk-backend-applet": "2.8.57.14-3.25.3",
+            "spacewalk-java-oracle": "2.8.78.21-3.29.1",
+            "optaplanner": "7.17.0-3.3.3",
+            "apache-commons-lang3": "3.4-3.3.3",
+            "spacewalk-backend-xml-export-libs": "2.8.57.14-3.25.3",
+            "spacewalk-backend-xmlrpc": "2.8.57.14-3.25.3",
+            "xstream": "1.4.10-4.3.3",
+            "spacewalk-backend": "2.8.57.14-3.25.3",
+            "reprepro": "5.3.0-2.3.3",
+            "spacewalk-backend-config-files-common": "2.8.57.14-3.25.3",
+            "jade4j": "1.0.7-3.3.3",
+            "spacewalk-base-minimal-config": "2.8.7.15-3.24.3",
+            "smdba": "1.6.4-0.3.9.3",
+            "cobbler": "2.6.6-6.16.3",
+            "kie-soup": "7.17.0.Final-2.3.3",
+            "spacewalk-backend-libs": "2.8.57.14-3.25.3",
+            "susemanager-schema": "3.2.18-3.22.3",
+            "kie-api": "7.17.0-3.3.3",
+            "spacewalk-java": "2.8.78.21-3.29.1",
+            "spacewalk-backend-config-files": "2.8.57.14-3.25.3",
+            "spacewalk-backend-sql-oracle": "2.8.57.14-3.25.3",
+            "py26-compat-salt": "2016.11.10-6.21.3",
+            "guava": "27.0.1-3.3.3",
+            "spacewalk-backend-sql": "2.8.57.14-3.25.3",
+            "spacewalk-admin": "2.8.4.4-3.6.3",
+            "spacewalk-backend-tools": "2.8.57.14-3.25.3",
+            "susemanager-sync-data": "3.2.14-3.20.3",
+            "susemanager": "3.2.17-3.22.4",
+            "spacewalk-backend-iss": "2.8.57.14-3.25.3",
+            "spacewalk-backend-server": "2.8.57.14-3.25.3",
+            "spacewalk-backend-package-push-server": "2.8.57.14-3.25.3",
+            "spacewalk-html": "2.8.7.15-3.24.3",
+            "spacewalk-java-config": "2.8.78.21-3.29.1",
+            "spacewalk-backend-iss-export": "2.8.57.14-3.25.3",
+            "susemanager-web-libs": "2.8.7.15-3.24.3",
+            "spacewalk-backend-app": "2.8.57.14-3.25.3",
+            "spacewalk-base-minimal": "2.8.7.15-3.24.3",
+            "spacewalk-branding": "2.8.5.15-3.19.3",
+            "spacewalk-taskomatic": "2.8.78.21-3.29.1",
+            "subscription-matcher": "0.23-4.12.3",
+            "python2-spacewalk-certs-tools": "2.8.8.7-3.6.3",
+            "drools": "7.17.0-3.3.3",
+            "spacewalk-java-postgresql": "2.8.78.21-3.29.1",
+            "spacecmd": "2.8.25.10-3.20.3",
+            "spacewalk-java-lib": "2.8.78.21-3.29.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1006-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

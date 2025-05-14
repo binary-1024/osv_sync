@@ -1,0 +1,371 @@
+{
+  "id": "GHSA-wvjv-p5rr-mmqm",
+  "summary": "Symfony allows direct access of ESI URLs behind a trusted proxy",
+  "details": "All 2.2.X, 2.3.X, 2.4.X, and 2.5.X versions of the Symfony HttpKernel component are affected by this security issue. Your application is vulnerable only if the ESI feature is enabled and there is a proxy in front of the web application.\n\nThis issue has been fixed in Symfony 2.3.19, 2.4.9, and 2.5.4. Note that no fixes are provided for Symfony 2.2 as it is not maintained anymore.\n\nDescription\nWhen you enable the ESI feature and when you are using a proxy like Varnish that you configured as a trusted proxy, the `FragmentHandler` considered requests to render fragments as coming from a trusted source, even if the client was requesting them directly. Symfony can not distinguish between ESI requests done on behalf of the client by Varnish and faked fragment requests coming directly from the client.\n\nTo mitigate this issue, and for not-supported Symfony versions, you can use the following workaround in your Varnish configuration (`/_fragment` being the URL path prefix configured under the `fragment` setting of the framework bundle configuration):\n\n Copy\nsub vcl_recv {\n    if (req.restarts == 0 && req.url ~ \"^/_fragment\") {\n        error 400;\n    }\n}\nResolution\nWe do not rely on trusted IPs anymore when validating a fragment request as all fragment URLs are now signed.\n\nThe patch for this issue is available here: https://github.com/symfony/symfony/pull/11831",
+  "aliases": [
+    "CVE-2014-5245"
+  ],
+  "modified": "2024-05-30T04:26:51.101526Z",
+  "published": "2024-05-30T00:46:52Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-200"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-05-30T00:46:52Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/symfony/symfony/pull/11831"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/symfony/symfony/commit/654b1f281e09dd96ffbbd3da815411700423ecf5"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/symfony/http-kernel/CVE-2014-5245.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/symfony/symfony/CVE-2014-5245.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://symfony.com/cve-2014-5245"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "symfony/http-kernel",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/symfony/http-kernel"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.3.19"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.4",
+        "2.0.5",
+        "2.0.6",
+        "2.0.7",
+        "v2.0.10",
+        "v2.0.12",
+        "v2.0.13",
+        "v2.0.14",
+        "v2.0.15",
+        "v2.0.16",
+        "v2.0.17",
+        "v2.0.18",
+        "v2.0.19",
+        "v2.0.20",
+        "v2.0.21",
+        "v2.0.22",
+        "v2.0.23",
+        "v2.0.24",
+        "v2.0.25",
+        "v2.0.9",
+        "v2.1.0",
+        "v2.1.1",
+        "v2.1.10",
+        "v2.1.11",
+        "v2.1.12",
+        "v2.1.13",
+        "v2.1.2",
+        "v2.1.3",
+        "v2.1.4",
+        "v2.1.5",
+        "v2.1.6",
+        "v2.1.7",
+        "v2.1.8",
+        "v2.1.9",
+        "v2.2.0",
+        "v2.2.1",
+        "v2.2.10",
+        "v2.2.11",
+        "v2.2.2",
+        "v2.2.3",
+        "v2.2.4",
+        "v2.2.5",
+        "v2.2.6",
+        "v2.2.7",
+        "v2.2.8",
+        "v2.2.9",
+        "v2.3.0",
+        "v2.3.1",
+        "v2.3.10",
+        "v2.3.11",
+        "v2.3.12",
+        "v2.3.13",
+        "v2.3.14",
+        "v2.3.15",
+        "v2.3.16",
+        "v2.3.17",
+        "v2.3.18",
+        "v2.3.2",
+        "v2.3.3",
+        "v2.3.4",
+        "v2.3.5",
+        "v2.3.6",
+        "v2.3.7",
+        "v2.3.8",
+        "v2.3.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-wvjv-p5rr-mmqm/GHSA-wvjv-p5rr-mmqm.json"
+      }
+    },
+    {
+      "package": {
+        "name": "symfony/http-kernel",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/symfony/http-kernel"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.4.0"
+            },
+            {
+              "fixed": "2.4.9"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v2.4.0",
+        "v2.4.1",
+        "v2.4.2",
+        "v2.4.3",
+        "v2.4.4",
+        "v2.4.5",
+        "v2.4.6",
+        "v2.4.7",
+        "v2.4.8"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-wvjv-p5rr-mmqm/GHSA-wvjv-p5rr-mmqm.json"
+      }
+    },
+    {
+      "package": {
+        "name": "symfony/http-kernel",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/symfony/http-kernel"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.5.0"
+            },
+            {
+              "fixed": "2.5.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v2.5.0",
+        "v2.5.1",
+        "v2.5.2",
+        "v2.5.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-wvjv-p5rr-mmqm/GHSA-wvjv-p5rr-mmqm.json"
+      }
+    },
+    {
+      "package": {
+        "name": "symfony/symfony",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/symfony/symfony"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.3.19"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.4",
+        "2.0.5",
+        "2.0.6",
+        "2.0.7",
+        "v2.0.10",
+        "v2.0.11",
+        "v2.0.12",
+        "v2.0.13",
+        "v2.0.14",
+        "v2.0.15",
+        "v2.0.16",
+        "v2.0.17",
+        "v2.0.18",
+        "v2.0.19",
+        "v2.0.20",
+        "v2.0.21",
+        "v2.0.22",
+        "v2.0.23",
+        "v2.0.24",
+        "v2.0.25",
+        "v2.0.9",
+        "v2.1.0",
+        "v2.1.0-BETA1",
+        "v2.1.0-BETA2",
+        "v2.1.0-BETA3",
+        "v2.1.0-BETA4",
+        "v2.1.0-RC1",
+        "v2.1.0-RC2",
+        "v2.1.1",
+        "v2.1.10",
+        "v2.1.11",
+        "v2.1.12",
+        "v2.1.13",
+        "v2.1.2",
+        "v2.1.3",
+        "v2.1.4",
+        "v2.1.5",
+        "v2.1.6",
+        "v2.1.7",
+        "v2.1.8",
+        "v2.1.9",
+        "v2.2.0",
+        "v2.2.0-BETA1",
+        "v2.2.0-BETA2",
+        "v2.2.0-RC1",
+        "v2.2.0-RC2",
+        "v2.2.0-RC3",
+        "v2.2.1",
+        "v2.2.10",
+        "v2.2.11",
+        "v2.2.2",
+        "v2.2.3",
+        "v2.2.4",
+        "v2.2.5",
+        "v2.2.6",
+        "v2.2.7",
+        "v2.2.8",
+        "v2.2.9",
+        "v2.3.0",
+        "v2.3.0-BETA1",
+        "v2.3.0-BETA2",
+        "v2.3.0-RC1",
+        "v2.3.1",
+        "v2.3.10",
+        "v2.3.11",
+        "v2.3.12",
+        "v2.3.13",
+        "v2.3.14",
+        "v2.3.15",
+        "v2.3.16",
+        "v2.3.17",
+        "v2.3.18",
+        "v2.3.2",
+        "v2.3.3",
+        "v2.3.4",
+        "v2.3.5",
+        "v2.3.6",
+        "v2.3.7",
+        "v2.3.8",
+        "v2.3.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-wvjv-p5rr-mmqm/GHSA-wvjv-p5rr-mmqm.json"
+      }
+    },
+    {
+      "package": {
+        "name": "symfony/symfony",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/symfony/symfony"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.4.0"
+            },
+            {
+              "fixed": "2.4.9"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v2.4.0",
+        "v2.4.1",
+        "v2.4.2",
+        "v2.4.3",
+        "v2.4.4",
+        "v2.4.5",
+        "v2.4.6",
+        "v2.4.7",
+        "v2.4.8"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-wvjv-p5rr-mmqm/GHSA-wvjv-p5rr-mmqm.json"
+      }
+    },
+    {
+      "package": {
+        "name": "symfony/symfony",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/symfony/symfony"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.5.0"
+            },
+            {
+              "fixed": "2.5.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v2.5.0",
+        "v2.5.1",
+        "v2.5.2",
+        "v2.5.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-wvjv-p5rr-mmqm/GHSA-wvjv-p5rr-mmqm.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

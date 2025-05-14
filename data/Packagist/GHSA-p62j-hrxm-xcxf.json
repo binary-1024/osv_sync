@@ -1,0 +1,238 @@
+{
+  "id": "GHSA-p62j-hrxm-xcxf",
+  "summary": "Book page text, count, and author/title length is not limited in PocketMine-MP",
+  "details": "### Impact\nPlayers can fill book pages with as many characters as they like; the server does not check this.\nIn addition, the maximum of 50 pages is also not enforced, meaning that players can create \"book bombs\".\n\nThis causes a variety of problems:\n- Oversized NBT on the wire costing excess bandwidth for server and client\n- Server crashes when saving region-based worlds due to exceeding maximum chunk size of 1 MB (PM3-specific)\n- Server crashes if any book page exceeds 32 KiB (due to TAG_String size limit) (PM4-specific)\n\nThis does, however, require that an attacker obtain a writable book in the first place in order to exploit the problem.\n\n### Patches\nThe bug has been fixed in 3.26.5 and 4.0.5.\n\n### Workarounds\nBan writable books, or use a plugin to cancel `PlayerEditBookEvent` to cancel the event if `strlen(text) > 1024 || mb_strlen(text) > 256`.\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Email us at [team@pmmp.io](mailto:team@pmmp.io)\n",
+  "modified": "2024-12-04T05:34:03.968663Z",
+  "published": "2022-01-06T23:53:35Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-01-06T19:44:35Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/pmmp/PocketMine-MP/security/advisories/GHSA-p62j-hrxm-xcxf"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/pmmp/PocketMine-MP"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "pocketmine/pocketmine-mp",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/pocketmine/pocketmine-mp"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.26.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.0.0",
+        "3.0.1",
+        "3.0.10",
+        "3.0.11",
+        "3.0.12",
+        "3.0.2",
+        "3.0.3",
+        "3.0.4",
+        "3.0.5",
+        "3.0.6",
+        "3.0.7",
+        "3.0.8",
+        "3.0.9",
+        "3.1.0",
+        "3.1.1",
+        "3.1.2",
+        "3.1.3",
+        "3.1.4",
+        "3.1.5",
+        "3.1.6",
+        "3.1.7",
+        "3.1.8",
+        "3.10.0",
+        "3.10.1",
+        "3.11.0",
+        "3.11.1",
+        "3.11.2",
+        "3.11.3",
+        "3.11.4",
+        "3.11.5",
+        "3.11.6",
+        "3.11.7",
+        "3.12.0",
+        "3.12.1",
+        "3.12.2",
+        "3.12.3",
+        "3.12.4",
+        "3.12.5",
+        "3.12.6",
+        "3.13.0",
+        "3.13.1",
+        "3.14.0",
+        "3.14.1",
+        "3.14.2",
+        "3.14.3",
+        "3.15.0",
+        "3.15.1",
+        "3.15.2",
+        "3.15.3",
+        "3.15.4",
+        "3.16.0",
+        "3.16.1",
+        "3.17.0",
+        "3.17.1",
+        "3.17.2",
+        "3.17.3",
+        "3.17.4",
+        "3.17.5",
+        "3.17.6",
+        "3.17.7",
+        "3.18.0",
+        "3.18.1",
+        "3.18.2",
+        "3.19.0",
+        "3.19.1",
+        "3.19.2",
+        "3.19.3",
+        "3.2.0",
+        "3.2.1",
+        "3.2.2",
+        "3.2.3",
+        "3.2.4",
+        "3.2.5",
+        "3.2.6",
+        "3.2.7",
+        "3.20.0",
+        "3.21.0",
+        "3.21.1",
+        "3.22.0",
+        "3.22.1",
+        "3.22.2",
+        "3.22.3",
+        "3.22.4",
+        "3.22.5",
+        "3.23.0",
+        "3.23.1",
+        "3.24.0",
+        "3.25.0",
+        "3.25.1",
+        "3.25.2",
+        "3.25.3",
+        "3.25.4",
+        "3.25.5",
+        "3.25.6",
+        "3.26.0",
+        "3.26.1",
+        "3.26.2",
+        "3.26.3",
+        "3.26.4",
+        "3.3.0",
+        "3.3.1",
+        "3.3.2",
+        "3.3.3",
+        "3.3.4",
+        "3.4.0",
+        "3.4.1",
+        "3.4.2",
+        "3.4.3",
+        "3.5.0",
+        "3.5.1",
+        "3.5.10",
+        "3.5.11",
+        "3.5.12",
+        "3.5.13",
+        "3.5.2",
+        "3.5.3",
+        "3.5.4",
+        "3.5.5",
+        "3.5.6",
+        "3.5.7",
+        "3.5.8",
+        "3.5.9",
+        "3.6.0",
+        "3.6.1",
+        "3.6.2",
+        "3.6.3",
+        "3.6.4",
+        "3.6.5",
+        "3.6.6",
+        "3.7.0",
+        "3.7.1",
+        "3.7.2",
+        "3.7.3",
+        "3.8.0",
+        "3.8.1",
+        "3.8.2",
+        "3.8.3",
+        "3.8.4",
+        "3.8.5",
+        "3.8.6",
+        "3.8.7",
+        "3.9.0",
+        "3.9.1",
+        "3.9.2",
+        "3.9.3",
+        "3.9.4",
+        "3.9.5",
+        "3.9.6",
+        "3.9.7",
+        "3.9.8"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-p62j-hrxm-xcxf/GHSA-p62j-hrxm-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "pocketmine/pocketmine-mp",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/pocketmine/pocketmine-mp"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.0.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0",
+        "4.0.1",
+        "4.0.2",
+        "4.0.3",
+        "4.0.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-p62j-hrxm-xcxf/GHSA-p62j-hrxm-xcxf.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

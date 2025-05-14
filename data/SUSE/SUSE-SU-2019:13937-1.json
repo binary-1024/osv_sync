@@ -1,0 +1,949 @@
+{
+  "id": "SUSE-SU-2019:13937-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 12 SP3 kernel was updated to 3.0.101 to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2018-9516: In hid_debug_events_read of drivers/hid/hid-debug.c, there is a possible out of bounds write due to a missing bounds check. This could lead to local escalation of privilege with System execution privileges needed. User interaction is not needed for exploitation (bnc#1108498).\n- CVE-2018-19407: The vcpu_scan_ioapic function in arch/x86/kvm/x86.c allowed local users to cause a denial of service (NULL pointer dereference and BUG) via crafted system calls that reach a situation where ioapic is uninitialized (bnc#1116841).\n- CVE-2018-19985: The function hso_probe read if_num from the USB device (as an u8) and used it without a length check to index an array, resulting in an OOB memory read in hso_probe or hso_get_config_data that could be used by local attackers (bnc#1120743).\n- CVE-2018-20169: The USB subsystem mishandled size checks during the reading of an extra descriptor, related to __usb_get_extra_descriptor in drivers/usb/core/usb.c (bnc#1119714).\n- CVE-2018-9568: In sk_clone_lock of sock.c, there is a possible memory corruption due to type confusion. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation (bnc#1118319).\n- CVE-2018-19824: A local user could exploit a use-after-free in the ALSA driver by supplying a malicious USB Sound device (with zero interfaces) that is mishandled in usb_audio_probe in sound/usb/card.c (bnc#1118152).\n- CVE-2018-18281: The mremap() syscall performs TLB flushes after dropping pagetable locks. If a syscall such as ftruncate() removes entries from the pagetables of a task that is in the middle of mremap(), a stale TLB entry can remain for a short time that permits access to a physical page after it has been released back to the page allocator and reused (bnc#1113769).\n- CVE-2018-18710: An information leak in cdrom_ioctl_select_disc in drivers/cdrom/cdrom.c could be used by local attackers to read kernel memory because a cast from unsigned long to int interferes with bounds checking. This is similar to CVE-2018-10940 and CVE-2018-16658 (bnc#1113751).\n- CVE-2018-18386: drivers/tty/n_tty.c allowed local attackers (who are able to access pseudo terminals) to hang/block further usage of any pseudo terminal devices due to an EXTPROC versus ICANON confusion in TIOCINQ (bnc#1094825).\n- CVE-2017-7273: The cp_report_fixup function in drivers/hid/hid-cypress.c allowed physically proximate attackers to cause a denial of service (integer underflow) or possibly have unspecified other impact via a crafted HID report (bnc#1031240).\n- CVE-2017-16533: The usbhid_parse function in drivers/hid/usbhid/hid-core.c allowed local users to cause a denial of service (out-of-bounds read and system crash) or possibly have unspecified other impact via a crafted USB device (bnc#1066674).\n- CVE-2017-1000407: Fixed a denial of service, which was caused by flooding the diagnostic port 0x80 an exception leading to a kernel panic (bnc#1071021).\n\nThe following non-security bugs were fixed:\n\n- ALSA: pcm: Fix potential deadlock in OSS emulation (bsc#968018, bsc#1104366).\n- cpusets, isolcpus: exclude isolcpus from load balancing in cpusets (bsc#1119255).\n- Drivers: scsi: storvsc: Change the limits to reflect the values on the host (bug#1107189).\n- drivers: scsi: storvsc: Correctly handle TEST_UNIT_READY failure (bug#1107189).\n- Drivers: scsi: storvsc: Filter commands based on the storage protocol version (bug#1107189).\n- Drivers: scsi: storvsc: Fix a bug in handling VMBUS protocol version (bug#1107189).\n- Drivers: scsi: storvsc: Implement a eh_timed_out handler (bug#1107189).\n- Drivers: scsi: storvsc: Set cmd_per_lun to reflect value supported by the Host (bug#1107189).\n- drivers: scsi: storvsc: Set srb_flags in all cases (bug#1107189).\n- EHCI: improved logic for isochronous scheduling (bsc#1117515).\n- ipv4: remove the unnecessary variable in udp_mcast_next (bsc#1104070).\n- KEYS: prevent creating a different user's keyrings (bnc#1094186).\n- KVM: x86: Fix the duplicate failure path handling in vmx_init (bsc#1104367).\n- MM: increase safety margin provided by PF_LESS_THROTTLE (bsc#1116412).\n- MM/vmscan.c: avoid throttling reclaim for loop-back nfsd threads (bsc#1116412).\n- net/ipv6/udp: Fix ipv6 multicast socket filter regression (bsc#1104070).\n- NFS: avoid deadlocks with loop-back mounted NFS filesystems (bsc#1116412).\n- NFS: avoid waiting at all in nfs_release_page when congested (bsc#1116412).\n- NFS: Do not write enable new pages while an invalidation is proceeding (bsc#1116412).\n- NFS: Fix a regression in the read() syscall (bsc#1116412).\n- NFS: Fix races in nfs_revalidate_mapping (bsc#1116412).\n- NFS: fix the handling of NFS_INO_INVALID_DATA flag in nfs_revalidate_mapping (bsc#1116412).\n- NFS: Fix writeback performance issue on cache invalidation (bsc#1116412).\n- reiserfs: do not preallocate blocks for extended attributes (bsc#990682).\n- reiserfs: fix race in readdir (bsc#1039803).\n- sched, isolcpu: make cpu_isolated_map visible outside scheduler (bsc#1119255).\n- scsi: storvsc: Always send on the selected outgoing channel (bug#1107189).\n- scsi: storvsc: Do not assume that the scatterlist is not chained (bug#1107189).\n- scsi: storvsc: Fix a bug in copy_from_bounce_buffer() (bug#1107189).\n- scsi: storvsc: Increase the ring buffer size (bug#1107189).\n- scsi: storvsc: Size the queue depth based on the ringbuffer size (bug#1107189).\n- storvsc: fix a bug in storvsc limits (bug#1107189).\n- storvsc: force discovery of LUNs that may have been removed (bug#1107189).\n- storvsc: get rid of overly verbose warning messages (bug#1107189).\n- storvsc: in responce to a scan event, scan the host (bug#1107189).\n- storvsc: Set the SRB flags correctly when no data transfer is needed (bug#1107189).\n- udp: ipv4: Add udp early demux (bsc#1104070).\n- udp: restore UDPlite many-cast delivery (bsc#1104070).\n- udp: Simplify __udp*_lib_mcast_deliver (bsc#1104070).\n- udp: Use hash2 for long hash1 chains in __udp*_lib_mcast_deliver (bsc#1104070).\n- USB: EHCI: add new root-hub state: STOPPING (bsc#1117515).\n- USB: EHCI: add pointer to end of async-unlink list (bsc#1117515).\n- USB: EHCI: add symbolic constants for QHs (bsc#1117515).\n- USB: EHCI: always scan each interrupt QH (bsc#1117515).\n- USB: EHCI: do not lose events during a scan (bsc#1117515).\n- USB: EHCI: do not refcount iso_stream structures (bsc#1117515).\n- USB: EHCI: do not refcount QHs (bsc#1117515).\n- USB: EHCI: fix initialization bug in iso_stream_schedule() (bsc#1117515).\n- USB: EHCI: fix up locking (bsc#1117515).\n- USB: EHCI: initialize data before resetting hardware (bsc#1117515).\n- USB: EHCI: introduce high-res timer (bsc#1117515).\n- USB: EHCI: remove PS3 status polling (bsc#1117515).\n- USB: EHCI: remove unneeded suspend/resume code (bsc#1117515).\n- USB: EHCI: rename 'reclaim' (bsc#1117515).\n- USB: EHCI: resolve some unlikely races (bsc#1117515).\n- USB: EHCI: return void instead of 0 (bsc#1117515).\n- USB: EHCI: simplify isochronous scanning (bsc#1117515).\n- USB: EHCI: unlink multiple async QHs together (bsc#1117515).\n- USB: EHCI: use hrtimer for async schedule (bsc#1117515).\n- USB: EHCI: use hrtimer for controller death (bsc#1117515).\n- USB: EHCI: use hrtimer for interrupt QH unlink (bsc#1117515).\n- USB: EHCI: use hrtimer for (s)iTD deallocation (bsc#1117515).\n- USB: EHCI: use hrtimer for the IAA watchdog (bsc#1117515).\n- USB: EHCI: use hrtimer for the I/O watchdog (bsc#1117515).\n- USB: EHCI: use hrtimer for the periodic schedule (bsc#1117515).\n- USB: EHCI: use hrtimer for unlinking empty async QHs (bsc#1117515).\n- XFS: do not BUG() on mixed direct and mapped I/O (bsc#1114920).\n- XFS: stop searching for free slots in an inode chunk when there are none (bsc#1115007).\n- XFS: validate sb_logsunit is a multiple of the fs blocksize (bsc#1115038).\n",
+  "modified": "2025-05-02T04:06:00.772855Z",
+  "published": "2019-01-29T12:13:02Z",
+  "related": [
+    "CVE-2017-1000407",
+    "CVE-2017-16533",
+    "CVE-2017-7273",
+    "CVE-2018-18281",
+    "CVE-2018-18386",
+    "CVE-2018-18710",
+    "CVE-2018-19407",
+    "CVE-2018-19824",
+    "CVE-2018-19985",
+    "CVE-2018-20169",
+    "CVE-2018-9516",
+    "CVE-2018-9568"
+  ],
+  "upstream": [
+    "CVE-2017-1000407",
+    "CVE-2017-16533",
+    "CVE-2017-7273",
+    "CVE-2018-18281",
+    "CVE-2018-18386",
+    "CVE-2018-18710",
+    "CVE-2018-19407",
+    "CVE-2018-19824",
+    "CVE-2018-19985",
+    "CVE-2018-20169",
+    "CVE-2018-9516",
+    "CVE-2018-9568"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2019/suse-su-201913937-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031240"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039803"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1066674"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1071021"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1094186"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1094825"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1104070"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1104366"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1104367"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1107189"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1108498"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1109200"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1113201"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1113751"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1113769"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1114920"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1115007"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1115038"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1116412"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1116841"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1117515"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1118152"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1118319"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1119255"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1119714"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1120743"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/905299"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/936875"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968018"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/990682"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-1000407"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-16533"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7273"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-18281"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-18386"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-18710"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-19407"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-19824"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-19985"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-20169"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-9516"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-9568"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-bigsmp",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-bigsmp&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-man": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-man": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-man": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-man": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-man": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-man": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-man": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.106.59.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.106.59.1",
+            "kernel-default-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-man": "3.0.101-0.47.106.59.1",
+            "kernel-ec2": "3.0.101-0.47.106.59.1",
+            "kernel-source": "3.0.101-0.47.106.59.1",
+            "kernel-default": "3.0.101-0.47.106.59.1",
+            "kernel-pae-base": "3.0.101-0.47.106.59.1",
+            "kernel-syms": "3.0.101-0.47.106.59.1",
+            "kernel-trace": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.106.59.1",
+            "kernel-trace-devel": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-devel": "3.0.101-0.47.106.59.1",
+            "kernel-pae": "3.0.101-0.47.106.59.1",
+            "kernel-ec2-base": "3.0.101-0.47.106.59.1",
+            "kernel-xen-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen-base": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp": "3.0.101-0.47.106.59.1",
+            "kernel-trace-base": "3.0.101-0.47.106.59.1",
+            "kernel-default-devel": "3.0.101-0.47.106.59.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.106.59.1",
+            "kernel-xen": "3.0.101-0.47.106.59.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:13937-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

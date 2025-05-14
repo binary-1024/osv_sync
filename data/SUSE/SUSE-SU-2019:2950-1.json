@@ -1,0 +1,914 @@
+{
+  "id": "SUSE-SU-2019:2950-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 12 SP1 kernel was updated to receive various security and bugfixes.\n\n\nThe following security bugs were fixed:\n\n- CVE-2018-12207: Untrusted virtual machines on Intel CPUs could exploit a race condition in the Instruction Fetch Unit of the Intel CPU to cause a Machine Exception during Page Size Change, causing the CPU core to be non-functional.\n\nThe Linux Kernel KVM hypervisor was adjusted to avoid page size changes in executable pages by splitting / merging huge pages into small pages as needed.\nMore information can be found on  https://www.suse.com/support/kb/doc/?id=7023735\n\n- CVE-2019-11135: Aborting an asynchronous TSX operation on Intel CPUs with\nTransactional Memory support could be used to facilitate sidechannel\ninformation leaks out of microarchitectural buffers, similar to the previously\ndescribed 'Microarchitectural Data Sampling' attack.\n\nThe Linux kernel was supplemented with the option to disable TSX operation\naltogether (requiring CPU Microcode updates on older systems) and better\nflushing of microarchitectural buffers (VERW).\n\nThe set of options available is described in our TID at https://www.suse.com/support/kb/doc/?id=7024251\n\n- CVE-2019-16233: drivers/scsi/qla2xxx/qla_os.c did not check the\n  alloc_workqueue return value, leading to a NULL pointer dereference.\n  (bsc#1150457).\n\n- CVE-2019-10220: Added sanity checks on the pathnames passed to the user\n  space. (bsc#1144903).\n\n- CVE-2019-16232: Fix a potential NULL pointer dereference in the Marwell\n  libertas driver (bsc#1150465).\n\n- CVE-2019-16234: iwlwifi pcie driver did not check the alloc_workqueue return\n  value, leading to a NULL pointer dereference. (bsc#1150452).\n\n- CVE-2019-17055: The AF_ISDN network module in the Linux kernel did not\n  enforce CAP_NET_RAW, which meant that unprivileged users could create a raw\n  socket (bnc#1152782).\n\n- CVE-2019-17056: The AF_NFC network module did not enforce CAP_NET_RAW, which\n  meant that unprivileged users could create a raw socket (bsc#1152788).\n\n- CVE-2019-16413: The 9p filesystem did not protect i_size_write() properly,\n  which caused an i_size_read() infinite loop and denial of service on SMP\n  systems (bnc#1151347).\n\n- CVE-2019-15902: A backporting issue was discovered that re-introduced the\n  Spectre vulnerability it had aimed to eliminate. This occurred because the\n  backport process depends on cherry picking specific commits, and because two\n  (correctly ordered) code lines were swapped (bnc#1149376).\n\n- CVE-2019-15291: Fixed a NULL pointer dereference issue that could be caused\n  by a malicious USB device (bnc#11465).\n\n- CVE-2019-15807: Fixed a memory leak in the SCSI module that could be abused\n  to cause denial of service (bnc#1148938).\n\n- CVE-2019-14821: An out-of-bounds access issue was fixed in the kernel's KVM\n  hypervisor. An unprivileged host user or process with access to '/dev/kvm'\n  device could use this flaw to crash the host kernel, resulting in a denial of\n  service or potentially escalating privileges on the system (bnc#1151350).\n\n- CVE-2019-15505: An out-of-bounds issue had been fixed that could be caused by\n  crafted USB device traffic (bnc#1147122).\n\n- CVE-2017-18595: A double free in allocate_trace_buffer was fixed\n  (bnc#1149555).\n\n- CVE-2019-14835: A buffer overflow flaw was found in the kernel's vhost\n  functionality that translates virtqueue buffers to IOVs. A privileged guest\n  user able to pass descriptors with invalid length to the host could use this\n  flaw to increase their privileges on the host (bnc#1150112).\n\n- CVE-2019-15216: A NULL pointer dereference was fixed that could be malicious\n  USB device (bnc#1146361).\n\n- CVE-2019-9456: An out-of-bounds write in the USB monitor driver has been\n  fixed. This issue could lead to local escalation of privilege with System\n  execution privileges needed. (bnc#1150025).\n\n- CVE-2019-15926: An out-of-bounds access was fixed in the\n  drivers/net/wireless/ath/ath6kl module. (bnc#1149527).\n\n- CVE-2019-15927: An out-of-bounds access was fixed in the sound/usb/mixer\n  module (bnc#1149522).\n\n- CVE-2019-15219: A NULL pointer dereference was fixed that could be abused by\n  a malicious USB device (bnc#1146524).\n\n- CVE-2019-15220: A use-after-free issue was fixed that could be caused by a\n  malicious USB device (bnc#1146526).\n\n- CVE-2019-15221: A NULL pointer dereference was fixed that could be caused by\n  a malicious USB device (bnc#1146529).\n\n- CVE-2019-14814: A heap-based buffer overflow was fixed in the marvell wifi\n  chip driver. That issue allowed local users to cause a denial of service\n  (system crash) or possibly execute arbitrary code (bnc#1146512).\n\n- CVE-2019-14815: A missing length check while parsing WMM IEs was fixed\n  (bsc#1146512, bsc#1146514, bsc#1146516).\n\n- CVE-2019-14816: A heap-based buffer overflow in the marvell wifi chip driver\n  was fixed. Local users would have abused this issue to cause a denial of\n  service (system crash) or possibly execute arbitrary code (bnc#1146516).\n\n- CVE-2017-18509: An issue in net/ipv6 as fixed. By setting a specific socket\n  option, an attacker could control a pointer in kernel land and cause an\n  inet_csk_listen_stop general protection fault, or potentially execute\n  arbitrary code under certain circumstances. The issue can be triggered as\n  root (e.g., inside a default LXC container or with the CAP_NET_ADMIN\n  capability) or after namespace unsharing. (bnc#1145477)\n\n- CVE-2019-9506: The Bluetooth BR/EDR specification used to permit sufficiently\n  low encryption key length and did not prevent an attacker from influencing\n  the key length negotiation. This allowed practical brute-force attacks (aka\n  'KNOB') that could decrypt traffic and inject arbitrary ciphertext without\n  the victim noticing (bnc#1137865).\n\n- CVE-2019-15098: A NULL pointer dereference in drivers/net/wireless/ath was\n  fixed (bnc#1146378).\n\n- CVE-2019-15290: A NULL pointer dereference in ath6kl_usb_alloc_urb_from_pipe\n  was fixed (bsc#1146378).\n\n- CVE-2019-15212: A double-free issue was fixed in drivers/usb driver\n  (bnc#1146391).\n\n- CVE-2016-10906: A use-after-free issue was fixed in drivers/net/ethernet/arc\n  (bnc#1146584).\n\n- CVE-2019-15217: A a NULL pointer dereference issue caused by a malicious USB\n  device was fixed in the drivers/media/usb/zr364xx driver (bnc#1146519).\n\n- CVE-2019-15218: A NULL pointer dereference caused by a malicious USB device\n  was fixed in the drivers/media/usb/siano driver (bnc#1146413).\n\n- CVE-2019-15215: A use-after-free issue caused by a malicious USB device was\n  fixed in the drivers/media/usb/cpia2 driver (bnc#1146425).\n\n- CVE-2018-20976: A use-after-free issue was fixed in the fs/xfs driver\n  (bnc#1146285).\n\n- CVE-2017-18551: An out-of-bounds write was fixed in the drivers/i2c driver\n  (bnc#1146163).\n\n- CVE-2019-10207: Add checks for missing tty operations to prevent unprivileged\n  user to  execute 0x0 address (bsc#1142857 bsc#1123959)\n\n- CVE-2019-15118: ALSA: usb-audio: Fix a stack buffer overflow bug in check_input_term\n  leading to kernel stack exhaustion (bsc#1145922).\n\nThe following non-security bugs were fixed:\n\n- array_index_nospec: Sanitize speculative array (bsc#1155671)\n- hpsa: move lockup_detected attribute to host attr (bsc#999278, bsc#1153119).\n- ib/core: Add mitigation for Spectre V1 (bsc#1155671)\n- kvm: Convert kvm_lock to a mutex (bsc#1117665).\n- kvm: MMU: drop read-only large sptes when creating lower level sptes (bsc#1117665).\n- kvm: vmx, svm: always run with EFER.NXE=1 when shadow paging is active (bsc#1117665).\n- kvm: x86: make FNAME(fetch) and __direct_map more similar (bsc#1117665).\n- media: smsusb: better handle optional alignment (bsc#1146413).\n- mwifiex: Fix heap overflow in mwifiex_uap_parse_tail_ies() (bsc#1137944).\n- netfilter: nf_nat: do not bug when mapping already exists (bsc#1146612).\n- tcp: Be more careful in tcp_fragment() (bsc#1137586 bsc#1139751).\n",
+  "modified": "2025-05-02T04:05:06.829366Z",
+  "published": "2019-11-12T18:12:17Z",
+  "related": [
+    "CVE-2016-10906",
+    "CVE-2017-18509",
+    "CVE-2017-18551",
+    "CVE-2017-18595",
+    "CVE-2018-12207",
+    "CVE-2018-20976",
+    "CVE-2019-10207",
+    "CVE-2019-10220",
+    "CVE-2019-11135",
+    "CVE-2019-11477",
+    "CVE-2019-14814",
+    "CVE-2019-14815",
+    "CVE-2019-14816",
+    "CVE-2019-14821",
+    "CVE-2019-14835",
+    "CVE-2019-15098",
+    "CVE-2019-15118",
+    "CVE-2019-15212",
+    "CVE-2019-15215",
+    "CVE-2019-15216",
+    "CVE-2019-15217",
+    "CVE-2019-15218",
+    "CVE-2019-15219",
+    "CVE-2019-15220",
+    "CVE-2019-15221",
+    "CVE-2019-15290",
+    "CVE-2019-15291",
+    "CVE-2019-15505",
+    "CVE-2019-15807",
+    "CVE-2019-15902",
+    "CVE-2019-15926",
+    "CVE-2019-15927",
+    "CVE-2019-16232",
+    "CVE-2019-16233",
+    "CVE-2019-16234",
+    "CVE-2019-16413",
+    "CVE-2019-17055",
+    "CVE-2019-17056",
+    "CVE-2019-9456",
+    "CVE-2019-9506"
+  ],
+  "upstream": [
+    "CVE-2016-10906",
+    "CVE-2017-18509",
+    "CVE-2017-18551",
+    "CVE-2017-18595",
+    "CVE-2018-12207",
+    "CVE-2018-20976",
+    "CVE-2019-10207",
+    "CVE-2019-10220",
+    "CVE-2019-11135",
+    "CVE-2019-11477",
+    "CVE-2019-14814",
+    "CVE-2019-14815",
+    "CVE-2019-14816",
+    "CVE-2019-14821",
+    "CVE-2019-14835",
+    "CVE-2019-15098",
+    "CVE-2019-15118",
+    "CVE-2019-15212",
+    "CVE-2019-15215",
+    "CVE-2019-15216",
+    "CVE-2019-15217",
+    "CVE-2019-15218",
+    "CVE-2019-15219",
+    "CVE-2019-15220",
+    "CVE-2019-15221",
+    "CVE-2019-15290",
+    "CVE-2019-15291",
+    "CVE-2019-15505",
+    "CVE-2019-15807",
+    "CVE-2019-15902",
+    "CVE-2019-15926",
+    "CVE-2019-15927",
+    "CVE-2019-16232",
+    "CVE-2019-16233",
+    "CVE-2019-16234",
+    "CVE-2019-16413",
+    "CVE-2019-17055",
+    "CVE-2019-17056",
+    "CVE-2019-9456",
+    "CVE-2019-9506"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2019/suse-su-20192950-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1117665"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1123959"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1137586"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1137865"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1137944"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1139073"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1139751"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1142857"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1144903"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1145477"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1145922"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146042"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146163"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146285"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146361"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146378"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146391"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146413"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146425"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146512"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146514"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146516"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146519"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146524"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146526"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146529"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146540"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146543"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146547"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146584"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1146612"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1147122"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1148938"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1149376"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1149522"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1149527"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1149555"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1150025"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1150112"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1150452"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1150457"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1150465"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1151347"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1151350"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1152782"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1152788"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1153119"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1155671"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/999278"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-10906"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-18509"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-18551"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-18595"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-12207"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-20976"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-10207"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-10220"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11135"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11477"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14814"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14815"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14816"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14821"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14835"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15098"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15118"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15212"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15215"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15216"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15217"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15218"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15219"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15220"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15221"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15290"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15291"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15505"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15807"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15902"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15926"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-15927"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-16232"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-16233"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-16234"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-16413"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-17055"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-17056"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-9456"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-9506"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Module for Public Cloud 12",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Public%20Cloud%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-ec2-extra": "3.12.74-60.64.124.1",
+            "kernel-ec2": "3.12.74-60.64.124.1",
+            "kernel-ec2-devel": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP1_Update_37",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP1_Update_37&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-2.3.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-default-man": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-default-man": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-default-man": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.124.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-default-man": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP1_Update_37",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP1_Update_37&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-2.3.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.124.1",
+            "kernel-devel": "3.12.74-60.64.124.1",
+            "kernel-default-base": "3.12.74-60.64.124.1",
+            "kernel-default-man": "3.12.74-60.64.124.1",
+            "kernel-xen-devel": "3.12.74-60.64.124.1",
+            "kernel-default": "3.12.74-60.64.124.1",
+            "kernel-source": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.124.1",
+            "kernel-syms": "3.12.74-60.64.124.1",
+            "kernel-default-devel": "3.12.74-60.64.124.1",
+            "kgraft-patch-3_12_74-60_64_124-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.124.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:2950-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

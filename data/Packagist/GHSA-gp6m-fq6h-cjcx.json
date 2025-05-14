@@ -1,0 +1,161 @@
+{
+  "id": "GHSA-gp6m-fq6h-cjcx",
+  "summary": "Magento LTS vulnerable to stored XSS in admin file form",
+  "details": "### Summary\nOpenMage is affected by a stored Cross-Site Scripting (XSS) vulnerability that could be abused by a low-privileged attacker to inject malicious scripts into vulnerable form fields.\n\n### Details\n`Mage_Adminhtml_Block_System_Config_Form_Field_File` does not escape filename value in certain situations.\nSame as: https://nvd.nist.gov/vuln/detail/CVE-2024-20717\n\n### PoC\n1. Create empty file with this filename: `<img src=x onerror=alert(1)>.crt`\n2. Go to _System_ > _Configuration_ > _Sales | Payment Methonds_.\n3. Click **Configure** on _PayPal Express Checkout_.\n4. Choose **API Certificate** from dropdown _API Authentication Methods_.\n5. Choose the XSS-file and click **Save Config**.\n6. Profit, alerts \"1\" -> XSS.\n7. Reload, alerts \"1\" -> Stored XSS.\n\n### Impact\nAffects admins that have access to any fileupload field in admin in core or custom implementations.\nMalicious JavaScript may be executed in a victim\u2019s browser when they browse to the page containing the vulnerable field.\n",
+  "modified": "2024-11-30T05:27:42.302302Z",
+  "published": "2024-02-27T21:47:58Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-27T21:47:58Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/OpenMage/magento-lts/security/advisories/GHSA-gp6m-fq6h-cjcx"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-20717"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/OpenMage/magento-lts"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openmage/magento-lts",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/openmage/magento-lts"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "20.0.0"
+            },
+            {
+              "fixed": "20.5.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v20.0.0",
+        "v20.0.1",
+        "v20.0.10",
+        "v20.0.11",
+        "v20.0.12",
+        "v20.0.13",
+        "v20.0.14",
+        "v20.0.15",
+        "v20.0.16",
+        "v20.0.17",
+        "v20.0.18",
+        "v20.0.19",
+        "v20.0.2",
+        "v20.0.20",
+        "v20.0.3",
+        "v20.0.4",
+        "v20.0.5",
+        "v20.0.6",
+        "v20.0.7",
+        "v20.0.8",
+        "v20.1.0",
+        "v20.1.0-rc1",
+        "v20.1.0-rc2",
+        "v20.1.0-rc3",
+        "v20.1.0-rc4",
+        "v20.1.0-rc5",
+        "v20.1.0-rc6",
+        "v20.1.0-rc7",
+        "v20.1.1",
+        "v20.2.0",
+        "v20.3.0",
+        "v20.4.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-gp6m-fq6h-cjcx/GHSA-gp6m-fq6h-cjcx.json"
+      }
+    },
+    {
+      "package": {
+        "name": "openmage/magento-lts",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/openmage/magento-lts"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "19.5.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.9.1.1",
+        "1.9.2.0",
+        "1.9.2.1",
+        "1.9.2.2",
+        "1.9.2.3",
+        "1.9.2.4",
+        "1.9.3.0",
+        "1.9.3.1",
+        "v19.4.0",
+        "v19.4.1",
+        "v19.4.10",
+        "v19.4.11",
+        "v19.4.12",
+        "v19.4.13",
+        "v19.4.14",
+        "v19.4.15",
+        "v19.4.16",
+        "v19.4.17",
+        "v19.4.18",
+        "v19.4.19",
+        "v19.4.2",
+        "v19.4.20",
+        "v19.4.21",
+        "v19.4.22",
+        "v19.4.23",
+        "v19.4.3",
+        "v19.4.4",
+        "v19.4.5",
+        "v19.4.6",
+        "v19.4.7",
+        "v19.4.8",
+        "v19.4.9",
+        "v19.5.0",
+        "v19.5.0-rc1",
+        "v19.5.0-rc2",
+        "v19.5.0-rc3",
+        "v19.5.0-rc4",
+        "v19.5.0-rc5",
+        "v19.5.1",
+        "v19.5.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-gp6m-fq6h-cjcx/GHSA-gp6m-fq6h-cjcx.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

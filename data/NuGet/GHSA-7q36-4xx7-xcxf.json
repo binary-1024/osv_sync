@@ -1,0 +1,632 @@
+{
+  "id": "GHSA-7q36-4xx7-xcxf",
+  "summary": "Untrusted data can lead to DoS attack due to hash collisions and stack overflow in MessagePack",
+  "details": "### Impact\n\nWhen this library is used to deserialize messagepack data from an untrusted source, there is a risk of a denial of service attack by either of two vectors:\n\n1. hash collisions - leading to large CPU consumption disproportionate to the size of the data being deserialized.\n1. stack overflow - leading to the deserializing process crashing.\n\n### Patches\n\nThe following steps are required to mitigate this risk.\n\n1. Upgrade to a version of the library where a fix is available\n1. Add code to your application to put MessagePack into the defensive `UntrustedData` mode.\n1. Identify all MessagePack extensions that implement `IMessagePackFormatter<T>` implementations that do not ship with the MessagePack library to include the security mitigations. This includes those acquired from 3rd party packages and classes included directly into your project. Any AOT formatters generated with the MPC tool must be regenerated with the patched version of mpc.\n1. Review your messagepack-serializable data structures for hash-based collections that use custom or unusual types for the hashed key. See below for details on handling such situations.\n\nReview the `MessagePackSecurity` class to tweak any settings as necessary to strike the right balance between performance, functionality, and security.\n\nSpecialized `IEqualityComparer<T>` implementations provide the hash collision resistance.\nEach type of hashed key may require a specialized implementation of its own.\nThe patched MessagePack library includes many such implementations for primitive types commonly used as keys in hash-based collections.\nIf your data structures use custom types as keys in these hash-based collections,\nputting MessagePack in `UntrustedData` mode may lead the deserializer to throw an exception\nbecause no safe `IEqualityComparer<T>` is available for your custom `T` type.\nYou can provide your own safe implementation by deriving from the `MessagePackSecurity` class\nand overriding the `GetHashCollisionResistantEqualityComparer<T>()` method to return your own\ncustom implementation when `T` matches your type, and fallback to `return base.GetHashCollisionResistantEqualityComparer<T>();` for types you do not have custom implementations for.\n\nUnrelated to this advisory, but as general security guidance, you should also avoid the Typeless serializer/formatters/resolvers for untrusted data as that opens the door for the untrusted data to potentially deserialize unanticipated types that can compromise security.\n\n#### MessagePack 1.x users\n\n1. Upgrade to any 1.9.x version.\n\n1. When deserializing untrusted data, put MessagePack into a more secure mode with:\n\n    ```cs\n    MessagePackSecurity.Active = MessagePackSecurity.UntrustedData;\n    ```\n\n    In MessagePack v1.x this is a static property and thus the security level is shared by the entire process or AppDomain.\n    Use MessagePack v2.1 or later for better control over the security level for your particular use.\n\n1. Any code produced by mpc should be regenerated with the mpc tool with the matching (patched) version. Such generated code usually is written to a file called `Generated.cs`. A patched `Generated.cs` file will typically reference the `MessagePackSecurity` class.\n\n    Review any custom-written `IMessagePackFormatter<T>` implementations in your project or that you might use from 3rd party packages to ensure they also utilize the `MessagePackSecurity` class as required.\n    In particular, a formatter that deserializes an object (as opposed to a primitive value) should wrap the deserialization in a `using (MessagePackSecurity.DepthStep())` block. For example:\n\n    ```cs\n    public MyObject Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)\n    {\n        if (reader.TryReadNil())\n        {\n            return default;\n        }\n        else\n        {\n            using (MessagePackSecurity.DepthStep()) // STACK OVERFLOW MITIGATION\n            {\n                MyObject o = new MyObject();\n                // deserialize members of the object here.\n                return o;\n            }\n        }\n    }\n    ```\n\n    If your custom formatter creates hash-based collections (e.g. `Dictionary<K, V>` or `HashSet<T>`) where the hashed key comes from the messagepack data, always instantiate your collection using `MessagePackSecurity.Active.GetEqualityComparer<T>()` as the equality comparer:\n\n    ```cs\n    var collection = new HashSet<T>(MessagePackSecurity.Active.GetEqualityComparer<T>());\n    ```\n\n    This ensures that when reading untrusted data, you will be using a collision-resistent hash algorithm.\n\nLearn more about [best security practices when reading untrusted data with MessagePack 1.x](https://github.com/neuecc/MessagePack-CSharp/tree/v1.x#security).\n\n#### MessagePack 2.x users\n\n1. Upgrade to any 2.1.x or later version.\n\n1. When deserializing untrusted data, put MessagePack into a more secure mode by configuring your `MessagePackSerializerOptions.Security` property:\n\n    ```cs\n    var options = MessagePackSerializerOptions.Standard\n        .WithSecurity(MessagePackSecurity.UntrustedData);\n\n    // Pass the options explicitly for the greatest control.\n    T object = MessagePackSerializer.Deserialize<T>(data, options);\n\n    // Or set the security level as the default.\n    MessagePackSerializer.DefaultOptions = options;\n    ```\n\n1. Any code produced by mpc should be regenerated with the mpc tool with the matching (patched) version. Such generated code usually is written to a file called `Generated.cs`. A patched `Generated.cs` file will typically reference the `Security` member on the `MessagePackSerializerOptions` parameter.\n\n    Review any custom-written `IMessagePackFormatter<T>` implementations in your project or that you might use from 3rd party packages to ensure they also utilize the `MessagePackSecurity` class as required.\n    In particular, a formatter that deserializes an object (as opposed to a primitive value) should call `options.Security.DepthStep(ref reader);` before deserializing the object's members, and be sure to revert the depth step with `reader.Depth--;` before exiting the method. For example:\n\n    ```cs\n    public MyObject Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)\n    {\n        if (reader.TryReadNil())\n        {\n            return default;\n        }\n        else\n        {\n            options.Security.DepthStep(ref reader); // STACK OVERFLOW MITIGATION, line 1\n            try\n            {\n                MyObject o = new MyObject();\n                // deserialize members of the object here.\n                return o;\n            }\n            finally\n            {\n                reader.Depth--; // STACK OVERFLOW MITIGATION, line 2\n            }\n        }\n    }\n    ```\n\n    If your custom formatter creates hash-based collections (e.g. `Dictionary<K, V>` or `HashSet<T>`) where the hashed key comes from the messagepack data, always instantiate your collection using `options.Security.GetEqualityComparer<TKey>()` as the equality comparer:\n\n    ```cs\n    var collection = new HashSet<T>(options.Security.GetEqualityComparer<T>());\n    ```\n\n    This ensures that when reading untrusted data, you will be using a collision-resistent hash algorithm.\n\nLearn more about [best security practices when reading untrusted data with MessagePack 2.x](https://github.com/neuecc/MessagePack-CSharp#security).\n\n### Workarounds\n\nThe security vulnerabilities are in the formatters.\nAvoiding the built-in formatters entirely in favor of reading messagepack primitive data directly\nor relying on carefully written custom formatters can provide a workaround.\n\nMessagePack v1.x users may utilize the `MessagePackBinary` static class directly to read the data they expect.\nMessagePack v2.x users may utilize the `MessagePackReader` struct directly to read the data they expect.\n\n### References\n\nLearn more about best security practices when reading untrusted data with [MessagePack 1.x](https://github.com/neuecc/MessagePack-CSharp/tree/v1.x#security) or [MessagePack 2.x](https://github.com/neuecc/MessagePack-CSharp#security).\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n\n* Open an issue in [MessagePack-CSharp](https://github.com/neuecc/MessagePack-CSharp/issues/new/choose)\n* [Email us](mailto:andrewarnott@gmail.com)\n",
+  "aliases": [
+    "CVE-2020-5234"
+  ],
+  "modified": "2024-10-16T22:25:17.367157Z",
+  "published": "2020-01-31T17:59:20Z",
+  "related": [
+    "CVE-2020-5234"
+  ],
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-121"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-01-31T17:47:49Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/MessagePack-CSharp/MessagePack-CSharp/security/advisories/GHSA-7q36-4xx7-xcxf"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/neuecc/MessagePack-CSharp/security/advisories/GHSA-7q36-4xx7-xcxf"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-5234"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/aspnet/Announcements/issues/405"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/neuecc/MessagePack-CSharp/issues/810"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/neuecc/MessagePack-CSharp/commit/56fa86219d01d0a183babbbbcb34abbdea588a02"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/neuecc/MessagePack-CSharp/commit/f88684078698386df02204f13faeff098a61f007"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/MessagePack-CSharp/MessagePack-CSharp"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "MessagePack",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.9.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1.0-beta",
+        "0.2.0-beta",
+        "0.2.1-beta",
+        "0.2.2-beta",
+        "0.2.3-beta",
+        "0.3.0-beta",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.5.0",
+        "0.6.0",
+        "0.6.1",
+        "0.7.0",
+        "0.7.2",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5",
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.1.0",
+        "1.1.1",
+        "1.1.1.1",
+        "1.1.2",
+        "1.2.0",
+        "1.2.0.1",
+        "1.2.0.2",
+        "1.2.1",
+        "1.2.2",
+        "1.2.3",
+        "1.3.0",
+        "1.3.1",
+        "1.3.1.1",
+        "1.3.2",
+        "1.3.3",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2",
+        "1.4.3",
+        "1.4.4",
+        "1.5.0",
+        "1.5.0.1",
+        "1.5.0.2",
+        "1.5.1",
+        "1.6.0",
+        "1.6.0.1",
+        "1.6.0.2",
+        "1.6.0.3",
+        "1.6.1",
+        "1.6.1.1",
+        "1.6.1.2",
+        "1.6.2",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.7.3",
+        "1.7.3.1",
+        "1.7.3.2",
+        "1.7.3.3",
+        "1.7.3.4",
+        "1.7.3.7",
+        "1.8.71-beta",
+        "1.8.74",
+        "1.8.80",
+        "1.9.3",
+        "1.9.3-g129239b107"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.1.90"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.107-alpha",
+        "2.0.108-alpha",
+        "2.0.110-alpha",
+        "2.0.110-alpha-g1e44a9106f",
+        "2.0.119-beta",
+        "2.0.123-beta",
+        "2.0.171-beta",
+        "2.0.204-beta",
+        "2.0.221-beta",
+        "2.0.231-rc",
+        "2.0.270-rc",
+        "2.0.299-rc",
+        "2.0.323",
+        "2.0.335",
+        "2.1.80"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack.ImmutableCollection",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack.ImmutableCollection"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.9.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.2.0-beta",
+        "0.3.0-beta",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.5.0",
+        "0.6.0",
+        "0.6.1",
+        "0.7.0",
+        "0.7.2",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5",
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.1.0",
+        "1.1.1",
+        "1.1.2",
+        "1.2.0",
+        "1.2.2",
+        "1.2.3",
+        "1.3.0",
+        "1.3.1",
+        "1.3.1.1",
+        "1.3.2",
+        "1.3.3",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2",
+        "1.4.3",
+        "1.4.4",
+        "1.5.0",
+        "1.5.0.1",
+        "1.5.0.2",
+        "1.5.1",
+        "1.6.0",
+        "1.6.0.1",
+        "1.6.0.2",
+        "1.6.0.3",
+        "1.6.1",
+        "1.6.1.1",
+        "1.6.1.2",
+        "1.6.2",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.7.3",
+        "1.7.3.1",
+        "1.7.3.2",
+        "1.7.3.3",
+        "1.7.3.4",
+        "1.7.3.7",
+        "1.8.71-beta",
+        "1.8.74",
+        "1.8.80",
+        "1.9.3",
+        "1.9.3-g129239b107"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack.ImmutableCollection",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack.ImmutableCollection"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.1.90"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.107-alpha",
+        "2.0.108-alpha",
+        "2.0.110-alpha",
+        "2.0.110-alpha-g1e44a9106f",
+        "2.0.119-beta",
+        "2.0.123-beta",
+        "2.0.171-beta",
+        "2.0.204-beta",
+        "2.0.221-beta",
+        "2.0.231-rc",
+        "2.0.270-rc",
+        "2.0.299-rc",
+        "2.0.323",
+        "2.0.335",
+        "2.1.80"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack.ReactiveProperty",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack.ReactiveProperty"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.9.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1.0-beta",
+        "0.2.0-beta",
+        "0.3.0-beta",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.5.0",
+        "0.6.0",
+        "0.6.1",
+        "0.7.0",
+        "0.7.2",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5",
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.1.0",
+        "1.1.1",
+        "1.1.2",
+        "1.2.0",
+        "1.2.1",
+        "1.2.2",
+        "1.2.3",
+        "1.3.0",
+        "1.3.1",
+        "1.3.1.1",
+        "1.3.2",
+        "1.3.3",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2",
+        "1.4.3",
+        "1.4.4",
+        "1.5.0",
+        "1.5.0.1",
+        "1.5.0.2",
+        "1.5.1",
+        "1.6.0",
+        "1.6.0.1",
+        "1.6.0.2",
+        "1.6.0.3",
+        "1.6.1",
+        "1.6.1.1",
+        "1.6.1.2",
+        "1.6.2",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.7.3",
+        "1.7.3.1",
+        "1.7.3.2",
+        "1.7.3.3",
+        "1.7.3.4",
+        "1.7.3.7",
+        "1.8.71-beta",
+        "1.8.74",
+        "1.8.80",
+        "1.9.3",
+        "1.9.3-g129239b107"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack.ReactiveProperty",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack.ReactiveProperty"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.1.90"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.107-alpha",
+        "2.0.108-alpha",
+        "2.0.110-alpha",
+        "2.0.110-alpha-g1e44a9106f",
+        "2.0.119-beta",
+        "2.0.123-beta",
+        "2.0.171-beta",
+        "2.0.204-beta",
+        "2.0.221-beta",
+        "2.0.231-rc",
+        "2.0.270-rc",
+        "2.0.299-rc",
+        "2.0.323",
+        "2.0.335",
+        "2.1.80"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack.UnityShims",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack.UnityShims"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.9.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.6.0",
+        "0.6.1",
+        "0.7.0",
+        "0.7.2",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5",
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.1.0",
+        "1.1.1",
+        "1.1.2",
+        "1.2.0",
+        "1.2.1",
+        "1.2.2",
+        "1.2.3",
+        "1.3.0",
+        "1.3.1",
+        "1.3.1.1",
+        "1.3.2",
+        "1.3.3",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2",
+        "1.4.3",
+        "1.4.4",
+        "1.5.0",
+        "1.5.0.1",
+        "1.5.0.2",
+        "1.5.1",
+        "1.6.0",
+        "1.6.0.1",
+        "1.6.0.2",
+        "1.6.0.3",
+        "1.6.1",
+        "1.6.1.1",
+        "1.6.1.2",
+        "1.6.2",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.7.3",
+        "1.7.3.1",
+        "1.7.3.2",
+        "1.7.3.3",
+        "1.7.3.4",
+        "1.7.3.7",
+        "1.8.71-beta",
+        "1.8.74",
+        "1.8.80",
+        "1.9.3",
+        "1.9.3-g129239b107"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack.UnityShims",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack.UnityShims"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.1.90"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.107-alpha",
+        "2.0.108-alpha",
+        "2.0.110-alpha",
+        "2.0.110-alpha-g1e44a9106f",
+        "2.0.119-beta",
+        "2.0.123-beta",
+        "2.0.171-beta",
+        "2.0.204-beta",
+        "2.0.221-beta",
+        "2.0.231-rc",
+        "2.0.270-rc",
+        "2.0.299-rc",
+        "2.0.323",
+        "2.0.335",
+        "2.1.80"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack.Unity",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack.Unity"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.9.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.2.0-beta",
+        "0.3.0-beta",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "MessagePack.Unity",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/MessagePack.Unity"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.1.90"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-7q36-4xx7-xcxf/GHSA-7q36-4xx7-xcxf.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

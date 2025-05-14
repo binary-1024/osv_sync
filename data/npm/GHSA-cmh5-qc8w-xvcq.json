@@ -1,0 +1,69 @@
+{
+  "id": "GHSA-cmh5-qc8w-xvcq",
+  "summary": "Cross-Site Scripting in i18next",
+  "details": "Affected versions of `i18next` may fail to sanitize user input when certain configuration options are used. When using the `.init` method, passing interpolation options without passing an `escapeValue` will default to `undefined` rather than the assumed `true`. \n\n## Proof of Concept\n\n```js\nvar init = i18n.init({\n  interpolation: {\n    prefix: \"__\",\n    suffix: \"__\",\n    escapeValue: true\n  }\n}, function(){\n  var test = i18n.t('__firstName__ __lastName__', {\n        firstName: 'Bob',\n        lastName: '[\"foo\",\"bar\"]',\n  });\n  console.log(test);\n});\n```\nWhen `escapeValue` is explicitly passed, the result of `test` is: \n\n```html\n&lt;script&gt;alert(1)&lt;&#x2F;script&gt; Johnson\n```\n\nThis is supposed to be the default. However, if `escapeValue` is not included, the result is the unescaped string: \n \n```html\n<script>alert(1)</script> Johnson\n```\n\n\n## Recommendation\n\nUpdate to version 3.4.4 or later.",
+  "aliases": [
+    "CVE-2017-16010"
+  ],
+  "modified": "2023-11-08T03:58:59.586536Z",
+  "published": "2018-07-24T19:58:33Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-06-16T21:31:57Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2017-16010"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/i18next/i18next/pull/826"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/advisories/GHSA-cmh5-qc8w-xvcq"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.npmjs.com/advisories/326"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "i18next",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/i18next"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "3.4.4"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2018/07/GHSA-cmh5-qc8w-xvcq/GHSA-cmh5-qc8w-xvcq.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

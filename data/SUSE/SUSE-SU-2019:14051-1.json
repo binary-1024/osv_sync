@@ -1,0 +1,696 @@
+{
+  "id": "SUSE-SU-2019:14051-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "The SUSE Linux Enterprise 11 SP4 kernel was updated to receive various security and bugfixes.\n\nFour new speculative execution information leak issues have been identified in Intel CPUs. (bsc#1111331)\n\n- CVE-2018-12126: Microarchitectural Store Buffer Data Sampling (MSBDS)\n- CVE-2018-12127: Microarchitectural Fill Buffer Data Sampling (MFBDS)\n- CVE-2018-12130: Microarchitectural Load Port Data Samling (MLPDS)\n- CVE-2019-11091: Microarchitectural Data Sampling Uncacheable Memory (MDSUM)\n\nThis kernel update contains software mitigations for these issues, which also utilize CPU microcode updates shipped in parallel.\n\nFor more information on this set of information leaks, check out https://www.suse.com/support/kb/doc/?id=7023736\n\nThe following security bugs were fixed:\n\n- CVE-2019-9213: The expand_downwards function in mm/mmap.c lacked a check for the mmap minimum address, which made it easier for attackers to exploit kernel NULL pointer dereferences on non-SMAP platforms. This is related to a capability check for the wrong task (bnc#1128166).\n- CVE-2013-0216: The Xen netback functionality allowed guest OS users to cause a denial of service (loop) by triggering ring pointer corruption (bnc#800280).\n- CVE-2013-0231: The pciback_enable_msi function in the PCI backend driver (drivers/xen/pciback/conf_space_capability_msi.c) in Xen allowed guest OS users with PCI device access to cause a denial of service via a large number of kernel log messages. (bnc#801178).\n- CVE-2012-3430: The rds_recvmsg function in net/rds/recv.c did not initialize a certain structure member, which allowed local users to obtain potentially sensitive information from kernel stack memory via a recvfrom or recvmsg system call on an RDS socket (bnc#773383).\n- CVE-2012-3412: The sfc (aka Solarflare Solarstorm) driver allowed remote attackers to cause a denial of service (DMA descriptor consumption and network-controller outage) via crafted TCP packets that trigger a small MSS value (bnc#774523).\n- CVE-2013-0160: The kernel allowed local users to obtain sensitive information about keystroke timing by using the inotify API on the /dev/ptmx device (bnc#797175).\n- CVE-2013-1979: The scm_set_cred function in include/net/scm.h uses incorrect uid and gid values during credentials passing, which allowed local users to gain privileges via a crafted application (bnc#816708).\n\nThe following non-security bugs were fixed:\n\n- Add opcodes from net: filter: BPF 'JIT' compiler for PPC64 (bsc#1131107).\n- EHCI: improved logic for isochronous scheduling (bsc#1117515).\n- KVM: x86: Use jmp to invoke kvm_spurious_fault() from .fixup (bsc#1129439).\n- USB: Add new USB LPM helpers (bsc#1129770).\n- USB: Consolidate LPM checks to avoid enabling LPM twice (bsc#1129770).\n- USB: EHCI: add new root-hub state: STOPPING (bsc#1117515).\n- USB: EHCI: add pointer to end of async-unlink list (bsc#1117515).\n- USB: EHCI: add symbolic constants for QHs (bsc#1117515).\n- USB: EHCI: always scan each interrupt QH (bsc#1117515).\n- USB: EHCI: do not lose events during a scan (bsc#1117515).\n- USB: EHCI: do not refcount QHs (bsc#1117515).\n- USB: EHCI: do not refcount iso_stream structures (bsc#1117515).\n- USB: EHCI: fix initialization bug in iso_stream_schedule() (bsc#1117515).\n- USB: EHCI: fix up locking (bsc#1117515).\n- USB: EHCI: initialize data before resetting hardware (bsc#1117515).\n- USB: EHCI: introduce high-res timer (bsc#1117515).\n- USB: EHCI: remove PS3 status polling (bsc#1117515).\n- USB: EHCI: remove unneeded suspend/resume code (bsc#1117515).\n- USB: EHCI: rename 'reclaim' (bsc#1117515).\n- USB: EHCI: resolve some unlikely races (bsc#1117515).\n- USB: EHCI: return void instead of 0 (bsc#1117515).\n- USB: EHCI: simplify isochronous scanning (bsc#1117515).\n- USB: EHCI: unlink multiple async QHs together (bsc#1117515).\n- USB: EHCI: use hrtimer for (s)iTD deallocation (bsc#1117515).\n- USB: EHCI: use hrtimer for async schedule (bsc#1117515).\n- USB: EHCI: use hrtimer for controller death (bsc#1117515).\n- USB: EHCI: use hrtimer for interrupt QH unlink (bsc#1117515).\n- USB: EHCI: use hrtimer for the I/O watchdog (bsc#1117515).\n- USB: EHCI: use hrtimer for the IAA watchdog (bsc#1117515).\n- USB: EHCI: use hrtimer for the periodic schedule (bsc#1117515).\n- USB: EHCI: use hrtimer for unlinking empty async QHs (bsc#1117515).\n- copy_mount_string: Limit string length to PATH_MAX (bsc#1082943).\n- cpu/speculation: Add 'mitigations=' cmdline option (bsc#1112178).\n- drm: Fix error handling in drm_legacy_addctx (bsc#1106886)\n- ext3: Set bitmap tails when growing filesystem (bsc#1128383).\n- fbdev: chipsfb: remove set but not used variable 'size' (bsc#1106886)\n- iommu/vt-d: Check capability before disabling protected memory (bsc#1130353).\n- iommu/vt-d: Check identity map for hot-added devices (bsc#1129248).\n- kernel/watchdog.c: control hard lockup detection default (bsc#1110436).\n- kvm: ensure hard lockup detection is disabled by default (bsc#1110436).\n- kvm: vmx: Set IA32_TSC_AUX for legacy mode guests (bsc#1129437).\n- kvm: x86: Add AMD's EX_CFG to the list of ignored MSRs (bsc#1127082).\n- mm, oom: fix use-after-free in oom_kill_process (git fixes (mm/mmap)).\n- mpt2sas: Fix IO error occurs on pulling out a drive from RAID1 volume created on two SATA drive (bsc#1130384).\n- nfsd: fix memory corruption caused by readdir (bsc#1127445).\n- powerpc/64: Call setup_barrier_nospec() from setup_arch() (bsc#1131107).\n- powerpc/64: Disable the speculation barrier from the command line (bsc#1131107).\n- powerpc/64: Make stf barrier PPC_BOOK3S_64 specific (bsc#1131107).\n- powerpc/64s: Add new security feature flags for count cache flush (bsc#1131107).\n- powerpc/64s: Add support for software count cache flush (bsc#1131107).\n- powerpc/asm: Add a patch_site macro & helpers for patching instructions (bsc#1131107).\n- powerpc/fsl: Fix spectre_v2 mitigations reporting (bsc#1131107).\n- powerpc/pseries/mce: Fix misleading print for TLB mutlihit (bsc#1094244, git-fixes).\n- powerpc/pseries: Query hypervisor for count cache flush settings (bsc#1131107).\n- powerpc/security: Fix spectre_v2 reporting (bsc#1131107).\n- powerpc/speculation: Support 'mitigations=' cmdline option (bsc#1112178).\n- powerpc/vdso32: fix CLOCK_MONOTONIC on PPC64 (bsc#1131587).\n- powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038 (bsc#1131587).\n- s390/dasd: fix panic for failed online processing (bsc#1132589).\n- s390/qeth: cancel close_dev work before removing a card (LTC#175048, bsc#1127376).\n- s390/qeth: fix use-after-free in error path (LTC#175048, bsc#1127376, bsc#1127534).\n- s390/qeth: handle failure on workqueue creation (LTC#175048, bsc#1127376).\n- s390/speculation: Support 'mitigations=' cmdline option (bsc#1112178).\n- sched/core: Optimize SCHED_SMT (bsc#1111331).\n- sched/smt: Expose sched_smt_present static key (bsc#1111331).\n- sched/smt: Make sched_smt_present track topology (bsc#1111331).\n- sched/smt: Update sched_smt_present at runtime (bsc#1111331).\n- scsi: ibmvscsi: Fix empty event pool access during host removal (bsc#1119019).\n- scsi: qla2xxx: do not disable a not previously enabled PCI device (bsc#1127738).\n- x86/cpu: Sanitize FAM6_ATOM naming (bsc#1111331).\n- x86/kvm/vmx: Add MDS protection when L1D Flush is not active (bsc#1111331).\n- x86/speculation/mds: Add 'mitigations=' support for MDS (bsc#1111331).\n- x86/speculation/mds: Add BUG_MSBDS_ONLY (bsc#1111331).\n- x86/speculation/mds: Add SMT warning message (bsc#1111331).\n- x86/speculation/mds: Add basic bug infrastructure for MDS (bsc#1111331).\n- x86/speculation/mds: Add mds=full,nosmt cmdline option (bsc#1111331).\n- x86/speculation/mds: Add mds_clear_cpu_buffers() (bsc#1111331).\n- x86/speculation/mds: Add mitigation control for MDS (bsc#1111331).\n- x86/speculation/mds: Add mitigation mode VMWERV (bsc#1111331).\n- x86/speculation/mds: Add sysfs reporting for MDS (bsc#1111331).\n- x86/speculation/mds: Clear CPU buffers on exit to user (bsc#1111331).\n- x86/speculation/mds: Conditionally clear CPU buffers on idle entry (bsc#1111331).\n- x86/speculation/mds: Print SMT vulnerable on MSBDS with mitigations off (bsc#1111331).\n- x86/speculation: Consolidate CPU whitelists (bsc#1111331).\n- x86/speculation: Enable cross-hyperthread spectre v2 STIBP mitigation (bsc#1111331).\n- x86/speculation: Move arch_smt_update() call to after mitigation decisions (bsc#1111331).\n- x86/speculation: Rework SMT state change (bsc#1111331).\n- x86/speculation: Support 'mitigations=' cmdline option (bsc#1112178).\n",
+  "modified": "2025-05-02T04:03:52.530860Z",
+  "published": "2019-05-16T13:04:49Z",
+  "related": [
+    "CVE-2012-3412",
+    "CVE-2012-3430",
+    "CVE-2013-0160",
+    "CVE-2013-0216",
+    "CVE-2013-0231",
+    "CVE-2013-1979",
+    "CVE-2018-12126",
+    "CVE-2018-12127",
+    "CVE-2018-12130",
+    "CVE-2019-11091",
+    "CVE-2019-9213"
+  ],
+  "upstream": [
+    "CVE-2012-3412",
+    "CVE-2012-3430",
+    "CVE-2013-0160",
+    "CVE-2013-0216",
+    "CVE-2013-0231",
+    "CVE-2013-1979",
+    "CVE-2018-12126",
+    "CVE-2018-12127",
+    "CVE-2018-12130",
+    "CVE-2019-11091",
+    "CVE-2019-9213"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2019/suse-su-201914051-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1082943"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1094244"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1103186"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106886"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1110436"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1111331"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1112178"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1117515"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1119019"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1127082"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1127376"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1127445"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1127534"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1127738"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1128166"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1128383"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129248"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129437"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129439"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129770"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1130353"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1130384"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1131107"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1131587"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1132589"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/773383"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/774523"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/797175"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/800280"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/801178"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/816708"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2012-3412"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2012-3430"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2013-0160"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2013-0216"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2013-0231"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2013-1979"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-12126"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-12127"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-12130"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11091"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-9213"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-bigmem",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-bigmem&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ppc64",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-ppc64&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.90.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.90.1",
+            "kernel-default-man": "3.0.101-108.90.1",
+            "kernel-ec2": "3.0.101-108.90.1",
+            "kernel-default": "3.0.101-108.90.1",
+            "kernel-source": "3.0.101-108.90.1",
+            "kernel-bigmem": "3.0.101-108.90.1",
+            "kernel-pae-base": "3.0.101-108.90.1",
+            "kernel-syms": "3.0.101-108.90.1",
+            "kernel-bigmem-base": "3.0.101-108.90.1",
+            "kernel-pae": "3.0.101-108.90.1",
+            "kernel-ppc64-devel": "3.0.101-108.90.1",
+            "kernel-ec2-devel": "3.0.101-108.90.1",
+            "kernel-ppc64-base": "3.0.101-108.90.1",
+            "kernel-trace-devel": "3.0.101-108.90.1",
+            "kernel-trace": "3.0.101-108.90.1",
+            "kernel-ec2-base": "3.0.101-108.90.1",
+            "kernel-ppc64": "3.0.101-108.90.1",
+            "kernel-xen-base": "3.0.101-108.90.1",
+            "kernel-xen-devel": "3.0.101-108.90.1",
+            "kernel-bigmem-devel": "3.0.101-108.90.1",
+            "kernel-trace-base": "3.0.101-108.90.1",
+            "kernel-default-devel": "3.0.101-108.90.1",
+            "kernel-pae-devel": "3.0.101-108.90.1",
+            "kernel-xen": "3.0.101-108.90.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14051-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

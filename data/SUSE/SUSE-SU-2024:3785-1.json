@@ -1,0 +1,232 @@
+{
+  "id": "SUSE-SU-2024:3785-1",
+  "summary": "Security update for pcp",
+  "details": "This update for pcp fixes the following issues:\n\npcp was updated from version 5.2.5 to version 6.2.0 (jsc#PED-8192, jsc#PED-8389):\n\n- Security issues fixed:\n\n  * CVE-2024-45770: Fixed a symlink attack that allows escalating from the pcp to the root user (bsc#1230552)\n  * CVE-2024-45769: Fixed a heap corruption through metric pmstore operations (bsc#1230551)\n  * CVE-2023-6917: Fixed local privilege escalation from pcp user to root in /usr/libexec/pcp/lib/pmproxy (bsc#1217826)\n\n- Major changes:\n\n  * Add version 3 PCP archive support: instance domain change-deltas,\n    Y2038-safe timestamps, nanosecond-precision timestamps, arbitrary timezones support, 64-bit file offsets used\n    throughout for larger (beyond 2GB) individual volumes\n    + Opt-in using the /etc/pcp.conf PCP_ARCHIVE_VERSION setting\n    + Version 2 archives remain the default (for next few years)\n  * Switch to using OpenSSL only throughout PCP (dropped NSS/NSPR);\n    this impacts on libpcp, PMAPI clients and PMCD use of encryption;\n    these are now configured and used consistently with pmproxy HTTPS support and redis-server, which were both already\n    using OpenSSL.\n  * New nanosecond precision timestamp PMAPI calls for PCP library interfaces that make use of timestamps\n    These are all optional, and full backward compatibility is preserved for existing tools.\n  * For the full list of changes please consult the packaged CHANGELOG file\n\n- Other packaging changes:\n\n  * Moved pmlogger_daily into the main package (bsc#1222815)\n  * Change dependency from openssl-devel >= 1.1.1 to openssl-devel >= 1.0.2p.\n    Required for SLE-12\n  * Introduce 'pmda-resctrl' package, disabled for architectures other than x86_64\n  * Change the architecture for various subpackages to 'noarch' as they contain no binaries\n  * Disable 'pmda-mssql', as it fails to build\n",
+  "modified": "2025-05-02T04:36:06.233519Z",
+  "published": "2024-10-30T07:56:17Z",
+  "related": [
+    "CVE-2023-6917",
+    "CVE-2024-45769",
+    "CVE-2024-45770"
+  ],
+  "upstream": [
+    "CVE-2023-6917",
+    "CVE-2024-45769",
+    "CVE-2024-45770"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2024/suse-su-20243785-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1217826"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1222815"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1230551"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1230552"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1231345"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-6917"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2024-45769"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2024-45770"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "pcp",
+        "ecosystem": "SUSE:Linux Enterprise Module for Development Tools 15 SP5",
+        "purl": "pkg:rpm/suse/pcp&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Development%20Tools%2015%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.2.0-150500.8.6.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "pcp-pmda-perfevent": "6.2.0-150500.8.6.1",
+            "perl-PCP-MMV": "6.2.0-150500.8.6.1",
+            "pcp-devel": "6.2.0-150500.8.6.1",
+            "pcp-doc": "6.2.0-150500.8.6.1",
+            "perl-PCP-LogSummary": "6.2.0-150500.8.6.1",
+            "libpcp_gui2": "6.2.0-150500.8.6.1",
+            "libpcp3": "6.2.0-150500.8.6.1",
+            "pcp-system-tools": "6.2.0-150500.8.6.1",
+            "python3-pcp": "6.2.0-150500.8.6.1",
+            "libpcp_web1": "6.2.0-150500.8.6.1",
+            "perl-PCP-PMDA": "6.2.0-150500.8.6.1",
+            "libpcp_trace2": "6.2.0-150500.8.6.1",
+            "pcp-import-mrtg2pcp": "6.2.0-150500.8.6.1",
+            "perl-PCP-LogImport": "6.2.0-150500.8.6.1",
+            "pcp-import-sar2pcp": "6.2.0-150500.8.6.1",
+            "pcp-import-iostat2pcp": "6.2.0-150500.8.6.1",
+            "libpcp-devel": "6.2.0-150500.8.6.1",
+            "libpcp_mmv1": "6.2.0-150500.8.6.1",
+            "pcp-conf": "6.2.0-150500.8.6.1",
+            "pcp": "6.2.0-150500.8.6.1",
+            "libpcp_import1": "6.2.0-150500.8.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:3785-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "pcp",
+        "ecosystem": "openSUSE:Leap 15.5",
+        "purl": "pkg:rpm/opensuse/pcp&distro=openSUSE%20Leap%2015.5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.2.0-150500.8.6.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "pcp-pmda-ds389": "6.2.0-150500.8.6.1",
+            "pcp-pmda-perfevent": "6.2.0-150500.8.6.1",
+            "pcp-pmda-elasticsearch": "6.2.0-150500.8.6.1",
+            "pcp-system-tools": "6.2.0-150500.8.6.1",
+            "libpcp_trace2": "6.2.0-150500.8.6.1",
+            "pcp-import-sar2pcp": "6.2.0-150500.8.6.1",
+            "pcp-pmda-json": "6.2.0-150500.8.6.1",
+            "pcp-pmda-rabbitmq": "6.2.0-150500.8.6.1",
+            "libpcp_mmv1": "6.2.0-150500.8.6.1",
+            "pcp-pmda-nginx": "6.2.0-150500.8.6.1",
+            "pcp-pmda-lmsensors": "6.2.0-150500.8.6.1",
+            "pcp-pmda-hacluster": "6.2.0-150500.8.6.1",
+            "pcp-pmda-oracle": "6.2.0-150500.8.6.1",
+            "pcp-pmda-sockets": "6.2.0-150500.8.6.1",
+            "pcp-export-pcp2xml": "6.2.0-150500.8.6.1",
+            "pcp-gui": "6.2.0-150500.8.6.1",
+            "pcp-devel": "6.2.0-150500.8.6.1",
+            "pcp-doc": "6.2.0-150500.8.6.1",
+            "pcp-pmda-nvidia-gpu": "6.2.0-150500.8.6.1",
+            "pcp-export-pcp2json": "6.2.0-150500.8.6.1",
+            "pcp-pmda-lustrecomm": "6.2.0-150500.8.6.1",
+            "libpcp_gui2": "6.2.0-150500.8.6.1",
+            "pcp-import-ganglia2pcp": "6.2.0-150500.8.6.1",
+            "pcp-import-collectl2pcp": "6.2.0-150500.8.6.1",
+            "pcp-pmda-openmetrics": "6.2.0-150500.8.6.1",
+            "libpcp_web1": "6.2.0-150500.8.6.1",
+            "pcp-pmda-smart": "6.2.0-150500.8.6.1",
+            "pcp-pmda-openvswitch": "6.2.0-150500.8.6.1",
+            "pcp-pmda-postfix": "6.2.0-150500.8.6.1",
+            "perl-PCP-PMDA": "6.2.0-150500.8.6.1",
+            "pcp-pmda-zswap": "6.2.0-150500.8.6.1",
+            "pcp-import-iostat2pcp": "6.2.0-150500.8.6.1",
+            "pcp-pmda-roomtemp": "6.2.0-150500.8.6.1",
+            "pcp-pmda-nfsclient": "6.2.0-150500.8.6.1",
+            "pcp-pmda-gpfs": "6.2.0-150500.8.6.1",
+            "pcp-testsuite": "6.2.0-150500.8.6.1",
+            "pcp": "6.2.0-150500.8.6.1",
+            "libpcp_import1": "6.2.0-150500.8.6.1",
+            "pcp-pmda-logger": "6.2.0-150500.8.6.1",
+            "pcp-pmda-systemd": "6.2.0-150500.8.6.1",
+            "pcp-export-pcp2graphite": "6.2.0-150500.8.6.1",
+            "pcp-pmda-samba": "6.2.0-150500.8.6.1",
+            "pcp-pmda-mysql": "6.2.0-150500.8.6.1",
+            "pcp-pmda-gpsd": "6.2.0-150500.8.6.1",
+            "pcp-pmda-shping": "6.2.0-150500.8.6.1",
+            "pcp-pmda-memcache": "6.2.0-150500.8.6.1",
+            "pcp-pmda-weblog": "6.2.0-150500.8.6.1",
+            "pcp-pmda-dbping": "6.2.0-150500.8.6.1",
+            "pcp-pmda-sendmail": "6.2.0-150500.8.6.1",
+            "pcp-pmda-nutcracker": "6.2.0-150500.8.6.1",
+            "libpcp3": "6.2.0-150500.8.6.1",
+            "pcp-pmda-ds389log": "6.2.0-150500.8.6.1",
+            "python3-pcp": "6.2.0-150500.8.6.1",
+            "pcp-pmda-gluster": "6.2.0-150500.8.6.1",
+            "perl-PCP-LogSummary": "6.2.0-150500.8.6.1",
+            "pcp-pmda-lustre": "6.2.0-150500.8.6.1",
+            "pcp-pmda-named": "6.2.0-150500.8.6.1",
+            "pcp-zeroconf": "6.2.0-150500.8.6.1",
+            "pcp-export-pcp2influxdb": "6.2.0-150500.8.6.1",
+            "libpcp-devel": "6.2.0-150500.8.6.1",
+            "pcp-pmda-gfs2": "6.2.0-150500.8.6.1",
+            "pcp-pmda-activemq": "6.2.0-150500.8.6.1",
+            "pcp-conf": "6.2.0-150500.8.6.1",
+            "pcp-pmda-haproxy": "6.2.0-150500.8.6.1",
+            "pcp-pmda-docker": "6.2.0-150500.8.6.1",
+            "pcp-pmda-mailq": "6.2.0-150500.8.6.1",
+            "pcp-export-pcp2zabbix": "6.2.0-150500.8.6.1",
+            "pcp-pmda-bonding": "6.2.0-150500.8.6.1",
+            "pcp-pmda-trace": "6.2.0-150500.8.6.1",
+            "pcp-pmda-dm": "6.2.0-150500.8.6.1",
+            "pcp-pmda-unbound": "6.2.0-150500.8.6.1",
+            "pcp-pmda-snmp": "6.2.0-150500.8.6.1",
+            "pcp-pmda-apache": "6.2.0-150500.8.6.1",
+            "pcp-pmda-redis": "6.2.0-150500.8.6.1",
+            "pcp-pmda-cifs": "6.2.0-150500.8.6.1",
+            "pcp-pmda-mounts": "6.2.0-150500.8.6.1",
+            "pcp-pmda-netfilter": "6.2.0-150500.8.6.1",
+            "pcp-pmda-summary": "6.2.0-150500.8.6.1",
+            "pcp-pmda-slurm": "6.2.0-150500.8.6.1",
+            "perl-PCP-MMV": "6.2.0-150500.8.6.1",
+            "pcp-export-pcp2spark": "6.2.0-150500.8.6.1",
+            "pcp-pmda-pdns": "6.2.0-150500.8.6.1",
+            "pcp-import-mrtg2pcp": "6.2.0-150500.8.6.1",
+            "pcp-pmda-cisco": "6.2.0-150500.8.6.1",
+            "pcp-pmda-rsyslog": "6.2.0-150500.8.6.1",
+            "pcp-pmda-mic": "6.2.0-150500.8.6.1",
+            "pcp-pmda-infiniband": "6.2.0-150500.8.6.1",
+            "pcp-pmda-netcheck": "6.2.0-150500.8.6.1",
+            "perl-PCP-LogImport": "6.2.0-150500.8.6.1",
+            "pcp-export-pcp2elasticsearch": "6.2.0-150500.8.6.1",
+            "pcp-pmda-bash": "6.2.0-150500.8.6.1",
+            "pcp-pmda-news": "6.2.0-150500.8.6.1",
+            "pcp-pmda-zimbra": "6.2.0-150500.8.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:3785-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

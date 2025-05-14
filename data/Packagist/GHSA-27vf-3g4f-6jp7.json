@@ -1,0 +1,208 @@
+{
+  "id": "GHSA-27vf-3g4f-6jp7",
+  "summary": "LibreNMS Ports Stored Cross-site Scripting vulnerability",
+  "details": "# StoredXSS-LibreNMS-Ports\n\n\n**Description:**\n\n\nStored XSS on the parameter:\n`/ajax_form.php` -> param: descr\n\nRequest:\n```http\nPOST /ajax_form.php HTTP/1.1\nHost: <your_host>\nX-Requested-With: XMLHttpRequest\nX-CSRF-TOKEN: <your_XSRF_token>\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\nCookie: <your_cookie>\n\ntype=update-ifalias&descr=%22%3E%3Cimg+src+onerror%3D%22alert(1)%22%3E&ifName=lo&port_id=1&device_id=1\n```\n\n\nof Librenms version 24.10.1 ([https://github.com/librenms/librenms](https://github.com/librenms/librenms)) allows remote attackers to inject malicious scripts. When a user views or interacts with the page displaying the data, the malicious script executes immediately, leading to potential unauthorized actions or data exposure.\n\n\n\n**Proof of Concept:**\n1. Add a new device through the LibreNMS interface.\n2. Edit the newly created device and select the \"ports\" section.\n3. In the \"Description\" field, enter the following payload: `\"><img src onerror=\"alert(1)\">`.\n4. Save the changes.\n5. The XSS vulnerability is triggered when accessing the \"ports\" tab, and the payload is executed again when hovering over the modified value in the \"Port\" field.\n\nPayload:\n![payload](https://github.com/user-attachments/assets/2f38b985-6684-403f-9d1f-e405f09a75bb)\n\nExecutes:\n![image](https://github.com/user-attachments/assets/b70a6e34-d52c-4113-b769-4e271e33de88)\nThe script execution vulnerability in the description field, as shown in the image, occurs at [Line 63 of functions.inc.php](https://github.com/librenms/librenms/blob/master/includes/html/functions.inc.php#L63)\n```php\n$overlib_content = '<div class=overlib><span class=overlib-text>' . $text . '</span><br />';\n```\n\n![image](https://github.com/user-attachments/assets/97b85403-5b7e-4f43-932c-d33bd3c0f73f)\n\n\n\n\n**Impact:**\n\nExecution of Malicious Code",
+  "aliases": [
+    "CVE-2025-23199"
+  ],
+  "modified": "2025-03-25T15:53:30.592733Z",
+  "published": "2025-01-16T17:32:30Z",
+  "database_specific": {
+    "nvd_published_at": "2025-01-16T23:15:08Z",
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-01-16T17:32:30Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/security/advisories/GHSA-27vf-3g4f-6jp7"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-23199"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/pull/16721"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/commit/9d07d166b87634091dcf21c62b28f9b42a3118c4"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/librenms/librenms"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "librenms/librenms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/librenms/librenms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "24.11.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.19",
+        "1.20",
+        "1.20.1",
+        "1.21",
+        "1.22",
+        "1.22.01",
+        "1.23",
+        "1.24",
+        "1.25",
+        "1.26",
+        "1.27",
+        "1.28",
+        "1.29",
+        "1.30",
+        "1.30.01",
+        "1.31",
+        "1.31.01",
+        "1.31.02",
+        "1.31.03",
+        "1.32",
+        "1.32.01",
+        "1.33",
+        "1.33.01",
+        "1.34",
+        "1.35",
+        "1.36",
+        "1.36.01",
+        "1.37",
+        "1.38",
+        "1.39",
+        "1.40",
+        "1.41",
+        "1.42",
+        "1.42.01",
+        "1.43",
+        "1.44",
+        "1.45",
+        "1.46",
+        "1.47",
+        "1.48",
+        "1.48.1",
+        "1.49",
+        "1.50",
+        "1.50.1",
+        "1.51",
+        "1.52",
+        "1.53",
+        "1.53.1",
+        "1.54",
+        "1.55",
+        "1.56",
+        "1.57",
+        "1.58",
+        "1.58.1",
+        "1.59",
+        "1.60",
+        "1.61",
+        "1.62",
+        "1.62.1",
+        "1.62.2",
+        "1.63",
+        "1.64",
+        "1.64.1",
+        "1.65",
+        "1.65.1",
+        "1.66",
+        "1.67",
+        "1.68",
+        "1.69",
+        "1.70.0",
+        "1.70.1",
+        "21.1.0",
+        "21.10.0",
+        "21.10.1",
+        "21.10.2",
+        "21.11.0",
+        "21.12.0",
+        "21.12.1",
+        "21.2.0",
+        "21.3.0",
+        "21.4.0",
+        "21.5.0",
+        "21.5.1",
+        "21.6.0",
+        "21.7.0",
+        "21.8.0",
+        "21.9.0",
+        "21.9.1",
+        "22.1.0",
+        "22.10.0",
+        "22.11.0",
+        "22.12.0",
+        "22.2.0",
+        "22.2.1",
+        "22.2.2",
+        "22.3.0",
+        "22.4.0",
+        "22.4.1",
+        "22.5.0",
+        "22.6.0",
+        "22.7.0",
+        "22.8.0",
+        "22.9.0",
+        "23.1.0",
+        "23.1.1",
+        "23.10.0",
+        "23.11.0",
+        "23.2.0",
+        "23.4.0",
+        "23.4.1",
+        "23.5.0",
+        "23.6.0",
+        "23.7.0",
+        "23.8.0",
+        "23.8.1",
+        "23.8.2",
+        "23.9.0",
+        "23.9.1",
+        "24.1.0",
+        "24.10.0",
+        "24.10.1",
+        "24.2.0",
+        "24.3.0",
+        "24.4.0",
+        "24.4.1",
+        "24.5.0",
+        "24.6.0",
+        "24.7.0",
+        "24.8.0",
+        "24.8.1",
+        "24.9.0",
+        "24.9.1"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 24.10.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-27vf-3g4f-6jp7/GHSA-27vf-3g4f-6jp7.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:L/I:L/A:N"
+    }
+  ]
+}

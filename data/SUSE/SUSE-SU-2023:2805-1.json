@@ -1,0 +1,527 @@
+{
+  "id": "SUSE-SU-2023:2805-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 12 SP2 kernel was updated to receive various security and bugfixes.\n\n\nThe following security bugs were fixed:\n\n- CVE-2017-5753: Fixed spectre vulnerability in prlimit (bsc#1209256).\n- CVE-2022-3566: Fixed race condition in the TCP Handler (bsc#1204405).\n- CVE-2022-45884: Fixed a use-after-free in dvbdev.c, related to dvb_register_device dynamically allocating fops (bsc#1205756).\n- CVE-2022-45885: Fixed a race condition in dvb_frontend.c that could cause a use-after-free when a device is disconnected (bsc#1205758).\n- CVE-2022-45886: Fixed a .disconnect versus dvb_device_open race condition in dvb_net.c that lead to a use-after-free (bsc#1205760).\n- CVE-2022-45887: Fixed a memory leak in ttusb_dec.c caused by the lack of a dvb_frontend_detach call (bsc#1205762).\n- CVE-2022-45919: Fixed a use-after-free in dvb_ca_en50221.c that could occur if there is a disconnect after an open, because of the lack of a wait_event (bsc#1205803).\n- CVE-2023-0590: Fixed race condition in qdisc_graft() (bsc#1207795).\n- CVE-2023-1077: Fixed a type confusion in pick_next_rt_entity(), that could cause memory corruption (bsc#1208600).\n- CVE-2023-1095: Fixed a NULL pointer dereference in nf_tables due to zeroed list head (bsc#1208777).\n- CVE-2023-1118: Fixed a use-after-free bugs caused by ene_tx_irqsim() in media/rc (bsc#1208837).\n- CVE-2023-1249: Fixed a use-after-free flaw in the core dump subsystem that allowed a local user to crash the system (bsc#1209039).\n- CVE-2023-1380: Fixed a slab-out-of-bound read problem in brcmf_get_assoc_ies() (bsc#1209287).\n- CVE-2023-1390: Fixed remote DoS vulnerability in tipc_link_xmit() (bsc#1209289).\n- CVE-2023-1513: Fixed an uninitialized portions of the kvm_debugregs structure that could be copied to userspace, causing an information leak (bsc#1209532).\n- CVE-2023-1611: Fixed an use-after-free flaw in btrfs_search_slot (bsc#1209687).\n- CVE-2023-1670: Fixed a use after free in the Xircom 16-bit PCMCIA Ethernet driver. A local user could use this flaw to crash the system or potentially escalate their privileges on the system (bsc#1209871).\n- CVE-2023-1989: Fixed a use after free in btsdio_remove (bsc#1210336).\n- CVE-2023-1990: Fixed a use after free in ndlc_remove (bsc#1210337).\n- CVE-2023-1998: Fixed a use after free during login when accessing the shost ipaddress (bsc#1210506).\n- CVE-2023-2124: Fixed an out-of-bound access in the XFS subsystem that could have lead to denial-of-service or potentially privilege escalation (bsc#1210498).\n- CVE-2023-2162: Fixed an use-after-free flaw in iscsi_sw_tcp_session_create (bsc#1210647).\n- CVE-2023-2194: Fixed an out-of-bounds write vulnerability in the SLIMpro I2C device driver (bsc#1210715).\n- CVE-2023-23454: Fixed a type-confusion in the CBQ network scheduler (bsc#1207036).\n- CVE-2023-23455: Fixed a denial of service inside atm_tc_enqueue in net/sched/sch_atm.c because of type confusion (non-negative numbers can sometimes indicate a TC_ACT_SHOT condition rather than valid classification results) (bsc#1207125).\n- CVE-2023-2513: Fixed a use-after-free vulnerability in the ext4 filesystem (bsc#1211105).\n- CVE-2023-28328: Fixed a denial of service issue in az6027 driver in drivers/media/usb/dev-usb/az6027.c (bsc#1209291).\n- CVE-2023-28464: Fixed user-after-free that could lead to privilege escalation in hci_conn_cleanup in net/uetooth/hci_conn.c (bsc#1209052).\n- CVE-2023-28772: Fixed buffer overflow in seq_buf_putmem_hex in lib/seq_buf.c (bsc#1209549).\n- CVE-2023-30772: Fixed race condition and resultant use-after-free in da9150_charger_remove (bsc#1210329).\n- CVE-2023-3090: Fixed a heap out-of-bounds write in the ipvlan network driver (bsc#1212842).\n- CVE-2023-3141: Fixed a use-after-free flaw in r592_remove in drivers/memstick/host/r592.c, that allowed local attackers to crash the system at device disconnect (bsc#1212129).\n- CVE-2023-31436: Fixed an out-of-bounds write in qfq_change_class() because lmax can exceed QFQ_MIN_LMAX (bsc#1210940).\n- CVE-2023-3159: Fixed use-after-free issue in driver/firewire in outbound_phy_packet_callback (bsc#1212128).\n- CVE-2023-3161: Fixed shift-out-of-bounds in fbcon_set_font() (bsc#1212154).\n- CVE-2023-32269: Fixed a use-after-free in af_netrom.c, related to the fact that accept() was also allowed for a successfully connected AF_NETROM socket (bsc#1211186).\n- CVE-2023-35824: Fixed a use-after-free in dm1105_remove in drivers/media/pci/dm1105/dm1105.c (bsc#1212501).\n\nThe following non-security bugs were fixed:\n\n- Do not sign the vanilla kernel (bsc#1209008).\n- Drop dvb-core fix patch due to regression (bsc#1205758).\n- Revert CVE-2018-20784 due to regression (bsc#1126703).\n- binfmt_elf: Take the mmap lock when walking the VMA list (bsc#1209039 CVE-2023-1249).\n- bluetooth: Fix double free in hci_conn_cleanup (bsc#1209052 CVE-2023-28464).\n- bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work (CVE-2023-1989 bsc#1210336).\n- btrfs: fix race between quota disable and quota assign ioctls (CVE-2023-1611 bsc#1209687).\n- do not fallthrough in cbq_classify and stop on TC_ACT_SHOT (bsc#1207036 CVE-2023-23454 bsc#1207125 CVE-2023-23455).\n- ext4: add EXT4_INODE_HAS_XATTR_SPACE macro in xattr.h (bsc#1206878).\n- ext4: fix use-after-free in ext4_xattr_set_entry (bsc#1206878 bsc#1211105 CVE-2023-2513).\n- fbcon: Check font dimension limits (CVE-2023-3161 bsc#1212154).\n- firewire: fix potential uaf in outbound_phy_packet_callback() (CVE-2023-3159 bsc#1212128).\n- fix a mistake in the CVE-2023-0590 / bsc#1207795 backport\n- i2c: xgene-slimpro: Fix out-of-bounds bug in xgene_slimpro_i2c_xfer() (bsc#1210715 CVE-2023-2194).\n- ipv6: raw: Deduct extension header length in rawv6_push_pending_frames (bsc#1207168).\n- ipvlan:Fix out-of-bounds caused by unclear skb->cb (bsc#1212842 CVE-2023-3090).\n- kernel/sys.c: fix potential Spectre v1 issue (bsc#1209256 CVE-2017-5753).\n- kvm: initialize all of the kvm_debugregs structure before sending it to userspace (bsc#1209532 CVE-2023-1513).\n- media: dm1105: Fix use after free bug in dm1105_remove due to race condition (bsc#1212501 CVE-2023-35824).\n- media: dvb-core: Fix use-after-free due on race condition at dvb_net (CVE-2022-45886 bsc#1205760).\n- media: dvb-core: Fix use-after-free due to race at dvb_register_device() (CVE-2022-45884 bsc#1205756).\n- media: dvb-core: Fix use-after-free due to race condition at dvb_ca_en50221 (CVE-2022-45919 bsc#1205803).\n- media: dvb-core: Fix use-after-free on race condition at dvb_frontend (CVE-2022-45885 bsc#1205758).\n- media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer() (bsc#1209291 CVE-2023-28328).\n- media: dvb_frontend: kABI workaround (CVE-2022-45885 bsc#1205758).\n- media: dvb_net: kABI workaround (CVE-2022-45886 bsc#1205760).\n- media: dvbdev: fix error logic at dvb_register_device() (CVE-2022-45884 bsc#1205756).\n- media: rc: Fix use-after-free bugs caused by ene_tx_irqsim() (CVE-2023-1118 bsc#1208837).\n- media: ttusb-dec: fix memory leak in ttusb_dec_exit_dvb() (CVE-2022-45887 bsc#1205762).\n- memstick: r592: Fix UAF bug in r592_remove due to race condition (CVE-2023-3141 bsc#1212129 bsc#1211449).\n- net: sched: sch_qfq: prevent slab-out-of-bounds in qfq_activate_agg (bsc#1210940 CVE-2023-31436).\n- netfilter: nf_tables: fix null deref due to zeroed list head (CVE-2023-1095 bsc#1208777).\n- netrom: Fix use-after-free caused by accept on already connected socket (bsc#1211186 CVE-2023-32269).\n- nfc: st-nci: Fix use after free bug in ndlc_remove due to race condition (git-fixes bsc#1210337 CVE-2023-1990).\n- power: supply: da9150: Fix use after free bug in da9150_charger_remove due to race condition (CVE-2023-30772 bsc#1210329).\n- prlimit: do_prlimit needs to have a speculation check (bsc#1209256 CVE-2017-5753).\n- sched/rt: pick_next_rt_entity(): check list_entry (bsc#1208600 CVE-2023-1077).\n- scsi: iscsi_tcp: Fix UAF during login when accessing the shost ipaddress (bsc#1210647 CVE-2023-2162).\n- seq_buf: Fix overflow in seq_buf_putmem_hex() (bsc#1209549 CVE-2023-28772).\n- tcp: Fix data races around icsk->icsk_af_ops (bsc#1204405 CVE-2022-3566).\n- tipc: fix NULL deref in tipc_link_xmit() (bsc#1209289 CVE-2023-1390).\n- wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies() (bsc#1209287 CVE-2023-1380).\n- x86/speculation: Allow enabling STIBP with legacy IBRS (bsc#1210506 CVE-2023-1998).\n- xfs: verify buffer contents when we skip log replay (bsc#1210498 CVE-2023-2124).\n- xirc2ps_cs: Fix use after free bug in xirc2ps_detach (bsc#1209871 CVE-2023-1670).\n",
+  "modified": "2025-05-02T04:29:48.368694Z",
+  "published": "2023-07-11T04:31:55Z",
+  "related": [
+    "CVE-2017-5753",
+    "CVE-2018-20784",
+    "CVE-2022-3566",
+    "CVE-2022-45884",
+    "CVE-2022-45885",
+    "CVE-2022-45886",
+    "CVE-2022-45887",
+    "CVE-2022-45919",
+    "CVE-2023-0590",
+    "CVE-2023-1077",
+    "CVE-2023-1095",
+    "CVE-2023-1118",
+    "CVE-2023-1249",
+    "CVE-2023-1380",
+    "CVE-2023-1390",
+    "CVE-2023-1513",
+    "CVE-2023-1611",
+    "CVE-2023-1670",
+    "CVE-2023-1989",
+    "CVE-2023-1990",
+    "CVE-2023-1998",
+    "CVE-2023-2124",
+    "CVE-2023-2162",
+    "CVE-2023-2194",
+    "CVE-2023-23454",
+    "CVE-2023-23455",
+    "CVE-2023-2513",
+    "CVE-2023-28328",
+    "CVE-2023-28464",
+    "CVE-2023-28772",
+    "CVE-2023-30772",
+    "CVE-2023-3090",
+    "CVE-2023-3141",
+    "CVE-2023-31436",
+    "CVE-2023-3159",
+    "CVE-2023-3161",
+    "CVE-2023-32269",
+    "CVE-2023-35824"
+  ],
+  "upstream": [
+    "CVE-2017-5753",
+    "CVE-2018-20784",
+    "CVE-2022-3566",
+    "CVE-2022-45884",
+    "CVE-2022-45885",
+    "CVE-2022-45886",
+    "CVE-2022-45887",
+    "CVE-2022-45919",
+    "CVE-2023-0590",
+    "CVE-2023-1077",
+    "CVE-2023-1095",
+    "CVE-2023-1118",
+    "CVE-2023-1249",
+    "CVE-2023-1380",
+    "CVE-2023-1390",
+    "CVE-2023-1513",
+    "CVE-2023-1611",
+    "CVE-2023-1670",
+    "CVE-2023-1989",
+    "CVE-2023-1990",
+    "CVE-2023-1998",
+    "CVE-2023-2124",
+    "CVE-2023-2162",
+    "CVE-2023-2194",
+    "CVE-2023-23454",
+    "CVE-2023-23455",
+    "CVE-2023-2513",
+    "CVE-2023-28328",
+    "CVE-2023-28464",
+    "CVE-2023-28772",
+    "CVE-2023-30772",
+    "CVE-2023-3090",
+    "CVE-2023-3141",
+    "CVE-2023-31436",
+    "CVE-2023-3159",
+    "CVE-2023-3161",
+    "CVE-2023-32269",
+    "CVE-2023-35824"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2023/suse-su-20232805-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1126703"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1204405"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1205756"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1205758"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1205760"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1205762"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1205803"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1206878"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1207036"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1207125"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1207168"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1207795"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1208600"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1208777"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1208837"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209008"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209039"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209052"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209256"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209287"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209289"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209291"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209532"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209549"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209687"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1209871"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1210329"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1210336"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1210337"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1210498"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1210506"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1210647"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1210715"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1210940"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1211105"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1211186"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1211449"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1212128"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1212129"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1212154"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1212501"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1212842"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5753"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-20784"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-3566"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-45884"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-45885"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-45886"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-45887"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-45919"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-0590"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1077"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1095"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1118"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1249"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1380"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1390"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1513"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1611"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1670"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1989"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1990"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-1998"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-2124"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-2162"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-2194"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-23454"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-23455"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-2513"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-28328"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-28464"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-28772"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-30772"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-3090"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-3141"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-31436"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-3159"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-3161"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-32269"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-35824"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.205.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.205.1",
+            "kernel-devel": "4.4.121-92.205.1",
+            "kernel-default-base": "4.4.121-92.205.1",
+            "kernel-default": "4.4.121-92.205.1",
+            "kernel-source": "4.4.121-92.205.1",
+            "kernel-syms": "4.4.121-92.205.1",
+            "kernel-default-devel": "4.4.121-92.205.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2805-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.205.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.205.1",
+            "kernel-devel": "4.4.121-92.205.1",
+            "kernel-default-base": "4.4.121-92.205.1",
+            "kernel-default": "4.4.121-92.205.1",
+            "kernel-source": "4.4.121-92.205.1",
+            "kernel-syms": "4.4.121-92.205.1",
+            "kernel-default-devel": "4.4.121-92.205.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2805-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.205.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.205.1",
+            "kernel-devel": "4.4.121-92.205.1",
+            "kernel-default-base": "4.4.121-92.205.1",
+            "kernel-default": "4.4.121-92.205.1",
+            "kernel-source": "4.4.121-92.205.1",
+            "kernel-syms": "4.4.121-92.205.1",
+            "kernel-default-devel": "4.4.121-92.205.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2805-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}
