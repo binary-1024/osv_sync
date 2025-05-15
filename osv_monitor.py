@@ -448,7 +448,7 @@ def needs_update(remote_file_info:dict, file_name):
         return True, rew_records
 
     # 如果文件存在且 last_update_time_remote 相等 则不需要更新
-    return False, None, None
+    return False, None
 
 # 主同步函数
 def sync_osv_data():
@@ -522,7 +522,7 @@ def sync_osv_data():
         
         # 多线程处理, 所有的生态系统
         total_updated = 0
-        with ThreadPoolExecutor(max_workers=30) as executor:
+        with ThreadPoolExecutor(max_workers=5) as executor:
             future_to_ecosystem = {
                 executor.submit(
                     sync_ecosystem, 
@@ -673,6 +673,7 @@ def parse_with_playwright(url):
                     size_td = row_data['size']
                     
                     files[file_name] = {
+                        'name': file_name,
                         'last_modified': date_td,
                         'size': size_td,
                         'ecosystem': ''
