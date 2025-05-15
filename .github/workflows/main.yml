@@ -1,0 +1,62 @@
+# name: Daily Scheduled Job
+
+# on:
+#   schedule:
+#     # 每天 UTC 时间 16:00 运行 (cron 语法)
+#     - cron: '0 16 * * *'
+#   workflow_dispatch:  # 允许手动触发
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v3
+
+#     # 安装系统依赖 (gcc 等)
+#     - name: Install apt dependencies
+#       run: |
+#         sudo apt-get update
+#         sudo apt-get install -y gcc g++ make build-essential \
+#         libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
+#         libsqlite3-dev wget curl llvm libncurses5-dev \
+#         libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
+        
+#     # 安装指定版本的 Chrome
+#     - name: Install Google Chrome
+#       run: |
+#         wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+#         echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+#         sudo apt-get update
+#         sudo apt-get install -y google-chrome-stable
+#         google-chrome --version
+        
+#     # 安装指定版本的 ChromeDriver
+#     - name: Install ChromeDriver
+#       run: |
+#         CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 1)
+#         CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+#         wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+#         unzip chromedriver_linux64.zip
+#         sudo mv chromedriver /usr/local/bin/chromedriver
+#         sudo chmod +x /usr/local/bin/chromedriver
+#         chromedriver --version
+        
+#     # 设置 Python
+#     - name: Set up Python
+#       uses: actions/setup-python@v4
+#       with:
+#         python-version: '3.x'  # 指定你需要的 Python 版本
+        
+#     # 安装 Python 依赖
+#     - name: Install Python dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install -r requirements.txt  # 假设你的依赖文件名为 requirements.txt
+        
+#     # 这里添加你的任务步骤
+#     - name: Run your task
+#       run: |
+#         # 这里放置你的任务命令
+#         echo "Running daily task..."
