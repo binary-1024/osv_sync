@@ -25,14 +25,11 @@ import csv
 import pandas as pd
 from datetime import datetime
 import threading
-# from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.chrome.service import Service
+import shutil
 
 File_lock = threading.Lock()
+FILE_DIR_NAME_TRANSFORM_RECORD = os.path.join(os.getcwd(), 'ECO_DIR_NAME_TRANSFORM_RECORD.csv')
+
 
 # 配置日志
 def setup_logging(logs_dir):
@@ -58,67 +55,61 @@ def load_config(config_path='config.yaml'):
     with open(config_path, 'r', encoding='utf-8') as f:
         return yaml.safe_load(f)
 
-# 解析索引页面
-def parse_index_page(html_content):
-    """解析OSV索引页面, 获取生态系统列表和文件信息"""
-    soup = BeautifulSoup(html_content, 'lxml')
-    table = soup.find('table')
-    
-    ecosystems = []
-    files = {'all.zip': None, 'ecosystems.txt': None}
-    
-    if table:
-        rows = table.find_all('tr')[2:]  # 跳过表头和空行
-        for row in rows:
-            cols = row.find_all('td')
-            if len(cols) >= 2:
-                name = cols[0].text.strip()
-                if name.endswith('/') and name != '../':
-                    # 这是一个生态系统目录
-                    ecosystems.append(name.rstrip('/'))
-                elif name in files:
-                    # 这是一个我们关注的文件
-                    last_modified = cols[1].text.strip() if len(cols) > 1 else ""
-                    size = cols[2].text.strip() if len(cols) > 2 else ""
-                    files[name] = {'last_modified': last_modified, 'size': size}
-    
-    return ecosystems, files
+# 验证文件完整性
+def check_validation(path):
+    '''根据文件后缀打开文件看一下是否是文件是否发生损毁, 当前仅支持 json, csv, text'''
+    file_path = Path(path) if type(path) is str else path
+    try:
+        if file_path.suffix.lower() == '.json':    
+            with open(file_path, 'r') as f:
+                json.load(f)  # 尝试解析JSON以验证完整性
+        elif file_path.suffix.lower() in ['.csv','text']:
+            with open(file_path, 'r') as f:
+                reader = csv.reader(f)
+    except Exception as e:
+        logger.error(f"File {path} is invalid: {e}, retrying...")
+        # 删除损毁文件
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        raise Exception("Invalid File")
+
 
 # 下载文件
 def download_file(url, dest_path, timeout=300, retries=3):
     """下载文件到指定路径，支持重试和进度条显示
-    
-    使用临时文件下载机制，确保原文件在下载失败时不会受损
+    arg:
+        - url: 文件下载 url
+        - dest_path: 本地存储路径
+        - timeout: 等待时长
+        - 重试次数
+    return: True|False 是否下载成功
+    ps: 
+      - 由于可能存在网络问题, 导致下载过程中失败, 或者下载到一半文件反而导致原始文件受损, 加入临时文件机制. 
+      - 由于会多线程同时下载, 要确保下载文件目录(文件名)不会发生冲突
     """
-    # 创建临时文件路径
+    # 创建临时文件路径, 
     temp_file_path = dest_path.with_suffix('.tmp')
-    
+    if 'AlmaLinux:8/AlmaLinux:8' in str(dest_path):
+        print('dd')
+    # 我记得除了这种傻瓜式 for 循环处理, 应该有一个库可以简洁的设置 retry
     for attempt in range(retries):
         try:
             with requests.get(url, stream=True, timeout=timeout) as r:
                 r.raise_for_status()
-                # total_size = int(r.headers.get('content-length', 0))
                 dest_path.parent.mkdir(exist_ok=True, parents=True)
                 
                 # 下载到临时文件
                 with open(temp_file_path, 'wb') as f:
+                    # 如果想动态可视化, 可以这么写. 
                     # with tqdm(total=total_size, unit='B', unit_scale=True, desc=dest_path.name) as pbar:
                     for chunk in r.iter_content(chunk_size=8192):
                         if chunk:
                             f.write(chunk)
                             # pbar.update(len(chunk))
                 
-                # 验证文件完整性（如果是JSON文件）
-                if dest_path.suffix.lower() == '.json':
-                    try:
-                        with open(temp_file_path, 'r') as f:
-                            json.load(f)  # 尝试解析JSON以验证完整性
-                    except json.JSONDecodeError:
-                        logger.error(f"下载的JSON文件 {url} 无效，重试...")
-                        if os.path.exists(temp_file_path):
-                            os.remove(temp_file_path)
-                        raise Exception("文件损坏")
-                # 如果是 ecosystems.txt 文件, 则需要验证内容
+                # 验证文件完整性
+                
+                # 如果是 ecosystems.txt 文件, 则需要验证内容与本地文件是否发生改变
                 if dest_path.name == 'ecosystems.txt':
                     with open(temp_file_path, 'r') as f:
                         reader = csv.reader(f)
@@ -129,9 +120,10 @@ def download_file(url, dest_path, timeout=300, retries=3):
                         local_data = [row[0] for row in reader]
                         local_data_set = set(local_data)
                     if remote_data_set != local_data_set:
-                        logger.info(f"下载的 ecosystems.txt 文件内容与本地文件内容不一致，重试...")
+                        logger.info(f"remote ecosystems.txt different with local, updating...")
                     else:
-                        logger.info(f"下载的 ecosystems.txt 文件内容与本地文件内容一致，跳过...")
+                        logger.info(f"remote ecosystems.txt same with local file, skiping...")
+                        os.remove(temp_file_path)
                         return False
                 # 下载成功，安全地替换目标文件
                 if os.path.exists(dest_path):
@@ -142,7 +134,7 @@ def download_file(url, dest_path, timeout=300, retries=3):
                             os.remove(backup_path)
                         os.rename(dest_path, backup_path)
                     except Exception as e:
-                        logger.warning(f"创建备份文件失败: {str(e)}")
+                        logger.warning(f"Creating backup file failed: {str(e)}")
                 
                 # 重命名临时文件为目标文件
                 os.rename(temp_file_path, dest_path)
@@ -153,36 +145,42 @@ def download_file(url, dest_path, timeout=300, retries=3):
                     try:
                         os.remove(backup_path)
                     except Exception as e:
-                        logger.warning(f"删除备份文件失败: {str(e)}")
-                
+                        logger.warning(f"Deleting backup file failed: {str(e)}")
                 return True
         except Exception as e:
-            logger.error(f"下载 {url} 失败，尝试 {attempt+1}/{retries}: {str(e)}")
+            logger.error(f"Dowloing {url} failed, retrying {attempt+1}/{retries}: {str(e)}")
             # 删除临时文件
             if os.path.exists(temp_file_path):
                 try:
                     os.remove(temp_file_path)
-                except:
+                except Exception as e2:
+                    logger.error(f'Deleting tmp file failed: {e2}, ignoring...')
                     pass
-            
+            # 下载失败的情况, 如果存在备份文件并且主文件不存在, 将备份恢复为主文件
             if attempt == retries - 1:
                 # 恢复备份（如果存在）
                 backup_path = dest_path.with_suffix('.bak')
                 if os.path.exists(backup_path) and not os.path.exists(dest_path):
                     try:
                         os.rename(backup_path, dest_path)
-                        logger.info(f"恢复文件 {dest_path} 的备份")
+                        logger.info(f"r {dest_path} 的备份")
                     except Exception as e:
                         logger.error(f"恢复备份文件失败: {str(e)}")
+                # 删除完临时文件之后报错
                 raise
             time.sleep(2 ** attempt)  # 指数退避
-    
     return False
 
 # 获取目录文件列表
 def get_directory_files(base_url, ecosystem):
-    """获取指定生态系统目录下的文件列表"""
+    """ 获取指定生态系统目录下的文件列表
+    arg: 
+        - base_url: osv 存储 url 前缀
+        - ecosystem: 要下载的生态名
+    """
+    # 拼接 url, 本来其实还有一个 ordernumber, 但是这是个动态的, 放了会出问题, 不放反而没问题. 
     url = f"{base_url}index.html?prefix={ecosystem}/"
+    
     try:
         def process_page(page):
             files = []
@@ -218,9 +216,8 @@ def get_directory_files(base_url, ecosystem):
                         'last_modified': date_td,
                         'size': size_td,
                         'full_url': href,
-                        'ecosystem': ecosystem
+                        'ecosystem': transform_validate_dir(ecosystem)
                     })
-            
             return files
         
         return with_playwright(url, process_page)
@@ -297,12 +294,48 @@ def log_file_operation(ecosystem, local_rela_file, operation_type, updated_recor
             with open(sync_log_file, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f, delimiter=',')
                 writer.writerows(new_records)
-        print(f"[+] 更新记录: {updated_records}")
+        print(f"[+] Updated sync records: {updated_records}")
 
                     
             
 
+def transform_validate_dir(dir_name):
+    """将目录名转换为合法的目录名"""
+    white_list = [
+        "/", ":", "*", "?", "\"", "<", ">", "|", " ", ".", ",", "!", "~", "[", "]"
+    ]
     
+    for char in white_list:
+        dir_name = dir_name.replace(char, '_')
+    if not os.path.exists(FILE_DIR_NAME_TRANSFORM_RECORD):
+        with open(FILE_DIR_NAME_TRANSFORM_RECORD, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f, delimiter='\t')
+            writer.writerow(['original_name', 'transformed_name'])
+    # 记录转换记录
+    with open(FILE_DIR_NAME_TRANSFORM_RECORD, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f, delimiter='\t')
+        writer.writerow([dir_name, dir_name])
+    return dir_name
+
+def summary_transform_record():
+    """总结转换记录"""
+    output_file = FILE_DIR_NAME_TRANSFORM_RECORD.with_suffix('.summary.json')
+    output_data = {}
+    with open(FILE_DIR_NAME_TRANSFORM_RECORD, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f, delimiter='\t')
+        header = next(reader)
+        for row in reader:
+            origin_name = row[0]
+            transformed_name = row[1]
+            if origin_name not in output_data:
+                output_data[origin_name] = []
+            output_data[origin_name].append(transformed_name)
+            # 去重
+            output_data[origin_name] = list(set(output_data[origin_name]))
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(output_data, f, ensure_ascii=False, indent=2)
+    logger.info(f"[+] Transform record summary saved to {output_file}")
+            
 
 
 # 同步生态系统数据
@@ -316,13 +349,14 @@ def sync_ecosystem(base_url, ecosystem, data_dir, timeout, retries, sync_log_fil
         retries: 重试次数
         sync_log_file: 同步日志文件路径
     """
-    ecosystem_dir = data_dir / ecosystem
+    transformed_ecosystem = transform_validate_dir(ecosystem)
+    ecosystem_dir = data_dir / transformed_ecosystem
     ecosystem_dir.mkdir(exist_ok=True, parents=True)
     
-    # 获取远程文件列表
+    # 获取远程文件列表, 这时候要用原始的 ecosystem
     remote_files = get_directory_files(base_url, ecosystem)
     if not remote_files:
-        logger.warning(f"无法获取生态系统 {ecosystem} 的远程文件列表")
+        logger.warning(f"cannot get remote file list of {ecosystem}")
         return 0
     
     # 获取本地文件列表
@@ -394,7 +428,7 @@ def needs_update(remote_file_info:dict, file_name):
     try:
         last_update_time_remote = datetime.strptime(remote_file_info["last_modified"], '%Y-%m-%d %H:%M:%S')
     except:
-        print(f"[-] Warning: 文件 {file_name} 的最后修改时间格式错误{remote_file_info["last_modified"]}, 转为当前时间")
+        print(f"[-] Warning: The last modified time of file {file_name} is incorrect: {remote_file_info['last_modified']}, using current time")
         last_update_time_remote = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     ecosystem = remote_file_info["ecosystem"]
     rew_records = []
@@ -423,7 +457,12 @@ def needs_update(remote_file_info:dict, file_name):
         header = next(reader)
         for row in reader:
             file_path = row[2]
-            last_update_time = datetime.strptime(row[4], '%Y-%m-%d %H:%M:%S')
+            last_update_time = row[4]
+            # 如果
+            try:
+                last_update_time = datetime.strptime(row[4], '%Y-%m-%d %H:%M:%S')
+            except:
+                last_update_time = datetime.strptime(row[4].split(' ')[0], '%Y-%m-%d')
             if file_path == file_name and last_update_time != last_update_time_remote:
                 rew_records = [datetime.now().strftime('%Y-%m-%d %H:%M:%S'), ecosystem, file_name, 'updated', last_update_time_remote]
                 update_flag = True
@@ -522,7 +561,7 @@ def sync_osv_data():
         
         # 多线程处理, 所有的生态系统
         total_updated = 0
-        with ThreadPoolExecutor(max_workers=5) as executor:
+        with ThreadPoolExecutor(max_workers=10) as executor:
             future_to_ecosystem = {
                 executor.submit(
                     sync_ecosystem, 
@@ -538,9 +577,9 @@ def sync_osv_data():
                 try:
                     updated_count = future.result()
                     total_updated += updated_count
-                    logger.info(f"生态系统 {ecosystem} 已更新 {updated_count} 个文件")
+                    logger.info(f"Ecosystem {ecosystem} updated {updated_count} files")
                 except Exception as e:
-                    logger.error(f"同步生态系统 {ecosystem} 时出错: {str(e)}")
+                    logger.error(f"Error syncing ecosystem {ecosystem}: {str(e)}")
         # for ecosystem in ecosystems:
         #     try:
         #         updated_count = sync_ecosystem(
@@ -686,4 +725,49 @@ def parse_with_playwright(url):
         return [], {}
 
 if __name__ == "__main__":
+    # root = os.path.join(os.getcwd(), 'data')
+    # for subdir in os.listdir(root):
+    #     path_ = os.path.join(root, subdir)
+    #     if os.path.isfile(path_):
+    #         continue
+    #     transformed_dir = transform_validate_dir(subdir)
+    #     os.rename(path_, os.path.join(root, transformed_dir))
+    #     print(f"rename {subdir} to {transformed_dir}")
+    #     # for subsub in os.listdir(path_):
+    #     #     path__ = os.path.join(path_, subsub)
+    #     #     if os.path.isdir(path__):
+    #     #         shutil.rmtree(path__)
+    #     #         print(f"remove extra dir{path__}")
+    # 将 sync_recording.csv 中的 目录名转换为合法的
+    # sync_recording_file = os.path.join(os.getcwd(), 'sync_recording.csv')
+    # new_output = []
+    # with open(sync_recording_file, 'r', encoding='utf-8') as f:
+    #     reader = csv.reader(f, delimiter=',')
+    #     header = next(reader)
+    #     for row in reader:
+    #         date,ecosystem,file_path,operation_type,last_update_time = row
+    #         parts = file_path.split('/')
+    #         new_file_path = ''
+    #         for part in parts[:-1]:
+    #             part_ = transform_validate_dir(part)
+    #             new_file_path += part_ + '/'
+    #         new_file_path = new_file_path+parts[-1]
+    #         new_output.append([date, ecosystem, new_file_path, operation_type, last_update_time])
+    # with open(sync_recording_file, 'w', newline='', encoding='utf-8') as f:
+    #     writer = csv.writer(f, delimiter=',')
+    #     writer.writerow(header)
+    #     writer.writerows(new_output)
+    # 验证 sync_recording.csv 中的 目录名是否合法
+    # sync_recording_file = os.path.join(os.getcwd(), 'sync_recording.csv')
+    # with open(sync_recording_file, 'r', encoding='utf-8') as f:
+    #     reader = csv.reader(f, delimiter=',')
+    #     header = next(reader)
+    #     for row in reader:
+    #         date,ecosystem,file_path,operation_type,last_update_time = row
+    #         exist = os.path.exists(file_path)
+    #         if not exist:
+    #             print(f"文件 {file_path} 不存在")
+    #         else:
+    #             print(f"文件 {file_path} 存在")
+    # exit(1)
     main() 
