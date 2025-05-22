@@ -21,37 +21,9 @@ source .venv/bin/activate  # Linux/macOS
 # 或者
 # .venv\Scripts\activate  # Windows
 
-## 配置说明
-
-配置文件采用 YAML 格式，主要包含以下部分：
-
-```yaml
-source:
-  base_url: "https://storage.googleapis.com/osv-vulnerabilities"
-  index_url: "https://storage.googleapis.com/osv-vulnerabilities/index.html"
-  all_zip_url: "https://storage.googleapis.com/osv-vulnerabilities/all.zip"
-
-storage:
-  data_dir: "data"  # 数据存储目录
-  logs_dir: "logs"  # 日志目录
-
-recording:
-  file_path: "logs/sync_history.csv"  # 同步记录文件
-
-sync:
-  timeout: 3000  # 下载超时时间（毫秒）
-  retry_attempts: 3  # 重试次数
-
-browser:
-  browser_type: "chromium"  # 浏览器类型：firefox, webkit, chromium
-  headless: true  # 是否无头模式
-  timeout: 30000  # 浏览器超时时间（毫秒）
-  viewport:
-    width: 1280
-    height: 800
-  options:
-    args: ["--disable-gpu", "--no-sandbox"]
-```
+## 项目配置说明
+配置文件采用 YAML 格式，在 config.yaml 中定义
+uv 依赖配置在 pyproject.toml 中定义
 
 ## 项目结构
 
