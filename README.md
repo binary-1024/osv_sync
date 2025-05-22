@@ -21,19 +21,6 @@ source .venv/bin/activate  # Linux/macOS
 # 或者
 # .venv\Scripts\activate  # Windows
 
-# 安装依赖
-uv pip install -e .
-```
-
-## 快速开始
-
-1. 创建配置文件 `config.yaml`（可参考项目根目录的示例配置文件）
-2. 运行同步命令：
-
-```bash
-uv pip install -e ".[dev]"
-```
-
 ## 配置说明
 
 配置文件采用 YAML 格式，主要包含以下部分：
@@ -102,13 +89,6 @@ uv pip install -e ".[dev]"
 chmod +x install_and_test.sh
 ./install_and_test.sh
 ```
-
-### 运行测试
-
-```bash
-black src && python -m osv_sync
-```
-太棒了！我们已经完成了基于 uv 管理的 Python 项目的创建。以下是项目的结构和功能：
 
 ### 代码风格检查
 
