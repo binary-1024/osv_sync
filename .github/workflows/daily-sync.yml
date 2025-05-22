@@ -60,32 +60,31 @@ jobs:
         path: logs/
         retention-days: 7
         
-    - name: 上传同步数据
-      if: steps.check_data.outputs.data_exists == 'true'
-      uses: actions/upload-artifact@v4  # 更新到最新版本
-      with:
-        name: osv-data-${{ steps.date.outputs.date }}
-        path: |
-          data/all.zip
-          data/all_vuln/
-        retention-days: 3
-        if-no-files-found: warn  # 添加警告
+    # - name: 上传同步数据
+    #   if: steps.check_data.outputs.data_exists == 'true'
+    #   uses: actions/upload-artifact@v4  # 更新到最新版本
+    #   with:
+    #     name: osv-data-${{ steps.date.outputs.date }}
+    #     path: |
+    #       data/all.zip
+    #       data/all_vuln/
+    #     retention-days: 3
+    #     if-no-files-found: warn  # 添加警告
         
-    # 可选：创建数据快照和推送结果
-    - name: 创建数据快照（可选）
-      if: steps.check_data.outputs.data_exists == 'true' && github.ref == 'refs/heads/main'
-      run: |
-        current_date=$(date +'%Y-%m-%d')
-        echo "创建数据快照: $current_date"
-        # 在这里可以添加快照逻辑
+    # # 可选：创建数据快照和推送结果
+    # - name: 创建数据快照（可选）
+    #   if: steps.check_data.outputs.data_exists == 'true' && github.ref == 'refs/heads/main'
+    #   run: |
+    #     current_date=$(date +'%Y-%m-%d')
+    #     echo "创建数据快照: $current_date"
+    #     # 在这里可以添加快照逻辑
         
     # 可选：如果需要将同步结果提交到仓库
-    # - name: 提交同步结果到仓库
-    #   if: github.ref == 'refs/heads/main'
-    #   run: |
-    #     git config --global user.name "GitHub Actions"
-    #     git config --global user.email "github-actions@github.com"
-    #     git add data/
-    #     git add logs/
-    #     git commit -m "自动数据同步 $(date +'%Y-%m-%d')"
-    #     git push 
+    - name: 提交同步结果到仓库
+      if: github.ref == 'refs/heads/main'
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "github-actions@github.com"
+        git .
+        git commit -m "自动数据同步 $(date +'%Y-%m-%d')"
+        git push 
