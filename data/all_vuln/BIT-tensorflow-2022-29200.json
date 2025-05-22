@@ -1,0 +1,95 @@
+{
+  "id": "BIT-tensorflow-2022-29200",
+  "summary": "Missing validation causes denial of service in TensorFlow via `LSTMBlockCell`",
+  "details": "TensorFlow is an open source platform for machine learning. Prior to versions 2.9.0, 2.8.1, 2.7.2, and 2.6.4, the implementation of `tf.raw_ops.LSTMBlockCell` does not fully validate the input arguments. This results in a `CHECK`-failure which can be used to trigger a denial of service attack. The code does not validate the ranks of any of the arguments to this API call. This results in `CHECK`-failures when the elements of the tensor are accessed. Versions 2.9.0, 2.8.1, 2.7.2, and 2.6.4 contain a patch for this issue.",
+  "aliases": [
+    "CVE-2022-29200",
+    "GHSA-2vv3-56qg-g2cf"
+  ],
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:14:30.110Z",
+  "database_specific": {
+    "cpes": [
+      "cpe:2.3:a:google:tensorflow:*:*:*:*:*:*:*:*"
+    ],
+    "severity": "Medium"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/rnn/lstm_ops.cc"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/803404044ae7a1efac48ba82d74111fce1ddb09a"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.6.4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.7.2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.8.1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.9.0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-2vv3-56qg-g2cf"
+    },
+    {
+      "type": "WEB",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29200"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "tensorflow",
+        "ecosystem": "Bitnami",
+        "purl": "pkg:bitnami/tensorflow"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.6.4"
+            },
+            {
+              "introduced": "2.7.0"
+            },
+            {
+              "fixed": "2.7.2"
+            },
+            {
+              "introduced": "2.8.0"
+            },
+            {
+              "fixed": "2.8.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2022-29200.json"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+        }
+      ]
+    }
+  ],
+  "schema_version": "1.6.0"
+}

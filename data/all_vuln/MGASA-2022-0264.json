@@ -1,0 +1,98 @@
+{
+  "id": "MGASA-2022-0264",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on upstream 5.15.55 and fixes at least the\nfollowing security issues:\n\nThere are use-after-free vulnerabilities caused by timer handler in\nnet/rose/rose_timer.c of linux that allow attackers to crash linux kernel\nwithout any privileges (CVE-2022-2318).\n\nXen Block and Network PV device frontends don't zero memory regions before\nsharing them with the backend (CVE-2022-26365, CVE-2022-33740, XSA-403).\nAdditionally the granularity of the grant table doesn't allow sharing less\nthan a 4K page, leading to unrelated data residing in the same 4K page as\ndata shared with a backend being accessible by such backend (CVE-2022-33741,\nCVE-2022-33742, XSA-403).\n\nXen network backend may cause Linux netfront to use freed SKBs While adding\nlogic to support XDP (eXpress Data Path), a code label was moved in a way\nallowing for SKBs having references (pointers) retained for further\nprocessing to nevertheless be freed (CVE-2022-33743, XSA-405).\n\nXen Arm guests can cause Dom0 DoS via PV devices When mapping pages of guests\non Arm, dom0 is using an rbtree to keep track of the foreign mappings.\nUpdating of that rbtree is not always done completely with the related lock\nheld, resulting in a small race window, which can be used by unprivileged\nguests via PV devices to cause inconsistencies of the rbtree. These\nin consistencies can lead to Denial of Service (DoS) of dom0, e.g. by\ncausing crashes or the inability to perform further mappings of other guests\nmemory pages (CVE-2022-33744, XSA-406).\n\nAn issue was discovered in the Linux kernel through 5.18.9. A type confusion\nbug in nft_set_elem_init (leading to a buffer overflow) could be used by a\nlocal attacker to escalate privileges (The attacker can obtain root access,\nbut must start with an unprivileged user namespace to obtain CAP_NET_ADMIN\naccess) (CVE-2022-34918).\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "modified": "2022-07-20T19:36:34Z",
+  "published": "2022-07-20T20:24:04Z",
+  "related": [
+    "CVE-2022-2318",
+    "CVE-2022-26365",
+    "CVE-2022-33740",
+    "CVE-2022-33741",
+    "CVE-2022-33742",
+    "CVE-2022-33743",
+    "CVE-2022-33744",
+    "CVE-2022-34918"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0264.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=30643"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.51"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.52"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.53"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.54"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.55"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-403.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-405.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-406.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.55-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0264.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

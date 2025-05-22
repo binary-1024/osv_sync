@@ -1,0 +1,205 @@
+{
+  "id": "MGASA-2017-0012",
+  "summary": "Updated xen packages fix security vulnerability",
+  "details": "This xen update is based on upstream 4.5.5 maintenance release, and fixes\nthe following security issues:\n\nThe qemu implementation in libvirt before 1.3.0 and Xen allows local guest\nOS users to cause a denial of service (host disk consumption) by writing\nto stdout or stderr (CVE-2014-3672)\n\nThe xrstor function in arch/x86/xstate.c in Xen 4.x does not properly handle\nwrites to the hardware FSW.ES bit when running on AMD64 processors, which\nallows local guest OS users to obtain sensitive register content information\nfrom another guest by leveraging pending exception and mask bits. NOTE: this\nvulnerability exists because of an incorrect fix for CVE-2013-2076\n(CVE-2016-3158).\n\nThe fpu_fxrstor function in arch/x86/i387.c in Xen 4.x does not properly\nhandle writes to the hardware FSW.ES bit when running on AMD64 processors,\nwhich allows local guest OS users to obtain sensitive register content\ninformation from another guest by leveraging pending exception and mask\nbits. NOTE: this vulnerability exists because of an incorrect fix for\nCVE-2013-2076 (CVE-2016-3159).\n\nThe VGA module in QEMU improperly performs bounds checking on banked access\nto video memory, which allows local guest OS administrators to execute\narbitrary code on the host by changing access modes after setting the bank\nregister, aka the \"Dark Portal\" issue (CVE-2016-3710).\n\nInteger overflow in the VGA module in QEMU allows local guest OS users to\ncause a denial of service (out-of-bounds read and QEMU process crash) by\nediting VGA registers in VBE mode (CVE-2016-3712).\n\nInteger overflow in the x86 shadow pagetable code in Xen allows local guest\nOS users to cause a denial of service (host crash) or possibly gain\nprivileges by shadowing a superpage mapping (CVE-2016-3960).\n\nThe libxl device-handling in Xen 4.6.x and earlier allows local OS guest\nadministrators to cause a denial of service (resource consumption or\nmanagement facility confusion) or gain host OS privileges by manipulating\ninformation in guest controlled areas of xenstore (CVE-2016-4962).\n\nThe libxl device-handling in Xen through 4.6.x allows local guest OS users\nwith access to the driver domain to cause a denial of service (management\ntool confusion) by manipulating information in the backend directories in\nxenstore (CVE-2016-4963).\n\nThe guest_walk_tables function in arch/x86/mm/guest_walk.c in Xen 4.6.x and\nearlier does not properly handle the Page Size (PS) page table entry bit at\nthe L4 and L3 page table levels, which might allow local guest OS users to\ngain privileges via a crafted mapping of memory (CVE-2016-4480).\n\nThe p2m_teardown function in arch/arm/p2m.c in Xen 4.4.x through 4.6.x allows\nlocal guest OS users with access to the driver domain to cause a denial of\nservice (NULL pointer dereference and host OS crash) by creating concurrent\ndomains and holding references to them, related to VMID exhaustion\n(CVE-2016-5242).\n\nThe virtqueue_pop function in hw/virtio/virtio.c in QEMU allows local guest\nOS administrators to cause a denial of service (memory consumption and QEMU\nprocess crash) by submitting requests without waiting for completion\n(CVE-2016-5403).\n\nThe PV pagetable code in arch/x86/mm.c in Xen 4.7.x and earlier allows local\n32-bit PV guest OS administrators to gain host OS privileges by leveraging\nfast-paths for updating pagetable entries (CVE-2016-6258).\n\nXen 4.5.x through 4.7.x do not implement Supervisor Mode Access Prevention\n(SMAP) whitelisting in 32-bit exception and event delivery, which allows\nlocal 32-bit PV guest OS kernels to cause a denial of service (hypervisor\nand VM crash) by triggering a safety check (CVE-2016-6259).\n\nThe get_page_from_l3e function in arch/x86/mm.c in Xen allows local 32-bit\nPV guest OS administrators to gain host OS privileges via vectors related\nto L3 recursive pagetables (CVE-2016-7092).\n\nXen 4.5.3, 4.6.3, and 4.7.x allow local HVM guest OS administrators to\noverwrite hypervisor memory and consequently gain host OS privileges by\nleveraging mishandling of instruction pointer truncation during emulation\n(CVE-2016-7093).\n\nBuffer overflow in Xen 4.7.x and earlier allows local x86 HVM guest OS\nadministrators on guests running with shadow paging to cause a denial of\nservice via a pagetable update (CVE-2016-7094).\n\nXen 4.7.x and earlier does not properly honor CR0.TS and CR0.EM, which\nallows local x86 HVM guest OS users to read or modify FPU, MMX, or XMM\nregister state information belonging to arbitrary tasks on the guest by\nmodifying an instruction while the hypervisor is preparing to emulate it\n(CVE-2016-7777).\n\nWhen Xen emulates instructions which generate software interrupts it needs\nto perform a privilege check involving an IDT lookup. This check is sometimes\nerroneously conducted as if the IDT had the format for a 32-bit guest, when\nin fact it is in the 64-bit format. Xen will then read the wrong part of the\nIDT and interpret it in an unintended manner. An unprivileged guest user\nprogram may be able to crash the guest (CVE-2016-9377).\n\nWhen Xen emulates instructions which generate software interrupts, and\nchooses to deliver the software interrupt, it may try to use the method\nintended for injecting exceptions. This is incorrect, and results in a\nguest crash (CVE-2016-9378).\n\npygrub supports a number of output formats. When the S-expression output\nformat is requested, putting string quotes and S-expressions in the \nbootloader configuration file can produce incorrect output. A malicious\nguest administrator can obtain the contents of sensitive host files (an\ninformation leak), or can cause files on the host to be removed, causing\na denial of service or in unusual cases privilegie escalation (CVE-2016-9379).\n\nWhen the nul-delimited output format is requested, nul bytes in the\nbootloader configuration file can produce an ambiguous or confusing output\nfile, which is interpreted by libxl in a vulnerable way. A malicious guest\nadministrator can obtain the contents of sensitive host files (an information\nleak), or can cause files on the host to be removed, causing a denial of\nservice or in unusual cases privilegie escalation (CVE-2016-9380).\n\nThe compiler can emit optimizations in qemu which can lead to double fetch\nvulnerabilities. Specifically data on the rings shared between qemu and the\nhypervisor (which the guest under control can obtain mappings of) can be\nfetched twice (during which time the guest can alter the contents) possibly\nleading to arbitrary code execution in qemu. Malicious administrators can\nexploit this vulnerability to take over the qemu process, elevating its\nprivilege to that of the qemu process. In a system not using a device model\nstub domain (or other techniques for deprivileging qemu), malicious guest\nadministrators can thus elevate their privilege to that of the host\n(CVE-2016-9381).\n\nLDTR, just like TR, is purely a protected mode facility. Hence even when\nswitching to a VM86 mode task, LDTR loading needs to follow protected mode\nsemantics. This was violated by the code. On SVM (AMD hardware): a malicious\nunprivileged guest process can escalate its privilege to that of the guest\noperating system. On both SVM and VMX (Intel hardware): a malicious\nunprivileged guest process can crash the guest (CVE-2016-9382).\n\nThe x86 instructions BT, BTC, BTR, and BTS, when used with a destination\nmemory operand and a source register rather than an immediate operand,\naccess a memory location offset from that specified by the memory operand\nas specified by the high bits of the register source. When Xen needs to\nemulate such an instruction, to efficiently handle the emulation, the memory\naddress and register operand are recalculated internally to Xen. In this\nprocess, the high bits of an intermediate expression were discarded, leading\nto both the memory location and the register operand being wrong. A malicious\nguest can modify arbitrary memory, allowing for arbitrary code execution\n(and therefore privilege escalation affecting the whole host), a crash of\nthe host (leading to a DoS), or information leaks (CVE-2016-9383).\n\nAlong with their main kernel binary, unprivileged guests may arrange to \nhave their Xen environment load (kernel) symbol tables for their use.\nThe ELF image metadata created for this purpose has a few unused bytes\nwhen the symbol table binary is in 32-bit ELF format. These unused bytes\nwere not properly cleared during symbol table loading. A malicious\nunprivileged guest may be able to obtain sensitive information from the\nhost (CVE-2016-9384).\n\nBoth writes to the FS and GS register base MSRs as well as the WRFSBASE and\nWRGSBASE instructions require their input values to be canonical, or a #GP\nfault will be raised. When the use of those instructions by the hypervisor\nwas enabled, the previous guard against #GP faults (having recovery code\nattached) was accidentally removed. A malicious guest administrator can\ncrash the host, leading to a DoS (CVE-2016-9385).\n\nThe Xen x86 emulator erroneously failed to consider the unusability of\nsegments when performing memory accesses. An unprivileged guest user\nprogram may be able to elevate its privilege to that of the guest operating\nsystem (CVE-2016-9386).\n\nThe code in qemu which implements ioport read/write looks up the specified\nioport address in a 32-bit dispatch table without proper range checks.\nXen will write only 16-bit address ioport accesses. However, depending on\nthe Xen and qemu version, the ring may be writeable by the guest. If so,\nthe guest can generate out-of-range ioport accesses, resulting in wild\npointer accesses within qemu. A malicious guest administrator can escalate\ntheir privilege to that of the host (CVE-2016-9637).\n\nx86 CMPXCHG8B emulation fails to ignore operand size override. A malicious\nunprivileged guest may be able to obtain sensitive information from the\nhost (CVE-2016-9932).\n\nx86 PV guests may be able to mask interrupts. A malicious guest kernel\nadministrator can cause a host hang or crash, resulting in a Denial of\nService (CVE-2016-10024).\n\nx86: Mishandling of SYSCALL singlestep during emulation. Guest userspace\nwhich can invoke the instruction emulator can use this flaw to escalate\nits privilege to that of the guest kernel (CVE-2016-10013).\n\nFor other fixes in this update, see the referenced changelogs.\n",
+  "modified": "2017-01-09T20:16:08Z",
+  "published": "2017-01-09T20:29:57Z",
+  "related": [
+    "CVE-2014-3672",
+    "CVE-2016-10013",
+    "CVE-2016-10024",
+    "CVE-2016-3158",
+    "CVE-2016-3159",
+    "CVE-2016-3710",
+    "CVE-2016-3712",
+    "CVE-2016-3960",
+    "CVE-2016-4480",
+    "CVE-2016-4962",
+    "CVE-2016-4963",
+    "CVE-2016-5242",
+    "CVE-2016-5403",
+    "CVE-2016-6258",
+    "CVE-2016-6259",
+    "CVE-2016-7092",
+    "CVE-2016-7093",
+    "CVE-2016-7094",
+    "CVE-2016-7777",
+    "CVE-2016-9377",
+    "CVE-2016-9378",
+    "CVE-2016-9379",
+    "CVE-2016-9380",
+    "CVE-2016-9381",
+    "CVE-2016-9382",
+    "CVE-2016-9383",
+    "CVE-2016-9384",
+    "CVE-2016-9385",
+    "CVE-2016-9386",
+    "CVE-2016-9637",
+    "CVE-2016-9932"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0012.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=19901"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.xenproject.org/downloads/xen-archives/xen-45-series/xen-453.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.xenproject.org/downloads/xen-archives/xen-45-series/xen-455.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-172.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-173.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-175.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-176.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-178.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-179.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-180.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-181.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-182.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-183.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-184.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-185.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-186.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-187.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-190.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-191.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-192.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-193.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-194.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-195.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-196.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-197.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-198.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-199.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-200.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-202.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-204.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "xen",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/xen?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.5.5-1.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0012.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

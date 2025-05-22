@@ -1,0 +1,126 @@
+{
+  "id": "MGASA-2019-0333",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on the upstream 5.3.11 and fixes at least\nthe following security issues:\n\nInsufficient access control in a subsystem for Intel (R) processor graphics\nmay allow an authenticated user to potentially enable escalation of\nprivilege via local access (CVE-2019-0155).\n\nA Spectre SWAPGS gadget was found in the Linux kernel's implementation of\nsystem interrupts. An attacker with local access could use this information\nto reveal private data through a Spectre like side channel (CVE-2019-1125).\n\nA flaw was found in the Linux kernel\u2019s Bluetooth implementation of UART.\nAn attacker with local access and write permissions to the Bluetooth\nhardware could use this flaw to issue a specially crafted ioctl function\ncall and cause the system to crash (CVE-2019-10207).\n\nTSX Asynchronous Abort condition on some CPUs utilizing speculative\nexecution may allow an authenticated user to potentially enable\ninformation disclosure via a side channel with local access\n(CVE-2019-11135).\n\nImproper invalidation for page table updates by a virtual guest operating\nsystem for multiple Intel(R) Processors may allow an authenticated user to\npotentially enable denial of service of the host system via local access\n(CVE-2018-12207). \n\nFor proper mitigations and fixes for theese issues, a microcode update is\nalso needed, either with a bios/uefi update from your hardware vendor or\nby installing the microcode-0.20191112-1.mga7.nonfree update (mga#25688).\n\nThere is heap-based buffer overflow in the marvell wifi chip driver that\nallows local users to cause a denial of service(system crash) or possibly\nexecute arbitrary code (CVE-2019-14814, CVE-2019-14815, CVE-2019-14816).\n\nAn out-of-bounds access issue was found in the way Linux kernel's KVM\nhypervisor implements the Coalesced MMIO write operation. It operates on\nan MMIO ring buffer 'struct kvm_coalesced_mmio' object, wherein write\nindices 'ring->first' and 'ring->last' value could be supplied by a host\nuser-space process. An unprivileged host user or process with access to\n'/dev/kvm' device could use this flaw to crash the host kernel, resulting\nin a denial of service or potentially escalating privileges on the system\n(CVE-2019-14821).\n\nA buffer overflow flaw was found in the way Linux kernel's vhost\nfunctionality that translates virtqueue buffers to IOVs, logged the buffer\ndescriptors during migration. A privileged guest user able to pass\ndescriptors with invalid length to the host when migration is underway,\ncould use this flaw to increase their privileges on the host\n(CVE-2019-14835).\n\nIn the Linux kernel before 5.2.14, rds6_inc_info_copy in net/rds/recv.c\nallows attackers to obtain sensitive information from kernel stack memory\nbecause tos and flags fields are not initialized (CVE-2019-16714)\n\nrtl_p2p_noa_ie in drivers/net/wireless/realtek/rtlwifi/ps.c in the Linux\nkernel through 5.3.6 lacks a certain upper-bound check, leading to a\nbuffer overflow (CVE-2019-17666)\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2019-11-19T21:16:53Z",
+  "related": [
+    "CVE-2018-12207",
+    "CVE-2019-0155",
+    "CVE-2019-10207",
+    "CVE-2019-11135",
+    "CVE-2019-1125",
+    "CVE-2019-14814",
+    "CVE-2019-14815",
+    "CVE-2019-14816",
+    "CVE-2019-14821",
+    "CVE-2019-14835",
+    "CVE-2019-16714",
+    "CVE-2019-17666"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0333.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=25687"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=25688"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://kernelnewbies.org/Linux_5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://kernelnewbies.org/Linux_5.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.11"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.11-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0333.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

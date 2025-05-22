@@ -1,0 +1,537 @@
+{
+  "id": "SUSE-SU-2016:1247-1",
+  "summary": "Security update for ntp",
+  "details": "ntp was updated to version 4.2.8p6 to fix 28 security issues.\n\nMajor functional changes:\n- The 'sntp' commandline tool changed its option handling in a major way,\n  some options have been renamed or dropped.\n- 'controlkey 1' is added during update to ntp.conf to allow sntp to work.\n- The local clock is being disabled during update.\n- ntpd is no longer running chrooted.\n\nOther functional changes:\n- ntp-signd is installed.\n- 'enable mode7' can be added to the configuration to allow ntdpc to work as compatibility mode option.\n- 'kod' was removed from the default restrictions.\n- SHA1 keys are used by default instead of MD5 keys.\n\nAlso yast2-ntp-client was updated to match some sntp syntax changes. (bsc#937837)\n\nThese security issues were fixed:\n- CVE-2015-8158: Fixed potential infinite loop in ntpq (bsc#962966).\n- CVE-2015-8138: Zero Origin Timestamp Bypass (bsc#963002).\n- CVE-2015-7979: Off-path Denial of Service (DoS) attack on authenticated broadcast mode (bsc#962784).\n- CVE-2015-7978: Stack exhaustion in recursive traversal of restriction list (bsc#963000).\n- CVE-2015-7977: reslist NULL pointer dereference (bsc#962970).\n- CVE-2015-7976: ntpq saveconfig command allows dangerous characters in filenames (bsc#962802).\n- CVE-2015-7975: nextvar() missing length check (bsc#962988).\n- CVE-2015-7974: Skeleton Key: Missing key check allows impersonation between authenticated peers (bsc#962960).\n- CVE-2015-7973: Replay attack on authenticated broadcast mode (bsc#962995).\n- CVE-2015-8140: ntpq vulnerable to replay attacks (bsc#962994).\n- CVE-2015-8139: Origin Leak: ntpq and ntpdc, disclose origin (bsc#962997).\n- CVE-2015-5300: MITM attacker could have forced ntpd to make a step larger than the panic threshold (bsc#951629).\n- CVE-2015-7871: NAK to the Future: Symmetric association authentication bypass via crypto-NAK (bsc#951608).\n- CVE-2015-7855: decodenetnum() will ASSERT botch instead of returning FAIL on some bogus values (bsc#951608).\n- CVE-2015-7854: Password Length Memory Corruption Vulnerability (bsc#951608).\n- CVE-2015-7853: Invalid length data provided by a custom refclock driver could cause a buffer overflow (bsc#951608).\n- CVE-2015-7852: ntpq atoascii() Memory Corruption Vulnerability (bsc#951608).\n- CVE-2015-7851: saveconfig Directory Traversal Vulnerability (bsc#951608).\n- CVE-2015-7850: remote config logfile-keyfile (bsc#951608).\n- CVE-2015-7849: trusted key use-after-free (bsc#951608).\n- CVE-2015-7848: mode 7 loop counter underrun (bsc#951608).\n- CVE-2015-7701: Slow memory leak in CRYPTO_ASSOC (bsc#951608).\n- CVE-2015-7703: configuration directives 'pidfile' and 'driftfile' should only be allowed locally (bsc#951608).\n- CVE-2015-7704, CVE-2015-7705: Clients that receive a KoD should validate the origin timestamp field (bsc#951608).\n- CVE-2015-7691, CVE-2015-7692, CVE-2015-7702: Incomplete autokey data packet length checks (bsc#951608).\n\nThese non-security issues were fixed:\n- fate#320758 bsc#975981: Enable compile-time support for MS-SNTP (--enable-ntp-signd).\n  This replaces the w32 patches in 4.2.4 that added the authreg\n  directive.\n- bsc#962318: Call /usr/sbin/sntp with full path to synchronize in start-ntpd.\n  When run as cron job, /usr/sbin/ is not in the path, which caused\n  the synchronization to fail.\n- bsc#782060: Speedup ntpq.\n- bsc#916617: Add /var/db/ntp-kod.\n- bsc#956773: Add ntp-ENOBUFS.patch to limit a warning that might happen quite a lot on loaded systems.\n- bsc#951559,bsc#975496: Fix the TZ offset output of sntp during DST.\n- Add ntp-fork.patch and build with threads disabled to allow name resolution even when running chrooted.\n- Add a controlkey line to /etc/ntp.conf if one does not already exist to allow runtime configuuration via ntpq.\n- bsc#946386: Temporarily disable memlock to avoid problems due to high memory usage during name resolution.\n- bsc#905885: Use SHA1 instead of MD5 for symmetric keys.\n- Improve runtime configuration:\n  * Read keytype from ntp.conf\n  * Don't write ntp keys to syslog.\n- Fix legacy action scripts to pass on command line arguments.\n- bsc#944300: Remove 'kod' from the restrict line in ntp.conf.\n- bsc#936327: Use ntpq instead of deprecated ntpdc in start-ntpd.\n- Add a controlkey to ntp.conf to make the above work.\n- Don't let 'keysdir' lines in ntp.conf trigger the 'keys' parser.\n- Disable mode 7 (ntpdc) again, now that we don't use it anymore.\n- Add 'addserver' as a new legacy action.\n- bsc#910063: Fix the comment regarding addserver in ntp.conf.\n- bsc#926510: Disable chroot by default.\n- bsc#920238: Enable ntpdc for backwards compatibility.\n",
+  "modified": "2025-05-02T04:04:41.552082Z",
+  "published": "2016-05-06T07:50:51Z",
+  "related": [
+    "CVE-2015-5300",
+    "CVE-2015-7691",
+    "CVE-2015-7692",
+    "CVE-2015-7701",
+    "CVE-2015-7702",
+    "CVE-2015-7703",
+    "CVE-2015-7704",
+    "CVE-2015-7705",
+    "CVE-2015-7848",
+    "CVE-2015-7849",
+    "CVE-2015-7850",
+    "CVE-2015-7851",
+    "CVE-2015-7852",
+    "CVE-2015-7853",
+    "CVE-2015-7854",
+    "CVE-2015-7855",
+    "CVE-2015-7871",
+    "CVE-2015-7973",
+    "CVE-2015-7974",
+    "CVE-2015-7975",
+    "CVE-2015-7976",
+    "CVE-2015-7977",
+    "CVE-2015-7978",
+    "CVE-2015-7979",
+    "CVE-2015-8138",
+    "CVE-2015-8139",
+    "CVE-2015-8140",
+    "CVE-2015-8158"
+  ],
+  "upstream": [
+    "CVE-2015-5300",
+    "CVE-2015-7691",
+    "CVE-2015-7692",
+    "CVE-2015-7701",
+    "CVE-2015-7702",
+    "CVE-2015-7703",
+    "CVE-2015-7704",
+    "CVE-2015-7705",
+    "CVE-2015-7848",
+    "CVE-2015-7849",
+    "CVE-2015-7850",
+    "CVE-2015-7851",
+    "CVE-2015-7852",
+    "CVE-2015-7853",
+    "CVE-2015-7854",
+    "CVE-2015-7855",
+    "CVE-2015-7871",
+    "CVE-2015-7973",
+    "CVE-2015-7974",
+    "CVE-2015-7975",
+    "CVE-2015-7976",
+    "CVE-2015-7977",
+    "CVE-2015-7978",
+    "CVE-2015-7979",
+    "CVE-2015-8138",
+    "CVE-2015-8139",
+    "CVE-2015-8140",
+    "CVE-2015-8158"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2016/suse-su-20161247-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/782060"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/905885"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/910063"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/916617"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/920238"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/926510"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/936327"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/937837"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/942587"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/944300"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/946386"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/951559"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/951608"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/951629"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/954982"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956773"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962318"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962784"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962802"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962960"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962966"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962970"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962988"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962994"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962995"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962997"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963000"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963002"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975496"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975981"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-5300"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7691"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7692"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7701"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7702"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7703"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7704"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7705"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7848"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7849"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7850"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7851"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7852"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7853"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7854"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7855"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7871"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7973"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7974"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7975"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7976"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7977"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7978"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7979"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8138"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8139"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8140"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8158"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ntp",
+        "ecosystem": "SUSE:Linux Enterprise Desktop 12",
+        "purl": "pkg:rpm/suse/ntp&distro=SUSE%20Linux%20Enterprise%20Desktop%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.8p6-46.5.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "ntp-doc": "4.2.8p6-46.5.2",
+            "yast2-ntp-client": "3.1.12.4-8.2",
+            "ntp": "4.2.8p6-46.5.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1247-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "yast2-ntp-client",
+        "ecosystem": "SUSE:Linux Enterprise Desktop 12",
+        "purl": "pkg:rpm/suse/yast2-ntp-client&distro=SUSE%20Linux%20Enterprise%20Desktop%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.1.12.4-8.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "ntp-doc": "4.2.8p6-46.5.2",
+            "yast2-ntp-client": "3.1.12.4-8.2",
+            "ntp": "4.2.8p6-46.5.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1247-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "yast2-ntp-client",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12",
+        "purl": "pkg:rpm/suse/yast2-ntp-client&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.1.12.4-8.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "yast2-ntp-client-devel-doc": "3.1.12.4-8.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1247-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "ntp",
+        "ecosystem": "SUSE:Linux Enterprise Server 12",
+        "purl": "pkg:rpm/suse/ntp&distro=SUSE%20Linux%20Enterprise%20Server%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.8p6-46.5.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "ntp-doc": "4.2.8p6-46.5.2",
+            "yast2-ntp-client": "3.1.12.4-8.2",
+            "ntp": "4.2.8p6-46.5.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1247-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "yast2-ntp-client",
+        "ecosystem": "SUSE:Linux Enterprise Server 12",
+        "purl": "pkg:rpm/suse/yast2-ntp-client&distro=SUSE%20Linux%20Enterprise%20Server%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.1.12.4-8.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "ntp-doc": "4.2.8p6-46.5.2",
+            "yast2-ntp-client": "3.1.12.4-8.2",
+            "ntp": "4.2.8p6-46.5.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1247-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "ntp",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12",
+        "purl": "pkg:rpm/suse/ntp&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.8p6-46.5.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "ntp-doc": "4.2.8p6-46.5.2",
+            "yast2-ntp-client": "3.1.12.4-8.2",
+            "ntp": "4.2.8p6-46.5.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1247-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "yast2-ntp-client",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12",
+        "purl": "pkg:rpm/suse/yast2-ntp-client&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.1.12.4-8.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "ntp-doc": "4.2.8p6-46.5.2",
+            "yast2-ntp-client": "3.1.12.4-8.2",
+            "ntp": "4.2.8p6-46.5.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1247-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

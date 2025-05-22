@@ -1,0 +1,612 @@
+{
+  "id": "SUSE-SU-2019:14157-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 11 SP4 kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2019-14284: The drivers/block/floppy.c allowed a denial of service by setup_format_params division-by-zero. Two consecutive ioctls can trigger the bug: the first one should set the drive geometry with .sect and .rate values that make F_SECT_PER_TRACK be zero. Next, the floppy format operation should be called. It can be triggered by an unprivileged local user even when a floppy disk has not been inserted. NOTE: QEMU creates the floppy device by default (bsc#1143189).\n- CVE-2019-14283: The function set_geometry in drivers/block/floppy.c did not validate the sect and head fields, as demonstrated by an integer overflow and out-of-bounds read. It can be triggered by an unprivileged local user when a floppy disk has been inserted. NOTE: QEMU creates the floppy device by default (bsc#1143191).\n- CVE-2019-13631: In parse_hid_report_descriptor in drivers/input/tablet/gtco.c, a malicious USB device can send an HID report that triggers an out-of-bounds write during generation of debugging messages (bsc#1142023).\n- CVE-2019-11810: A NULL pointer dereference can occur when megasas_create_frame_pool() fails in megasas_alloc_cmds() in drivers/scsi/megaraid/megaraid_sas_base.c. This causes a Denial of Service, related to a use-after-free (bsc#1134399).\n- CVE-2019-1125: Enable Spectre v1 swapgs mitigations (bsc#1139358).\n- CVE-2018-20855: An issue was discovered in create_qp_common in drivers/infiniband/hw/mlx5/qp.c, mlx5_ib_create_qp_resp was never initialized, resulting in a leak of stack memory to userspace (bsc#1143045).\n- CVE-2015-9289: A buffer overflow occurs when checking userspace params in drivers/media/dvb-frontends/cx24116.c. The maximum size for a DiSEqC command is 6, according to the userspace API. However, the code allowed larger values such as 23 (bsc#1143179).\n\nThe following non-security bugs were fixed:\n\n- fix detection of race between fcntl-setlk and close (bsc#1140965).\n- ocfs2: add first lock wait time in locking_state (bsc#1134390).\n- ocfs2: add last unlock times in locking_state (bsc#1134390).\n- ocfs2: add locking filter debugfs file (bsc#1134390).\n- powerpc/watchpoint: Restore NV GPRs while returning from exception (bsc#1140945,bsc#1141401,bsc#1141402,bsc#1141452,bsc#1141453,bsc#1141454).\n- xen-netfront: use napi_complete() correctly to prevent Rx stalling (bsc#1138744).\n",
+  "modified": "2025-05-02T04:04:55.250056Z",
+  "published": "2019-08-29T14:18:28Z",
+  "related": [
+    "CVE-2015-9289",
+    "CVE-2018-20855",
+    "CVE-2019-1125",
+    "CVE-2019-11810",
+    "CVE-2019-13631",
+    "CVE-2019-14283",
+    "CVE-2019-14284"
+  ],
+  "upstream": [
+    "CVE-2015-9289",
+    "CVE-2018-20855",
+    "CVE-2019-1125",
+    "CVE-2019-11810",
+    "CVE-2019-13631",
+    "CVE-2019-14283",
+    "CVE-2019-14284"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2019/suse-su-201914157-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1134390"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1134399"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1138744"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1139358"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1140945"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1140965"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1141401"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1141402"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1141452"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1141453"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1141454"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1142023"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1143045"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1143179"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1143189"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1143191"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-9289"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-20855"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-1125"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11810"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-13631"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14283"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14284"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-bigmem",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-bigmem&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ppc64",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-ppc64&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.101.1",
+            "kernel-default-man": "3.0.101-108.101.1",
+            "kernel-ec2": "3.0.101-108.101.1",
+            "kernel-default": "3.0.101-108.101.1",
+            "kernel-source": "3.0.101-108.101.1",
+            "kernel-bigmem": "3.0.101-108.101.1",
+            "kernel-pae-base": "3.0.101-108.101.1",
+            "kernel-syms": "3.0.101-108.101.1",
+            "kernel-bigmem-base": "3.0.101-108.101.1",
+            "kernel-pae": "3.0.101-108.101.1",
+            "kernel-ppc64-devel": "3.0.101-108.101.1",
+            "kernel-ec2-devel": "3.0.101-108.101.1",
+            "kernel-ppc64-base": "3.0.101-108.101.1",
+            "kernel-trace-devel": "3.0.101-108.101.1",
+            "kernel-trace": "3.0.101-108.101.1",
+            "kernel-ec2-base": "3.0.101-108.101.1",
+            "kernel-ppc64": "3.0.101-108.101.1",
+            "kernel-xen-base": "3.0.101-108.101.1",
+            "kernel-xen-devel": "3.0.101-108.101.1",
+            "kernel-bigmem-devel": "3.0.101-108.101.1",
+            "kernel-trace-base": "3.0.101-108.101.1",
+            "kernel-default-devel": "3.0.101-108.101.1",
+            "kernel-pae-devel": "3.0.101-108.101.1",
+            "kernel-xen": "3.0.101-108.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:14157-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

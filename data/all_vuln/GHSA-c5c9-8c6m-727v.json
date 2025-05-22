@@ -1,0 +1,561 @@
+{
+  "id": "GHSA-c5c9-8c6m-727v",
+  "summary": "Cross-Site Scripting via Rich-Text Content",
+  "details": "> ### Meta\n> * CVSS: `CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N/E:F/RL:O/RC` (5.7)\n\n### Problem\nFailing to properly parse, sanitize and encode malicious rich-text content, the content rendering process in the website frontend is vulnerable to cross-site scripting. Corresponding rendering instructions via TypoScript functionality _[HTMLparser](https://docs.typo3.org/m/typo3/reference-typoscript/10.4/en-us/Functions/Htmlparser.html)_ do not consider all potentially malicious HTML tag & attribute combinations per default.\n\nIn addition, the lack of comprehensive default node configuration for rich-text fields in the backend user interface fosters this malfunction.\n\nIn default scenarios, a valid backend user account is needed to exploit this vulnerability. In case custom plugins used in the website frontend accept and reflect rich-text content submitted by users, no authentication is required.\n\n### Solution\nUpdate to TYPO3 versions 7.6.53 ELTS, 8.7.42 ELTS, 9.5.29, 10.4.19, 11.3.2 that fix the problem described above.\n\nCustom package _[typo3/html-sanitizer](https://github.com/TYPO3/html-sanitizer)_ - based on allow-lists only - takes care of sanitizing potentially malicious markup. The default behavior is based on safe and commonly used markup - however, this can be extended or restricted further in case it is necessary for individual scenarios.\n\nDuring the frontend rendering process, sanitization is applied to the default TypoScript path `lib.parseFunc`, which is implicitly used by the Fluid view-helper instruction `f:format.html`. Rich-text data persisted using the backend user interface is sanitized as well. Implementation details are explained in corresponding [ChangeLog documentation](https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.5.x/Important-94484-IntroduceHTMLSanitizer.html).\n\n### Credits\nThanks to Benjamin Stiber, Gert-Jan Jansma, G\u00e1bor \u00c1cs-Kurucz, Alexander Kellner, Richie Lee, Nina R\u00f6sch who reported this issue, and to TYPO3 security team member Oliver Hader, as well as TYPO3 contributor Susanne Moog who fixed the issue.\n\n### References\n* [TYPO3-CORE-SA-2021-013](https://typo3.org/security/advisory/typo3-core-sa-2021-013)",
+  "aliases": [
+    "BIT-typo3-2021-32768",
+    "CVE-2021-32768"
+  ],
+  "modified": "2024-02-16T08:02:01.455799Z",
+  "published": "2021-08-19T15:53:12Z",
+  "related": [
+    "CVE-2021-32768"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2021-08-10T17:15:00Z",
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-16T22:38:47Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/TYPO3/TYPO3.CMS/security/advisories/GHSA-c5c9-8c6m-727v"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/TYPO3/typo3/security/advisories/GHSA-c5c9-8c6m-727v"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-32768"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/typo3/cms-core/CVE-2021-32768.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/typo3/cms/CVE-2021-32768.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://typo3.org/security/advisory/typo3-core-sa-2021-013"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "typo3/cms-core",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "7.0.0"
+            },
+            {
+              "fixed": "7.6.53"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "typo3/cms-core",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "8.0.0"
+            },
+            {
+              "fixed": "8.7.42"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v8.7.10",
+        "v8.7.11",
+        "v8.7.12",
+        "v8.7.13",
+        "v8.7.14",
+        "v8.7.15",
+        "v8.7.16",
+        "v8.7.17",
+        "v8.7.18",
+        "v8.7.19",
+        "v8.7.20",
+        "v8.7.21",
+        "v8.7.22",
+        "v8.7.23",
+        "v8.7.24",
+        "v8.7.25",
+        "v8.7.26",
+        "v8.7.27",
+        "v8.7.28",
+        "v8.7.29",
+        "v8.7.30",
+        "v8.7.31",
+        "v8.7.32",
+        "v8.7.7",
+        "v8.7.8",
+        "v8.7.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms-core",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.4.19"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v10.0.0",
+        "v10.1.0",
+        "v10.2.0",
+        "v10.2.1",
+        "v10.2.2",
+        "v10.3.0",
+        "v10.4.0",
+        "v10.4.1",
+        "v10.4.10",
+        "v10.4.11",
+        "v10.4.12",
+        "v10.4.13",
+        "v10.4.14",
+        "v10.4.15",
+        "v10.4.16",
+        "v10.4.17",
+        "v10.4.18",
+        "v10.4.2",
+        "v10.4.3",
+        "v10.4.4",
+        "v10.4.5",
+        "v10.4.6",
+        "v10.4.7",
+        "v10.4.8",
+        "v10.4.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms-core",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "11.0.0"
+            },
+            {
+              "fixed": "11.3.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v11.0.0",
+        "v11.1.0",
+        "v11.1.1",
+        "v11.2.0",
+        "v11.3.0",
+        "v11.3.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms-core",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "9.0.0"
+            },
+            {
+              "fixed": "9.5.29"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v9.0.0",
+        "v9.1.0",
+        "v9.2.0",
+        "v9.2.1",
+        "v9.3.0",
+        "v9.3.1",
+        "v9.3.2",
+        "v9.3.3",
+        "v9.4.0",
+        "v9.5.0",
+        "v9.5.1",
+        "v9.5.10",
+        "v9.5.11",
+        "v9.5.12",
+        "v9.5.13",
+        "v9.5.14",
+        "v9.5.15",
+        "v9.5.16",
+        "v9.5.17",
+        "v9.5.18",
+        "v9.5.19",
+        "v9.5.2",
+        "v9.5.20",
+        "v9.5.21",
+        "v9.5.22",
+        "v9.5.23",
+        "v9.5.24",
+        "v9.5.25",
+        "v9.5.26",
+        "v9.5.27",
+        "v9.5.28",
+        "v9.5.3",
+        "v9.5.4",
+        "v9.5.5",
+        "v9.5.6",
+        "v9.5.7",
+        "v9.5.8",
+        "v9.5.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.4.19"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v10.0.0",
+        "v10.1.0",
+        "v10.2.0",
+        "v10.2.1",
+        "v10.2.2",
+        "v10.3.0",
+        "v10.4.0",
+        "v10.4.1",
+        "v10.4.10",
+        "v10.4.11",
+        "v10.4.12",
+        "v10.4.13",
+        "v10.4.14",
+        "v10.4.15",
+        "v10.4.16",
+        "v10.4.17",
+        "v10.4.18",
+        "v10.4.2",
+        "v10.4.3",
+        "v10.4.4",
+        "v10.4.5",
+        "v10.4.6",
+        "v10.4.7",
+        "v10.4.8",
+        "v10.4.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "11.0.0"
+            },
+            {
+              "fixed": "11.3.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v11.0.0",
+        "v11.1.0",
+        "v11.1.1",
+        "v11.2.0",
+        "v11.3.0",
+        "v11.3.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "9.0.0"
+            },
+            {
+              "fixed": "9.5.29"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v9.0.0",
+        "v9.1.0",
+        "v9.2.0",
+        "v9.2.1",
+        "v9.3.0",
+        "v9.3.1",
+        "v9.3.2",
+        "v9.3.3",
+        "v9.4.0",
+        "v9.5.0",
+        "v9.5.1",
+        "v9.5.10",
+        "v9.5.11",
+        "v9.5.12",
+        "v9.5.13",
+        "v9.5.14",
+        "v9.5.15",
+        "v9.5.16",
+        "v9.5.17",
+        "v9.5.18",
+        "v9.5.19",
+        "v9.5.2",
+        "v9.5.20",
+        "v9.5.21",
+        "v9.5.22",
+        "v9.5.23",
+        "v9.5.24",
+        "v9.5.25",
+        "v9.5.26",
+        "v9.5.27",
+        "v9.5.28",
+        "v9.5.3",
+        "v9.5.4",
+        "v9.5.5",
+        "v9.5.6",
+        "v9.5.7",
+        "v9.5.8",
+        "v9.5.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "8.0.0"
+            },
+            {
+              "fixed": "8.7.42"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "8.0.0",
+        "8.0.1",
+        "8.1.0",
+        "8.1.1",
+        "8.1.2",
+        "8.2.0",
+        "8.2.1",
+        "8.3.0",
+        "8.3.1",
+        "8.4.0",
+        "8.4.1",
+        "8.5.0",
+        "8.5.1",
+        "8.6.0",
+        "8.6.1",
+        "8.7.0",
+        "8.7.1",
+        "8.7.2",
+        "v8.7.10",
+        "v8.7.11",
+        "v8.7.12",
+        "v8.7.13",
+        "v8.7.14",
+        "v8.7.15",
+        "v8.7.16",
+        "v8.7.17",
+        "v8.7.18",
+        "v8.7.19",
+        "v8.7.20",
+        "v8.7.21",
+        "v8.7.22",
+        "v8.7.23",
+        "v8.7.24",
+        "v8.7.25",
+        "v8.7.26",
+        "v8.7.27",
+        "v8.7.28",
+        "v8.7.29",
+        "v8.7.3",
+        "v8.7.30",
+        "v8.7.31",
+        "v8.7.32",
+        "v8.7.4",
+        "v8.7.5",
+        "v8.7.6",
+        "v8.7.7",
+        "v8.7.8",
+        "v8.7.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "7.0.0"
+            },
+            {
+              "fixed": "7.6.53"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "7.0.0",
+        "7.0.1",
+        "7.0.2",
+        "7.1.0",
+        "7.2.0",
+        "7.3.0",
+        "7.3.1",
+        "7.4.0",
+        "7.5.0",
+        "7.6.0",
+        "7.6.1",
+        "7.6.10",
+        "7.6.11",
+        "7.6.12",
+        "7.6.13",
+        "7.6.14",
+        "7.6.15",
+        "7.6.16",
+        "7.6.17",
+        "7.6.18",
+        "7.6.19",
+        "7.6.2",
+        "7.6.3",
+        "7.6.4",
+        "7.6.5",
+        "7.6.6",
+        "7.6.7",
+        "7.6.8",
+        "7.6.9",
+        "v7.6.20",
+        "v7.6.21",
+        "v7.6.22",
+        "v7.6.23",
+        "v7.6.24",
+        "v7.6.25",
+        "v7.6.26",
+        "v7.6.27",
+        "v7.6.28",
+        "v7.6.29",
+        "v7.6.30",
+        "v7.6.31",
+        "v7.6.32"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-c5c9-8c6m-727v/GHSA-c5c9-8c6m-727v.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

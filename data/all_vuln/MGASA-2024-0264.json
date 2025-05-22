@@ -1,0 +1,67 @@
+{
+  "id": "MGASA-2024-0264",
+  "summary": "Updated freeradius packages fix security vulnerability",
+  "details": "This vulnerability allows an attacker performing a meddler-in-the-middle\nattack between Palo Alto Networks PAN-OS firewall and a RADIUS server to\nbypass authentication and escalate privileges to \u2018superuser\u2019 when RADIUS\nauthentication is in use and either CHAP or PAP is selected in the\nRADIUS server profile.\nCHAP and PAP are protocols with no Transport Layer Security (TLS), and\nhence vulnerable to meddler-in-the-middle attacks. Neither protocol\nshould be used unless they are encapsulated by an encrypted tunnel. If\nthey are in use, but are encapsulated within a TLS tunnel, they are not\nvulnerable to this attack.\nFor additional information regarding this vulnerability, please see\nhttps://blastradius.fail.\nNote: these two lines are added upstream in the default radiusd.conf\nfile:\n\"\"\"\nrequire_message_authenticator = auto\nlimit_proxy_state = auto\n\"\"\"\n",
+  "modified": "2024-07-14T04:58:02Z",
+  "published": "2024-07-14T05:23:38Z",
+  "related": [
+    "CVE-2024-3596"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2024-0264.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=33388"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.freeradius.org/security/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/07/09/4"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "freeradius",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/freeradius?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.27-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0264.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "MGASA-2023-0243",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on upstream 5.15.122 and fixes atleast\nthe following security issues:\n\nUnder specific microarchitectural circumstances, a register in \"Zen 2\"\nCPUs may not be written to 0 correctly. This may cause data from another\nprocess and/or thread to be stored in the YMM register, which may allow\nan attacker to potentially access sensitive information (CVE-2023-20593,\nalso known as Zenbleed).\n\nThis update adds a kernel-side mitigation for this issue to protect users\nuntil Amd gets their fixed microcode / AGESA updates out for all affected\nCPUs. The fixed microcode for Amd EPYC gen2 is available in the\nmicrocode-0.20230613-2.mga8.nonfree package. For other affected CPUs, see\nthe referenced amd.com url that has info about estimated microcode update\ntimelines for various CPUs.\n\nLinux Kernel nftables Use-After-Free Local Privilege Escalation\nVulnerability; nft_chain_lookup_byid() failed to check whether a chain\nwas active and CAP_NET_ADMIN is in any user or network namespace \n(CVE-2023-31248).\n\nLinux Kernel nftables Out-Of-Bounds Read/Write Vulnerability;\nnft_byteorder poorly handled vm register contents when CAP_NET_ADMIN\nis in any user or network namespace (CVE-2023-35001).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2023-07-26T20:57:59Z",
+  "published": "2023-07-26T22:07:49Z",
+  "related": [
+    "CVE-2023-20593",
+    "CVE-2023-31248",
+    "CVE-2023-35001"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2023-0243.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=32140"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.121"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.122"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7008.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.122-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0243.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

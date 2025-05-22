@@ -1,0 +1,64 @@
+{
+  "id": "MGASA-2024-0295",
+  "summary": "Updated libpcap packages fix security vulnerabilities",
+  "details": "In affected libpcap versions during the setup of a remote packet capture\nthe internal function sock_initaddress() calls getaddrinfo() and\npossibly freeaddrinfo(), but does not clearly indicate to the caller\nfunction whether freeaddrinfo() still remains to be called after the\nfunction returns. This makes it possible in some scenarios that both the\nfunction and its caller call freeaddrinfo() for the same allocated\nmemory block. (CVE-2023-7256)\nRemote packet capture support is disabled by default in libpcap. When a\nuser builds libpcap with remote packet capture support enabled, one of\nthe functions that become available is pcap_findalldevs_ex(). One of the\nfunction arguments can be a filesystem path, which normally means a\ndirectory with input data files. When the specified path cannot be used\nas a directory, the function receives NULL from opendir(), but does not\ncheck the return value and passes the NULL value to readdir(), which\ncauses a NULL pointer derefence. (CVE-2024-8006)\n",
+  "modified": "2024-09-11T20:20:58Z",
+  "published": "2024-09-11T20:42:44Z",
+  "related": [
+    "CVE-2023-7256",
+    "CVE-2024-8006"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2024-0295.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=33537"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lwn.net/Articles/988357/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "libpcap",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/libpcap?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.10.5-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0295.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

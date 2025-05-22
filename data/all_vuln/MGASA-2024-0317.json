@@ -1,0 +1,94 @@
+{
+  "id": "MGASA-2024-0317",
+  "summary": "Updated python3 packages fix security vulnerabilities",
+  "details": "A defect was discovered in the Python \u201cssl\u201d module where there is a\nmemory race condition with the ssl.SSLContext methods\n\u201ccert_store_stats()\u201d and \u201cget_ca_certs()\u201d. The race condition can be\ntriggered if the methods are called at the same time as certificates are\nloaded into the SSLContext, such as during the TLS handshake with a\ncertificate directory configured. (CVE-2024-0397)\nThe \u201cipaddress\u201d module contained incorrect information about whether\ncertain IPv4 and IPv6 addresses were designated as \u201cglobally reachable\u201d\nor \u201cprivate\u201d. This affected the is_private and is_global properties of\nthe ipaddress.IPv4Address, ipaddress.IPv4Network, ipaddress.IPv6Address,\nand ipaddress.IPv6Network classes, where values wouldn\u2019t be returned in\naccordance with the latest information from the IANA Special-Purpose\nAddress Registries. (CVE-2024-4032)\nThe email module didn\u2019t properly quote newlines for email headers when\nserializing an email message allowing for header injection when an email\nis serialized. (CVE-2024-6923)\nWhen iterating over names of entries in a zip archive (for example,\nmethods of \"zipfile.Path\" like \"namelist()\", \"iterdir()\", etc) the\nprocess can be put into an infinite loop with a maliciously crafted zip\narchive. This defect applies when reading only metadata or extracting\nthe contents of the zip archive. Programs that are not handling\nuser-controlled zip archives are not affected. (CVE-2024-8088)\nRegular expressions that allowed excessive backtracking during\ntarfile.TarFile header parsing are vulnerable to ReDoS via\nspecifically-crafted tar archives. (CVE-2024-6232)\nWhen parsing cookies that contained backslashes for quoted characters in\nthe cookie value, the parser would use an algorithm with quadratic\ncomplexity, resulting in excess CPU resources being used while parsing\nthe value. (CVE-2024-7592)\nUrlparse insufficient validation leads to open redirect. (CVE-2015-2104)\nThe email module of Python through 3.11.3 incorrectly parses e-mail\naddresses that contain a special character. The wrong portion of an\nRFC2822 header is identified as the value of the addr-spec. In some\napplications, an attacker can bypass a protection mechanism in which\napplication access is granted only after verifying receipt of e-mail to\na specific domain (e.g., only @company.example.com addresses may be used\nfor signup). This occurs in email/_parseaddr.py in recent versions of\nPython. (CVE-2023-27043)\n",
+  "modified": "2024-09-27T01:05:32Z",
+  "published": "2024-09-27T01:30:52Z",
+  "related": [
+    "CVE-2015-2104",
+    "CVE-2023-27043",
+    "CVE-2024-0397",
+    "CVE-2024-4032",
+    "CVE-2024-6232",
+    "CVE-2024-6923",
+    "CVE-2024-7592",
+    "CVE-2024-8088"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2024-0317.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=33436"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/06/17/2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/06/17/3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lwn.net/Articles/983060/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/08/01/3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/08/22/1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/09/03/5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/09/07/3"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "python3",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/python3?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.10.11-1.3.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0317.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

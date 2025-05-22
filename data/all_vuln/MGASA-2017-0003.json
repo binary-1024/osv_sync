@@ -1,0 +1,94 @@
+{
+  "id": "MGASA-2017-0003",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This update is based on upstream 4.4.39 and fixes at least the following\nsecurity issues:\n\nDue to lack of size checking on ICMP header length, it is possible to\ncause out-of-bounds read on stack (CVE-2016-8399)\n\nThe TCP stack in the Linux kernel before 4.8.10 mishandles skb\ntruncation, which allows local users to cause a denial of service\n(system crash) via a crafted application that makes sendto system calls,\nrelated to net/ipv4/tcp_ipv4.c and net/ipv6/tcp_ipv6.c (CVE-2016-8645).\n\nThe mpi_powm function in lib/mpi/mpi-pow.c in the Linux kernel through\n4.8.11 does not ensure that memory is allocated for limb data, which\nallows local users to cause a denial of service (stack memory corruption\nand panic) via an add_key system call for an RSA key with a zero\nexponent (CVE-2016-8650).\n\nA race condition issue leading to a use-after-free flaw was found in the\nway the raw packet sockets implementation in the Linux kernel networking\nsubsystem handled synchronization while creating the TPACKET_V3 ring\nbuffer. A local user able to open a raw packet socket (requires the\nCAP_NET_RAW capability) could use this flaw to elevate their privileges\non the system (CVE-2016-8655).\n\nA use-after-free vulnerability in the SCSI generic driver allows users\nwith write access to /dev/sg* or /dev/bsg* to elevate their privileges\n(CVE-2016-9576).\n\nLinux kernel built with the Kernel-based Virtual Machine(CONFIG_KVM)\nsupport is vulnerable to an information leakage issue. It could occur\non x86 platform, while emulating instructions in 32bit mode. A \nuser/process could use this flaw to leak host kernel memory bytes\n(CVE-2016-9756).\n\nA bug in SO_{SND|RCV}BUFFORCE setsockopt() implementation allows\nCAP_NET_ADMIN users to set negative sk_sndbuf or sk_rcvbuf values.\nA user could use this flaw to cause various memory corruptions,\ncrashes and OOM (CVE-2016-9793).\n\nA use-after-free vulnerability was found in ALSA pcm layer, which allows\nlocal users to cause a denial of service, memory corruption, or possibly\nother unspecified impact (CVE-2016-9794).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2017-01-03T22:05:03Z",
+  "related": [
+    "CVE-2016-8399",
+    "CVE-2016-8645",
+    "CVE-2016-8650",
+    "CVE-2016-8655",
+    "CVE-2016-9576",
+    "CVE-2016-9756",
+    "CVE-2016-9793",
+    "CVE-2016-9794"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0003.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=19991"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.33"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.34"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.35"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.36"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.37"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.38"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.39"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.39-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0003.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

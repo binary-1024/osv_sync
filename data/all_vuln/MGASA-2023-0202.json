@@ -1,0 +1,101 @@
+{
+  "id": "MGASA-2023-0202",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on upstream 5.15.117 and fixes atleast\nthe following security issues:\n\nIn the Linux kernel through 6.2.7, fs/ntfs3/inode.c has an invalid kfree\nbecause it does not validate MFT flags before replaying logs\n(CVE-2022-48425).\n\nAn out-of-bounds memory access flaw was found in the Linux kernel\u2019s XFS file\nsystem in how a user restores an XFS image after failure (with a dirty log\njournal). This flaw allows a local user to crash or potentially escalate\ntheir privileges on the system (CVE-2023-2124).\n\nA flaw was found in the networking subsystem of the Linux kernel within\nthe handling of the RPL protocol. This issue results from the lack of\nproper handling of user-supplied data, which can lead to an assertion\nfailure. This may allow an unauthenticated remote attacker to create a\ndenial of service condition on the system (CVE-2023-2156).\n\nA denial of service problem was found, due to a possible recursive locking\nscenario, resulting in a deadlock in table_clear in drivers/md/dm-ioctl.c\nin the Linux Kernel Device Mapper-Multipathing sub-component\n(CVE-2023-2269).\n\nA use-after-free flaw was found in r592_remove in drivers/memstick/host/r592.c\nin media access in the Linux Kernel. This flaw allows a local attacker to\ncrash the system at device disconnect, possibly leading to a kernel\ninformation leak (CVE-2023-3141).\n\nA NULL pointer dereference issue was found in the gfs2 file system in the\nLinux kernel. It occurs on corrupt gfs2 file systems when the evict code\ntries to reference the journal descriptor structure after it has been freed\nand set to NULL. A privileged local user could use this flaw to cause a\nkernel panic (CVE-2023-3212).\n\nAn out of bounds (OOB) memory access flaw was found in the Linux kernel in\nrelay_file_read_start_pos in kernel/relay.c in the relayfs. This flaw could\nallow a local attacker to crash the system or leak kernel internal\ninformation (CVE-2023-3268).\n\nAn issue was discovered in drivers/media/dvb-core/dvb_frontend.c in the\nLinux kernel 6.2. There is a blocking operation when a task is in\n!TASK_RUNNING. In dvb_frontend_get_event, wait_event_interruptible is\ncalled; the condition is dvb_frontend_test_event(fepriv,events).\nIn dvb_frontend_test_event, down(&fepriv->sem) is called. However,\nwait_event_interruptible would put the process to sleep, and\ndown(&fepriv->sem) may block the process (CVE-2023-31084).\n\nIn the Linux kernel through 6.3.1, a use-after-free in Netfilter\nnf_tables when processing batch requests can be abused to perform arbitrary\nread and write operations on kernel memory. Unprivileged local users can\nobtain root privileges. This occurs because anonymous sets are mishandled\n(CVE-2023-32233).\n\nAn issue was discovered in the Linux kernel before 6.3.3. There is an\nout-of-bounds read in crc16 in lib/crc16.c when called from fs/ext4/super.c\nbecause ext4_group_desc_csum does not properly check an offset \n(CVE-2023-34256).\n\nAn issue was discovered in fl_set_geneve_opt in net/sched/cls_flower.c in\nthe Linux kernel before 6.3.7. It allows an out-of-bounds write in the\nflower classifier code via TCA_FLOWER_KEY_ENC_OPTS_GENEVE packets. This\nmay result in denial of service or privilege escalation (CVE-2023-35788).\n\nAn issue was discovered in the Linux kernel before 6.3.2. A use-after-free\nwas found in saa7134_finidev in drivers/media/pci/saa7134/saa7134-core.c\n(CVE-2023-35823).\n\nAn issue was discovered in the Linux kernel before 6.3.2. A use-after-free\nwas found in dm1105_remove in drivers/media/pci/dm1105/dm1105.c\n(CVE-2023-35824).\n\nAn issue was discovered in the Linux kernel before 6.3.2. A use-after-free\nwas found in renesas_usb3_remove in drivers/usb/gadget/udc/renesas_usb3.c\n(CVE-2023-35828).\n\nAn issue was discovered in the Linux kernel before 6.3.2. A use-after-free\nwas found in rkvdec_remove in drivers/staging/media/rkvdec/rkvdec.c\n(CVE-2023-35829).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2023-06-25T16:12:11Z",
+  "published": "2023-06-19T16:29:01Z",
+  "related": [
+    "CVE-2022-48425",
+    "CVE-2023-2124",
+    "CVE-2023-2156",
+    "CVE-2023-2269",
+    "CVE-2023-31084",
+    "CVE-2023-3141",
+    "CVE-2023-3212",
+    "CVE-2023-32233",
+    "CVE-2023-3268",
+    "CVE-2023-34256",
+    "CVE-2023-35788",
+    "CVE-2023-35823",
+    "CVE-2023-35824",
+    "CVE-2023-35828",
+    "CVE-2023-35829"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2023-0202.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=32002"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.111"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.112"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.113"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.114"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.115"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.116"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.117"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.117-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0202.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

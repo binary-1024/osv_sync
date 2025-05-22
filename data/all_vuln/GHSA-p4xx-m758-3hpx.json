@@ -1,0 +1,153 @@
+{
+  "id": "GHSA-p4xx-m758-3hpx",
+  "summary": "TYPO3 CMS Webhooks Server Side Request Forgery",
+  "details": "### Problem\nWebhooks are inherently vulnerable to Server-Side Request Forgery (SSRF), which can be exploited by adversaries to target internal resources (e.g., _localhost_ or other services on the local network). While this is not a vulnerability in TYPO3 itself, it may enable attackers to blindly access systems that would otherwise be inaccessible. An administrator-level backend user account is required to exploit this vulnerability.\n\n### Solution\nUpdate to TYPO3 versions 12.4.31 LTS, 13.4.12 LTS that fix the problem described.\n\n> [!IMPORTANT]\n>\n> **Manual actions required**\n>\n> To mitigate potential SSRF risks via webhooks, it is recommended to explicitly allow access only to trusted hosts. This can be achieved by configuring the allowlist in `$GLOBALS['TYPO3_CONF_VARS']['HTTP']['allowed_hosts']['webhooks']`.\n> \n> If the allowlist is not defined or set to `null`, all requests will be allowed.\n> If the allowlist is an empty `array`, all requests will be blocked.\n> \n> By default, the factory setting allows all requests. This prevents existing webhooks from failing after upgrading to the affected TYPO3 versions. Administrators must configure this setting manually to enforce restrictions.\n\n\n### Credits\nThanks to the National Cyber Security Center (NCSC) of Switzerland for reporting this issue, and to TYPO3 core & security team member Benjamin Franzke for fixing it.",
+  "aliases": [
+    "CVE-2025-47936"
+  ],
+  "modified": "2025-05-20T20:13:27.507693Z",
+  "published": "2025-05-20T19:20:55Z",
+  "database_specific": {
+    "nvd_published_at": "2025-05-20T14:15:50Z",
+    "cwe_ids": [
+      "CWE-918"
+    ],
+    "severity": "LOW",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-20T19:20:55Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/TYPO3/typo3/security/advisories/GHSA-p4xx-m758-3hpx"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-47936"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/TYPO3-CMS/webhooks/commit/0df8b8adae577876fa253679c9ef3fe2a7ee64fd"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/TYPO3-CMS/webhooks"
+    },
+    {
+      "type": "WEB",
+      "url": "https://typo3.org/security/advisory/typo3-core-sa-2025-012"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "typo3/cms-webhooks",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms-webhooks"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "12.0.0"
+            },
+            {
+              "fixed": "12.4.31"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v12.3.0",
+        "v12.4.0",
+        "v12.4.1",
+        "v12.4.10",
+        "v12.4.11",
+        "v12.4.12",
+        "v12.4.13",
+        "v12.4.14",
+        "v12.4.15",
+        "v12.4.16",
+        "v12.4.17",
+        "v12.4.18",
+        "v12.4.19",
+        "v12.4.2",
+        "v12.4.20",
+        "v12.4.21",
+        "v12.4.22",
+        "v12.4.23",
+        "v12.4.24",
+        "v12.4.25",
+        "v12.4.26",
+        "v12.4.27",
+        "v12.4.28",
+        "v12.4.29",
+        "v12.4.3",
+        "v12.4.30",
+        "v12.4.4",
+        "v12.4.5",
+        "v12.4.6",
+        "v12.4.7",
+        "v12.4.8",
+        "v12.4.9"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 12.4.30",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-p4xx-m758-3hpx/GHSA-p4xx-m758-3hpx.json"
+      }
+    },
+    {
+      "package": {
+        "name": "typo3/cms-webhooks",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/typo3/cms-webhooks"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "13.0.0"
+            },
+            {
+              "fixed": "13.4.12"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v13.0.0",
+        "v13.0.1",
+        "v13.1.0",
+        "v13.1.1",
+        "v13.2.1",
+        "v13.3.0",
+        "v13.3.1",
+        "v13.4.0",
+        "v13.4.1",
+        "v13.4.10",
+        "v13.4.11",
+        "v13.4.2",
+        "v13.4.3",
+        "v13.4.4",
+        "v13.4.5",
+        "v13.4.6",
+        "v13.4.7",
+        "v13.4.8",
+        "v13.4.9"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 13.4.11",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-p4xx-m758-3hpx/GHSA-p4xx-m758-3hpx.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:N/I:L/A:L"
+    }
+  ]
+}

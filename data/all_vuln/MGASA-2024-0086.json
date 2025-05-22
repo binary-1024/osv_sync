@@ -1,0 +1,71 @@
+{
+  "id": "MGASA-2024-0086",
+  "summary": "Updated nodejs-hawk packages fix security vulnerability",
+  "details": "Hawk is an HTTP authentication scheme providing mechanisms for making\nauthenticated HTTP requests with partial cryptographic verification of\nthe request and response, covering the HTTP method, request URI, host,\nand optionally the request payload. Hawk used a regular expression to\nparse `Host` HTTP header (`Hawk.utils.parseHost()`), which was subject\nto regular expression DoS attack - meaning each added character in the\nattacker's input increases the computation time exponentially.\n`parseHost()` was patched in `9.0.1` to use built-in `URL` class to\nparse hostname instead. `Hawk.authenticate()` accepts `options`\nargument. If that contains `host` and `port`, those would be used\ninstead of a call to `utils.parseHost()`. (CVE-2022-29167)\n",
+  "modified": "2024-03-24T04:40:52Z",
+  "published": "2024-03-24T04:57:19Z",
+  "related": [
+    "CVE-2022-29167"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2024-0086.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=31313"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/lts/security/2022/dla-3246"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/mozilla/hawk/security/advisories/GHSA-44pw-h2cw-w3vq"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://ubuntu.com/security/notices/USN-6116-1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "nodejs-hawk",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/nodejs-hawk?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.0.10-4.1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0086.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

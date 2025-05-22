@@ -1,0 +1,65 @@
+{
+  "id": "MGASA-2019-0309",
+  "summary": "Updated ansible packages fix security vulnerabilities",
+  "details": "Updated ansible package fixes security vulnerabilities:\n\nansible-playbook -k and ansible cli tools prompt passwords by expanding\nthem from templates as they could contain special characters. Passwords\nshould be wrapped to prevent templates trigger and exposing them\n(CVE-2019-10206).\n\nAnsible was logging at the DEBUG level which lead to a disclosure of\ncredentials if a plugin used a library that logged credentials at the\nDEBUG level. This flaw does not affect Ansible modules, as those are\nexecuted in a separate process (CVE-2019-14846).\n\nWhen a module has an argument_spec with sub parameters marked as no_log,\npassing an invalid parameter name to the module will cause the task to\nfail before the no_log options in the sub parameters are processed. As a\nresult, data in the sub parameter fields will not be masked and will be\ndisplayed if Ansible is run with increased verbosity and present in the\nmodule invocation arguments for the task (CVE-2019-14858).\n",
+  "modified": "2019-11-02T16:34:52Z",
+  "published": "2019-11-02T16:54:34Z",
+  "related": [
+    "CVE-2019-10206",
+    "CVE-2019-14846",
+    "CVE-2019-14858"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0309.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=25607"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://access.redhat.com/errata/RHSA-2019:3203"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ansible",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/ansible?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.14-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0309.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "MGASA-2019-0094",
+  "summary": "Updated tcpreplay packages fix security vulnerability",
+  "details": "An issue was discovered in Tcpreplay 4.3.0 beta1. A heap-based buffer\nover-read was triggered in the function dlt_en10mb_encode() of the file\nplugins/dlt_en10mb/en10mb.c, due to inappropriate values in the function\nmemmove(). The length (pktlen + ctx -> l2len) can be larger than source\nvalue (packet + ctx->l2len) because the function fails to ensure the length\nof a packet is valid. This leads to Denial of Service. (CVE-2018-17974)\n\nA heap-based buffer over-read exists in the function fast_edit_packet() in\nthe file send_packets.c of Tcpreplay v4.3.0 beta1. This can lead to Denial\nof Service (DoS) and potentially Information Exposure when the application\nattempts to process a crafted pcap file. (CVE-2018-17580)\n\nTcpreplay v4.3.0 beta1 contains a heap-based buffer over-read. The\nget_next_packet() function in the send_packets.c file uses the memcpy()\nfunction unsafely to copy sequences from the source buffer pktdata to the\ndestination (*prev_packet)->pktdata. This will result in a Denial of\nService (DoS) and potentially Information Exposure when the application\nattempts to process a file. (CVE-2018-17582)\n\nA heap-based buffer over-read was discovered in the tcpreplay-edit binary\nof Tcpreplay 4.3.0 beta1, during the incremental checksum operation. The\nissue gets triggered in the function csum_replace4() in\nincremental_checksum.h, causing a denial of service. (CVE-2018-18407)\n\nA use-after-free was discovered in the tcpbridge binary of Tcpreplay 4.3.0\nbeta1. The issue gets triggered in the function post_args() at tcpbridge.c,\ncausing a denial of service or possibly unspecified other impact.\n(CVE-2018-18408)\n",
+  "modified": "2019-02-20T21:23:38Z",
+  "published": "2019-02-20T22:18:01Z",
+  "related": [
+    "CVE-2018-17580",
+    "CVE-2018-17582",
+    "CVE-2018-17974",
+    "CVE-2018-18407",
+    "CVE-2018-18408"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0094.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24148"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/5UTDLO275Z67H3IN6UL57U6OAI4R3G5I/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "tcpreplay",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/tcpreplay?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.3.1-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0094.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

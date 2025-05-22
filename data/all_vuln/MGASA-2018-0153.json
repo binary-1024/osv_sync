@@ -1,0 +1,105 @@
+{
+  "id": "MGASA-2018-0153",
+  "summary": "Updated libvirt packages fix security vulnerabilities",
+  "details": "Updated libvirt packages fix security vulnerabilities:\n\nIn virsh, the hostname could crafted maliciously with ssh arguments, which would \nbe passed to ssh (bsc#1053600).\n\nThe default_tls_x509_verify (and related) parameters in qemu.conf control \nwhether the TLS servers in QEMU request & verify certificates from clients. This \nworks as a simple access control system for QEMU servers by requiring the CA to \nissue certs to permitted clients. This use of client certificates is disabled by \ndefault, since it requires extra work to issue client certificates. \nUnfortunately the libvirt code was using these configuration parameters when \nsetting up both TLS clients and servers in QEMU. The result was that TLS clients \nfor character devices and disk devices had verification turned off, meaning they \nwould ignore any errors while validating the server certificate \n(CVE-2017-1000256).\n\nAn industry-wide issue was found in the way many modern microprocessor designs \nhave implemented speculative execution of instructions (a commonly used \nperformance optimization). There are three primary variants of the issue which \ndiffer in the way the speculative execution can be exploited. Variant \nCVE-2017-5715 triggers the speculative execution by utilizing branch target \ninjection. It relies on the presence of a precisely-defined instruction sequence \nin the privileged code as well as the fact that memory accesses may cause \nallocation into the microprocessor's data cache even for speculatively executed \ninstructions that never actually commit (retire). As a result, an unprivileged \nattacker could use this flaw to cross the syscall and guest/host boundaries and \nread privileged memory by conducting targeted cache side-channel attacks \n(CVE-2017-5715).\n\nqemu/qemu_monitor.c in libvirt allows attackers to cause a denial of service \n(memory consumption) via a large QEMU reply (CVE-2018-5748).\n\nIt was discovered libvirt does not properly determine the hostname on LXC \ncontainer startup, which allows local guest OS users to bypass an intended \ncontainer protection mechanism and execute arbitrary commands via a crafted NSS \nmodule (CVE-2018-6764).\n",
+  "modified": "2018-03-01T21:10:45Z",
+  "published": "2018-03-01T21:27:52Z",
+  "related": [
+    "CVE-2017-1000256",
+    "CVE-2017-5715",
+    "CVE-2018-5748",
+    "CVE-2018-6764"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0153.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22280"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://security.libvirt.org/2017/0002.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/opensuse-updates/2017-10/msg00018.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/opensuse-updates/2017-10/msg00096.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://access.redhat.com/errata/RHSA-2018:0029"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "libvirt",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/libvirt?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.10.0-1.1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0153.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "python-libvirt",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/python-libvirt?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.10.0-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0153.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

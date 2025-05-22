@@ -1,0 +1,107 @@
+{
+  "id": "HSEC-2023-0008",
+  "summary": "Stored XSS in hledger-web",
+  "details": "# Stored XSS in *hledger-web*\n\nAn issue was discovered in *hledger-web* < 1.23. A Stored Cross-Site\nScripting (XSS) vulnerability exists in `toBloodhoundJson` that\nallows an attacker to execute JavaScript by encoding user-controlled\nvalues in a payload with base64 and parsing them with the `atob`\nfunction.\n\n*hledger-web* forms sanitise obvious JavaScript, but not obfuscated\nJavaScript (see [OWASP Filter Evasion Cheat Sheet][cheatsheet]).\nThis means *hledger-web* instances, especially anonymously-writable\nones like `demo.hledger.org`, could be loaded with malicious\nJavaScript to be executed by subsequent visitors.\n\n[cheatsheet]: https://owasp.org/www-community/xss-filter-evasion-cheatsheet\n\nReported by Gaspard Baye and Hamidullah Muslih.  Fix by Arsen\nArsenovi\u0107.\n",
+  "aliases": [
+    "CVE-2021-46888"
+  ],
+  "modified": "2023-12-13T13:05:27.423842Z",
+  "published": "2023-07-22T12:23:10Z",
+  "references": [
+    {
+      "type": "REPORT",
+      "url": "https://github.com/simonmichael/hledger/issues/1525"
+    },
+    {
+      "type": "INTRODUCED",
+      "url": "https://github.com/simonmichael/hledger/commit/ec51d28839b2910eea360b1b8c72904b51cf7821"
+    },
+    {
+      "type": "EVIDENCE",
+      "url": "https://www.youtube.com/watch?v=QnRO-VkfIic"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/simonmichael/hledger/pull/1663"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "hledger-web",
+        "ecosystem": "Hackage",
+        "purl": "pkg:hackage/hledger-web"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.24"
+            },
+            {
+              "fixed": "1.23"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.24",
+        "0.24.1",
+        "0.25",
+        "0.25.1",
+        "0.26",
+        "0.27",
+        "1.0",
+        "1.0.1",
+        "1.1",
+        "1.10",
+        "1.11",
+        "1.11.1",
+        "1.12",
+        "1.13",
+        "1.14",
+        "1.14.1",
+        "1.15",
+        "1.16",
+        "1.16.1",
+        "1.16.2",
+        "1.17",
+        "1.17.1",
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.2",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.21",
+        "1.22",
+        "1.22.1",
+        "1.22.2",
+        "1.3",
+        "1.3.1",
+        "1.3.2",
+        "1.4",
+        "1.5",
+        "1.5.1",
+        "1.9",
+        "1.9.1",
+        "1.9.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/haskell/security-advisories/blob/generated/osv-export/2023/HSEC-2023-0008.json"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N"
+        }
+      ]
+    }
+  ],
+  "schema_version": "1.6.0"
+}

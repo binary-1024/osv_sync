@@ -1,0 +1,76 @@
+{
+  "id": "MGASA-2023-0033",
+  "summary": "Updated git packages fix security vulnerability",
+  "details": "gitattributes are a mechanism to allow defining attributes for paths.\nThese attributes can be defined by adding a '.gitattributes' file to the\nrepository, which contains a set of file patterns and the attributes that\nshould be set for paths matching this pattern. When parsing gitattributes,\nmultiple integer overflows can occur when there is a huge number of path\npatterns, a huge number of attributes for a single pattern, or when the\ndeclared attribute names are huge. These overflows can be triggered via a\ncrafted '.gitattributes' file that may be part of the commit history. Git\nsilently splits lines longer than 2KB when parsing gitattributes from a\nfile, but not when parsing them from the index. Consequentially, the\nfailure mode depends on whether the file exists in the working tree, the\nindex or both. This integer overflow can result in arbitrary heap reads\nand writes, which may result in remote code execution. (CVE-2022-23521)\n\n'git log' can display commits in an arbitrary format using its '--format'\nspecifiers. This functionality is also exposed to 'git archive' via the\n'export-subst' gitattribute. When processing the padding operators, there\nis a integer overflow in 'pretty.c::format_and_pad_commit()' where a\n'size_t' is stored improperly as an 'int, and then added as an offset to a\n'memcpy()'. This overflow can be triggered directly by a user running a\ncommand which invokes the commit formatting machinery\n(e.g., 'git log --format=...'). It may also be triggered indirectly\nthrough git archive via the export-subst mechanism, which expands format\nspecifiers inside of files within the repository during a git archive.\nThis integer overflow can result in arbitrary heap writes, which may\nresult in arbitrary code execution. (CVE-2022-41903)\n",
+  "modified": "2023-02-06T22:57:48Z",
+  "published": "2023-02-07T00:06:39Z",
+  "related": [
+    "CVE-2022-23521",
+    "CVE-2022-41903"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2023-0033.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=31428"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.30.7.txt"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lore.kernel.org/git/xmqqa62g8i6u.fsf@gitster.g/T/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://ubuntu.com/security/notices/USN-5810-1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://ubuntu.com/security/notices/USN-5810-2"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "git",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/git?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.30.7-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0033.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

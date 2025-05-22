@@ -1,0 +1,228 @@
+{
+  "id": "MGASA-2017-0463",
+  "summary": "Updated kernel packages fix security vulnerabilities",
+  "details": "This kernel update is based on upstream 4.4.105 and fixes at least the\nfollowing security issues:\n\nA security flaw was discovered in nl80211_set_rekey_data() function in the\nLinux kernel since v3.1-rc1 through v4.13. This function does not check\nwhether the required attributes are present in a netlink request. This\nrequest can be issued by a user with CAP_NET_ADMIN privilege and may result\nin NULL dereference and a system crash (CVE-2017-12153).\n\nLinux kernel built with the KVM visualization support (CONFIG_KVM), with\nnested visualization (nVMX) feature enabled (nested=1), is vulnerable to a\ncrash due to disabled external interrupts. As L2 guest could acce s (r/w)\nhardware CR8 register of the host(L0). In a nested visualization setup,\nL2 guest user could use this flaw to potentially crash the host(L0)\nresulting in DoS (CVE-2017-12154).\n\nThe tcp_disconnect function in net/ipv4/tcp.c in the Linux kernel before\n4.12 allows local users to cause a denial of service (__tcp_select_window\ndivide-by-zero error and system crash) by triggering a disconnect within a\ncertain tcp_recvmsg code path (CVE-2017-14106).\n\nThe atyfb_ioctl function in drivers/video/fbdev/aty/atyfb_base.c in the\nLinux kernel through 4.12.10 does not initialize a certain data structure,\nwhich allows local users to obtain sensitive information from kernel stack\nmemory by reading locations associated with padding bytes (CVE-2017-14156).\n\nIt was found that the iscsi_if_rx() function in scsi_transport_iscsi.c in\nthe Linux kernel since v2.6.24-rc1 through 4.13.2 allows local users to\ncause a denial of service (a system panic) by making a number of certain\nsyscalls by leveraging incorrect length validation in the kernel code\n(CVE-2017-14489).\n\nThe sg_ioctl function in drivers/scsi/sg.c in the Linux kernel before 4.13.4\nallows local users to obtain sensitive information from uninitialized kernel\nheap-memory locations via an SG_GET_REQUEST_TABLE ioctl call for /dev/sg0\n(CVE-2017-14991).\n\nA reachable assertion failure flaw was found in the Linux kernel built with\nKVM virtualisation(CONFIG_KVM) support with Virtual Function I/O feature\n(CONFIG_VFIO) enabled. This failure could occur if a malicious guest device\nsent a virtual interrupt (guest IRQ) with a larger (>1024) index value\n(CVE-2017-1000252).\n\nFor other upstream fixes in this update, read the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2017-12-21T22:14:23Z",
+  "related": [
+    "CVE-2017-0786",
+    "CVE-2017-12190",
+    "CVE-2017-12193",
+    "CVE-2017-13080",
+    "CVE-2017-15115",
+    "CVE-2017-15265",
+    "CVE-2017-15299",
+    "CVE-2017-16939",
+    "CVE-2017-16994",
+    "CVE-2017-7518"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0463.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22178"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.93"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.94"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.95"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.96"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.97"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.98"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.100"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.101"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.102"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.103"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.104"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.105"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.105-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0463.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-userspace-headers",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.105-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0463.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-vboxadditions",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.30-2.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0463.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.30-2.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0463.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.10-50.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0463.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

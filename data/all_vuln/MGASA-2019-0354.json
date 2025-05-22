@@ -1,0 +1,104 @@
+{
+  "id": "MGASA-2019-0354",
+  "summary": "Updated openssl packages fix security vulnerabilities",
+  "details": "The updated packages fix security vulnerabilities:\n\nChaCha20-Poly1305 is an AEAD cipher, and requires a unique nonce input\nfor every encryption operation. RFC 7539 specifies that the nonce value\n(IV) should be 96 bits (12 bytes). OpenSSL allows a variable nonce length\nand front pads the nonce with 0 bytes if it is less than 12 bytes. However\nit also incorrectly allows a nonce to be set of up to 16 bytes. In this\ncase only the last 12 bytes are significant and any additional leading\nbytes are ignored. It is a requirement of using this cipher that nonce\nvalues are unique. Messages encrypted using a reused nonce value are\nsusceptible to serious confidentiality and integrity attacks. If an\napplication changes the default nonce length to be longer than 12 bytes\nand then makes a change to the leading bytes of the nonce expecting the\nnew value to be a new unique nonce then such an application could\ninadvertently encrypt messages with a reused nonce. Additionally the\nignored bytes in a long nonce are not covered by the integrity guarantee\nof this cipher. Any application that relies on the integrity of these\nignored leading bytes of a long nonce may be further affected. Any OpenSSL\ninternal use of this cipher, including in SSL/TLS, is safe because no such\nuse sets such a long nonce value. However user applications that use this\ncipher directly and set a non-default nonce length to be longer than 12\nbytes may be vulnerable. (CVE-2019-1543)\n\nNormally in OpenSSL EC groups always have a co-factor present and this is\nused in side channel resistant code paths. However, in some cases, it is\npossible to construct a group using explicit parameters (instead of using\na named curve). In those cases it is possible that such a group does not\nhave the cofactor present. This can occur even where all the parameters\nmatch a known named curve. If such a curve is used then OpenSSL falls back\nto non-side channel resistant code paths which may result in full key\nrecovery during an ECDSA signature operation. In order to be vulnerable an\nattacker would have to have the ability to time the creation of a large\nnumber of signatures where explicit parameters with no co-factor present\nare in use by an application using libcrypto. For the avoidance of doubt\nlibssl is not vulnerable because explicit parameters are never used.\n(CVE-2019-1547)\n\nIn situations where an attacker receives automated notification of the\nsuccess or failure of a decryption attempt an attacker, after sending a\nvery large number of messages to be decrypted, can recover a CMS/PKCS7\ntransported encryption key or decrypt any RSA encrypted message that was\nencrypted with the public RSA key, using a Bleichenbacher padding oracle\nattack. Applications are not affected if they use a certificate together\nwith the private RSA key to the CMS_decrypt or PKCS7_decrypt functions\nto select the correct recipient info to decrypt. (CVE-2019-1563)\n",
+  "modified": "2019-12-06T13:40:45Z",
+  "published": "2019-12-06T14:15:42Z",
+  "related": [
+    "CVE-2019-1543",
+    "CVE-2019-1547",
+    "CVE-2019-1563"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0354.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24888"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openssl.org/news/secadv/20190306.txt"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2019/dsa-4475"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openssl.org/news/secadv/20190910.txt"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2019/dsa-4540"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openssl",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.0l-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0354.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "compat-openssl10",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/compat-openssl10?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.2t-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0354.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

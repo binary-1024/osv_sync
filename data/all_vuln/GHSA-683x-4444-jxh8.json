@@ -1,0 +1,134 @@
+{
+  "id": "GHSA-683x-4444-jxh8",
+  "summary": "Improper Restriction of XML External Entity Reference in org.cyclonedx:cyclonedx-core-java",
+  "details": "### Impact\n\nBefore deserializing CycloneDX Bill of Materials in XML format, _cyclonedx-core-java_ leverages XPath expressions to determine the schema version of the BOM. The `DocumentBuilderFactory` used to evaluate XPath expressions was not configured securely, making the library vulnerable to XML External Entity (XXE) injection.\n\nXXE injection can be exploited to exfiltrate local file content, or perform Server Side Request Forgery (SSRF) to access infrastructure adjacent to the vulnerable application.\n\n### PoC\n\n```java\nimport org.cyclonedx.parsers.XmlParser;\n\nclass Poc {\n\n    public static void main(String[] args) {\n        // Will throw org.cyclonedx.exception.ParseException: java.net.ConnectException: Connection refused\n        new XmlParser().parse(\"\"\"\n            <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n            <!DOCTYPE bom [<!ENTITY % sp SYSTEM \"https://localhost:1010/does-not-exist/file.dtd\"> %sp;]>\n            <bom xmlns=\"http://cyclonedx.org/schema/bom/1.5\"/>\n            \"\"\".getBytes());\n    }\n\n}\n```\n\n### Patches\n\nThe vulnerability has been fixed in _cyclonedx-core-java_ version 0.9.4.\n\n### Workarounds\n\nIf feasible, applications can reject XML documents before handing them to _cyclonedx-core-java_ for parsing.\nThis may be an option if incoming CycloneDX BOMs are known to be in JSON format.\n\n### References\n\n* Issue was fixed via <https://github.com/CycloneDX/cyclonedx-core-java/pull/434>\n* Issue was introduced via <https://github.com/CycloneDX/cyclonedx-core-java/commit/162aa594f347b3f612fe0a45071693c3cd398ce9>\n* <https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing>\n* <https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#xpathexpression>\n",
+  "aliases": [
+    "CVE-2024-38374"
+  ],
+  "modified": "2024-06-28T19:01:56.474113Z",
+  "published": "2024-06-24T20:44:48Z",
+  "related": [
+    "CGA-467f-p579-vqm9",
+    "CGA-6ffw-f2qw-rxwj"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-06-28T18:15:04Z",
+    "cwe_ids": [
+      "CWE-611"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-06-24T20:44:48Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/CycloneDX/cyclonedx-core-java/security/advisories/GHSA-683x-4444-jxh8"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38374"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/CycloneDX/cyclonedx-core-java/pull/434"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/CycloneDX/cyclonedx-core-java/pull/434/commits/ab0bc9c530d24f737970dbd0287d1190b129853d"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/CycloneDX/cyclonedx-core-java"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.cyclonedx:cyclonedx-core-java",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.cyclonedx/cyclonedx-core-java"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.1.0"
+            },
+            {
+              "fixed": "9.0.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.1.0",
+        "2.1.1",
+        "2.5.0",
+        "2.5.1",
+        "2.6.0",
+        "2.6.1",
+        "2.6.2",
+        "2.6.3",
+        "2.6.4",
+        "2.6.5",
+        "2.7.0",
+        "3.0.0",
+        "3.0.1",
+        "3.0.2",
+        "3.0.3",
+        "3.0.4",
+        "3.0.5",
+        "3.0.6",
+        "3.0.7",
+        "3.0.8",
+        "4.0.0",
+        "4.0.1",
+        "4.0.2",
+        "4.0.3",
+        "4.1.0",
+        "4.1.1",
+        "4.1.2",
+        "5.0.0",
+        "5.0.1",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "6.0.0",
+        "7.0.0",
+        "7.1.0",
+        "7.1.1",
+        "7.1.2",
+        "7.1.3",
+        "7.1.4",
+        "7.1.5",
+        "7.1.6",
+        "7.2.0",
+        "7.2.1",
+        "7.3.0",
+        "7.3.1",
+        "7.3.2",
+        "8.0.0",
+        "8.0.1",
+        "8.0.2",
+        "8.0.3",
+        "9.0.0",
+        "9.0.1",
+        "9.0.2",
+        "9.0.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-683x-4444-jxh8/GHSA-683x-4444-jxh8.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

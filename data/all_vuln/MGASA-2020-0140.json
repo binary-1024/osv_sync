@@ -1,0 +1,134 @@
+{
+  "id": "MGASA-2020-0140",
+  "summary": "Updated kernel packages fix security vulnerabilities",
+  "details": "This update is based on upstream 5.5.9 and fixes at least the following\nsecurity vulnerabilities:\n\nIn the Linux kernel 5.4.0-rc2, there is a use-after-free (read) in the\n__blk_add_trace function in kernel/trace/blktrace.c (which is used to\nfill out a blk_io_trace structure and place it in a per-cpu sub-buffer)\n(CVE-2019-19768).\n\nThere is a use-after-free vulnerability in the Linux kernel through 5.5.2\nin the vc_do_resize function in drivers/tty/vt/vt.c (CVE-2020-8647).\n\nThere is a use-after-free vulnerability in the Linux kernel through 5.5.2\nin the n_tty_receive_buf_common function in drivers/tty/n_tty.c\n(CVE-2020-8648).\n\nThere is a use-after-free vulnerability in the Linux kernel through 5.5.2\nin the vgacon_invert_region function in drivers/video/console/vgacon.c. \n(CVE-2020-8649).\n\nAn issue was discovered in the Linux kernel through 5.5.6. set_fdc in\ndrivers/block/floppy.c leads to a wait_til_ready out-of-bounds read\nbecause the FDC index is not checked for errors before assigning it,\naka CID-2e90ca68b0d2 (CVE-2020-9383).\n\nAn issue was discovered in the Linux kernel 5.4 and 5.5 through 5.5.6\non the AArch64 architecture. It ignores the top byte in the address\npassed to the brk system call, potentially moving the memory break\ndownwards when the application expects it to move upwards, aka CID-\ndcde237319e6. This has been observed to cause heap corruption with\nthe GNU C Library malloc implementation (CVE-2020-9391).\n\nOther notable changes in this update:\n- kernel is built with the updated gcc-8.4.0, thus fixing the issue\n  with nvidia drivers complaining about gcc mismatch and failing the\n  dkms-nvidia* builds.\n- ahci: Add Intel Comet Lake H RAID PCI ID\n- update Amd Sensor Fusion Hub driver to v4\n- replace staging exfat driver with new upstream exfat driver\n- update rtl8812au driver for more hw support (mga#26178)\n- fscrypt: don't evict dirty inodes after removing key\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2020-03-13T23:19:55Z",
+  "related": [
+    "CVE-2019-19768",
+    "CVE-2020-8647",
+    "CVE-2020-8648",
+    "CVE-2020-8649",
+    "CVE-2020-9383",
+    "CVE-2020-9391"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2020-0140.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=26331"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=26178"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.9"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.5.9-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0140.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.0.18-5.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0140.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.8-5.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0140.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

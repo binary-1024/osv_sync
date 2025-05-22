@@ -1,0 +1,87 @@
+{
+  "id": "MGASA-2016-0411",
+  "summary": "Updated kernel-linus-4.4.32 packages fix security vulnerability",
+  "details": "This update is based on upstream 4.4.32 and fixes alteast the following\nsecurity issues:\n\nVladimir Bene discovered an unbounded recursion in the VLAN and TEB\nGeneric Receive Offload (GRO) processing implementations in the Linux\nkernel, A remote attacker could use this to cause a stack corruption,\nleading to a denial of service (system crash). (CVE-2016-7039)\n\nThe proc_keys_show function in security/keys/proc.c in the Linux kernel\nthrough 4.8.2, when the GNU Compiler Collection (gcc) stack protector is\nenabled, uses an incorrect buffer size for certain timeout data, which\nallows local users to cause a denial of service (stack memory corruption\nand panic) by reading the /proc/keys file (CVE-2016-7042).\n\nThe arcmsr_iop_message_xfer function in drivers/scsi/arcmsr/arcmsr_hba.c\nin the Linux kernel through 4.8.2 does not restrict a certain length\nfield, which allows local users to gain privileges or cause a denial of\nservice (heap-based buffer overflow) via an ARCMSR_MESSAGE_WRITE_WQBUFFER\ncontrol code (CVE-2016-7425).\n\nNull pointer dereference in kvm/emulate.c (CVE-2016-8630).\n\nA buffer overflow vulnerability due to a lack of input filtering of\nincoming fragmented datagrams was found in the IP-over-1394 driver\n[firewire-net] in a fragment handling code in the Linux kernel. A\nmaliciously formed fragment with a respectively large datagram offset\nwould cause a memcpy() past the datagram buffer, which would cause a\nsystem panic or possible arbitrary code execution. The flaw requires\n[firewire-net] module to be loaded and is remotely exploitable from\nconnected firewire devices, but not over a local network (CVE-2016-8633).\n\nFor other fixes in this update, see the referenced changelogs.\n",
+  "modified": "2016-12-07T11:10:33Z",
+  "published": "2016-12-07T11:48:35Z",
+  "related": [
+    "CVE-2016-7039",
+    "CVE-2016-7042",
+    "CVE-2016-7425",
+    "CVE-2016-8630",
+    "CVE-2016-8633"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0411.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=19794"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.27"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.28"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.29"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.30"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.31"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.32"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.32-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0411.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

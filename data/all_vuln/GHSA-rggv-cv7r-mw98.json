@@ -1,0 +1,453 @@
+{
+  "id": "GHSA-rggv-cv7r-mw98",
+  "summary": "Connection leaking on idle timeout when TCP congested",
+  "details": "### Impact\nIf an HTTP/2 connection gets TCP congested, when an idle timeout occurs the HTTP/2 session is marked as closed, and then a GOAWAY frame is queued to be written.\nHowever it is not written because the connection is TCP congested.\nWhen another idle timeout period elapses, it is then supposed to hard close the connection, but it delegates to the HTTP/2 session which reports that it has already been closed so it does not attempt to hard close the connection.\n\nThis leaves the connection in ESTABLISHED state (i.e. not closed), TCP congested, and idle.\n\nAn attacker can cause many connections to end up in this state, and the server may run out of file descriptors, eventually causing the server to stop accepting new connections from valid clients.\n\nThe client may also be impacted (if the server does not read causing a TCP congestion), but the issue is more severe for servers.\n\n### Patches\nPatched versions:\n* 9.4.54\n* 10.0.20\n* 11.0.20\n* 12.0.6\n\n### Workarounds\nDisable HTTP/2 and HTTP/3 support until you can upgrade to a patched version of Jetty.\nHTTP/1.x is not affected.\n\n### References\n* https://github.com/jetty/jetty.project/issues/11256.",
+  "aliases": [
+    "CVE-2024-22201"
+  ],
+  "modified": "2025-02-07T21:02:32.212058Z",
+  "published": "2024-02-26T20:13:46Z",
+  "related": [
+    "CGA-5328-2w4x-xrgm",
+    "CGA-fc4g-frm4-jw6v",
+    "CVE-2024-22201"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-02-26T16:27:56Z",
+    "cwe_ids": [
+      "CWE-400",
+      "CWE-770"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-26T20:13:46Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/security/advisories/GHSA-rggv-cv7r-mw98"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22201"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/issues/11256"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/issues/11259"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/commit/0839a208cdc3fcfe25206a77af59ba9fda260188"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/commit/b953871c9a5ff4fbca4a2499848f75182dbd9810"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jetty/jetty.project"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2024/04/msg00002.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20240329-0001"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2024/03/20/2"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http2:http2-common",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http2/http2-common"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "9.3.0"
+            },
+            {
+              "fixed": "9.4.54"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "9.3.0.v20150612",
+        "9.3.1.v20150714",
+        "9.3.10.M0",
+        "9.3.10.v20160621",
+        "9.3.11.M0",
+        "9.3.11.v20160721",
+        "9.3.12.v20160915",
+        "9.3.13.M0",
+        "9.3.13.v20161014",
+        "9.3.14.v20161028",
+        "9.3.15.v20161220",
+        "9.3.16.v20170120",
+        "9.3.17.RC0",
+        "9.3.17.v20170317",
+        "9.3.18.v20170406",
+        "9.3.19.v20170502",
+        "9.3.2.v20150730",
+        "9.3.20.v20170531",
+        "9.3.21.M0",
+        "9.3.21.RC0",
+        "9.3.21.v20170918",
+        "9.3.22.v20171030",
+        "9.3.23.v20180228",
+        "9.3.24.v20180605",
+        "9.3.25.v20180904",
+        "9.3.26.v20190403",
+        "9.3.27.v20190418",
+        "9.3.28.v20191105",
+        "9.3.29.v20201019",
+        "9.3.3.v20150827",
+        "9.3.30.v20211001",
+        "9.3.4.RC0",
+        "9.3.4.RC1",
+        "9.3.4.v20151007",
+        "9.3.5.v20151012",
+        "9.3.6.v20151106",
+        "9.3.7.RC0",
+        "9.3.7.RC1",
+        "9.3.7.v20160115",
+        "9.3.8.RC0",
+        "9.3.8.v20160314",
+        "9.3.9.M0",
+        "9.3.9.M1",
+        "9.3.9.v20160517",
+        "9.4.0.M0",
+        "9.4.0.M1",
+        "9.4.0.RC0",
+        "9.4.0.RC1",
+        "9.4.0.RC2",
+        "9.4.0.RC3",
+        "9.4.0.v20161208",
+        "9.4.0.v20180619",
+        "9.4.1.v20170120",
+        "9.4.1.v20180619",
+        "9.4.10.RC0",
+        "9.4.10.RC1",
+        "9.4.10.v20180503",
+        "9.4.11.v20180605",
+        "9.4.12.RC0",
+        "9.4.12.RC1",
+        "9.4.12.RC2",
+        "9.4.12.v20180830",
+        "9.4.13.v20181111",
+        "9.4.14.v20181114",
+        "9.4.15.v20190215",
+        "9.4.16.v20190411",
+        "9.4.17.v20190418",
+        "9.4.18.v20190429",
+        "9.4.19.v20190610",
+        "9.4.2.v20170220",
+        "9.4.2.v20180619",
+        "9.4.20.v20190813",
+        "9.4.21.v20190926",
+        "9.4.22.v20191022",
+        "9.4.23.v20191118",
+        "9.4.24.v20191120",
+        "9.4.25.v20191220",
+        "9.4.26.v20200117",
+        "9.4.27.v20200227",
+        "9.4.28.v20200408",
+        "9.4.29.v20200521",
+        "9.4.3.v20170317",
+        "9.4.3.v20180619",
+        "9.4.30.v20200611",
+        "9.4.31.v20200723",
+        "9.4.32.v20200930",
+        "9.4.33.v20201020",
+        "9.4.34.v20201102",
+        "9.4.35.v20201120",
+        "9.4.36.v20210114",
+        "9.4.37.v20210219",
+        "9.4.38.v20210224",
+        "9.4.39.v20210325",
+        "9.4.4.v20170414",
+        "9.4.4.v20180619",
+        "9.4.40.v20210413",
+        "9.4.41.v20210516",
+        "9.4.42.v20210604",
+        "9.4.43.v20210629",
+        "9.4.44.v20210927",
+        "9.4.45.v20220203",
+        "9.4.46.v20220331",
+        "9.4.47.v20220610",
+        "9.4.48.v20220622",
+        "9.4.49.v20220914",
+        "9.4.5.v20170502",
+        "9.4.5.v20180619",
+        "9.4.50.v20221201",
+        "9.4.51.v20230217",
+        "9.4.52.v20230823",
+        "9.4.53.v20231009",
+        "9.4.6.v20170531",
+        "9.4.6.v20180619",
+        "9.4.7.RC0",
+        "9.4.7.v20170914",
+        "9.4.7.v20180619",
+        "9.4.8.v20171121",
+        "9.4.8.v20180619",
+        "9.4.9.v20180320"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 9.4.53",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http2:http2-common",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http2/http2-common"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.20"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "10.0.0",
+        "10.0.1",
+        "10.0.10",
+        "10.0.11",
+        "10.0.12",
+        "10.0.13",
+        "10.0.14",
+        "10.0.15",
+        "10.0.16",
+        "10.0.17",
+        "10.0.18",
+        "10.0.19",
+        "10.0.2",
+        "10.0.3",
+        "10.0.4",
+        "10.0.5",
+        "10.0.6",
+        "10.0.7",
+        "10.0.8",
+        "10.0.9"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 10.0.19",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http3:http3-common",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http3/http3-common"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "10.0.8"
+            },
+            {
+              "fixed": "10.0.20"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "10.0.10",
+        "10.0.11",
+        "10.0.12",
+        "10.0.13",
+        "10.0.14",
+        "10.0.15",
+        "10.0.16",
+        "10.0.17",
+        "10.0.18",
+        "10.0.19",
+        "10.0.8",
+        "10.0.9"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 10.0.19",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http2:http2-common",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http2/http2-common"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "11.0.0"
+            },
+            {
+              "fixed": "11.0.20"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "11.0.0",
+        "11.0.1",
+        "11.0.10",
+        "11.0.11",
+        "11.0.12",
+        "11.0.13",
+        "11.0.14",
+        "11.0.15",
+        "11.0.16",
+        "11.0.17",
+        "11.0.18",
+        "11.0.19",
+        "11.0.2",
+        "11.0.3",
+        "11.0.4",
+        "11.0.5",
+        "11.0.6",
+        "11.0.7",
+        "11.0.8",
+        "11.0.9"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 11.0.19",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http3:http3-common",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http3/http3-common"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "11.0.8"
+            },
+            {
+              "fixed": "11.0.20"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "11.0.10",
+        "11.0.11",
+        "11.0.12",
+        "11.0.13",
+        "11.0.14",
+        "11.0.15",
+        "11.0.16",
+        "11.0.17",
+        "11.0.18",
+        "11.0.19",
+        "11.0.8",
+        "11.0.9"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 11.0.19",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http2:jetty-http2-common",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http2/jetty-http2-common"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "12.0.0"
+            },
+            {
+              "fixed": "12.0.6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "12.0.0",
+        "12.0.1",
+        "12.0.2",
+        "12.0.3",
+        "12.0.4",
+        "12.0.5"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 12.0.5",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http3:jetty-http3-common",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http3/jetty-http3-common"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "12.0.0"
+            },
+            {
+              "fixed": "12.0.6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "12.0.0",
+        "12.0.1",
+        "12.0.2",
+        "12.0.3",
+        "12.0.4",
+        "12.0.5"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 12.0.5",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

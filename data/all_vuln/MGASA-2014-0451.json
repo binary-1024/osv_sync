@@ -1,0 +1,164 @@
+{
+  "id": "MGASA-2014-0451",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on upstream -longterm 3.14.23 and\nfixes the following security issues:\n\nThe kvm_iommu_map_pages function in virt/kvm/iommu.c in the Linux\nkernel through 3.16.1 miscalculates the number of pages during the\nhandling of a mapping failure, which allows guest OS users to (1)\ncause a denial of service (host OS memory corruption) or possibly\nhave unspecified other impact by triggering a large gfn value or\n(2) cause a denial of service (host OS memory consumption) by\ntriggering a small gfn value that leads to permanently pinned\npages (CVE-2014-3601).\n\nThe assoc_array_gc function in the associative-array implementation\nin lib/assoc_array.c in the Linux kernel before 3.16.3 does not\nproperly implement garbage collection, which allows local users to\ncause a denial of service (NULL pointer dereference and system\ncrash) or possibly have unspecified other impact via multiple\n\"keyctl newring\" operations followed by a \"keyctl timeout\"\noperation (CVE-2014-3631).\n\nThe xfs_da3_fixhashpath function in fs/xfs/xfs_da_btree.c in the\nxfs implementation in the Linux kernel before 3.14.2 does not properly\ncompare btree hash values, which allows local users to cause a denial\nof service (filesystem corruption, and OOPS or panic) via operations\non directories that have hash collisions, as demonstrated by rmdir\noperations (CVE-2014-7283).\n\nThe net_get_random_once implementation in net/core/utils.c in the\nLinux kernel 3.13.x and 3.14.x before 3.14.5 on certain Intel processors\ndoes not perform the intended slow-path operation to initialize random\nseeds, which makes it easier for remote attackers to spoof or disrupt IP\ncommunication by leveraging the predictability of TCP sequence numbers,\nTCP and UDP port numbers, and IP ID values (CVE-2014-7284)\n\nThe pivot_root implementation in fs/namespace.c in the Linux kernel\nthrough 3.17 does not properly interact with certain locations of\na chroot directory, which allows local users to cause a denial of\nservice (mount-tree loop) via . (dot) values in both arguments to\nthe pivot_root system call (CVE-2014-7970).\n\nThe do_umount function in fs/namespace.c in the Linux kernel \nthrough 3.17 does not require the CAP_SYS_ADMIN capability for\ndo_remount_sb calls that change the root filesystem to read-only,\nwhich allows local users to cause a denial of service (loss of\nwritability) by making certain unshare system calls, clearing the\n/ MNT_LOCKED flag, and making an MNT_FORCE umount system call\n(CVE-2014-7975).\n\nFor other fixes included in this update, read the referenced\nchangelogs.\n",
+  "modified": "2014-11-15T18:13:04Z",
+  "published": "2014-11-15T18:31:46Z",
+  "related": [
+    "CVE-2014-3601",
+    "CVE-2014-3631",
+    "CVE-2014-7283",
+    "CVE-2014-7284",
+    "CVE-2014-7970",
+    "CVE-2014-7975"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0451.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=14003"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://kernelnewbies.org/Linux_3.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://kernelnewbies.org/Linux_3.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.17"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.18"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.19"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.20"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.21"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.22"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.23"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.14.23-1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0451.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

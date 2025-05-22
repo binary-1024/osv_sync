@@ -1,0 +1,90 @@
+{
+  "id": "MGASA-2014-0144",
+  "summary": "Updated stunnel package fixes security vulnerability",
+  "details": "A flaw was found in the way stunnel, a socket wrapper which can provide\nSSL support to ordinary applications, performed (re)initialization of PRNG\nafter fork. When accepting a new connection, the server forks and the\nchild process handles the request. The RAND_bytes() function of openssl\ndoesn't reset its state after the fork, but seeds the PRNG with the output\nof time(NULL). The most important consequence is that servers using EC\n(ECDSA) or DSA certificates may under certain conditions leak their\nprivate key (CVE-2014-0016).\n\nThe updated packages fix this issue by using threads instead of new\nprocesses to handle connections.\n\nAlso an issue has been corrected where the directory for the pid file was\nnot being created when the package is installed.\n\nAn issue currently exists in Mageia 4 where it fails trying to use FIPS SSL\n(mga#13124). This can be worked around by adding fips = no into the config.\n",
+  "modified": "2014-04-01T17:20:33Z",
+  "published": "2014-03-31T19:40:37Z",
+  "related": [
+    "CVE-2014-0016"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0144.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=12943"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1072180"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "stunnel",
+        "ecosystem": "Mageia:3",
+        "purl": "pkg:rpm/mageia/stunnel?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.55-1.2.mga3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0144.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "stunnel",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/stunnel?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.56-3.2.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0144.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

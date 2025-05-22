@@ -1,0 +1,139 @@
+{
+  "id": "MGASA-2022-0278",
+  "summary": "Updated kernel packages fix security vulnerabilities",
+  "details": "This kernel update is based on upstream 5.15.58 and fixes at least the\nfollowing security issues:\n\nKernel lockdown bypass when UEFI secure boot is disabled / unavailable\nand IMA appraisal is enabled (CVE-2022-21505).\n\nAliases in the branch predictor may cause some AMD processors to predict\nthe wrong branch type potentially leading to information disclosure\n(CVE-2022-23825).\n\nMis-trained branch predictions for return instructions may allow arbitrary\nspeculative code execution under certain microarchitecture-dependent\nconditions (CVE-2022-29900, RetBleed).\n\nIntel microprocessor generations 6 to 8 are affected by a new Spectre\nvariant that is able to bypass their retpoline mitigation in the kernel\nto leak arbitrary data. An attacker with unprivileged user access can\nhijack return instructions to achieve arbitrary speculative code execution\nunder certain microarchitecture-dependent conditions (CVE-2022-29901).\n\nThe Linux kernel before 5.18.13 lacks a certain clear operation for the\nblock starting symbol (.bss). This allows Xen PV guest OS users to cause\na denial of service or gain privileges (CVE-2022-36123).\n\nAn issue was discovered in the Linux kernel through 5.18.14.\nxfrm_expand_policies in net/xfrm/xfrm_policy.c can cause a refcount to be\ndropped twice (CVE-2022-36879).\n\nnfqnl_mangle in net/netfilter/nfnetlink_queue.c in the Linux kernel\nthrough 5.18.14 allows remote attackers to cause a denial of service\n(panic) because, in the case of an nf_queue verdict with a one-byte\nnfta_payload attribute, an skb_pull can encounter a negative\nskb->len (CVE-2022-36946).\n\nOther fixes in this update:\n- fs: sendfile handles O_NONBLOCK of out_fd\n- hugetlb: fix memoryleak in hugetlb_mcopy_atomic_pte\n- mm: fix page leak with multiple threads mapping the same page\n- x86/bugs: Do not enable IBPB at firmware entry when IBPB is not available\n- x86/speculation: Make all RETbleed mitigations 64-bit only\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "modified": "2022-08-06T14:52:29Z",
+  "published": "2022-08-06T15:43:47Z",
+  "related": [
+    "CVE-2022-21505",
+    "CVE-2022-23825",
+    "CVE-2022-29900",
+    "CVE-2022-29901",
+    "CVE-2022-36123",
+    "CVE-2022-36879",
+    "CVE-2022-36946"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0278.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=30687"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.56"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.57"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.58"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.amd.com/en/corporate/product-security/bulletin/amd-sb-1037"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00702.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.58-2.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0278.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.1.36-1.4.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0278.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.20-1.30.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0278.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

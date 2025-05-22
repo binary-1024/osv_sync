@@ -1,0 +1,66 @@
+{
+  "id": "MGASA-2023-0141",
+  "summary": "Updated davmail packages fix security vulnerability",
+  "details": "Included in Log4j 1.2 is a SocketServer class that is vulnerable to\ndeserialization of untrusted data which can be exploited to remotely\nexecute arbitrary code when combined with a deserialization gadget when\nlistening to untrusted network traffic for log data. This affects Log4j\nversions up to 1.2 up to 1.2.17. (CVE-2019-17571)\nJMSAppender in Log4j 1.2 is vulnerable to deserialization of untrusted\ndata when the attacker has write access to the Log4j configuration. The\nattacker can provide TopicBindingName and\nTopicConnectionFactoryBindingName configurations causing JMSAppender to\nperform JNDI requests that result in remote code execution in a similar\nfashion to CVE-2021-44228. Note this issue only affects Log4j 1.2 when\nspecifically configured to use JMSAppender, which is not the default.\n(CVE-2021-4104)\nJMSSink in all versions of Log4j 1.x is vulnerable to deserialization of\nuntrusted data when the attacker has write access to the Log4j\nconfiguration or if the configuration references an LDAP service the\nattacker has access to. The attacker can provide a\nTopicConnectionFactoryBindingName configuration causing JMSSink to perform\nJNDI requests that result in remote code execution in a similar fashion to\nCVE-2021-4104. Note this issue only affects Log4j 1.x when specifically\nconfigured to use JMSSink, which is not the default. (CVE-2022-23302)\nBy design, the JDBCAppender in Log4j 1.2.x accepts an SQL statement as a\nconfiguration parameter where the values to be inserted are converters\nfrom PatternLayout. The message converter, %m, is likely to always be\nincluded. This allows attackers to manipulate the SQL by entering crafted\nstrings into input fields or headers of an application that are logged\nallowing unintended SQL queries to be executed. Note this issue only\naffects Log4j 1.x when specifically configured to use the JDBCAppender,\nwhich is not the default. (CVE-2022-23305)\n",
+  "modified": "2023-04-15T17:50:03Z",
+  "published": "2023-04-15T19:03:44Z",
+  "related": [
+    "CVE-2019-17571",
+    "CVE-2021-4104",
+    "CVE-2022-23302",
+    "CVE-2022-23305"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2023-0141.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=31708"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/mguessan/davmail/blob/master/RELEASE-NOTES.md"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "davmail",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/davmail?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.1.0-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0141.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

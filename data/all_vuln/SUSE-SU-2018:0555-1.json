@@ -1,0 +1,1730 @@
+{
+  "id": "SUSE-SU-2018:0555-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 11 SP4 kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2017-5715: Systems with microprocessors utilizing speculative\n  execution and indirect branch prediction may allow unauthorized disclosure\n  of information to an attacker with local user access via a side-channel\n  analysis (bnc#1068032).\n\n  The previous fix using CPU Microcode has been complemented by building\n  the Linux Kernel with return trampolines aka 'retpolines'.\n\n- CVE-2018-5332: In the Linux kernel the rds_message_alloc_sgs() function\n  did not validate a value that is used during DMA page allocation, leading\n  to a heap-based out-of-bounds write (related to the rds_rdma_extra_size\n  function in net/rds/rdma.c) (bnc#1075621).\n- CVE-2018-5333: In the Linux kernel the rds_cmsg_atomic function in\n  net/rds/rdma.c mishandled cases where page pinning fails or an invalid\n  address is supplied, leading to an rds_atomic_free_op NULL pointer\n  dereference (bnc#1075617).\n- CVE-2017-18017: The tcpmss_mangle_packet function in\n  net/netfilter/xt_TCPMSS.c in the Linux kernel allowed remote attackers\n  to cause a denial of service (use-after-free and memory corruption)\n  or possibly have unspecified other impact by leveraging the presence of\n  xt_TCPMSS in an iptables action (bnc#1074488).\n- CVE-2017-18079: drivers/input/serio/i8042.c in the Linux kernel allowed\n  attackers to cause a denial of service (NULL pointer dereference and\n  system crash) or possibly have unspecified other impact because the\n  port->exists value can change after it is validated (bnc#1077922).\n- CVE-2015-1142857: On multiple SR-IOV cars it is possible for VF's\n  assigned to guests to send ethernet flow control pause frames via the\n  PF. (bnc#1077355).\n- CVE-2017-17741: The KVM implementation in the Linux kernel allowed\n  attackers to obtain potentially sensitive information from kernel\n  memory, aka a write_mmio stack-based out-of-bounds read, related to\n  arch/x86/kvm/x86.c and include/trace/events/kvm.h (bnc#1073311).\n- CVE-2017-13215: A elevation of privilege vulnerability in the Upstream\n  kernel skcipher. (bnc#1075908).\n- CVE-2018-1000004: In the Linux kernel a race condition vulnerability\n  existed in the sound system, this can lead to a deadlock and denial of\n  service condition (bnc#1076017).\n\nThe following non-security bugs were fixed:\n\n- alsa: aloop: Fix inconsistent format due to incomplete rule (bsc#1045538).\n- alsa: aloop: Fix racy hw constraints adjustment (bsc#1045538).\n- alsa: aloop: Release cable upon open error path (bsc#1045538).\n- alsa: pcm: Abort properly at pending signal in OSS read/write loops (bsc#1045538).\n- alsa: pcm: Add missing error checks in OSS emulation plugin builder (bsc#1045538).\n- alsa: pcm: Allow aborting mutex lock at OSS read/write loops (bsc#1045538).\n- alsa: pcm: Remove incorrect snd_BUG_ON() usages (bsc#1045538).\n- alsa: pcm: Remove yet superfluous WARN_ON() (bsc#1045538).\n- btrfs: cleanup unnecessary assignment when cleaning up all the residual transaction (FATE#325056).\n- btrfs: copy fsid to super_block s_uuid (bsc#1080774).\n- btrfs: do not wait for all the writers circularly during the transaction commit (FATE#325056).\n- btrfs: do not WARN() in btrfs_transaction_abort() for IO errors (bsc#1080363).\n- btrfs: fix two use-after-free bugs with transaction cleanup (FATE#325056).\n- btrfs: make the state of the transaction more readable (FATE#325056).\n- btrfs: qgroup: exit the rescan worker during umount (bsc#1080685).\n- btrfs: qgroup: Fix dead judgement on qgroup_rescan_leaf() return value (bsc#1080685).\n- btrfs: reset intwrite on transaction abort (FATE#325056).\n- btrfs: set qgroup_ulist to be null after calling ulist_free() (bsc#1080359).\n- btrfs: stop waiting on current trans if we aborted (FATE#325056).\n- cdc-acm: apply quirk for card reader (bsc#1060279).\n- cdrom: factor out common open_for_* code (bsc#1048585).\n- cdrom: wait for tray to close (bsc#1048585).\n- delay: add poll_event_interruptible (bsc#1048585).\n- dm flakey: add corrupt_bio_byte feature (bsc#1080372).\n- dm flakey: add drop_writes (bsc#1080372).\n- dm flakey: error READ bios during the down_interval (bsc#1080372).\n- dm flakey: fix crash on read when corrupt_bio_byte not set (bsc#1080372).\n- dm flakey: fix reads to be issued if drop_writes configured (bsc#1080372).\n- dm flakey: introduce 'error_writes' feature (bsc#1080372).\n- dm flakey: support feature args (bsc#1080372).\n- dm flakey: use dm_target_offset and support discards (bsc#1080372).\n- ext2: free memory allocated and forget buffer head when io error happens (bnc#1069508).\n- ext2: use unlikely to improve the efficiency of the kernel (bnc#1069508).\n- ext3: add necessary check in case IO error happens (bnc#1069508).\n- ext3: use unlikely to improve the efficiency of the kernel (bnc#1069508).\n- fork: clear thread stack upon allocation (bsc#1077560).\n- kaiser: Add proper NX handling for !NX-capable systems also to kaiser_add_user_map(). (bsc#1076278).\n- kaiser: do not clobber ZF by calling ENABLE_IBRS after test and before jz\n- kaiser: fix ia32 compat sysexit (bsc#1080579) sysexit_from_sys_call cannot make assumption of accessible stack after CR3 switch, and therefore should use the SWITCH_USER_CR3_NO_STACK method to flip the pagetable hierarchy.\n- kaiser: Fix trampoline stack loading issue on XEN PV\n- kaiser: handle non-accessible stack in sysretl_from_sys_call properly (bsc#bsc#1080579)\n- kaiser: make sure not to touch stack after CR3 switch in compat syscall return\n- kaiser: really do switch away from trampoline stack to kernel stack in ia32_syscall entry (bsc#1080579)\n- kbuild: modversions for EXPORT_SYMBOL() for asm (bsc#1074621 bsc#1068032).\n- keys: trusted: fix writing past end of buffer in trusted_read() (bsc#1074880).\n- media: omap_vout: Fix a possible null pointer dereference in omap_vout_open() (bsc#1050431).\n- mISDN: fix a loop count (bsc#1077191).\n- nfsd: do not share group_info among threads (bsc@1070623).\n- ocfs2: avoid blocking in ocfs2_mark_lockres_freeing() in downconvert thread (bsc#1076437).\n- ocfs2: do not set OCFS2_LOCK_UPCONVERT_FINISHING if nonblocking lock can not be granted at once (bsc#1076437).\n- ocfs2: NFS hangs in __ocfs2_cluster_lock due to race with ocfs2_unblock_lock (bsc#962257).\n- powerpc/64: Add macros for annotating the destination of rfid/hrfid (bsc#1068032, bsc#1075088).\n- powerpc/64: Convert fast_exception_return to use RFI_TO_USER/KERNEL (bsc#1068032, bsc#1075088).\n- powerpc/64: Convert the syscall exit path to use RFI_TO_USER/KERNEL (bsc#1068032, bsc#1075088).\n- powerpc/64s: Add EX_SIZE definition for paca exception save areas (bsc#1068032, bsc#1075088).\n- powerpc/64s: Add support for RFI flush of L1-D cache  (bsc#1068032, bsc#1075088).\n- powerpc/64s: Allow control of RFI flush via debugfs (bsc#1068032,  bsc#1075088).\n- powerpc/64s: Convert slb_miss_common to use RFI_TO_USER/KERNEL (bsc#1068032, bsc#1075088).\n- powerpc/64s: Simple RFI macro conversions (bsc#1068032, bsc#1075088).\n- powerpc/64s: Support disabling RFI flush with no_rfi_flush and nopti (bsc#1068032, bsc#1075088).\n- powerpc/64s: Wire up cpu_show_meltdown() (bsc#1068032).\n- powerpc/asm: Allow including ppc_asm.h in asm files (bsc#1068032, bsc#1075088).\n- powerpc: Fix register clobbering when accumulating stolen time (bsc#1059174).\n- powerpc: Fix up the kdump base cap to 128M (bsc#1079917, bsc#1077487).\n- powerpc: Mark CONFIG_PPC_DEBUG_RFI as BROKEN (bsc#1075088).\n- powerpc/perf: Dereference BHRB entries safely (bsc#1064861, FATE#317619, git-fixes).\n- powerpc/perf: Fix book3s kernel to userspace backtraces (bsc#1080133).\n- powerpc/pseries: Add H_GET_CPU_CHARACTERISTICS flags & wrapper (bsc#1068032, bsc#1075088).\n- powerpc/pseries: include linux/types.h in asm/hvcall.h (bsc#1068032, bsc#1075088).\n- powerpc/pseries: Introduce H_GET_CPU_CHARACTERISTICS (bsc#1068032, bsc#1075088).\n- powerpc/pseries: Kill all prefetch streams on context switch (bsc#1068032, bsc#1075088).\n- powerpc/pseries: Query hypervisor for RFI flush settings (bsc#1068032,  bsc#1075088).\n- powerpc/pseries: rfi-flush: Call setup_rfi_flush() after LPM migration (bsc#1068032, bsc#1075088).\n- powerpc/pseries/rfi-flush: Call setup_rfi_flush() after LPM migration (bsc#1075088).\n- powerpc/pseries/rfi-flush: Drop PVR-based selection (bsc#1075088).\n- powerpc/rfi-flush: Add DEBUG_RFI config option (bsc#1068032,  bsc#1075088).\n- powerpc/rfi-flush: Factor out init_fallback_flush() (bsc#1075088).\n- powerpc/rfi-flush: Make setup_rfi_flush() not __init (bsc#1075088).\n- powerpc/rfi-flush: Move RFI flush fields out of the paca  (unbreak kABI) (bsc#1068032, bsc#1075088).\n- powerpc/rfi-flush: Move the logic to avoid a redo into the  sysfs code (bsc#1068032, bsc#1075088).\n- powerpc/rfi-flush: Move the logic to avoid a redo into the sysfs code (bsc#1075088).\n- powerpc/vdso64: Use double word compare on pointers (bsc#1070781).\n- rfi-flush: Make DEBUG_RFI a CONFIG option (bsc#1068032, bsc#1075088).\n- rfi-flush: Move rfi_flush_fallback_area to end of paca (bsc#1075088).\n- rfi-flush: Move RFI flush fields out of the paca (unbreak kABI) (bsc#1075088).\n- rfi-flush: Switch to new linear fallback flush (bsc#1068032,bsc#1075088).\n- s390: add ppa to the idle loop (bnc#1077406, LTC#163910).\n- s390/cpuinfo: show facilities as reported by stfle (bnc#1076849, LTC#163741).\n- scsi: libiscsi: fix shifting of DID_REQUEUE host byte (bsc#1078875).\n- scsi: sr: wait for the medium to become ready (bsc#1048585).\n- scsi: virtio_scsi: let host do exception handling (bsc#936530,bsc#1060682).\n- storvsc: do not assume SG list is continuous when doing bounce buffers (bsc#1075410).\n- sysfs/cpu: Add vulnerability folder (bnc#1012382).\n- sysfs/cpu: Fix typos in vulnerability documentation (bnc#1012382).\n- sysfs: spectre_v2, handle spec_ctrl (bsc#1075994 bsc#1075091).\n- x86/acpi: Handle SCI interrupts above legacy space gracefully (bsc#1068984).\n- x86/acpi: Reduce code duplication in mp_override_legacy_irq() (bsc#1068984).\n- x86, asm: Extend definitions of _ASM_* with a raw format (bsc#1068032 CVE-2017-5754).\n- x86/boot: Fix early command-line parsing when matching at end (bsc#1068032).\n- x86/cpu: Factor out application of forced CPU caps (bsc#1075994 bsc#1075091).\n- x86/cpu: Implement CPU vulnerabilites sysfs functions (bnc#1012382).\n- x86/CPU: Sync CPU feature flags late (bsc#1075994 bsc#1075091).\n- x86/kaiser: Populate shadow PGD with NX bit only if supported by platform (bsc#1076154 bsc#1076278).\n- x86/kaiser: use trampoline stack for kernel entry.\n- x86/microcode/intel: Extend BDW late-loading further with LLC size check (bsc#1054305).\n- x86/microcode/intel: Extend BDW late-loading with a revision check (bsc#1054305).\n- x86/microcode: Rescan feature flags upon late loading (bsc#1075994 bsc#1075091).\n- x86/retpolines/spec_ctrl: disable IBRS on !SKL if retpolines are active (bsc#1068032).\n- x86/spec_ctrl: handle late setting of X86_FEATURE_SPEC_CTRL properly (bsc#1075994 bsc#1075091).\n- x86/spectre_v2: fix ordering in IBRS initialization (bsc#1075994 bsc#1075091).\n- x86/spectre_v2: nospectre_v2 means nospec too (bsc#1075994 bsc#1075091).\n- x86/speculation: Fix typo IBRS_ATT, which should be IBRS_ALL (bsc#1068032 CVE-2017-5715).\n- mm: pin address_space before dereferencing it while isolating an LRU page (bnc#1081500).\n",
+  "modified": "2025-05-02T04:04:22.756211Z",
+  "published": "2018-02-27T16:16:04Z",
+  "related": [
+    "CVE-2015-1142857",
+    "CVE-2017-13215",
+    "CVE-2017-17741",
+    "CVE-2017-18017",
+    "CVE-2017-18079",
+    "CVE-2017-5715",
+    "CVE-2018-1000004",
+    "CVE-2018-5332",
+    "CVE-2018-5333"
+  ],
+  "upstream": [
+    "CVE-2015-1142857",
+    "CVE-2017-13215",
+    "CVE-2017-17741",
+    "CVE-2017-18017",
+    "CVE-2017-18079",
+    "CVE-2017-5715",
+    "CVE-2018-1000004",
+    "CVE-2018-5332",
+    "CVE-2018-5333"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2018/suse-su-20180555-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012382"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1045538"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1048585"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1050431"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1054305"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1059174"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1060279"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1060682"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1063544"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1064861"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1068032"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1068984"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1069508"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1070623"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1070781"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1073311"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1074488"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1074621"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1074880"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1075088"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1075091"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1075410"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1075617"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1075621"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1075908"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1075994"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076017"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076154"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076278"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076437"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076849"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1077191"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1077355"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1077406"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1077487"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1077560"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1077922"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1078875"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1079917"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1080133"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1080359"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1080363"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1080372"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1080579"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1080685"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1080774"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1081500"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/936530"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962257"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-1142857"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-13215"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-17741"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-18017"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-18079"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5715"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-1000004"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-5332"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-5333"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "cluster-network",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 11 SP4",
+        "purl": "pkg:rpm/suse/cluster-network&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4-2.32.4.6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "gfs2-kmp-xen": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-pae": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-pacemaker": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-pae": "1.4_3.0.101_108.35-2.32.4.6",
+            "cluster-network-kmp-bigmem": "1.4_3.0.101_108.35-2.32.4.6",
+            "ocfs2-kmp-bigmem": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-trace": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-ppc64": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-pae": "1.6_3.0.101_108.35-0.28.5.6",
+            "cluster-network-kmp-trace": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-bash-completion": "8.4.4-0.27.4.2",
+            "drbd-heartbeat": "8.4.4-0.27.4.2",
+            "drbd-kmp-bigmem": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-udev": "8.4.4-0.27.4.2",
+            "drbd": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-default": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-utils": "8.4.4-0.27.4.2",
+            "drbd-kmp-default": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-kmp-ppc64": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "gfs2-kmp-bigmem": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-trace": "2_3.0.101_108.35-0.24.4.6",
+            "cluster-network-kmp-ppc64": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-trace": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "cluster-network-kmp-xen": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-xen": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "ocfs2-kmp-xen": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-default": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-kmp-pae": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-xen": "8.4.4-0.27.4.2",
+            "ocfs2-kmp-default": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-ppc64": "2_3.0.101_108.35-0.24.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "drbd",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 11 SP4",
+        "purl": "pkg:rpm/suse/drbd&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "8.4.4-0.27.4.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "gfs2-kmp-xen": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-pae": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-pacemaker": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-pae": "1.4_3.0.101_108.35-2.32.4.6",
+            "cluster-network-kmp-bigmem": "1.4_3.0.101_108.35-2.32.4.6",
+            "ocfs2-kmp-bigmem": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-trace": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-ppc64": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-pae": "1.6_3.0.101_108.35-0.28.5.6",
+            "cluster-network-kmp-trace": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-bash-completion": "8.4.4-0.27.4.2",
+            "drbd-heartbeat": "8.4.4-0.27.4.2",
+            "drbd-kmp-bigmem": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-udev": "8.4.4-0.27.4.2",
+            "drbd": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-default": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-utils": "8.4.4-0.27.4.2",
+            "drbd-kmp-default": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-kmp-ppc64": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "gfs2-kmp-bigmem": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-trace": "2_3.0.101_108.35-0.24.4.6",
+            "cluster-network-kmp-ppc64": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-trace": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "cluster-network-kmp-xen": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-xen": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "ocfs2-kmp-xen": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-default": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-kmp-pae": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-xen": "8.4.4-0.27.4.2",
+            "ocfs2-kmp-default": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-ppc64": "2_3.0.101_108.35-0.24.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "drbd-kmp",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 11 SP4",
+        "purl": "pkg:rpm/suse/drbd-kmp&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "8.4.4-0.27.4.6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "gfs2-kmp-xen": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-pae": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-pacemaker": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-pae": "1.4_3.0.101_108.35-2.32.4.6",
+            "cluster-network-kmp-bigmem": "1.4_3.0.101_108.35-2.32.4.6",
+            "ocfs2-kmp-bigmem": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-trace": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-ppc64": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-pae": "1.6_3.0.101_108.35-0.28.5.6",
+            "cluster-network-kmp-trace": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-bash-completion": "8.4.4-0.27.4.2",
+            "drbd-heartbeat": "8.4.4-0.27.4.2",
+            "drbd-kmp-bigmem": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-udev": "8.4.4-0.27.4.2",
+            "drbd": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-default": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-utils": "8.4.4-0.27.4.2",
+            "drbd-kmp-default": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-kmp-ppc64": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "gfs2-kmp-bigmem": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-trace": "2_3.0.101_108.35-0.24.4.6",
+            "cluster-network-kmp-ppc64": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-trace": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "cluster-network-kmp-xen": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-xen": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "ocfs2-kmp-xen": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-default": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-kmp-pae": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-xen": "8.4.4-0.27.4.2",
+            "ocfs2-kmp-default": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-ppc64": "2_3.0.101_108.35-0.24.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "gfs2",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 11 SP4",
+        "purl": "pkg:rpm/suse/gfs2&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2-0.24.4.6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "gfs2-kmp-xen": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-pae": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-pacemaker": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-pae": "1.4_3.0.101_108.35-2.32.4.6",
+            "cluster-network-kmp-bigmem": "1.4_3.0.101_108.35-2.32.4.6",
+            "ocfs2-kmp-bigmem": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-trace": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-ppc64": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-pae": "1.6_3.0.101_108.35-0.28.5.6",
+            "cluster-network-kmp-trace": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-bash-completion": "8.4.4-0.27.4.2",
+            "drbd-heartbeat": "8.4.4-0.27.4.2",
+            "drbd-kmp-bigmem": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-udev": "8.4.4-0.27.4.2",
+            "drbd": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-default": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-utils": "8.4.4-0.27.4.2",
+            "drbd-kmp-default": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-kmp-ppc64": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "gfs2-kmp-bigmem": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-trace": "2_3.0.101_108.35-0.24.4.6",
+            "cluster-network-kmp-ppc64": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-trace": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "cluster-network-kmp-xen": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-xen": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "ocfs2-kmp-xen": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-default": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-kmp-pae": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-xen": "8.4.4-0.27.4.2",
+            "ocfs2-kmp-default": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-ppc64": "2_3.0.101_108.35-0.24.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "ocfs2",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 11 SP4",
+        "purl": "pkg:rpm/suse/ocfs2&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.6-0.28.5.6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "gfs2-kmp-xen": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-pae": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-pacemaker": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-pae": "1.4_3.0.101_108.35-2.32.4.6",
+            "cluster-network-kmp-bigmem": "1.4_3.0.101_108.35-2.32.4.6",
+            "ocfs2-kmp-bigmem": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-trace": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-ppc64": "1.6_3.0.101_108.35-0.28.5.6",
+            "ocfs2-kmp-pae": "1.6_3.0.101_108.35-0.28.5.6",
+            "cluster-network-kmp-trace": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-bash-completion": "8.4.4-0.27.4.2",
+            "drbd-heartbeat": "8.4.4-0.27.4.2",
+            "drbd-kmp-bigmem": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-udev": "8.4.4-0.27.4.2",
+            "drbd": "8.4.4-0.27.4.2",
+            "cluster-network-kmp-default": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-utils": "8.4.4-0.27.4.2",
+            "drbd-kmp-default": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-kmp-ppc64": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "gfs2-kmp-bigmem": "2_3.0.101_108.35-0.24.4.6",
+            "gfs2-kmp-trace": "2_3.0.101_108.35-0.24.4.6",
+            "cluster-network-kmp-ppc64": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-trace": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "cluster-network-kmp-xen": "1.4_3.0.101_108.35-2.32.4.6",
+            "drbd-kmp-xen": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "ocfs2-kmp-xen": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-default": "2_3.0.101_108.35-0.24.4.6",
+            "drbd-kmp-pae": "8.4.4_3.0.101_108.35-0.27.4.6",
+            "drbd-xen": "8.4.4-0.27.4.2",
+            "ocfs2-kmp-default": "1.6_3.0.101_108.35-0.28.5.6",
+            "gfs2-kmp-ppc64": "2_3.0.101_108.35-0.24.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "cluster-network",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/cluster-network&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4-2.32.4.6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "cluster-network-kmp-rt_trace": "1.4_3.0.101_rt130_69.14-2.32.4.6",
+            "gfs2-kmp-rt_trace": "2_3.0.101_rt130_69.14-0.24.4.6",
+            "cluster-network-kmp-rt": "1.4_3.0.101_rt130_69.14-2.32.4.6",
+            "ocfs2-kmp-rt": "1.6_3.0.101_rt130_69.14-0.28.5.6",
+            "drbd-kmp-rt": "8.4.4_3.0.101_rt130_69.14-0.27.4.6",
+            "ocfs2-kmp-rt_trace": "1.6_3.0.101_rt130_69.14-0.28.5.6",
+            "gfs2-kmp-rt": "2_3.0.101_rt130_69.14-0.24.4.6",
+            "drbd-kmp-rt_trace": "8.4.4_3.0.101_rt130_69.14-0.27.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "drbd-kmp",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/drbd-kmp&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "8.4.4-0.27.4.6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "cluster-network-kmp-rt_trace": "1.4_3.0.101_rt130_69.14-2.32.4.6",
+            "gfs2-kmp-rt_trace": "2_3.0.101_rt130_69.14-0.24.4.6",
+            "cluster-network-kmp-rt": "1.4_3.0.101_rt130_69.14-2.32.4.6",
+            "ocfs2-kmp-rt": "1.6_3.0.101_rt130_69.14-0.28.5.6",
+            "drbd-kmp-rt": "8.4.4_3.0.101_rt130_69.14-0.27.4.6",
+            "ocfs2-kmp-rt_trace": "1.6_3.0.101_rt130_69.14-0.28.5.6",
+            "gfs2-kmp-rt": "2_3.0.101_rt130_69.14-0.24.4.6",
+            "drbd-kmp-rt_trace": "8.4.4_3.0.101_rt130_69.14-0.27.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "gfs2",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/gfs2&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2-0.24.4.6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "cluster-network-kmp-rt_trace": "1.4_3.0.101_rt130_69.14-2.32.4.6",
+            "gfs2-kmp-rt_trace": "2_3.0.101_rt130_69.14-0.24.4.6",
+            "cluster-network-kmp-rt": "1.4_3.0.101_rt130_69.14-2.32.4.6",
+            "ocfs2-kmp-rt": "1.6_3.0.101_rt130_69.14-0.28.5.6",
+            "drbd-kmp-rt": "8.4.4_3.0.101_rt130_69.14-0.27.4.6",
+            "ocfs2-kmp-rt_trace": "1.6_3.0.101_rt130_69.14-0.28.5.6",
+            "gfs2-kmp-rt": "2_3.0.101_rt130_69.14-0.24.4.6",
+            "drbd-kmp-rt_trace": "8.4.4_3.0.101_rt130_69.14-0.27.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "ocfs2",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/ocfs2&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.6-0.28.5.6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "cluster-network-kmp-rt_trace": "1.4_3.0.101_rt130_69.14-2.32.4.6",
+            "gfs2-kmp-rt_trace": "2_3.0.101_rt130_69.14-0.24.4.6",
+            "cluster-network-kmp-rt": "1.4_3.0.101_rt130_69.14-2.32.4.6",
+            "ocfs2-kmp-rt": "1.6_3.0.101_rt130_69.14-0.28.5.6",
+            "drbd-kmp-rt": "8.4.4_3.0.101_rt130_69.14-0.27.4.6",
+            "ocfs2-kmp-rt_trace": "1.6_3.0.101_rt130_69.14-0.28.5.6",
+            "gfs2-kmp-rt": "2_3.0.101_rt130_69.14-0.24.4.6",
+            "drbd-kmp-rt_trace": "8.4.4_3.0.101_rt130_69.14-0.27.4.6"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-bigmem",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-bigmem&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ppc64",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-ppc64&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-bigmem",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-bigmem&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ppc64",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-ppc64&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-108.35.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-108.35.1",
+            "kernel-default-man": "3.0.101-108.35.1",
+            "kernel-ec2": "3.0.101-108.35.1",
+            "kernel-default": "3.0.101-108.35.1",
+            "kernel-source": "3.0.101-108.35.1",
+            "kernel-bigmem": "3.0.101-108.35.1",
+            "kernel-pae-base": "3.0.101-108.35.1",
+            "kernel-syms": "3.0.101-108.35.1",
+            "kernel-bigmem-base": "3.0.101-108.35.1",
+            "kernel-pae": "3.0.101-108.35.1",
+            "kernel-ppc64-devel": "3.0.101-108.35.1",
+            "kernel-ec2-devel": "3.0.101-108.35.1",
+            "kernel-ppc64-base": "3.0.101-108.35.1",
+            "kernel-trace-devel": "3.0.101-108.35.1",
+            "kernel-trace": "3.0.101-108.35.1",
+            "kernel-ec2-base": "3.0.101-108.35.1",
+            "kernel-ppc64": "3.0.101-108.35.1",
+            "kernel-xen-base": "3.0.101-108.35.1",
+            "kernel-xen-devel": "3.0.101-108.35.1",
+            "kernel-bigmem-devel": "3.0.101-108.35.1",
+            "kernel-trace-base": "3.0.101-108.35.1",
+            "kernel-default-devel": "3.0.101-108.35.1",
+            "kernel-pae-devel": "3.0.101-108.35.1",
+            "kernel-xen": "3.0.101-108.35.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:0555-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

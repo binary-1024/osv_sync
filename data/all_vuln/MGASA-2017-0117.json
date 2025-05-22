@@ -1,0 +1,64 @@
+{
+  "id": "MGASA-2017-0117",
+  "summary": "Updated tomcat packages fix security vulnerability",
+  "details": "A bug in the handling of the pipelined requests when send file was used\nresulted in the pipelined request being lost when send file processing of\nthe previous request completed. This could result in responses appearing\nto be sent for the wrong request. For example, a user agent that sent\nrequests A, B and C could see the correct response for request A, the\nresponse for request C for request B and no response for request C\n(CVE-2017-5647).\n\nWhile investigating bug 60718, it was noticed that some calls to\napplication listeners did not use the appropriate facade object. When\nrunning an untrusted application under a SecurityManager, it was therefore\npossible for that untrusted application to retain a reference to the\nrequest or response object and thereby access and/or modify information\nassociated with another web application (CVE-2017-5648).\n",
+  "modified": "2017-04-27T22:08:53Z",
+  "published": "2017-04-27T22:21:29Z",
+  "related": [
+    "CVE-2017-5647",
+    "CVE-2017-5648"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0117.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=20655"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://tomcat.apache.org/security-7.html#Fixed_in_Apache_Tomcat_7.0.77"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "tomcat",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/tomcat?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.0.77-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0117.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

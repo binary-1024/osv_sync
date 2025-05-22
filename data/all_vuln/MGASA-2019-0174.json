@@ -1,0 +1,186 @@
+{
+  "id": "MGASA-2019-0174",
+  "summary": "Updated kernel packages fix security vulnerability",
+  "details": "This kernel update provides the upstream 4.14.119 that adds the kernel side\nmitigations for the Microarchitectural Data Sampling (MDS, also called\nZombieLoad attack) vulnerabilities in Intel processors that can allow\nattackers to retrieve data being processed inside a CPU. To complete the\nmitigations new microcode is also needed, either by installing the\nmicrocode-0.20190514-1.mga6 package, or get an updated bios / uefi\nfirmware from the motherboard vendor.\n\nThe fixed / mitigated issues are:\n\nModern Intel microprocessors implement hardware-level micro-optimizations\nto improve the performance of writing data back to CPU caches. The write\noperation is split into STA (STore Address) and STD (STore Data)\nsub-operations. These sub-operations allow the processor to hand-off\naddress generation logic into these sub-operations for optimized writes.\nBoth of these sub-operations write to a shared distributed processor\nstructure called the 'processor store buffer'. As a result, an\nunprivileged attacker could use this flaw to read private data resident\nwithin the CPU's processor store buffer. (CVE-2018-12126)\n\nMicroprocessors use a \u2018load port\u2019 subcomponent to perform load operations\nfrom memory or IO. During a load operation, the load port receives data\nfrom the memory or IO subsystem and then provides the data to the CPU\nregisters and operations in the CPU\u2019s pipelines. Stale load operations\nresults are stored in the 'load port' table until overwritten by newer\noperations. Certain load-port operations triggered by an attacker can be\nused to reveal data about previous stale requests leaking data back to the\nattacker via a timing side-channel. (CVE-2018-12127)\n\nA flaw was found in the implementation of the \"fill buffer\", a mechanism\nused by modern CPUs when a cache-miss is made on L1 CPU cache. If an\nattacker can generate a load operation that would create a page fault,\nthe execution will continue speculatively with incorrect data from the\nfill buffer while the data is fetched from higher level caches. This\nresponse time can be measured to infer data in the fill buffer.\n(CVE-2018-12130)\n\nUncacheable memory on some microprocessors utilizing speculative execution\nmay allow an authenticated user to potentially enable information disclosure\nvia a side channel with local access. (CVE-2019-11091)\n",
+  "modified": "2019-05-16T07:49:35Z",
+  "published": "2019-05-16T08:25:22Z",
+  "related": [
+    "CVE-2018-12126",
+    "CVE-2018-12127",
+    "CVE-2018-12130",
+    "CVE-2019-11091"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0174.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24820"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/mds.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.117"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.118"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.119"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.119-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0174.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-userspace-headers",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.119-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0174.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-vboxadditions",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.0.6-3.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0174.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.0.6-3.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0174.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.13-85.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0174.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

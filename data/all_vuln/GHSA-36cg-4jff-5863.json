@@ -1,0 +1,76 @@
+{
+  "id": "GHSA-36cg-4jff-5863",
+  "summary": "Data races in signal-simple",
+  "details": "Affected versions of this crate unconditionally implement Send/Sync for SyncChannel<T>. SyncChannel<T> doesn't provide access to &T but merely serves as a channel that consumes and returns owned T.\n\nUsers can create UB in safe Rust by sending T: !Send to other threads with SyncChannel::send/recv APIs. Using T = Arc<Cell<_> allows to create data races (which can lead to memory corruption), and using T = MutexGuard<T> allows to unlock a mutex from a thread that didn't lock the mutex.",
+  "aliases": [
+    "CVE-2020-36446",
+    "GHSA-8892-84wf-cg8f",
+    "RUSTSEC-2020-0126"
+  ],
+  "modified": "2023-11-08T04:03:45.337562Z",
+  "published": "2021-08-25T20:59:13Z",
+  "database_specific": {
+    "nvd_published_at": "2021-08-08T06:15:00Z",
+    "cwe_ids": [
+      "CWE-119",
+      "CWE-362"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-09T21:44:31Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-36446"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/kitsuneninetails/signal-rust/issues/2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://raw.githubusercontent.com/rustsec/advisory-db/main/crates/signal-simple/RUSTSEC-2020-0126.md"
+    },
+    {
+      "type": "WEB",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2020-0126.html"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "http://github.com/kitsuneninetails/signal-rust"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "signal-simple",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/signal-simple"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "0.1.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-36cg-4jff-5863/GHSA-36cg-4jff-5863.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

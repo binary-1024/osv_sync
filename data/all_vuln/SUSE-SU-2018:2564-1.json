@@ -1,0 +1,120 @@
+{
+  "id": "SUSE-SU-2018:2564-1",
+  "summary": "Security update for postgresql10",
+  "details": "This update for postgresql10 fixes the following issues:\n\nPostgreSQL 10 was updated to 10.5:\n\n- https://www.postgresql.org/about/news/1851/\n- https://www.postgresql.org/docs/current/static/release-10-5.html\n\n  A dump/restore is not required for those running 10.X.\n  However, if you use the adminpack extension, you should update\n  it as per the first changelog entry below.\n  Also, if the function marking mistakes mentioned in the second\n  and third changelog entries below affect you, you will want to\n  take steps to correct your database catalogs.\n\nSecurity issues fixed:\n\n- CVE-2018-1115: Remove public execute privilege\n  from contrib/adminpack's pg_logfile_rotate() function\n  pg_logfile_rotate() is a deprecated wrapper for the core\n  function pg_rotate_logfile(). When that function was changed\n  to rely on SQL privileges for access control rather than a\n  hard-coded superuser check, pg_logfile_rotate() should have\n  been updated as well, but the need for this was missed. Hence,\n  if adminpack is installed, any user could request a logfile\n  rotation, creating a minor security issue.\n  After installing this update, administrators should update\n  adminpack by performing ALTER EXTENSION adminpack UPDATE in\n  each database in which adminpack is installed (bsc#1091610).\n- CVE-2018-10915: libpq failed to properly reset its internal state between\n  connections. If an affected version of libpq was used with 'host' or 'hostaddr'\n  connection parameters from untrusted input, attackers could have bypassed\n  client-side connection security features, obtain access to higher privileged\n  connections or potentially cause other impact SQL injection, by causing the\n  PQescape() functions to malfunction (bsc#1104199)\n- CVE-2018-10925: Add missing authorization check on certain statements\n  involved with 'INSERT ... ON CONFLICT DO UPDATE'. An attacker with 'CREATE\n  TABLE' privileges could have exploited this to read arbitrary bytes server\n  memory. If the attacker also had certain 'INSERT' and limited 'UPDATE'\n  privileges to a particular table, they could have exploited this to update\n  other columns in the same table (bsc#1104202).\n",
+  "modified": "2025-05-02T04:07:29.657201Z",
+  "published": "2018-08-30T14:11:30Z",
+  "related": [
+    "CVE-2018-10915",
+    "CVE-2018-10925",
+    "CVE-2018-1115"
+  ],
+  "upstream": [
+    "CVE-2018-10915",
+    "CVE-2018-10925",
+    "CVE-2018-1115"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2018/suse-su-20182564-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1091610"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1104199"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1104202"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10915"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10925"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-1115"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "postgresql10",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15",
+        "purl": "pkg:rpm/suse/postgresql10&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "10.5-4.5.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libpq5": "10.5-4.5.1",
+            "postgresql10": "10.5-4.5.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2564-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "postgresql10",
+        "ecosystem": "SUSE:Linux Enterprise Module for Server Applications 15",
+        "purl": "pkg:rpm/suse/postgresql10&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Server%20Applications%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "10.5-4.5.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "postgresql10-docs": "10.5-4.5.1",
+            "postgresql10-plperl": "10.5-4.5.1",
+            "libecpg6": "10.5-4.5.1",
+            "postgresql10-devel": "10.5-4.5.1",
+            "postgresql10-pltcl": "10.5-4.5.1",
+            "postgresql10-contrib": "10.5-4.5.1",
+            "postgresql10-server": "10.5-4.5.1",
+            "postgresql10-plpython": "10.5-4.5.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2564-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

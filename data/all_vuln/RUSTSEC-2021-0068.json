@@ -1,0 +1,67 @@
+{
+  "id": "RUSTSEC-2021-0068",
+  "summary": "Soundness issue in `iced-x86` versions <= 1.10.3",
+  "details": "Versions of iced-x86 <= 1.10.3 invoke undefined behavior which may cause soundness\nissues in crates using the `iced_x86::Decoder` struct. The `Decoder::new()` function\nmade a call to `slice.get_unchecked(slice.length())` to get the end position of \nthe input buffer. The flaw was fixed with safe logic that does not invoke undefined\nbehavior.\n\nMore details can be found at <https://github.com/icedland/iced/issues/168>.",
+  "aliases": [
+    "CVE-2021-38188",
+    "GHSA-jjx5-3f36-6927"
+  ],
+  "modified": "2023-11-08T04:06:25.737471Z",
+  "published": "2021-05-19T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/iced-x86"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2021-0068.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/icedland/iced/issues/168"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "iced-x86",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/iced-x86"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "1.10.4-0"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [
+            "iced_x86::Decoder::new"
+          ],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": null,
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2021-0068.json",
+        "categories": []
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

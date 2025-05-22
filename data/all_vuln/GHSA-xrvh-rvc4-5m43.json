@@ -1,0 +1,381 @@
+{
+  "id": "GHSA-xrvh-rvc4-5m43",
+  "summary": "Kirby vulnerable to unrestricted file upload of user avatar images",
+  "details": "### TL;DR\n\nThis vulnerability affects all Kirby sites that might have potential attackers in the group of authenticated Panel users.\n\nThe attack requires user interaction by another user or visitor and *cannot* be automated.\n\n----\n\n### Introduction\n\nUnrestricted upload of files with a dangerous type is a type of vulnerability that allows to circumvent expectations and protections in the server setup or backend code. Uploaded files are not checked for their compliance with the intended purpose of the upload target, which can introduce secondary attack vectors.\n\nWhile the vulnerability described here does *not* allow critical attacks like remote code execution (RCE), it can still be abused to upload unexpected file types that could for example make it possible to perform cross-site scripting (XSS) attacks.\n\n### Impact\n\nUsers with Panel access can upload a user avatar in their own account view. This avatar is intended to be an image, however the file type or file extension was not validated on the backend. This effectively allowed to upload many types of files that would then be stored with the filename `profile` and the provided file extension.\n\nWhile the upload is protected against dangerous file types such as HTML files or executable PHP files, this could be abused to upload unexpected files such as PDFs that would then be available via a direct link. These links could be shared to other users.\n\n### Patches\n\nThe problem has been patched in [Kirby 3.6.6.5](https://github.com/getkirby/kirby/releases/tag/3.6.6.5), [Kirby 3.7.5.4](https://github.com/getkirby/kirby/releases/tag/3.7.5.4), [Kirby 3.8.4.3](https://github.com/getkirby/kirby/releases/tag/3.8.4.3), [Kirby 3.9.8.1](https://github.com/getkirby/kirby/releases/tag/3.9.8.1), [Kirby 3.10.0.1](https://github.com/getkirby/kirby/releases/tag/3.10.0.1), and [Kirby 4.1.1](https://github.com/getkirby/kirby/releases/tag/4.1.1). Please update to one of these or a [later version](https://github.com/getkirby/kirby/releases) to fix the vulnerability.\n\nIn all of the mentioned releases, we have added validations that prevent any files that don't have an image file extension or MIME type from being uploaded as a user avatar.\n\n### Credits\n\nThanks to Natwara Archeepsamooth (@PlyNatwara) for responsibly reporting the identified issue.",
+  "aliases": [
+    "CVE-2024-26483"
+  ],
+  "modified": "2024-02-26T17:56:54.723389Z",
+  "published": "2024-02-26T16:22:12Z",
+  "related": [
+    "CVE-2024-26483"
+  ],
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-26T16:22:12Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/getkirby/kirby/security/advisories/GHSA-xrvh-rvc4-5m43"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-26483"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/getkirby/kirby"
+    },
+    {
+      "type": "WEB",
+      "url": "https://shrouded-trowel-50c.notion.site/Kirby-CMS-4-1-0-Unrestricted-File-Upload-dc60ce3132f04442b73f2dba2631fae0?pvs=4"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "getkirby/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/getkirby/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.6.6.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.0.0",
+        "3.0.1",
+        "3.0.1-rc.1",
+        "3.0.2",
+        "3.0.2-rc.1",
+        "3.0.3",
+        "3.0.3-rc.1",
+        "3.0.3-rc.2",
+        "3.0.3-rc.3",
+        "3.1.0",
+        "3.1.0-rc.1",
+        "3.1.1",
+        "3.1.2",
+        "3.1.2-rc.1",
+        "3.1.3",
+        "3.1.3-rc.1",
+        "3.1.4",
+        "3.1.4-rc.1",
+        "3.2.0",
+        "3.2.0-rc.1",
+        "3.2.0-rc.2",
+        "3.2.0-rc.3",
+        "3.2.0-rc.4",
+        "3.2.1",
+        "3.2.1-rc.1",
+        "3.2.2",
+        "3.2.3",
+        "3.2.3-rc.1",
+        "3.2.4",
+        "3.2.4-rc.1",
+        "3.2.5",
+        "3.2.5-rc.1",
+        "3.2.5-rc.2",
+        "3.3.0",
+        "3.3.0-rc.1",
+        "3.3.0-rc.2",
+        "3.3.0-rc.3",
+        "3.3.0-rc.4",
+        "3.3.0-rc.5",
+        "3.3.1",
+        "3.3.1-rc.1",
+        "3.3.2",
+        "3.3.2-rc.1",
+        "3.3.3",
+        "3.3.3-rc.1",
+        "3.3.4",
+        "3.3.4-rc.1",
+        "3.3.5",
+        "3.3.5-rc.1",
+        "3.3.6",
+        "3.4.0",
+        "3.4.0-rc.1",
+        "3.4.0-rc.2",
+        "3.4.0-rc.3",
+        "3.4.1",
+        "3.4.1-rc.1",
+        "3.4.2",
+        "3.4.3",
+        "3.4.3-rc.1",
+        "3.4.4",
+        "3.4.4-rc.1",
+        "3.4.5",
+        "3.5.0",
+        "3.5.0-rc.1",
+        "3.5.0-rc.2",
+        "3.5.0-rc.3",
+        "3.5.0-rc.4",
+        "3.5.0-rc.5",
+        "3.5.0-rc.6",
+        "3.5.0-rc.7",
+        "3.5.1",
+        "3.5.1-rc.1",
+        "3.5.2",
+        "3.5.2-rc.1",
+        "3.5.3",
+        "3.5.3.1",
+        "3.5.4",
+        "3.5.5",
+        "3.5.5-rc.1",
+        "3.5.6",
+        "3.5.6-rc.1",
+        "3.5.7",
+        "3.5.7-rc.1",
+        "3.5.7.1",
+        "3.5.8",
+        "3.5.8.1",
+        "3.5.8.2",
+        "3.5.8.3",
+        "3.5.8.4",
+        "3.6.0",
+        "3.6.0-alpha.1",
+        "3.6.0-alpha.2",
+        "3.6.0-alpha.3",
+        "3.6.0-alpha.4",
+        "3.6.0-beta.1",
+        "3.6.0-beta.2",
+        "3.6.0-beta.3",
+        "3.6.0-rc.1",
+        "3.6.0-rc.2",
+        "3.6.0-rc.3",
+        "3.6.0-rc.4",
+        "3.6.0-rc.5",
+        "3.6.1",
+        "3.6.1.1",
+        "3.6.2",
+        "3.6.2-rc.1",
+        "3.6.2-rc.2",
+        "3.6.2-rc.3",
+        "3.6.3",
+        "3.6.3-rc.1",
+        "3.6.3-rc.2",
+        "3.6.3.1",
+        "3.6.4",
+        "3.6.4-rc.1",
+        "3.6.5",
+        "3.6.5-rc.1",
+        "3.6.6",
+        "3.6.6-rc.1",
+        "3.6.6.1",
+        "3.6.6.2",
+        "3.6.6.3",
+        "3.6.6.4"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.6.6.4",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-xrvh-rvc4-5m43/GHSA-xrvh-rvc4-5m43.json"
+      }
+    },
+    {
+      "package": {
+        "name": "getkirby/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/getkirby/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "3.7.0"
+            },
+            {
+              "fixed": "3.7.5.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.7.0",
+        "3.7.0.1",
+        "3.7.0.2",
+        "3.7.1",
+        "3.7.1-rc.1",
+        "3.7.2",
+        "3.7.2-rc.1",
+        "3.7.2.1",
+        "3.7.3",
+        "3.7.3-rc.1",
+        "3.7.4",
+        "3.7.4-rc.1",
+        "3.7.5",
+        "3.7.5.1",
+        "3.7.5.2",
+        "3.7.5.3"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.7.5.3",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-xrvh-rvc4-5m43/GHSA-xrvh-rvc4-5m43.json"
+      }
+    },
+    {
+      "package": {
+        "name": "getkirby/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/getkirby/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "3.8.0"
+            },
+            {
+              "fixed": "3.8.4.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.8.0",
+        "3.8.1",
+        "3.8.1-rc.1",
+        "3.8.1.1",
+        "3.8.2",
+        "3.8.2-rc.1",
+        "3.8.3",
+        "3.8.3-rc.1",
+        "3.8.3-rc.2",
+        "3.8.4",
+        "3.8.4.1",
+        "3.8.4.2"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.8.4.2",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-xrvh-rvc4-5m43/GHSA-xrvh-rvc4-5m43.json"
+      }
+    },
+    {
+      "package": {
+        "name": "getkirby/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/getkirby/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "3.9.0"
+            },
+            {
+              "fixed": "3.9.8.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.9.0",
+        "3.9.1",
+        "3.9.1-rc.1",
+        "3.9.2",
+        "3.9.2-rc.1",
+        "3.9.3",
+        "3.9.3-rc.1",
+        "3.9.4",
+        "3.9.4-rc.1",
+        "3.9.5",
+        "3.9.5-rc.1",
+        "3.9.6",
+        "3.9.6-rc.1",
+        "3.9.6.1",
+        "3.9.7",
+        "3.9.7-rc.1",
+        "3.9.8",
+        "3.9.8-rc.1"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.9.8",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-xrvh-rvc4-5m43/GHSA-xrvh-rvc4-5m43.json"
+      }
+    },
+    {
+      "package": {
+        "name": "getkirby/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/getkirby/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "3.10.0"
+            },
+            {
+              "fixed": "3.10.0.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.10.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-xrvh-rvc4-5m43/GHSA-xrvh-rvc4-5m43.json"
+      }
+    },
+    {
+      "package": {
+        "name": "getkirby/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/getkirby/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.1.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0",
+        "4.0.1",
+        "4.0.2",
+        "4.0.3",
+        "4.1.0",
+        "4.1.0-rc.1",
+        "4.1.0-rc.2",
+        "4.1.0-rc.3"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 4.1.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-xrvh-rvc4-5m43/GHSA-xrvh-rvc4-5m43.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:L/I:L/A:N"
+    }
+  ]
+}

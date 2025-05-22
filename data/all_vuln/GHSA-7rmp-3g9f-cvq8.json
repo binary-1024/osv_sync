@@ -1,0 +1,69 @@
+{
+  "id": "GHSA-7rmp-3g9f-cvq8",
+  "summary": "generator-jhipster-entity-audit vulnerable to Unsafe Reflection when having Javers selected as Entity Audit Framework",
+  "details": "### Summary\nCWE-470 (Use of Externally-Controlled Input to Select Classes or Code ('Unsafe Reflection') when having Javers selected as Entity Audit Framework\n\n### Details\nIn the following two occurences, user input directly leads to class loading without checking against e.g. a whitelist of allowed classes. This is also known as CWE-470\nhttps://github.com/jhipster/generator-jhipster-entity-audit/blob/e21e83135d10c77d92203c89cb0b0063914e8fe0/generators/spring-boot-javers/templates/src/main/java/_package_/web/rest/JaversEntityAuditResource.java.ejs#L88\nhttps://github.com/jhipster/generator-jhipster-entity-audit/blob/e21e83135d10c77d92203c89cb0b0063914e8fe0/generators/spring-boot-javers/templates/src/main/java/_package_/web/rest/JaversEntityAuditResource.java.ejs#L124\n\nSo, if an attacker manages to place some malicious classes into the classpath and also has access to these REST interface for calling the mentioned REST endpoints, using these lines of code can lead to unintended remote code execution.\n\n### PoC\n\n1. Place an arbitrary class with the right package name (starting with JHIpster applications path name) and make it available in class path\n2. Gain access to view entity's audit changelogs (Role: ADMIN)\n3. pass in the malicious class name part as `entityType` (first mentioned part) // `qualifiedName` (second mentioned occurence)\n4. class gets loaded and static code blocks in there get executed\n\n--> Should be limited to the already existing whitelist of classes (see first method in that mentioned class)\n\n### Impact\nRemote Code execution. You need to have some access to place malicious classes into the class path and you need to have a user with ADMIN role on the system.",
+  "aliases": [
+    "CVE-2025-31119"
+  ],
+  "modified": "2025-04-04T14:57:08.770747Z",
+  "published": "2025-04-04T14:06:35Z",
+  "database_specific": {
+    "nvd_published_at": "2025-04-03T20:15:25Z",
+    "cwe_ids": [
+      "CWE-470"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-04T14:06:35Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/jhipster/generator-jhipster-entity-audit/security/advisories/GHSA-7rmp-3g9f-cvq8"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-31119"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jhipster/generator-jhipster-entity-audit"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jhipster/generator-jhipster-entity-audit/blob/e21e83135d10c77d92203c89cb0b0063914e8fe0/generators/spring-boot-javers/templates/src/main/java/_package_/web/rest/JaversEntityAuditResource.java.ejs#L88"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "generator-jhipster-entity-audit",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/generator-jhipster-entity-audit"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.9.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-7rmp-3g9f-cvq8/GHSA-7rmp-3g9f-cvq8.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"
+    }
+  ]
+}

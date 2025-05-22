@@ -1,0 +1,91 @@
+{
+  "id": "MGASA-2014-0337",
+  "summary": "Updated kernel-tmb package fixes security vulnerabilities",
+  "details": "Updated kernel-tmb provides upstream 3.12.26 kernel and fixes the\nfollowing security issues:\n\nArray index error in the aio_read_events_ring function in fs/aio.c in\nthe Linux kernel through 3.15.1 allows local users to obtain sensitive\ninformation from kernel memory via a large head value (CVE-2014-0206).\n\nmedia-device: fix infoleak in ioctl media_enum_entities()\n(CVE-2014-1739)\n\nThe futex_requeue function in kernel/futex.c in the Linux kernel through\n3.14.5 does not ensure that calls have two different futex addresses,\nwhich allows local users to gain privileges via a crafted FUTEX_REQUEUE\ncommand that facilitates unsafe waiter modification. (CVE-2014-3153)\n\nkernel/auditsc.c in the Linux kernel through 3.14.5, when \nCONFIG_AUDITSYSCALL is enabled with certain syscall rules, allows local\nusers to obtain potentially sensitive single-bit values from kernel memory\nor cause a denial of service (OOPS) via a large value of a syscall number.\nTo avoid this and other issues CONFIG_AUDITSYSCALL has been disabled.\n(CVE-2014-3917)\n\nThe capabilities implementation in the Linux kernel before 3.14.8 does\nnot properly consider that namespaces are inapplicable to inodes, which\nallows local users to bypass intended chmod restrictions by first creating\na user namespace, as demonstrated by setting the setgid bit on a file with\ngroup ownership of root (CVE-2014-4014)\n\nmm/shmem.c in the Linux kernel through 3.15.1 does not properly implement\nthe interaction between range notification and hole punching, which allows\nlocal users to cause a denial of service (i_mutex hold) by using the mmap\nsystem call to access a hole, as demonstrated by interfering with intended\nshmem activity by blocking completion of (1) an MADV_REMOVE madvise call\nor (2) an FALLOC_FL_PUNCH_HOLE fallocate call (CVE-2014-4171).\n\narch/x86/kernel/entry_32.S in the Linux kernel through 3.15.1 on 32-bit\nx86 platforms, when syscall auditing is enabled and the sep CPU feature\nflag is set, allows local users to cause a denial of service (OOPS and\nsystem crash) via an invalid syscall number, as demonstrated by number\n1000 (CVE-2014-4508). \n\nA flaw was found in the way reference counting was handled in the Linux\nkernels VFS subsystem when unmount on symlink was performed. An unprivileged\nlocal user could use this flaw to cause OOM conditions leading to denial\nof service or, potentially, trigger use-after-free error (CVE-2014-5045).\n\nLinux kernel built with the support for Stream Control Transmission Protocol\n(CONFIG_IP_SCTP) is vulnerable to a NULL pointer dereference flaw. It could\noccur when simultaneous new connections are initiated between the same pair\nof hosts. A remote user/program could use this flaw to crash the system\nkernel resulting in DoS (CVE.2014-5077).\n\nFor other fixes, see the referenced changelogs.\n",
+  "modified": "2014-08-18T09:00:26Z",
+  "published": "2014-08-18T09:14:56Z",
+  "related": [
+    "CVE-2014-0206",
+    "CVE-2014-1739",
+    "CVE-2014-3153",
+    "CVE-2014-3917",
+    "CVE-2014-4014",
+    "CVE-2014-4171",
+    "CVE-2014-4508",
+    "CVE-2014-5045",
+    "CVE-2014-5077"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0337.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=13867"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.12.26"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.12.25"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.12.24"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.12.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.12.22"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.12.21"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-tmb",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.26-1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0337.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

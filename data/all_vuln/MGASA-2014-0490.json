@@ -1,0 +1,122 @@
+{
+  "id": "MGASA-2014-0490",
+  "summary": "Updated asterisk packages fix CVE-2014-6610 and mitigate POODLE",
+  "details": "Updated asterisk packages fix security vulnerabilities:\n\nIn Asterisk Open Source 11.x before 11.12.1, when an out of call message,\ndelivered by either the SIP or PJSIP channel driver or the XMPP stack, is\nhandled in Asterisk, a crash can occur if the channel servicing the message\nis sent into the ReceiveFax dialplan application while using the\nres_fax_spandsp module (CVE-2014-6610).\n\nIn Asterisk Open Source 11.x before 11.13.1, the res_jabber and res_xmpp\nmodule both use SSLv3 exclusively, and are hence susceptible to\nCVE-2014-3566, a.k.a. POODLE. Also, the core TLS handling, used by the\nchan_sip channel driver, Asterisk Manager Interface (AMI), and the Asterisk\nHTTP server, defaults to allowing SSLv3/SSLv2 fallback. This allows a MITM\nto potentially force a connection to fallback to SSLv3, exposing it to the\nPOODLE vulnerability.\n\nAsterisk has been updated to version 11.14.1, which fixes the CVE-2014-6610\nissue, and in which it no longer uses SSLv3 for the res_jabber/res_xmpp\nmodules. Additionally, when the encryption method is not specified, the\ndefault handling in the TLS core no longer allows for a fallback to SSLv3\nor SSLv2.  These changes mitigate the POODLE vulnerability.\n\nOther security issues fixed in 11.14.1 include:\n\nMixed IP address families in access control lists may permit unwanted\ntraffic (AST-2014-012)\n\nHigh call load may result in hung channels in ConfBridge (AST-2014-014).\n\nPermission escalation through ConfBridge actions/dialplan functions\n(AST-2014-017).\n\nThe DB dialplan function when executed from an external protocol (for\ninstance AMI), could result in a privilege escalation (AST-2014-018).\n",
+  "modified": "2014-11-26T17:11:28Z",
+  "published": "2014-11-26T17:29:06Z",
+  "related": [
+    "CVE-2014-6610"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0490.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=14466"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://downloads.asterisk.org/pub/security/AST-2014-010.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://downloads.asterisk.org/pub/security/AST-2014-011.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://downloads.asterisk.org/pub/security/AST-2014-012.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://downloads.asterisk.org/pub/security/AST-2014-014.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://downloads.asterisk.org/pub/security/AST-2014-017.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://downloads.asterisk.org/pub/security/AST-2014-018.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://downloads.asterisk.org/pub/telephony/asterisk/releases/ChangeLog-11.14.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-11.14.1-summary.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.mandriva.com/en/support/security/advisories/mbs1/MDVSA-2014%3A218/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "asterisk",
+        "ecosystem": "Mageia:3",
+        "purl": "pkg:rpm/mageia/asterisk?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "11.14.1-1.mga3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0490.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "asterisk",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/asterisk?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "11.14.1-1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0490.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

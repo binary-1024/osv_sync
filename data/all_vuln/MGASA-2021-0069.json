@@ -1,0 +1,76 @@
+{
+  "id": "MGASA-2021-0069",
+  "summary": "Updated nodejs packages fix security vulnerabilities",
+  "details": "Node.js versions before 10.23.1, 12.20.1, 14.15.4, 15.5.1 are vulnerable to a\nuse-after-free bug in its TLS implementation. When writing to a TLS enabled\nsocket, node::StreamBase::Write calls node::TLSWrap::DoWrite with a freshly\nallocated WriteWrap object as first argument. If the DoWrite method does not\nreturn an error, this object is passed back to the caller as part of a\nStreamWriteResult structure. This may be exploited to corrupt memory leading\nto a Denial of Service or potentially other exploits. (CVE-2020-8265).\n\nNode.js versions before 10.23.1, 12.20.1, 14.15.4, 15.5.1 allow two copies of\na header field in an HTTP request (for example, two Transfer-Encoding header\nfields). In this case, Node.js identifies the first header field and ignores\nthe second. This can lead to HTTP Request Smuggling. (CVE-2020-8287).\n",
+  "modified": "2021-02-05T11:14:13Z",
+  "published": "2021-02-05T11:54:53Z",
+  "related": [
+    "CVE-2020-8265",
+    "CVE-2020-8287"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0069.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=28015"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://nodejs.org/en/blog/vulnerability/january-2021-security-releases/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://nodejs.org/en/blog/release/v10.23.1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2021/dsa-4826"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/K4I6MZNC7C7VIDQR267OL4TVCI3ZKAC4/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "nodejs",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/nodejs?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "10.23.1-10.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0069.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "id": "MGASA-2013-0343",
+  "summary": "Updated kernel-linus package fixes security vulnerabilites.",
+  "details": "This kernel-linus update provides the upstream 3.4.69 kernel and fixes the\nfollowing security issues:\n\nThe ext4_orphan_del function in fs/ext4/namei.c in the Linux kernel before\n3.7.3 does not properly handle orphan-list entries for non-journal\nfilesystems, which allows physically proximate attackers to cause a denial\nof service (system hang) via a crafted filesystem on removable media, as\ndemonstrated by the e2fsprogs tests/f_orphan_extents_inode/image.gz test\n(CVE-2013-2015).\n\nMultiple array index errors in drivers/hid/hid-core.c in the Human\nInterface Device (HID) subsystem in the Linux kernel through 3.11 allow\nphysically proximate attackers to execute arbitrary code or cause a\ndenial of service (heap memory corruption) via a crafted device that\nprovides an invalid Report ID (CVE-2013-2888).\n\ndrivers/hid/hid-zpff.c in the Human Interface Device (HID) subsystem\nin the Linux kernel through 3.11, when CONFIG_HID_ZEROPLUS is enabled,\nallows physically proximate attackers to cause a denial of service\n(heap-based out-of-bounds write) via a crafted device (CVE-2013-2889).\n\ndrivers/hid/hid-pl.c in the Human Interface Device (HID) subsystem in\nthe Linux kernel through 3.11, when CONFIG_HID_PANTHERLORD is enabled,\nallows physically proximate attackers to cause a denial of service\n(heap-based out-of-bounds write) via a crafted device (CVE-2013-2892).\n\nThe Human Interface Device (HID) subsystem in the Linux kernel\nthrough 3.11, when CONFIG_LOGITECH_FF, CONFIG_LOGIG940_FF, or\nCONFIG_LOGIWHEELS_FF is enabled, allows physically proximate\nattackers to cause a denial of service (heap-based out-of-bounds\nwrite) via a crafted device, related to (1) drivers/hid/hid-lgff.c,\n(2) drivers/hid/hid-lg3ff.c, and (3) drivers/hid/hid-lg4ff.c\n(CVE-2013-2893).\n\ndrivers/hid/hid-logitech-dj.c in the Human Interface Device (HID)\nsubsystem in the Linux kernel through 3.11, when CONFIG_HID_LOGITECH_DJ\nis enabled, allows physically proximate attackers to cause a denial\nof service (NULL pointer dereference and OOPS) or obtain sensitive\ninformation from kernel memory via a crafted device (CVE-2013-2895).\n\ndrivers/hid/hid-ntrig.c in the Human Interface Device (HID)\nsubsystem in the Linux kernel through 3.11, when CONFIG_HID_NTRIG\nis enabled, allows physically proximate attackers to cause a denial\nof service (NULL pointer dereference and OOPS) via a crafted device\n(CVE-2013-2896).\n\nMultiple array index errors in drivers/hid/hid-multitouch.c in the\nHuman Interface Device (HID) subsystem in the Linux kernel through\n3.11, when CONFIG_HID_MULTITOUCH is enabled, allow physically proximate\nattackers to cause a denial of service (heap memory corruption, or NULL\npointer dereference and OOPS) via a crafted device (CVE-2013-2897).\n\ndrivers/hid/hid-picolcd_core.c in the Human Interface Device (HID)\nsubsystem in the Linux kernel through 3.11, when CONFIG_HID_PICOLCD\nis enabled, allows physically proximate attackers to cause a denial\nof service (NULL pointer dereference and OOPS) via a crafted device\n(CVE-2013-2899).\n\nThe udp_v6_push_pending_frames function in net/ipv6/udp.c in the IPv6\nimplementation in the Linux kernel through 3.10.3 makes an incorrect\nfunction call for pending data, which allows local users to cause a\ndenial of service (BUG and system crash) via a crafted application that\nuses the UDP_CORK option in a setsockopt system call (CVE-2013-4162).\n\nThe ip6_append_data_mtu function in net/ipv6/ip6_output.c in the IPv6\nimplementation in the Linux kernel through 3.10.3 does not properly\nmaintain information about whether the IPV6_MTU setsockopt option\nhad been specified, which allows local users to cause a denial of\nservice (BUG and system crash) via a crafted application that uses\nthe UDP_CORK option in a setsockopt system call (CVE-2013-4163).\n\nThe validate_event function in arch/arm/kernel/perf_event.c in the\nLinux kernel before 3.10.8 on the ARM platform allows local users to\ngain privileges or cause a denial of service (NULL pointer dereference\nand system crash) by adding a hardware event to an event group led\nby a software event (CVE-2013-4254)\n\nThe skb_flow_dissect function in net/core/flow_dissector.c in the\nLinux kernel through 3.12 allows remote attackers to cause a denial\nof service (infinite loop) via a small value in the IHL field of a\npacket with IPIP encapsulation (CVE-2013-4348).\n\nThe IPv6 SCTP implementation in net/sctp/ipv6.c in the Linux kernel\nthrough 3.11.1 uses data structures and function calls that do not\ntrigger an intended configuration of IPsec encryption, which allows\nremote attackers to obtain sensitive information by sniffing the\nnetwork (CVE-2013-4350).\n\nnet/ipv6/ip6_output.c in the Linux kernel through 3.11.4 does not\nproperly determine the need for UDP Fragmentation Offload (UFO)\nprocessing of small packets after the UFO queueing of a large packet,\nwhich allows remote attackers to cause a denial of service (memory\ncorruption and system crash) or possibly have unspecified other\nimpact via network traffic that triggers a large response packet\n(CVE-2013-4387).\n\nThe Linux kernel before 3.12, when UDP Fragmentation Offload (UFO) is\nenabled, does not properly initialize certain data structures, which\nallows local users to cause a denial of service (memory corruption and\nsystem crash) or possibly gain privileges via a crafted application\nthat uses the UDP_CORK option in a setsockopt system call and\nsends both short and long packets, related to the ip_ufo_append_data\nfunction in net/ipv4/ip_output.c and the ip6_ufo_append_data function\nin net/ipv6/ip6_output.c (CVE-2013-4470).\n\nThe ipc_rcu_putref function in ipc/util.c in the Linux kernel before\n3.10 does not properly manage a reference count, which allows local\nusers to cause a denial of service (memory consumption or system crash)\nvia a crafted application (CVE-2013-4483).\n\nFor other -stable fixes, read the referenced changelogs.\n",
+  "modified": "2013-11-22T18:59:57Z",
+  "published": "2013-11-22T19:00:03Z",
+  "related": [
+    "CVE-2013-2015",
+    "CVE-2013-2888",
+    "CVE-2013-2889",
+    "CVE-2013-2892",
+    "CVE-2013-2893",
+    "CVE-2013-2895",
+    "CVE-2013-2896",
+    "CVE-2013-2897",
+    "CVE-2013-2899",
+    "CVE-2013-4162",
+    "CVE-2013-4163",
+    "CVE-2013-4254",
+    "CVE-2013-4348",
+    "CVE-2013-4350",
+    "CVE-2013-4387",
+    "CVE-2013-4470",
+    "CVE-2013-4483"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2013-0343.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=11468"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.53"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.54"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.55"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.56"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.57"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.58"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.59"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.60"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.61"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.62"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.63"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.64"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.65"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.66"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.67"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.68"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.69"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:2",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.4.69-1.mga2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2013-0343.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

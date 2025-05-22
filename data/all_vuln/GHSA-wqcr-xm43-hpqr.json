@@ -1,0 +1,104 @@
+{
+  "id": "GHSA-wqcr-xm43-hpqr",
+  "summary": "Vulnerable version of libwebp and can be exploited with a malicious source image",
+  "details": "### Impact\n\nThis vulnerability affects deployments of FreeImage that involve decoding or processing malicious source .webp files. If you only process your own trusted files, this should not affect you, but **you should remove FreeImage from your project, as it is not maintained and presents a massive security risk**. \n\nIf you are using FreeImage via  ImageResizer.Plugins.FreeImage, please utilize [Imageflow](https://github.com/imazen/imageflow) or [Imageflow.Server](https://github.com/imazen/imageflow-dotnet-server) instead, or upgrade to ImageResizer 5 and use ImageResizer.Plugins.Imageflow (enable Prereleases on NuGet to access). \n\nFreeImage relies on Google's [libwebp](https://github.com/webmproject/libwebp) library to decode .webp images, and is affected by the recent zero-day out-of-bounds write vulnerability [CVE-2023-4863](https://nvd.nist.gov/vuln/detail/CVE-2023-4863) and https://github.com/advisories/GHSA-j7hp-h8jx-5ppr. The libwebp vulnerability also affects Chrome, Android, macOS, and other consumers of the library).\n\nlibwebp patched [the vulnerability](https://github.com/webmproject/libwebp/commit/2af26267cdfcb63a88e5c74a85927a12d6ca1d76 ) and released [1.3.2](https://github.com/webmproject/libwebp/releases/tag/v1.3.2). FreeImage hasn't been updated since then and is presumed vulnerable. \n\n### Patches\n\nNone. FreeImage has not been updated in several years.\n\n### Workarounds\n\n If you are using ImageResizer.Plugins.FreeImage, please utilize [Imageflow](https://github.com/imazen/imageflow) or [Imageflow.Server](https://github.com/imazen/imageflow-dotnet-server) instead, or upgrade to ImageResizer 5 and use ImageResizer.Plugins.Imageflow (enable Prereleases on NuGet to access). \n\n### References\n\nhttps://github.com/advisories/GHSA-j7hp-h8jx-5ppr\nhttps://nvd.nist.gov/vuln/detail/CVE-2023-4863\nhttps://github.com/webmproject/libwebp/commit/2af26267cdfcb63a88e5c74a85927a12d6ca1d76 \nhttps://github.com/NoXF/libwebp-sys/commits/master",
+  "modified": "2024-12-01T05:34:00.210970Z",
+  "published": "2023-10-06T20:46:33Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-10-06T20:46:33Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/imazen/resizer/security/advisories/GHSA-wqcr-xm43-hpqr"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-4863"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/webmproject/libwebp/commit/2af26267cdfcb63a88e5c74a85927a12d6ca1d76"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/NoXF/libwebp-sys/commits/master"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/advisories/GHSA-j7hp-h8jx-5ppr"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/imazen/resizer"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ImageResizer.Plugins.FreeImage",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/ImageResizer.Plugins.FreeImage"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "4.2.8"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0-prerelease0877",
+        "4.0.0-prerelease0881",
+        "4.0.1",
+        "4.0.2",
+        "4.0.3",
+        "4.0.4",
+        "4.0.5",
+        "4.1.1",
+        "4.1.10",
+        "4.1.11",
+        "4.1.2",
+        "4.1.3-beta",
+        "4.1.3-preview",
+        "4.1.3-rc",
+        "4.1.4-rc",
+        "4.1.5-rc",
+        "4.1.6-rc",
+        "4.1.7",
+        "4.1.7-rc",
+        "4.1.8",
+        "4.1.9",
+        "4.2.0",
+        "4.2.1-pre",
+        "4.2.3-pre",
+        "4.2.4-pre",
+        "4.2.5",
+        "4.2.5-pre",
+        "4.2.6-pre",
+        "4.2.7-pre",
+        "4.2.8"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-wqcr-xm43-hpqr/GHSA-wqcr-xm43-hpqr.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

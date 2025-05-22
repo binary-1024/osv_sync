@@ -1,0 +1,63 @@
+{
+  "id": "MGASA-2017-0026",
+  "summary": "Updated pcsc-lite packages fix security vulnerability",
+  "details": "Once MSGRemoveContext is invoked (via SCARD_RELEASE_CONTEXT), cardsList\nis freed. A repeated invocation of SCARD_RELEASE_CONTEXT (with an empty\ncontext handle) results in a use-after-free followed by a double-free.\n\nAfter MSGRemoveContext, invocation of SCardEstablishContext enable\nfurther use-after-free of cardsList in MSGCheckHandleAssociation,\nMSGRemoveContext, MSGAddHandle, MSGRemoveHandle.\n\nTo avoid this problem, destroy the list only when the client connection\nis terminated. (CVE-2016-10109)\n",
+  "modified": "2017-01-27T20:20:03Z",
+  "published": "2017-01-27T20:30:52Z",
+  "related": [
+    "CVE-2016-10109"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0026.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=20066"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://openwall.com/lists/oss-security/2017/01/03/3"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "pcsc-lite",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/pcsc-lite?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.8.11-4.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0026.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

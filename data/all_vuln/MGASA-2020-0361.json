@@ -1,0 +1,73 @@
+{
+  "id": "MGASA-2020-0361",
+  "summary": "Updated squid packages fix security vulnerabilities",
+  "details": "An issue was discovered in Squid before 4.13. Due to incorrect data validation,\nHTTP Request Smuggling attacks may succeed against HTTP and HTTPS traffic.\nThis leads to cache poisoning. This allows any client, including browser\nscripts, to bypass local security and poison the proxy cache and any downstream\ncaches with content from an arbitrary source. When configured for relaxed\nheader parsing (the default), Squid relays headers containing whitespace\ncharacters to upstream servers. When this occurs as a prefix to a\nContent-Length header, the frame length specified will be ignored by Squid\n(allowing for a conflicting length to be used from another Content-Length\nheader) but relayed upstream (CVE-2020-15810).\n\nAn issue was discovered in Squid before 4.13. Due to incorrect data validation,\nHTTP Request Splitting attacks may succeed against HTTP and HTTPS traffic. This\nleads to cache poisoning. This allows any client, including browser scripts, to\nbypass local security and poison the browser cache and any downstream caches\nwith content from an arbitrary source. Squid uses a string search instead of\nparsing the Transfer-Encoding header to find chunked encoding. This allows an\nattacker to hide a second request inside Transfer-Encoding: it is interpreted\nby Squid as chunked and split out into a second request delivered upstream.\nSquid will then deliver two distinct responses to the client, corrupting any\ndownstream caches (CVE-2020-15811).\n\nSquid before 4.13 and 5.x before 5.0.4 allows a trusted peer to perform Denial\nof Service by consuming all available CPU cycles during handling of a crafted\nCache Digest response message. This only occurs when cache_peer is used with\nthe cache digests feature. The problem exists because peerDigestHandleReply()\nlivelocking in peer_digest.cc mishandles EOF (CVE-2020-24606).\n",
+  "modified": "2020-09-04T08:46:11Z",
+  "published": "2020-09-04T09:16:18Z",
+  "related": [
+    "CVE-2020-15810",
+    "CVE-2020-15811",
+    "CVE-2020-24606"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2020-0361.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=27211"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/squid-cache/squid/security/advisories/GHSA-c7p8-xqhm-49wv"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/squid-cache/squid/security/advisories/GHSA-vvj7-xjgq-g2jg"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/squid-cache/squid/security/advisories/GHSA-3365-q9qx-f98m"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "squid",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/squid?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.13-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0361.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}
