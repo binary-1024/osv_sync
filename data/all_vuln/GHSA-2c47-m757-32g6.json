@@ -3,9 +3,10 @@
   "summary": "Insufficient input sanitization in ejson2env ",
   "details": "### Summary\nThe `ejson2env` tool has a vulnerability related to how it writes to `stdout`. Specifically, the tool is intended to write an export statement for environment variables and their values. However, due to inadequate output sanitization, there is a potential risk where variable names or values may include malicious content, resulting in additional unintended commands being output to `stdout`. If this output is improperly utilized in further command execution, it could lead to command injection vulnerabilities, allowing an attacker to execute arbitrary commands on the host system.\n\n### Details\nThe vulnerability exists because environment variables are not properly sanitized during the decryption phase, which enables malicious keys or encrypted values to inject commands.\n\n### Impact\nAn attacker with control over  `.ejson` files can inject commands in the environment where `source $(ejson2env)`  or `eval ejson2env` are executed.\n\n\n### Mitigation\n- Update to a version of `ejson2env` that sanitizes the output during decryption or\n- Do not use `ejson2env` to decrypt untrusted user secrets or\n- Do not evaluate or execute the direct output from `ejson2env` without removing nonprintable characters.\n\n### Credit\nThanks to security researcher [Demonia](https://hackerone.com/demonia?type=user) for reporting this issue.",
   "aliases": [
-    "CVE-2025-48069"
+    "CVE-2025-48069",
+    "GO-2025-3702"
   ],
-  "modified": "2025-05-21T20:13:45.222419Z",
+  "modified": "2025-05-23T16:13:20.996738Z",
   "published": "2025-05-21T18:32:37Z",
   "database_specific": {
     "nvd_published_at": "2025-05-21T18:15:53Z",
