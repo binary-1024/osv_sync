@@ -2,10 +2,16 @@
   "id": "GHSA-26xq-m8xw-6373",
   "summary": "Froxlor has an HTML Injection Vulnerability",
   "details": "### Summary\n_An HTML Injection vulnerability in the customer account portal allows an attacker to inject malicious HTML payloads in the email section. This can lead to phishing attacks, credential theft, and reputational damage by redirecting users to malicious external websites. The vulnerability has a medium severity, as it can be exploited through user input without authentication._\n\n### Observation\n_It is observed that in the portal of the customer account, there is a functionality in the email section to create an email address that accepts user input. By intercepting the request and modifying the \"domain\" field with an HTML injection payload containing an anchor tag, the injected payload is reflected on an error page. When clicked, it redirects users to an external website, confirming the presence of an HTML Injection vulnerability._\n\n### PoC\n1. Navigate to the Email section in the Customer Account Portal and create a new email address.\n\n2. Enter any garbage value in the required field and intercept the request using Burp Suite.\n\n3. Locate the \"domain\" field in the intercepted request and replace its value with the following HTML Injection payload:\n\n\t`<a href=\"&#x68;&#x74;&#x74;&#x70;&#x73;&#x3a;&#x2f;&#x2f;&#x77;&#x77;&#x77;&#x2e;&#x67;&#x6f;&#x6f;&#x67;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;\">CLiCK</a>`\n\n4. Forward the modified request and observe that the injected payload is reflected on an error page.\n\n5. Click on the displayed \"CLiCK\" link to verify that it redirects to `https://www.google.com`, confirming the presence of HTML [Injection.]([url]([froxlor_HTML-INJECTION.mp4.zip](https://github.com/user-attachments/files/18311429/froxlor_HTML-INJECTION.mp4.zip)))\n\n### Impact\n_An attacker can exploit this HTML Injection vulnerability to manipulate the portal\u2019s content, conduct phishing attacks, deface the application, or trick users into clicking malicious links. This can lead to credential theft, malware distribution, reputational damage, and potential compliance violations.\nThe users of the customer account portal are impacted by this vulnerability. Specifically, any user who interacts with the email section of the portal may be tricked into clicking malicious links, leading to potential phishing attacks, credential theft, and exposure to other malicious activities. The organization hosting the portal could also be impacted by reputational damage and compliance violations._\n\n### Recommendation\n_It is recommended to implement proper input validation and output encoding to prevent HTML Injection. The application should sanitize user input by stripping or escaping HTML tags before rendering it on the page._",
-  "modified": "2025-03-11T20:47:33.464399Z",
+  "aliases": [
+    "CVE-2025-48958"
+  ],
+  "modified": "2025-06-03T17:58:55.586478Z",
   "published": "2025-03-11T20:31:08Z",
+  "related": [
+    "CVE-2025-48958"
+  ],
   "database_specific": {
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-06-02T12:15:25Z",
     "cwe_ids": [
       "CWE-79",
       "CWE-80"
@@ -18,6 +24,10 @@
     {
       "type": "WEB",
       "url": "https://github.com/froxlor/Froxlor/security/advisories/GHSA-26xq-m8xw-6373"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-48958"
     },
     {
       "type": "WEB",
