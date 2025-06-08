@@ -1,0 +1,70 @@
+{
+  "id": "RUSTSEC-2021-0046",
+  "summary": "misc::vec_with_size() can drop uninitialized memory if clone panics",
+  "details": "`misc::vec_with_size` creates a vector of the provided `size` and immediately\ncalls `vec.set_len(size)` on it, initially filling it with uninitialized memory.\nIt then inserts elements using `vec[i] = value.clone()`.\n\nIf the `value.clone()` call panics, uninitialized items in the vector will be\ndropped leading to undefined behavior.",
+  "aliases": [
+    "CVE-2021-29937",
+    "GHSA-hpcx-3pw8-g3j2"
+  ],
+  "modified": "2023-11-08T04:05:43.941216Z",
+  "published": "2021-02-17T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/telemetry"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2021-0046.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/Yoric/telemetry.rs/issues/45"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "telemetry",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/telemetry"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2021-0046.json",
+        "categories": [
+          "memory-corruption"
+        ]
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

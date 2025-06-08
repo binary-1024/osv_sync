@@ -1,0 +1,69 @@
+{
+  "id": "GHSA-vw58-ph65-6rxp",
+  "summary": "Directus inserts access token from query string into logs",
+  "details": "### Summary\nAccess token from query string is not redacted and is potentially exposed in system logs which may be persisted.\n\n### Details\nThe access token in `req.query` is not redacted when the `LOG_STYLE` is set to `raw`. If these logs are not properly sanitized or protected, an attacker with access to it can potentially gain administrative control, leading to unauthorized data access and manipulation.\n\n### PoC\n1. Set `LOG_LEVEL=\"raw\"` in the environment.\n2. Send a request with the `access_token` in the query string.\n3. Notice that the `access_token` in `req.query` is not redacted.\n\n### Impact\nIt impacts systems where the `LOG_STYLE` is set to `raw`. The `access_token` in the query could potentially be a long-lived static token. Users with impacted systems should rotate their static tokens if they were provided using query string.",
+  "aliases": [
+    "CVE-2024-47822"
+  ],
+  "modified": "2025-04-14T15:20:41Z",
+  "published": "2025-04-14T15:20:40Z",
+  "database_specific": {
+    "nvd_published_at": "2024-10-08T18:15:31Z",
+    "cwe_ids": [
+      "CWE-532"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-14T15:20:40Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/directus/directus/security/advisories/GHSA-vw58-ph65-6rxp"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47822"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/directus/directus/commit/2e893f9c576d5a02506272fe2c0bcc12e6c58768"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/directus/directus"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "@directus/api",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/%40directus/api"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "21.0.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-vw58-ph65-6rxp/GHSA-vw58-ph65-6rxp.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:H/UI:R/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

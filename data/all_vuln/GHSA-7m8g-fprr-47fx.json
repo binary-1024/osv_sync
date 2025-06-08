@@ -1,0 +1,204 @@
+{
+  "id": "GHSA-7m8g-fprr-47fx",
+  "summary": "phpMyFAQ vulnerable to stored XSS on attachments filename",
+  "details": "### Summary\nUnsafe echo of filename in phpMyFAQ\\phpmyfaq\\admin\\attachments.php leading to allow execute JavaScript code in client side (XSS)\n\n### Details\nOn that snippet code of rendering the file attachments from user tables\n\n```\n<?php foreach ($crumbs as $item) : ?>\n        <tr id=\"attachment_<?= $item->id ?>\" title=\"<?= $item->thema ?>\">\n          <td><?= $item->id ?></td>\n          <td><?= $item->filename ?></td>\n          <td><?= $item->record_lang ?></td>\n          <td><?= Utils::formatBytes($item->filesize) ?></td>\n          <td><?= $item->mime_type ?></td>\n          <td>\n```\n\nThe data directly rendering with short hand echo without any sanitation first, its recommend to use  existing class of `Strings::htmlentities` on use `phpMyFAQ\\Strings;`\n\n```\n<td><?= Strings::htmlentities($item->filename); ?></td>\n<td><?= Strings::htmlentities($item->record_lang); ?></td>\n<td><?= Utils::formatBytes($item->filesize) ?></td>\n<td><?= Strings::htmlentities($item->mime_type); ?></td>\n```\n\nPropose fixing on that pull request https://github.com/thorsten/phpMyFAQ/pull/2827\n\n### PoC\n1. An attacker with permission will upload the attachments image on [http://{base_url}/admin/?action=editentry](http://{base_url}/admin/?action=editentry)\n2. On endpoint of ajax upload image POST /admin/index.php?action=ajax&ajax=att&ajaxaction=upload \n3. Change the originally name file on parameters  filename to a XSS payload \n4. The XSS will trigger on attachment pages /admin/?action=attachments\n\n- Trigger XSS\n![image](https://user-images.githubusercontent.com/37658579/301022211-81da265b-5dce-48bd-a043-8bae0991fe46.png)\n\n- Payload XSS\n<img width=\"1000\" alt=\"image\" src=\"https://user-images.githubusercontent.com/37658579/301022571-d6cdd166-b1f9-4062-87c5-c8bbb308cd5d.png\">\n\n\n\n\n### Impact\n\nThis vulnerability will allow an attacker with a permissions of uploading an attachment to storing the payload of XSS on database specific table `faqattachment` columns `filename.`\n\nThe XSS payload could be rendering on page that listing the file on tables, and impact to others user that on the hierarchy. \n\nThe payload XSS have several attack scenario such like \n\n1. Stealing the cookies (isn\u2019t possible since HttpOnly)\n2. Crashing the application with a looping javascript payload\n",
+  "aliases": [
+    "CVE-2024-24574"
+  ],
+  "modified": "2024-02-16T07:56:27.897284Z",
+  "published": "2024-02-05T20:22:05Z",
+  "related": [
+    "CVE-2024-24574"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-02-05T21:15:12Z",
+    "cwe_ids": [
+      "CWE-79",
+      "CWE-80"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-05T20:22:05Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-7m8g-fprr-47fx"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24574"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/thorsten/phpMyFAQ/pull/2827"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/thorsten/phpMyFAQ/commit/5479b4a4603cce71aa7eb4437f1c201153a1f1f5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/thorsten/phpMyFAQ"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.phpmyfaq.de/security/advisory-2024-02-05"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "phpmyfaq/phpmyfaq",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/phpmyfaq/phpmyfaq"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.2.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.10.0-alpha",
+        "2.8.0",
+        "2.8.0-RC",
+        "2.8.0-RC2",
+        "2.8.0-RC3",
+        "2.8.0-RC4",
+        "2.8.0-alpha2",
+        "2.8.0-alpha3",
+        "2.8.0-beta",
+        "2.8.0-beta2",
+        "2.8.0-beta3",
+        "2.8.1",
+        "2.8.10",
+        "2.8.11",
+        "2.8.12",
+        "2.8.13",
+        "2.8.14",
+        "2.8.15",
+        "2.8.16",
+        "2.8.17",
+        "2.8.18",
+        "2.8.19",
+        "2.8.2",
+        "2.8.20",
+        "2.8.21",
+        "2.8.22",
+        "2.8.23",
+        "2.8.24",
+        "2.8.25",
+        "2.8.26",
+        "2.8.27",
+        "2.8.28",
+        "2.8.29",
+        "2.8.3",
+        "2.8.4",
+        "2.8.5",
+        "2.8.6",
+        "2.8.7",
+        "2.8.8",
+        "2.8.9",
+        "2.9.0",
+        "2.9.0-alpha",
+        "2.9.0-alpha2",
+        "2.9.0-alpha3",
+        "2.9.0-alpha4",
+        "2.9.0-beta",
+        "2.9.0-beta2",
+        "2.9.0-rc",
+        "2.9.0-rc2",
+        "2.9.0-rc3",
+        "2.9.0-rc4",
+        "2.9.1",
+        "2.9.10",
+        "2.9.11",
+        "2.9.12",
+        "2.9.13",
+        "2.9.2",
+        "2.9.3",
+        "2.9.4",
+        "2.9.5",
+        "2.9.6",
+        "2.9.7",
+        "2.9.8",
+        "2.9.9",
+        "3.0.0",
+        "3.0.0-RC",
+        "3.0.0-RC.2",
+        "3.0.0-alpha",
+        "3.0.0-alpha.2",
+        "3.0.0-alpha.3",
+        "3.0.0-alpha.4",
+        "3.0.0-beta",
+        "3.0.0-beta.2",
+        "3.0.0-beta.3",
+        "3.0.1",
+        "3.0.10",
+        "3.0.11",
+        "3.0.12",
+        "3.0.2",
+        "3.0.3",
+        "3.0.4",
+        "3.0.5",
+        "3.0.6",
+        "3.0.7",
+        "3.0.8",
+        "3.0.9",
+        "3.1.0",
+        "3.1.0-RC",
+        "3.1.0-alpha",
+        "3.1.0-alpha.2",
+        "3.1.0-alpha.3",
+        "3.1.0-beta",
+        "3.1.1",
+        "3.1.10",
+        "3.1.11",
+        "3.1.12",
+        "3.1.13",
+        "3.1.14",
+        "3.1.15",
+        "3.1.16",
+        "3.1.17",
+        "3.1.18",
+        "3.1.2",
+        "3.1.3",
+        "3.1.4",
+        "3.1.5",
+        "3.1.6",
+        "3.1.7",
+        "3.1.8",
+        "3.1.9",
+        "3.2.0",
+        "3.2.0-RC",
+        "3.2.0-RC.2",
+        "3.2.0-RC.4",
+        "3.2.0-alpha",
+        "3.2.0-beta",
+        "3.2.0-beta.2",
+        "3.2.1",
+        "3.2.2",
+        "3.2.3",
+        "3.2.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-7m8g-fprr-47fx/GHSA-7m8g-fprr-47fx.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L"
+    }
+  ]
+}

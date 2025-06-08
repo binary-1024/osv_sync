@@ -1,0 +1,167 @@
+{
+  "id": "GHSA-hx5q-v6pj-533r",
+  "summary": "SAML authentication bypass due to missing validation on unsigned SAML messages",
+  "details": "### Impact\n\nWhen SAML is used as the authentication mechanism, Central Dogma accepts unsigned SAML messages (assertions, logout requests, etc.) as they are, rather than rejecting them by default. As a result, an attacker can forge a SAML message to authenticate themselves, despite the fact that such an unsigned SAML message should be rejected.\n\n### Patches\n\nThe vulnerability has been patched in Central Dogma 0.64.3 by updating its Armeria dependency to 1.27.2. All users who use SAML as the authentication mechanism must upgrade from 0.64.3 or later.\n\n### Workarounds\n\nA user can manually upgrade the `armeria-saml` module with the one from Armeria 1.27.2 or later, either by replacing the JAR in the Central Dogma distribution or by updating the dependency tree of the build.\n\n### References\n\n[`SamlMessageUtil.validateSignature()`](https://github.com/line/armeria/blob/0efc776988d71be4da6e506ec8a33c2b7b43f567/saml/src/main/java/com/linecorp/armeria/server/saml/SamlMessageUtil.java#L160-L163)",
+  "modified": "2024-12-04T05:34:32.965572Z",
+  "published": "2024-02-26T20:04:50Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-1395"
+    ],
+    "severity": "CRITICAL",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-26T20:04:50Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/line/armeria/security/advisories/GHSA-4m6j-23p2-8c54"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/line/centraldogma/security/advisories/GHSA-hx5q-v6pj-533r"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/line/centraldogma/commit/16903426be2e954c050b3ee47b8c38ee3218f0eb"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/line/centraldogma/commit/16903426be2e954c050b3ee47b8c38ee3218f0ebxz"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/line/centraldogma"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/line/centraldogma/releases/tag/centraldogma-0.64.3"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "com.linecorp.centraldogma:centraldogma-server-auth-saml",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.linecorp.centraldogma/centraldogma-server-auth-saml"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.64.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.33.0",
+        "0.34.0",
+        "0.35.0",
+        "0.35.1",
+        "0.36.0",
+        "0.37.0",
+        "0.38.0",
+        "0.39.0",
+        "0.39.1",
+        "0.39.2",
+        "0.40.0",
+        "0.40.1",
+        "0.41.0",
+        "0.41.1",
+        "0.41.2",
+        "0.41.3",
+        "0.41.4",
+        "0.42.0",
+        "0.43.0",
+        "0.43.1",
+        "0.43.2",
+        "0.43.3",
+        "0.43.4",
+        "0.44.0",
+        "0.44.1",
+        "0.44.10",
+        "0.44.11",
+        "0.44.12",
+        "0.44.13",
+        "0.44.14",
+        "0.44.2",
+        "0.44.3",
+        "0.44.4",
+        "0.44.5",
+        "0.44.6",
+        "0.44.7",
+        "0.44.8",
+        "0.44.9",
+        "0.45.0",
+        "0.45.1",
+        "0.46.0",
+        "0.46.1",
+        "0.47.0",
+        "0.47.1",
+        "0.48.0",
+        "0.49.0",
+        "0.49.1",
+        "0.50.0",
+        "0.51.0",
+        "0.51.1",
+        "0.52.0",
+        "0.52.1",
+        "0.52.2",
+        "0.52.3",
+        "0.52.4",
+        "0.52.5",
+        "0.52.6",
+        "0.53.0",
+        "0.53.1",
+        "0.54.0",
+        "0.55.0",
+        "0.55.1",
+        "0.55.2",
+        "0.56.0",
+        "0.56.1",
+        "0.56.2",
+        "0.57.0",
+        "0.57.1",
+        "0.57.2",
+        "0.57.3",
+        "0.58.0",
+        "0.58.1",
+        "0.59.0",
+        "0.60.0",
+        "0.60.1",
+        "0.61.0",
+        "0.61.1",
+        "0.61.2",
+        "0.61.3",
+        "0.61.4",
+        "0.61.5",
+        "0.62.0",
+        "0.62.1",
+        "0.63.0",
+        "0.63.1",
+        "0.63.2",
+        "0.63.3",
+        "0.64.0",
+        "0.64.1",
+        "0.64.2"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 0.64.2",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-hx5q-v6pj-533r/GHSA-hx5q-v6pj-533r.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+    }
+  ]
+}

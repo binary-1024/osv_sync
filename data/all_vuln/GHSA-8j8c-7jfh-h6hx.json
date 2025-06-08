@@ -1,0 +1,56 @@
+{
+  "id": "GHSA-8j8c-7jfh-h6hx",
+  "summary": "Code Injection in js-yaml",
+  "details": "Versions of `js-yaml` prior to 3.13.1 are vulnerable to Code Injection. The `load()` function may execute arbitrary code injected through a malicious YAML file. Objects that have `toString` as key, JavaScript code as value and are used as explicit mapping keys allow attackers to execute the supplied code through the `load()` function. The `safeLoad()` function is unaffected.\n\nAn example payload is \n`{ toString: !<tag:yaml.org,2002:js/function> 'function (){return Date.now()}' } : 1` \nwhich returns the object \n{\n  \"1553107949161\": 1\n}\n\n\n## Recommendation\n\nUpgrade to version 3.13.1.",
+  "modified": "2020-08-31T18:36:43Z",
+  "published": "2019-06-04T20:14:07Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-94"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2019-06-04T20:13:53Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/nodeca/js-yaml/pull/480"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nodeca/js-yaml/pull/480/commits/e18afbf1edcafb7add2c4c7b22abc8d6ebc2fa61"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.npmjs.com/advisories/813"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "js-yaml",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/js-yaml"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.13.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2019/06/GHSA-8j8c-7jfh-h6hx/GHSA-8j8c-7jfh-h6hx.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

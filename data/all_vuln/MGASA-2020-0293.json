@@ -1,0 +1,64 @@
+{
+  "id": "MGASA-2020-0293",
+  "summary": "Updated mbedtls packages fix security vulnerability",
+  "details": "Updated mbedtls packages fix security vulnerabilities\n\nFix a side channel vulnerability in modular exponentiation that could reveal\nan RSA private key used in a secure enclave.\n\nFix side channel in mbedtls_ecp_check_pub_priv() and mbedtls_pk_parse_key() /\nmbedtls_pk_parse_keyfile() (when loading a private key that didn't include the\nuncompressed public key), as well as mbedtls_ecp_mul() /\nmbedtls_ecp_mul_restartable() when called with a NULL f_rng argument. An\nattacker with access to precise enough timing and memory access information\n(typically an untrusted operating system attacking a secure enclave) could\nfully recover the ECC private key. \n\nFix issue in Lucky 13 counter-measure that could make it ineffective when\nhardware accelerators were used (using one of the MBEDTLS_SHAxxx_ALT macros).\nThis would cause the original Lucky 13 attack to be possible in those\nconfigurations, allowing an active network attacker to recover plaintext after\nrepeated timing measurements under some conditions.\n",
+  "modified": "2020-07-10T15:03:05Z",
+  "published": "2020-07-10T15:40:08Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2020-0293.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=26924"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://tls.mbed.org/tech-updates/security-advisories/mbedtls-security-advisory-2020-07"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ARMmbed/mbedtls/releases/tag/mbedtls-2.16.7"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "mbedtls",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/mbedtls?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.16.7-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0293.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

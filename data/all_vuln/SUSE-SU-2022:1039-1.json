@@ -1,0 +1,996 @@
+{
+  "id": "SUSE-SU-2022:1039-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "The SUSE Linux Enterprise 15 SP3 kernel was updated to receive various security and bugfixes.\n\n\nThe following security bugs were fixed:\n\n- CVE-2022-25636: Fixed an issue which allowed a local users to gain privileges because of a heap out-of-bounds write in nf_dup_netdev.c, related to nf_tables_offload (bsc#1196299).\n- CVE-2022-26490: Fixed a buffer overflow in the st21nfca driver. An attacker with adjacent NFC access could trigger crash the system or corrupt system memory (bsc#1196830).\n- CVE-2022-0487: A use-after-free vulnerability was found in rtsx_usb_ms_drv_remove() in drivers/memstick/host/rtsx_usb_ms.c (bsc#1194516).\n- CVE-2022-24448: Fixed an issue if an application sets the O_DIRECTORY flag, and tries to open a regular file, nfs_atomic_open() performs a regular lookup. If a regular file is found, ENOTDIR should have occured, but the server instead returned uninitialized data in the file descriptor (bsc#1195612).\n- CVE-2022-0617: Fixed a null pointer dereference in UDF file system functionality. A local user could crash the system by triggering udf_file_write_iter() via a malicious UDF image. (bsc#1196079)\n- CVE-2022-0644: Fixed a denial of service by a local user. A assertion failure could be triggered in kernel_read_file_from_fd(). (bsc#1196155)\n- CVE-2022-25258: The USB Gadget subsystem lacked certain validation of interface OS descriptor requests, which could have lead to memory corruption (bsc#1196096).\n- CVE-2022-24958: drivers/usb/gadget/legacy/inode.c mishandled dev->buf release (bsc#1195905).\n- CVE-2022-24959: Fixed a memory leak in yam_siocdevprivate() in drivers/net/hamradio/yam.c (bsc#1195897).\n- CVE-2021-44879: In gc_data_segment() in fs/f2fs/gc.c, special files were not considered, which lead to a move_data_page NULL pointer dereference (bsc#1195987).\n- CVE-2021-0920: Fixed a local privilege escalation due to a use-after-free vulnerability in unix_scm_to_skb of af_unix (bsc#1193731).\n- CVE-2021-39657: Fixed an information leak in the Universal Flash Storage subsystem (bsc#1193864).\n- CVE-2022-26966: Fixed an issue in drivers/net/usb/sr9700.c, which allowed attackers to obtain sensitive information from heap memory via crafted frame lengths from a device (bsc#1196836).\n- CVE-2021-39698: Fixed a possible memory corruption due to a use after free in aio_poll_complete_work. This could lead to local escalation of privilege with no additional execution privileges needed. (bsc#1196956)\n- CVE-2021-45402: The check_alu_op function in kernel/bpf/verifier.c did not properly update bounds while handling the mov32 instruction, which allowed local users to obtain potentially sensitive address information (bsc#1196130).\n- CVE-2022-23036,CVE-2022-23037,CVE-2022-23038,CVE-2022-23039,CVE-2022-23040,CVE-2022-23041,CVE-2022-23042: Fixed multiple issues which could have lead to read/write access to memory pages or denial of service. These issues are related to the Xen PV device frontend drivers. (bsc#1196488)\n\nThe following non-security bugs were fixed:\n\n- ALSA: intel_hdmi: Fix reference to PCM buffer address (git-fixes).\n- ARM: 9182/1: mmu: fix returns from early_param() and __setup() functions (git-fixes).\n- ARM: Fix kgdb breakpoint for Thumb2 (git-fixes).\n- ASoC: cs4265: Fix the duplicated control name (git-fixes).\n- ASoC: ops: Shift tested values in snd_soc_put_volsw() by +min (git-fixes).\n- ASoC: rt5668: do not block workqueue if card is unbound (git-fixes).\n- ASoC: rt5682: do not block workqueue if card is unbound (git-fixes).\n- Bluetooth: btusb: Add missing Chicony device for Realtek RTL8723BE (bsc#1196779).\n- EDAC/altera: Fix deferred probing (bsc#1178134).\n- EDAC: Fix calculation of returned address and next offset in edac_align_ptr() (bsc#1178134).\n- HID: add mapping for KEY_ALL_APPLICATIONS (git-fixes).\n- HID: add mapping for KEY_DICTATE (git-fixes).\n- Hand over the maintainership to SLE15-SP3 maintainers\n- IB/hfi1: Correct guard on eager buffer deallocation (git-fixes).\n- IB/hfi1: Fix early init panic (git-fixes).\n- IB/hfi1: Fix leak of rcvhdrtail_dummy_kvaddr (git-fixes).\n- IB/hfi1: Insure use of smp_processor_id() is preempt disabled (git-fixes).\n- IB/rdmavt: Validate remote_addr during loopback atomic tests (git-fixes).\n- Input: clear BTN_RIGHT/MIDDLE on buttonpads (git-fixes).\n- Input: elan_i2c - fix regulator enable count imbalance after suspend/resume (git-fixes).\n- Input: elan_i2c - move regulator_[en|dis]able() out of elan_[en|dis]able_power() (git-fixes).\n- NFC: port100: fix use-after-free in port100_send_complete (git-fixes).\n- RDMA/bnxt_re: Scan the whole bitmap when checking if 'disabling RCFW with pending cmd-bit' (git-fixes).\n- RDMA/cma: Do not change route.addr.src_addr outside state checks (bsc#1181147).\n- RDMA/cma: Let cma_resolve_ib_dev() continue search even after empty entry (git-fixes).\n- RDMA/cma: Remove open coding of overflow checking for private_data_len (git-fixes).\n- RDMA/core: Do not infoleak GRH fields (git-fixes).\n- RDMA/core: Let ib_find_gid() continue search even after empty entry (git-fixes).\n- RDMA/cxgb4: Set queue pair state when being queried (git-fixes).\n- RDMA/hns: Validate the pkey index (git-fixes).\n- RDMA/ib_srp: Fix a deadlock (git-fixes).\n- RDMA/mlx4: Do not continue event handler after memory allocation failure (git-fixes).\n- RDMA/rtrs-clt: Fix possible double free in error case (jsc#SLE-15176).\n- RDMA/rxe: Fix a typo in opcode name (git-fixes).\n- RDMA/siw: Fix broken RDMA Read Fence/Resume logic (git-fixes).\n- RDMA/uverbs: Check for null return of kmalloc_array (git-fixes).\n- RDMA/uverbs: Remove the unnecessary assignment (git-fixes).\n- Revert 'USB: serial: ch341: add new Product ID for CH341A' (git-fixes).\n- SUNRPC: avoid race between mod_timer() and del_timer_sync() (bnc#1195403).\n- USB: gadget: validate endpoint index for xilinx udc (git-fixes).\n- USB: gadget: validate interface OS descriptor requests (git-fixes).\n- USB: hub: Clean up use of port initialization schemes and retries (git-fixes).\n- USB: serial: option: add Telit LE910R1 compositions (git-fixes).\n- USB: serial: option: add support for DW5829e (git-fixes).\n- USB: zaurus: support another broken Zaurus (git-fixes).\n- arm64: dts: rockchip: Switch RK3399-Gru DP to SPDIF output (git-fixes).\n- asix: fix uninit-value in asix_mdio_read() (git-fixes).\n- ata: pata_hpt37x: disable primary channel on HPT371 (git-fixes).\n- ax25: Fix NULL pointer dereference in ax25_kill_by_device (git-fixes).\n- batman-adv: Do not expect inter-netns unique iflink indices (git-fixes).\n- batman-adv: Request iflink once in batadv-on-batadv check (git-fixes).\n- batman-adv: Request iflink once in batadv_get_real_netdevice (git-fixes).\n- blk-mq: do not free tags if the tag_set is used by other device in queue initialztion (bsc#1193787).\n- bnxt_en: Fix active FEC reporting to ethtool (jsc#SLE-16649).\n- bnxt_en: Fix incorrect multicast rx mask setting when not requested (git-fixes).\n- bnxt_en: Fix occasional ethtool -t loopback test failures (git-fixes).\n- bnxt_en: Fix offline ethtool selftest with RDMA enabled (git-fixes).\n- bonding: force carrier update when releasing slave (git-fixes).\n- build initrd without systemd This reduces the size of the initrd by over 25%, which improves startup time of the virtual machine by 0.5-0.6s on very fast machines, more on slower ones.\n- can: gs_usb: change active_channels's type from atomic_t to u8 (git-fixes).\n- cgroup-v1: Correct privileges check in release_agent writes (bsc#1196723).\n- cgroup/cpuset: Fix 'suspicious RCU usage' lockdep warning (bsc#1196868).\n- clk: jz4725b: fix mmc0 clock gating (git-fixes).\n- constraints: Also adjust disk requirement for x86 and s390.\n- constraints: Increase disk space for aarch64\n- cpufreq: schedutil: Use kobject release() method to free (git-fixes)\n- cpuset: Fix the bug that subpart_cpus updated wrongly in update_cpumask() (bsc#1196866).\n- cputime, cpuacct: Include guest time in user time in (git-fixes)\n- dma-direct: Fix potential NULL pointer dereference (bsc#1196472 ltc#192278).\n- dma-mapping: Allow mixing bypass and mapped DMA operation (bsc#1196472 ltc#192278).\n- dmaengine: shdma: Fix runtime PM imbalance on error (git-fixes).\n- drm/amdgpu: disable MMHUB PG for Picasso (git-fixes).\n- drm/edid: Always set RGB444 (git-fixes).\n- drm/i915/dg1: Wait for pcode/uncore handshake at startup (bsc#1195211).\n- drm/i915/gen11+: Only load DRAM information from pcode (bsc#1195211).\n- drm/i915: Nuke not needed members of dram_info (bsc#1195211).\n- drm/i915: Remove memory frequency calculation (bsc#1195211).\n- drm/i915: Rename is_16gb_dimm to wm_lv_0_adjust_needed (bsc#1195211).\n- drm/sun4i: mixer: Fix P010 and P210 format numbers (git-fixes).\n- efivars: Respect 'block' flag in efivar_entry_set_safe() (git-fixes).\n- exfat: fix i_blocks for files truncated over 4 GiB (git-fixes).\n- exfat: fix incorrect loading of i_blocks for large files (git-fixes).\n- firmware: arm_scmi: Remove space in MODULE_ALIAS name (git-fixes).\n- fix rpm build warning tumbleweed rpm is adding these warnings to the log: It's not recommended to have unversioned Obsoletes: Obsoletes:   microcode_ctl\n- gianfar: ethtool: Fix refcount leak in gfar_get_ts_info (git-fixes).\n- gpio: rockchip: Reset int_bothedge when changing trigger (git-fixes).\n- gpio: tegra186: Fix chip_data type confusion (git-fixes).\n- gpio: ts4900: Do not set DAT and OE together (git-fixes).\n- gpiolib: acpi: Convert ACPI value of debounce to microseconds (git-fixes).\n- gtp: remove useless rcu_read_lock() (git-fixes).\n- hamradio: fix macro redefine warning (git-fixes).\n- i2c: bcm2835: Avoid clock stretching timeouts (git-fixes).\n- iavf: Fix missing check for running netdev (git-fixes).\n- ice: initialize local variable 'tlv' (jsc#SLE-12878).\n- igc: igc_read_phy_reg_gpy: drop premature return (git-fixes).\n- igc: igc_write_phy_reg_gpy: drop premature return (git-fixes).\n- iio: Fix error handling for PM (git-fixes).\n- iio: adc: ad7124: fix mask used for setting AIN_BUFP & AIN_BUFM bits (git-fixes).\n- iio: adc: men_z188_adc: Fix a resource leak in an error handling path (git-fixes).\n- ixgbe: xsk: change !netif_carrier_ok() handling in ixgbe_xmit_zc() (git-fixes).\n- kernel-binary.spec.in: Move 20-kernel-default-extra.conf to the correctr directory (bsc#1195051).\n- kernel-binary.spec: Also exclude the kernel signing key from devel package. There is a check in OBS that fails when it is included. Also the key is not reproducible. Fixes: bb988d4625a3 ('kernel-binary: Do not include sourcedir in certificate path.')\n- kernel-binary.spec: Do not use the default certificate path (bsc#1194943). Using the the default path is broken since Linux 5.17\n- kernel-binary: Do not include sourcedir in certificate path. The certs macro runs before build directory is set up so it creates the aggregate of supplied certificates in the source directory. Using this file directly as the certificate in kernel config works but embeds the source directory path in the kernel config. To avoid this symlink the certificate to the build directory and use relative path to refer to it. Also fabricate a certificate in the same location in build directory when none is provided.\n- kernel-obs-build: include 9p (boo#1195353) To be able to share files between host and the qemu vm of the build script, the 9p and 9p_virtio kernel modules need to be included in the initrd of kernel-obs-build.\n- mac80211: fix forwarded mesh frames AC & queue selection (git-fixes).\n- mac80211_hwsim: initialize ieee80211_tx_info at hw_scan_work (git-fixes).\n- mac80211_hwsim: report NOACK frames in tx_status (git-fixes).\n- mask out added spinlock in rndis_params (git-fixes).\n- mmc: meson: Fix usage of meson_mmc_post_req() (git-fixes).\n- net/mlx5: Fix possible deadlock on rule deletion (git-fixes).\n- net/mlx5: Fix wrong limitation of metadata match on ecpf (git-fixes).\n- net/mlx5: Update the list of the PCI supported devices (git-fixes).\n- net/mlx5: Update the list of the PCI supported devices (git-fixes).\n- net/mlx5e: Fix modify header actions memory leak (git-fixes).\n- net/mlx5e: Fix page DMA map/unmap attributes (bsc#1196468).\n- net/mlx5e: Fix wrong return value on ioctl EEPROM query failure (git-fixes).\n- net/mlx5e: TC, Reject rules with drop and modify hdr action (git-fixes).\n- net/mlx5e: TC, Reject rules with forward and drop actions (git-fixes).\n- net/mlx5e: kTLS, Use CHECKSUM_UNNECESSARY for device-offloaded packets (jsc#SLE-15172).\n- net/sched: act_ct: Fix flow table lookup after ct clear or switching zones (jsc#SLE-15172).\n- net: dsa: mv88e6xxx: MV88E6097 does not support jumbo configuration (git-fixes).\n- net: ethernet: ti: cpsw: disable PTPv1 hw timestamping advertisement (git-fixes).\n- net: fix up skbs delta_truesize in UDP GRO frag_list (bsc#1176447).\n- net: hns3: Clear the CMDQ registers before unmapping BAR region (git-fixes).\n- net: phy: DP83822: clear MISR2 register to disable interrupts (git-fixes).\n- net: sfc: Replace in_interrupt() usage (git-fixes).\n- net: tipc: validate domain record count on input (bsc#1195254).\n- net: usb: cdc_mbim: avoid altsetting toggling for Telit FN990 (git-fixes).\n- netfilter: nf_tables: fix memory leak during stateful obj update (bsc#1176447).\n- netsec: ignore 'phy-mode' device property on ACPI systems (git-fixes).\n- nfp: flower: Fix a potential leak in nfp_tunnel_add_shared_mac() (git-fixes).\n- nl80211: Handle nla_memdup failures in handle_nan_filter (git-fixes).\n- ntb: intel: fix port config status offset for SPR (git-fixes).\n- nvme-multipath: use vmalloc for ANA log buffer (bsc#1193787).\n- nvme-rdma: fix possible use-after-free in transport error_recovery work (git-fixes).\n- nvme-tcp: fix possible use-after-free in transport error_recovery work (git-fixes).\n- nvme: fix a possible use-after-free in controller reset during load (git-fixes).\n- powerpc/dma: Fallback to dma_ops when persistent memory present (bsc#1196472 ltc#192278). Update config files.\n- powerpc/fadump: register for fadump as early as possible (bsc#1179439 ltc#190038).\n- powerpc/mm: Remove dcache flush from memory remove (bsc#1196433 ltc#196449).\n- powerpc/powernv/memtrace: Fix dcache flushing (bsc#1196433 ltc#196449).\n- powerpc/pseries/iommu: Fix window size for direct mapping with pmem (bsc#1196472 ltc#192278).\n- rpm/*.spec.in: Use https:// urls\n- rpm/arch-symbols,guards,*driver: Replace Novell with SUSE.\n- rpm/check-for-config-changes: Ignore PAHOLE_VERSION.\n- rpm/kernel-docs.spec.in: use %%license for license declarations Limited to SLE15+ to avoid compatibility nightmares.\n- rpm/kernel-source.spec.in: call fdupes per subpackage It is a waste of time to do a global fdupes when we have subpackages.\n- rpm: SC2006: Use $(...) notation instead of legacy backticked `...`.\n- sched/core: Mitigate race (git-fixes)\n- scsi: bnx2fc: Flush destroy_work queue before calling bnx2fc_interface_put() (git-fixes).\n- scsi: bnx2fc: Make bnx2fc_recv_frame() mp safe (git-fixes).\n- scsi: lpfc: Terminate string in lpfc_debugfs_nvmeio_trc_write() (git-fixes).\n- scsi: nsp_cs: Check of ioremap return value (git-fixes).\n- scsi: qedf: Fix potential dereference of NULL pointer (git-fixes).\n- scsi: smartpqi: Add PCI IDs (bsc#1196627).\n- scsi: ufs: Fix race conditions related to driver data (git-fixes).\n- selftests: mlxsw: tc_police_scale: Make test more robust (bsc#1176774).\n- soc: fsl: Correct MAINTAINERS database (QUICC ENGINE LIBRARY) (git-fixes).\n- soc: fsl: Correct MAINTAINERS database (SOC) (git-fixes).\n- soc: fsl: qe: Check of ioremap return value (git-fixes).\n- spi: spi-zynq-qspi: Fix a NULL pointer dereference in zynq_qspi_exec_mem_op() (git-fixes).\n- sr9700: sanity check for packet length (bsc#1196836).\n- staging: gdm724x: fix use after free in gdm_lte_rx() (git-fixes).\n- tracing: Fix return value of __setup handlers (git-fixes).\n- tty: n_gsm: fix encoding of control signal octet bit DV (git-fixes).\n- tty: n_gsm: fix proper link termination after failed open (git-fixes).\n- usb: dwc2: Fix Stalling a Non-Isochronous OUT EP (git-fixes).\n- usb: dwc2: gadget: Fix GOUTNAK flow for Slave mode (git-fixes).\n- usb: dwc2: gadget: Fix kill_all_requests race (git-fixes).\n- usb: dwc2: use well defined macros for power_down (git-fixes).\n- usb: dwc3: gadget: Let the interrupt handler disable bottom halves (git-fixes).\n- usb: dwc3: meson-g12a: Disable the regulator in the error handling path of the probe (git-fixes).\n- usb: dwc3: pci: Fix Bay Trail phy GPIO mappings (git-fixes).\n- usb: gadget: rndis: add spinlock for rndis response list (git-fixes).\n- usb: host: xen-hcd: add missing unlock in error path (git-fixes).\n- usb: hub: Fix locking issues with address0_mutex (git-fixes).\n- usb: hub: Fix usb enumeration issue due to address0 race (git-fixes).\n- vrf: Fix fast path output packet handling with async Netfilter rules (git-fixes).\n- xen/usb: do not use gnttab_end_foreign_access() in xenhcd_gnttab_done() (bsc#1196488, XSA-396).\n- xhci: Prevent futile URB re-submissions due to incorrect return value (git-fixes).\n- xhci: re-initialize the HC during resume if HCE was set (git-fixes).\n",
+  "modified": "2025-05-02T04:31:00.203345Z",
+  "published": "2022-03-30T07:38:49Z",
+  "related": [
+    "CVE-2021-0920",
+    "CVE-2021-39657",
+    "CVE-2021-39698",
+    "CVE-2021-44879",
+    "CVE-2021-45402",
+    "CVE-2022-0487",
+    "CVE-2022-0617",
+    "CVE-2022-0644",
+    "CVE-2022-23036",
+    "CVE-2022-23037",
+    "CVE-2022-23038",
+    "CVE-2022-23039",
+    "CVE-2022-23040",
+    "CVE-2022-23041",
+    "CVE-2022-23042",
+    "CVE-2022-24448",
+    "CVE-2022-24958",
+    "CVE-2022-24959",
+    "CVE-2022-25258",
+    "CVE-2022-25636",
+    "CVE-2022-26490",
+    "CVE-2022-26966"
+  ],
+  "upstream": [
+    "CVE-2021-0920",
+    "CVE-2021-39657",
+    "CVE-2021-39698",
+    "CVE-2021-44879",
+    "CVE-2021-45402",
+    "CVE-2022-0487",
+    "CVE-2022-0617",
+    "CVE-2022-0644",
+    "CVE-2022-23036",
+    "CVE-2022-23037",
+    "CVE-2022-23038",
+    "CVE-2022-23039",
+    "CVE-2022-23040",
+    "CVE-2022-23041",
+    "CVE-2022-23042",
+    "CVE-2022-24448",
+    "CVE-2022-24958",
+    "CVE-2022-24959",
+    "CVE-2022-25258",
+    "CVE-2022-25636",
+    "CVE-2022-26490",
+    "CVE-2022-26966"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2022/suse-su-20221039-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1176447"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1176774"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178134"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179439"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1181147"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191428"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192273"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193731"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193787"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193864"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194463"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194516"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194943"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195051"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195211"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195254"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195353"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195403"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195612"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195897"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195905"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195939"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195949"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195987"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196079"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196095"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196130"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196132"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196155"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196299"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196301"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196433"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196468"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196472"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196488"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196627"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196723"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196779"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196830"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196836"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196866"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196868"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196956"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1196959"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-0920"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-39657"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-39698"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-44879"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-45402"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-0487"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-0617"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-0644"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-23036"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-23037"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-23038"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-23039"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-23040"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-23041"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-23042"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-24448"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-24958"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-24959"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-25258"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-25636"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-26490"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-26966"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-64kb",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-64kb&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "5.3.18-150300.59.60.4",
+            "kernel-devel": "5.3.18-150300.59.60.4",
+            "kernel-default-base": "5.3.18-150300.59.60.4.150300.18.37.5",
+            "kernel-64kb-devel": "5.3.18-150300.59.60.4",
+            "kernel-zfcpdump": "5.3.18-150300.59.60.4",
+            "kernel-default": "5.3.18-150300.59.60.4",
+            "kernel-preempt": "5.3.18-150300.59.60.4",
+            "kernel-default-devel": "5.3.18-150300.59.60.4",
+            "kernel-64kb": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "5.3.18-150300.59.60.4",
+            "kernel-devel": "5.3.18-150300.59.60.4",
+            "kernel-default-base": "5.3.18-150300.59.60.4.150300.18.37.5",
+            "kernel-64kb-devel": "5.3.18-150300.59.60.4",
+            "kernel-zfcpdump": "5.3.18-150300.59.60.4",
+            "kernel-default": "5.3.18-150300.59.60.4",
+            "kernel-preempt": "5.3.18-150300.59.60.4",
+            "kernel-default-devel": "5.3.18-150300.59.60.4",
+            "kernel-64kb": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default-base",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-default-base&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4.150300.18.37.5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "5.3.18-150300.59.60.4",
+            "kernel-devel": "5.3.18-150300.59.60.4",
+            "kernel-default-base": "5.3.18-150300.59.60.4.150300.18.37.5",
+            "kernel-64kb-devel": "5.3.18-150300.59.60.4",
+            "kernel-zfcpdump": "5.3.18-150300.59.60.4",
+            "kernel-default": "5.3.18-150300.59.60.4",
+            "kernel-preempt": "5.3.18-150300.59.60.4",
+            "kernel-default-devel": "5.3.18-150300.59.60.4",
+            "kernel-64kb": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-preempt",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-preempt&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "5.3.18-150300.59.60.4",
+            "kernel-devel": "5.3.18-150300.59.60.4",
+            "kernel-default-base": "5.3.18-150300.59.60.4.150300.18.37.5",
+            "kernel-64kb-devel": "5.3.18-150300.59.60.4",
+            "kernel-zfcpdump": "5.3.18-150300.59.60.4",
+            "kernel-default": "5.3.18-150300.59.60.4",
+            "kernel-preempt": "5.3.18-150300.59.60.4",
+            "kernel-default-devel": "5.3.18-150300.59.60.4",
+            "kernel-64kb": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "5.3.18-150300.59.60.4",
+            "kernel-devel": "5.3.18-150300.59.60.4",
+            "kernel-default-base": "5.3.18-150300.59.60.4.150300.18.37.5",
+            "kernel-64kb-devel": "5.3.18-150300.59.60.4",
+            "kernel-zfcpdump": "5.3.18-150300.59.60.4",
+            "kernel-default": "5.3.18-150300.59.60.4",
+            "kernel-preempt": "5.3.18-150300.59.60.4",
+            "kernel-default-devel": "5.3.18-150300.59.60.4",
+            "kernel-64kb": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-zfcpdump",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-zfcpdump&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "5.3.18-150300.59.60.4",
+            "kernel-devel": "5.3.18-150300.59.60.4",
+            "kernel-default-base": "5.3.18-150300.59.60.4.150300.18.37.5",
+            "kernel-64kb-devel": "5.3.18-150300.59.60.4",
+            "kernel-zfcpdump": "5.3.18-150300.59.60.4",
+            "kernel-default": "5.3.18-150300.59.60.4",
+            "kernel-preempt": "5.3.18-150300.59.60.4",
+            "kernel-default-devel": "5.3.18-150300.59.60.4",
+            "kernel-64kb": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise Module for Development Tools 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Development%20Tools%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "5.3.18-150300.59.60.4",
+            "kernel-syms": "5.3.18-150300.59.60.4",
+            "kernel-preempt-devel": "5.3.18-150300.59.60.4",
+            "kernel-source": "5.3.18-150300.59.60.4",
+            "kernel-obs-build": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-build",
+        "ecosystem": "SUSE:Linux Enterprise Module for Development Tools 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-obs-build&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Development%20Tools%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "5.3.18-150300.59.60.4",
+            "kernel-syms": "5.3.18-150300.59.60.4",
+            "kernel-preempt-devel": "5.3.18-150300.59.60.4",
+            "kernel-source": "5.3.18-150300.59.60.4",
+            "kernel-obs-build": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-preempt",
+        "ecosystem": "SUSE:Linux Enterprise Module for Development Tools 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-preempt&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Development%20Tools%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "5.3.18-150300.59.60.4",
+            "kernel-syms": "5.3.18-150300.59.60.4",
+            "kernel-preempt-devel": "5.3.18-150300.59.60.4",
+            "kernel-source": "5.3.18-150300.59.60.4",
+            "kernel-obs-build": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Module for Development Tools 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Development%20Tools%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "5.3.18-150300.59.60.4",
+            "kernel-syms": "5.3.18-150300.59.60.4",
+            "kernel-preempt-devel": "5.3.18-150300.59.60.4",
+            "kernel-source": "5.3.18-150300.59.60.4",
+            "kernel-obs-build": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Module for Development Tools 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Development%20Tools%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "5.3.18-150300.59.60.4",
+            "kernel-syms": "5.3.18-150300.59.60.4",
+            "kernel-preempt-devel": "5.3.18-150300.59.60.4",
+            "kernel-source": "5.3.18-150300.59.60.4",
+            "kernel-obs-build": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Module for Legacy 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Legacy%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "reiserfs-kmp-default": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-livepatch": "5.3.18-150300.59.60.4",
+            "kernel-livepatch-5_3_18-150300_59_60-default": "1-150300.7.5.3",
+            "kernel-default-livepatch-devel": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-livepatch-SLE15-SP3_Update_16",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-livepatch-SLE15-SP3_Update_16&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-150300.7.5.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-livepatch": "5.3.18-150300.59.60.4",
+            "kernel-livepatch-5_3_18-150300_59_60-default": "1-150300.7.5.3",
+            "kernel-default-livepatch-devel": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "dlm-kmp-default": "5.3.18-150300.59.60.4",
+            "gfs2-kmp-default": "5.3.18-150300.59.60.4",
+            "ocfs2-kmp-default": "5.3.18-150300.59.60.4",
+            "cluster-md-kmp-default": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Workstation Extension 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Workstation%20Extension%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-extra": "5.3.18-150300.59.60.4",
+            "kernel-preempt-extra": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-preempt",
+        "ecosystem": "SUSE:Linux Enterprise Workstation Extension 15 SP3",
+        "purl": "pkg:rpm/suse/kernel-preempt&distro=SUSE%20Linux%20Enterprise%20Workstation%20Extension%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-extra": "5.3.18-150300.59.60.4",
+            "kernel-preempt-extra": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Micro 5.1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Micro%205.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "5.3.18-150300.59.60.4.150300.18.37.5",
+            "kernel-default": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default-base",
+        "ecosystem": "SUSE:Linux Enterprise Micro 5.1",
+        "purl": "pkg:rpm/suse/kernel-default-base&distro=SUSE%20Linux%20Enterprise%20Micro%205.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.18-150300.59.60.4.150300.18.37.5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "5.3.18-150300.59.60.4.150300.18.37.5",
+            "kernel-default": "5.3.18-150300.59.60.4"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:1039-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

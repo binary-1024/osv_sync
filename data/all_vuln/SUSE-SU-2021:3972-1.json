@@ -1,0 +1,1155 @@
+{
+  "id": "SUSE-SU-2021:3972-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "The SUSE Linux Enterprise 12 SP4 kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- Unprivileged BPF has been disabled by default to reduce attack surface as too many security issues have happened in the past (jsc#SLE-22573)\n\n  You can reenable via systemctl setting /proc/sys/kernel/unprivileged_bpf_disabled to 0. (kernel.unprivileged_bpf_disabled = 0)\n\n\nThe following security bugs were fixed:\n\n- CVE-2021-0941: In bpf_skb_change_head of filter.c, there is a possible out of bounds read due to a use after free. This could lead to local escalation of privilege with System execution privileges needed. User interaction is not needed for exploitation (bnc#1192045).\n- CVE-2021-31916: An out-of-bounds (OOB) memory write flaw was found in list_devices in drivers/md/dm-ioctl.c in the Multi-device driver module in the Linux kernel A bound check failure allowed an attacker with special user (CAP_SYS_ADMIN) privilege to gain access to out-of-bounds memory leading to a system crash or a leak of internal kernel information. The highest threat from this vulnerability is to system availability (bnc#1192781).\n- CVE-2021-20322: Make the ipv4 and ipv6 ICMP exception caches less predictive to avoid information leaks about UDP ports in use. (bsc#1191790)\n- CVE-2021-34981: Fixed file refcounting in cmtp when cmtp_attach_device fails. (bsc#1191961)\n- CVE-2021-3655: Fixed a missing size validations on inbound SCTP packets, which may have allowed the kernel to read uninitialized memory (bsc#1188563).\n- CVE-2021-3715: Fixed a use-after-free in route4_change() in net/sched/cls_route.c (bsc#1190349).\n- CVE-2021-3760: Fixed a use-after-free vulnerability with the ndev->rf_conn_info object (bsc#1190067).\n- CVE-2021-42739: The firewire subsystem had a buffer overflow related to drivers/media/firewire/firedtv-avc.c and drivers/media/firewire/firedtv-ci.c, because avc_ca_pmt mishandled bounds checking (bsc#1184673).\n- CVE-2021-3542: Fixed heap buffer overflow in firedtv driver (bsc#1186063).\n- CVE-2021-42252: Fixed an issue inside aspeed_lpc_ctrl_mmap that could have allowed local attackers to access the Aspeed LPC control interface to overwrite memory in the kernel and potentially execute privileges (bnc#1190479).\n- CVE-2021-41864: Fixed prealloc_elems_and_freelist that allowed unprivileged users to trigger an eBPF multiplication integer overflow with a resultant out-of-bounds write (bnc#1191317).\n- CVE-2021-42008: Fixed a slab out-of-bounds write in the decode_data function in drivers/net/hamradio/6pack.c. Input from a process that had the CAP_NET_ADMIN capability could have lead to root access (bsc#1191315).\n- CVE-2021-37159: Fixed use-after-free and a double free inside hso_free_net_device in drivers/net/usb/hso.c when unregister_netdev is called without checking for the NETREG_REGISTERED state (bnc#1188601).\n- CVE-2020-3702: Fixed a bug which could be triggered with specifically timed and handcrafted traffic and cause internal errors in a WLAN device that lead to improper layer 2 Wi-Fi encryption with a consequent possibility of information disclosure. (bnc#1191193)\n- CVE-2021-3752: Fixed a use after free vulnerability in the Linux kernel's bluetooth module. (bsc#1190023)\n- CVE-2021-40490: Fixed a race condition discovered in the ext4 subsystem that could leat to local priviledge escalation. (bnc#1190159)\n- CVE-2021-3744: Fixed a bug which could allows attackers to cause a denial of service. (bsc#1189884)\n- CVE-2021-3764: Fixed a bug which could allows attackers to cause a denial of service. (bsc#1190534)\n- CVE-2021-3772: Fixed a remote denial of service in the SCTP stack, if the attacker can spoof IP addresses and knows the IP-addresses and port numbers being used (bnc#1190351).\n- CVE-2018-9517: Fixed possible memory corruption due to a use after free in pppol2tp_connect (bsc#1108488).\n- CVE-2019-3874: Fixed possible denial of service attack via SCTP socket buffer used by a userspace applications (bnc#1129898).\n- CVE-2019-3900: Fixed an infinite loop issue while handling incoming packets in handle_rx() (bnc#1133374).\n- CVE-2021-3640: Fixed a Use-After-Free vulnerability in function sco_sock_sendmsg() in the bluetooth stack (bsc#1188172).\n- CVE-2021-3653: Missing validation of the `int_ctl` VMCB field and allows a malicious L1 guest to enable AVIC support for the L2 guest. (bsc#1189399).\n- CVE-2021-3656: Missing validation of the the `virt_ext` VMCB field and allows a malicious L1 guest to disable both VMLOAD/VMSAVE intercepts and VLS for the L2 guest (bsc#1189400).\n- CVE-2021-3679: A lack of CPU resource in tracing module functionality was found in the way user uses trace ring buffer in a specific way. Only privileged local users (with CAP_SYS_ADMIN capability) could use this flaw to starve the resources causing denial of service (bnc#1189057).\n- CVE-2021-3732: Mounting overlayfs inside an unprivileged user namespace can reveal files (bsc#1189706).\n- CVE-2021-3753: Fixed race out-of-bounds in virtual terminal handling (bsc#1190025).\n- CVE-2021-3759: Unaccounted ipc objects in Linux kernel could have lead to breaking memcg limits and DoS attacks (bsc#1190115).\n- CVE-2021-38160: Data corruption or loss could be triggered by an untrusted device that supplies a buf->len value exceeding the buffer size in drivers/char/virtio_console.c (bsc#1190117)\n- CVE-2021-38198: arch/x86/kvm/mmu/paging_tmpl.h incorrectly computes the access permissions of a shadow page, leading to a missing guest protection page fault (bnc#1189262).\n- CVE-2021-38204: drivers/usb/host/max3421-hcd.c allowed physically proximate attackers to cause a denial of service (use-after-free and panic) by removing a MAX-3421 USB device in certain situations (bnc#1189291).\n- CVE-2021-34556: Fixed side-channel attack via a Speculative Store Bypass via unprivileged BPF program that could have obtain sensitive information from kernel memory (bsc#1188983).\n- CVE-2021-35477: Fixed BPF stack frame pointer which could have been abused to disclose content of arbitrary kernel memory (bsc#1188985).\n- CVE-2020-12770: Fixed sg_remove_request call in a certain failure cases (bsc#1171420).\n- CVE-2021-3659: Fixed a NULL pointer dereference in llsec_key_alloc() in net/mac802154/llsec.c (bsc#1188876).\n- CVE-2021-22543: Fixed improper handling of VM_IO|VM_PFNMAP vmas in KVM, which could bypass RO checks and can lead to pages being freed while still accessible by the VMM and guest. This allowed users with the ability to start and control a VM to read/write random pages of memory and can result in local privilege escalation (bsc#1186482).\n- CVE-2021-37576: Fixed an issue on the powerpc platform, where a KVM guest OS user could cause host OS memory corruption via rtas_args.nargs (bsc#1188838).\n- CVE-2020-0429: In l2tp_session_delete and related functions of l2tp_core.c, there is possible memory corruption due to a use after free. This could lead to local escalation of privilege with System execution privileges needed. (bsc#1176724).\n\nThe following non-security bugs were fixed:\n\n- Add arch-dependent support markers in supported.conf (bsc#1186672)\n- Add the support for kernel-FLAVOR-optional subpackage (jsc#SLE-11796)\n- NFS: Do uncached readdir when we're seeking a cookie in an empty page cache (bsc#1191628).\n- PCI: hv: Use expected affinity when unmasking IRQ (bsc#1185973).\n- Use /usr/lib/modules as module dir when usermerge is active in the target distro.\n- UsrMerge the kernel (boo#1184804)\n- bpf: Add kconfig knob for disabling unpriv bpf by default (jsc#SLE-22913)\n- bpf: Disallow unprivileged bpf by default (jsc#SLE-22913).\n- cpufreq: intel_pstate: Add Icelake servers support in no-HWP mode (bsc#1185758,bsc#1192400).\n- drm: fix spectre issue in vmw_execbuf_ioctl (bsc#1192802).\n- drop debugging statements\n- ftrace: Fix scripts/recordmcount.pl due to new binutils (bsc#1192267).\n- gigaset: fix spectre issue in do_data_b3_req (bsc#1192802).\n- handle also race conditions in /proc/net/tcp code\n- hisax: fix spectre issues (bsc#1192802).\n- hv: adjust mana_select_queue to old ndo_select_queue API\n- hv: mana: adjust mana_select_queue to old API (jsc#SLE-18779, bsc#1185727).\n- hv: mana: fake bitmap API (jsc#SLE-18779, bsc#1185726).\n- hv: mana: remove netdev_lockdep_set_classes usage (jsc#SLE-18779, bsc#1185727).\n- hysdn: fix spectre issue in hycapi_send_message (bsc#1192802).\n- infiniband: fix spectre issue in ib_uverbs_write (bsc#1192802).\n- ipc: remove memcg accounting for sops objects in do_semtimedop() (bsc#1190115).\n- iwlwifi: fix spectre issue in iwl_dbgfs_update_pm (bsc#1192802).\n- media: dvb_ca_en50221: prevent using slot_info for Spectre attacs (bsc#1192802).\n- media: dvb_ca_en50221: sanity check slot number from userspace (bsc#1192802).\n- media: wl128x: get rid of a potential spectre issue (bsc#1192802).\n- memcg: enable accounting for file lock caches (bsc#1190115).\n- mm: vmscan: scan anonymous pages on file refaults (VM Performance, bsc#1183050).\n- mpt3sas: fix spectre issues (bsc#1192802).\n- net/mlx4_en: Avoid scheduling restart task if it is already running (bsc#1181854 bsc#1181855).\n- net/mlx4_en: Handle TX error CQE (bsc#1181854 bsc#1181855).\n- net: mana: Add WARN_ON_ONCE in case of CQE read overflow (jsc#SLE-18779, bsc#1185727).\n- net: mana: Add a driver for Microsoft Azure Network Adapter (MANA) (jsc#SLE-18779, bsc#1185727).\n- net: mana: Add support for EQ sharing (jsc#SLE-18779, bsc#1185727).\n- net: mana: Fix a memory leak in an error handling path in (jsc#SLE-18779, bsc#1185727).\n- net: mana: Fix error handling in mana_create_rxq() (git-fixes, bsc#1191801).\n- net: mana: Move NAPI from EQ to CQ (jsc#SLE-18779, bsc#1185727).\n- net: mana: Prefer struct_size over open coded arithmetic (jsc#SLE-18779, bsc#1185727).\n- net: mana: Use int to check the return value of mana_gd_poll_cq() (jsc#SLE-18779, bsc#1185727).\n- net: mana: Use struct_size() in kzalloc() (jsc#SLE-18779, bsc#1185727).\n- net: mana: fix PCI_HYPERV dependency (jsc#SLE-18779, bsc#1185727).\n- net: mana: remove redundant initialization of variable err (jsc#SLE-18779, bsc#1185727).\n- net: sched: sch_teql: fix null-pointer dereference (bsc#1190717).\n- net: sock_diag: Fix spectre v1 gadget in __sock_diag_cmd() (bsc#1192802).\n- net_sched: cls_route: remove the right filter from hashtable (networking-stable-20_03_28).\n- objtool: Do not fail on missing symbol table (bsc#1192379).\n- osst: fix spectre issue in osst_verify_frame (bsc#1192802).\n- ovl: check whiteout in ovl_create_over_whiteout() (bsc#1189846).\n- ovl: filter of trusted xattr results in audit (bsc#1189846).\n- ovl: fix dentry leak in ovl_get_redirect (bsc#1189846).\n- ovl: initialize error in ovl_copy_xattr (bsc#1189846).\n- ovl: relax WARN_ON() on rename to self (bsc#1189846).\n- s390/bpf: Fix 64-bit subtraction of the -0x80000000 constant (bsc#1190601).\n- s390/bpf: Fix branch shortening during codegen pass (bsc#1190601).\n- s390/bpf: Fix optimizing out zero-extensions (bsc#1190601).\n- s390/bpf: Wrap JIT macro parameter usages in parentheses (bsc#1190601).\n- s390/unwind: use current_frame_address() to unwind current task (bsc#1185677).\n- s390/vtime: fix increased steal time accounting (bsc#1183861).\n- s390: bpf: implement jitting of BPF_ALU | BPF_ARSH | BPF_* (bsc#1190601).\n- scripts/git_sort/git_sort.py: add bpf git repo\n- sctp: check asoc peer.asconf_capable before processing asconf (bsc#1190351).\n- sctp: fully initialize v4 addr in some functions (bsc#1188563).\n- sysvipc/sem: mitigate semnum index against spectre v1 (bsc#1192802).\n- x86/CPU: Add more Icelake model numbers (bsc#1185758,bsc#1192400).\n- x86/debug: Extend the lower bound of crash kernel low reservations (bsc#1153720).\n- xfrm: xfrm_state_mtu should return at least 1280 for ipv6 (bsc#1185377).\n",
+  "modified": "2025-05-02T04:29:52.793989Z",
+  "published": "2021-12-08T10:39:54Z",
+  "related": [
+    "CVE-2018-13405",
+    "CVE-2018-9517",
+    "CVE-2019-3874",
+    "CVE-2019-3900",
+    "CVE-2020-0429",
+    "CVE-2020-12770",
+    "CVE-2020-3702",
+    "CVE-2021-0941",
+    "CVE-2021-20322",
+    "CVE-2021-22543",
+    "CVE-2021-31916",
+    "CVE-2021-34556",
+    "CVE-2021-34981",
+    "CVE-2021-3542",
+    "CVE-2021-35477",
+    "CVE-2021-3640",
+    "CVE-2021-3653",
+    "CVE-2021-3655",
+    "CVE-2021-3656",
+    "CVE-2021-3659",
+    "CVE-2021-3679",
+    "CVE-2021-3715",
+    "CVE-2021-37159",
+    "CVE-2021-3732",
+    "CVE-2021-3744",
+    "CVE-2021-3752",
+    "CVE-2021-3753",
+    "CVE-2021-37576",
+    "CVE-2021-3759",
+    "CVE-2021-3760",
+    "CVE-2021-3764",
+    "CVE-2021-3772",
+    "CVE-2021-38160",
+    "CVE-2021-38198",
+    "CVE-2021-38204",
+    "CVE-2021-40490",
+    "CVE-2021-41864",
+    "CVE-2021-42008",
+    "CVE-2021-42252",
+    "CVE-2021-42739"
+  ],
+  "upstream": [
+    "CVE-2018-13405",
+    "CVE-2018-9517",
+    "CVE-2019-3874",
+    "CVE-2019-3900",
+    "CVE-2020-0429",
+    "CVE-2020-12770",
+    "CVE-2020-3702",
+    "CVE-2021-0941",
+    "CVE-2021-20322",
+    "CVE-2021-22543",
+    "CVE-2021-31916",
+    "CVE-2021-34556",
+    "CVE-2021-34981",
+    "CVE-2021-3542",
+    "CVE-2021-35477",
+    "CVE-2021-3640",
+    "CVE-2021-3653",
+    "CVE-2021-3655",
+    "CVE-2021-3656",
+    "CVE-2021-3659",
+    "CVE-2021-3679",
+    "CVE-2021-3715",
+    "CVE-2021-37159",
+    "CVE-2021-3732",
+    "CVE-2021-3744",
+    "CVE-2021-3752",
+    "CVE-2021-3753",
+    "CVE-2021-37576",
+    "CVE-2021-3759",
+    "CVE-2021-3760",
+    "CVE-2021-3764",
+    "CVE-2021-3772",
+    "CVE-2021-38160",
+    "CVE-2021-38198",
+    "CVE-2021-38204",
+    "CVE-2021-40490",
+    "CVE-2021-41864",
+    "CVE-2021-42008",
+    "CVE-2021-42252",
+    "CVE-2021-42739"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2021/suse-su-20213972-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1087082"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100416"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1108488"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129735"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129898"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1133374"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1153720"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1171420"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1176724"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1176931"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1180624"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1181854"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1181855"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1183050"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1183861"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184673"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184804"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185377"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185677"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185726"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185727"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185758"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185973"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186063"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186482"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186483"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186672"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188026"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188172"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188563"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188601"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188613"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188838"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188842"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188876"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188983"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188985"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189057"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189262"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189278"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189291"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189399"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189400"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189418"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189420"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189706"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189846"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189884"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190023"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190025"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190067"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190115"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190117"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190118"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190159"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190276"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190349"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190350"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190351"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190432"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190479"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190534"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190601"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190717"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191193"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191315"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191317"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191318"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191529"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191530"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191628"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191660"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191790"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191801"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191813"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191961"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192036"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192045"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192048"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192267"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192379"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192400"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192444"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192549"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192775"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192781"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192802"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-13405"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-9517"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-3874"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-3900"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-0429"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-12770"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-3702"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-0941"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-20322"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-22543"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-31916"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-34556"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-34981"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3542"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-35477"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3640"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3653"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3655"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3656"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3659"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3679"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3715"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-37159"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3732"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3744"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3752"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3753"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-37576"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3759"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3760"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3764"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3772"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-38160"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-38198"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-38204"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-40490"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-41864"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-42008"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-42252"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-42739"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:OpenStack Cloud 9",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20OpenStack%20Cloud%209"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:OpenStack Cloud 9",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20OpenStack%20Cloud%209"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:OpenStack Cloud 9",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20OpenStack%20Cloud%209"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:OpenStack Cloud Crowbar 9",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20OpenStack%20Cloud%20Crowbar%209"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:OpenStack Cloud Crowbar 9",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20OpenStack%20Cloud%20Crowbar%209"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:OpenStack Cloud Crowbar 9",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20OpenStack%20Cloud%20Crowbar%209"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 12 SP4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2012%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "dlm-kmp-default": "4.12.14-95.83.2",
+            "gfs2-kmp-default": "4.12.14-95.83.2",
+            "ocfs2-kmp-default": "4.12.14-95.83.2",
+            "cluster-md-kmp-default": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 12 SP4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2012%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-kgraft": "4.12.14-95.83.2",
+            "kernel-default-kgraft-devel": "4.12.14-95.83.2",
+            "kgraft-patch-4_12_14-95_83-default": "1-6.3.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP4_Update_23",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 12 SP4",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP4_Update_23&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2012%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-6.3.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-kgraft": "4.12.14-95.83.2",
+            "kernel-default-kgraft-devel": "4.12.14-95.83.2",
+            "kgraft-patch-4_12_14-95_83-default": "1-6.3.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP4",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP4",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default-man": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default-man": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP4-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-95.83.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-95.83.2",
+            "kernel-devel": "4.12.14-95.83.2",
+            "kernel-default-base": "4.12.14-95.83.2",
+            "kernel-default-man": "4.12.14-95.83.2",
+            "kernel-default": "4.12.14-95.83.2",
+            "kernel-source": "4.12.14-95.83.2",
+            "kernel-syms": "4.12.14-95.83.2",
+            "kernel-default-devel": "4.12.14-95.83.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3972-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

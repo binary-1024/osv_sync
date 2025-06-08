@@ -1,0 +1,67 @@
+{
+  "id": "BIT-solr-2025-24814",
+  "summary": "Apache Solr: Core-creation with \"trusted\" configset can use arbitrary untrusted files",
+  "details": "Core creation allows users to replace \"trusted\" configset files with arbitrary configuration\n\nSolr instances that (1) use the \"FileSystemConfigSetService\" component (the default in \"standalone\" or \"user-managed\" mode), and (2) are running without authentication and authorization are vulnerable to a sort of privilege escalation wherein individual \"trusted\" configset files can be ignored in favor of potentially-untrusted replacements available elsewhere on the filesystem.\u00a0 These replacement config files are treated as \"trusted\" and can use \"<lib>\" tags to add to Solr's classpath, which an attacker might use to load malicious code as a searchComponent or other plugin.\n\nThis issue affects all Apache Solr versions up through Solr 9.7.\u00a0 Users can protect against the vulnerability by enabling authentication and authorization on their Solr clusters or switching to SolrCloud (and away from \"FileSystemConfigSetService\").\u00a0 Users are also recommended to upgrade to Solr 9.8.0, which mitigates this issue by disabling use of \"<lib>\" tags by default.",
+  "aliases": [
+    "CVE-2025-24814",
+    "GHSA-68r2-fwcg-qpm8"
+  ],
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2025-01-29T07:20:22.315Z",
+  "database_specific": {
+    "cpes": [
+      "cpe:2.3:a:apache:solr:*:*:*:*:*:maven:*:*"
+    ],
+    "severity": "Medium"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://lists.apache.org/thread/gl291pn8x9f9n52ys5l0pc0b6qtf0qw1"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2025/01/26/1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20250214-0002/"
+    },
+    {
+      "type": "WEB",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-24814"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "solr",
+        "ecosystem": "Bitnami",
+        "purl": "pkg:bitnami/solr"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.8.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/solr/BIT-solr-2025-24814.json"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N"
+        }
+      ]
+    }
+  ],
+  "schema_version": "1.6.0"
+}

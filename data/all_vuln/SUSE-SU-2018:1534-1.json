@@ -1,0 +1,126 @@
+{
+  "id": "SUSE-SU-2018:1534-1",
+  "summary": "Security update for the Linux Kernel (Live Patch 12 for SLE 12 SP2)",
+  "details": "This update for the Linux Kernel 4.4.74-92_35 fixes several issues.\n\nThe following security issues were fixed:\n\n- CVE-2017-13166: An elevation of privilege vulnerability in the kernel v4l2 video driver was fixed. (bsc#1085447).\n- CVE-2018-8897: A statement in the System Programming Guide of the Intel 64 and IA-32 Architectures Software Developer's Manual (SDM) was mishandled in the development of some or all operating-system kernels, resulting in unexpected behavior for #DB exceptions that are deferred by MOV SS or POP SS, as demonstrated by (for example) privilege escalation in Windows, macOS, some Xen configurations, or FreeBSD, or a Linux kernel crash. The MOV to SS and POP SS instructions inhibit interrupts (including NMIs), data breakpoints, and single step trap exceptions until the instruction boundary following the next instruction (SDM Vol. 3A; section 6.8.3). (The inhibited data breakpoints are those on memory accessed by the MOV to SS or POP to SS instruction itself.) Note that debug exceptions are not inhibited by the interrupt enable (EFLAGS.IF) system flag (SDM Vol. 3A; section 2.3). If the instruction following the MOV to SS or POP to SS instruction is an instruction like SYSCALL, SYSENTER, INT 3, etc. that transfers control to the operating system at CPL < 3, the debug exception is delivered after the transfer to CPL < 3 is complete. OS kernels may not expect this order of events and may therefore experience unexpected behavior when it occurs (bsc#1090368).\n- CVE-2018-8781: The udl_fb_mmap function in drivers/gpu/drm/udl/udl_fb.c had an integer-overflow vulnerability allowing local users with access to the udldrmfb driver to obtain full read and write permissions on kernel physical pages, resulting in a code execution in kernel space (bsc#1090646).\n- bsc#1083125: Fixed kgraft: small race in reversion code\n- CVE-2018-1087: kernel KVM was vulnerable to a flaw in the way the Linux kernel's KVM hypervisor handled exceptions delivered after a stack switch operation via Mov SS or Pop SS instructions. During the stack switch operation, the processor did not deliver interrupts and exceptions, rather they are delivered once the first instruction after the stack switch is executed. An unprivileged KVM guest user could use this flaw to crash the guest or, potentially, escalate their privileges in the guest (bsc#1090869)\nbefore\n",
+  "modified": "2025-05-02T04:06:21.522502Z",
+  "published": "2018-06-05T15:36:42Z",
+  "related": [
+    "CVE-2017-13166",
+    "CVE-2018-1087",
+    "CVE-2018-8781",
+    "CVE-2018-8897"
+  ],
+  "upstream": [
+    "CVE-2017-13166",
+    "CVE-2018-1087",
+    "CVE-2018-8781",
+    "CVE-2018-8897"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2018/suse-su-20181534-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1083125"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1085447"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1090368"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1090646"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1090869"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-13166"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-1087"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-8781"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-8897"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_12",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_12&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "10-2.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kgraft-patch-4_4_74-92_35-default": "10-2.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1534-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_12",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_12&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "10-2.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kgraft-patch-4_4_74-92_35-default": "10-2.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1534-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

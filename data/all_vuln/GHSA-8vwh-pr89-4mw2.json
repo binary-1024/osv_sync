@@ -1,0 +1,98 @@
+{
+  "id": "GHSA-8vwh-pr89-4mw2",
+  "summary": "Laravel Pulse Allows Remote Code Execution via Unprotected Query Method",
+  "details": "A vulnerability has been discovered in Laravel Pulse that could allow remote code execution through the public `remember()` method in the `Laravel\\Pulse\\Livewire\\Concerns\\RemembersQueries` trait. This method is accessible via Livewire components and can be exploited to call arbitrary callables within the application. \n\n### Impact\n\nAn authenticated user with access to Laravel Pulse dashboard can execute arbitrary code by calling any function or static method that meets the following criteria:\n\n- The callable is a function or static method\n- The callable has no parameters or no strict parameter types\n\n### Vulnerable Components\n\n- The `remember(callable $query, string $key = '')` method in `Laravel\\Pulse\\Livewire\\Concerns\\RemembersQueries`\n- Affects all Pulse card components that use this trait\n\n### Attack Vectors\n\nThe vulnerability can be exploited through Livewire component interactions, for example:\n\n```php\nwire:click=\"remember('\\\\Illuminate\\\\Support\\\\Facades\\\\Config::all', 'config')\"\n```\n\n### Credit\n\nThank you to Jeremy Angele for reporting this vulnerability.\n",
+  "aliases": [
+    "CVE-2024-55661"
+  ],
+  "modified": "2024-12-17T18:26:56.935947Z",
+  "published": "2024-12-13T20:35:43Z",
+  "database_specific": {
+    "nvd_published_at": "2024-12-13T16:15:27Z",
+    "cwe_ids": [
+      "CWE-94"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-12-13T20:35:43Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/laravel/pulse/security/advisories/GHSA-8vwh-pr89-4mw2"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-55661"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/laravel/pulse/commit/d1a5bf2eca36c6e3bedb4ceecd45df7d002a1ebc"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/laravel/pulse"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "laravel/pulse",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laravel/pulse"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.3.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.0.0",
+        "v1.0.0-beta1",
+        "v1.0.0-beta10",
+        "v1.0.0-beta11",
+        "v1.0.0-beta12",
+        "v1.0.0-beta13",
+        "v1.0.0-beta14",
+        "v1.0.0-beta15",
+        "v1.0.0-beta16",
+        "v1.0.0-beta2",
+        "v1.0.0-beta3",
+        "v1.0.0-beta4",
+        "v1.0.0-beta5",
+        "v1.0.0-beta6",
+        "v1.0.0-beta7",
+        "v1.0.0-beta8",
+        "v1.0.0-beta9",
+        "v1.1.0",
+        "v1.2.0",
+        "v1.2.1",
+        "v1.2.2",
+        "v1.2.3",
+        "v1.2.4",
+        "v1.2.5",
+        "v1.2.6",
+        "v1.2.7",
+        "v1.3.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-8vwh-pr89-4mw2/GHSA-8vwh-pr89-4mw2.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "id": "MGASA-2013-0374",
+  "summary": "Updated kernel-rt packages fix security vulnerabilities",
+  "details": "This kernel-rt update provides an update to the 3.10 longterm branch,\ncurrently 3.10.24 and fixes the following security issues:\n\nThe ipv6_create_tempaddr function in net/ipv6/addrconf.c in the Linux\nkernel through 3.10 does not properly handle problems with the generation\nof IPv6 temporary addresses, which allows remote attackers to cause a\ndenial of service (excessive retries and address-generation outage), and\nconsequently obtain sensitive information, via ICMPv6 Router Advertisement\n(RA) messages. (CVE-2013-0343)\n\nnet/ceph/auth_none.c in the Linux kernel through 3.10 allows remote\nattackers to cause a denial of service (NULL pointer dereference and\nsystem crash) or possibly have unspecified other impact via an auth_reply\nmessage that triggers an attempted build_request operation.\n(CVE-2013-1059)\n\nThe dispatch_discard_io function in drivers/block/xen-blkback/blkback.c in\nthe Xen blkback implementation in the Linux kernel before 3.10.5 allows\nguest OS users to cause a denial of service (data loss) via filesystem\nwrite operations on a read-only disk that supports the (1) \nBLKIF_OP_DISCARD (aka discard or TRIM) or (2) SCSI UNMAP feature.\n(CVE-2013-2140)\n\nThe HP Smart Array controller disk-array driver and Compaq SMART2\ncontroller disk-array driver in the Linux kernel through 3.9.4 do not\ninitialize certain data structures, which allows local users to obtain\nsensitive information from kernel memory via (1) a crafted IDAGETPCIINFO\ncommand for a /dev/ida device, related to the ida_locked_ioctl function in\ndrivers/block/cpqarray.c or (2) a crafted CCISS_PASSTHRU32 command for a\n/dev/cciss device, related to the cciss_ioctl32_passthru function in\ndrivers/block/cciss.c. (CVE-2013-2147)\n\nFormat string vulnerability in the register_disk function in block/genhd.c\nin the Linux kernel through 3.9.4 allows local users to gain privileges by\nleveraging root access and writing format string specifiers to\n/sys/module/md_mod/parameters/new_array in order to create a crafted\n/dev/md device name. (CVE-2013-2851)\n\nMultiple array index errors in drivers/hid/hid-core.c in the Human\nInterface Device (HID) subsystem in the Linux kernel through 3.11\nallow physically proximate attackers to execute arbitrary code or\ncause a denial of service (heap memory corruption) via a crafted\ndevice that provides an invalid Report ID (CVE-2013-2888).\n\ndrivers/hid/hid-zpff.c in the Human Interface Device (HID) subsystem\nin the Linux kernel through 3.11, when CONFIG_HID_ZEROPLUS is enabled,\nallows physically proximate attackers to cause a denial of service\n(heap-based out-of-bounds write) via a crafted device (CVE-2013-2889).\n\ndrivers/hid/hid-steelseries.c in the Human Interface Device (HID)\nsubsystem in the Linux kernel through 3.11, when CONFIG_HID_STEELSERIES is\nenabled, allows physically proximate attackers to cause a denial of\nservice (heap-based out-of-bounds write) via a crafted device.\n(CVE-2013-2891)\n\ndrivers/hid/hid-pl.c in the Human Interface Device (HID) subsystem in\nthe Linux kernel through 3.11, when CONFIG_HID_PANTHERLORD is enabled,\nallows physically proximate attackers to cause a denial of service\n(heap-based out-of-bounds write) via a crafted device (CVE-2013-2892).\n\nThe Human Interface Device (HID) subsystem in the Linux kernel\nthrough 3.11, when CONFIG_LOGITECH_FF, CONFIG_LOGIG940_FF, or\nCONFIG_LOGIWHEELS_FF is enabled, allows physically proximate\nattackers to cause a denial of service (heap-based out-of-bounds\nwrite) via a crafted device, related to (1) drivers/hid/hid-lgff.c,\n(2) drivers/hid/hid-lg3ff.c, and (3) drivers/hid/hid-lg4ff.c\n(CVE-2013-2893).\n\ndrivers/hid/hid-lenovo-tpkbd.c in the Human Interface Device (HID)\nsubsystem in the Linux kernel through 3.11, when CONFIG_HID_LENOVO_TPKBD\nis enabled, allows physically proximate attackers to cause a denial of\nservice (heap-based out-of-bounds write) via a crafted device.\n(CVE-2013-2894)\n\ndrivers/hid/hid-logitech-dj.c in the Human Interface Device (HID)\nsubsystem in the Linux kernel through 3.11, when CONFIG_HID_LOGITECH_DJ\nis enabled, allows physically proximate attackers to cause a denial\nof service (NULL pointer dereference and OOPS) or obtain sensitive\ninformation from kernel memory via a crafted device (CVE-2013-2895).\n\ndrivers/hid/hid-ntrig.c in the Human Interface Device (HID)\nsubsystem in the Linux kernel through 3.11, when CONFIG_HID_NTRIG\nis enabled, allows physically proximate attackers to cause a denial\nof service (NULL pointer dereference and OOPS) via a crafted device\n(CVE-2013-2896).\n\nMultiple array index errors in drivers/hid/hid-multitouch.c in the\nHuman Interface Device (HID) subsystem in the Linux kernel through\n3.11, when CONFIG_HID_MULTITOUCH is enabled, allow physically proximate\nattackers to cause a denial of service (heap memory corruption, or NULL\npointer dereference and OOPS) via a crafted device (CVE-2013-2897).\n\ndrivers/hid/hid-sensor-hub.c in the Human Interface Device (HID) subsystem\nin the Linux kernel through 3.11, when CONFIG_HID_SENSOR_HUB is enabled,\nallows physically proximate attackers to obtain sensitive information from\nkernel memory via a crafted device. (CVE-2013-2898)\n\ndrivers/hid/hid-picolcd_core.c in the Human Interface Device (HID)\nsubsystem in the Linux kernel through 3.11, when CONFIG_HID_PICOLCD\nis enabled, allows physically proximate attackers to cause a denial\nof service (NULL pointer dereference and OOPS) via a crafted device\n(CVE-2013-2899).\n\nThe Linux kernel before 3.12.2 does not properly use the get_dumpable\nfunction, which allows local users to bypass intended ptrace restrictions\nor obtain sensitive information from IA64 scratch registers via a crafted\napplication, related to kernel/ptrace.c and arch/ia64/include/asm/processor.h\n(CVE-2013-2929)\n\nThe perf_trace_event_perm function in kernel/trace/trace_event_perf.c in the\nLinux kernel before 3.12.2 does not properly restrict access to the perf\nsubsystem, which allows local users to enable function tracing via a crafted\napplication. (CVE-2013-2930)\n\nThe udp_v6_push_pending_frames function in net/ipv6/udp.c in the IPv6\nimplementation in the Linux kernel through 3.10.3 makes an incorrect\nfunction call for pending data, which allows local users to cause a\ndenial of service (BUG and system crash) via a crafted application that\nuses the UDP_CORK option in a setsockopt system call (CVE-2013-4162).\n\nThe ip6_append_data_mtu function in net/ipv6/ip6_output.c in the IPv6\nimplementation in the Linux kernel through 3.10.3 does not properly\nmaintain information about whether the IPV6_MTU setsockopt option\nhad been specified, which allows local users to cause a denial of\nservice (BUG and system crash) via a crafted application that uses\nthe UDP_CORK option in a setsockopt system call (CVE-2013-4163).\n\nThe validate_event function in arch/arm/kernel/perf_event.c in the\nLinux kernel before 3.10.8 on the ARM platform allows local users to\ngain privileges or cause a denial of service (NULL pointer dereference\nand system crash) by adding a hardware event to an event group led\nby a software event (CVE-2013-4254)\n\nInterpretation conflict in drivers/md/dm-snap-persistent.c in the Linux\nkernel through 3.11.6 allows remote authenticated users to obtain\nsensitive information or modify data via a crafted mapping to a snapshot\nblock device. (CVE-2013-4299)\n\nThe skb_flow_dissect function in net/core/flow_dissector.c in the\nLinux kernel through 3.12 allows remote attackers to cause a denial\nof service (infinite loop) via a small value in the IHL field of a\npacket with IPIP encapsulation (CVE-2013-4348).\n\nThe IPv6 SCTP implementation in net/sctp/ipv6.c in the Linux kernel\nthrough 3.11.1 uses data structures and function calls that do not\ntrigger an intended configuration of IPsec encryption, which allows\nremote attackers to obtain sensitive information by sniffing the\nnetwork (CVE-2013-4350).\n\nnet/ipv6/ip6_output.c in the Linux kernel through 3.11.4 does not\nproperly determine the need for UDP Fragmentation Offload (UFO)\nprocessing of small packets after the UFO queueing of a large packet,\nwhich allows remote attackers to cause a denial of service (memory\ncorruption and system crash) or possibly have unspecified other\nimpact via network traffic that triggers a large response packet\n(CVE-2013-4387).\n\nThe Linux kernel before 3.12, when UDP Fragmentation Offload (UFO) is\nenabled, does not properly initialize certain data structures, which\nallows local users to cause a denial of service (memory corruption and\nsystem crash) or possibly gain privileges via a crafted application\nthat uses the UDP_CORK option in a setsockopt system call and\nsends both short and long packets, related to the ip_ufo_append_data\nfunction in net/ipv4/ip_output.c and the ip6_ufo_append_data function\nin net/ipv6/ip6_output.c (CVE-2013-4470).\n\nBuffer overflow in the oz_cdev_write function in\ndrivers/staging/ozwpan/ozcdev.c in the Linux kernel before 3.12 allows\nlocal users to cause a denial of service or possibly have unspecified\nother impact via a crafted write operation. (CVE-2013-4513)\n\nArray index error in the kvm_vm_ioctl_create_vcpu function in \nvirt/kvm/kvm_main.c in the KVM subsystem in the Linux kernel through\n3.12.5 allows local users to gain privileges via a large id value\n(CVE-2013-4587)\n\nThe apic_get_tmcct function in arch/x86/kvm/lapic.c in the KVM subsystem\nin the Linux kernel through 3.12.5 allows guest OS users to cause a denial\nof service (divide-by-zero error and host OS crash) via crafted\nmodifications of the TMICT value. (CVE-2013-6367)\n\nThe KVM subsystem in the Linux kernel through 3.12.5 allows local users to\ngain privileges or cause a denial of service (system crash) via a VAPIC\nsynchronization operation involving a page-end address.  (CVE-2013-6368)\n\nThe recalculate_apic_map function in arch/x86/kvm/lapic.c in the KVM\nsubsystem  in the Linux kernel through 3.12.5 allows guest OS users to\ncause a denial of service (host OS crash) via a crafted ICR write\noperation in x2apic mode. (CVE-2013-6376)\n\nThe lbs_debugfs_write function in drivers/net/wireless/libertas/debugfs.c\nin the Linux kernel through 3.12.1 allows local users to cause a denial of\nservice (OOPS) by leveraging root privileges for a zero-length write\noperation. (CVE-2013-6378)\n\nThe aac_send_raw_srb function in drivers/scsi/aacraid/commctrl.c in the\nLinux kernel through 3.12.1 does not properly validate a certain size\nvalue, which allows local users to cause a denial of service (invalid\npointer dereference) or possibly have unspecified other impact via an\nFSACTL_SEND_RAW_SRB ioctl call that triggers a crafted SRB command.\n(CVE-2013-6380)\n\nBuffer overflow in the qeth_snmp_command function in \ndrivers/s390/net/qeth_core_main.c in the Linux kernel through 3.12.1\nallows local users to cause a denial of service or possibly have\nunspecified other impact via an  SNMP ioctl call with a length value that\nis incompatible with the command-buffer size. (CVE-2013-6381)\n\nMultiple buffer underflows in the XFS implementation in the Linux kernel\nthrough 3.12.1 allow local users to cause a denial of service (memory\ncorruption) or possibly have unspecified other impact by leveraging the\nCAP_SYS_ADMIN capability for a (1) XFS_IOC_ATTRLIST_BY_HANDLE or (2)\nXFS_IOC_ATTRLIST_BY_HANDLE_32 ioctl call with a crafted length value,\nrelated to the xfs_attrlist_by_handle function in fs/xfs/xfs_ioctl.c\nand the xfs_compat_attrlist_by_handle function in fs/xfs/xfs_ioctl32.c.\n(CVE-2013-6382)\n\nThe aac_compat_ioctl function in drivers/scsi/aacraid/linit.c in the Linux\nkernel before 3.11.8 does not require the CAP_SYS_RAWIO capability, which\nallows local users to bypass intended access restrictions via a crafted\nioctl call. (CVE-2013-6383)\n\nOther fixes:\n- xfs: add capability check to free eofblocks ioctl (CVE pending)\n- cpufreq: ondemand: Change the calculation of target frequency\n- the -rt patch has been updated to -rt20\n\nFor other -stable fixes, read the referenced changelogs.\n",
+  "modified": "2013-12-17T23:27:46Z",
+  "published": "2013-12-17T23:27:56Z",
+  "related": [
+    "CVE-2013-0343",
+    "CVE-2013-1059",
+    "CVE-2013-2140",
+    "CVE-2013-2147",
+    "CVE-2013-2851",
+    "CVE-2013-2888",
+    "CVE-2013-2889",
+    "CVE-2013-2891",
+    "CVE-2013-2892",
+    "CVE-2013-2893",
+    "CVE-2013-2894",
+    "CVE-2013-2895",
+    "CVE-2013-2896",
+    "CVE-2013-2897",
+    "CVE-2013-2898",
+    "CVE-2013-2899",
+    "CVE-2013-2929",
+    "CVE-2013-2930",
+    "CVE-2013-4162",
+    "CVE-2013-4163",
+    "CVE-2013-4254",
+    "CVE-2013-4299",
+    "CVE-2013-4348",
+    "CVE-2013-4350",
+    "CVE-2013-4387",
+    "CVE-2013-4470",
+    "CVE-2013-4513",
+    "CVE-2013-4587",
+    "CVE-2013-6367",
+    "CVE-2013-6368",
+    "CVE-2013-6376",
+    "CVE-2013-6378",
+    "CVE-2013-6380",
+    "CVE-2013-6381",
+    "CVE-2013-6382",
+    "CVE-2013-6383"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2013-0374.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=11466"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://kernelnewbies.org/Linux_3.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://kernelnewbies.org/Linux_3.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.17"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.18"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.19"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.20"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.21"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.22"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.24"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-rt",
+        "ecosystem": "Mageia:3",
+        "purl": "pkg:rpm/mageia/kernel-rt?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.10.24-0.rt20.2.mga3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2013-0374.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

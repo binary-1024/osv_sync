@@ -1,0 +1,208 @@
+{
+  "id": "GHSA-vr64-r9qj-h27f",
+  "summary": "Reading specially crafted serializable objects from an untrusted source may cause an infinite loop and denial of service",
+  "details": "Any program on the JVM may read serialized objects via [java.io.ObjectInputStream.readObject()](https://docs.oracle.com/javase/8/docs/api/java/io/ObjectInputStream.html#readObject--). Reading serialized objects from an untrusted source is **inherently unsafe** (this affects any program running on any version of the JVM) and is a prerequisite for this vulnerability.\n\nClojure classes that represent infinite seqs (Cycle, infinite Repeat, and Iterate) do not define hashCode() and use the parent ASeq.hashCode(), which walks the seq to compute the hash, yielding an infinite loop. Classes like java.util.HashMap call hashCode() on keys during deserialization of a serialized map. \n\nThe exploit requires:\n\n1. Crafting a serialized HashMap object with an infinite seq object as a key.\n2. Sending that to a program that reads serialized objects via ObjectInputStream.readObject().\n\nThis will cause the program to enter an infinite loop on the reading thread and thus a denial of service (DoS). \n\nThe affected Clojure classes (Cycle, Repeat, Iterate) exist in Clojure 1.7.0-1.11.1, 1.12.0-alpha1-1.12.0-alpha8.",
+  "aliases": [
+    "CVE-2024-22871"
+  ],
+  "modified": "2024-08-13T22:05:32.602059Z",
+  "published": "2024-02-29T03:33:18Z",
+  "related": [
+    "CGA-3r8v-xrwq-39h5",
+    "CGA-cwpj-3273-6vqg"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-02-29T02:15:09Z",
+    "cwe_ids": [
+      "CWE-502"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-03-01T16:56:52Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22871"
+    },
+    {
+      "type": "WEB",
+      "url": "https://clojure.atlassian.net/browse/CLJ-2839"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/clojure/clojure"
+    },
+    {
+      "type": "WEB",
+      "url": "https://hackmd.io/%40fe1w0/rymmJGida"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/25FKUOYXQZGGJMFUM5HJABWMIX2TILRV"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/SWWK2SO2MH4SXPO6L444MM6LHVLVFULV"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/YFPGUDXMW6OXKIDGCOZFEAXO74VQIB2T"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.clojure:clojure",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.clojure/clojure"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.7.0"
+            },
+            {
+              "fixed": "1.11.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.10.0",
+        "1.10.0-RC1",
+        "1.10.0-RC2",
+        "1.10.0-RC3",
+        "1.10.0-RC4",
+        "1.10.0-RC5",
+        "1.10.0-alpha1",
+        "1.10.0-alpha2",
+        "1.10.0-alpha3",
+        "1.10.0-alpha4",
+        "1.10.0-alpha5",
+        "1.10.0-alpha6",
+        "1.10.0-alpha7",
+        "1.10.0-alpha8",
+        "1.10.0-alpha9",
+        "1.10.0-beta1",
+        "1.10.0-beta2",
+        "1.10.0-beta3",
+        "1.10.0-beta4",
+        "1.10.0-beta5",
+        "1.10.0-beta6",
+        "1.10.0-beta7",
+        "1.10.0-beta8",
+        "1.10.1",
+        "1.10.1-RC1",
+        "1.10.1-beta1",
+        "1.10.1-beta2",
+        "1.10.1-beta3",
+        "1.10.2",
+        "1.10.2-alpha1",
+        "1.10.2-alpha2",
+        "1.10.2-alpha3",
+        "1.10.2-alpha4",
+        "1.10.2-rc1",
+        "1.10.2-rc2",
+        "1.10.2-rc3",
+        "1.10.3",
+        "1.10.3-rc1",
+        "1.11.0",
+        "1.11.0-alpha1",
+        "1.11.0-alpha2",
+        "1.11.0-alpha3",
+        "1.11.0-alpha4",
+        "1.11.0-beta1",
+        "1.11.0-rc1",
+        "1.11.1",
+        "1.11.1-rc1",
+        "1.7.0",
+        "1.8.0",
+        "1.8.0-RC1",
+        "1.8.0-RC2",
+        "1.8.0-RC3",
+        "1.8.0-RC4",
+        "1.8.0-RC5",
+        "1.8.0-alpha1",
+        "1.8.0-alpha2",
+        "1.8.0-alpha3",
+        "1.8.0-alpha4",
+        "1.8.0-alpha5",
+        "1.8.0-beta1",
+        "1.8.0-beta2",
+        "1.9.0",
+        "1.9.0-RC1",
+        "1.9.0-RC2",
+        "1.9.0-alpha1",
+        "1.9.0-alpha10",
+        "1.9.0-alpha11",
+        "1.9.0-alpha12",
+        "1.9.0-alpha13",
+        "1.9.0-alpha14",
+        "1.9.0-alpha15",
+        "1.9.0-alpha16",
+        "1.9.0-alpha17",
+        "1.9.0-alpha18",
+        "1.9.0-alpha19",
+        "1.9.0-alpha2",
+        "1.9.0-alpha20",
+        "1.9.0-alpha3",
+        "1.9.0-alpha4",
+        "1.9.0-alpha5",
+        "1.9.0-alpha6",
+        "1.9.0-alpha7",
+        "1.9.0-alpha8",
+        "1.9.0-alpha9",
+        "1.9.0-beta1",
+        "1.9.0-beta2",
+        "1.9.0-beta3",
+        "1.9.0-beta4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-vr64-r9qj-h27f/GHSA-vr64-r9qj-h27f.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.clojure:clojure",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.clojure/clojure"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.12.0-alpha1"
+            },
+            {
+              "fixed": "1.12.0-alpha9"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.12.0-alpha1",
+        "1.12.0-alpha2",
+        "1.12.0-alpha3",
+        "1.12.0-alpha4",
+        "1.12.0-alpha5",
+        "1.12.0-alpha6",
+        "1.12.0-alpha7",
+        "1.12.0-alpha8"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-vr64-r9qj-h27f/GHSA-vr64-r9qj-h27f.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

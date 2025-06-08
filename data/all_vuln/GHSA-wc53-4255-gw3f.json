@@ -1,0 +1,78 @@
+{
+  "id": "GHSA-wc53-4255-gw3f",
+  "summary": "The XWiki JIRA extension allows data leak through an XXE attack by using a fake JIRA server",
+  "details": "### Impact\nIf the JIRA macro is installed, any logged in XWiki user could edit his/her user profile wiki page and use that JIRA macro, specifying a fake JIRA URL that returns an XML specifying a DOCTYPE pointing to a local file on the XWiki server host and displaying that file's content in one of the returned JIRA fields (such as the summary or description for example).\n\nFor example:\n\n```\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"file:///etc/passwd\"> ]>\n<rss version=\"0.92\">\n...\n    <item>\n      <title>&xxe;</title>\n      <link>https://jira.xwiki.org/browse/XE-307</link>\n      <project id=\"10222\" key=\"XE\">{RETIRED} XWiki Enterprise</project>\n      <description>&xxe;</description>\n      <environment/>\n...\n```\n\n### Patches\nThe vulnerability has been patched in the JIRA Extension v8.6.5.\n\n### Workarounds\nNo easy workaround except to upgrade (which is easy using the XWiki Extension Manager).\n\n### References\n* https://github.com/xwiki-contrib/jira/commit/98a74c2a516b42689c73b13ecd94e9c1998fa9cb and https://github.com/xwiki-contrib/jira/commit/5049e352d16f8356734de70daf1202301f170ee6\n* https://jira.xwiki.org/browse/JIRA-49\n\n### For more information\nIf you have any questions or comments about this advisory:\n*    Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n*    Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "aliases": [
+    "CVE-2025-31487"
+  ],
+  "modified": "2025-04-04T14:20:18Z",
+  "published": "2025-04-04T14:20:18Z",
+  "database_specific": {
+    "nvd_published_at": "2025-04-03T19:15:40Z",
+    "cwe_ids": [
+      "CWE-611"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-04T14:20:18Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki-contrib/jira/security/advisories/GHSA-wc53-4255-gw3f"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-31487"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki-contrib/jira/commit/5049e352d16f8356734de70daf1202301f170ee6"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki-contrib/jira/commit/98a74c2a516b42689c73b13ecd94e9c1998fa9cb"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/xwiki-contrib/jira"
+    },
+    {
+      "type": "WEB",
+      "url": "https://jira.xwiki.org/browse/JIRA-49"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.xwiki.contrib.jira:jira-macro-default",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.xwiki.contrib.jira/jira-macro-default"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.2"
+            },
+            {
+              "fixed": "8.5.6"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-wc53-4255-gw3f/GHSA-wc53-4255-gw3f.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:N/A:N"
+    }
+  ]
+}

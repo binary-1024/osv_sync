@@ -1,0 +1,337 @@
+{
+  "id": "MGASA-2015-0171",
+  "summary": "Updated kernel package fixes security vulnerabilities",
+  "details": "This kernel update is based on upstream -longterm 3.14.39 and fixes the\nfollowing security issues:\n\nIt was found that the Linux kernel's Infiniband subsystem did not properly\nsanitize input parameters while registering memory regions from user space\nvia the (u)verbs API. A local user with access to a /dev/infiniband/uverbsX\ndevice could use this flaw to crash the system or, potentially, escalate\ntheir privileges on the system (CVE-2014-8159)\n\nThe stack randomization feature in the Linux kernel before 3.19.1 on 64-bit\nplatforms uses incorrect data types for the results of bitwise left-shift\noperations, which makes it easier for attackers to bypass the ASLR\nprotection mechanism by predicting the address of the top of the stack,\nrelated to the randomize_stack_top function in fs/binfmt_elf.c and the\nstack_maxrandom_size function in arch/x86/mm/mmap.c (CVE-2015-1593)\n\nXen 3.3.x through 4.5.x and the Linux kernel through 3.19.1 do not properly\nrestrict access to PCI command registers, which might allow local guest\nusers to cause a denial of service (non-maskable interrupt and host crash)\nby disabling the (1) memory or (2) I/O decoding for a PCI Express device\nand then accessing the device, which triggers an Unsupported Request\n(UR) response (CVE-2015-2150)\n\nSasha Levin discovered that the LLC subsystem exposed some variables as\nsysctls with the wrong type.  On a 64-bit kernel, this possibly allows\nprivilege escalation from a process with CAP_NET_ADMIN capability; it\nalso results in a trivial information leak (CVE-2015-2041).\n\nSasha Levin discovered that the RDS subsystem exposed some variables as\nsysctls with the wrong type.  On a 64-bit kernel, this results in a\ntrivial information leak (CVE-2015-2042).\n\nAndrew Lutomirski discovered that when a 64-bit task on an amd64 kernel\nmakes a fork(2) or clone(2) system call using int $0x80, the 32-bit\ncompatibility flag is set (correctly) but is not cleared on return.\nAs a result, both seccomp and audit will misinterpret the following\nsystem call by the task(s), possibly leading to a violation of security\npolicy (CVE-2015-2830).\n\nStephan Mueller discovered that the optimised implementation of RFC4106\nGCM for x86 processors that support AESNI miscalculated buffer addresses\nin some cases.  If an IPsec tunnel is configured to use this mode (also\nknown as AES-GCM-ESP) this can lead to memory corruption and crashes\n(even without malicious traffic).  This could potentially also result\nin remote code execution (CVE-2015-3331).\n\nBen Hutchings discovered that the TCP Fast Open feature regressed in\nLinux 3.16.7-ckt9, resulting in a kernel BUG when it is used.\nThis can be used as a local denial of service (CVE-2015-3332)\n\nFor other fixes in this update, see the referenced changelogs.\n",
+  "modified": "2015-04-30T22:37:55Z",
+  "published": "2015-04-30T21:57:25Z",
+  "related": [
+    "CVE-2014-8159",
+    "CVE-2015-1593",
+    "CVE-2015-2041",
+    "CVE-2015-2042",
+    "CVE-2015-2150",
+    "CVE-2015-2830",
+    "CVE-2015-3331",
+    "CVE-2015-3332"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2015-0171.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=15612"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.33"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.34"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.35"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.36"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.37"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.38"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.39"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.14.39-1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-userspace-headers",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.14.39-1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-vboxadditions",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.3.26-6.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.3.26-6.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.5-16.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-broadcom-wl",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kmod-broadcom-wl?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.30.223.141-51.mga4.nonfree"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "nonfree"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-fglrx",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kmod-fglrx?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "14.010.1006-21.mga4.nonfree"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "nonfree"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-nvidia173",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kmod-nvidia173?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "173.14.39-36.mga4.nonfree"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "nonfree"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-nvidia304",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kmod-nvidia304?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "304.125-6.mga4.nonfree"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "nonfree"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-nvidia-current",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/kmod-nvidia-current?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "331.113-6.mga4.nonfree"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "nonfree"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0171.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,442 @@
+{
+  "id": "SUSE-SU-2016:1707-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 11 SP4 Realtime kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n- CVE-2015-1339: Memory leak in the cuse_channel_release function in\n  fs/fuse/cuse.c in the Linux kernel allowed local users to cause a denial\n  of service (memory consumption) or possibly have unspecified other impact\n  by opening /dev/cuse many times (bnc#969356).\n- CVE-2015-7566: The clie_5_attach function in drivers/usb/serial/visor.c\n  in the Linux kernel allowed physically proximate attackers to cause\n  a denial of service (NULL pointer dereference and system crash) or\n  possibly have unspecified other impact by inserting a USB device that\n  lacks a bulk-out endpoint (bnc#961512).\n- CVE-2015-8551: The PCI backend driver in Xen, when running on an\n  x86 system and using Linux 3.1.x through 4.3.x as the driver domain,\n  allowed local guest administrators to hit BUG conditions and cause\n  a denial of service (NULL pointer dereference and host OS crash) by\n  leveraging a system with access to a passed-through MSI or MSI-X capable\n  physical PCI device and a crafted sequence of XEN_PCI_OP_* operations,\n  aka 'Linux pciback missing sanity checks (bnc#957990).\n- CVE-2015-8552: The PCI backend driver in Xen, when running on an\n  x86 system and using Linux 3.1.x through 4.3.x as the driver domain,\n  allowed local guest administrators to generate a continuous stream\n  of WARN messages and cause a denial of service (disk consumption)\n  by leveraging a system with access to a passed-through MSI or MSI-X\n  capable physical PCI device and XEN_PCI_OP_enable_msi operations, aka\n  'Linux pciback missing sanity checks (bnc#957990).\n- CVE-2015-8816: The hub_activate function in drivers/usb/core/hub.c in\n  the Linux kernel did not properly maintain a hub-interface data structure,\n  which allowed physically proximate attackers to cause a denial of service\n  (invalid memory access and system crash) or possibly have unspecified\n  other impact by unplugging a USB hub device (bnc#968010).\n- CVE-2016-2143: The fork implementation in the Linux kernel on s390\n  platforms mishandles the case of four page-table levels, which allowed\n  local users to cause a denial of service (system crash) or possibly\n  have unspecified other impact via a crafted application, related to\n  arch/s390/include/asm/mmu_context.h and arch/s390/include/asm/pgalloc.h\n  (bnc#970504).\n- CVE-2016-2184: The create_fixed_stream_quirk function in\n  sound/usb/quirks.c in the snd-usb-audio driver in the Linux kernel allowed\n  physically proximate attackers to cause a denial of service (NULL pointer\n  dereference or double free, and system crash) via a crafted endpoints\n  value in a USB device descriptor (bnc#971125).\n- CVE-2016-2185: The ati_remote2_probe function in\n  drivers/input/misc/ati_remote2.c in the Linux kernel allowed physically\n  proximate attackers to cause a denial of service (NULL pointer dereference\n  and system crash) via a crafted endpoints value in a USB device descriptor\n  (bnc#971124).\n- CVE-2016-2186: The powermate_probe function in\n  drivers/input/misc/powermate.c in the Linux kernel allowed physically\n  proximate attackers to cause a denial of service (NULL pointer dereference\n  and system crash) via a crafted endpoints value in a USB device descriptor\n  (bnc#970958).\n- CVE-2016-2188: The iowarrior_probe function in\n  drivers/usb/misc/iowarrior.c in the Linux kernel allowed physically\n  proximate attackers to cause a denial of service (NULL pointer dereference\n  and system crash) via a crafted endpoints value in a USB device descriptor\n  (bnc#970956).\n- CVE-2016-2782: The treo_attach function in drivers/usb/serial/visor.c\n  in the Linux kernel allowed physically proximate attackers to cause a\n  denial of service (NULL pointer dereference and system crash) or possibly\n  have unspecified other impact by inserting a USB device that lacks a\n  (1) bulk-in or (2) interrupt-in endpoint (bnc#968670).\n- CVE-2016-2847: fs/pipe.c in the Linux kernel did not limit the amount\n  of unread data in pipes, which allowed local users to cause a denial of\n  service (memory consumption) by creating many pipes with non-default sizes\n  (bnc#970948).\n- CVE-2016-3137: drivers/usb/serial/cypress_m8.c in the Linux kernel\n  allowed physically proximate attackers to cause a denial of service\n  (NULL pointer dereference and system crash) via a USB device without\n  both an interrupt-in and an interrupt-out endpoint descriptor, related\n  to the cypress_generic_port_probe and cypress_open functions (bnc#970970).\n- CVE-2016-3138: The acm_probe function in drivers/usb/class/cdc-acm.c\n  in the Linux kernel allowed physically proximate attackers to cause a\n  denial of service (NULL pointer dereference and system crash) via a USB\n  device without both a control and a data endpoint descriptor (bnc#970911).\n- CVE-2016-3139: The wacom_probe function in\n  drivers/input/tablet/wacom_sys.c in the Linux kernel allowed physically\n  proximate attackers to cause a denial of service (NULL pointer dereference\n  and system crash) via a crafted endpoints value in a USB device descriptor\n  (bnc#970909).\n- CVE-2016-3140: The digi_port_init function in\n  drivers/usb/serial/digi_acceleport.c in the Linux kernel allowed\n  physically proximate attackers to cause a denial of service (NULL pointer\n  dereference and system crash) via a crafted endpoints value in a USB\n  device descriptor (bnc#970892).\n- CVE-2016-3156: The IPv4 implementation in the Linux kernel mishandles\n  destruction of device objects, which allowed guest OS users to cause a\n  denial of service (host OS networking outage) by arranging for a large\n  number of IP addresses (bnc#971360).\n\nThe following non-security bugs were fixed:\n- acpi / pci: Account for ARI in _PRT lookups (bsc#968566).\n- af_unix: Guard against other == sk in unix_dgram_sendmsg (bsc#973570).\n- alsa: pcm: Fix potential deadlock in OSS emulation (bsc#968018).\n- alsa: rawmidi: Fix race at copying & updating the position (bsc#968018).\n- alsa: rawmidi: Make snd_rawmidi_transmit() race-free (bsc#968018).\n- alsa: seq: Fix double port list deletion (bsc#968018).\n- alsa: seq: Fix incorrect sanity check at snd_seq_oss_synth_cleanup() (bsc#968018).\n- alsa: seq: Fix leak of pool buffer at concurrent writes (bsc#968018).\n- alsa: seq: Fix lockdep warnings due to double mutex locks (bsc#968018).\n- alsa: seq: Fix race at closing in virmidi driver (bsc#968018).\n- alsa: seq: Fix yet another races among ALSA timer accesses (bsc#968018).\n- alsa: timer: Call notifier in the same spinlock (bsc#973378).\n- alsa: timer: Code cleanup (bsc#968018).\n- alsa: timer: Fix leftover link at closing (bsc#968018).\n- alsa: timer: Fix link corruption due to double start or stop (bsc#968018).\n- alsa: timer: Fix race between stop and interrupt (bsc#968018).\n- alsa: timer: Fix wrong instance passed to slave callbacks (bsc#968018).\n- alsa: timer: Protect the whole snd_timer_close() with open race (bsc#973378).\n- alsa: timer: Sync timer deletion at closing the system timer (bsc#973378).\n- alsa: timer: Use mod_timer() for rearming the system timer (bsc#973378).\n- dcache: use IS_ROOT to decide where dentry is hashed (bsc#949752).\n- fs, seqfile: always allow oom killer (bnc#968687).\n- fs/seq_file: fallback to vmalloc allocation (bnc#968687).\n- fs, seq_file: fallback to vmalloc instead of oom kill processes (bnc#968687).\n- hpsa: fix issues with multilun devices (bsc#959381).\n- ibmvscsi: Remove unsupported host config MAD (bsc#973556).\n- iommu/vt-d: Improve fault handler error messages (bsc#975772).\n- iommu/vt-d: Ratelimit fault handler (bsc#975772).\n- ipv6: make fib6 serial number per namespace (bsc#965319).\n- ipv6: mld: fix add_grhead skb_over_panic for devs with large MTUs (bsc#956852).\n- ipv6: per netns fib6 walkers (bsc#965319).\n- ipv6: per netns FIB garbage collection (bsc#965319).\n- ipv6: replace global gc_args with local variable (bsc#965319).\n- kabi, fs/seq_file: fallback to vmalloc allocation (bnc#968687).\n- kabi: Import kabi files from kernel 3.0.101-71\n- kabi: protect struct netns_ipv6 after FIB6 GC series (bsc#965319).\n- kabi: Restore kabi after lock-owner change (bnc#968141).\n- llist: Add llist_next() (fate#316876).\n- make vfree() safe to call from interrupt contexts (fate#316876).\n- mld, igmp: Fix reserved tailroom calculation (bsc#956852).\n- net/core: dev_mc_sync_multiple calls wrong helper (bsc#971433).\n- net/core: __hw_addr_create_ex does not initialize sync_cnt (bsc#971433).\n- net/core: __hw_addr_sync_one / _multiple broken (bsc#971433).\n- net/core: __hw_addr_unsync_one 'from' address not marked synced (bsc#971433).\n- nfs4: treat lock owners as opaque values (bnc#968141).\n- nfsd4: return nfserr_symlink on v4 OPEN of non-regular file (bsc#973237).\n- nfsd: do not fail unchecked creates of non-special files (bsc#973237).\n- nfs: use smaller allocations for 'struct idmap' (bsc#965923).\n- pciback: check PF instead of VF for PCI_COMMAND_MEMORY (bsc#957990).\n- pciback: Save the number of MSI-X entries to be copied later (bsc#957988).\n- pci: Move pci_ari_enabled() to global header (bsc#968566).\n- pci: Update PCI VPD size patch to upstream: - PCI: Determine actual VPD size on first access (bsc#971729). - PCI: Update VPD definitions (bsc#971729).\n- rdma/ucma: Fix AB-BA deadlock (bsc#963998).\n- s390/pageattr: Do a single TLB flush for change_page_attr (bsc#940413).\n- scsi_dh_alua: Do not block request queue if workqueue is active (bsc#960458).\n- scsi: mpt2sas: Rearrange the the code so that the completion queues are initialized prior to sending the request to controller firmware (bsc#967863).\n- skb: Add inline helper for getting the skb end offset from head (bsc#956852).\n- tcp: avoid order-1 allocations on wifi and tx path (bsc#956852).\n- tcp: fix skb_availroom() (bsc#956852).\n- usb: usbip: fix potential out-of-bounds write (bnc#975945).\n- vmxnet3: set carrier state properly on probe (bsc#972363).\n- vmxnet3: set netdev parant device before calling netdev_info (bsc#972363).\n- xfrm: do not segment UFO packets (bsc#946122).\n- xfs: fix sgid inheritance for subdirectories inheriting default acls [V3] (bsc#965860).\n- xhci: Workaround to get Intel xHCI reset working more reliably (bnc#898592).\n",
+  "modified": "2025-05-02T04:04:23.551655Z",
+  "published": "2016-06-30T15:03:23Z",
+  "related": [
+    "CVE-2015-1339",
+    "CVE-2015-7566",
+    "CVE-2015-8551",
+    "CVE-2015-8552",
+    "CVE-2015-8816",
+    "CVE-2016-2143",
+    "CVE-2016-2184",
+    "CVE-2016-2185",
+    "CVE-2016-2186",
+    "CVE-2016-2188",
+    "CVE-2016-2782",
+    "CVE-2016-2847",
+    "CVE-2016-3137",
+    "CVE-2016-3138",
+    "CVE-2016-3139",
+    "CVE-2016-3140",
+    "CVE-2016-3156"
+  ],
+  "upstream": [
+    "CVE-2015-1339",
+    "CVE-2015-7566",
+    "CVE-2015-8551",
+    "CVE-2015-8552",
+    "CVE-2015-8816",
+    "CVE-2016-2143",
+    "CVE-2016-2184",
+    "CVE-2016-2185",
+    "CVE-2016-2186",
+    "CVE-2016-2188",
+    "CVE-2016-2782",
+    "CVE-2016-2847",
+    "CVE-2016-3137",
+    "CVE-2016-3138",
+    "CVE-2016-3139",
+    "CVE-2016-3140",
+    "CVE-2016-3156"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2016/suse-su-20161707-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/898592"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/940413"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/946122"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/949752"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956852"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/957988"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/957990"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/959381"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/960458"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/961512"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963998"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/965319"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/965860"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/965923"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/967863"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968010"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968018"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968141"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968566"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968670"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968687"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/969356"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970504"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970892"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970909"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970911"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970948"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970956"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970958"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970970"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971124"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971125"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971360"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971433"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971729"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/972363"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/973237"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/973378"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/973556"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/973570"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975772"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975945"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-1339"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7566"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8551"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8552"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8816"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2143"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2184"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2185"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2186"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2188"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2782"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2847"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3137"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3138"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3139"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3140"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3156"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-54.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-54.1",
+            "kernel-rt-devel": "3.0.101.rt130-54.1",
+            "kernel-rt_trace": "3.0.101.rt130-54.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-54.1",
+            "kernel-source-rt": "3.0.101.rt130-54.1",
+            "kernel-rt": "3.0.101.rt130-54.1",
+            "kernel-syms-rt": "3.0.101.rt130-54.1",
+            "kernel-rt-base": "3.0.101.rt130-54.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1707-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-rt_trace",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-rt_trace&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-54.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-54.1",
+            "kernel-rt-devel": "3.0.101.rt130-54.1",
+            "kernel-rt_trace": "3.0.101.rt130-54.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-54.1",
+            "kernel-source-rt": "3.0.101.rt130-54.1",
+            "kernel-rt": "3.0.101.rt130-54.1",
+            "kernel-syms-rt": "3.0.101.rt130-54.1",
+            "kernel-rt-base": "3.0.101.rt130-54.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1707-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-source-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-54.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-54.1",
+            "kernel-rt-devel": "3.0.101.rt130-54.1",
+            "kernel-rt_trace": "3.0.101.rt130-54.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-54.1",
+            "kernel-source-rt": "3.0.101.rt130-54.1",
+            "kernel-rt": "3.0.101.rt130-54.1",
+            "kernel-syms-rt": "3.0.101.rt130-54.1",
+            "kernel-rt-base": "3.0.101.rt130-54.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1707-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-syms-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-54.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-54.1",
+            "kernel-rt-devel": "3.0.101.rt130-54.1",
+            "kernel-rt_trace": "3.0.101.rt130-54.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-54.1",
+            "kernel-source-rt": "3.0.101.rt130-54.1",
+            "kernel-rt": "3.0.101.rt130-54.1",
+            "kernel-syms-rt": "3.0.101.rt130-54.1",
+            "kernel-rt-base": "3.0.101.rt130-54.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1707-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

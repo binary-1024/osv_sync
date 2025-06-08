@@ -1,0 +1,90 @@
+{
+  "id": "MGASA-2020-0375",
+  "summary": "Updated pdns packages fix security vulnerability",
+  "details": "An issue has been found in PowerDNS Authoritative Server allowing an\nauthorized user to cause the server to exit by inserting a crafted record in a\nMASTER type zone under their control. The issue is due to the fact that the\nAuthoritative Server will exit when it runs into a parsing error while looking\nup the NS/A/AAAA records it is about to use for an outgoing notify\n(CVE-2019-10162).\n\nAn issue has been found in PowerDNS Authoritative Server allowing a remote,\nauthorized master server to cause a high CPU load or even prevent any further\nupdates to any slave zone by sending a large number of NOTIFY messages. Note\nthat only servers configured as slaves are affected by this issue\n(CVE-2019-10163).\n\nAn issue has been found in PowerDNS Authoritative Server allowing an\nauthorized user to cause the server to exit by inserting a crafted record in a\nMASTER type zone under their control. The issue is due to the fact that the\nAuthoritative Server will exit when it tries to store the notified serial in\nthe PostgreSQL database, if this serial cannot be represented in 31 bits\n(CVE-2019-10203).\n\nAn issue has been found in PowerDNS Authoritative Server before 4.3.1 where an\nauthorized user with the ability to insert crafted records into a zone might be\nable to leak the content of uninitialized memory. Such a user could be a\ncustomer inserting data via a control panel, or somebody with access to the\nREST API. Crafted records cannot be inserted via AXFR (CVE-2020-17482).\n\nThe pdns package has been updated to version 4.1.14, fixing these issues and\nseveral other bugs.  See the upstream changelog for details.\n\nAlso note that manual intervention is required to fix the CVE-2019-10203 issue\nfor those using PostgreSQL with pdns.  See the upstream blog post for details.\n",
+  "modified": "2020-10-16T15:10:22Z",
+  "published": "2020-09-27T20:06:37Z",
+  "related": [
+    "CVE-2019-10162",
+    "CVE-2019-10163",
+    "CVE-2019-10203",
+    "CVE-2020-17482"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2020-0375.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24994"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=27310"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://doc.powerdns.com/authoritative/changelog/4.1.html#change-4.1.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://blog.powerdns.com/2019/08/01/security-notice-for-powerdnspostgres-users/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://doc.powerdns.com/authoritative/security-advisories/powerdns-advisory-2019-04.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://doc.powerdns.com/authoritative/security-advisories/powerdns-advisory-2019-05.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://doc.powerdns.com/authoritative/security-advisories/powerdns-advisory-2019-06.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://doc.powerdns.com/authoritative/security-advisories/powerdns-advisory-2020-05.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "pdns",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/pdns?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.1.14-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0375.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

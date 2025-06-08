@@ -1,0 +1,744 @@
+{
+  "id": "openSUSE-SU-2021:3876-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 15 SP1 LTSS kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- Unprivileged BPF has been disabled by default to reduce attack surface as too many security issues have happened in the past (jsc#SLE-22573)\n\n  You can reenable via systemctl setting /proc/sys/kernel/unprivileged_bpf_disabled to 0. (kernel.unprivileged_bpf_disabled = 0)\n\n- CVE-2021-0941: In bpf_skb_change_head of filter.c, there is a possible out of bounds read due to a use after free. This could lead to local escalation of privilege with System execution privileges needed. User interaction is not needed for exploitation (bnc#1192045).\n- CVE-2021-31916: An out-of-bounds (OOB) memory write flaw was found in list_devices in drivers/md/dm-ioctl.c in the Multi-device driver module in the Linux kernel A bound check failure allowed an attacker with special user (CAP_SYS_ADMIN) privilege to gain access to out-of-bounds memory leading to a system crash or a leak of internal kernel information. The highest threat from this vulnerability is to system availability (bnc#1192781).\n- CVE-2021-20322: Make the ipv4 and ipv6 ICMP exception caches less predictive to avoid information leaks about UDP ports in use. (bsc#1191790)\n- CVE-2021-34981: Fixed file refcounting in cmtp when cmtp_attach_device fails  (bsc#1191961).\n- CVE-2021-37159: hso_free_net_device in drivers/net/usb/hso.c in the Linux kernel calls unregister_netdev without checking for the NETREG_REGISTERED state, leading to a use-after-free and a double free (bnc#1188601).\n- CVE-2021-3772: Fixed sctp vtag check in sctp_sf_ootb (bsc#1190351).\n- CVE-2021-3655: Missing size validations on inbound SCTP packets may have allowed the kernel to read uninitialized memory (bnc#1188563).\n- CVE-2021-33033: The Linux kernel has a use-after-free in cipso_v4_genopt in net/ipv4/cipso_ipv4.c because the CIPSO and CALIPSO refcounting for the DOI definitions is mishandled, aka CID-ad5d07f4a9cd. This leads to writing an arbitrary value (bnc#1186109 bnc#1186390 bnc#1188876).\n- CVE-2021-3760: Fixed a use-after-free vulnerability with the ndev->rf_conn_info object (bsc#1190067).\n- CVE-2021-42739: The firewire subsystem in the Linux kernel has a buffer overflow related to drivers/media/firewire/firedtv-avc.c and drivers/media/firewire/firedtv-ci.c, because avc_ca_pmt mishandled bounds checking (bnc#1184673).\n- CVE-2021-3542: Fixed heap buffer overflow in firedtv driver (bsc#1186063).\n- CVE-2018-13405: The inode_init_owner function in fs/inode.c in the Linux kernel allowed local users to create files with an unintended group ownership, in a scenario where a directory is SGID to a certain group and is writable by a user who is not a member of that group. Here, the non-member can trigger creation of a plain file whose group ownership is that group. The intended behavior was that the non-member can trigger creation of a directory (but not a plain file) whose group ownership is that group. The non-member can escalate privileges by making the plain file executable and SGID (bnc#1100416 bnc#1129735).\n- CVE-2021-3715: Fixed a use-after-free in route4_change() in net/sched/cls_route.c (bsc#1190349).\n- CVE-2021-34556: An unprivileged BPF program can obtain sensitive information from kernel memory via a Speculative Store Bypass side-channel attack because the protection mechanism neglects the possibility of uninitialized memory locations on the BPF stack (bnc#1188983).\n- CVE-2021-35477: An unprivileged BPF program can obtain sensitive information from kernel memory via a Speculative Store Bypass side-channel attack because a certain preempting store operation did not necessarily occur before a store operation that has an attacker-controlled value (bnc#1188985).\n- CVE-2021-42252: An issue was discovered in aspeed_lpc_ctrl_mmap in drivers/soc/aspeed/aspeed-lpc-ctrl.c in the Linux kernel Local attackers able to access the Aspeed LPC control interface could overwrite memory in the kernel and potentially execute privileges, aka CID-b49a0e69a7b1. This occurs because a certain comparison uses values that are not memory sizes (bnc#1190479).\n- CVE-2021-41864: prealloc_elems_and_freelist in kernel/bpf/stackmap.c in the Linux kernel allowed unprivileged users to trigger an eBPF multiplication integer overflow with a resultant out-of-bounds write (bnc#1191317).\n- CVE-2021-42008: The decode_data function in drivers/net/hamradio/6pack.c in the Linux kernel has a slab out-of-bounds write. Input from a process that has the CAP_NET_ADMIN capability can lead to root access (bnc#1191315).\n- CVE-2021-3759: Unaccounted ipc objects could have lead to breaking memcg limits and DoS attacks (bsc#1190115).\n- CVE-2020-3702: Specifically timed and handcrafted traffic can cause internal errors in a WLAN device that lead to improper layer 2 Wi-Fi encryption with a consequent possibility of information disclosure over the air for a discrete set of traffic (bnc#1191193).\n- CVE-2021-3752: Fixed a use after free vulnerability in the bluetooth module. (bsc#1190023)\n- CVE-2021-40490: A race condition was discovered in ext4_write_inline_data_end in fs/ext4/inline.c in the ext4 subsystem in the Linux kernel (bnc#1190159 bnc#1192775)\n- CVE-2021-3744: Fixed a bug which could allows attackers to cause a denial of service. (bsc#1189884)\n- CVE-2021-3764: Fixed a bug which could allows attackers to cause a denial of service. (bsc#1190534)\n- CVE-2020-12770: An issue was discovered in the Linux kernel sg_write lacks an sg_remove_request call in a certain failure case, aka CID-83c6f2390040 (bnc#1171420).\n- CVE-2021-3640: Fixed a Use-After-Free vulnerability in function sco_sock_sendmsg() in the bluetooth stack (bsc#1188172).\n- CVE-2019-3900: An infinite loop issue was found in the vhost_net kernel module, while handling incoming packets in handle_rx(). It could occur if one end sends packets faster than the other end can process them. A guest user, maybe remote one, could use this flaw to stall the vhost_net kernel thread, resulting in a DoS scenario (bnc#1133374).\n- CVE-2019-3874: The SCTP socket buffer used by a userspace application is not accounted by the cgroups subsystem. An attacker can use this flaw to cause a denial of service attack. (bnc#1129898).\n- CVE-2018-9517: In pppol2tp_connect, there is possible memory corruption due to a use after free. This could lead to local escalation of privilege with System execution privileges needed. User interaction is not needed for exploitation. (bnc#1108488).\n- CVE-2021-38160: Data corruption or loss could be triggered by an untrusted device that supplies a buf->len value exceeding the buffer size in drivers/char/virtio_console.c (bsc#1190117)\n- CVE-2021-3753: Fixed race out-of-bounds in virtual terminal handling (bsc#1190025).\n- CVE-2021-3732: Mounting overlayfs inside an unprivileged user namespace can reveal files (bsc#1189706).\n- CVE-2021-3653: A flaw was found in the KVM's AMD code for supporting SVM nested virtualization. The flaw occurs when processing the VMCB (virtual machine control block) provided by the L1 guest to spawn/handle a nested guest (L2). Due to improper validation of the 'int_ctl' field, this issue could allow a malicious L1 to enable AVIC support (Advanced Virtual Interrupt Controller) for the L2 guest. As a result, the L2 guest would be allowed to read/write physical pages of the host, resulting in a crash of the entire system, leak of sensitive data or potential guest-to-host escape. This flaw affects Linux kernel versions prior to 5.14-rc7 (bnc#1189399).\n- CVE-2021-3656: Missing validation of the the `virt_ext` VMCB field and allows a malicious L1 guest to disable both VMLOAD/VMSAVE intercepts and VLS for the L2 guest (bsc#1189400).\n- CVE-2021-38204: drivers/usb/host/max3421-hcd.c allowed physically proximate attackers to cause a denial of service (use-after-free and panic) by removing a MAX-3421 USB device in certain situations (bnc#1189291).\n- CVE-2021-3679: A lack of CPU resource in the tracing module functionality was found in the way user uses trace ring buffer in a specific way. Only privileged local users (with CAP_SYS_ADMIN capability) could use this flaw to starve the resources causing denial of service (bnc#1189057).\n- CVE-2020-4788: IBM Power9 (AIX 7.1, 7.2, and VIOS 3.1) processors could allow a local user to obtain sensitive information from the data in the L1 cache under extenuating circumstances. IBM X-Force ID: 189296 (bnc#0 bnc#1177666 bnc#1181158).\n- CVE-2021-3659: Fixed a NULL pointer dereference in llsec_key_alloc() in net/mac802154/llsec.c (bsc#1188876).\n- CVE-2020-0429: In l2tp_session_delete and related functions of l2tp_core.c, there is possible memory corruption due to a use after free. This could lead to local escalation of privilege with System execution privileges needed. User interaction is not needed for exploitation (bnc#1176724).\n- CVE-2021-37576: arch/powerpc/kvm/book3s_rtas.c on the powerpc platform allowed KVM guest OS users to cause host OS memory corruption via rtas_args.nargs, aka CID-f62f3c20647e (bnc#1188838 bnc#1190276).\n- CVE-2021-22543: KVM through Improper handling of VM_IO|VM_PFNMAP vmas in KVM can bypass RO checks and can lead to pages being freed while still accessible by the VMM and guest. This allowed users with the ability to start and control a VM to read/write random pages of memory and can result in local privilege escalation (bnc#1186482 bnc#1190276).\n- CVE-2021-33909: fs/seq_file.c did not properly restrict seq buffer allocations, leading to an integer overflow, an Out-of-bounds Write, and escalation to root by an unprivileged user, aka CID-8cae8cd89f05 (bnc#1188062 bnc#1188063).\n\nThe following non-security bugs were fixed:\n\n- Add arch-dependent support markers in supported.conf (bsc#1186672) \n- Add the support for kernel-FLAVOR-optional subpackage (jsc#SLE-11796)\n- bpf: Add kconfig knob for disabling unpriv bpf by default (jsc#SLE-22913)\n- bpf: Disallow unprivileged bpf by default (jsc#SLE-22913).\n- ceph: take snap_empty_lock atomically with snaprealm refcount change (bsc#1191888).\n- config: disable unprivileged BPF by default (jsc#SLE-22913)\n- cpufreq: intel_pstate: Add Icelake servers support in no-HWP mode (bsc#1185758,bsc#1192400).\n- drm: fix spectre issue in vmw_execbuf_ioctl (bsc#1192802).\n- ftrace: Fix scripts/recordmcount.pl due to new binutils (bsc#1192267).\n- gigaset: fix spectre issue in do_data_b3_req (bsc#1192802).\n- hisax: fix spectre issues (bsc#1192802).\n- hv: mana: adjust mana_select_queue to old API (jsc#SLE-18779, bsc#1185726).\n- hv: mana: remove netdev_lockdep_set_classes usage (jsc#SLE-18779, bsc#1185726).\n- hv_netvsc: Make netvsc/VF binding check both MAC and serial number (jsc#SLE-18779, bsc#1185726).\n- hysdn: fix spectre issue in hycapi_send_message (bsc#1192802).\n- infiniband: fix spectre issue in ib_uverbs_write (bsc#1192802).\n- infiniband: fix spectre issue in ib_uverbs_write (bsc#1192802).\n- ipc: remove memcg accounting for sops objects in do_semtimedop() (bsc#1190115).\n- iwlwifi: fix spectre issue in iwl_dbgfs_update_pm (bsc#1192802).\n- kernel-binary.spec: Exctract s390 decompression code (jsc#SLE-17042).\n- kernel-binary.spec: Fix up usrmerge for non-modular kernels.\n- kernel-binary.spec.in: build-id check requires elfutils.\n- kernel-binary.spec.in: Regenerate makefile when not using mkmakefile.\n- kernel-binary.spec: Only use mkmakefile when it exists Linux 5.13 no longer had a mkmakefile script\n- kernel-binary.spec: Remove obsolete and wrong comment mkmakefile is repleced by echo on newer kernel\n- kernel-docs.spec.in: Build using an utf-8 locale. Sphinx cannot handle UTF-8 input in non-UTF-8 locale.\n- media: dvb_ca_en50221: prevent using slot_info for Spectre attacs (bsc#1192802).\n- media: dvb_ca_en50221: sanity check slot number from userspace (bsc#1192802).\n- media: wl128x: get rid of a potential spectre issue (bsc#1192802).\n- memcg: enable accounting for file lock caches (bsc#1190115).\n- mm/memory.c: do_fault: avoid usage of stale vm_area_struct (bsc#1136513).\n- mpt3sas: fix spectre issues (bsc#1192802).\n- net: mana: Add a driver for Microsoft Azure Network Adapter (MANA) (jsc#SLE-18779, bsc#1185726).\n- net: mana: Add support for EQ sharing (jsc#SLE-18779, bsc#1185726).\n- net: mana: Add WARN_ON_ONCE in case of CQE read overflow (jsc#SLE-18779, bsc#1185726).\n- net: mana: Fix a memory leak in an error handling path in (jsc#SLE-18779, bsc#1185726).\n- net: mana: Fix error handling in mana_create_rxq() (git-fixes, bsc#1191800).\n- net: mana: fix PCI_HYPERV dependency (jsc#SLE-18779, bsc#1185726).\n- net: mana: Move NAPI from EQ to CQ (jsc#SLE-18779, bsc#1185726).\n- net: mana: Prefer struct_size over open coded arithmetic (jsc#SLE-18779, bsc#1185726).\n- net: mana: remove redundant initialization of variable err (jsc#SLE-18779, bsc#1185726).\n- net: mana: Use int to check the return value of mana_gd_poll_cq() (jsc#SLE-18779, bsc#1185726).\n- net: mana: Use struct_size() in kzalloc() (jsc#SLE-18779, bsc#1185726).\n- net_sched: cls_route: remove the right filter from hashtable (networking-stable-20_03_28).\n- net: sched: sch_teql: fix null-pointer dereference (bsc#1190717).\n- net: sock_diag: Fix spectre v1 gadget in __sock_diag_cmd() (bsc#1192802).\n- NFS: Do uncached readdir when we're seeking a cookie in an empty page cache (bsc#1191628).\n- objtool: Do not fail on missing symbol table (bsc#1192379).\n- osst: fix spectre issue in osst_verify_frame (bsc#1192802).\n- ovl: check whiteout in ovl_create_over_whiteout() (bsc#1189846).\n- ovl: filter of trusted xattr results in audit (bsc#1189846).\n- ovl: fix dentry leak in ovl_get_redirect (bsc#1189846).\n- ovl: initialize error in ovl_copy_xattr (bsc#1189846).\n- ovl: relax WARN_ON() on rename to self (bsc#1189846).\n- PCI: hv: Use expected affinity when unmasking IRQ (bsc#1185973).\n- Revert 'memcg: enable accounting for file lock caches (bsc#1190115).' This reverts commit 912b4421a3e9bb9f0ef1aadc64a436666259bd4d. It's effectively upstream commit 3754707bcc3e190e5dadc978d172b61e809cb3bd applied to kernel-source (to avoid proliferation of patches). Make a note in blacklist.conf too.\n- s390/bpf: Fix 64-bit subtraction of the -0x80000000 constant (bsc#1190601).\n- s390/bpf: Fix branch shortening during codegen pass (bsc#1190601).\n- s390/bpf: Fix optimizing out zero-extensions (bsc#1190601).\n- s390: bpf: implement jitting of BPF_ALU | BPF_ARSH | BPF_* (bsc#1190601).\n- s390/bpf: Wrap JIT macro parameter usages in parentheses (bsc#1190601).\n- scripts/git_sort/git_sort.py: add bpf git repo\n- scripts/git_sort/git_sort.py: Update nvme repositories\n- scsi: libfc: Fix array index out of bound exception (bsc#1188616).\n- scsi: lpfc: Fix FLOGI failure due to accessing a freed node (bsc#1191349).\n- scsi: lpfc: Fix memory overwrite during FC-GS I/O abort handling (bsc#1191349 bsc#1191457).\n- scsi: lpfc: Keep NDLP reference until after freeing the IOCB after ELS handling (bsc#1191349 bsc#1191457).\n- scsi: target: avoid using lun_tg_pt_gp after unlock (bsc#1186078).\n- sctp: check asoc peer.asconf_capable before processing asconf (bsc#1190351).\n- sctp: fully initialize v4 addr in some functions (bsc#1188563).\n- sysvipc/sem: mitigate semnum index against spectre v1 (bsc#1192802).\n- target: core: Fix sense key for invalid XCOPY request (bsc#1186078).\n- Update config files: Add CONFIG_BPF_UNPRIV_DEFAULT_OFF is not set\n- Use /usr/lib/modules as module dir when usermerge is active in the target distro.\n- UsrMerge the kernel (boo#1184804)\n- x86/CPU: Add more Icelake model numbers (bsc#1185758,bsc#1192400).\n- xfrm: xfrm_state_mtu should return at least 1280 for ipv6 (bsc#1185377).\n",
+  "modified": "2025-05-07T18:10:02.760396Z",
+  "published": "2021-12-02T07:19:22Z",
+  "related": [
+    "CVE-2018-13405",
+    "CVE-2018-9517",
+    "CVE-2019-3874",
+    "CVE-2019-3900",
+    "CVE-2020-0429",
+    "CVE-2020-12770",
+    "CVE-2020-3702",
+    "CVE-2020-4788",
+    "CVE-2021-0941",
+    "CVE-2021-20322",
+    "CVE-2021-22543",
+    "CVE-2021-31916",
+    "CVE-2021-33033",
+    "CVE-2021-33909",
+    "CVE-2021-34556",
+    "CVE-2021-34981",
+    "CVE-2021-3542",
+    "CVE-2021-35477",
+    "CVE-2021-3640",
+    "CVE-2021-3653",
+    "CVE-2021-3655",
+    "CVE-2021-3656",
+    "CVE-2021-3659",
+    "CVE-2021-3679",
+    "CVE-2021-3715",
+    "CVE-2021-37159",
+    "CVE-2021-3732",
+    "CVE-2021-3744",
+    "CVE-2021-3752",
+    "CVE-2021-3753",
+    "CVE-2021-37576",
+    "CVE-2021-3759",
+    "CVE-2021-3760",
+    "CVE-2021-3764",
+    "CVE-2021-3772",
+    "CVE-2021-38160",
+    "CVE-2021-38198",
+    "CVE-2021-38204",
+    "CVE-2021-40490",
+    "CVE-2021-41864",
+    "CVE-2021-42008",
+    "CVE-2021-42252",
+    "CVE-2021-42739"
+  ],
+  "upstream": [
+    "CVE-2018-13405",
+    "CVE-2018-9517",
+    "CVE-2019-3874",
+    "CVE-2019-3900",
+    "CVE-2020-0429",
+    "CVE-2020-12770",
+    "CVE-2020-3702",
+    "CVE-2020-4788",
+    "CVE-2021-0941",
+    "CVE-2021-20322",
+    "CVE-2021-22543",
+    "CVE-2021-31916",
+    "CVE-2021-33033",
+    "CVE-2021-33909",
+    "CVE-2021-34556",
+    "CVE-2021-34981",
+    "CVE-2021-3542",
+    "CVE-2021-35477",
+    "CVE-2021-3640",
+    "CVE-2021-3653",
+    "CVE-2021-3655",
+    "CVE-2021-3656",
+    "CVE-2021-3659",
+    "CVE-2021-3679",
+    "CVE-2021-3715",
+    "CVE-2021-37159",
+    "CVE-2021-3732",
+    "CVE-2021-3744",
+    "CVE-2021-3752",
+    "CVE-2021-3753",
+    "CVE-2021-37576",
+    "CVE-2021-3759",
+    "CVE-2021-3760",
+    "CVE-2021-3764",
+    "CVE-2021-3772",
+    "CVE-2021-38160",
+    "CVE-2021-38198",
+    "CVE-2021-38204",
+    "CVE-2021-40490",
+    "CVE-2021-41864",
+    "CVE-2021-42008",
+    "CVE-2021-42252",
+    "CVE-2021-42739"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/JOIHHN3KQX7O34NG25NJOF7PFEZF2TVP/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100416"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1108488"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129735"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1129898"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1133374"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1136513"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1171420"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1176724"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1177666"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1181158"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184673"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184804"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185377"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185726"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185758"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185973"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186078"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186109"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186390"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186482"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186672"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188062"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188063"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188172"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188563"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188601"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188616"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188838"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188876"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188983"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188985"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189057"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189262"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189291"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189399"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189400"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189706"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189846"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1189884"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190023"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190025"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190067"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190115"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190117"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190159"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190276"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190349"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190351"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190479"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190534"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190601"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190717"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191193"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191315"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191317"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191349"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191457"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191628"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191790"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191800"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191888"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191961"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192045"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192267"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192379"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192400"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192775"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192781"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192802"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-13405"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-9517"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-3874"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-3900"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-0429"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-12770"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-3702"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-4788"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-0941"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-20322"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-22543"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-31916"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-33033"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-33909"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-34556"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-34981"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3542"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-35477"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3640"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3653"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3655"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3656"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3659"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3679"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3715"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-37159"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3732"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3744"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3752"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3753"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-37576"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3759"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3760"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3764"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3772"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-38160"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-38198"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-38204"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-40490"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-41864"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-42008"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-42252"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-42739"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-debug",
+        "ecosystem": "openSUSE:Leap 15.3",
+        "purl": "pkg:rpm/opensuse/kernel-debug&distro=openSUSE%20Leap%2015.3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-197.102.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-man": "4.12.14-197.102.2",
+            "kernel-debug-base": "4.12.14-197.102.2",
+            "kernel-kvmsmall-base": "4.12.14-197.102.2",
+            "kernel-vanilla-livepatch-devel": "4.12.14-197.102.2",
+            "kernel-vanilla-devel": "4.12.14-197.102.2",
+            "kernel-zfcpdump-man": "4.12.14-197.102.2",
+            "kernel-vanilla-base": "4.12.14-197.102.2",
+            "kernel-vanilla": "4.12.14-197.102.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2021:3876-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "openSUSE:Leap 15.3",
+        "purl": "pkg:rpm/opensuse/kernel-default&distro=openSUSE%20Leap%2015.3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-197.102.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-man": "4.12.14-197.102.2",
+            "kernel-debug-base": "4.12.14-197.102.2",
+            "kernel-kvmsmall-base": "4.12.14-197.102.2",
+            "kernel-vanilla-livepatch-devel": "4.12.14-197.102.2",
+            "kernel-vanilla-devel": "4.12.14-197.102.2",
+            "kernel-zfcpdump-man": "4.12.14-197.102.2",
+            "kernel-vanilla-base": "4.12.14-197.102.2",
+            "kernel-vanilla": "4.12.14-197.102.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2021:3876-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-kvmsmall",
+        "ecosystem": "openSUSE:Leap 15.3",
+        "purl": "pkg:rpm/opensuse/kernel-kvmsmall&distro=openSUSE%20Leap%2015.3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-197.102.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-man": "4.12.14-197.102.2",
+            "kernel-debug-base": "4.12.14-197.102.2",
+            "kernel-kvmsmall-base": "4.12.14-197.102.2",
+            "kernel-vanilla-livepatch-devel": "4.12.14-197.102.2",
+            "kernel-vanilla-devel": "4.12.14-197.102.2",
+            "kernel-zfcpdump-man": "4.12.14-197.102.2",
+            "kernel-vanilla-base": "4.12.14-197.102.2",
+            "kernel-vanilla": "4.12.14-197.102.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2021:3876-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-vanilla",
+        "ecosystem": "openSUSE:Leap 15.3",
+        "purl": "pkg:rpm/opensuse/kernel-vanilla&distro=openSUSE%20Leap%2015.3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-197.102.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-man": "4.12.14-197.102.2",
+            "kernel-debug-base": "4.12.14-197.102.2",
+            "kernel-kvmsmall-base": "4.12.14-197.102.2",
+            "kernel-vanilla-livepatch-devel": "4.12.14-197.102.2",
+            "kernel-vanilla-devel": "4.12.14-197.102.2",
+            "kernel-zfcpdump-man": "4.12.14-197.102.2",
+            "kernel-vanilla-base": "4.12.14-197.102.2",
+            "kernel-vanilla": "4.12.14-197.102.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2021:3876-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-zfcpdump",
+        "ecosystem": "openSUSE:Leap 15.3",
+        "purl": "pkg:rpm/opensuse/kernel-zfcpdump&distro=openSUSE%20Leap%2015.3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-197.102.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-man": "4.12.14-197.102.2",
+            "kernel-debug-base": "4.12.14-197.102.2",
+            "kernel-kvmsmall-base": "4.12.14-197.102.2",
+            "kernel-vanilla-livepatch-devel": "4.12.14-197.102.2",
+            "kernel-vanilla-devel": "4.12.14-197.102.2",
+            "kernel-zfcpdump-man": "4.12.14-197.102.2",
+            "kernel-vanilla-base": "4.12.14-197.102.2",
+            "kernel-vanilla": "4.12.14-197.102.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2021:3876-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

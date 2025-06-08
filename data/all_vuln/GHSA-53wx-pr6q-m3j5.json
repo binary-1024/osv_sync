@@ -1,0 +1,99 @@
+{
+  "id": "GHSA-53wx-pr6q-m3j5",
+  "summary": "Apache Parquet Java: Potential malicious code execution from trusted packages in the parquet-avro module when reading an Avro schema from a Parquet file metadata",
+  "details": "Schema parsing in the parquet-avro module of Apache Parquet 1.15.0 and previous versions allows bad actors to execute arbitrary code.\n\nWhile 1.15.1 introduced a fix to restrict untrusted packages, the default setting of trusted packages still allows malicious classes from these packages to be executed.\n\nThe exploit is only applicable if the client code of parquet-avro uses the \"specific\" or the \"reflect\" models deliberately for reading Parquet files. (\"generic\" model is not impacted)\n\nUsers are recommended to upgrade to 1.15.2 or set the system property \"org.apache.parquet.avro.SERIALIZABLE_PACKAGES\" to an empty string on 1.15.1. Both are sufficient to fix the issue.",
+  "aliases": [
+    "CVE-2025-46762"
+  ],
+  "modified": "2025-05-06T17:57:37.806590Z",
+  "published": "2025-05-06T12:30:23Z",
+  "database_specific": {
+    "nvd_published_at": "2025-05-06T10:15:16Z",
+    "cwe_ids": [
+      "CWE-73"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-06T16:46:15Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46762"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/apache/parquet-java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://issues.apache.org/jira/browse/AVRO-3985"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.apache.org/thread/t7724lpvl110xsbgqwsmrdsns0rhycdp"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2025/05/02/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.apache.parquet:parquet-avro",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.parquet/parquet-avro"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.15.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.10.0",
+        "1.10.1",
+        "1.11.0",
+        "1.11.1",
+        "1.11.2",
+        "1.12.0",
+        "1.12.1",
+        "1.12.2",
+        "1.12.3",
+        "1.13.0",
+        "1.13.1",
+        "1.14.0",
+        "1.14.1",
+        "1.14.2",
+        "1.14.3",
+        "1.14.4",
+        "1.15.0",
+        "1.15.1",
+        "1.7.0",
+        "1.8.0",
+        "1.8.1",
+        "1.8.2",
+        "1.8.3",
+        "1.9.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-53wx-pr6q-m3j5/GHSA-53wx-pr6q-m3j5.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:H/UI:A/VC:L/VI:H/VA:H/SC:L/SI:H/SA:H/S:N/RE:M/U:Amber"
+    }
+  ]
+}

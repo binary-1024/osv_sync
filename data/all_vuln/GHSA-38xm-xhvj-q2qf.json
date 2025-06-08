@@ -1,0 +1,87 @@
+{
+  "id": "GHSA-38xm-xhvj-q2qf",
+  "summary": "Jenkins Credentials Binding Plugin has Insufficiently Protected Credentials",
+  "details": "Jenkins Credentials Binding plugin allows specifying passwords and other secrets as environment variables, and will hide them from console output in builds.\n\nHowever, since Jenkins will try to resolve references to other environment variables in environment variables passed to a build, this can result in values other than the one specified being provided to a build. For example, the value `p4$$w0rd` would result in Jenkins passing on `p4$w0rd`, as `$$` is the escape sequence for a single `$`.\n\nCredentials Binding plugin does not prevent such a transformed value (e.g. `p4$w0rd`) from being shown on the build log, allowing users to reconstruct the actual password value from the transformed one.\n\nCredentials Binding plugin will now escape any `$` characters in password values so they are correctly passed to the build.\n\nThis issue did apply to freestyle and other classic job types, but does not apply to Pipelines.",
+  "aliases": [
+    "CVE-2018-1000057"
+  ],
+  "modified": "2024-02-21T05:23:38.933679Z",
+  "published": "2022-05-13T01:48:30Z",
+  "database_specific": {
+    "nvd_published_at": "2018-02-09T23:29:00Z",
+    "cwe_ids": [
+      "CWE-522"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-12-28T18:43:13Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2018-1000057"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/credentials-binding-plugin/commit/0c75238933365aa52b26b7c73fd1f742bfaca9b1"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jenkinsci/credentials-binding-plugin"
+    },
+    {
+      "type": "WEB",
+      "url": "https://jenkins.io/security/advisory/2018-02-05"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.jenkins-ci.plugins:credentials-binding",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.jenkins-ci.plugins/credentials-binding"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.15"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0",
+        "1.0-beta-1",
+        "1.1",
+        "1.10",
+        "1.11",
+        "1.12",
+        "1.13",
+        "1.14",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+        "1.8",
+        "1.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-38xm-xhvj-q2qf/GHSA-38xm-xhvj-q2qf.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N"
+    }
+  ]
+}

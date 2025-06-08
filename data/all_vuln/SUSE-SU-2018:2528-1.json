@@ -1,0 +1,217 @@
+{
+  "id": "SUSE-SU-2018:2528-1",
+  "summary": "Security update for xen",
+  "details": "\nThis update for xen fixes the following issues:\n\nThese security issue were fixed:\n\n- CVE-2018-3646: Systems with microprocessors utilizing speculative execution\n  and address translations may have allowed unauthorized disclosure of\n  information residing in the L1 data cache to an attacker with local user access\n  with guest OS privilege via a terminal page fault and a side-channel analysis\n  (bsc#1091107, bsc#1027519).\n- CVE-2018-12617: An integer overflow that could cause a segmentation\n  fault in qmp_guest_file_read() with g_malloc() in qemu-guest-agent was\n  fixed (bsc#1098744)\n- CVE-2018-3665: System software utilizing Lazy FP state restore technique\n  on systems using Intel Core-based microprocessors may potentially allow\n  a local process to infer data from another process through a speculative\n  execution side channel. (bsc#1095242)\n- CVE-2018-3639: Systems with microprocessors utilizing speculative\n  execution and speculative execution of memory reads before the addresses\n  of all prior memory writes are known may allow unauthorized disclosure\n  of information to an attacker with local user access via a side-channel\n  analysis, aka Speculative Store Bypass (SSB), Variant 4. (bsc#1092631)\n- CVE-2017-5715: Systems with microprocessors utilizing speculative\n  execution and indirect branch prediction may allow unauthorized disclosure\n  of information to an attacker with local user access via a side-channel\n  analysis. (bsc#1074562)\n- CVE-2017-5753: Systems with microprocessors utilizing speculative\n  execution and branch prediction may allow unauthorized disclosure of\n  information to an attacker with local user access via a side-channel\n  analysis. (bsc#1074562)\n- CVE-2017-5754: Systems with microprocessors utilizing speculative\n  execution and indirect branch prediction may allow unauthorized disclosure\n  of information to an attacker with local user access via a side-channel\n  analysis of the data cache. (bsc#1074562)\n- CVE-2018-12891: Certain PV MMU operations may take a long time to\n  process. For that reason Xen explicitly checks for the need to preempt\n  the current vCPU at certain points. A few rarely taken code paths did\n  bypass such checks. By suitably enforcing the conditions through its own\n  page table contents, a malicious guest may cause such bypasses to be used\n  for an unbounded number of iterations. A malicious or buggy PV guest may\n  cause a Denial of Service (DoS) affecting the entire host. Specifically,\n  it may prevent use of a physical CPU for an indeterminate period of\n  time. (bsc#1097521)\n- CVE-2018-12893:  One of the fixes in XSA-260 added some safety checks\n  to help prevent Xen livelocking with debug exceptions. Unfortunately,\n  due to an oversight, at least one of these safety checks can be\n  triggered by a guest. A malicious PV guest can crash Xen, leading to\n  a Denial of Service. Only x86 PV guests can exploit the vulnerability. x86\n  HVM and PVH guests cannot exploit the vulnerability. An attacker\n  needs to be able to control hardware debugging facilities to exploit\n  the vulnerability, but such permissions are typically available to\n  unprivileged users. (bsc#1097522)\n- CVE-2018-11806: m_cat in slirp/mbuf.c in Qemu has a heap-based buffer\n  overflow via incoming fragmented datagrams. (bsc#1096224)\n- CVE-2018-10982: An issue was discovered in Xen allowed x86 HVM guest\n  OS users to cause a denial of service (unexpectedly high interrupt\n  number, array overrun, and hypervisor crash) or possibly gain hypervisor\n  privileges by setting up an HPET timer to deliver interrupts in IO-APIC\n  mode, aka vHPET interrupt injection. (bsc#1090822)\n- CVE-2018-10981: An issue was discovered in Xen that allowed x86 HVM guest OS users to cause a denial of service (host OS infinite loop) in situations where a QEMU device model attempts to make invalid transitions between states of a request. (bsc#1090823)\n\nFollowing bugs were fixed:\n\n- After updating to kernel 3.0.101-0.47.106.32-xen system crashes in check_bugs() (bsc#1097206)\n- bsc#1079730 - in xen-kmp, unplug emulated devices after migration\n  This is required since xen-4.10 and/or qemu-2.10 because the state\n  of unplug is not propagated from one dom0 to another. Without\n  this unplug qemu's block-backend will be unable to open qcow2\n  disks on the receiving dom0\n  ",
+  "modified": "2025-05-02T04:06:53.516400Z",
+  "published": "2018-08-27T10:02:13Z",
+  "related": [
+    "CVE-2017-5715",
+    "CVE-2017-5753",
+    "CVE-2017-5754",
+    "CVE-2018-10981",
+    "CVE-2018-10982",
+    "CVE-2018-11806",
+    "CVE-2018-12617",
+    "CVE-2018-12891",
+    "CVE-2018-12893",
+    "CVE-2018-3639",
+    "CVE-2018-3646",
+    "CVE-2018-3665"
+  ],
+  "upstream": [
+    "CVE-2017-5715",
+    "CVE-2017-5753",
+    "CVE-2017-5754",
+    "CVE-2018-10981",
+    "CVE-2018-10982",
+    "CVE-2018-11806",
+    "CVE-2018-12617",
+    "CVE-2018-12891",
+    "CVE-2018-12893",
+    "CVE-2018-3639",
+    "CVE-2018-3646",
+    "CVE-2018-3665"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2018/suse-su-20182528-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027519"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1074562"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1079730"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1090822"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1090823"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1091107"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1092631"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1095242"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1096224"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1097206"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1097521"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1097522"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1098744"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5715"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5753"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5754"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10981"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10982"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-11806"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-12617"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-12891"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-12893"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-3639"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-3646"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-3665"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "xen",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/xen&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.5_21-45.25.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "xen-libs": "4.2.5_21-45.25.1",
+            "xen-kmp-pae": "4.2.5_21_3.0.101_0.47.106.43-45.25.1",
+            "xen-tools-domU": "4.2.5_21-45.25.1",
+            "xen-kmp-default": "4.2.5_21_3.0.101_0.47.106.43-45.25.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2528-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.5_21-45.25.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "xen-kmp-pae": "4.2.5_21_3.0.101_0.47.106.43-45.25.1",
+            "xen-doc-pdf": "4.2.5_21-45.25.1",
+            "xen-kmp-default": "4.2.5_21_3.0.101_0.47.106.43-45.25.1",
+            "xen-libs": "4.2.5_21-45.25.1",
+            "xen-doc-html": "4.2.5_21-45.25.1",
+            "xen-libs-32bit": "4.2.5_21-45.25.1",
+            "xen-tools": "4.2.5_21-45.25.1",
+            "xen-tools-domU": "4.2.5_21-45.25.1",
+            "xen": "4.2.5_21-45.25.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2528-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

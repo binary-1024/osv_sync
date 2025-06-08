@@ -1,0 +1,63 @@
+{
+  "id": "MGASA-2024-0356",
+  "summary": "Updated networkmanager-libreswan packages fix security vulnerability",
+  "details": "A flaw was found in the libreswan client plugin for NetworkManager\n(NetkworkManager-libreswan), where it fails to properly sanitize the VPN\nconfiguration from the local unprivileged user. In this configuration,\ncomposed by a key-value format, the plugin fails to escape special\ncharacters, leading the application to interpret values as keys. One of\nthe most critical parameters that could be abused by a malicious user is\nthe \"leftupdown\" key. This key takes an executable command as a value and\nis used to specify what executes as a callback in\nNetworkManager-libreswan to retrieve configuration settings back to\nNetworkManager. As NetworkManager uses Polkit to allow an unprivileged\nuser to control the system's network configuration, a malicious actor\ncould achieve local privilege escalation and potential code execution as\nroot in the targeted machine by creating a malicious configuration.\n(CVE-2024-9050)\n",
+  "modified": "2024-11-11T19:42:46Z",
+  "published": "2024-11-12T19:53:59Z",
+  "related": [
+    "CVE-2024-9050"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2024-0356.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=33709"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/10/25/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "networkmanager-libreswan",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/networkmanager-libreswan?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.2.24-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0356.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,806 @@
+{
+  "id": "SUSE-SU-2021:3593-1",
+  "summary": "Security update for binutils",
+  "details": "This update for binutils fixes the following issues:\n\nUpdate to binutils 2.37:\n\n* The GNU Binutils sources now requires a C99 compiler and library to\n  build.\n* Support for the arm-symbianelf format has been removed.\n* Support for Realm Management Extension (RME) for AArch64 has been\n  added.\n* A new linker option '-z report-relative-reloc' for x86 ELF targets\n  has been added to report dynamic relative relocations.\n* A new linker option '-z start-stop-gc' has been added to disable\n  special treatment of __start_*/__stop_* references when\n  --gc-sections.\n* A new linker options '-Bno-symbolic' has been added which will\n  cancel the '-Bsymbolic' and '-Bsymbolic-functions' options.\n* The readelf tool has a new command line option which can be used to\n  specify how the numeric values of symbols are reported.\n  --sym-base=0|8|10|16 tells readelf to display the values in base 8,\n  base 10 or base 16.  A sym base of 0 represents the default action\n  of displaying values under 10000 in base 10 and values above that in\n  base 16.\n* A new format has been added to the nm program.  Specifying\n  '--format=just-symbols' (or just using -j) will tell the program to\n  only display symbol names and nothing else.\n* A new command line option '--keep-section-symbols' has been added to\n  objcopy and strip.  This stops the removal of unused section symbols\n  when the file is copied.  Removing these symbols saves space, but\n  sometimes they are needed by other tools.\n* The '--weaken', '--weaken-symbol' and '--weaken-symbols' options\n  supported by objcopy now make undefined symbols weak on targets that\n  support weak symbols. \n* Readelf and objdump can now display and use the contents of .debug_sup\n  sections.\n* Readelf and objdump will now follow links to separate debug info\n  files by default.  This behaviour can be stopped via the use of the\n  new '-wN' or '--debug-dump=no-follow-links' options for readelf and\n  the '-WN' or '--dwarf=no-follow-links' options for objdump.  Also\n  the old behaviour can be restored by the use of the\n  '--enable-follow-debug-links=no' configure time option.\n\n  The semantics of the =follow-links option have also been slightly\n  changed.  When enabled, the option allows for the loading of symbol\n  tables and string tables from the separate files which can be used\n  to enhance the information displayed when dumping other sections,\n  but it does not automatically imply that information from the\n  separate files should be displayed.\n\n  If other debug section display options are also enabled (eg\n  '--debug-dump=info') then the contents of matching sections in both\n  the main file and the separate debuginfo file *will* be displayed.\n  This is because in most cases the debug section will only be present\n  in one of the files.\n\n  If however non-debug section display options are enabled (eg\n  '--sections') then the contents of matching parts of the separate\n  debuginfo file will *not* be displayed.  This is because in most\n  cases the user probably only wanted to load the symbol information\n  from the separate debuginfo file.  In order to change this behaviour\n  a new command line option --process-links can be used.  This will\n  allow di0pslay options to applied to both the main file and any\n  separate debuginfo files.\n* Nm has a new command line option: '--quiet'.  This suppresses 'no\n  symbols' diagnostic.\n\nUpdate to binutils 2.36:\n\n New features in the Assembler:\n\n  General:\n\n   * When setting the link order attribute of ELF sections, it is now\n     possible to use a numeric section index instead of symbol name.\n   * Added a .nop directive to generate a single no-op instruction in\n     a target neutral manner.  This instruction does have an effect on\n     DWARF line number generation, if that is active.\n   * Removed --reduce-memory-overheads and --hash-size as gas now\n     uses hash tables that can be expand and shrink automatically.\n\n   X86/x86_64:\n\n     * Add support for AVX VNNI, HRESET, UINTR, TDX, AMX and Key\n       Locker instructions. \n     * Support non-absolute segment values for lcall and ljmp.\n     * Add {disp16} pseudo prefix to x86 assembler.\n     * Configure with --enable-x86-used-note by default for Linux/x86.\n\n   ARM/AArch64:\n\n     * Add support for Cortex-A78, Cortex-A78AE and Cortex-X1,\n       Cortex-R82, Neoverse V1, and Neoverse N2 cores.\n     * Add support for ETMv4 (Embedded Trace Macrocell), ETE (Embedded\n       Trace Extension), TRBE (Trace Buffer Extension), CSRE (Call\n       Stack Recorder Extension) and BRBE (Branch Record Buffer\n       Extension) system registers.\n     * Add support for Armv8-R and Armv8.7-A ISA extensions.\n     * Add support for DSB memory nXS barrier, WFET and WFIT\n       instruction for Armv8.7.\n     * Add support for +csre feature for -march. Add CSR PDEC\n       instruction for CSRE feature in AArch64.\n     * Add support for +flagm feature for -march in Armv8.4 AArch64.\n     * Add support for +ls64 feature for -march in Armv8.7\n       AArch64. Add atomic 64-byte load/store instructions for this\n       feature. \n     * Add support for +pauth (Pointer Authentication) feature for\n       -march in AArch64.\n\n  New features in the Linker:\n\n    * Add --error-handling-script=<NAME> command line option to allow\n      a helper script to be invoked when an undefined symbol or a\n      missing library is encountered.  This option can be suppressed\n      via the configure time switch: --enable-error-handling-script=no.\n    * Add -z x86-64-{baseline|v[234]} to the x86 ELF linker to mark\n      x86-64-{baseline|v[234]} ISA level as needed.\n    * Add -z unique-symbol to avoid duplicated local symbol names.\n    * The creation of PE format DLLs now defaults to using a more\n      secure set of DLL characteristics.\n    * The linker now deduplicates the types in .ctf sections.  The new \n       command-line option --ctf-share-types describes how to do this:\n       its default value, share-unconflicted, produces the most compact\n       output.\n    * The linker now omits the 'variable section' from .ctf sections\n      by default, saving space.  This is almost certainly what you\n      want unless you are working on a project that has its own\n      analogue of symbol tables that are not reflected in the ELF\n      symtabs.\n\nNew features in other binary tools:\n\n    * The ar tool's previously unused l modifier is now used for\n      specifying dependencies of a static library. The arguments of\n      this option (or --record-libdeps long form option) will be\n      stored verbatim in the __.LIBDEP member of the archive, which\n      the linker may read at link time.\n    * Readelf can now display the contents of LTO symbol table\n      sections when asked to do so via the --lto-syms command line\n      option.\n    * Readelf now accepts the -C command line option to enable the\n      demangling of symbol names.  In addition the --demangle=<style>,\n      --no-demangle, --recurse-limit and --no-recurse-limit options\n      are also now availale.\n\nUpdate to binutils 2.35.1:\n\n* This is a point release over the previous 2.35 version, containing bug\n  fixes, and as an exception to the usual rule, one new feature.  The\n  new feature is the support for a new directive in the assembler:\n  '.nop'.  This directive creates a single no-op instruction in whatever\n  encoding is correct for the target architecture.  Unlike the .space or\n  .fill this is a real instruction, and it does affect the generation of\n  DWARF line number tables, should they be enabled.\n\nUpdate to binutils 2.35:\n\n* The assembler can now produce DWARF-5 format line number tables.\n* Readelf now has a 'lint' mode to enable extra checks of the files it is processing.\n* Readelf will now display '[...]' when it has to truncate a symbol name.  \n  The old behaviour - of displaying as many characters as possible, up to\n  the 80 column limit - can be restored by the use of the --silent-truncation\n  option.\n* The linker can now produce a dependency file listing the inputs that it\n  has processed, much like the -M -MP option supported by the compiler.\n\nUpdate to binutils 2.34:\n\n* The disassembler (objdump --disassemble) now has an option to\n  generate ascii art thats show the arcs between that start and end\n  points of control flow instructions.\n* The binutils tools now have support for debuginfod.  Debuginfod is a \n  HTTP service for distributing ELF/DWARF debugging information as\n  well as source code.  The tools can now connect to debuginfod\n  servers in order to download debug information about the files that\n  they are processing.\n* The assembler and linker now support the generation of ELF format\n  files for the Z80 architecture.\n\nUpdate to binutils 2.33.1:\n\n* Adds support for the Arm Scalable Vector Extension version 2\n  (SVE2) instructions, the Arm Transactional Memory Extension (TME)\n  instructions and the Armv8.1-M Mainline and M-profile Vector\n  Extension (MVE) instructions.\n* Adds support for the Arm Cortex-A76AE, Cortex-A77 and Cortex-M35P\n  processors and the AArch64 Cortex-A34, Cortex-A65, Cortex-A65AE,\n  Cortex-A76AE, and Cortex-A77 processors.\n* Adds a .float16 directive for both Arm and AArch64 to allow\n  encoding of 16-bit floating point literals.\n* For MIPS, Add -m[no-]fix-loongson3-llsc option to fix (or not)\n  Loongson3 LLSC Errata.  Add a --enable-mips-fix-loongson3-llsc=[yes|no]\n  configure time option to set the default behavior. Set the default\n  if the configure option is not used to 'no'.\n* The Cortex-A53 Erratum 843419 workaround now supports a choice of\n  which workaround to use.  The option --fix-cortex-a53-843419 now\n  takes an optional argument --fix-cortex-a53-843419[=full|adr|adrp]\n  which can be used to force a particular workaround to be used.\n  See --help for AArch64 for more details.\n* Add support for GNU_PROPERTY_AARCH64_FEATURE_1_BTI and\n  GNU_PROPERTY_AARCH64_FEATURE_1_PAC  in ELF GNU program properties\n  in the AArch64 ELF linker. \n* Add -z force-bti for AArch64 to enable GNU_PROPERTY_AARCH64_FEATURE_1_BTI\n  on output while warning about missing GNU_PROPERTY_AARCH64_FEATURE_1_BTI \n  on inputs and use PLTs protected with BTI.\n* Add -z pac-plt for AArch64 to pick PAC enabled PLTs.\n* Add --source-comment[=<txt>] option to objdump which if present,\n  provides a prefix to source code lines displayed in a disassembly.\n* Add --set-section-alignment <section-name>=<power-of-2-align>\n  option to objcopy to allow the changing of section alignments.\n* Add --verilog-data-width option to objcopy for verilog targets to\n  control width of data elements in verilog hex format.\n* The separate debug info file options of readelf (--debug-dump=links\n  and --debug-dump=follow) and objdump (--dwarf=links and\n  --dwarf=follow-links) will now display and/or follow multiple\n  links if more than one are present in a file.  (This usually\n  happens when gcc's -gsplit-dwarf option is used).\n  In addition objdump's --dwarf=follow-links now also affects its\n  other display options, so that for example, when combined with\n  --syms it will cause the symbol tables in any linked debug info\n  files to also be displayed.  In addition when combined with\n  --disassemble the --dwarf= follow-links option will ensure that\n  any symbol tables in the linked files are read and used when\n  disassembling code in the main file.\n* Add support for dumping types encoded in the Compact Type Format\n  to objdump and readelf.\n\nThe following security fixes are addressed by the update:\n\n- CVE-2021-20197: Fixed a race condition which allows users to own arbitrary files (bsc#1181452).\n- CVE-2021-20284: Fixed a heap-based buffer overflow in _bfd_elf_slurp_secondary_reloc_section in elf.c (bsc#1183511).\n- CVE-2021-3487: Fixed a denial of service via excessive debug section size causing excessive memory consumption in bfd's dwarf2.c read_section() (bsc#1184620).\n- CVE-2020-35448: Fixed a heap-based buffer over-read in bfd_getl_signed_32() in libbfd.c (bsc#1184794).\n- CVE-2020-16590: Fixed a double free vulnerability in process_symbol_table() (bsc#1179898).\n- CVE-2020-16591: Fixed an invalid read in process_symbol_table() (bsc#1179899).\n- CVE-2020-16592: Fixed an use-after-free in bfd_hash_lookup() (bsc#1179900).\n- CVE-2020-16593: Fixed a null pointer dereference in scan_unit_for_symbols() (bsc#1179901).\n- CVE-2020-16598: Fixed a null pointer dereference in debug_get_real_type() (bsc#1179902).\n- CVE-2020-16599: Fixed a null pointer dereference in _bfd_elf_get_symbol_version_string() (bsc#1179903)\n- CVE-2020-35493: Fixed heap-based buffer overflow in bfd_pef_parse_function_stubs function in bfd/pef.c via crafted PEF file (bsc#1180451).\n- CVE-2020-35496: Fixed multiple null pointer dereferences in bfd module due to not checking return value of bfd_malloc (bsc#1180454).\n- CVE-2020-35507: Fixed a null pointer dereference in bfd_pef_parse_function_stubs() (bsc#1180461).\n- CVE-2019-17451: Fixed an integer overflow leading to a SEGV in _bfd_dwarf2_find_nearest_line() in dwarf2.c (bsc#1153768).\n- CVE-2019-17450: Fixed a potential denial of service in find_abstract_instance() in dwarf2.c (bsc#1153770).\n- CVE-2019-9077: Fixed a heap-based buffer overflow in process_mips_specific() in readelf.c via a malformed MIPS option section (bsc#1126826).\n- CVE-2019-9075: Fixed a heap-based buffer overflow in _bfd_archive_64_bit_slurp_armap() in archive64.c (bsc#1126829).\n- CVE-2019-9074: Fixed a out-of-bounds read leading to a SEGV in bfd_getl32() in libbfd.c (bsc#1126831).\n- CVE-2019-12972: Fixed a heap-based buffer over-read in _bfd_doprnt() in bfd.c (bsc#1140126).\n- CVE-2019-14444: Fixed an integer overflow apply_relocations() in readelf.c (bsc#1143609).\n- CVE-2019-14250: Fixed an integer overflow in simple_object_elf_match() in simple-object-elf.c (bsc#1142649).\n",
+  "modified": "2025-05-02T04:09:58.275695Z",
+  "published": "2021-11-02T09:35:56Z",
+  "related": [
+    "CVE-2019-12972",
+    "CVE-2019-14250",
+    "CVE-2019-14444",
+    "CVE-2019-17450",
+    "CVE-2019-17451",
+    "CVE-2019-9074",
+    "CVE-2019-9075",
+    "CVE-2019-9077",
+    "CVE-2020-16590",
+    "CVE-2020-16591",
+    "CVE-2020-16592",
+    "CVE-2020-16593",
+    "CVE-2020-16598",
+    "CVE-2020-16599",
+    "CVE-2020-35448",
+    "CVE-2020-35493",
+    "CVE-2020-35496",
+    "CVE-2020-35507",
+    "CVE-2021-20197",
+    "CVE-2021-20284",
+    "CVE-2021-3487"
+  ],
+  "upstream": [
+    "CVE-2019-12972",
+    "CVE-2019-14250",
+    "CVE-2019-14444",
+    "CVE-2019-17450",
+    "CVE-2019-17451",
+    "CVE-2019-9074",
+    "CVE-2019-9075",
+    "CVE-2019-9077",
+    "CVE-2020-16590",
+    "CVE-2020-16591",
+    "CVE-2020-16592",
+    "CVE-2020-16593",
+    "CVE-2020-16598",
+    "CVE-2020-16599",
+    "CVE-2020-35448",
+    "CVE-2020-35493",
+    "CVE-2020-35496",
+    "CVE-2020-35507",
+    "CVE-2021-20197",
+    "CVE-2021-20284",
+    "CVE-2021-3487"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2021/suse-su-20213593-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1126826"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1126829"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1126831"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1140126"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1142649"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1143609"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1153768"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1153770"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1157755"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1160254"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1160590"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1163333"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1163744"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179036"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179341"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179898"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179899"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179900"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179901"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179902"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179903"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1180451"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1180454"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1180461"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1181452"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1182252"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1183511"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184620"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184794"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-12972"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14250"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-14444"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-17450"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-17451"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-9074"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-9075"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-9077"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-16590"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-16591"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-16592"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-16593"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-16598"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-16599"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-35448"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-35493"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-35496"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-35507"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-20197"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-20284"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3487"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:HPE Helion OpenStack 8",
+        "purl": "pkg:rpm/suse/binutils&distro=HPE%20Helion%20OpenStack%208"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:OpenStack Cloud 8",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20OpenStack%20Cloud%208"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:OpenStack Cloud 9",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20OpenStack%20Cloud%209"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:OpenStack Cloud Crowbar 8",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20OpenStack%20Cloud%20Crowbar%208"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:OpenStack Cloud Crowbar 9",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20OpenStack%20Cloud%20Crowbar%209"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP3",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP4",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils-gold": "2.37-9.39.1",
+            "cross-ppc-binutils": "2.37-9.39.1",
+            "cross-spu-binutils": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "cross-ppc-binutils",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
+        "purl": "pkg:rpm/suse/cross-ppc-binutils&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils-gold": "2.37-9.39.1",
+            "cross-ppc-binutils": "2.37-9.39.1",
+            "cross-spu-binutils": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "cross-spu-binutils",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
+        "purl": "pkg:rpm/suse/cross-spu-binutils&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils-gold": "2.37-9.39.1",
+            "cross-ppc-binutils": "2.37-9.39.1",
+            "cross-spu-binutils": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP3-LTSS",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP3-BCL",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP3-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP4-LTSS",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP4-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "binutils",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
+        "purl": "pkg:rpm/suse/binutils&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.37-9.39.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "binutils-devel": "2.37-9.39.1",
+            "binutils": "2.37-9.39.1",
+            "libctf0": "2.37-9.39.1",
+            "libctf-nobfd0": "2.37-9.39.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3593-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

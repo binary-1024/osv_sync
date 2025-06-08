@@ -1,0 +1,85 @@
+{
+  "id": "SUSE-SU-2021:2473-1",
+  "summary": "Security update for slurm",
+  "details": "This update for slurm fixes the following issues:\n\nUpdated to 20.11.7 \n\nSummary of new features:\n\n* CVE-2021-31215: Fixed a remote code execution as SlurmUser (bsc#1186024).\n* slurmd - handle configless failures gracefully instead of hanging indefinitely.\n* select/cons_tres - fix Dragonfly topology not selecting nodes in the same\n  leaf switch when it should as well as requests with *-switches option.\n* Fix issue where certain step requests wouldn't run if the first node in the\n  job allocation was full and there were idle resources on other nodes in\n  the job allocation.\n* Fix deadlock issue with <Prolog|Epilog>Slurmctld.\n* torque/qstat - fix printf error message in output.\n* When adding associations or wckeys avoid checking multiple times a user or cluster name.\n* Fix wrong jobacctgather information on a step on multiple nodes\n  due to timeouts sending its the information gathered on its node.\n* Fix missing xstrdup which could result in slurmctld segfault on array jobs.\n* Fix security issue in PrologSlurmctld and EpilogSlurmctld by always\n  prepending SPANK_ to all user-set environment variables. CVE-2021-31215.\n* Fix sacct assert with the --qos option.\n* Use pkg-config --atleast-version instead of --modversion for systemd.\n* common/fd - fix getsockopt() call in fd_get_socket_error().\n* Properly handle the return from fd_get_socket_error() in _conn_readable().\n* cons_res - Fix issue where running jobs were not taken into consideration\n  when creating a reservation.\n* Avoid a deadlock between job_list for_each and assoc QOS_LOCK.\n* Fix TRESRunMins usage for partition qos on restart/reconfig.\n* Fix printing of number of tasks on a completed job that didn't request tasks.\n* Fix updating GrpTRESRunMins when decrementing job time is bigger than it.\n* Make it so we handle multithreaded allocations correctly when doing\n  --exclusive or --core-spec allocations.\n* Fix incorrect round-up division in _pick_step_cores\n* Use appropriate math to adjust cpu counts when --ntasks-per-core=1.\n* cons_tres - Fix consideration of power downed nodes.\n* cons_tres - Fix DefCpuPerGPU, increase cpus-per-task to match with\n  gpus-per-task * cpus-per-gpu.\n* Fix under-cpu memory auto-adjustment when MaxMemPerCPU is set.\n* Make it possible to override CR_CORE_DEFAULT_DIST_BLOCK.\n* Perl API - fix retrieving/storing of slurm_step_id_t in job_step_info_t.\n* Recover state of burst buffers when slurmctld is restarted to avoid skipping\n  burst buffer stages.\n* Fix race condition in burst buffer plugin which caused a burst buffer\n  in stage-in to not get state saved if slurmctld stopped.\n* auth/jwt - print an error if jwt_file= has not been set in slurmdbd.\n* Fix RESV_DEL_HOLD not being a valid state when using squeue --states.\n* Add missing squeue selectable states in valid states error message.\n* Fix scheduling last array task multiple times on error, causing segfault.\n* Fix issue where a step could be allocated more memory than the job when\n  dealing with --mem-per-cpu and --threads-per-core.\n* Fix removing qos from assoc with -= can lead to assoc with no qos\n* auth/jwt - fix segfault on invalid credential in slurmdbd due to\n  missing validate_slurm_user() function in context.\n* Fix single Port= not being applied to range of nodes in slurm.conf\n* Fix Jobs not requesting a tres are not starting because of that tres limit.\n* acct_gather_energy/rapl - fix AveWatts calculation.\n* job_container/tmpfs - Fix issues with cleanup and slurmd restarting on\n  running jobs.\n",
+  "modified": "2025-05-02T04:10:39.481768Z",
+  "published": "2021-07-27T08:39:37Z",
+  "related": [
+    "CVE-2021-31215"
+  ],
+  "upstream": [
+    "CVE-2021-31215"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2021/suse-su-20212473-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1180700"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186024"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-31215"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "slurm",
+        "ecosystem": "SUSE:Linux Enterprise Module for HPC 15 SP3",
+        "purl": "pkg:rpm/suse/slurm&distro=SUSE%20Linux%20Enterprise%20Module%20for%20HPC%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20.11.7-4.3.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "slurm-plugins": "20.11.7-4.3.1",
+            "slurm-config": "20.11.7-4.3.1",
+            "slurm-auth-none": "20.11.7-4.3.1",
+            "slurm-slurmdbd": "20.11.7-4.3.1",
+            "slurm-rest": "20.11.7-4.3.1",
+            "slurm-devel": "20.11.7-4.3.1",
+            "libslurm36": "20.11.7-4.3.1",
+            "slurm-pam_slurm": "20.11.7-4.3.1",
+            "slurm-config-man": "20.11.7-4.3.1",
+            "slurm-doc": "20.11.7-4.3.1",
+            "slurm-munge": "20.11.7-4.3.1",
+            "perl-slurm": "20.11.7-4.3.1",
+            "slurm-sview": "20.11.7-4.3.1",
+            "slurm-sql": "20.11.7-4.3.1",
+            "libnss_slurm2": "20.11.7-4.3.1",
+            "slurm-webdoc": "20.11.7-4.3.1",
+            "libpmi0": "20.11.7-4.3.1",
+            "slurm": "20.11.7-4.3.1",
+            "slurm-lua": "20.11.7-4.3.1",
+            "slurm-node": "20.11.7-4.3.1",
+            "slurm-torque": "20.11.7-4.3.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2473-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

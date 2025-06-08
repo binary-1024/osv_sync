@@ -1,0 +1,122 @@
+{
+  "id": "GHSA-f9c6-2f9p-82jj",
+  "summary": "Any user with view access to the XWiki space can change the authenticator",
+  "details": "### Impact\n\nA user who can access pages located in the XWiki space (by default, anyone) can access the page `XWiki.Authentication.Administration` and (unless an authenticator is set in `xwiki.cfg`) switch to another installed authenticator.\n\nNote that, by default, there is only one authenticator available (`Standard XWiki Authenticator`). So, if no authenticator extension was installed, it's not really possible to do anything for an attacker.\n\nAlso, in most cases, if you have installed and are using an SSO authenticator (like OIDC or LDAP for example), the worst an attacker can do is break authentication by switching back to the standard authenticator (that's because it's impossible to login to a user which does not have a stored password, and that's usually what SSO authenticator produce).\n\n### Patches\n\nThis has been patched in XWiki 15.10.9 and XWiki 16.3.0RC1.\n\n### Workarounds\n\nYou can very easily fix this vulnerability in your instance through right configuration:\n* access the page and children right administration of the page `XWiki.Authentication` (`https://myhost/xwiki/bin/admin/XWiki/Authentication/WebPreferences?editor=spaceadmin&section=PageAndChildrenRights&space=XWiki.Authentication#|t=usersandgroupstable&p=1&l=10&uorg=groups&wiki=local&clsname=XWiki.XWikiGlobalRights`)\n* make sure only admin user have the VIEW right\n\n### References\n\nhttps://jira.xwiki.org/browse/XWIKI-22604\nhttps://github.com/xwiki/xwiki-platform/commit/5efc31cea1501c9a5cb593566fea8b558ff32a2a\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "aliases": [
+    "CVE-2025-46557"
+  ],
+  "modified": "2025-05-01T13:30:33Z",
+  "published": "2025-04-30T16:51:53Z",
+  "database_specific": {
+    "nvd_published_at": "2025-04-30T19:15:55Z",
+    "cwe_ids": [
+      "CWE-862"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-30T16:51:53Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki/xwiki-platform/security/advisories/GHSA-f9c6-2f9p-82jj"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46557"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki/xwiki-platform/commit/5efc31cea1501c9a5cb593566fea8b558ff32a2a"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/xwiki/xwiki-platform"
+    },
+    {
+      "type": "WEB",
+      "url": "https://jira.xwiki.org/browse/XWIKI-22604"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.xwiki.platform:xwiki-platform-security-authentication-ui",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-security-authentication-ui"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "15.3-rc-1"
+            },
+            {
+              "fixed": "15.10.14"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-f9c6-2f9p-82jj/GHSA-f9c6-2f9p-82jj.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "org.xwiki.platform:xwiki-platform-security-authentication-ui",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-security-authentication-ui"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "16.0.0-rc-1"
+            },
+            {
+              "fixed": "16.4.6"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-f9c6-2f9p-82jj/GHSA-f9c6-2f9p-82jj.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "org.xwiki.platform:xwiki-platform-security-authentication-ui",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-security-authentication-ui"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "16.5.0-rc-1"
+            },
+            {
+              "fixed": "16.10.0-rc-1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-f9c6-2f9p-82jj/GHSA-f9c6-2f9p-82jj.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:H/VA:H/SC:N/SI:N/SA:N"
+    }
+  ]
+}

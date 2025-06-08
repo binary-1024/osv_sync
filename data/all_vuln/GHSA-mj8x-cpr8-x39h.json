@@ -1,0 +1,107 @@
+{
+  "id": "GHSA-mj8x-cpr8-x39h",
+  "summary": "Remote code execution in Apache Tapestry",
+  "details": "A critical unauthenticated remote code execution vulnerability was found all recent versions of Apache Tapestry. The affected versions include 5.4.5, 5.5.0, 5.6.2 and 5.7.0. The vulnerability I have found is a bypass of the fix for CVE-2019-0195. Recap: Before the fix of CVE-2019-0195 it was possible to download arbitrary class files from the classpath by providing a crafted asset file URL. An attacker was able to download the file `AppModule.class` by requesting the URL `http://localhost:8080/assets/something/services/AppModule.class` which contains a HMAC secret key. The fix for that bug was a blacklist filter that checks if the URL ends with `.class`, `.properties` or `.xml`. Bypass: Unfortunately, the blacklist solution can simply be bypassed by appending a `/` at the end of the URL: `http://localhost:8080/assets/something/services/AppModule.class/` The slash is stripped after the blacklist check and the file `AppModule.class` is loaded into the response. This class usually contains the HMAC secret key which is used to sign serialized Java objects. With the knowledge of that key an attacker can sign a Java gadget chain that leads to RCE (e.g. CommonsBeanUtils1 from ysoserial). Solution for this vulnerability: * For Apache Tapestry 5.4.0 to 5.6.2, upgrade to 5.6.3 or later. * For Apache Tapestry 5.7.0, upgrade to 5.7.1 or later.",
+  "aliases": [
+    "CVE-2021-27850"
+  ],
+  "modified": "2024-12-02T05:47:35.826691Z",
+  "published": "2021-06-16T17:33:19Z",
+  "database_specific": {
+    "nvd_published_at": "2021-04-15T08:15:00Z",
+    "cwe_ids": [
+      "CWE-502",
+      "CWE-922"
+    ],
+    "severity": "CRITICAL",
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-04-19T21:38:56Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-27850"
+    },
+    {
+      "type": "WEB",
+      "url": "https://issues.apache.org/jira/browse/TAP5-2663"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.apache.org/thread.html/r237ff7f286bda31682c254550c1ebf92b0ec61329b32fbeb2d1c8751%40%3Cusers.tapestry.apache.org%3E"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20210528-0002"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2021/04/15/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.apache.tapestry:tapestry-core",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.tapestry/tapestry-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5.4.0"
+            },
+            {
+              "fixed": "5.6.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.4.0",
+        "5.4.1",
+        "5.4.2",
+        "5.4.3",
+        "5.4.4",
+        "5.4.5",
+        "5.5.0",
+        "5.5.0-beta-3",
+        "5.6.0",
+        "5.6.1",
+        "5.6.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/06/GHSA-mj8x-cpr8-x39h/GHSA-mj8x-cpr8-x39h.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.apache.tapestry:tapestry-core",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.tapestry/tapestry-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5.7.0"
+            },
+            {
+              "fixed": "5.7.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.7.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/06/GHSA-mj8x-cpr8-x39h/GHSA-mj8x-cpr8-x39h.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

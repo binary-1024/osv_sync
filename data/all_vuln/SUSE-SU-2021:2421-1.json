@@ -1,0 +1,1390 @@
+{
+  "id": "SUSE-SU-2021:2421-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 15 LTSS kernel was updated to receive various security and bugfixes.\n\n\nThe following security bugs were fixed:\n\n- CVE-2021-22555: A heap out-of-bounds write was discovered in net/netfilter/x_tables.c (bnc#1188116 ).\n- CVE-2021-33909: Extremely large seq buffer allocations in seq_file could lead to buffer underruns and code execution (bsc#1188062).\n- CVE-2021-3609: A use-after-free in can/bcm could have led to privilege escalation (bsc#1187215).\n- CVE-2021-33624: In kernel/bpf/verifier.c a branch can be mispredicted (e.g., because of type confusion) and consequently an unprivileged BPF program can read arbitrary memory locations via a side-channel attack, aka CID-9183671af6db (bnc#1187554).\n- CVE-2021-0605: In pfkey_dump of af_key.c, there is a possible out-of-bounds read due to a missing bounds check. This could lead to local information disclosure with System execution privileges needed. User interaction is not needed for exploitation (bnc#1187601).\n- CVE-2021-0512: In __hidinput_change_resolution_multipliers of hid-input.c, there is a possible out of bounds write due to a heap buffer overflow. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation (bnc#1187595).\n- CVE-2020-26558: Bluetooth LE and BR/EDR secure pairing in Bluetooth Core Specification 2.1 may permit a nearby man-in-the-middle attacker to identify the Passkey used during pairing (in the Passkey authentication procedure) by reflection of the public key and the authentication evidence of the initiating device, potentially permitting this attacker to complete authenticated pairing with the responding device using the correct Passkey for the pairing session. The attack methodology determines the Passkey value one bit at a time (bnc#1179610).\n- CVE-2021-34693: net/can/bcm.c in the Linux kernel allowed local users to obtain sensitive information from kernel stack memory because parts of a data structure are uninitialized (bnc#1187452).\n- CVE-2020-36385: An issue was discovered in the Linux kernel drivers/infiniband/core/ucma.c has a use-after-free because the ctx is reached via the ctx_list in some ucma_migrate_id situations where ucma_close is called, aka CID-f5449e74802c (bnc#1187050).\n- CVE-2021-0129: Improper access control in BlueZ may have allowed an authenticated user to potentially enable information disclosure via adjacent access (bnc#1186463).\n- CVE-2020-36386: An issue was discovered in the Linux kernel net/bluetooth/hci_event.c has a slab out-of-bounds read in hci_extended_inquiry_result_evt, aka CID-51c19bf3d5cf (bnc#1187038).\n- CVE-2020-24588: The 802.11 standard that underpins Wi-Fi Protected Access (WPA, WPA2, and WPA3) and Wired Equivalent Privacy (WEP) doesn't require that the A-MSDU flag in the plaintext QoS header field is authenticated. Against devices that support receiving non-SSP A-MSDU frames (which is mandatory as part of 802.11n), an adversary can abuse this to inject arbitrary network packets (bnc#1185861).\n- CVE-2021-33200: kernel/bpf/verifier.c enforced incorrect limits for pointer arithmetic operations, aka CID-bb01a1bba579. This can be abused to perform out-of-bounds reads and writes in kernel memory, leading to local privilege escalation to root. In particular, there is a corner case where the off reg causes a masking direction change, which then results in an incorrect final aux->alu_limit (bnc#1186484).\n- CVE-2021-33034: net/bluetooth/hci_event.c had a use-after-free when destroying an hci_chan, aka CID-5c4c8c954409. This leads to writing an arbitrary value (bnc#1186111).\n- CVE-2020-26139: An Access Point (AP) forwards EAPOL frames to other clients even though the sender has not yet successfully authenticated to the AP. This might be abused in projected Wi-Fi networks to launch denial-of-service attacks against connected clients and made it easier to exploit other vulnerabilities in connected clients (bnc#1186062).\n- CVE-2021-23134: Use After Free vulnerability in nfc sockets allowed local attackers to elevate their privileges. In typical configurations, the issue can only be triggered by a privileged local user with the CAP_NET_RAW capability (bnc#1186060).\n- CVE-2020-24586: The 802.11 standard that underpins Wi-Fi Protected Access (WPA, WPA2, and WPA3) and Wired Equivalent Privacy (WEP) doesn't require that received fragments be cleared from memory after (re)connecting to a network. Under the right circumstances, when another device sends fragmented frames encrypted using WEP, CCMP, or GCMP, this can be abused to inject arbitrary network packets and/or exfiltrate user data (bnc#1185859).\n- CVE-2020-26141: The Wi-Fi implementation did not verify the Message Integrity Check (authenticity) of fragmented TKIP frames. An adversary can abuse this to inject and possibly decrypt packets in WPA or WPA2 networks that support the TKIP data-confidentiality protocol (bnc#1185987).\n- CVE-2020-26145: The WEP, WPA, WPA2, and WPA3 implementations accept second (or subsequent) broadcast fragments even when sent in plaintext and process them as full unfragmented frames. An adversary can abuse this to inject arbitrary network packets independent of the network configuration (bnc#1185860).\n- CVE-2020-24587: The 802.11 standard that underpins Wi-Fi Protected Access (WPA, WPA2, and WPA3) and Wired Equivalent Privacy (WEP) doesn't require that all fragments of a frame are encrypted under the same key. An adversary can abuse this to decrypt selected fragments when another device sends fragmented frames and the WEP, CCMP, or GCMP encryption key is periodically renewed (bnc#1185859 bnc#1185862).\n- CVE-2020-26147: The WEP, WPA, WPA2, and WPA3 implementations reassemble fragments even though some of them were sent in plaintext. This vulnerability can be abused to inject packets and/or exfiltrate selected fragments when another device sends fragmented frames and the WEP, CCMP, or GCMP data-confidentiality protocol is used. ()\n- CVE-2021-3491: The io_uring subsystem allowed the MAX_RW_COUNT limit to be bypassed in the PROVIDE_BUFFERS operation, which led to negative values being usedin mem_rw when reading /proc/<PID>/mem. This could be used to create a heap overflow leading to arbitrary code execution in the kernel. (bnc#1185642).\n- CVE-2021-23133: A race condition in SCTP sockets (net/sctp/socket.c) could lead to kernel privilege escalation from the context of a network service or an unprivileged process. If sctp_destroy_sock is called without sock_net(sk)->sctp.addr_wq_lock then an element is removed from the auto_asconf_splist list without any proper locking. This can be exploited by an attacker with network service privileges to escalate to root or from the context of an unprivileged user directly if a BPF_CGROUP_INET_SOCK_CREATE is attached which denies creation of some SCTP socket (bnc#1184675).\n- CVE-2021-32399: net/bluetooth/hci_request.c in the Linux kernel has a race condition for removal of the HCI controller (bnc#1184611 bnc#1185898).\n\nThe following non-security bugs were fixed:\n\n- Drivers: hv: vmbus: Increase wait time for VMbus unload (bsc#1185725).\n- Drivers: hv: vmbus: Initialize unload_event statically (bsc#1185725).\n- af_packet: fix the tx skb protocol in raw sockets with ETH_P_ALL (bsc#1176081).\n- dm: fix redundant IO accounting for bios that need splitting (bsc#1183738).\n- kabi: preserve struct header_ops after bsc#1176081 fix (bsc#1176081).\n- net/ethernet: Add parse_protocol header_ops support (bsc#1176081).\n- net/mlx5e: Remove the wrong assumption about transport offset (bsc#1176081).\n- net/mlx5e: Trust kernel regarding transport offset (bsc#1176081).\n- net/packet: Ask driver for protocol if not provided by user (bsc#1176081).\n- net/packet: Remove redundant skb->protocol set (bsc#1176081).\n- net: Do not set transport offset to invalid value (bsc#1176081).\n- net: Introduce parse_protocol header_ops callback (bsc#1176081).\n- video: hyperv_fb: Add ratelimit on error message (bsc#1185725).\n",
+  "modified": "2025-05-02T04:30:37.536727Z",
+  "published": "2021-07-21T09:01:19Z",
+  "related": [
+    "CVE-2020-24586",
+    "CVE-2020-24587",
+    "CVE-2020-24588",
+    "CVE-2020-26139",
+    "CVE-2020-26141",
+    "CVE-2020-26145",
+    "CVE-2020-26147",
+    "CVE-2020-26558",
+    "CVE-2020-36385",
+    "CVE-2020-36386",
+    "CVE-2021-0129",
+    "CVE-2021-0512",
+    "CVE-2021-0605",
+    "CVE-2021-22555",
+    "CVE-2021-23133",
+    "CVE-2021-23134",
+    "CVE-2021-32399",
+    "CVE-2021-33034",
+    "CVE-2021-33200",
+    "CVE-2021-33624",
+    "CVE-2021-33909",
+    "CVE-2021-34693",
+    "CVE-2021-3491",
+    "CVE-2021-3609"
+  ],
+  "upstream": [
+    "CVE-2020-24586",
+    "CVE-2020-24587",
+    "CVE-2020-24588",
+    "CVE-2020-26139",
+    "CVE-2020-26141",
+    "CVE-2020-26145",
+    "CVE-2020-26147",
+    "CVE-2020-26558",
+    "CVE-2020-36385",
+    "CVE-2020-36386",
+    "CVE-2021-0129",
+    "CVE-2021-0512",
+    "CVE-2021-0605",
+    "CVE-2021-22555",
+    "CVE-2021-23133",
+    "CVE-2021-23134",
+    "CVE-2021-32399",
+    "CVE-2021-33034",
+    "CVE-2021-33200",
+    "CVE-2021-33624",
+    "CVE-2021-33909",
+    "CVE-2021-34693",
+    "CVE-2021-3491",
+    "CVE-2021-3609"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2021/suse-su-20212421-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1176081"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179610"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1183738"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184611"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184675"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185642"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185725"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185859"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185860"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185861"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185862"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185898"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185987"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186060"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186062"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186111"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186463"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186484"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187038"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187050"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187215"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187452"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187554"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187595"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187601"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188062"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188116"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-24586"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-24587"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-24588"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-26139"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-26141"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-26145"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-26147"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-26558"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-36385"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-36386"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-0129"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-0512"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-0605"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-22555"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-23133"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-23134"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-32399"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-33034"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-33200"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-33624"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-33909"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-34693"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3491"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3609"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 15",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-livepatch": "4.12.14-150.75.1",
+            "kernel-livepatch-4_12_14-150_75-default": "1-1.3.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-livepatch-SLE15_Update_25",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 15",
+        "purl": "pkg:rpm/suse/kernel-livepatch-SLE15_Update_25&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-1.3.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-livepatch": "4.12.14-150.75.1",
+            "kernel-livepatch-4_12_14-150_75-default": "1-1.3.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 15",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "dlm-kmp-default": "4.12.14-150.75.1",
+            "gfs2-kmp-default": "4.12.14-150.75.1",
+            "ocfs2-kmp-default": "4.12.14-150.75.1",
+            "cluster-md-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-ESPOS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-ESPOS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-ESPOS",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-ESPOS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-build",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-ESPOS",
+        "purl": "pkg:rpm/suse/kernel-obs-build&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-ESPOS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-ESPOS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-ESPOS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-ESPOS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-ESPOS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-vanilla",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-ESPOS",
+        "purl": "pkg:rpm/suse/kernel-vanilla&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-ESPOS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-build",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-obs-build&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-vanilla",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-vanilla&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default-man": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise Server 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20Server%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default-man": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-build",
+        "ecosystem": "SUSE:Linux Enterprise Server 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-obs-build&distro=SUSE%20Linux%20Enterprise%20Server%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default-man": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default-man": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default-man": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-vanilla",
+        "ecosystem": "SUSE:Linux Enterprise Server 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-vanilla&distro=SUSE%20Linux%20Enterprise%20Server%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default-man": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-zfcpdump",
+        "ecosystem": "SUSE:Linux Enterprise Server 15-LTSS",
+        "purl": "pkg:rpm/suse/kernel-zfcpdump&distro=SUSE%20Linux%20Enterprise%20Server%2015-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default-man": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-build",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15",
+        "purl": "pkg:rpm/suse/kernel-obs-build&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-vanilla",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15",
+        "purl": "pkg:rpm/suse/kernel-vanilla&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-150.75.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-150.75.1",
+            "kernel-devel": "4.12.14-150.75.1",
+            "kernel-default-base": "4.12.14-150.75.1",
+            "kernel-docs": "4.12.14-150.75.1",
+            "kernel-default": "4.12.14-150.75.1",
+            "kernel-obs-build": "4.12.14-150.75.1",
+            "kernel-source": "4.12.14-150.75.1",
+            "kernel-syms": "4.12.14-150.75.1",
+            "kernel-default-devel": "4.12.14-150.75.1",
+            "kernel-vanilla-base": "4.12.14-150.75.1",
+            "reiserfs-kmp-default": "4.12.14-150.75.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:2421-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

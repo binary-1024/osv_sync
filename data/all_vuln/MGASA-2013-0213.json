@@ -1,0 +1,68 @@
+{
+  "id": "MGASA-2013-0213",
+  "summary": "Updated kernel-tmb packages fix multiple security vulnerabilities",
+  "details": "This kernel-tmb update provides the extended stable 3.8.13.4 kernel and\nfixes the following security issues:\n\nThe pciback_enable_msi function in the PCI backend driver \n(drivers/xen/pciback/conf_space_capability_msi.c) in Xen for the Linux\nkernel 2.6.18 and 3.8 allows guest OS users with PCI device access to\ncause a denial of service via a large number of kernel log messages.\n(CVE-2013-0231 / XSA-43)\n\nipv6: ip6_sk_dst_check() must not assume ipv6 dst\nIt's possible to use AF_INET6 sockets and to connect to an IPv4\ndestination. After this, socket dst cache is a pointer to a rtable,\nnot rt6_info. This bug can be exploited by local non-root users\nto trigger various corruptions/crashes (CVE-2013-2232)\n\naf_key: fix info leaks in notify messages\nkey_notify_sa_flush() and key_notify_policy_flush() miss to\ninitialize the sadb_msg_reserved member of the broadcasted message\nand thereby leak 2 bytes of heap memory to listeners (CVE-2013-2234)\n\naf_key: initialize satype in key_notify_policy_flush()\nkey_notify_policy_flush() miss to nitialize the sadb_msg_satype member\nof the broadcasted message and thereby leak heap memory to listeners\n(CVE-2013-2237)\n\nHeap-based buffer overflow in the iscsi_add_notunderstood_response function\nin drivers/target/iscsi/iscsi_target_parameters.c in the iSCSI target\nsubsystem in the Linux kernel through 3.9.4 allows remote attackers to\ncause a denial of service (memory corruption and OOPS) or possibly execute\narbitrary code via a long key that is not properly handled during\nconstruction of an error-response packet.\nA reproduction case requires patching open-iscsi to send overly large\nkeys. Performing discovery in a loop will Oops the remote server.\n(CVE-2013-2850)\n\nFormat string vulnerability in the b43_request_firmware function in\ndrivers/net/wireless/b43/main.c in the Broadcom B43 wireless driver in\nthe Linux kernel through 3.9.4 allows local users to gain privileges by\nleveraging root access and including format string specifiers in an\nfwpostfix modprobe parameter, leading to improper construction of an\nerror message. (CVE-2013-2852)\n\nOther fixes:\n- Fix up alx AR8161 breakage (mga #10079)\n- bcma: add support for BCM43142 (mga#9378, mga#10611)\n- net/tg3: Avoid delay during MMIO access\n- iommu/vt-d: add quirk for broken interrupt remapping on 55XX chipsets\n- rtlwifi: rtl8723ae: Fix typo in firmware names\n- rtlwifi: rtl8192cu: Fix problem in connecting to WEP or WPA(1) networks\n- md/raid10: fix two bugs affecting RAID10 reshape\n- crypto: algboss - Hold ref count on larval\n- perf: Disable monitoring on setuid processes for regular users\n- netfilter: nf_conntrack_ipv6: Plug sk_buff leak in fragment handling\n- enable X86_X2APIC, X86_REROUTE_FOR_BROKEN_BOOT_IRQS, FHANDLE\n- disable COMPAT_VDSO (not needed since glibc-2.3.3)\n\nFor other fixes in the extended stable update, see the referenced shortlog\n",
+  "modified": "2013-07-16T08:01:23Z",
+  "published": "2013-07-16T08:01:28Z",
+  "related": [
+    "CVE-2013-0231",
+    "CVE-2013-2232",
+    "CVE-2013-2234",
+    "CVE-2013-2237",
+    "CVE-2013-2850",
+    "CVE-2013-2852"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2013-0213.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://kernel.ubuntu.com/git?p=ubuntu/linux.git;h=refs/heads/linux-3.8.y;a=shortlog"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=10696"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-tmb",
+        "ecosystem": "Mageia:3",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.8.13.4-1.mga3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2013-0213.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

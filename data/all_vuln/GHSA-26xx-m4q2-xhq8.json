@@ -1,0 +1,187 @@
+{
+  "id": "GHSA-26xx-m4q2-xhq8",
+  "summary": "Authentication Bypass by CSRF Weakness",
+  "details": "### Impact\n\nCSRF vulnerability that allows user account takeover.\n\nAll applications using any version of the frontend component of `spree_auth_devise` are affected if `protect_from_forgery` method is both:\n\n* Executed whether as:\n  * A before_action callback (the default)\n  * A prepend_before_action (option prepend: true given) before the :load_object hook in Spree::UserController (most likely order to find).\n* Configured to use :null_session or :reset_session strategies (:null_session is the default in case the no strategy is given, but rails --new generated skeleton use :exception).\n\nThat means that applications that haven't been configured differently from what it's generated with Rails aren't affected.\n\nThanks @waiting-for-dev for reporting and providing a patch \ud83d\udc4f \n\n### Patches\n\nSpree 4.3 users should update to spree_auth_devise 4.4.1\nSpree 4.2 users should update to spree_auth_devise 4.2.1\nSpree 4.1 users should update to spree_auth_devise 4.1.1\nOlder Spree version users should update to spree_auth_devise 4.0.1\n \n### Workarounds\n\nIf possible, change your strategy to :exception:\n\n```ruby\nclass ApplicationController < ActionController::Base\n  protect_from_forgery with: :exception\nend\n```\n\nAdd the following to`config/application.rb `to at least run the `:exception` strategy on the affected controller:\n\n```ruby\nconfig.after_initialize do\n  Spree::UsersController.protect_from_forgery with: :exception\nend\n```\n\n### References\nhttps://github.com/solidusio/solidus_auth_devise/security/advisories/GHSA-xm34-v85h-9pg2\n",
+  "aliases": [
+    "CVE-2021-41275"
+  ],
+  "modified": "2023-11-08T04:06:58.347585Z",
+  "published": "2021-11-18T20:14:19Z",
+  "related": [
+    "CVE-2021-41275"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2021-11-17T20:15:00Z",
+    "github_reviewed_at": "2021-11-17T21:07:45Z",
+    "severity": "CRITICAL",
+    "github_reviewed": true,
+    "cwe_ids": [
+      "CWE-352"
+    ]
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/solidusio/solidus_auth_devise/security/advisories/GHSA-xm34-v85h-9pg2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/spree/spree_auth_devise/security/advisories/GHSA-26xx-m4q2-xhq8"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-41275"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/spree/spree_auth_devise/commit/adf6ed4cd94d66091776b5febd4ff3767362de63"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/spree_auth_devise/CVE-2021-41275.yml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/spree/spree_auth_devise"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "spree_auth_devise",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/spree_auth_devise"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.3.0"
+            },
+            {
+              "fixed": "4.4.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.3.0",
+        "4.3.1",
+        "4.3.2",
+        "4.3.3",
+        "4.3.4",
+        "4.4.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/11/GHSA-26xx-m4q2-xhq8/GHSA-26xx-m4q2-xhq8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "spree_auth_devise",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/spree_auth_devise"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.2.0"
+            },
+            {
+              "fixed": "4.2.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.2.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/11/GHSA-26xx-m4q2-xhq8/GHSA-26xx-m4q2-xhq8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "spree_auth_devise",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/spree_auth_devise"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.1.0"
+            },
+            {
+              "fixed": "4.1.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.1.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/11/GHSA-26xx-m4q2-xhq8/GHSA-26xx-m4q2-xhq8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "spree_auth_devise",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/spree_auth_devise"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.0.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.1",
+        "1.2.0",
+        "1.3.1",
+        "3.0.5",
+        "3.0.6",
+        "3.1.0",
+        "3.2.0",
+        "3.2.0.beta",
+        "3.3.0",
+        "3.3.0.rc1",
+        "3.3.1",
+        "3.3.3",
+        "3.4.0",
+        "3.4.1",
+        "3.4.2",
+        "3.5.0",
+        "3.5.1",
+        "3.5.2",
+        "4.0.0",
+        "4.0.0.rc1",
+        "4.0.0.rc2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/11/GHSA-26xx-m4q2-xhq8/GHSA-26xx-m4q2-xhq8.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:N"
+    }
+  ]
+}

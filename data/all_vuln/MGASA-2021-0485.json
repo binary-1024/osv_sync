@@ -1,0 +1,90 @@
+{
+  "id": "MGASA-2021-0485",
+  "summary": "Updated tomcat packages fix security vulnerability",
+  "details": "A vulnerability in the JNDI Realm of Apache Tomcat allows an attacker to\nauthenticate using variations of a valid user name and/or to bypass some\nof the protection provided by the LockOut Realm. (CVE-2021-30640)\n\nApache Tomcat 10.0.0-M1 to 10.0.6, 9.0.0.M1 to 9.0.46 and 8.5.0 to 8.5.66\ndid not correctly parse the HTTP transfer-encoding request header in some\ncircumstances leading to the possibility to request smuggling when used\nwith a reverse proxy. Specifically: - Tomcat incorrectly ignored the\ntransfer encoding header if the client declared it would only accept an\nHTTP/1.0 response; - Tomcat honoured the identify encoding; and - Tomcat\ndid not ensure that, if present, the chunked encoding was the final\nencoding. (CVE-2021-33037)\n\nApache Tomcat 8.5.0 to 8.5.63, 9.0.0-M1 to 9.0.43 and 10.0.0-M1 to 10.0.2\ndid not properly validate incoming TLS packets. When Tomcat was configured\nto use NIO+OpenSSL or NIO2+OpenSSL for TLS, a specially crafted packet\ncould be used to trigger an infinite loop resulting in a denial of service.\n(CVE-2021-41079)\n\nThe fix for bug 63362 present in Apache Tomcat 10.1.0-M1 to 10.1.0-M5,\n10.0.0-M1 to 10.0.11, 9.0.40 to 9.0.53 and 8.5.60 to 8.5.71 introduced a\nmemory leak. The object introduced to collect metrics for HTTP upgrade\nconnections was not released for WebSocket connections once the\nconnection was closed. This created a memory leak that, over time, could\nlead to a denial of service via an OutOfMemoryError. (CVE-2021-42340)\n",
+  "modified": "2021-10-23T09:37:21Z",
+  "published": "2021-10-23T10:05:28Z",
+  "related": [
+    "CVE-2021-30640",
+    "CVE-2021-33037",
+    "CVE-2021-41079",
+    "CVE-2021-42340"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0485.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=29351"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2021/dsa-4952"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://tomcat.apache.org/security-9.html#Fixed_in_Apache_Tomcat_9.0.48"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://tomcat.apache.org/security-9.html#Fixed_in_Apache_Tomcat_9.0.44"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2021/09/15/6"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://tomcat.apache.org/security-9.html#Fixed_in_Apache_Tomcat_9.0.54"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2021/10/14/1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2021/dsa-4986"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "tomcat",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/tomcat?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.0.54-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0485.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

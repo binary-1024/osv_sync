@@ -1,0 +1,108 @@
+{
+  "id": "GHSA-rpq8-q44m-2rpg",
+  "summary": "Microsoft Identity Web Exposes Client Secrets and Certificate Information in Service Logs",
+  "details": "### Impact\n_What kind of vulnerability is it? Who is impacted?_\n\n**Description:** This vulnerability affects confidential client applications, including daemons, web apps, and web APIs. Under specific circumstances, sensitive information such as client secrets or certificate details may be exposed in the service logs of these applications. Service logs are intended to be handled securely.\n\n**Impact:** The vulnerability impacts service logs that meet the following criteria:\n\n- **Logging Level:** Logs are generated at the information level.\n- **Credential Descriptions:** containing:\n    - Local file paths with passwords.\n    - Base64 encoded values.\n    - Client secret.\n    \nAdditionally, logs of services using Base64 encoded certificates or certificate paths with password credential descriptions are also affected if the certificates are invalid or expired, regardless of the log level. Note that these credentials are not usable due to their invalid or expired status.\n\nIf your service logs are handled securely, you are not impacted. \n\nOtherwise, the following table shows when you can be impacted \n\u00a0 | Log Level Information for Microsoft.Identity.Web | Invalid Certificate\n-- | -- | --\nOne of the ClientCredentials credential description has a CredentialSource = Base64Encoded or (CredentialSource = Path) | Impacted | Impacted\nOne of the ClientCredentials credential description is a Client secret (CredentialSource = ClientSecret) | Impacted | Not impacted\nOther credential descriptions | Not Impacted | Not Impacted\n\n### Patches\n_Has the problem been patched? What versions should users upgrade to?_\nTo mitigate this vulnerability, update to Microsoft.Identity.Web 3.8.2 or Microsoft.Identity.Abstractions 9.0.0.\n\n### Workarounds\n_Is there a way for users to fix or remediate the vulnerability without upgrading?_\nYou can work around the issue in the following ways: \n\n- Ensure that service logs are handled securely and access to logs is restricted\n\n- Don\u2019t use `LogLevel = Information` for the Microsoft.Identity.Web namespace \n\n### Recommendation for production environment\nAvoid using `ClientCredentials` with [`CredentialDescriptions`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.identity.abstractions.credentialdescription.base64encodedvalue?view=msal-model-dotnet-latest) which `CredentialSource` is `ClientSecret`, or `Base64Encoded`, or `Path`. Rather use certificate from KeyVault or a certificate store, or Federation identity credential with Managed identity.\n\n### References\n_Are there any links users can visit to find out more?_",
+  "aliases": [
+    "CVE-2025-32016"
+  ],
+  "modified": "2025-04-09T19:12:05.576663Z",
+  "published": "2025-04-09T18:58:35Z",
+  "database_specific": {
+    "nvd_published_at": "2025-04-09T16:15:24Z",
+    "cwe_ids": [
+      "CWE-532"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-09T18:58:35Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/AzureAD/microsoft-identity-web/security/advisories/GHSA-rpq8-q44m-2rpg"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-32016"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/AzureAD/microsoft-identity-web"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "Microsoft.Identity.Web",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Microsoft.Identity.Web"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "3.2.0"
+            },
+            {
+              "fixed": "3.8.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.4.0",
+        "3.5.0",
+        "3.6.0",
+        "3.6.1",
+        "3.6.2",
+        "3.7.0",
+        "3.7.1",
+        "3.8.0",
+        "3.8.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-rpq8-q44m-2rpg/GHSA-rpq8-q44m-2rpg.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Microsoft.Identity.Abstractions",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Microsoft.Identity.Abstractions"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "7.1.0"
+            },
+            {
+              "fixed": "9.0.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "7.1.0",
+        "7.2.0",
+        "7.2.1",
+        "8.0.0",
+        "8.1.0",
+        "8.1.1",
+        "8.2.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-rpq8-q44m-2rpg/GHSA-rpq8-q44m-2rpg.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

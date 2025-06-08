@@ -1,0 +1,66 @@
+{
+  "id": "MGASA-2018-0314",
+  "summary": "Updated cantata packages fix security vulnerability",
+  "details": "The mount target path check in mounter.cpp 'mpOk()' is insufficient. A\nregular user can this way mount a CIFS filesystem anywhere, and not just\nbeneath /home by passing relative path components (CVE-2018-12559).\n\nArbitrary unmounts can be performed by regular users the same way\n(CVE-2018-12560).\n\nA regular user can inject additional mount options like file_mode= by\nmanipulating e.g. the domain parameter of the samba URL (CVE-2018-12561).\n\nThe wrapper script 'mount.cifs.wrapper' uses the shell to forward the\narguments to the actual mount.cifs binary. The shell evaluates wildcards\nwhich can also be injected (CVE-2018-12562).\n\nTo fix these issues, the vulnerable D-Bus service has been removed.\n",
+  "modified": "2018-07-13T18:41:55Z",
+  "published": "2018-07-13T19:01:19Z",
+  "related": [
+    "CVE-2018-12559",
+    "CVE-2018-12560",
+    "CVE-2018-12561",
+    "CVE-2018-12562"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0314.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=23201"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://openwall.com/lists/oss-security/2018/06/19/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "cantata",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/cantata?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.1-5.1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0314.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

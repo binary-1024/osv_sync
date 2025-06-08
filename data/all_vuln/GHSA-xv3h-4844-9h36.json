@@ -1,0 +1,386 @@
+{
+  "id": "GHSA-xv3h-4844-9h36",
+  "summary": "HTTP Multiline Header Termination",
+  "details": "### Impact\n\nAffected versions of Laminas Diactoros accepted a single line feed (LF / `\\n` ) character at the end of a header name. When serializing such a header name containing a line-feed into the on-the-wire representation of a HTTP/1.x message, the resulting message would be syntactically invalid, due to the header line being terminated too early. An attacker that is able to control the header names that are passed to Laminas Diactoros would be able to intentionally craft invalid messages, possibly causing application errors or invalid HTTP requests being sent out with an PSR-18 HTTP client. The latter might present a denial of service vector if a remote service\u2019s web application firewall bans the application due to the receipt of malformed requests.\n\n### Patches\n\nThe problem has been patched in the following versions:\n\n- 2.18.1\n- 2.19.1\n- 2.20.1\n- 2.21.1\n- 2.22.1\n- 2.23.1\n- 2.24.2\n- 2.25.2\n\n### Workarounds\n\nValidate HTTP header keys and/or values, and if using user-supplied values, filter them to strip off leading or trailing newline characters before calling `withHeader()`.\n\n### References\n\n- CVE-2023-29197\n- GHSA-wxmh-65f7-jcvw",
+  "aliases": [
+    "CVE-2023-29530"
+  ],
+  "modified": "2025-01-14T11:42:26.231591Z",
+  "published": "2023-04-24T22:42:39Z",
+  "related": [
+    "CVE-2023-29530"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2023-04-24T20:15:08Z",
+    "cwe_ids": [
+      "CWE-20"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-04-24T22:42:39Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/laminas/laminas-diactoros/security/advisories/GHSA-xv3h-4844-9h36"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-29530"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/laminas/laminas-diactoros/commit/7e721a60a09c5119c98694c2d23fc031094e1f1c"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/advisories/GHSA-wxmh-65f7-jcvw"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/laminas/laminas-diactoros"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/BPW54QK7ISDALPLP2CKODU4ZIVRYS336"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "laminas/laminas-diactoros",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laminas/laminas-diactoros"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.18.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.0.4",
+        "1.0.5",
+        "1.1.0",
+        "1.1.1",
+        "1.1.2",
+        "1.1.3",
+        "1.1.4",
+        "1.2.0",
+        "1.2.1",
+        "1.3.0",
+        "1.3.1",
+        "1.3.10",
+        "1.3.11",
+        "1.3.2",
+        "1.3.3",
+        "1.3.4",
+        "1.3.5",
+        "1.3.6",
+        "1.3.7",
+        "1.3.8",
+        "1.3.9",
+        "1.4.0",
+        "1.4.1",
+        "1.5.0",
+        "1.6.0",
+        "1.6.1",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.8.0",
+        "1.8.0p1",
+        "1.8.0p2",
+        "1.8.1",
+        "1.8.1p1",
+        "1.8.1p2",
+        "1.8.2",
+        "1.8.2p1",
+        "1.8.2p2",
+        "1.8.3",
+        "1.8.3p1",
+        "1.8.3p2",
+        "1.8.4",
+        "1.8.4p1",
+        "1.8.4p2",
+        "1.8.5",
+        "1.8.5p1",
+        "1.8.5p2",
+        "1.8.6",
+        "1.8.6p1",
+        "1.8.6p2",
+        "1.8.7",
+        "1.8.7p1",
+        "1.8.7p2",
+        "2.0.0",
+        "2.0.0p1",
+        "2.0.0p2",
+        "2.0.1",
+        "2.0.1p1",
+        "2.0.1p2",
+        "2.0.2",
+        "2.0.2p1",
+        "2.0.2p2",
+        "2.0.3",
+        "2.0.3p1",
+        "2.0.3p2",
+        "2.1.0",
+        "2.1.0p1",
+        "2.1.0p2",
+        "2.1.1",
+        "2.1.1p1",
+        "2.1.1p2",
+        "2.1.2",
+        "2.1.2p1",
+        "2.1.2p2",
+        "2.1.3",
+        "2.1.3p1",
+        "2.1.3p2",
+        "2.1.4",
+        "2.1.4p1",
+        "2.1.4p2",
+        "2.1.5",
+        "2.1.5p1",
+        "2.1.5p2",
+        "2.10.0",
+        "2.11.0",
+        "2.11.1",
+        "2.11.2",
+        "2.11.3",
+        "2.12.0",
+        "2.13.0",
+        "2.14.0",
+        "2.15.0",
+        "2.16.0",
+        "2.17.0",
+        "2.18.0",
+        "2.2.0",
+        "2.2.0p1",
+        "2.2.0p2",
+        "2.2.1",
+        "2.2.1p1",
+        "2.2.1p2",
+        "2.2.2",
+        "2.2.3",
+        "2.3.0",
+        "2.3.1",
+        "2.3.2",
+        "2.4.0",
+        "2.4.1",
+        "2.5.0",
+        "2.5.1",
+        "2.6.0",
+        "2.7.0",
+        "2.8.0",
+        "2.9.0",
+        "2.9.1",
+        "2.9.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-xv3h-4844-9h36/GHSA-xv3h-4844-9h36.json"
+      }
+    },
+    {
+      "package": {
+        "name": "laminas/laminas-diactoros",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laminas/laminas-diactoros"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.19.0"
+            },
+            {
+              "fixed": "2.19.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.19.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-xv3h-4844-9h36/GHSA-xv3h-4844-9h36.json"
+      }
+    },
+    {
+      "package": {
+        "name": "laminas/laminas-diactoros",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laminas/laminas-diactoros"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.20.0"
+            },
+            {
+              "fixed": "2.20.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.20.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-xv3h-4844-9h36/GHSA-xv3h-4844-9h36.json"
+      }
+    },
+    {
+      "package": {
+        "name": "laminas/laminas-diactoros",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laminas/laminas-diactoros"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.21.0"
+            },
+            {
+              "fixed": "2.21.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.21.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-xv3h-4844-9h36/GHSA-xv3h-4844-9h36.json"
+      }
+    },
+    {
+      "package": {
+        "name": "laminas/laminas-diactoros",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laminas/laminas-diactoros"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.22.0"
+            },
+            {
+              "fixed": "2.22.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.22.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-xv3h-4844-9h36/GHSA-xv3h-4844-9h36.json"
+      }
+    },
+    {
+      "package": {
+        "name": "laminas/laminas-diactoros",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laminas/laminas-diactoros"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.23.0"
+            },
+            {
+              "fixed": "2.23.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.23.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-xv3h-4844-9h36/GHSA-xv3h-4844-9h36.json"
+      }
+    },
+    {
+      "package": {
+        "name": "laminas/laminas-diactoros",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laminas/laminas-diactoros"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.24.0"
+            },
+            {
+              "fixed": "2.24.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.24.0",
+        "2.24.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-xv3h-4844-9h36/GHSA-xv3h-4844-9h36.json"
+      }
+    },
+    {
+      "package": {
+        "name": "laminas/laminas-diactoros",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/laminas/laminas-diactoros"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.25.0"
+            },
+            {
+              "fixed": "2.25.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.25.0",
+        "2.25.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-xv3h-4844-9h36/GHSA-xv3h-4844-9h36.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

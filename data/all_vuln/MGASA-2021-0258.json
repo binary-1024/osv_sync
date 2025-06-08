@@ -1,0 +1,108 @@
+{
+  "id": "MGASA-2021-0258",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on upstream 5.10.43 and fixes at least\nthe following security issues:\n\nThe 802.11 standard that underpins Wi-Fi Protected Access (WPA, WPA2, and\nWPA3) and Wired Equivalent Privacy (WEP) doesn't require that received\nfragments be cleared from memory after (re)connecting to a network. Under\nthe right circumstances, when another device sends fragmented frames\nencrypted using WEP, CCMP, or GCMP, this can be abused to inject arbitrary\nnetwork packets and/or exfiltrate user data (CVE-2020-24586).\n\nThe 802.11 standard that underpins Wi-Fi Protected Access (WPA, WPA2, and\nWPA3) and Wired Equivalent Privacy (WEP) doesn't require that all fragments\nof a frame are encrypted under the same key. An adversary can abuse this to\ndecrypt selected fragments when another device sends fragmented frames and\nthe WEP, CCMP, or GCMP encryption key is periodically renewed\n(CVE-2020-24587).\n\nThe 802.11 standard that underpins Wi-Fi Protected Access (WPA, WPA2, and\nWPA3) and Wired Equivalent Privacy (WEP) doesn't require that the A-MSDU\nflag in the plaintext QoS header field is authenticated. Against devices\nthat support receiving non-SSP A-MSDU frames (which is mandatory as part\nof 802.11n), an adversary can abuse this to inject arbitrary network\npackets (CVE-2020-24588).\n\nAn issue was discovered in the kernel. An Access Point (AP) forwards EAPOL\nframes to other clients even though the sender has not yet successfully\nauthenticated to the AP. This might be abused in projected Wi-Fi networks\nto launch denial-of-service attacks against connected clients and makes\nit easier to exploit other vulnerabilities in connected clients\n(CVE-2020-26139).\n\nAn issue was discovered in the kernel ath10k driver. The Wi-Fi\nimplementation does not verify the Message Integrity Check (authenticity)\nof fragmented TKIP frames. An adversary can abuse this to inject and\npossibly decrypt packets in WPA or WPA2 networks that support the TKIP\ndata-confidentiality protocol (CVE-2020-26141). \n\nAn issue was discovered in the kernel ath10k driver. The WEP, WPA, WPA2,\nand WPA3 implementations accept second (or subsequent) broadcast fragments\neven when sent in plaintext and process them as full unfragmented frames.\nAn adversary can abuse this to inject arbitrary network packets independent\nof the network configuration (CVE-2020-26145).\n\nAn issue was discovered in the Linux kernel 5.8.9. The WEP, WPA, WPA2, and\nWPA3 implementations reassemble fragments even though some of them were\nsent in plaintext. This vulnerability can be abused to inject packets and/\nor exfiltrate selected fragments when another device sends fragmented\nframes and the WEP, CCMP, or GCMP data-confidentiality protocol is used\n(CVE-2020-26147).\n\nA double-free memory corruption in the Linux kernel HCI device\ninitialization subsystem was found in the way user attach malicious HCI\nTTY Bluetooth device. A local user could use this flaw to crash the system\n(CVE-2021-3564).\n\nA use after free vulnerability has been found in the hci_sock_bound_ioctl()\nfunction of the Linux kernel. It can allow attackers to corrupt kernel\nheaps (kmalloc-8k to be specific) and adopt further exploitations\n(CVE-2021-3573).\n\nThere is a guest triggered use-after-free in Linux xen-netback. A malicious\nor buggy network PV frontend can force Linux netback to disable the\ninterface and terminate the receive kernel thread associated with queue 0\nin response to the frontend sending a malformed packet. Such kernel thread\ntermination will lead to a use-after-free in Linux netback when the backend\nis destroyed, as the kernel thread associated with queue 0 will have already\nexited and thus the call to kthread_stop will be performed against a stale\npointer. A malicious or buggy frontend driver can trigger a dom0 crash.\nPrivilege escalation and information leaks cannot be ruled out.\n(CVE-2021-28691 / XSA-374).\n\nThere is a null pointer dereference in llcp_sock_getname in net/nfc/\nllcp_sock.c of the Linux kernel. An unprivileged user can trigger this bug\nand cause denial of service (CVE-2021-38208).\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2021-06-13T21:32:39Z",
+  "related": [
+    "CVE-2020-24586",
+    "CVE-2020-24587",
+    "CVE-2020-24588",
+    "CVE-2020-26139",
+    "CVE-2020-26141",
+    "CVE-2020-26145",
+    "CVE-2020-26147",
+    "CVE-2021-28691",
+    "CVE-2021-3564",
+    "CVE-2021-3573",
+    "CVE-2021-38208"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0258.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=29107"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.42"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.43"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xen.org/xsa/advisory-374.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.43-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0258.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.43-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0258.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

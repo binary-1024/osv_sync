@@ -1,0 +1,249 @@
+{
+  "id": "GHSA-vcc3-rw6f-jv97",
+  "summary": "Duplicate Advisory: Use-after-free in libxml2 via Nokogiri::XML::Reader",
+  "details": "# Duplicate Advisory\nThis advisory has been withdrawn because it is a duplicate of GHSA-xc9x-jj77-9p9j. This link is maintained to preserve external references.\n\n# Original Description\n\n### Summary\n\nNokogiri upgrades its dependency libxml2 as follows:\n- v1.15.6 upgrades libxml2 to 2.11.7 from 2.11.6\n- v1.16.2 upgrades libxml2 to 2.12.5 from 2.12.4\n\nlibxml2 v2.11.7 and v2.12.5 address the following vulnerability:\n\nCVE-2024-25062 / https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-25062\n- described at https://gitlab.gnome.org/GNOME/libxml2/-/issues/604\n- patched by https://gitlab.gnome.org/GNOME/libxml2/-/commit/92721970\n\nPlease note that this advisory only applies to the CRuby implementation of Nokogiri, and only if\nthe packaged libraries are being used. If you've overridden defaults at installation time to use\nsystem libraries instead of packaged libraries, you should instead pay attention to your distro's\nlibxml2 release announcements.\n\nJRuby users are not affected.\n\n### Severity\n\nThe Nokogiri maintainers have evaluated this as **Moderate**.\n\n### Impact\n\nFrom the CVE description, this issue applies to the `xmlTextReader` module (which underlies\n`Nokogiri::XML::Reader`):\n\n> When using the XML Reader interface with DTD validation and XInclude expansion enabled,\n> processing crafted XML documents can lead to an xmlValidatePopElement use-after-free.\n\n### Mitigation\n\nUpgrade to Nokogiri `~> 1.15.6` or `>= 1.16.2`.\n\nUsers who are unable to upgrade Nokogiri may also choose a more complicated mitigation: compile\nand link Nokogiri against patched external libxml2 libraries which will also address these same\nissues.",
+  "modified": "2025-05-23T20:46:52.608167Z",
+  "published": "2024-03-18T20:38:40Z",
+  "withdrawn": "2025-05-23T20:02:12Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-416"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-03-18T20:38:40Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/sparklemotion/nokogiri/security/advisories/GHSA-xc9x-jj77-9p9j"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/nokogiri/GHSA-xc9x-jj77-9p9j.yml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/sparklemotion/nokogiri"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "nokogiri",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/nokogiri"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.15.6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.0.4",
+        "1.0.5",
+        "1.0.6",
+        "1.0.7",
+        "1.1.0",
+        "1.1.1",
+        "1.10.0",
+        "1.10.0.rc1",
+        "1.10.1",
+        "1.10.10",
+        "1.10.2",
+        "1.10.3",
+        "1.10.4",
+        "1.10.5",
+        "1.10.6",
+        "1.10.7",
+        "1.10.8",
+        "1.10.9",
+        "1.11.0",
+        "1.11.0.rc1",
+        "1.11.0.rc2",
+        "1.11.0.rc3",
+        "1.11.0.rc4",
+        "1.11.1",
+        "1.11.2",
+        "1.11.3",
+        "1.11.4",
+        "1.11.5",
+        "1.11.6",
+        "1.11.7",
+        "1.12.0",
+        "1.12.0.rc1",
+        "1.12.1",
+        "1.12.2",
+        "1.12.3",
+        "1.12.4",
+        "1.12.5",
+        "1.13.0",
+        "1.13.1",
+        "1.13.10",
+        "1.13.2",
+        "1.13.3",
+        "1.13.4",
+        "1.13.5",
+        "1.13.6",
+        "1.13.7",
+        "1.13.8",
+        "1.13.9",
+        "1.14.0",
+        "1.14.0.rc1",
+        "1.14.1",
+        "1.14.2",
+        "1.14.3",
+        "1.14.4",
+        "1.14.5",
+        "1.15.0",
+        "1.15.1",
+        "1.15.2",
+        "1.15.3",
+        "1.15.4",
+        "1.15.5",
+        "1.2.0",
+        "1.2.1",
+        "1.2.2",
+        "1.2.3",
+        "1.3.0",
+        "1.3.1",
+        "1.3.2",
+        "1.3.3",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2",
+        "1.4.2.1",
+        "1.4.3",
+        "1.4.3.1",
+        "1.4.4",
+        "1.4.4.1",
+        "1.4.4.2",
+        "1.4.5",
+        "1.4.6",
+        "1.4.7",
+        "1.5.0",
+        "1.5.0.beta.1",
+        "1.5.0.beta.2",
+        "1.5.0.beta.3",
+        "1.5.0.beta.4",
+        "1.5.1",
+        "1.5.1.rc1",
+        "1.5.10",
+        "1.5.11",
+        "1.5.2",
+        "1.5.3",
+        "1.5.3.rc2",
+        "1.5.3.rc3",
+        "1.5.3.rc4",
+        "1.5.3.rc5",
+        "1.5.3.rc6",
+        "1.5.4",
+        "1.5.4.rc1",
+        "1.5.4.rc2",
+        "1.5.4.rc3",
+        "1.5.5",
+        "1.5.5.rc1",
+        "1.5.5.rc2",
+        "1.5.5.rc3",
+        "1.5.6",
+        "1.5.6.rc1",
+        "1.5.6.rc2",
+        "1.5.6.rc3",
+        "1.5.7",
+        "1.5.7.rc1",
+        "1.5.7.rc2",
+        "1.5.7.rc3",
+        "1.5.8",
+        "1.5.9",
+        "1.6.0",
+        "1.6.0.rc1",
+        "1.6.1",
+        "1.6.2",
+        "1.6.2.1",
+        "1.6.2.rc1",
+        "1.6.2.rc2",
+        "1.6.2.rc3",
+        "1.6.3",
+        "1.6.3.1",
+        "1.6.3.rc1",
+        "1.6.3.rc2",
+        "1.6.3.rc3",
+        "1.6.4",
+        "1.6.4.1",
+        "1.6.5",
+        "1.6.6.1",
+        "1.6.6.2",
+        "1.6.6.3",
+        "1.6.6.4",
+        "1.6.7",
+        "1.6.7.1",
+        "1.6.7.2",
+        "1.6.7.rc2",
+        "1.6.7.rc3",
+        "1.6.7.rc4",
+        "1.6.8",
+        "1.6.8.1",
+        "1.6.8.rc1",
+        "1.6.8.rc2",
+        "1.6.8.rc3",
+        "1.7.0",
+        "1.7.0.1",
+        "1.7.1",
+        "1.7.2",
+        "1.8.0",
+        "1.8.1",
+        "1.8.2",
+        "1.8.3",
+        "1.8.4",
+        "1.8.5",
+        "1.9.0",
+        "1.9.0.rc1",
+        "1.9.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-vcc3-rw6f-jv97/GHSA-vcc3-rw6f-jv97.json"
+      }
+    },
+    {
+      "package": {
+        "name": "nokogiri",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/nokogiri"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.16.0"
+            },
+            {
+              "fixed": "1.16.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.16.0",
+        "1.16.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-vcc3-rw6f-jv97/GHSA-vcc3-rw6f-jv97.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

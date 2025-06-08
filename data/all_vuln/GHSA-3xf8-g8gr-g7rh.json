@@ -1,0 +1,154 @@
+{
+  "id": "GHSA-3xf8-g8gr-g7rh",
+  "summary": "Graylog session fixation vulnerability through cookie injection",
+  "details": "### Impact\nReauthenticating with an existing session cookie would re-use that session id, even if for different user credentials.\nIn this case, the pre-existing session could be used to gain elevated access to an existing Graylog login session, provided the malicious user could successfully inject their session cookie into someone else's browser.\n\nThe complexity of such an attack is high, because it requires presenting a spoofed login screen and injection of a session cookie into an existing browser, potentially through an XSS attack. No such attack has been discovered.\n\n### Patches\nGraylog 5.1.11 and 5.2.4, and any versions of the 6.0 development branch contain patches to not re-use sessions under any circumstances, making this type of attack impossible.\n\n### Workarounds\nUsing short session expiration and explicit log outs of unused sessions can help limiting the attack vector. Unpatched this vulnerability exists, but is relatively hard to exploit.\nA proxy could be leveraged to clear the `authentication` cookie for the Graylog server URL for the `/api/system/sessions` endpoint, as that is the only one vulnerable.\n\nAnalysis provided by Fabian Yamaguchi - Whirly Labs (Pty) Ltd",
+  "aliases": [
+    "CVE-2024-24823"
+  ],
+  "modified": "2024-02-16T08:23:00.609534Z",
+  "published": "2024-02-07T18:24:20Z",
+  "related": [
+    "CVE-2024-24823"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-02-07T18:15:54Z",
+    "cwe_ids": [
+      "CWE-384"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-07T18:24:20Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/security/advisories/GHSA-3xf8-g8gr-g7rh"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24823"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/commit/1596b749db86368ba476662f23a0f0c5ec2b5097"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/commit/b93a66353f35a94a4e8f3f75ac4f5cdc5a2d4a6a"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Graylog2/graylog2-server"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.graylog2:graylog2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.graylog2/graylog2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.3.0"
+            },
+            {
+              "fixed": "5.1.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.3.0",
+        "4.3.1",
+        "4.3.10",
+        "4.3.11",
+        "4.3.12",
+        "4.3.13",
+        "4.3.14",
+        "4.3.15",
+        "4.3.2",
+        "4.3.3",
+        "4.3.4",
+        "4.3.5",
+        "4.3.6",
+        "4.3.7",
+        "4.3.8",
+        "4.3.9",
+        "5.0.0",
+        "5.0.1",
+        "5.0.10",
+        "5.0.11",
+        "5.0.12",
+        "5.0.13",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "5.0.6",
+        "5.0.7",
+        "5.0.8",
+        "5.0.9",
+        "5.1.0",
+        "5.1.1",
+        "5.1.10",
+        "5.1.2",
+        "5.1.3",
+        "5.1.4",
+        "5.1.5",
+        "5.1.6",
+        "5.1.7",
+        "5.1.8",
+        "5.1.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-3xf8-g8gr-g7rh/GHSA-3xf8-g8gr-g7rh.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.graylog2:graylog2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.graylog2/graylog2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5.2.0-alpha.1"
+            },
+            {
+              "fixed": "5.2.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.2.0",
+        "5.2.0-alpha.1",
+        "5.2.0-beta.1",
+        "5.2.0-beta.2",
+        "5.2.0-beta.3",
+        "5.2.0-rc.1",
+        "5.2.0-rc.2",
+        "5.2.1",
+        "5.2.2",
+        "5.2.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-3xf8-g8gr-g7rh/GHSA-3xf8-g8gr-g7rh.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:H/I:H/A:N"
+    }
+  ]
+}

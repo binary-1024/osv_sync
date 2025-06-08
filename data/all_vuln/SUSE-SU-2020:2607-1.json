@@ -1,0 +1,351 @@
+{
+  "id": "SUSE-SU-2020:2607-1",
+  "summary": "Security update for pdsh, slurm_20_02",
+  "details": "This update for pdsh, slurm_20_02 fixes the following issues:\n\nChanges in slurm_20_02:\n\n- Add support for openPMIx also for Leap/SLE 15.0/1 (bsc#1173805).\n- Do not run %check on SLE-12-SP2: Some incompatibility in tcl\n  makes this fail.\n- Remove unneeded build dependency to postgresql-devel.\n- Disable build on s390 (requires 64bit).\n\n- Bring QA to the package build: add %%check stage.\n- Remove cruft that isn't needed any longer.\n- Add 'ghosted' run-file.\n- Add rpmlint filter to handle issues with library packages\n  for Leap and enterprise upgrade versions.\n\n- Updated to 20.02.3 which fixes CVE-2020-12693 (bsc#1172004).\n- Other changes are:\n * Factor in ntasks-per-core=1 with cons_tres.\n * Fix formatting in error message in cons_tres.\n * Fix calling stat on a NULL variable.\n * Fix minor memory leak when using reservations with flags=first_cores.\n * Fix gpu bind issue when CPUs=Cores and ThreadsPerCore > 1 on a node.\n * Fix --mem-per-gpu for heterogenous --gres requests.\n * Fix slurmctld load order in load_all_part_state().\n * Fix race condition not finding jobacct gather task cgroup entry.\n * Suppress error message when selecting nodes on disjoint topologies.\n * Improve performance of _pack_default_job_details() with large number of job\n * arguments.\n * Fix archive loading previous to 17.11 jobs per-node req_mem.\n * Fix regresion validating that --gpus-per-socket requires --sockets-per-node\n * for steps. Should only validate allocation requests.\n * error() instead of fatal() when parsing an invalid hostlist.\n * nss_slurm - fix potential deadlock in slurmstepd on overloaded systems.\n * cons_tres - fix --gres-flags=enforce-binding and related --cpus-per-gres.\n * cons_tres - Allocate lowest numbered cores when filtering cores with gres.\n * Fix getting system counts for named GRES/TRES.\n * MySQL - Fix for handing typed GRES for association rollups.\n * Fix step allocations when tasks_per_core > 1.\n * Fix allocating more GRES than requested when asking for multiple GRES types.\n\n- Treat libnss_slurm like any other package: add version string to\n  upgrade package.\n\n- Updated to 20.02.1 with following changes'\n * Improve job state reason for jobs hitting partition_job_depth.\n * Speed up testing of singleton dependencies.\n * Fix negative loop bound in cons_tres.\n * srun - capture the MPI plugin return code from mpi_hook_client_fini() and\n   use as final return code for step failure.\n * Fix segfault in cli_filter/lua.\n * Fix --gpu-bind=map_gpu reusability if tasks > elements.\n * Make sure config_flags on a gres are sent to the slurmctld on node\n   registration.\n * Prolog/Epilog - Fix missing GPU information.\n * Fix segfault when using config parser for expanded lines.\n * Fix bit overlap test function.\n * Don't accrue time if job begin time is in the future.\n * Remove accrue time when updating a job start/eligible time to the future.\n * Fix regression in 20.02.0 that broke --depend=expand.\n * Reset begin time on job release if it's not in the future.\n * Fix for recovering burst buffers when using high-availability.\n * Fix invalid read due to freeing an incorrectly allocated env array.\n * Update slurmctld -i message to warn about losing data.\n * Fix scontrol cancel_reboot so it clears the DRAIN flag and node reason for a\n   pending ASAP reboot.\n\nChanges in pdsh:\n- Bring QA to the package build: add %%check stage\n\n- Since the build for the SLE-12 HPC Module got fixed, simplify\n  spec file and remove legacy workarounds.\n- Remove _multibuild file where not needed.\n",
+  "modified": "2025-05-02T04:05:00.848998Z",
+  "published": "2020-09-11T07:01:32Z",
+  "related": [
+    "CVE-2016-10030",
+    "CVE-2017-15566",
+    "CVE-2018-10995",
+    "CVE-2018-7033",
+    "CVE-2019-12838",
+    "CVE-2019-19727",
+    "CVE-2019-19728",
+    "CVE-2019-6438",
+    "CVE-2020-12693"
+  ],
+  "upstream": [
+    "CVE-2016-10030",
+    "CVE-2017-15566",
+    "CVE-2018-10995",
+    "CVE-2018-7033",
+    "CVE-2019-12838",
+    "CVE-2019-19727",
+    "CVE-2019-19728",
+    "CVE-2019-6438",
+    "CVE-2020-12693"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2020/suse-su-20202607-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1007053"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1018371"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031872"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1041706"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1065697"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1084125"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1084917"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1085240"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1085606"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1086859"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1088693"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1090292"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1095508"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100850"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1103561"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1108671"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1109373"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1116758"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1123304"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1140709"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1153095"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1153259"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1155784"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1158696"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1159692"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1161716"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1162377"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1164326"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1164386"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1172004"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1173805"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-10030"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-15566"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10995"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-7033"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-12838"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-19727"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-19728"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-6438"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-12693"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "pdsh_slurm_18_08",
+        "ecosystem": "SUSE:Linux Enterprise Module for HPC 12",
+        "purl": "pkg:rpm/suse/pdsh_slurm_18_08&distro=SUSE%20Linux%20Enterprise%20Module%20for%20HPC%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.34-7.26.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "slurm_20_02-lua": "20.02.3-3.5.1",
+            "slurm_20_02-node": "20.02.3-3.5.1",
+            "libslurm35": "20.02.3-3.5.1",
+            "slurm_20_02-munge": "20.02.3-3.5.1",
+            "pdsh-slurm_20_02": "2.34-7.26.2",
+            "slurm_20_02-auth-none": "20.02.3-3.5.1",
+            "slurm_20_02-config": "20.02.3-3.5.1",
+            "slurm_20_02-config-man": "20.02.3-3.5.1",
+            "slurm_20_02-sql": "20.02.3-3.5.1",
+            "slurm_20_02-torque": "20.02.3-3.5.1",
+            "slurm_20_02-pam_slurm": "20.02.3-3.5.1",
+            "slurm_20_02-devel": "20.02.3-3.5.1",
+            "perl-slurm_20_02": "20.02.3-3.5.1",
+            "pdsh-slurm_18_08": "2.34-7.26.2",
+            "slurm_20_02": "20.02.3-3.5.1",
+            "slurm_20_02-doc": "20.02.3-3.5.1",
+            "libpmi0_20_02": "20.02.3-3.5.1",
+            "libnss_slurm2_20_02": "20.02.3-3.5.1",
+            "slurm_20_02-plugins": "20.02.3-3.5.1",
+            "slurm_20_02-slurmdbd": "20.02.3-3.5.1",
+            "slurm_20_02-sview": "20.02.3-3.5.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:2607-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "pdsh_slurm_20_02",
+        "ecosystem": "SUSE:Linux Enterprise Module for HPC 12",
+        "purl": "pkg:rpm/suse/pdsh_slurm_20_02&distro=SUSE%20Linux%20Enterprise%20Module%20for%20HPC%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.34-7.26.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "slurm_20_02-lua": "20.02.3-3.5.1",
+            "slurm_20_02-node": "20.02.3-3.5.1",
+            "libslurm35": "20.02.3-3.5.1",
+            "slurm_20_02-munge": "20.02.3-3.5.1",
+            "pdsh-slurm_20_02": "2.34-7.26.2",
+            "slurm_20_02-auth-none": "20.02.3-3.5.1",
+            "slurm_20_02-config": "20.02.3-3.5.1",
+            "slurm_20_02-config-man": "20.02.3-3.5.1",
+            "slurm_20_02-sql": "20.02.3-3.5.1",
+            "slurm_20_02-torque": "20.02.3-3.5.1",
+            "slurm_20_02-pam_slurm": "20.02.3-3.5.1",
+            "slurm_20_02-devel": "20.02.3-3.5.1",
+            "perl-slurm_20_02": "20.02.3-3.5.1",
+            "pdsh-slurm_18_08": "2.34-7.26.2",
+            "slurm_20_02": "20.02.3-3.5.1",
+            "slurm_20_02-doc": "20.02.3-3.5.1",
+            "libpmi0_20_02": "20.02.3-3.5.1",
+            "libnss_slurm2_20_02": "20.02.3-3.5.1",
+            "slurm_20_02-plugins": "20.02.3-3.5.1",
+            "slurm_20_02-slurmdbd": "20.02.3-3.5.1",
+            "slurm_20_02-sview": "20.02.3-3.5.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:2607-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "slurm_20_02",
+        "ecosystem": "SUSE:Linux Enterprise Module for HPC 12",
+        "purl": "pkg:rpm/suse/slurm_20_02&distro=SUSE%20Linux%20Enterprise%20Module%20for%20HPC%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20.02.3-3.5.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "slurm_20_02-lua": "20.02.3-3.5.1",
+            "slurm_20_02-node": "20.02.3-3.5.1",
+            "libslurm35": "20.02.3-3.5.1",
+            "slurm_20_02-munge": "20.02.3-3.5.1",
+            "pdsh-slurm_20_02": "2.34-7.26.2",
+            "slurm_20_02-auth-none": "20.02.3-3.5.1",
+            "slurm_20_02-config": "20.02.3-3.5.1",
+            "slurm_20_02-config-man": "20.02.3-3.5.1",
+            "slurm_20_02-sql": "20.02.3-3.5.1",
+            "slurm_20_02-torque": "20.02.3-3.5.1",
+            "slurm_20_02-pam_slurm": "20.02.3-3.5.1",
+            "slurm_20_02-devel": "20.02.3-3.5.1",
+            "perl-slurm_20_02": "20.02.3-3.5.1",
+            "pdsh-slurm_18_08": "2.34-7.26.2",
+            "slurm_20_02": "20.02.3-3.5.1",
+            "slurm_20_02-doc": "20.02.3-3.5.1",
+            "libpmi0_20_02": "20.02.3-3.5.1",
+            "libnss_slurm2_20_02": "20.02.3-3.5.1",
+            "slurm_20_02-plugins": "20.02.3-3.5.1",
+            "slurm_20_02-slurmdbd": "20.02.3-3.5.1",
+            "slurm_20_02-sview": "20.02.3-3.5.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:2607-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

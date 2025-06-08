@@ -1,0 +1,72 @@
+{
+  "id": "MGASA-2014-0525",
+  "summary": "Updated qemu packages fix security vulnerabilities",
+  "details": "Updated qemu packages fix security vulnerabilities:\n\nDuring migration, the values read from migration stream during ram load are\nnot validated. Especially offset in host_from_stream_offset() and also the\nlength of the writes in the callers of the said function. A user able to\nalter the savevm data (either on the disk or over the wire during migration)\ncould use either of these flaws to corrupt QEMU process memory on the\n(destination) host, which could potentially result in arbitrary code\nexecution on the host with the privileges of the QEMU process\n(CVE-2014-7840).\n\nPaolo Bonzini of Red Hat discovered that the blit region checks were\ninsufficient in the Cirrus VGA emulator in qemu. A privileged guest user\ncould use this flaw to write into qemu address space on the host,\npotentially escalating their privileges to those of the qemu host process\n(CVE-2014-8106).\n",
+  "modified": "2014-12-13T20:08:08Z",
+  "published": "2014-12-13T20:16:05Z",
+  "related": [
+    "CVE-2014-7840",
+    "CVE-2014-8106"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0525.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=14725"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1163075"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1169454"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2014/dsa-3087"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "qemu",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/qemu?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.6.2-1.7.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0525.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

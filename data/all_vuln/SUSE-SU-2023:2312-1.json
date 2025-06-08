@@ -1,0 +1,609 @@
+{
+  "id": "SUSE-SU-2023:2312-1",
+  "summary": "Security update for go1.18-openssl",
+  "details": "This update for go1.18-openssl fixes the following issues:\n\n- Add subpackage go1.x-libstd compiled shared object libstd.so (jsc#PED-1962)\n  * Main go1.x package included libstd.so in previous versions\n  * Split libstd.so into subpackage that can be installed standalone\n  * Continues the slimming down of main go1.x package by 40 Mb\n  * Experimental and not recommended for general use, Go currently has no ABI\n  * Upstream Go has not committed to support buildmode=shared long-term\n  * Do not use in packaging, build static single binaries (the default)\n  * Upstream Go go1.x binary releases do not include libstd.so\n  * go1.x Suggests go1.x-libstd so not installed by default Recommends\n  * go1.x-libstd does not Require: go1.x so can install standalone\n  * Provides go-libstd unversioned package name\n  * Fix build step -buildmode=shared std to omit -linkshared\n- Packaging improvements:\n  * go1.x Suggests go1.x-doc so not installed by default Recommends\n  * Use Group: Development/Languages/Go instead of Other\n\n- Improvements to go1.x packaging spec:\n  * On Tumbleweed bootstrap with current default gcc13 and gccgo118\n  * On SLE-12 aarch64 ppc64le ppc64 remove overrides to bootstrap\n    using go1.x package (%bcond_without gccgo). This is no longer\n    needed on current SLE-12:Update and removing will consolidate\n    the build configurations used.\n  * Change source URLs to go.dev as per Go upstream\n  * On x86_64 export GOAMD64=v1 as per the current baseline.\n    At this time forgo GOAMD64=v3 option for x86_64_v3 support.\n  * On x86_64 %define go_amd64=v1 as current instruction baseline\n\n- Update to version 1.18.10.1 cut from the go1.18-openssl-fips\n  branch at the revision tagged go1.18.10-1-openssl-fips.\n  * Merge branch dev.boringcrypto.go1.18 into go1.18-openssl-fips\n  * Merge go1.18.10 into dev.boringcrypto.go1.18\n\n- go1.18.10 (released 2023-01-10) includes fixes to cgo, the\n  compiler, the linker, and the crypto/x509, net/http, and syscall\n  packages.\n  Refs bsc#1193742 go1.18 release tracking\n  * go#57705 misc/cgo: backport needed for dlltool fix\n  * go#57426 crypto/x509: Verify on macOS does not return typed errors\n  * go#57344 cmd/compile: the loong64 intrinsic for CompareAndSwapUint32 function needs to sign extend its 'old' argument.\n  * go#57338 syscall, internal/poll: accept4-to-accept fallback removal broke Go code on Synology DSM 6.2 ARM devices\n  * go#57213 os: TestLstat failure on Linux Aarch64\n  * go#57211 reflect: sort.SliceStable sorts incorrectly on arm64 with less function created with reflect.MakeFunc and slice of sufficient length\n  * go#57057 cmd/go: remove test dependency on gopkg.in service\n  * go#57054 cmd/go: TestScript/version_buildvcs_git_gpg (if enabled) fails on linux longtest builders\n  * go#57044 cgo: malformed DWARF TagVariable entry\n  * go#57028 cmd/cgo: Wrong types in compiler errors with clang 14\n  * go#56833 cmd/link/internal/ppc64: too-far trampoline is reused\n  * go#56711 net: reenable TestLookupDotsWithRemoteSource and TestLookupGoogleSRV with a different target\n  * go#56323 net/http: bad handling of HEAD requests with a body\n",
+  "modified": "2025-05-02T04:32:31.398189Z",
+  "published": "2023-05-30T06:54:51Z",
+  "related": [
+    "CVE-2022-1705",
+    "CVE-2022-1962",
+    "CVE-2022-24675",
+    "CVE-2022-27536",
+    "CVE-2022-27664",
+    "CVE-2022-28131",
+    "CVE-2022-28327",
+    "CVE-2022-2879",
+    "CVE-2022-2880",
+    "CVE-2022-29526",
+    "CVE-2022-29804",
+    "CVE-2022-30580",
+    "CVE-2022-30629",
+    "CVE-2022-30630",
+    "CVE-2022-30631",
+    "CVE-2022-30632",
+    "CVE-2022-30633",
+    "CVE-2022-30634",
+    "CVE-2022-30635",
+    "CVE-2022-32148",
+    "CVE-2022-32189",
+    "CVE-2022-41715",
+    "CVE-2022-41716",
+    "CVE-2022-41717",
+    "CVE-2022-41720",
+    "CVE-2022-41723",
+    "CVE-2022-41724",
+    "CVE-2022-41725"
+  ],
+  "upstream": [
+    "CVE-2022-1705",
+    "CVE-2022-1962",
+    "CVE-2022-24675",
+    "CVE-2022-27536",
+    "CVE-2022-27664",
+    "CVE-2022-28131",
+    "CVE-2022-28327",
+    "CVE-2022-2879",
+    "CVE-2022-2880",
+    "CVE-2022-29526",
+    "CVE-2022-29804",
+    "CVE-2022-30580",
+    "CVE-2022-30629",
+    "CVE-2022-30630",
+    "CVE-2022-30631",
+    "CVE-2022-30632",
+    "CVE-2022-30633",
+    "CVE-2022-30634",
+    "CVE-2022-30635",
+    "CVE-2022-32148",
+    "CVE-2022-32189",
+    "CVE-2022-41715",
+    "CVE-2022-41716",
+    "CVE-2022-41717",
+    "CVE-2022-41720",
+    "CVE-2022-41723",
+    "CVE-2022-41724",
+    "CVE-2022-41725"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2023/suse-su-20232312-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1183043"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193742"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1198423"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1198424"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1198427"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1199413"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1200134"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1200135"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1200136"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1200137"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201434"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201436"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201437"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201440"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201443"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201444"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201445"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201447"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1201448"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1202035"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1203185"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1204023"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1204024"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1204025"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1204941"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1206134"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1206135"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1208270"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1208271"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1208272"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1208491"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-1705"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-1962"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-24675"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-27536"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-27664"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-28131"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-28327"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-2879"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-2880"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-29526"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-29804"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-30580"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-30629"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-30630"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-30631"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-30632"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-30633"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-30634"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-30635"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-32148"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-32189"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-41715"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-41716"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-41717"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-41720"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-41723"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-41724"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-41725"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "SUSE:Linux Enterprise Module for Development Tools 15 SP4",
+        "purl": "pkg:rpm/suse/go1.18-openssl&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Development%20Tools%2015%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15 SP3-ESPOS",
+        "purl": "pkg:rpm/suse/go1.18-openssl&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015%20SP3-ESPOS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15 SP3-LTSS",
+        "purl": "pkg:rpm/suse/go1.18-openssl&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 15 SP3",
+        "purl": "pkg:rpm/suse/go1.18-openssl&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "SUSE:Linux Enterprise Server 15 SP3-LTSS",
+        "purl": "pkg:rpm/suse/go1.18-openssl&distro=SUSE%20Linux%20Enterprise%20Server%2015%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15 SP3",
+        "purl": "pkg:rpm/suse/go1.18-openssl&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "SUSE:Enterprise Storage 7.1",
+        "purl": "pkg:rpm/suse/go1.18-openssl&distro=SUSE%20Enterprise%20Storage%207.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "openSUSE:Leap 15.4",
+        "purl": "pkg:rpm/opensuse/go1.18-openssl&distro=openSUSE%20Leap%2015.4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "go1.18-openssl",
+        "ecosystem": "openSUSE:Leap 15.5",
+        "purl": "pkg:rpm/opensuse/go1.18-openssl&distro=openSUSE%20Leap%2015.5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.10.1-150000.1.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "go1.18-openssl-doc": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl": "1.18.10.1-150000.1.9.1",
+            "go1.18-openssl-race": "1.18.10.1-150000.1.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:2312-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

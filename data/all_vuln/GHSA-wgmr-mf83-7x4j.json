@@ -1,0 +1,275 @@
+{
+  "id": "GHSA-wgmr-mf83-7x4j",
+  "summary": "Jetty vulnerable to Invalid HTTP/2 requests that can lead to denial of service",
+  "details": "### Description\nInvalid HTTP/2 requests (for example, invalid URIs) are incorrectly handled by writing a blocking error response directly from the selector thread.\nIf the client manages to exhaust the HTTP/2 flow control window, or TCP congest the connection, the selector thread will be blocked trying to write the error response.\nIf this is repeated for all the selector threads, the server becomes unresponsive, causing the denial of service.\n\n### Impact\nA malicious client may render the server unresponsive.\n\n### Patches\nThe fix is available in Jetty versions 9.4.47. 10.0.10, 11.0.10.\n\n### Workarounds\nNo workaround available within Jetty itself.\nOne possible workaround is to filter the requests before sending them to Jetty (for example in a proxy)\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Email us at security@webtide.com.\n",
+  "aliases": [
+    "BIT-jenkins-2022-2048",
+    "CVE-2022-2048"
+  ],
+  "modified": "2024-02-17T05:23:31.094257Z",
+  "published": "2022-07-07T20:55:40Z",
+  "related": [
+    "CVE-2022-2048"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2022-07-07T21:15:00Z",
+    "cwe_ids": [
+      "CWE-400",
+      "CWE-410"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-07-07T20:55:40Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse/jetty.project/security/advisories/GHSA-wgmr-mf83-7x4j"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-2048"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/eclipse/jetty.project"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2022/08/msg00011.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20220901-0006"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.debian.org/security/2022/dsa-5198"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2022/09/09/2"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http2:http2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http2/http2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.4.47"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "9.3.0.M0",
+        "9.3.0.M1",
+        "9.3.0.M2",
+        "9.3.0.RC0",
+        "9.3.0.RC1",
+        "9.3.0.v20150612",
+        "9.3.1.v20150714",
+        "9.3.10.M0",
+        "9.3.10.v20160621",
+        "9.3.11.M0",
+        "9.3.11.v20160721",
+        "9.3.12.v20160915",
+        "9.3.13.M0",
+        "9.3.13.v20161014",
+        "9.3.14.v20161028",
+        "9.3.15.v20161220",
+        "9.3.16.v20170120",
+        "9.3.17.RC0",
+        "9.3.17.v20170317",
+        "9.3.18.v20170406",
+        "9.3.19.v20170502",
+        "9.3.2.v20150730",
+        "9.3.20.v20170531",
+        "9.3.21.M0",
+        "9.3.21.RC0",
+        "9.3.21.v20170918",
+        "9.3.22.v20171030",
+        "9.3.23.v20180228",
+        "9.3.24.v20180605",
+        "9.3.25.v20180904",
+        "9.3.26.v20190403",
+        "9.3.27.v20190418",
+        "9.3.28.v20191105",
+        "9.3.29.v20201019",
+        "9.3.3.v20150827",
+        "9.3.30.v20211001",
+        "9.3.4.RC0",
+        "9.3.4.RC1",
+        "9.3.4.v20151007",
+        "9.3.5.v20151012",
+        "9.3.6.v20151106",
+        "9.3.7.RC0",
+        "9.3.7.RC1",
+        "9.3.7.v20160115",
+        "9.3.8.RC0",
+        "9.3.8.v20160314",
+        "9.3.9.M0",
+        "9.3.9.M1",
+        "9.3.9.v20160517",
+        "9.4.0.M0",
+        "9.4.0.M1",
+        "9.4.0.RC0",
+        "9.4.0.RC1",
+        "9.4.0.RC2",
+        "9.4.0.RC3",
+        "9.4.0.v20161208",
+        "9.4.0.v20180619",
+        "9.4.1.v20170120",
+        "9.4.1.v20180619",
+        "9.4.10.RC0",
+        "9.4.10.RC1",
+        "9.4.10.v20180503",
+        "9.4.11.v20180605",
+        "9.4.12.RC0",
+        "9.4.12.RC1",
+        "9.4.12.RC2",
+        "9.4.12.v20180830",
+        "9.4.13.v20181111",
+        "9.4.14.v20181114",
+        "9.4.15.v20190215",
+        "9.4.16.v20190411",
+        "9.4.17.v20190418",
+        "9.4.18.v20190429",
+        "9.4.19.v20190610",
+        "9.4.2.v20170220",
+        "9.4.2.v20180619",
+        "9.4.20.v20190813",
+        "9.4.21.v20190926",
+        "9.4.22.v20191022",
+        "9.4.23.v20191118",
+        "9.4.24.v20191120",
+        "9.4.25.v20191220",
+        "9.4.26.v20200117",
+        "9.4.27.v20200227",
+        "9.4.28.v20200408",
+        "9.4.29.v20200521",
+        "9.4.3.v20170317",
+        "9.4.3.v20180619",
+        "9.4.30.v20200611",
+        "9.4.31.v20200723",
+        "9.4.32.v20200930",
+        "9.4.33.v20201020",
+        "9.4.34.v20201102",
+        "9.4.35.v20201120",
+        "9.4.36.v20210114",
+        "9.4.37.v20210219",
+        "9.4.38.v20210224",
+        "9.4.39.v20210325",
+        "9.4.4.v20170414",
+        "9.4.4.v20180619",
+        "9.4.40.v20210413",
+        "9.4.41.v20210516",
+        "9.4.42.v20210604",
+        "9.4.43.v20210629",
+        "9.4.44.v20210927",
+        "9.4.45.v20220203",
+        "9.4.46.v20220331",
+        "9.4.5.v20170502",
+        "9.4.5.v20180619",
+        "9.4.6.v20170531",
+        "9.4.6.v20180619",
+        "9.4.7.RC0",
+        "9.4.7.v20170914",
+        "9.4.7.v20180619",
+        "9.4.8.v20171121",
+        "9.4.8.v20180619",
+        "9.4.9.v20180320"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-wgmr-mf83-7x4j/GHSA-wgmr-mf83-7x4j.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http2:http2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http2/http2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.10"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "10.0.0",
+        "10.0.1",
+        "10.0.2",
+        "10.0.3",
+        "10.0.4",
+        "10.0.5",
+        "10.0.6",
+        "10.0.7",
+        "10.0.8",
+        "10.0.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-wgmr-mf83-7x4j/GHSA-wgmr-mf83-7x4j.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.eclipse.jetty.http2:http2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.eclipse.jetty.http2/http2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "11.0.0"
+            },
+            {
+              "fixed": "11.0.10"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "11.0.0",
+        "11.0.1",
+        "11.0.2",
+        "11.0.3",
+        "11.0.4",
+        "11.0.5",
+        "11.0.6",
+        "11.0.7",
+        "11.0.8",
+        "11.0.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-wgmr-mf83-7x4j/GHSA-wgmr-mf83-7x4j.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

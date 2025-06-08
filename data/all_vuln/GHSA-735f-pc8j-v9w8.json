@@ -1,0 +1,1108 @@
+{
+  "id": "GHSA-735f-pc8j-v9w8",
+  "summary": "protobuf-java has potential Denial of Service issue",
+  "details": "### Summary\nWhen parsing unknown fields in the Protobuf Java Lite and Full library, a maliciously crafted message can cause a StackOverflow error and lead to a program crash.\n\nReporter: Alexis Challande, Trail of Bits Ecosystem Security Team <ecosystem@trailofbits.com>\n\nAffected versions: This issue affects all versions of both the Java full and lite Protobuf runtimes, as well as Protobuf for Kotlin and JRuby, which themselves use the Java Protobuf runtime.\n\n### Severity\n[CVE-2024-7254](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-7254) **High** CVSS4.0 Score 8.7 (NOTE: there may be a delay in publication)\nThis is a potential Denial of Service. Parsing nested groups as unknown fields with DiscardUnknownFieldsParser or Java Protobuf Lite parser, or against Protobuf map fields, creates unbounded recursions that can be abused by an attacker.\n\n### Proof of Concept\nFor reproduction details, please refer to the unit tests (Protobuf Java [LiteTest](https://github.com/protocolbuffers/protobuf/blob/a037f28ff81ee45ebe008c64ab632bf5372242ce/java/lite/src/test/java/com/google/protobuf/LiteTest.java) and [CodedInputStreamTest](https://github.com/protocolbuffers/protobuf/blob/a037f28ff81ee45ebe008c64ab632bf5372242ce/java/core/src/test/java/com/google/protobuf/CodedInputStreamTest.java)) that identify the specific inputs that exercise this parsing weakness.\n\n### Remediation and Mitigation\nWe have been working diligently to address this issue and have released a mitigation that is available now. Please update to the latest available versions of the following packages:\n* protobuf-java (3.25.5, 4.27.5, 4.28.2)\n* protobuf-javalite (3.25.5, 4.27.5, 4.28.2)\n* protobuf-kotlin (3.25.5, 4.27.5, 4.28.2)\n* protobuf-kotlin-lite (3.25.5, 4.27.5, 4.28.2)\n* com-protobuf [JRuby gem only] (3.25.5, 4.27.5, 4.28.2)",
+  "aliases": [
+    "CVE-2024-7254"
+  ],
+  "modified": "2025-04-23T15:03:11.956278Z",
+  "published": "2024-09-19T16:06:03Z",
+  "related": [
+    "CGA-2232-8fcm-46m9",
+    "CGA-26vm-c4xx-fw99",
+    "CGA-3jqr-m622-9v65",
+    "CGA-3rgp-cw6g-rj22",
+    "CGA-5j9v-w79r-r73h",
+    "CGA-6xwj-3x88-p9hm",
+    "CGA-8cc7-m97x-rcw7",
+    "CGA-9p42-9pfp-83g9",
+    "CGA-c87c-r7j2-6c2f",
+    "CGA-f6ww-g9c8-j27r",
+    "CGA-gf8j-3f7c-2f6p",
+    "CGA-grm4-x73v-9xcw",
+    "CGA-h5p9-89pr-8jw6",
+    "CGA-h63q-9rr4-x7xq",
+    "CGA-m76c-26vf-3vhr",
+    "CGA-pj84-6mcw-q95g",
+    "CGA-r5c2-7p3p-gp53",
+    "CGA-rjwj-h86r-xhrh",
+    "CGA-v28j-qmhq-qrxf",
+    "CGA-v5fx-59qm-4247",
+    "CGA-xrwq-83cw-2mjc",
+    "RUSTSEC-2024-0437"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-09-19T01:15:10Z",
+    "cwe_ids": [
+      "CWE-20"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-09-19T16:06:03Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/protocolbuffers/protobuf/security/advisories/GHSA-735f-pc8j-v9w8"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-7254"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/protocolbuffers/protobuf/commit/4728531c162f2f9e8c2ca1add713cfee2db6be3b"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/protocolbuffers/protobuf/commit/850fcce9176e2c9070614dab53537760498c926b"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/protocolbuffers/protobuf/commit/9a5f5fe752a20cbac2e722b06949ac985abdd534"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/protocolbuffers/protobuf/commit/ac9fb5b4c71b0dd80985b27684e265d1f03abf46"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/protocolbuffers/protobuf/commit/cc8b3483a5584b3301e3d43d17eb59704857ffaa"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/protocolbuffers/protobuf/commit/d6c82fc55a76481c676f541a255571e8950bb8c3"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/protocolbuffers/protobuf"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/google-protobuf/CVE-2024-7254.yml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20241213-0010"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20250418-0006"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-java",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.25.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.1",
+        "2.0.3",
+        "2.1.0",
+        "2.2.0",
+        "2.3.0",
+        "2.4.0a",
+        "2.4.1",
+        "2.5.0",
+        "2.6.0",
+        "2.6.1",
+        "3.0.0",
+        "3.0.0-alpha-2",
+        "3.0.0-alpha-3",
+        "3.0.0-alpha-3.1",
+        "3.0.0-beta-1",
+        "3.0.0-beta-2",
+        "3.0.0-beta-3",
+        "3.0.0-beta-4",
+        "3.0.2",
+        "3.1.0",
+        "3.10.0",
+        "3.10.0-rc-1",
+        "3.11.0",
+        "3.11.0-rc-1",
+        "3.11.0-rc-2",
+        "3.11.1",
+        "3.11.3",
+        "3.11.4",
+        "3.12.0",
+        "3.12.0-rc-1",
+        "3.12.0-rc-2",
+        "3.12.1",
+        "3.12.2",
+        "3.12.4",
+        "3.13.0",
+        "3.13.0-rc-3",
+        "3.14.0",
+        "3.14.0-rc-1",
+        "3.14.0-rc-2",
+        "3.14.0-rc-3",
+        "3.15.0",
+        "3.15.0-rc-1",
+        "3.15.0-rc-2",
+        "3.15.1",
+        "3.15.2",
+        "3.15.3",
+        "3.15.4",
+        "3.15.5",
+        "3.15.6",
+        "3.15.7",
+        "3.15.8",
+        "3.16.0",
+        "3.16.0-rc-1",
+        "3.16.0-rc-2",
+        "3.16.1",
+        "3.16.3",
+        "3.17.0",
+        "3.17.0-rc-1",
+        "3.17.0-rc-2",
+        "3.17.1",
+        "3.17.2",
+        "3.17.3",
+        "3.18.0",
+        "3.18.0-rc-1",
+        "3.18.0-rc-2",
+        "3.18.1",
+        "3.18.2",
+        "3.18.3",
+        "3.19.0",
+        "3.19.0-rc-1",
+        "3.19.0-rc-2",
+        "3.19.1",
+        "3.19.2",
+        "3.19.3",
+        "3.19.4",
+        "3.19.5",
+        "3.19.6",
+        "3.2.0",
+        "3.2.0-rc.1",
+        "3.2.0rc2",
+        "3.20.0",
+        "3.20.0-rc-1",
+        "3.20.1",
+        "3.20.1-rc-1",
+        "3.20.2",
+        "3.20.3",
+        "3.21.0",
+        "3.21.0-rc-1",
+        "3.21.0-rc-2",
+        "3.21.1",
+        "3.21.10",
+        "3.21.11",
+        "3.21.12",
+        "3.21.2",
+        "3.21.3",
+        "3.21.4",
+        "3.21.5",
+        "3.21.6",
+        "3.21.7",
+        "3.21.8",
+        "3.21.9",
+        "3.22.0",
+        "3.22.0-RC1",
+        "3.22.0-RC3",
+        "3.22.1",
+        "3.22.2",
+        "3.22.3",
+        "3.22.4",
+        "3.22.5",
+        "3.23.0",
+        "3.23.0-RC2",
+        "3.23.0-RC3",
+        "3.23.1",
+        "3.23.2",
+        "3.23.3",
+        "3.23.4",
+        "3.24.0",
+        "3.24.0-RC1",
+        "3.24.0-RC2",
+        "3.24.0-RC3",
+        "3.24.1",
+        "3.24.2",
+        "3.24.3",
+        "3.24.4",
+        "3.25.0",
+        "3.25.0-RC1",
+        "3.25.0-RC2",
+        "3.25.1",
+        "3.25.2",
+        "3.25.3",
+        "3.25.4",
+        "3.3.0",
+        "3.3.1",
+        "3.4.0",
+        "3.5.0",
+        "3.5.1",
+        "3.6.0",
+        "3.6.1",
+        "3.7.0",
+        "3.7.0-rc1",
+        "3.7.1",
+        "3.8.0",
+        "3.8.0-rc-1",
+        "3.9.0",
+        "3.9.0-rc-1",
+        "3.9.1",
+        "3.9.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-javalite",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.25.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.10.0",
+        "3.10.0-rc-1",
+        "3.11.0",
+        "3.11.0-rc-1",
+        "3.11.0-rc-2",
+        "3.11.1",
+        "3.11.3",
+        "3.11.4",
+        "3.12.0",
+        "3.12.0-rc-1",
+        "3.12.0-rc-2",
+        "3.12.1",
+        "3.12.2",
+        "3.12.4",
+        "3.13.0",
+        "3.13.0-rc-3",
+        "3.14.0",
+        "3.14.0-rc-1",
+        "3.14.0-rc-2",
+        "3.14.0-rc-3",
+        "3.15.0",
+        "3.15.0-rc-1",
+        "3.15.0-rc-2",
+        "3.15.1",
+        "3.15.2",
+        "3.15.3",
+        "3.15.4",
+        "3.15.5",
+        "3.15.6",
+        "3.15.7",
+        "3.15.8",
+        "3.16.0",
+        "3.16.0-rc-1",
+        "3.16.0-rc-2",
+        "3.16.1",
+        "3.16.3",
+        "3.17.0",
+        "3.17.0-rc-1",
+        "3.17.0-rc-2",
+        "3.17.1",
+        "3.17.2",
+        "3.17.3",
+        "3.18.0",
+        "3.18.0-rc-1",
+        "3.18.0-rc-2",
+        "3.18.1",
+        "3.18.2",
+        "3.18.3",
+        "3.19.0",
+        "3.19.0-rc-1",
+        "3.19.0-rc-2",
+        "3.19.1",
+        "3.19.2",
+        "3.19.3",
+        "3.19.4",
+        "3.19.5",
+        "3.19.6",
+        "3.20.0",
+        "3.20.0-rc-1",
+        "3.20.1",
+        "3.20.1-rc-1",
+        "3.20.2",
+        "3.20.3",
+        "3.21.0",
+        "3.21.0-rc-1",
+        "3.21.0-rc-2",
+        "3.21.1",
+        "3.21.10",
+        "3.21.11",
+        "3.21.12",
+        "3.21.2",
+        "3.21.3",
+        "3.21.4",
+        "3.21.5",
+        "3.21.6",
+        "3.21.7",
+        "3.21.8",
+        "3.21.9",
+        "3.22.0",
+        "3.22.0-RC1",
+        "3.22.0-RC3",
+        "3.22.1",
+        "3.22.2",
+        "3.22.3",
+        "3.22.4",
+        "3.22.5",
+        "3.23.0",
+        "3.23.0-RC2",
+        "3.23.0-RC3",
+        "3.23.1",
+        "3.23.2",
+        "3.23.3",
+        "3.23.4",
+        "3.24.0",
+        "3.24.0-RC1",
+        "3.24.0-RC2",
+        "3.24.0-RC3",
+        "3.24.1",
+        "3.24.2",
+        "3.24.3",
+        "3.24.4",
+        "3.25.0",
+        "3.25.0-RC1",
+        "3.25.0-RC2",
+        "3.25.1",
+        "3.25.2",
+        "3.25.3",
+        "3.25.4",
+        "3.8.0",
+        "3.8.0-rc-1",
+        "3.9.0",
+        "3.9.0-rc-1",
+        "3.9.1",
+        "3.9.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-kotlin",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.25.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.17.0",
+        "3.17.0-rc-2",
+        "3.17.1",
+        "3.17.2",
+        "3.17.3",
+        "3.18.0",
+        "3.18.0-rc-1",
+        "3.18.0-rc-2",
+        "3.18.1",
+        "3.18.2",
+        "3.18.3",
+        "3.19.0",
+        "3.19.0-rc-1",
+        "3.19.0-rc-2",
+        "3.19.1",
+        "3.19.2",
+        "3.19.3",
+        "3.19.4",
+        "3.19.5",
+        "3.19.6",
+        "3.20.0",
+        "3.20.0-rc-1",
+        "3.20.1",
+        "3.20.1-rc-1",
+        "3.20.2",
+        "3.20.3",
+        "3.21.0",
+        "3.21.0-rc-1",
+        "3.21.0-rc-2",
+        "3.21.1",
+        "3.21.10",
+        "3.21.11",
+        "3.21.12",
+        "3.21.2",
+        "3.21.3",
+        "3.21.4",
+        "3.21.5",
+        "3.21.6",
+        "3.21.7",
+        "3.21.8",
+        "3.21.9",
+        "3.22.0",
+        "3.22.0-RC1",
+        "3.22.0-RC3",
+        "3.22.1",
+        "3.22.2",
+        "3.22.3",
+        "3.22.4",
+        "3.22.5",
+        "3.23.0",
+        "3.23.0-RC2",
+        "3.23.0-RC3",
+        "3.23.1",
+        "3.23.2",
+        "3.23.3",
+        "3.23.4",
+        "3.24.0",
+        "3.24.0-RC1",
+        "3.24.0-RC2",
+        "3.24.0-RC3",
+        "3.24.1",
+        "3.24.2",
+        "3.24.3",
+        "3.24.4",
+        "3.25.0",
+        "3.25.0-RC1",
+        "3.25.0-RC2",
+        "3.25.1",
+        "3.25.2",
+        "3.25.3",
+        "3.25.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-kotlin-lite",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.25.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.17.0",
+        "3.17.0-rc-2",
+        "3.17.1",
+        "3.17.2",
+        "3.17.3",
+        "3.18.0",
+        "3.18.0-rc-1",
+        "3.18.0-rc-2",
+        "3.18.1",
+        "3.18.2",
+        "3.18.3",
+        "3.19.0",
+        "3.19.0-rc-1",
+        "3.19.0-rc-2",
+        "3.19.1",
+        "3.19.2",
+        "3.19.3",
+        "3.19.4",
+        "3.19.5",
+        "3.19.6",
+        "3.20.0",
+        "3.20.0-rc-1",
+        "3.20.1",
+        "3.20.1-rc-1",
+        "3.20.2",
+        "3.20.3",
+        "3.21.0",
+        "3.21.0-rc-1",
+        "3.21.0-rc-2",
+        "3.21.1",
+        "3.21.10",
+        "3.21.11",
+        "3.21.12",
+        "3.21.2",
+        "3.21.3",
+        "3.21.4",
+        "3.21.5",
+        "3.21.6",
+        "3.21.7",
+        "3.21.8",
+        "3.21.9",
+        "3.22.0",
+        "3.22.0-RC1",
+        "3.22.0-RC3",
+        "3.22.1",
+        "3.22.2",
+        "3.22.3",
+        "3.22.4",
+        "3.22.5",
+        "3.23.0",
+        "3.23.0-RC2",
+        "3.23.0-RC3",
+        "3.23.1",
+        "3.23.2",
+        "3.23.3",
+        "3.23.4",
+        "3.24.0",
+        "3.24.0-RC1",
+        "3.24.0-RC2",
+        "3.24.0-RC3",
+        "3.24.1",
+        "3.24.2",
+        "3.24.3",
+        "3.24.4",
+        "3.25.0",
+        "3.25.0-RC1",
+        "3.25.0-RC2",
+        "3.25.1",
+        "3.25.2",
+        "3.25.3",
+        "3.25.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "google-protobuf",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/google-protobuf"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.25.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.0.0",
+        "3.0.0.alpha.1.0",
+        "3.0.0.alpha.1.1",
+        "3.0.0.alpha.2.0",
+        "3.0.0.alpha.3",
+        "3.0.0.alpha.3.1.pre",
+        "3.0.0.alpha.4.0",
+        "3.0.0.alpha.5.0.3",
+        "3.0.0.alpha.5.0.4",
+        "3.0.0.alpha.5.0.5",
+        "3.0.0.alpha.5.0.5.1",
+        "3.0.2",
+        "3.1.0",
+        "3.1.0.0.pre",
+        "3.10.0.rc.1",
+        "3.10.1",
+        "3.11.0",
+        "3.11.0.rc.1",
+        "3.11.0.rc.2",
+        "3.11.1",
+        "3.11.2",
+        "3.11.3",
+        "3.11.4",
+        "3.12.0",
+        "3.12.0.rc.1",
+        "3.12.0.rc.2",
+        "3.12.1",
+        "3.12.2",
+        "3.12.4",
+        "3.13.0",
+        "3.13.0.rc.3",
+        "3.14.0",
+        "3.14.0.rc.1",
+        "3.14.0.rc.2",
+        "3.14.0.rc.3",
+        "3.15.0",
+        "3.15.0.rc.1",
+        "3.15.0.rc.2",
+        "3.15.1",
+        "3.15.2",
+        "3.15.3",
+        "3.15.4",
+        "3.15.5",
+        "3.15.6",
+        "3.15.7",
+        "3.15.8",
+        "3.16.0",
+        "3.16.0.rc.1",
+        "3.16.0.rc.2",
+        "3.17.0",
+        "3.17.0.rc.1",
+        "3.17.0.rc.2",
+        "3.17.1",
+        "3.17.2",
+        "3.17.3",
+        "3.18.0",
+        "3.18.0.rc.1",
+        "3.18.0.rc.2",
+        "3.18.1",
+        "3.18.2",
+        "3.18.3",
+        "3.19.0",
+        "3.19.0.rc.1",
+        "3.19.0.rc.2",
+        "3.19.1",
+        "3.19.2",
+        "3.19.3",
+        "3.19.4",
+        "3.19.5",
+        "3.19.6",
+        "3.2.0",
+        "3.2.0.1",
+        "3.2.0.2",
+        "3.2.1.pre",
+        "3.20.0",
+        "3.20.0.rc.1",
+        "3.20.0.rc.2",
+        "3.20.1",
+        "3.20.1.rc.1",
+        "3.20.2",
+        "3.20.3",
+        "3.21.0",
+        "3.21.0.rc.1",
+        "3.21.0.rc.2",
+        "3.21.1",
+        "3.21.10",
+        "3.21.11",
+        "3.21.12",
+        "3.21.2",
+        "3.21.3",
+        "3.21.4",
+        "3.21.5",
+        "3.21.6",
+        "3.21.7",
+        "3.21.8",
+        "3.21.9",
+        "3.22.0",
+        "3.22.0.rc.2",
+        "3.22.0.rc.3",
+        "3.22.1",
+        "3.22.2",
+        "3.22.3",
+        "3.22.5",
+        "3.23.0",
+        "3.23.0.rc.1",
+        "3.23.0.rc.2",
+        "3.23.0.rc.3",
+        "3.23.1",
+        "3.23.2",
+        "3.23.3",
+        "3.23.4",
+        "3.24.0",
+        "3.24.0.rc.2",
+        "3.24.0.rc.3",
+        "3.24.1",
+        "3.24.2",
+        "3.24.3",
+        "3.24.4",
+        "3.25.0",
+        "3.25.0.rc.1",
+        "3.25.0.rc.2",
+        "3.25.1",
+        "3.25.2",
+        "3.25.3",
+        "3.25.4",
+        "3.3.0",
+        "3.4.0.1",
+        "3.4.0.2",
+        "3.4.1.1",
+        "3.5.0",
+        "3.5.0.pre",
+        "3.5.1",
+        "3.5.1.1",
+        "3.5.1.2",
+        "3.6.0",
+        "3.6.1",
+        "3.7.0",
+        "3.7.0.rc.2",
+        "3.7.0.rc.3",
+        "3.7.1",
+        "3.8.0",
+        "3.8.0.rc.1",
+        "3.9.0",
+        "3.9.0.rc.1",
+        "3.9.1",
+        "3.9.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "google-protobuf",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/google-protobuf"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0.rc.1"
+            },
+            {
+              "fixed": "4.27.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.26.0",
+        "4.26.0.rc.1",
+        "4.26.0.rc.2",
+        "4.26.0.rc.3",
+        "4.26.1",
+        "4.27.0",
+        "4.27.0.rc.1",
+        "4.27.0.rc.2",
+        "4.27.0.rc.3",
+        "4.27.1",
+        "4.27.2",
+        "4.27.3",
+        "4.27.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "google-protobuf",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/google-protobuf"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.28.0.rc.1"
+            },
+            {
+              "fixed": "4.28.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.28.0",
+        "4.28.0.rc.1",
+        "4.28.0.rc.2",
+        "4.28.0.rc.3",
+        "4.28.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-kotlin-lite",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0.rc.1"
+            },
+            {
+              "fixed": "4.27.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.26.0",
+        "4.26.0-RC1",
+        "4.26.0-RC2",
+        "4.26.0-RC3",
+        "4.26.1",
+        "4.27.0",
+        "4.27.0-RC1",
+        "4.27.0-RC2",
+        "4.27.0-RC3",
+        "4.27.1",
+        "4.27.2",
+        "4.27.3",
+        "4.27.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-kotlin-lite",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.28.0.rc.1"
+            },
+            {
+              "fixed": "4.28.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.28.0",
+        "4.28.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-kotlin",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0.rc.1"
+            },
+            {
+              "fixed": "4.27.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.26.0",
+        "4.26.0-RC1",
+        "4.26.0-RC2",
+        "4.26.0-RC3",
+        "4.26.1",
+        "4.27.0",
+        "4.27.0-RC1",
+        "4.27.0-RC2",
+        "4.27.0-RC3",
+        "4.27.1",
+        "4.27.2",
+        "4.27.3",
+        "4.27.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-kotlin",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.28.0.rc.1"
+            },
+            {
+              "fixed": "4.28.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.28.0",
+        "4.28.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-javalite",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0.rc.1"
+            },
+            {
+              "fixed": "4.27.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.26.0",
+        "4.26.0-RC1",
+        "4.26.0-RC2",
+        "4.26.0-RC3",
+        "4.26.1",
+        "4.27.0",
+        "4.27.0-RC1",
+        "4.27.0-RC2",
+        "4.27.0-RC3",
+        "4.27.1",
+        "4.27.2",
+        "4.27.3",
+        "4.27.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-javalite",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.28.0.rc.1"
+            },
+            {
+              "fixed": "4.28.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.28.0",
+        "4.28.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-java",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0.rc.1"
+            },
+            {
+              "fixed": "4.27.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.26.0",
+        "4.26.0-RC1",
+        "4.26.0-RC2",
+        "4.26.0-RC3",
+        "4.26.1",
+        "4.27.0",
+        "4.27.0-RC1",
+        "4.27.0-RC2",
+        "4.27.0-RC3",
+        "4.27.1",
+        "4.27.2",
+        "4.27.3",
+        "4.27.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    },
+    {
+      "package": {
+        "name": "com.google.protobuf:protobuf-java",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.28.0.rc.1"
+            },
+            {
+              "fixed": "4.28.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.28.0",
+        "4.28.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    },
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+    }
+  ]
+}

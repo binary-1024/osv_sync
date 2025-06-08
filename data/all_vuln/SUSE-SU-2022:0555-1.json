@@ -1,0 +1,472 @@
+{
+  "id": "SUSE-SU-2022:0555-1",
+  "summary": "Security update for the Linux RT Kernel",
+  "details": "\nThe SUSE Linux Enterprise 12 SP5 RT kernel was updated to receive various security and bugfixes.\n\n\nThe following security bugs were fixed:\n\n- CVE-2022-0435: Fixed remote stack overflow in net/tipc module that validate domain record count on input (bsc#1195254).\n- CVE-2022-24448: Fixed an issue inside fs/nfs/dir.c if an application sets the O_DIRECTORY flag, and tries to open a regular file, nfs_atomic_open() performs a regular lookup (bnc#1195612).\n- CVE-2021-3564: Fixed double-free memory corruption in the Linux kernel HCI device initialization subsystem that could have been used by attaching malicious HCI TTY Bluetooth devices. A local user could use this flaw to crash the system (bnc#1186207).\n- CVE-2020-28097: Fixed out-of-bounds read in vgacon subsystem that mishandled software scrollback (bnc#1187723).\n- CVE-2021-45095: Fixed refcount leak in pep_sock_accept in net/phonet/pep.c (bnc#1193867).\n- CVE-2022-22942: Fixed stale file descriptors on failed usercopy (bsc#1195065).\n- CVE-2021-39657: Fixed out of bounds read due to a missing bounds check in ufshcd_eh_device_reset_handler of ufshcd.c. This could lead to local information disclosure with System execution privileges needed (bnc#1193864).\n- CVE-2021-39648: Fixed possible disclosure of kernel heap memory due to a race condition in gadget_dev_desc_UDC_show of configfs.c. This could lead to local information disclosure with System execution privileges needed. User interaction is not needed for exploitation (bnc#1193861).\n- CVE-2021-44733: Fixed a use-after-free exists in drivers/tee/tee_shm.c in the TEE subsystem, that could have occured because of a race condition in tee_shm_get_from_id during an attempt to free a shared memory object (bnc#1193767).\n- CVE-2022-0330: Fixed flush TLBs before releasing backing store (bsc#1194880).\n- CVE-2022-0322: Fixed SCTP issue with account stream padding length for reconf chunk (bsc#1194985).\n- CVE-2021-4197: Use cgroup open-time credentials for process migraton perm checks (bsc#1194302).\n- CVE-2021-4202: Fixed NFC race condition by adding NCI_UNREG flag (bsc#1194529).\n- CVE-2021-4083: Fixed a read-after-free memory flaw inside the garbage collection for Unix domain socket file handlers when users call close() and fget() simultaneouslyand can potentially trigger a race condition (bnc#1193727).\n- CVE-2021-4149: Fixed btrfs unlock newly allocated extent buffer after error (bsc#1194001).\n- CVE-2021-4135: Fixed zero-initialize memory inside netdevsim for new map's value in function nsim_bpf_map_alloc (bsc#1193927).\n\n\nThe following non-security bugs were fixed:\n\n- KVM: remember position in kvm->vcpus array (bsc#1190973).\n- KVM: s390: index kvm->arch.idle_mask by vcpu_idx (bsc#1190973).\n- SUNRPC: Add basic load balancing to the transport switch - kabi fix. (bnc#1192729).\n- SUNRPC: Add basic load balancing to the transport switch. (bnc#1192729)\n- SUNRPC: Fix initialisation of struct rpc_xprt_switch (bnc#1192729).\n- SUNRPC: Optimise transport balancing code (bnc#1192729).\n- SUNRPC: Replace division by multiplication in calculation of queue length (bnc#1192729).\n- SUNRPC: Skip zero-refcount transports (bnc#1192729).\n- USB: serial: option: add Telit FN990 compositions (git-fixes).\n- bpf: Verifer, adjust_scalar_min_max_vals to always call update_reg_bounds() (bsc#1194227).\n- crypto: qat - fix undetected PFVF timeout in ACK loop (git-fixes).\n- ext4: set csum seed in tmp inode while migrating to extents (bsc#1195272).\n- fget: clarify and improve __fget_files() implementation (bsc#1193727).\n- hv_netvsc: Set needed_headroom according to VF (bsc#1193507).\n- ibmvnic: Allow extra failures before disabling (bsc#1195073 ltc#195713).\n- ibmvnic: do not spin in tasklet (bsc#1195073 ltc#195713).\n- ibmvnic: init ->running_cap_crqs early (bsc#1195073 ltc#195713).\n- ibmvnic: remove unused ->wait_capability (bsc#1195073 ltc#195713).\n- kABI fixup after adding vcpu_idx to struct kvm_cpu (bsc#1190973).\n- kabi: mask new member 'empty' of struct Qdisc (bsc#1183405).\n- kabi: revert drop of Qdisc::atomic_qlen (bsc#1183405).\n- kprobes: Limit max data_size of the kretprobe instances (bsc#1193669).\n- livepatch: Avoid CPU hogging with cond_resched (bsc#1071995).\n- memstick: rtsx_usb_ms: fix UAF (bsc#1194516).\n- mm/hwpoison: do not lock page again when me_huge_page() successfully recovers (bsc#1194814).\n- mm/slab: Using proper atomic helper (bsc#1186222).\n- moxart: fix potential use-after-free on remove path (bsc#1194516).\n- net, xdp: Introduce xdp_init_buff utility routine (bsc#1193507).\n- net, xdp: Introduce xdp_prepare_buff utility routine (bsc#1193507).\n- net/sched: annotate lockless accesses to qdisc->empty (bsc#1183405).\n- net/sched: fix race between deactivation and dequeue for NOLOCK qdisc (bsc#1183405).\n- net/sched: pfifo_fast: fix wrong dereference in pfifo_fast_enqueue (bsc#1183405).\n- net/sched: pfifo_fast: fix wrong dereference when qdisc is reset (bsc#1183405).\n- net: allow retransmitting a TCP packet if original is still in queue (bsc#1188605 bsc#1187428).\n- net: caif: avoid using qdisc_qlen() (bsc#1183405).\n- net: cdc_ncm: Allow for dwNtbOutMaxSize to be unset or zero (git-fixes).\n- net: dev: introduce support for sch BYPASS for lockless qdisc (bsc#1183405).\n- net: mana: Add RX fencing (bsc#1193507).\n- net: mana: Add XDP support (bsc#1193507).\n- net: sch_generic: aviod concurrent reset and enqueue op for lockless qdisc (bsc#1183405).\n- net: sched: Avoid using yield() in a busy waiting loop (bsc#1183405).\n- net: sched: add barrier to ensure correct ordering for lockless qdisc (bsc#1183405).\n- net: sched: add empty status flag for NOLOCK qdisc (bsc#1183405).\n- net: sched: always do stats accounting according to TCQ_F_CPUSTATS (bsc#1183405).\n- net: sched: avoid unnecessary seqcount operation for lockless qdisc (bsc#1183405).\n- net: sched: fix packet stuck problem for lockless qdisc (bsc#1183405).\n- net: sched: fix tx action reschedule issue with stopped queue (bsc#1183405).\n- net: sched: fix tx action rescheduling issue during deactivation (bsc#1183405).\n- net: sched: prefer qdisc_is_empty() over direct qlen access (bsc#1183405).\n- net: sched: replaced invalid qdisc tree flush helper in qdisc_replace (bsc#1183405).\n- net: sched: when clearing NOLOCK, clear TCQ_F_CPUSTATS, too (bsc#1183405).\n- net: usb: lan78xx: add Allied Telesis AT29M2-AF (git-fixes).\n- net_sched: avoid resetting active qdisc for multiple times (bsc#1183405).\n- net_sched: get rid of unnecessary dev_qdisc_reset() (bsc#1183405).\n- net_sched: use qdisc_reset() in qdisc_destroy() (bsc#1183405).\n- nfs: do not dirty kernel pages read by direct-io (bsc#1194410).\n- nvme: add 'iopolicy' module parameter (bsc#1177599 bsc#1193096). \n- nvme: return BLK_STS_TRANSPORT unless DNR for NVME_SC_NS_NOT_READY (bsc#1163405).\n- of: Add cpu node iterator for_each_of_cpu_node() (bsc#1065729).\n- of: Add device_type access helper functions (bsc#1065729).\n- of: Fix cpu node iterator to not ignore disabled cpu nodes (bsc#1065729).\n- of: Fix property name in of_node_get_device_type (bsc#1065729).\n- of: add node name compare helper functions (bsc#1065729).\n- powerpc/perf: Fix data source encodings for L2.1 and L3.1 accesses (bsc#1065729).\n- powerpc/prom_init: Fix improper check of prom_getprop() (bsc#1065729).\n- powerpc/pseries/cpuhp: cache node corrections (bsc#1065729).\n- powerpc/pseries/cpuhp: delete add/remove_by_count code (bsc#1065729).\n- powerpc/pseries/mobility: ignore ibm, platform-facilities updates (bsc#1065729).\n- powerpc/traps: do not enable irqs in _exception (bsc#1065729).\n- powerpc: add interrupt_cond_local_irq_enable helper (bsc#1065729).\n- s390/cio: make ccw_device_dma_* more robust (bsc#1193242).\n- s390/pci: add s390_iommu_aperture kernel parameter (bsc#1193234).\n- s390/pci: move pseudo-MMIO to prevent MIO overlap (bsc#1194965).\n- select: Fix indefinitely sleeping task in poll_schedule_timeout() (bsc#1194027).\n- tpm: Check for integer overflow in tpm2_map_response_body() (bsc#1082555).\n- tpm: add request_locality before write TPM_INT_ENABLE (bsc#1082555).\n- tpm: fix potential NULL pointer access in tpm_del_char_device (bsc#1184209 ltc#190917 git-fixes bsc#1193660 ltc#195634).\n- tracing/kprobes: 'nmissed' not showed correctly for kretprobe (git-fixes).\n- tracing: Fix check for trace_percpu_buffer validity in get_trace_buf() (git-fixes).\n- ucsi_ccg: Check DEV_INT bit only when starting CCG4 (git-fixes).\n- usb: core: config: fix validation of wMaxPacketValue entries (git-fixes).\n- usbnet: fix error return code in usbnet_probe() (git-fixes).\n- usbnet: sanity check for maxpacket (git-fixes).\n- vfs: check fd has read access in kernel_read_file_from_fd() (bsc#1194888).\n- virtio: write back F_VERSION_1 before validate (bsc#1193235).\n- x86/platform/uv: Add more to secondary CPU kdump info (bsc#1194493).\n- xfrm: fix MTU regression (bsc#1185377, bsc#1194048).\n",
+  "modified": "2025-05-02T04:30:45.833065Z",
+  "published": "2022-02-22T15:07:17Z",
+  "related": [
+    "CVE-2020-28097",
+    "CVE-2021-3564",
+    "CVE-2021-39648",
+    "CVE-2021-39657",
+    "CVE-2021-4083",
+    "CVE-2021-4135",
+    "CVE-2021-4149",
+    "CVE-2021-4197",
+    "CVE-2021-4202",
+    "CVE-2021-44733",
+    "CVE-2021-45095",
+    "CVE-2022-0322",
+    "CVE-2022-0330",
+    "CVE-2022-0435",
+    "CVE-2022-22942",
+    "CVE-2022-24448"
+  ],
+  "upstream": [
+    "CVE-2020-28097",
+    "CVE-2021-3564",
+    "CVE-2021-39648",
+    "CVE-2021-39657",
+    "CVE-2021-4083",
+    "CVE-2021-4135",
+    "CVE-2021-4149",
+    "CVE-2021-4197",
+    "CVE-2021-4202",
+    "CVE-2021-44733",
+    "CVE-2021-45095",
+    "CVE-2022-0322",
+    "CVE-2022-0330",
+    "CVE-2022-0435",
+    "CVE-2022-22942",
+    "CVE-2022-24448"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2022/suse-su-20220555-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1065729"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1071995"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1082555"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1163405"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1177599"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1183405"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184209"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185377"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186207"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186222"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187428"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1187723"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1188605"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190973"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192729"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193096"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193234"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193235"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193242"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193507"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193660"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193669"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193727"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193767"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193861"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193864"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193867"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1193927"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194001"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194027"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194048"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194227"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194302"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194410"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194493"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194516"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194529"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194814"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194880"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194888"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194965"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1194985"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195065"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195073"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195254"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195272"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1195612"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-28097"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3564"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-39648"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-39657"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-4083"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-4135"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-4149"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-4197"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-4202"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-44733"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-45095"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-0322"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-0330"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-0435"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-22942"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2022-24448"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-10.78.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-devel-rt": "4.12.14-10.78.1",
+            "dlm-kmp-rt": "4.12.14-10.78.1",
+            "gfs2-kmp-rt": "4.12.14-10.78.1",
+            "kernel-rt_debug": "4.12.14-10.78.1",
+            "kernel-rt-devel": "4.12.14-10.78.1",
+            "cluster-md-kmp-rt": "4.12.14-10.78.1",
+            "kernel-rt_debug-devel": "4.12.14-10.78.1",
+            "kernel-source-rt": "4.12.14-10.78.1",
+            "kernel-rt": "4.12.14-10.78.1",
+            "ocfs2-kmp-rt": "4.12.14-10.78.1",
+            "kernel-syms-rt": "4.12.14-10.78.1",
+            "kernel-rt-base": "4.12.14-10.78.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-rt_debug",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-rt_debug&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-10.78.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-devel-rt": "4.12.14-10.78.1",
+            "dlm-kmp-rt": "4.12.14-10.78.1",
+            "gfs2-kmp-rt": "4.12.14-10.78.1",
+            "kernel-rt_debug": "4.12.14-10.78.1",
+            "kernel-rt-devel": "4.12.14-10.78.1",
+            "cluster-md-kmp-rt": "4.12.14-10.78.1",
+            "kernel-rt_debug-devel": "4.12.14-10.78.1",
+            "kernel-source-rt": "4.12.14-10.78.1",
+            "kernel-rt": "4.12.14-10.78.1",
+            "ocfs2-kmp-rt": "4.12.14-10.78.1",
+            "kernel-syms-rt": "4.12.14-10.78.1",
+            "kernel-rt-base": "4.12.14-10.78.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-source-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-10.78.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-devel-rt": "4.12.14-10.78.1",
+            "dlm-kmp-rt": "4.12.14-10.78.1",
+            "gfs2-kmp-rt": "4.12.14-10.78.1",
+            "kernel-rt_debug": "4.12.14-10.78.1",
+            "kernel-rt-devel": "4.12.14-10.78.1",
+            "cluster-md-kmp-rt": "4.12.14-10.78.1",
+            "kernel-rt_debug-devel": "4.12.14-10.78.1",
+            "kernel-source-rt": "4.12.14-10.78.1",
+            "kernel-rt": "4.12.14-10.78.1",
+            "ocfs2-kmp-rt": "4.12.14-10.78.1",
+            "kernel-syms-rt": "4.12.14-10.78.1",
+            "kernel-rt-base": "4.12.14-10.78.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:0555-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-syms-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-10.78.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-devel-rt": "4.12.14-10.78.1",
+            "dlm-kmp-rt": "4.12.14-10.78.1",
+            "gfs2-kmp-rt": "4.12.14-10.78.1",
+            "kernel-rt_debug": "4.12.14-10.78.1",
+            "kernel-rt-devel": "4.12.14-10.78.1",
+            "cluster-md-kmp-rt": "4.12.14-10.78.1",
+            "kernel-rt_debug-devel": "4.12.14-10.78.1",
+            "kernel-source-rt": "4.12.14-10.78.1",
+            "kernel-rt": "4.12.14-10.78.1",
+            "ocfs2-kmp-rt": "4.12.14-10.78.1",
+            "kernel-syms-rt": "4.12.14-10.78.1",
+            "kernel-rt-base": "4.12.14-10.78.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:0555-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

@@ -1,0 +1,104 @@
+{
+  "id": "MGASA-2019-0196",
+  "summary": "Updated kernel-tmb packages fix security vulnerability",
+  "details": "This kernel-tmb update is based on the upstream 4.14.127 and fixes at least\nthe following security issues:\n\nJonathan Looney discovered that it is possible to send a crafted sequence\nof SACKs which will fragment the RACK send map. An attacker may be able to\nfurther exploit the fragmented send map to cause an expensive linked-list\nwalk for subsequent SACKs received for that same TCP connection\n(CVE-2019-5599).\n\nA flaw was found in the Linux kernel's freescale hypervisor manager\nimplementation. A parameter passed via to an ioctl was incorrectly\nvalidated and used in size calculations for the page size calculation.\nAn attacker can use this flaw to crash the system or corrupt memory\nor, possibly, create other adverse security affects (CVE-2019-10142).\n\nJonathan Looney discovered that the TCP_SKB_CB(skb)->tcp_gso_segs value\nwas subject to an integer overflow in the Linux kernel when handling TCP\nSelective Acknowledgments (SACKs). A remote attacker could use this to\ncause a denial of service (CVE-2019-11477).\n\nJonathan Looney discovered that the TCP retransmission queue implementation\nin tcp_fragment in the Linux kernel could be fragmented when handling\ncertain TCP Selective Acknowledgment (SACK) sequences. A remote attacker\ncould use this to cause a denial of service (CVE-2019-11478).\n\nJonathan Looney discovered that the Linux kernel default MSS is hard-coded\nto 48 bytes. This allows a remote peer to fragment TCP resend queues\nsignificantly more than if a larger MSS were enforced. A remote attacker\ncould use this to cause a denial of service (CVE-2019-11479).\n\nfs/ext4/extents.c in the Linux kernel through 5.1.2 does not zero out\nthe unused memory region in the extent tree block, which might allow\nlocal users to obtain sensitive information by reading uninitialized\ndata in the filesystem (CVE-2019-11833).\n\nIt also fixes an upstream regression that caused older 'legacy'\nbluetooth adapters to stop working (mga #24840).\n\nWireGuard has been updated to 0.0.20190601.\n\nFor other uptstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2019-06-21T01:07:01Z",
+  "related": [
+    "CVE-2019-10142",
+    "CVE-2019-11477",
+    "CVE-2019-11478",
+    "CVE-2019-11479",
+    "CVE-2019-11833",
+    "CVE-2019-5599"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0196.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24973"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24840"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.120"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.121"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.122"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.123"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.124"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.125"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.126"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.127"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-tmb",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.127-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0196.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

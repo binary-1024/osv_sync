@@ -1,0 +1,91 @@
+{
+  "id": "MGASA-2021-0123",
+  "summary": "Updated glib2.0 packages fix security vulnerabilities",
+  "details": "* Fix various instances within GLib where `g_memdup()` was vulnerable to a\nsilent integer truncation and heap overflow problem (discovered by\nKevin Backhouse, work by Philip Withnall) (#2319)\n\n* Fix some issues with handling over-long (invalid) input when parsing for\n`GDate` (!1824)\n\n* Don't load GIO modules or parse other GIO environment variables when\n`AT_SECURE` is set (i.e. in a setuid/setgid/setcap process). GIO has always\nbeen documented as not being safe to use in privileged processes, but people\npersist in using it unsafely, so these changes should harden things against\npotential attacks at least a little.\nUnfortunately they break a couple of projects which were relying on reading\n`DBUS_SESSION_BUS_ADDRESS`, so GIO continues to read that for setgid/setcap\n(but not setuid) processes. This loophole will be closed in GLib 2.70\n(see issue #2316), which should give modules 6 months to change their behaviour.\n(Work by Simon McVittie and Philip Withnall) (#2168, #2305)\n\n* Fix `g_spawn()` searching `PATH` when it wasn't meant to (work by Simon\nMcVittie and Thomas Haller) (!1913)\n\nAlso, this update provides 2.66.7 version that fixes several issues:\n* Fix various regressions caused by rushed security fixes in 2.66.6\n(work by Simon McVittie and Jan Alexander Steffens) (!1933, !1943)\n\n* Fix a silent integer truncation when calling `g_byte_array_new_take()` for\nbyte arrays bigger than `G_MAXUINT` (work by Krzesimir Nowak) (!1944)\n\n* Disallow using currently-undefined D-Bus connection or server flags to prevent\nforward-compatibility problems with new security-sensitive flags likely to be\nreleased in GLib 2.68 (work by Simon McVittie) (!1945)\n",
+  "modified": "2021-03-12T00:14:00Z",
+  "published": "2021-03-12T01:25:47Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0123.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=28392"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/RKZC2OMFCXQTQDGIDS4JBWOWNQUAAOV2/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/F3TX2KSXDNFQN6HBKCYRZSZWKF4W5EYJ/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "glib2.0",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/glib2.0?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.66.7-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0123.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "mingw-glib2",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/mingw-glib2?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.66.7-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0123.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

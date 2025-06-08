@@ -1,0 +1,87 @@
+{
+  "id": "MGASA-2018-0180",
+  "summary": "Updated libtiff packages fix security vulnerabilities",
+  "details": "In LibTIFF 4.0.8, there is a denial of service vulnerability in the\nTIFFOpen function. A crafted input will lead to a denial of service\nattack. During the TIFFOpen process, td_imagelength is not checked. The\nvalue of td_imagelength can be directly controlled by an input file. In\nthe ChopUpSingleUncompressedStrip function, the _TIFFCheckMalloc\nfunction is called based on td_imagelength. If we set the value of\ntd_imagelength close to the amount of system memory, it will hang the\nsystem or trigger the OOM killer. (CVE-2017-11613)\n\nIn LibTIFF 4.0.9, there is an uncontrolled resource consumption in the\nTIFFSetDirectory function of tif_dir.c. Remote attackers could leverage\nthis vulnerability to cause a denial of service via a crafted tif file.\nThis occurs because the declared number of directory entries is not\nvalidated against the actual number of directory entries. (CVE-2018-5784)\n",
+  "modified": "2018-03-19T11:36:43Z",
+  "published": "2018-03-19T12:13:14Z",
+  "related": [
+    "CVE-2017-11613",
+    "CVE-2018-5784"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0180.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22799"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "libtiff",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/libtiff?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.0.9-1.2.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0180.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libtiff",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/libtiff?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.0.9-1.2.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0180.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

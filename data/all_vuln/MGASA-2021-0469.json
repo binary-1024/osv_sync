@@ -1,0 +1,157 @@
+{
+  "id": "MGASA-2021-0469",
+  "summary": "Updated firefox packages fix security vulnerability",
+  "details": "Due to a data race in the crossbeam-deque in the crossbeam crate, one or more\ntasks in the worker queue could have been be popped twice instead of other\ntasks that are forgotten and never popped. If tasks are allocated on the heap,\nthis could have caused a double free and a memory leak (CVE-2021-32810).\n\nDuring operations on MessageTasks, a task may have been removed while it was\nstill scheduled, resulting in memory corruption and a potentially exploitable\ncrash due to a use-after-free in MessageTask (CVE-2021-38496).\n\nThrough use of reportValidity() and window.open(), a plain-text validation\nmessage could have been overlaid on another origin, leading to possible user\nconfusion and spoofing attacks (CVE-2021-38497).\n\nDuring process shutdown, a document could have caused a use-after-free of a\nlanguages service object (nsLanguageAtomService), leading to memory corruption\nand a potentially exploitable crash (CVE-2021-38498). \n\nMozilla developers and community members Andreas Pehrson, Christian Holler, \nKevin Brosnan, and Mihai Alexandru Michis reported memory safety bugs present\nin Firefox ESR 91.1. Some of these bugs showed evidence of memory corruption\nand we presume that with enough effort some of these could have been exploited\nto run arbitrary code (CVE-2021-38500, CVE-2021-38501).\n",
+  "modified": "2021-10-08T03:59:05Z",
+  "published": "2021-10-08T04:27:53Z",
+  "related": [
+    "CVE-2021-32810",
+    "CVE-2021-38496",
+    "CVE-2021-38497",
+    "CVE-2021-38498",
+    "CVE-2021-38500",
+    "CVE-2021-38501"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0469.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=29525"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.mozilla.org/en-US/security/advisories/mfsa2021-45/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://groups.google.com/a/mozilla.org/g/dev-tech-crypto/c/eLTKcnMNzPg"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://firefox-source-docs.mozilla.org/security/nss/releases/nss_3_71.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "firefox",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/firefox?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "91.2.0-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0469.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "firefox-l10n",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/firefox-l10n?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "91.2.0-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0469.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "nss",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/nss?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.71.0-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0469.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "rootcerts",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/rootcerts?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20210907.00-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0469.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "id": "GHSA-62f6-h68r-3jpw",
+  "summary": "Zendframework session validation vulnerability",
+  "details": "`Zend\\Session` session validators do not work as expected if set prior to the start of a session.\n\nFor instance, the following test case fails (where `$this->manager` is an instance of `Zend\\Session\\SessionManager`):\n```\n$this\n    ->manager\n    ->getValidatorChain()\n    ->attach('session.validate', array(new RemoteAddr(), 'isValid'));\n\n$this->manager->start();\n\n$this->assertSame(\n    array(\n        'Zend\\Session\\Validator\\RemoteAddr' =3D> '',\n    ),\n    $_SESSION['__ZF']['_VALID']\n);\n```\nThe implication is that subsequent calls to `Zend\\Session\\SessionManager#start()` (in later requests, assuming a session was created) will not have any validator metadata attached, which causes any validator metadata to be re-built from scratch, thus marking the session as valid.\n\nAn attacker is thus able to simply ignore session validators such as RemoteAddr or HttpUserAgent, since the \"signature\" that these validators check against is not being stored in the session.",
+  "modified": "2024-12-04T05:37:06.052419Z",
+  "published": "2024-06-07T20:20:21Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-384"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-06-07T20:20:21Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/zendframework/zendframework/commit/1672aee3531205e5c1a0b96d8c680124ec93db09"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/zendframework/zendframework/commit/282135561cbf98cc93274c57966b021fd6e051b9"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/zendframework/zendframework/commit/5f06a1f80a1aaeac87a46bfa9b63a5a74a14866c"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/zendframework/zendframework/commit/9493d725ef869e6ce7ab78167539223396fda491"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/zendframework/zendframework/commit/ddbf43ac3fe28fe98a4104993d0cb4bffb13a026"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/zendframework/zendframework/commit/f22a83c611732fbc0328f0f887bccc075be1fd56"
+    },
+    {
+      "type": "WEB",
+      "url": "https://framework.zend.com/security/advisory/ZF2015-01"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/zendframework/zendframework/ZF2015-01.yaml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/zendframework/zendframework"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "zendframework/zendframework",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/zendframework/zendframework"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.2.9"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.0.4",
+        "2.0.5",
+        "2.0.6",
+        "2.0.7",
+        "2.0.8",
+        "2.1.0",
+        "2.1.1",
+        "2.1.2",
+        "2.1.3",
+        "2.1.4",
+        "2.1.5",
+        "2.1.6",
+        "2.2.0",
+        "2.2.0rc1",
+        "2.2.0rc2",
+        "2.2.0rc3",
+        "2.2.1",
+        "2.2.2",
+        "2.2.3",
+        "2.2.4",
+        "2.2.5",
+        "2.2.6",
+        "2.2.7",
+        "2.2.8"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-62f6-h68r-3jpw/GHSA-62f6-h68r-3jpw.json"
+      }
+    },
+    {
+      "package": {
+        "name": "zendframework/zendframework",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/zendframework/zendframework"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.3.0"
+            },
+            {
+              "fixed": "2.3.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.3.0",
+        "2.3.1",
+        "2.3.2",
+        "2.3.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-62f6-h68r-3jpw/GHSA-62f6-h68r-3jpw.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N"
+    }
+  ]
+}

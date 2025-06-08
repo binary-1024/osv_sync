@@ -1,0 +1,665 @@
+{
+  "id": "GHSA-w3q8-m492-4pwp",
+  "summary": "Possibility to circumvent the invitation token expiry period",
+  "details": "### Impact\nThe invites feature allows users to accept the invitation for an unlimited amount of time through the password reset functionality.\n\nWhen using the password reset functionality, the `devise_invitable` gem always accepts the pending invitation if the user has been invited as shown in this piece of code within the `devise_invitable` gem:\nhttps://github.com/scambra/devise_invitable/blob/41f58970ff76fb64382a9b9ea1bd530f7c3adab2/lib/devise_invitable/models.rb#L198\n\nThe only check done here is if the user has been invited but the code does not ensure that the pending invitation is still valid as defined by the `invite_for` expiry period as explained in the gem's documentation:\nhttps://github.com/scambra/devise_invitable#model-configuration-\n\n> `invite_for`: The period the generated invitation token is valid. After this period, the invited resource won\u2019t be able to accept the invitation. When `invite_for` is `0` (the default), the invitation won\u2019t expire.\n\nDecidim sets this configuration to `2.weeks` so this configuration should be respected:\nhttps://github.com/decidim/decidim/blob/d2d390578050772d1bdb6d731395f1afc39dcbfc/decidim-core/config/initializers/devise.rb#L134\n\nThe bug is in the `devise_invitable` gem and should be fixed there and the dependency should be upgraded in Decidim once the fix becomes available.\n\n### Patches\nUpdate `devise_invitable` to version `2.0.9` or above by running the following command:\n\n```\n$ bundle update devise_invitable\n```\n\n### Workarounds\nThe invitations can be cancelled directly from the database by running the following command from the Rails console:\n\n```\n> Decidim::User.invitation_not_accepted.update_all(invitation_token: nil)\n```\n\n### References\nOWASP ASVS V4.0.3-2.3.1\n\nThis bug has existed in the `devise_invitable` gem since this commit which was first included in the `v0.4.rc3` release of this gem:\nhttps://github.com/scambra/devise_invitable/commit/94d859c7de0829bf63f679ae5dd3cab2b866a098\n\nAll versions since then are affected.\n\nThis gem was first introduced at its version `~> 1.7.0` to the `decidim-admin` gem in this commit which was first included in the `v0.0.1.alpha3` release of Decidim:\nhttps://github.com/decidim/decidim/commit/073e60e2e4224dd81815a784002ebba30f2ebb34\n\nIt was first introduced at its version `~> 1.7.0` to the `decidim-system` gem in this commit which was also first included in the `v0.0.1.alpha3` release of Decidim:\nhttps://github.com/decidim/decidim/commit/b12800717a689c295a9ea680a38ca9f823d2c454\n\n### Credits\nThis issue was discovered in City of Helsinki's security audit against Decidim 0.27 done during September 2023. The security audit was implemented by [Deloitte Finland](https://www2.deloitte.com/fi/fi.html).",
+  "aliases": [
+    "CVE-2023-48220"
+  ],
+  "modified": "2024-02-20T19:41:46.406222Z",
+  "published": "2024-02-20T19:26:51Z",
+  "related": [
+    "CVE-2023-48220"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-02-20T18:15:50Z",
+    "cwe_ids": [
+      "CWE-672"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-20T19:26:51Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/decidim/decidim/security/advisories/GHSA-w3q8-m492-4pwp"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-48220"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/decidim/decidim/commit/073e60e2e4224dd81815a784002ebba30f2ebb34"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/decidim/decidim/commit/b12800717a689c295a9ea680a38ca9f823d2c454"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/scambra/devise_invitable/commit/94d859c7de0829bf63f679ae5dd3cab2b866a098"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/decidim/decidim"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/decidim/decidim/blob/d2d390578050772d1bdb6d731395f1afc39dcbfc/decidim-core/config/initializers/devise.rb#L134"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/decidim/decidim/releases/tag/v0.26.9"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/decidim/decidim/releases/tag/v0.27.5"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/decidim/decidim/releases/tag/v0.28.0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/scambra/devise_invitable/blob/41f58970ff76fb64382a9b9ea1bd530f7c3adab2/lib/devise_invitable/models.rb#L198"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "decidim",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/decidim"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.0.1.alpha3"
+            },
+            {
+              "fixed": "0.26.9"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.0.1",
+        "0.0.1.alpha3",
+        "0.0.1.alpha4",
+        "0.0.1.alpha5",
+        "0.0.1.alpha6",
+        "0.0.1.alpha7",
+        "0.0.1.alpha8",
+        "0.0.1.alpha9",
+        "0.0.2",
+        "0.0.3",
+        "0.0.4",
+        "0.0.5",
+        "0.0.6",
+        "0.0.7",
+        "0.0.8.1",
+        "0.1.0",
+        "0.10.0",
+        "0.10.1",
+        "0.11.0.pre1",
+        "0.11.1",
+        "0.11.2",
+        "0.12.0",
+        "0.12.0.pre",
+        "0.12.1",
+        "0.12.2",
+        "0.13.0",
+        "0.13.0.pre1",
+        "0.13.1",
+        "0.14.1",
+        "0.14.2",
+        "0.14.3",
+        "0.14.4",
+        "0.15.0",
+        "0.15.1",
+        "0.15.2",
+        "0.16.0",
+        "0.16.1",
+        "0.17.0",
+        "0.17.1",
+        "0.17.2",
+        "0.18.0",
+        "0.18.1",
+        "0.19.0",
+        "0.19.1",
+        "0.2.0",
+        "0.20.0",
+        "0.20.1",
+        "0.21.0",
+        "0.22.0",
+        "0.23.0",
+        "0.23.1",
+        "0.23.1.rc1",
+        "0.23.2",
+        "0.23.3",
+        "0.23.4",
+        "0.23.5",
+        "0.23.6",
+        "0.24.0",
+        "0.24.0.rc1",
+        "0.24.0.rc2",
+        "0.24.1",
+        "0.24.2",
+        "0.24.3",
+        "0.25.0",
+        "0.25.0.rc1",
+        "0.25.0.rc2",
+        "0.25.0.rc3",
+        "0.25.0.rc4",
+        "0.25.1",
+        "0.25.2",
+        "0.26.0",
+        "0.26.0.rc2",
+        "0.26.1",
+        "0.26.2",
+        "0.26.3",
+        "0.26.4",
+        "0.26.5",
+        "0.26.7",
+        "0.26.8",
+        "0.3.0",
+        "0.3.1",
+        "0.3.2",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.4.3",
+        "0.4.4",
+        "0.5.0",
+        "0.5.1",
+        "0.6.0",
+        "0.6.1",
+        "0.6.2",
+        "0.6.3",
+        "0.6.4",
+        "0.6.5",
+        "0.6.6",
+        "0.6.7",
+        "0.6.8",
+        "0.7.0",
+        "0.7.1",
+        "0.7.2",
+        "0.7.3",
+        "0.7.4",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.9.0",
+        "0.9.1",
+        "0.9.2",
+        "0.9.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-w3q8-m492-4pwp/GHSA-w3q8-m492-4pwp.json"
+      }
+    },
+    {
+      "package": {
+        "name": "decidim-admin",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/decidim-admin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.0.1.alpha3"
+            },
+            {
+              "fixed": "0.26.9"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.0.1",
+        "0.0.1.alpha3",
+        "0.0.1.alpha4",
+        "0.0.1.alpha5",
+        "0.0.1.alpha6",
+        "0.0.1.alpha7",
+        "0.0.1.alpha8",
+        "0.0.1.alpha9",
+        "0.0.2",
+        "0.0.3",
+        "0.0.5",
+        "0.0.6",
+        "0.0.7",
+        "0.0.8.1",
+        "0.1.0",
+        "0.10.0",
+        "0.10.1",
+        "0.11.0.pre1",
+        "0.11.1",
+        "0.11.2",
+        "0.12.0",
+        "0.12.0.pre",
+        "0.12.1",
+        "0.12.2",
+        "0.13.0",
+        "0.13.0.pre1",
+        "0.13.1",
+        "0.14.1",
+        "0.14.2",
+        "0.14.3",
+        "0.14.4",
+        "0.15.0",
+        "0.15.1",
+        "0.15.2",
+        "0.16.0",
+        "0.16.1",
+        "0.17.0",
+        "0.17.1",
+        "0.17.2",
+        "0.18.0",
+        "0.18.1",
+        "0.19.0",
+        "0.19.1",
+        "0.2.0",
+        "0.20.0",
+        "0.20.1",
+        "0.21.0",
+        "0.22.0",
+        "0.23.0",
+        "0.23.1",
+        "0.23.1.rc1",
+        "0.23.2",
+        "0.23.3",
+        "0.23.4",
+        "0.23.5",
+        "0.23.6",
+        "0.24.0",
+        "0.24.0.rc1",
+        "0.24.0.rc2",
+        "0.24.1",
+        "0.24.2",
+        "0.24.3",
+        "0.25.0",
+        "0.25.0.rc1",
+        "0.25.0.rc2",
+        "0.25.0.rc3",
+        "0.25.0.rc4",
+        "0.25.1",
+        "0.25.2",
+        "0.26.0",
+        "0.26.0.rc1",
+        "0.26.0.rc2",
+        "0.26.1",
+        "0.26.2",
+        "0.26.3",
+        "0.26.4",
+        "0.26.5",
+        "0.26.7",
+        "0.26.8",
+        "0.3.0",
+        "0.3.1",
+        "0.3.2",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.4.3",
+        "0.4.4",
+        "0.5.0",
+        "0.5.1",
+        "0.6.0",
+        "0.6.1",
+        "0.6.2",
+        "0.6.3",
+        "0.6.4",
+        "0.6.5",
+        "0.6.6",
+        "0.6.7",
+        "0.6.8",
+        "0.7.0",
+        "0.7.1",
+        "0.7.2",
+        "0.7.3",
+        "0.7.4",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.9.0",
+        "0.9.1",
+        "0.9.2",
+        "0.9.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-w3q8-m492-4pwp/GHSA-w3q8-m492-4pwp.json"
+      }
+    },
+    {
+      "package": {
+        "name": "decidim-system",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/decidim-system"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.0.1.alpha3"
+            },
+            {
+              "fixed": "0.26.9"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.0.1",
+        "0.0.1.alpha3",
+        "0.0.1.alpha4",
+        "0.0.1.alpha5",
+        "0.0.1.alpha6",
+        "0.0.1.alpha7",
+        "0.0.1.alpha8",
+        "0.0.1.alpha9",
+        "0.0.2",
+        "0.0.3",
+        "0.0.5",
+        "0.0.6",
+        "0.0.7",
+        "0.0.8.1",
+        "0.1.0",
+        "0.10.0",
+        "0.10.1",
+        "0.11.0.pre1",
+        "0.11.1",
+        "0.11.2",
+        "0.12.0",
+        "0.12.0.pre",
+        "0.12.1",
+        "0.12.2",
+        "0.13.0",
+        "0.13.0.pre1",
+        "0.13.1",
+        "0.14.1",
+        "0.14.2",
+        "0.14.3",
+        "0.14.4",
+        "0.15.0",
+        "0.15.1",
+        "0.15.2",
+        "0.16.0",
+        "0.16.1",
+        "0.17.0",
+        "0.17.1",
+        "0.17.2",
+        "0.18.0",
+        "0.18.1",
+        "0.19.0",
+        "0.19.1",
+        "0.2.0",
+        "0.20.0",
+        "0.20.1",
+        "0.21.0",
+        "0.22.0",
+        "0.23.0",
+        "0.23.1",
+        "0.23.1.rc1",
+        "0.23.2",
+        "0.23.3",
+        "0.23.4",
+        "0.23.5",
+        "0.23.6",
+        "0.24.0",
+        "0.24.0.rc1",
+        "0.24.0.rc2",
+        "0.24.1",
+        "0.24.2",
+        "0.24.3",
+        "0.25.0",
+        "0.25.0.rc1",
+        "0.25.0.rc2",
+        "0.25.0.rc3",
+        "0.25.0.rc4",
+        "0.25.1",
+        "0.25.2",
+        "0.26.0",
+        "0.26.0.rc1",
+        "0.26.0.rc2",
+        "0.26.1",
+        "0.26.2",
+        "0.26.3",
+        "0.26.4",
+        "0.26.5",
+        "0.26.7",
+        "0.26.8",
+        "0.3.0",
+        "0.3.1",
+        "0.3.2",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.4.3",
+        "0.4.4",
+        "0.5.0",
+        "0.5.1",
+        "0.6.0",
+        "0.6.1",
+        "0.6.2",
+        "0.6.3",
+        "0.6.4",
+        "0.6.5",
+        "0.6.6",
+        "0.6.7",
+        "0.6.8",
+        "0.7.0",
+        "0.7.1",
+        "0.7.2",
+        "0.7.3",
+        "0.7.4",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.9.0",
+        "0.9.1",
+        "0.9.2",
+        "0.9.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-w3q8-m492-4pwp/GHSA-w3q8-m492-4pwp.json"
+      }
+    },
+    {
+      "package": {
+        "name": "devise_invitable",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/devise_invitable"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.4.rc3"
+            },
+            {
+              "fixed": "2.0.9"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.4.rc3",
+        "0.4.rc4",
+        "0.4.rc5",
+        "0.5.0",
+        "0.5.1",
+        "0.5.2",
+        "0.5.3",
+        "0.5.4",
+        "0.5.5",
+        "0.5.6",
+        "0.5.7",
+        "0.6.0",
+        "0.6.1",
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.1.0",
+        "1.1.1",
+        "1.1.2",
+        "1.1.3",
+        "1.1.4",
+        "1.1.5",
+        "1.1.6",
+        "1.1.7",
+        "1.1.8",
+        "1.2.1",
+        "1.3.0",
+        "1.3.1",
+        "1.3.2",
+        "1.3.3",
+        "1.3.4",
+        "1.3.5",
+        "1.3.6",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2",
+        "1.5.0",
+        "1.5.1",
+        "1.5.2",
+        "1.5.3",
+        "1.5.5",
+        "1.6.0",
+        "1.6.1",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.7.3",
+        "1.7.4",
+        "1.7.5",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.0.4",
+        "2.0.5",
+        "2.0.6",
+        "2.0.7",
+        "2.0.8"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-w3q8-m492-4pwp/GHSA-w3q8-m492-4pwp.json"
+      }
+    },
+    {
+      "package": {
+        "name": "decidim",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/decidim"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.27.0"
+            },
+            {
+              "fixed": "0.27.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.27.0",
+        "0.27.1",
+        "0.27.2",
+        "0.27.3",
+        "0.27.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-w3q8-m492-4pwp/GHSA-w3q8-m492-4pwp.json"
+      }
+    },
+    {
+      "package": {
+        "name": "decidim-admin",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/decidim-admin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.27.0"
+            },
+            {
+              "fixed": "0.27.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.27.0",
+        "0.27.1",
+        "0.27.2",
+        "0.27.3",
+        "0.27.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-w3q8-m492-4pwp/GHSA-w3q8-m492-4pwp.json"
+      }
+    },
+    {
+      "package": {
+        "name": "decidim-system",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/decidim-system"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.27.0"
+            },
+            {
+              "fixed": "0.27.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.27.0",
+        "0.27.1",
+        "0.27.2",
+        "0.27.3",
+        "0.27.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-w3q8-m492-4pwp/GHSA-w3q8-m492-4pwp.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:H/I:H/A:N"
+    }
+  ]
+}

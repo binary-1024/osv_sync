@@ -1,0 +1,65 @@
+{
+  "id": "RUSTSEC-2024-0346",
+  "summary": "Incorrect usage of `#[repr(packed)]`",
+  "details": "The affected versions make unsafe memory accesses under the assumption that `#[repr(packed)]` has a guaranteed field order. \n\nThe Rust specification does not guarantee this, and https://github.com/rust-lang/rust/pull/125360 (1.80.0-beta) starts \nreordering fields of `#[repr(packed)]` structs, leading to illegal memory accesses.\n\nThe patched versions `0.9.7` and `0.10.3` use `#[repr(C, packed)]`, which guarantees field order.",
+  "modified": "2024-07-08T17:05:42Z",
+  "published": "2024-07-01T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/zerovec-derive"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2024-0346.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "zerovec-derive",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/zerovec-derive"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.9.7"
+            },
+            {
+              "introduced": "0.10.0"
+            },
+            {
+              "fixed": "0.10.3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": null,
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2024-0346.json",
+        "categories": [
+          "memory-corruption"
+        ]
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

@@ -1,0 +1,596 @@
+{
+  "id": "GHSA-v65r-p3vv-jjfv",
+  "summary": "TinyMCE mXSS vulnerability in undo/redo, getContent API, resetContent API, and Autosave plugin",
+  "details": "### Impact\nA [mutation cross-site scripting](https://researchgate.net/publication/266654651_mXSS_attacks_Attacking_well-secured_web-applications_by_using_innerHTML_mutations) (mXSS) vulnerability was discovered in TinyMCE\u2019s core undo and redo functionality. When a carefully-crafted HTML snippet passes the XSS sanitisation layer, it is manipulated as a string by internal trimming functions before being stored in the undo stack. If the HTML snippet is restored from the undo stack, the combination of the string manipulation and reparative parsing by either the browser's native [DOMParser API](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser) (TinyMCE 6) or the [SaxParser API](https://www.tiny.cloud/docs/api/tinymce.html/tinymce.html.saxparser/) (TinyMCE 5) mutates the HTML maliciously, allowing an XSS payload to be executed.\n\u200bThis vulnerability also impacts these related TinyMCE APIs and plugins:\u200b\n* [`tinymce.Editor.getContent({ format: 'raw' })`](https://tiny.cloud/docs/tinymce/6/apis/tinymce.editor/#getContent)\n* [`tinymce.Editor.resetContent()`](https://tiny.cloud/docs/tinymce/6/apis/tinymce.editor/#resetContent)\n* [Autosave Plugin](https://tiny.cloud/docs/tinymce/6/autosave/)\n\n### Patches\nThis vulnerability has been patched in TinyMCE 5.10.8 and TinyMCE 6.7.1 by ensuring HTML is trimmed using node-level manipulation instead of string manipulation.\n\n### Fix\nTo avoid this vulnerability:\n* Upgrade to TinyMCE 5.10.8 or higher for TinyMCE 5.x.\n* Upgrade to TinyMCE 6.7.1 or higher for TinyMCE 6.x.\n\n### Acknowledgements\nTiny Technologies would like to thank Masato Kinugawa of [Cure53](https://cure53.de/) for discovering this vulnerability.\n\n### References\n* [TinyMCE 5.10.8 Release Notes](https://tiny.cloud/docs/release-notes/release-notes5108/)\n* [TinyMCE 6.7.1 Release Notes](https://tiny.cloud/docs/tinymce/6/6.7.1-release-notes/)\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Email us at <infosec@tiny.cloud>\n* Open an issue in the [TinyMCE repo](https://github.com/tinymce/tinymce/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)",
+  "aliases": [
+    "CVE-2023-45818"
+  ],
+  "modified": "2024-02-21T06:01:15.767825Z",
+  "published": "2023-10-19T16:36:29Z",
+  "related": [
+    "CVE-2023-45818"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2023-10-19T22:15:10Z",
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-10-19T16:36:29Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tinymce/tinymce/security/advisories/GHSA-v65r-p3vv-jjfv"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-45818"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tinymce/tinymce"
+    },
+    {
+      "type": "WEB",
+      "url": "https://researchgate.net/publication/266654651_mXSS_attacks_Attacking_well-secured_web-applications_by_using_innerHTML_mutations"
+    },
+    {
+      "type": "WEB",
+      "url": "https://tiny.cloud/docs/release-notes/release-notes5108/#securityfixes"
+    },
+    {
+      "type": "WEB",
+      "url": "https://tiny.cloud/docs/tinymce/6/6.7.1-release-notes/#security-fixes"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.tiny.cloud/docs/api/tinymce.html/tinymce.html.saxparser"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "tinymce",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/tinymce"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "6.0.0"
+            },
+            {
+              "fixed": "6.7.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v65r-p3vv-jjfv/GHSA-v65r-p3vv-jjfv.json"
+      }
+    },
+    {
+      "package": {
+        "name": "TinyMCE",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/TinyMCE"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "6.0.0"
+            },
+            {
+              "fixed": "6.7.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "6.0.0",
+        "6.0.1",
+        "6.0.2",
+        "6.0.3",
+        "6.1.0",
+        "6.1.1",
+        "6.1.2",
+        "6.2.0",
+        "6.3.0",
+        "6.3.1",
+        "6.3.2",
+        "6.4.0",
+        "6.4.1",
+        "6.4.2",
+        "6.5.0",
+        "6.5.1",
+        "6.6.2",
+        "6.7.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v65r-p3vv-jjfv/GHSA-v65r-p3vv-jjfv.json"
+      }
+    },
+    {
+      "package": {
+        "name": "tinymce/tinymce",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/tinymce/tinymce"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "6.0.0"
+            },
+            {
+              "fixed": "6.7.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "6.0.0",
+        "6.0.1",
+        "6.0.2",
+        "6.0.3",
+        "6.1.0",
+        "6.1.1",
+        "6.1.2",
+        "6.2.0",
+        "6.3.0",
+        "6.3.1",
+        "6.3.2",
+        "6.4.0",
+        "6.4.1",
+        "6.4.2",
+        "6.5.0",
+        "6.5.1",
+        "6.6.0",
+        "6.6.1",
+        "6.6.2",
+        "6.7.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v65r-p3vv-jjfv/GHSA-v65r-p3vv-jjfv.json"
+      }
+    },
+    {
+      "package": {
+        "name": "tinymce",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/tinymce"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.8"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v65r-p3vv-jjfv/GHSA-v65r-p3vv-jjfv.json"
+      }
+    },
+    {
+      "package": {
+        "name": "TinyMCE",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/TinyMCE"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.8"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.4.3.2",
+        "3.4.4",
+        "3.4.5",
+        "3.4.7",
+        "3.5.0",
+        "3.5.0.1",
+        "3.5.1",
+        "3.5.1.1",
+        "3.5.2",
+        "3.5.3",
+        "3.5.4",
+        "3.5.4.1",
+        "3.5.5",
+        "3.5.6",
+        "3.5.7",
+        "3.5.8",
+        "4.0.0",
+        "4.0.1",
+        "4.0.10",
+        "4.0.11",
+        "4.0.13",
+        "4.0.14",
+        "4.0.15",
+        "4.0.16",
+        "4.0.17",
+        "4.0.18",
+        "4.0.19",
+        "4.0.2",
+        "4.0.20",
+        "4.0.21",
+        "4.0.22",
+        "4.0.23",
+        "4.0.24",
+        "4.0.25",
+        "4.0.26",
+        "4.0.27",
+        "4.0.28",
+        "4.0.4",
+        "4.0.5",
+        "4.0.6",
+        "4.0.8",
+        "4.0.9",
+        "4.1.0",
+        "4.1.1",
+        "4.1.10",
+        "4.1.2",
+        "4.1.3",
+        "4.1.4",
+        "4.1.5",
+        "4.1.6",
+        "4.1.7",
+        "4.1.8",
+        "4.1.9",
+        "4.2.0",
+        "4.2.1",
+        "4.2.2",
+        "4.2.3",
+        "4.2.4",
+        "4.2.5",
+        "4.2.6",
+        "4.2.7",
+        "4.2.8",
+        "4.3.0",
+        "4.3.1",
+        "4.3.10",
+        "4.3.11",
+        "4.3.12",
+        "4.3.13",
+        "4.3.2",
+        "4.3.3",
+        "4.3.4",
+        "4.3.6",
+        "4.3.7",
+        "4.3.8",
+        "4.3.9",
+        "4.4.0",
+        "4.4.1",
+        "4.4.2",
+        "4.4.3",
+        "4.5.0",
+        "4.5.1",
+        "4.5.2",
+        "4.5.3",
+        "4.5.4",
+        "4.5.5",
+        "4.5.6",
+        "4.5.7",
+        "4.5.8",
+        "4.6.0",
+        "4.6.1",
+        "4.6.2",
+        "4.6.3",
+        "4.6.4",
+        "4.6.5",
+        "4.6.6",
+        "4.6.7",
+        "4.7.0",
+        "4.7.10",
+        "4.7.11",
+        "4.7.12",
+        "4.7.13",
+        "4.7.3",
+        "4.7.4",
+        "4.7.5",
+        "4.7.6",
+        "4.7.7",
+        "4.7.8",
+        "4.7.9",
+        "4.8.0",
+        "4.8.1",
+        "4.8.2",
+        "4.8.3",
+        "4.8.4",
+        "4.8.5",
+        "4.9.0",
+        "4.9.1",
+        "4.9.10",
+        "4.9.11",
+        "4.9.2",
+        "4.9.3",
+        "4.9.4",
+        "4.9.5",
+        "4.9.6",
+        "4.9.7",
+        "4.9.8",
+        "4.9.9",
+        "5.0.0",
+        "5.0.1",
+        "5.0.10",
+        "5.0.11",
+        "5.0.12",
+        "5.0.13",
+        "5.0.14",
+        "5.0.15",
+        "5.0.16",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "5.0.6",
+        "5.0.7",
+        "5.0.8",
+        "5.0.9",
+        "5.1.0",
+        "5.1.1",
+        "5.1.2",
+        "5.1.3",
+        "5.1.4",
+        "5.1.5",
+        "5.1.6",
+        "5.10.0",
+        "5.10.1",
+        "5.10.2",
+        "5.10.3",
+        "5.10.4",
+        "5.10.5",
+        "5.10.6",
+        "5.10.7",
+        "5.2.0",
+        "5.2.1",
+        "5.2.2",
+        "5.3.0",
+        "5.3.1",
+        "5.3.2",
+        "5.4.0",
+        "5.4.1",
+        "5.4.2",
+        "5.5.0",
+        "5.5.1",
+        "5.6.0",
+        "5.6.1",
+        "5.6.2",
+        "5.7.0",
+        "5.7.1",
+        "5.8.0",
+        "5.8.1",
+        "5.8.2",
+        "5.9.0",
+        "5.9.1",
+        "5.9.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v65r-p3vv-jjfv/GHSA-v65r-p3vv-jjfv.json"
+      }
+    },
+    {
+      "package": {
+        "name": "tinymce/tinymce",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/tinymce/tinymce"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.8"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0",
+        "4.0.1",
+        "4.0.10",
+        "4.0.11",
+        "4.0.12",
+        "4.0.13",
+        "4.0.14",
+        "4.0.15",
+        "4.0.16",
+        "4.0.17",
+        "4.0.18",
+        "4.0.19",
+        "4.0.2",
+        "4.0.20",
+        "4.0.21",
+        "4.0.22",
+        "4.0.23",
+        "4.0.24",
+        "4.0.25",
+        "4.0.26",
+        "4.0.27",
+        "4.0.28",
+        "4.0.3",
+        "4.0.4",
+        "4.0.5",
+        "4.0.6",
+        "4.0.7",
+        "4.0.8",
+        "4.0.9",
+        "4.1.0",
+        "4.1.1",
+        "4.1.10",
+        "4.1.2",
+        "4.1.3",
+        "4.1.4",
+        "4.1.5",
+        "4.1.6",
+        "4.1.7",
+        "4.1.8",
+        "4.1.9",
+        "4.2.0",
+        "4.2.1",
+        "4.2.2",
+        "4.2.3",
+        "4.2.4",
+        "4.2.5",
+        "4.2.6",
+        "4.2.7",
+        "4.2.8",
+        "4.3.0",
+        "4.3.1",
+        "4.3.10",
+        "4.3.11",
+        "4.3.12",
+        "4.3.13",
+        "4.3.2",
+        "4.3.3",
+        "4.3.4",
+        "4.3.6",
+        "4.3.7",
+        "4.3.8",
+        "4.3.9",
+        "4.4.0",
+        "4.4.1",
+        "4.4.2",
+        "4.4.3",
+        "4.5.0",
+        "4.5.1",
+        "4.5.12",
+        "4.5.2",
+        "4.5.3",
+        "4.5.4",
+        "4.5.5",
+        "4.5.6",
+        "4.5.7",
+        "4.5.8",
+        "4.5.9",
+        "4.6.0",
+        "4.6.1",
+        "4.6.2",
+        "4.6.3",
+        "4.6.4",
+        "4.6.5",
+        "4.6.6",
+        "4.6.7",
+        "4.7.0",
+        "4.7.1",
+        "4.7.10",
+        "4.7.11",
+        "4.7.12",
+        "4.7.13",
+        "4.7.2",
+        "4.7.3",
+        "4.7.4",
+        "4.7.5",
+        "4.7.6",
+        "4.7.7",
+        "4.7.8",
+        "4.7.9",
+        "4.8.0",
+        "4.8.1",
+        "4.8.2",
+        "4.8.3",
+        "4.8.4",
+        "4.8.5",
+        "4.9.0",
+        "4.9.1",
+        "4.9.10",
+        "4.9.11",
+        "4.9.2",
+        "4.9.3",
+        "4.9.4",
+        "4.9.5",
+        "4.9.6",
+        "4.9.7",
+        "4.9.8",
+        "4.9.9",
+        "5.0.0",
+        "5.0.1",
+        "5.0.10",
+        "5.0.11",
+        "5.0.12",
+        "5.0.13",
+        "5.0.14",
+        "5.0.15",
+        "5.0.16",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "5.0.6",
+        "5.0.7",
+        "5.0.8",
+        "5.0.9",
+        "5.1.0",
+        "5.1.1",
+        "5.1.2",
+        "5.1.3",
+        "5.1.4",
+        "5.1.5",
+        "5.1.6",
+        "5.10.0",
+        "5.10.1",
+        "5.10.2",
+        "5.10.3",
+        "5.10.4",
+        "5.10.5",
+        "5.10.6",
+        "5.10.7",
+        "5.2.0",
+        "5.2.1",
+        "5.2.2",
+        "5.3.0",
+        "5.3.1",
+        "5.3.2",
+        "5.4.0",
+        "5.4.1",
+        "5.4.2",
+        "5.5.0",
+        "5.5.1",
+        "5.6.0",
+        "5.6.1",
+        "5.6.2",
+        "5.7.0",
+        "5.7.1",
+        "5.8.0",
+        "5.8.1",
+        "5.8.2",
+        "5.9.0",
+        "5.9.1",
+        "5.9.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v65r-p3vv-jjfv/GHSA-v65r-p3vv-jjfv.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

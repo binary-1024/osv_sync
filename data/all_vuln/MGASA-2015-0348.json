@@ -1,0 +1,98 @@
+{
+  "id": "MGASA-2015-0348",
+  "summary": "Updated ntp packages fix security vulnerabilities",
+  "details": "Updated ntp packages fix security vulnerability:\n\nA flaw was found in the way ntpd processed certain remote configuration\npackets. An attacker could use a specially crafted package to cause ntpd to\ncrash if the attacker had authenticated access to remote ntpd configuration\n(CVE-2015-5146).\n\nIt was found that ntpd could crash due to an uninitialized variable when\nprocessing malformed logconfig configuration commands, for example,\nntpq -c \":config logconfig a\" (CVE-2015-5194).\n\nIt was found that ntpd exits with a segmentation fault when a statistics\ntype that was not enabled during compilation (e.g. timingstats) is\nreferenced by the statistics or filegen configuration command, for example,\nntpq -c ':config statistics timingstats'\nntpq -c ':config filegen timingstats' (CVE-2015-5195).\n\nIt was found that the :config command can be used to set the pidfile and\ndriftfile paths without any restrictions. A remote attacker could use\nthis flaw to overwrite a file on the file system with a file containing\nthe pid of the ntpd process (immediately) or the current estimated drift\nof the system clock (in hourly intervals). For example,\nntpq -c ':config pidfile /tmp/ntp.pid'\nntpq -c ':config driftfile /tmp/ntp.drift' (CVE-2015-5196).\n\nIt was discovered that sntp would hang in an infinite loop when a\ncrafted NTP packet was received, related to the conversion of the\nprecision value in the packet to double (CVE-2015-5219).\n",
+  "modified": "2015-09-08T17:18:17Z",
+  "published": "2015-09-08T17:55:59Z",
+  "related": [
+    "CVE-2015-5146",
+    "CVE-2015-5194",
+    "CVE-2015-5195",
+    "CVE-2015-5196",
+    "CVE-2015-5219"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2015-0348.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=16322"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://support.ntp.org/bin/view/Main/SecurityNotice#June_2015_NTP_Security_Vulnerabi"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://openwall.com/lists/oss-security/2015/08/25/3"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ntp",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.6p5-15.6.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0348.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "ntp",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.6p5-24.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0348.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,1252 @@
+{
+  "id": "SUSE-SU-2017:1360-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 12 SP1 kernel was updated to 3.12.74 to receive various security and bugfixes.\n\nNotable new/improved features:\n- Improved support for Hyper-V\n- Support for the tcp_westwood TCP scheduling algorithm\n\nThe following security bugs were fixed:\n\n- CVE-2017-8106: The handle_invept function in arch/x86/kvm/vmx.c in the Linux kernel allowed privileged KVM guest OS users to cause a denial of service (NULL pointer dereference and host OS crash) via a single-context INVEPT instruction with a NULL EPT pointer (bsc#1035877).\n- CVE-2017-6951: The keyring_search_aux function in security/keys/keyring.c in the Linux kernel allowed local users to cause a denial of service (NULL pointer dereference and OOPS) via a request_key system call for the 'dead' type. (bsc#1029850).\n- CVE-2017-2647: The KEYS subsystem in the Linux kernel allowed local users to gain privileges or cause a denial of service (NULL pointer dereference and system crash) via vectors involving a NULL value for a certain match field, related to the keyring_search_iterator function in keyring.c. (bsc#1030593)\n- CVE-2016-9604: This fixes handling of keyrings starting with '.' in KEYCTL_JOIN_SESSION_KEYRING, which could have allowed local users to manipulate privileged keyrings (bsc#1035576)\n- CVE-2017-7616: Incorrect error handling in the set_mempolicy and mbind compat syscalls in mm/mempolicy.c in the Linux kernel allowed local users to obtain sensitive information from uninitialized stack data by triggering failure of a certain bitmap operation. (bnc#1033336).\n- CVE-2017-7645: The NFSv2/NFSv3 server in the nfsd subsystem in the Linux kernel allowed remote attackers to cause a denial of service (system crash) via a long RPC reply, related to net/sunrpc/svc.c, fs/nfsd/nfs3xdr.c, and fs/nfsd/nfsxdr.c. (bsc#1034670).\n- CVE-2017-7308: The packet_set_ring function in net/packet/af_packet.c in the Linux kernel did not properly validate certain block-size data, which allowed local users to cause a denial of service (overflow) or possibly have unspecified other impact via crafted system calls (bnc#1031579)\n- CVE-2017-2671: The ping_unhash function in net/ipv4/ping.c in the Linux kernel was  too late in obtaining a certain lock and consequently could not ensure that disconnect function calls are safe, which allowed local users to cause a denial of service (panic) by leveraging access to the protocol value of IPPROTO_ICMP in a socket system call (bnc#1031003)\n- CVE-2017-7294: The vmw_surface_define_ioctl function in drivers/gpu/drm/vmwgfx/vmwgfx_surface.c in the Linux kernel did not validate addition of certain levels data, which allowed local users to trigger an integer overflow and out-of-bounds write, and cause a denial of service (system hang or crash) or possibly gain privileges, via a crafted ioctl call for a /dev/dri/renderD* device (bnc#1031440)\n- CVE-2017-7261: The vmw_surface_define_ioctl function in drivers/gpu/drm/vmwgfx/vmwgfx_surface.c in the Linux kernel did not check for a zero value of certain levels data, which allowed local users to cause a denial of service (ZERO_SIZE_PTR dereference, and GPF and possibly panic) via a crafted ioctl call for a /dev/dri/renderD* device (bnc#1031052)\n- CVE-2017-7187: The sg_ioctl function in drivers/scsi/sg.c in the Linux kernel allowed local users to cause a denial of service (stack-based buffer overflow) or possibly have unspecified other impact via a large command size in an SG_NEXT_CMD_LEN ioctl call, leading to out-of-bounds write access in the sg_write function (bnc#1030213)\n- CVE-2016-9588: arch/x86/kvm/vmx.c in the Linux kernel mismanaged the #BP and #OF exceptions, which allowed guest OS users to cause a denial of service (guest OS crash) by declining to handle an exception thrown by an L2 guest (bsc#1015703).\n- CVE-2017-5669: The do_shmat function in ipc/shm.c in the Linux kernel did not restrict the address calculated by a certain rounding operation, which allowed local users to map page zero, and consequently bypass a protection mechanism that exists for the mmap system call, by making crafted shmget and shmat system calls in a privileged context (bnc#1026914).\n- CVE-2016-10200: Race condition in the L2TPv3 IP Encapsulation feature in the Linux kernel allowed local users to gain privileges or cause a denial of service (use-after-free) by making multiple bind system calls without properly ascertaining whether a socket has the SOCK_ZAPPED status, related to net/l2tp/l2tp_ip.c and net/l2tp/l2tp_ip6.c (bnc#1028415)\n- CVE-2016-10208: The ext4_fill_super function in fs/ext4/super.c in the Linux kernel did not properly validate meta block groups, which allowed physically proximate attackers to cause a denial of service (out-of-bounds read and system crash) via a crafted ext4 image (bnc#1023377).\n- CVE-2017-5897: The ip6gre_err function in net/ipv6/ip6_gre.c in the Linux kernel allowed remote attackers to have unspecified impact via vectors involving GRE flags in an IPv6 packet, which trigger an out-of-bounds access (bsc#1023762).\n- CVE-2017-5986: A race condition in the sctp_wait_for_sndbuf function in net/sctp/socket.c in the Linux kernel allowed local users to cause a denial of service (assertion failure and panic) via a multithreaded application that peels off an association in a certain buffer-full state (bsc#1025235).\n- CVE-2017-6074: The dccp_rcv_state_process function in net/dccp/input.c in the Linux kernel mishandled DCCP_PKT_REQUEST packet data structures in the LISTEN state, which allowed local users to obtain root privileges or cause a denial of service (double free) via an application that made an IPV6_RECVPKTINFO setsockopt system call (bnc#1026024)\n- CVE-2016-9191: The cgroup offline implementation in the Linux kernel mishandled certain drain operations, which allowed local users to cause a denial of service (system hang) by leveraging access to a container environment for executing a crafted application (bnc#1008842)\n- CVE-2017-6348: The hashbin_delete function in net/irda/irqueue.c in the Linux kernel improperly managed lock dropping, which allowed local users to cause a denial of service (deadlock) via crafted operations on IrDA devices (bnc#1027178).\n- CVE-2016-10044: The aio_mount function in fs/aio.c in the Linux kernel did not properly restrict execute access, which made it easier for local users to bypass intended SELinux W^X policy restrictions, and consequently gain privileges, via an io_setup system call (bnc#1023992).\n- CVE-2016-3070: The trace_writeback_dirty_page implementation in include/trace/events/writeback.h in the Linux kernel improperly interacts with mm/migrate.c, which allowed local users to cause a denial of service (NULL pointer dereference and system crash) or possibly have unspecified other impact by triggering a certain page move (bnc#979215).\n- CVE-2016-5243: The tipc_nl_compat_link_dump function in net/tipc/netlink_compat.c in the Linux kernel did not properly copy a certain string, which allowed local users to obtain sensitive information from kernel stack memory by reading a Netlink message (bnc#983212).\n- CVE-2017-6345: The LLC subsystem in the Linux kernel did not ensure that a certain destructor exists in required circumstances, which allowed local users to cause a denial of service (BUG_ON) or possibly have unspecified other impact via crafted system calls (bnc#1027190)\n- CVE-2017-6346: Race condition in net/packet/af_packet.c in the Linux kernel allowed local users to cause a denial of service (use-after-free) or possibly have unspecified other impact via a multithreaded application that made PACKET_FANOUT setsockopt system calls (bnc#1027189)\n- CVE-2017-6353: net/sctp/socket.c in the Linux kernel did not properly restrict association peel-off operations during certain wait states, which allowed local users to cause a denial of service (invalid unlock and double free) via a multithreaded application. NOTE: this vulnerability exists because of an incorrect fix for CVE-2017-5986 (bnc#1027066)\n- CVE-2017-5986: Race condition in the sctp_wait_for_sndbuf function in net/sctp/socket.c in the Linux kernel allowed local users to cause a denial of service (assertion failure and panic) via a multithreaded application that peels off an association in a certain buffer-full state (bsc#1025235).\n- CVE-2017-6214: The tcp_splice_read function in net/ipv4/tcp.c in the Linux kernel allowed remote attackers to cause a denial of service (infinite loop and soft lockup) via vectors involving a TCP packet with the URG flag (bnc#1026722)\n- CVE-2016-2117: The atl2_probe function in drivers/net/ethernet/atheros/atlx/atl2.c in the Linux kernel incorrectly enables scatter/gather I/O, which allowed remote attackers to obtain sensitive information from kernel memory by reading packet data (bnc#968697)\n- CVE-2015-1350: The VFS subsystem in the Linux kernel provided an incomplete set of requirements for setattr operations that underspecifies removing extended privilege attributes, which allowed local users to cause a denial of service (capability stripping) via a failed invocation of a system call, as demonstrated by using chown to remove a capability from the ping or Wireshark dumpcap program (bsc#914939).\n- CVE-2016-7117: Use-after-free vulnerability in the __sys_recvmmsg function in net/socket.c in the Linux kernel allowed remote attackers to execute arbitrary code via vectors involving a recvmmsg system call that is mishandled during error processing (bsc#1003077).\n\nThe following non-security bugs were fixed:\n\n- ACPI / APEI: Fix NMI notification handling (bsc#917630).\n- arch: Mass conversion of smp_mb__*() (bsc#1020795).\n- asm-generic: add __smp_xxx wrappers (bsc#1020795).\n- block: remove struct request buffer member (bsc#1020795).\n- block: submit_bio_wait() conversions (bsc#1020795).\n- bonding: Advertize vxlan offload features when supported (bsc#1009682).\n- bonding: handle more gso types (bsc#1009682).\n- bonding: use the correct ether type for alb (bsc#1028595).\n- btrfs: allow unlink to exceed subvolume quota (bsc#1015821).\n- btrfs: Change qgroup_meta_rsv to 64bit (bsc#1015821).\n- btrfs: fix btrfs_compat_ioctl failures on non-compat ioctls (bsc#1018100).\n- btrfs: make file clone aware of fatal signals (bsc#1015787).\n- btrfs: qgroups: Retry after commit on getting EDQUOT (bsc#1015821).\n- cancel the setfilesize transation when io error happen (bsc#1028648).\n- cgroup: remove stray references to css_id (bsc#1020795).\n- cpuidle: powernv/pseries: Auto-promotion of snooze to deeper idle state (bnc#1023164).\n- dm: add era target (bsc#1020795).\n- dm: allow remove to be deferred (bsc#1020795).\n- dm bitset: only flush the current word if it has been dirtied (bsc#1020795).\n- dm btree: add dm_btree_find_lowest_key (bsc#1020795).\n- dm cache: actually resize cache (bsc#1020795).\n- dm cache: add block sizes and total cache blocks to status output (bsc#1020795).\n- dm cache: add cache block invalidation support (bsc#1020795).\n- dm cache: add passthrough mode (bsc#1020795).\n- dm cache: add policy name to status output (bsc#1020795).\n- dm cache: add remove_cblock method to policy interface (bsc#1020795).\n- dm cache: be much more aggressive about promoting writes to discarded blocks (bsc#1020795).\n- dm cache: cache shrinking support (bsc#1020795).\n- dm cache: do not add migration to completed list before unhooking bio (bsc#1020795).\n- dm cache: fix a lock-inversion (bsc#1020795).\n- dm cache: fix truncation bug when mapping I/O to more than 2TB fast device (bsc#1020795).\n- dm cache: fix writethrough mode quiescing in cache_map (bsc#1020795).\n- dm cache: improve efficiency of quiescing flag management (bsc#1020795).\n- dm cache: io destined for the cache device can now serve as tick bios (bsc#1020795).\n- dm cache: log error message if dm_kcopyd_copy() fails (bsc#1020795).\n- dm cache metadata: check the metadata version when reading the superblock (bsc#1020795).\n- dm cache metadata: return bool from __superblock_all_zeroes (bsc#1020795).\n- dm cache: move hook_info into common portion of per_bio_data structure (bsc#1020795).\n- dm cache: optimize commit_if_needed (bsc#1020795).\n- dm cache policy mq: a few small fixes (bsc#1020795).\n- dm cache policy mq: fix promotions to occur as expected (bsc#1020795).\n- dm cache policy mq: implement writeback_work() and mq_{set,clear}_dirty() (bsc#1020795).\n- dm cache policy mq: introduce three promotion threshold tunables (bsc#1020795).\n- dm cache policy mq: protect residency method with existing mutex (bsc#1020795).\n- dm cache policy mq: reduce memory requirements (bsc#1020795).\n- dm cache policy mq: use list_del_init instead of list_del + INIT_LIST_HEAD (bsc#1020795).\n- dm cache policy: remove return from void policy_remove_mapping (bsc#1020795).\n- dm cache: promotion optimisation for writes (bsc#1020795).\n- dm cache: resolve small nits and improve Documentation (bsc#1020795).\n- dm cache: return -EINVAL if the user specifies unknown cache policy (bsc#1020795).\n- dm cache: use cell_defer() boolean argument consistently (bsc#1020795).\n- dm: change sector_count member in clone_info from sector_t to unsigned (bsc#1020795).\n- dm crypt: add TCW IV mode for old CBC TCRYPT containers (bsc#1020795).\n- dm crypt: properly handle extra key string in initialization (bsc#1020795).\n- dm delay: use per-bio data instead of a mempool and slab cache (bsc#1020795).\n- dm: fix Kconfig indentation (bsc#1020795).\n- dm: fix Kconfig menu indentation (bsc#1020795).\n- dm: make dm_table_alloc_md_mempools static (bsc#1020795).\n- dm mpath: do not call pg_init when it is already running (bsc#1020795).\n- dm mpath: fix lock order inconsistency in multipath_ioctl (bsc#1020795).\n- dm mpath: print more useful warnings in multipath_message() (bsc#1020795).\n- dm mpath: push back requests instead of queueing (bsc#1020795).\n- dm mpath: really fix lockdep warning (bsc#1020795).\n- dm mpath: reduce memory pressure when requeuing (bsc#1020795).\n- dm mpath: remove extra nesting in map function (bsc#1020795).\n- dm mpath: remove map_io() (bsc#1020795).\n- dm mpath: remove process_queued_ios() (bsc#1020795).\n- dm mpath: requeue I/O during pg_init (bsc#1020795).\n- dm persistent data: cleanup dm-thin specific references in text (bsc#1020795).\n- dm snapshot: call destroy_work_on_stack() to pair with INIT_WORK_ONSTACK() (bsc#1020795).\n- dm snapshot: fix metadata corruption (bsc#1020795).\n- dm snapshot: prepare for switch to using dm-bufio (bsc#1020795).\n- dm snapshot: use dm-bufio (bsc#1020795).\n- dm snapshot: use dm-bufio prefetch (bsc#1020795).\n- dm snapshot: use GFP_KERNEL when initializing exceptions (bsc#1020795).\n- dm space map disk: optimise sm_disk_dec_block (bsc#1020795).\n- dm space map metadata: limit errors in sm_metadata_new_block (bsc#1020795).\n- dm: stop using bi_private (bsc#1020795).\n- dm table: add dm_table_run_md_queue_async (bsc#1020795).\n- dm table: print error on preresume failure (bsc#1020795).\n- dm table: remove unused buggy code that extends the targets array (bsc#1020795).\n- dm thin: add error_if_no_space feature (bsc#1020795).\n- dm thin: add mappings to end of prepared_* lists (bsc#1020795).\n- dm thin: add 'no_space_timeout' dm-thin-pool module param (bsc#1020795).\n- dm thin: add timeout to stop out-of-data-space mode holding IO forever (bsc#1020795).\n- dm thin: allow metadata commit if pool is in PM_OUT_OF_DATA_SPACE mode (bsc#1020795).\n- dm thin: allow metadata space larger than supported to go unused (bsc#1020795).\n- dm thin: cleanup and improve no space handling (bsc#1020795).\n- dm thin: eliminate the no_free_space flag (bsc#1020795).\n- dm thin: ensure user takes action to validate data and metadata consistency (bsc#1020795).\n- dm thin: factor out check_low_water_mark and use bools (bsc#1020795).\n- dm thin: fix deadlock in __requeue_bio_list (bsc#1020795).\n- dm thin: fix noflush suspend IO queueing (bsc#1020795).\n- dm thin: fix out of data space handling (bsc#1020795).\n- dm thin: fix pool feature parsing (bsc#1020795).\n- dm thin: fix rcu_read_lock being held in code that can sleep (bsc#1020795).\n- dm thin: handle metadata failures more consistently (bsc#1020795).\n- dm thin: irqsave must always be used with the pool->lock spinlock (bsc#1020795).\n- dm thin: log info when growing the data or metadata device (bsc#1020795).\n- dm thin: requeue bios to DM core if no_free_space and in read-only mode (bsc#1020795).\n- dm thin: return error from alloc_data_block if pool is not in write mode (bsc#1020795).\n- dm thin: simplify pool_is_congested (bsc#1020795).\n- dm thin: sort the per thin deferred bios using an rb_tree (bsc#1020795).\n- dm thin: synchronize the pool mode during suspend (bsc#1020795).\n- dm thin: use bool rather than unsigned for flags in structures (bsc#1020795).\n- dm thin: use INIT_WORK_ONSTACK in noflush_work to avoid ODEBUG warning (bsc#1020795).\n- dm thin: use per thin device deferred bio lists (bsc#1020795).\n- dm: use RCU_INIT_POINTER instead of rcu_assign_pointer in __unbind (bsc#1020795).\n- drm/i915: relax uncritical udelay_range() (bsc#1038261).\n- ether: add loopback type ETH_P_LOOPBACK (bsc#1028595).\n- ext4: fix bh leak on error paths in ext4_rename() and ext4_cross_rename() (bsc#1012985).\n- ext4: fix fencepost in s_first_meta_bg validation (bsc#1029986).\n- ext4: mark inode dirty after converting inline directory (bsc#1012985).\n- ftrace: Make ftrace_location_range() global (FATE#322421).\n- HID: usbhid: improve handling of Clear-Halt and reset (bsc#1031080).\n- hv: util: catch allocation errors\n- hv: utils: use memdup_user in hvt_op_write\n- hwrng: virtio - ensure reads happen after successful probe (bsc#954763 bsc#1032344).\n- i40e: avoid null pointer dereference (bsc#922853).\n- i40e/i40evf: Break up xmit_descriptor_count from maybe_stop_tx (bsc#985561).\n- i40e/i40evf: Limit TSO to 7 descriptors for payload instead of 8 per packet (bsc#985561).\n- i40e/i40evf: Rewrite logic for 8 descriptor per packet check (bsc#985561).\n- i40e: Impose a lower limit on gso size (bsc#985561).\n- i40e: Limit TX descriptor count in cases where frag size is greater than 16K (bsc#985561).\n- iommu/vt-d: Flush old iommu caches for kdump when the device gets context mapped (bsc#1023824).\n- iommu/vt-d: Tylersburg isoch identity map check is done too late (bsc#1032125).\n- ipv6: make ECMP route replacement less greedy (bsc#930399).\n- kabi: hide changes in struct sk_buff (bsc#1009682).\n- KABI: Hide new include in arch/powerpc/kernel/process.c (fate#322421).\n- kABI: mask struct xfs_icdinode change (bsc#1024788).\n- kABI: protect struct inet6_dev (kabi).\n- kABI: protect struct iscsi_conn (bsc#103470).\n- kABI: protect struct xfs_buftarg and struct xfs_mount (bsc#1024508).\n- kABI: restore can_rx_register parameters (kabi).\n- kernel/watchdog: use nmi registers snapshot in hardlockup handler (bsc#940946, bsc#937444).\n- kgr: Mark eeh_event_handler() kthread safe using a timeout (bsc#1031662).\n- kgr/module: make a taint flag module-specific\n- kgr: remove unneeded kgr_needs_lazy_migration() s390x definition\n- l2tp: fix address test in __l2tp_ip6_bind_lookup() (bsc#1028415).\n- l2tp: fix lookup for sockets not bound to a device in l2tp_ip (bsc#1028415).\n- l2tp: fix racy socket lookup in l2tp_ip and l2tp_ip6 bind() (bsc#1028415).\n- l2tp: hold socket before dropping lock in l2tp_ip{, 6}_recv() (bsc#1028415).\n- l2tp: hold tunnel socket when handling control frames in l2tp_ip and l2tp_ip6 (bsc#1028415).\n- l2tp: lock socket before checking flags in connect() (bsc#1028415).\n- livepatch: Allow architectures to specify an alternate ftrace location (FATE#322421).\n- locking/semaphore: Add down_interruptible_timeout() (bsc#1031662).\n- md: avoid oops on unload if some process is in poll or select (bsc#1020795).\n- md: Convert use of typedef ctl_table to struct ctl_table (bsc#1020795).\n- md: ensure metadata is writen after raid level change (bsc#1020795).\n- md linear: fix a race between linear_add() and linear_congested() (bsc#1018446).\n- md: md_clear_badblocks should return an error code on failure (bsc#1020795).\n- md: refuse to change shape of array if it is active but read-only (bsc#1020795).\n- megaraid_sas: add missing curly braces in ioctl handler (bsc#1023207).\n- megaraid_sas: Fixup tgtid count in megasas_ld_list_query() (bsc#971933).\n- mm/huge_memory.c: respect FOLL_FORCE/FOLL_COW for thp (bnc#1030118).\n- mm, memcg: do not retry precharge charges (bnc#1022559).\n- mm/mempolicy.c: do not put mempolicy before using its nodemask (References: VM Performance, bnc#931620).\n- mm/page_alloc: fix nodes for reclaim in fast path (bnc#1031842).\n- module: move add_taint_module() to a header file\n- net: Add skb_gro_postpull_rcsum to udp and vxlan (bsc#1009682).\n- net: add skb_pop_rcv_encapsulation (bsc#1009682).\n- net: Call skb_checksum_init in IPv4 (bsc#1009682).\n- net: Call skb_checksum_init in IPv6 (bsc#1009682).\n- netfilter: allow logging fron non-init netns (bsc#970083).\n- net: Generalize checksum_init functions (bsc#1009682).\n- net: Preserve CHECKSUM_COMPLETE at validation (bsc#1009682).\n- NFS: do not try to cross a mountpount when there isn't one there (bsc#1028041).\n- NFS: Expedite unmount of NFS auto-mounts (bnc#1025802).\n- NFS: Fix a performance regression in readdir (bsc#857926).\n- NFS: flush out dirty data on file fput() (bsc#1021762).\n- ocfs2: do not write error flag to user structure we cannot copy from/to (bsc#1012985).\n- powerpc: Blacklist GCC 5.4 6.1 and 6.2 (boo#1028895).\n- powerpc: Create a helper for getting the kernel toc value (FATE#322421).\n- powerpc/fadump: Fix the race in crash_fadump() (bsc#1022971).\n- powerpc/fadump: Reserve memory at an offset closer to bottom of RAM (bsc#1032141).\n- powerpc/fadump: Update fadump documentation (bsc#1032141).\n- powerpc/ftrace: Add Kconfig & Make glue for mprofile-kernel (FATE#322421).\n- powerpc/ftrace: Add support for -mprofile-kernel ftrace ABI (FATE#322421).\n- powerpc/ftrace: Use $(CC_FLAGS_FTRACE) when disabling ftrace (FATE#322421).\n- powerpc/ftrace: Use generic ftrace_modify_all_code() (FATE#322421).\n- powerpc: introduce TIF_KGR_IN_PROGRESS thread flag (FATE#322421).\n- powerpc/kgraft: Add kgraft header (FATE#322421).\n- powerpc/kgraft: Add kgraft stack to struct thread_info (FATE#322421).\n- powerpc/kgraft: Add live patching support on ppc64le (FATE#322421).\n- powerpc/module: Create a special stub for ftrace_caller() (FATE#322421).\n- powerpc/module: Mark module stubs with a magic value (FATE#322421).\n- powerpc/module: Only try to generate the ftrace_caller() stub once (FATE#322421).\n- powerpc/modules: Never restore r2 for a mprofile-kernel style mcount() call (FATE#322421).\n- powerpc/prom: Increase minimum RMA size to 512MB (bsc#984530).\n- powerpc/pseries/cpuidle: Remove MAX_IDLE_STATE macro (bnc#1023164).\n- powerpc/pseries/cpuidle: Use cpuidle_register() for initialisation (bnc#1023164).\n- powerpc: Reject binutils 2.24 when building little endian (boo#1028895).\n- RAID1: avoid unnecessary spin locks in I/O barrier code (bsc#982783,bsc#1020048).\n- raid1: include bio_end_io_list in nr_queued to prevent freeze_array hang\n- remove mpath patches from dmcache backport, for bsc#1035738\n- revert 'procfs: mark thread stack correctly in proc/PID/maps' (bnc#1030901).\n- Revert 'RDMA/core: Fix incorrect structure packing for booleans' (kabi).\n- rtnetlink: allow to register ops without ops->setup set (bsc#1021374).\n- s390/zcrypt: Introduce CEX6 toleration (FATE#321783, LTC#147506, bsc#1019514).\n- sched/loadavg: Avoid loadavg spikes caused by delayed NO_HZ accounting (bsc#1018419).\n- scsi_error: count medium access timeout only once per EH run (bsc#993832, bsc#1032345).\n- scsi: libiscsi: add lock around task lists to fix list corruption regression (bsc#1034700).\n- scsi: storvsc: fix SRB_STATUS_ABORTED handling\n- sfc: reduce severity of PIO buffer alloc failures (bsc#1019168).\n- svcrpc: fix gss-proxy NULL dereference in some error cases (bsc#1024309).\n- taint/module: Clean up global and module taint flags handling\n- tcp: abort orphan sockets stalling on zero window probes (bsc#1021913).\n- thp: fix MADV_DONTNEED vs. numa balancing race (bnc#1027974).\n- thp: reduce indentation level in change_huge_pmd() (bnc#1027974).\n- treewide: fix 'distingush' typo (bsc#1020795).\n- tree-wide: use reinit_completion instead of INIT_COMPLETION (bsc#1020795).\n- usb: dwc3: gadget: Fix incorrect DEPCMD and DGCMD status macros (bsc#1035699).\n- usb: host: xhci: print correct command ring address (bnc#1035699).\n- USB: serial: kl5kusb105: fix line-state error handling (bsc#1021256).\n- vfs: Do not exchange 'short' filenames unconditionally (bsc#1012985).\n- vfs: split generic splice code from i_mutex locking (bsc#1024788).\n- vmxnet3: segCnt can be 1 for LRO packets (bsc#988065).\n- VSOCK: Detach QP check should filter out non matching QPs (bsc#1036752).\n- vxlan: cancel sock_work in vxlan_dellink() (bsc#1031567).\n- vxlan: Checksum fixes (bsc#1009682).\n- vxlan: GRO support at tunnel layer (bsc#1009682).\n- xen-blkfront: correct maximum segment accounting (bsc#1018263).\n- xen-blkfront: do not call talk_to_blkback when already connected to blkback.\n- xen-blkfront: free resources if xlvbd_alloc_gendisk fails.\n- xfs_dmapi: fix the debug compilation of xfs_dmapi (bsc#989056).\n- xfs: do not allow di_size with high bit set (bsc#1024234).\n- xfs: do not assert fail on non-async buffers on ioacct decrement (bsc#1024508).\n- xfs: exclude never-released buffers from buftarg I/O accounting (bsc#1024508).\n- xfs: fix broken multi-fsb buffer logging (bsc#1024081).\n- xfs: fix buffer overflow dm_get_dirattrs/dm_get_dirattrs2 (bsc#989056).\n- xfs: Fix lock ordering in splice write (bsc#1024788).\n- xfs: fix up xfs_swap_extent_forks inline extent handling (bsc#1023888).\n- xfs: Make xfs_icdinode->di_dmstate atomic_t (bsc#1024788).\n- xfs: pass total block res. as total xfs_bmapi_write() parameter (bsc#1029470).\n- xfs: replace global xfslogd wq with per-mount wq (bsc#1024508).\n- xfs: track and serialize in-flight async buffers against unmount (bsc#1024508).\n",
+  "modified": "2025-05-02T04:04:23.807257Z",
+  "published": "2017-05-19T12:12:38Z",
+  "related": [
+    "CVE-2015-1350",
+    "CVE-2016-10044",
+    "CVE-2016-10200",
+    "CVE-2016-10208",
+    "CVE-2016-2117",
+    "CVE-2016-3070",
+    "CVE-2016-5243",
+    "CVE-2016-7117",
+    "CVE-2016-9191",
+    "CVE-2016-9588",
+    "CVE-2016-9604",
+    "CVE-2017-2647",
+    "CVE-2017-2671",
+    "CVE-2017-5669",
+    "CVE-2017-5897",
+    "CVE-2017-5986",
+    "CVE-2017-6074",
+    "CVE-2017-6214",
+    "CVE-2017-6345",
+    "CVE-2017-6346",
+    "CVE-2017-6348",
+    "CVE-2017-6353",
+    "CVE-2017-6951",
+    "CVE-2017-7187",
+    "CVE-2017-7261",
+    "CVE-2017-7294",
+    "CVE-2017-7308",
+    "CVE-2017-7616",
+    "CVE-2017-7645",
+    "CVE-2017-8106"
+  ],
+  "upstream": [
+    "CVE-2015-1350",
+    "CVE-2016-10044",
+    "CVE-2016-10200",
+    "CVE-2016-10208",
+    "CVE-2016-2117",
+    "CVE-2016-3070",
+    "CVE-2016-5243",
+    "CVE-2016-7117",
+    "CVE-2016-9191",
+    "CVE-2016-9588",
+    "CVE-2016-9604",
+    "CVE-2017-2647",
+    "CVE-2017-2671",
+    "CVE-2017-5669",
+    "CVE-2017-5897",
+    "CVE-2017-5986",
+    "CVE-2017-6074",
+    "CVE-2017-6214",
+    "CVE-2017-6345",
+    "CVE-2017-6346",
+    "CVE-2017-6348",
+    "CVE-2017-6353",
+    "CVE-2017-6951",
+    "CVE-2017-7187",
+    "CVE-2017-7261",
+    "CVE-2017-7294",
+    "CVE-2017-7308",
+    "CVE-2017-7616",
+    "CVE-2017-7645",
+    "CVE-2017-8106"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2017/suse-su-20171360-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1003077"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008842"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1009682"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012620"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012985"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015703"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015787"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015821"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1017512"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1018100"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1018263"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1018419"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1018446"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1019168"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1019514"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1020048"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1020795"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1021256"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1021374"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1021762"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1021913"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1022559"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1022971"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023164"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023207"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023377"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023762"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023824"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023888"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023992"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024081"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024234"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024309"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024508"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024788"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1025039"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1025235"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1025354"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1025802"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1026024"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1026722"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1026914"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027066"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027178"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027189"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027190"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027974"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1028041"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1028415"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1028595"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1028648"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1028895"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1029470"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1029850"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1029986"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1030118"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1030213"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1030593"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1030901"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031003"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031052"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031080"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031440"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031567"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031579"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031662"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031842"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1032125"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1032141"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1032344"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1032345"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1033336"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1034670"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/103470"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1034700"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1035576"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1035699"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1035738"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1035877"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1036752"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1038261"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/799133"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/857926"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/914939"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/917630"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/922853"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/930399"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/931620"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/937444"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/940946"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/954763"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968697"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970083"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971933"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/979215"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982783"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/983212"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/984530"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/985561"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/988065"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/989056"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/993832"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-1350"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-10044"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-10200"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-10208"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2117"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3070"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5243"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-7117"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9191"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9588"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9604"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-2647"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-2671"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5669"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5897"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5986"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6074"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6214"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6345"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6346"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6348"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6353"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6951"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7187"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7261"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7294"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7308"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7616"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7645"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-8106"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Desktop 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Desktop%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-default-extra": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Desktop 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Desktop%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-default-extra": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Desktop 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Desktop%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-default-extra": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Desktop 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Desktop%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-default-extra": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP1_Update_15",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 12",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP1_Update_15&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-4.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kgraft-patch-3_12_74-60_64_40-default": "1-4.1",
+            "kgraft-patch-3_12_74-60_64_40-xen": "1-4.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Module for Public Cloud 12",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Public%20Cloud%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-ec2-extra": "3.12.74-60.64.40.1",
+            "kernel-ec2": "3.12.74-60.64.40.1",
+            "kernel-ec2-devel": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "3.12.74-60.64.40.4",
+            "kernel-obs-build": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-build",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-obs-build&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "3.12.74-60.64.40.4",
+            "kernel-obs-build": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-default-base": "3.12.74-60.64.40.1",
+            "kernel-default-man": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-xen-base": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-default-base": "3.12.74-60.64.40.1",
+            "kernel-default-man": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-xen-base": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-default-base": "3.12.74-60.64.40.1",
+            "kernel-default-man": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-xen-base": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-default-base": "3.12.74-60.64.40.1",
+            "kernel-default-man": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-xen-base": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-default-base": "3.12.74-60.64.40.1",
+            "kernel-default-man": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-xen-base": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-default-base": "3.12.74-60.64.40.1",
+            "kernel-default-man": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-xen-base": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-default-base": "3.12.74-60.64.40.1",
+            "kernel-default-man": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-xen-base": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.40.1",
+            "kernel-devel": "3.12.74-60.64.40.1",
+            "kernel-default-base": "3.12.74-60.64.40.1",
+            "kernel-default-man": "3.12.74-60.64.40.1",
+            "kernel-xen-devel": "3.12.74-60.64.40.1",
+            "kernel-default": "3.12.74-60.64.40.1",
+            "kernel-source": "3.12.74-60.64.40.1",
+            "kernel-xen-base": "3.12.74-60.64.40.1",
+            "kernel-syms": "3.12.74-60.64.40.1",
+            "kernel-default-devel": "3.12.74-60.64.40.1",
+            "kernel-xen": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Workstation Extension 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Workstation%20Extension%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.40.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-extra": "3.12.74-60.64.40.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1360-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

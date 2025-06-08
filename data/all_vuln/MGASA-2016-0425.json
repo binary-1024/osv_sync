@@ -1,0 +1,66 @@
+{
+  "id": "MGASA-2016-0425",
+  "summary": "Updated hdf5 packages fix security vulnerabilities",
+  "details": "In the HDF5 1.8.16 library's failure to check if the number of\ndimensions  for an array read from the file is within the bounds of the\nspace allocated for it, a heap-based buffer overflow will occur,\npotentially leading to arbitrary code execution (CVE-2016-4330).\n\nWhen decoding data out of a dataset encoded with the H5Z_NBIT decoding,\nthe HDF5 1.8.16 library will fail to ensure that the precision is within\nthe bounds of the size leading to arbitrary code execution\n(CVE-2016-4331).\n\nThe library's failure to check if certain message types support a\nparticular flag, the HDF5 1.8.16 library will cast the structure to an\nalternative structure and then assign to fields that aren't supported by\nthe message type and the library will write outside the bounds of the\nheap buffer. This can lead to code execution under the context of the\nlibrary (CVE-2016-4332).\n\nThe HDF5 1.8.16 library allocating space for the array using a value\nfrom the file has an impact within the loop for initializing said array\nallowing a value within the file to modify the loop's terminator. Due to\nthis, an aggressor can cause the loop's index to point outside the\nbounds of the array when initializing it (CVE-2016-4333).\n",
+  "modified": "2016-12-29T10:16:44Z",
+  "published": "2016-12-29T10:29:11Z",
+  "related": [
+    "CVE-2016-4330",
+    "CVE-2016-4331",
+    "CVE-2016-4332",
+    "CVE-2016-4333"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0425.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=19874"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2016/dsa-3727"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "hdf5",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/hdf5?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.8.13-4.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0425.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

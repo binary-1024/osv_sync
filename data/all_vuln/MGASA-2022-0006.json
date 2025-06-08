@@ -1,0 +1,81 @@
+{
+  "id": "MGASA-2022-0006",
+  "summary": "Updated singularity packages fix security vulnerability",
+  "details": "A dependency used to extract docker/OCI image layers can be tricked into\nmodifying host files by creating a malicious layer that has a symlink with\nthe name \".\" (or \"/\"), when running as root. (CVE-2021-29136)\nDde to incorrect use of a default URL, `singularity` action commands\n(`run`/`shell`/`exec`) specifying a container using a `library://` URI\nwill always attempt to retrieve the container from the default remote\nendpoint (`cloud.sylabs.io`) rather than the configured remote endpoint.\nAn attacker may be able to push a malicious container to the default\nremote endpoint with a URI that is identical to the URI used by a victim\nwith a non-default remote endpoint, thus executing the malicious container.\nOnly action commands (`run`/`shell`/`exec`) against `library://` URIs are\naffected. Other commands such as `pull` / `push` respect the configured\nremote endpoint. (CVE-2021-32635)\nIf a Content-Type header changed between two pulls of the same digest, a\nclient may interpret the resulting content differently. (CVE-2021-41190)\n",
+  "modified": "2022-01-05T22:10:26Z",
+  "published": "2022-01-05T22:45:33Z",
+  "related": [
+    "CVE-2021-29136",
+    "CVE-2021-32635",
+    "CVE-2021-41190"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0006.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=29027"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/BMX7XV7YNNNOVKKIOOPNENIXY64H4ZEY/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/sylabs/singularity/releases/tag/v3.7.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/U5WJLLGD3LSUWRS73C4NPIWYTMST4QO5/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/D2IU6GJMCV5CQKUQZLHBP6EHSIZZXC3X/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/L3AGIEOXZIUUEYYMWKJCJCQI7V235UTR/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "singularity",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/singularity?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.8.5-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0006.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

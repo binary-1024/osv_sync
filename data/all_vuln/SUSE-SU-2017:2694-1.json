@@ -1,0 +1,352 @@
+{
+  "id": "SUSE-SU-2017:2694-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 11 SP4 RT kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2017-1000251: The native Bluetooth stack was vulnerable to a stack\n  overflow vulnerability in the processing of L2CAP configuration responses\n  resulting in remote code execution in kernel space (bnc#1057389).\n- CVE-2017-14340: The XFS_IS_REALTIME_INODE macro in fs/xfs/xfs_linux.h did not\n  verify that a filesystem has a realtime device, which allowed local users to\n  cause a denial of service (NULL pointer dereference and OOPS) via vectors\n  related to setting an RHINHERIT flag on a directory (bnc#1058524).\n- CVE-2017-14140: The move_pages system call in mm/migrate.c did not check the\n  effective uid of the target process, enabling a local attacker to learn the\n  memory layout of a setuid executable despite ASLR (bnc#1057179).\n- CVE-2017-14051: An integer overflow in the qla2x00_sysfs_write_optrom_ctl\n  function in drivers/scsi/qla2xxx/qla_attr.c allowed local users to cause a\n  denial of service (memory corruption and system crash) by leveraging root\n  access (bnc#1056588).\n- CVE-2017-10661: Race condition in fs/timerfd.c allowed local users to gain\n  privileges or cause a denial of service (list corruption or use-after-free) via\n  simultaneous file-descriptor operations that leverage improper might_cancel\n  queueing (bnc#1053152).\n- CVE-2017-12762: In /drivers/isdn/i4l/isdn_net.c a user-controlled buffer was\n  copied into a local buffer of constant size using strcpy without a length check\n  which can cause a buffer overflow (bnc#1053148).\n- CVE-2017-8831: The saa7164_bus_get function allowed local users to cause a\n  denial of service (out-of-bounds array access) or possibly have unspecified\n  other impact by changing a certain sequence-number value, aka a 'double fetch'\n  vulnerability (bnc#1037994).\n- CVE-2017-1000112: Prevent race condition in net-packet code that could have\n  been exploited by unprivileged users to gain root access.(bnc#1052311).\n\nThe following non-security bugs were fixed:\n\n- ALSA: Fix Lewisburg audio issue\n- Drop commit 96234ae:kvm_io_bus_unregister_dev() should never fail (bsc#1055680)\n- Fixup build warnings in drivers/scsi/scsi.c (bsc#1031358)\n- NFS: Cache aggressively when file is open for writing (bsc#1053933).\n- NFS: Do drop directory dentry when error clearly requires it (bsc#1051932).\n- NFS: Do not flush caches for a getattr that races with writeback (bsc#1053933).\n- NFS: Optimize fallocate by refreshing mapping when needed (bsc#1053933).\n- NFS: invalidate file size when taking a lock (bsc#1053933).\n- PCI: fix hotplug related issues (bnc#1054247).\n- af_key: do not use GFP_KERNEL in atomic contexts (bsc#1054093).\n- avoid deadlock in xenbus (bnc#1047523).\n- blacklist 9754d45e9970 tpm: read burstcount from TPM_STS in one 32-bit transaction\n- blkback/blktap: do not leak stack data via response ring (bsc#1042863 XSA-216).\n- cx231xx-audio: fix NULL-deref at probe (bsc#1050431).\n- cx82310_eth: use skb_cow_head() to deal with cloned skbs (bsc#1045154).\n- fuse: do not use iocb after it may have been freed (bsc#1054706).\n- fuse: fix fuse_write_end() if zero bytes were copied (bsc#1054706).\n- fuse: fsync() did not return IO errors (bsc#1054076).\n- fuse: fuse_flush must check mapping->flags for errors (bsc#1054706).\n- gspca: konica: add missing endpoint sanity check (bsc#1050431).\n- kabi/severities: Ignore zpci symbol changes (bsc#1054247)\n- lib/mpi: mpi_read_raw_data(): fix nbits calculation\n- media: platform: davinci: return -EINVAL for VPFE_CMD_S_CCDC_RAW_PARAMS ioctl (bsc#1050431).\n- net: Fix RCU splat in af_key (bsc#1054093).\n- powerpc/fadump: add reschedule point while releasing memory (bsc#1040609 bsc#1024450).\n- powerpc/fadump: avoid duplicates in crash memory ranges (bsc#1037669 bsc#1037667).\n- powerpc/fadump: provide a helpful error message (bsc#1037669 bsc#1037667).\n- powerpc/prom: Increase minimum RMA size to 512MB (bsc#984530, bsc#1052370).\n- powerpc/slb: Force a full SLB flush when we insert for a bad EA (bsc#1054070).\n- reiserfs: fix race in readdir (bsc#1039803).\n- s390/pci: do not cleanup in arch_setup_msi_irqs (bnc#1054247).\n- s390/pci: fix handling of PEC 306 (bnc#1054247).\n- s390/pci: improve error handling during fmb (de)registration (bnc#1054247).\n- s390/pci: improve error handling during interrupt deregistration (bnc#1054247).\n- s390/pci: improve pci hotplug (bnc#1054247).\n- s390/pci: improve unreg_ioat error handling (bnc#1054247).\n- s390/pci: introduce clp_get_state (bnc#1054247).\n- s390/pci: provide more debug information (bnc#1054247).\n- scsi: avoid system stall due to host_busy race (bsc#1031358).\n- scsi: close race when updating blocked counters (bsc#1031358).\n- ser_gigaset: return -ENOMEM on error instead of success (bsc#1037441).\n- supported.conf: clear mistaken external support flag for cifs.ko (bsc#1053802).\n- tpm: fix a kernel memory leak in tpm-sysfs.c (bsc#1050381).\n- uwb: fix device quirk on big-endian hosts (bsc#1036629).\n- xfs: fix inobt inode allocation search optimization (bsc#1013018).\n",
+  "modified": "2025-05-02T04:05:51.900305Z",
+  "published": "2017-10-10T12:16:47Z",
+  "related": [
+    "CVE-2017-1000112",
+    "CVE-2017-1000251",
+    "CVE-2017-10661",
+    "CVE-2017-12762",
+    "CVE-2017-14051",
+    "CVE-2017-14140",
+    "CVE-2017-14340",
+    "CVE-2017-8831"
+  ],
+  "upstream": [
+    "CVE-2017-1000112",
+    "CVE-2017-1000251",
+    "CVE-2017-10661",
+    "CVE-2017-12762",
+    "CVE-2017-14051",
+    "CVE-2017-14140",
+    "CVE-2017-14340",
+    "CVE-2017-8831"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2017/suse-su-20172694-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013018"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024450"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031358"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1036629"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1037441"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1037667"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1037669"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1037994"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039803"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1040609"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1042863"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1045154"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1047523"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1050381"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1050431"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1051932"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1052311"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1052370"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1053148"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1053152"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1053802"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1053933"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1054070"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1054076"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1054093"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1054247"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1054706"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1055680"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1056588"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1057179"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1057389"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1058524"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/984530"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-1000112"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-1000251"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-10661"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-12762"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-14051"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-14140"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-14340"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-8831"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-69.8.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-69.8.1",
+            "kernel-rt-devel": "3.0.101.rt130-69.8.1",
+            "kernel-rt_trace": "3.0.101.rt130-69.8.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-69.8.1",
+            "kernel-source-rt": "3.0.101.rt130-69.8.1",
+            "kernel-rt": "3.0.101.rt130-69.8.1",
+            "kernel-syms-rt": "3.0.101.rt130-69.8.1",
+            "kernel-rt-base": "3.0.101.rt130-69.8.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2694-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-rt_trace",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-rt_trace&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-69.8.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-69.8.1",
+            "kernel-rt-devel": "3.0.101.rt130-69.8.1",
+            "kernel-rt_trace": "3.0.101.rt130-69.8.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-69.8.1",
+            "kernel-source-rt": "3.0.101.rt130-69.8.1",
+            "kernel-rt": "3.0.101.rt130-69.8.1",
+            "kernel-syms-rt": "3.0.101.rt130-69.8.1",
+            "kernel-rt-base": "3.0.101.rt130-69.8.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2694-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-source-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-69.8.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-69.8.1",
+            "kernel-rt-devel": "3.0.101.rt130-69.8.1",
+            "kernel-rt_trace": "3.0.101.rt130-69.8.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-69.8.1",
+            "kernel-source-rt": "3.0.101.rt130-69.8.1",
+            "kernel-rt": "3.0.101.rt130-69.8.1",
+            "kernel-syms-rt": "3.0.101.rt130-69.8.1",
+            "kernel-rt-base": "3.0.101.rt130-69.8.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2694-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-syms-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-69.8.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-69.8.1",
+            "kernel-rt-devel": "3.0.101.rt130-69.8.1",
+            "kernel-rt_trace": "3.0.101.rt130-69.8.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-69.8.1",
+            "kernel-source-rt": "3.0.101.rt130-69.8.1",
+            "kernel-rt": "3.0.101.rt130-69.8.1",
+            "kernel-syms-rt": "3.0.101.rt130-69.8.1",
+            "kernel-rt-base": "3.0.101.rt130-69.8.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2694-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

@@ -1,0 +1,222 @@
+{
+  "id": "GHSA-x7g2-wrrp-r6h3",
+  "summary": "Use of a Broken or Risky Cryptographic Algorithm",
+  "details": "## \u270d\ufe0f Description\nThe function mt_rand is used to generate session tokens, this function is cryptographically flawed due to its nature being one pseudorandomness, an attacker can take advantage of the cryptographically insecure nature of this function to enumerate session tokens for accounts that are not under his/her control\n\n## \ud83d\udd75\ufe0f\u200d\u2642\ufe0f Proof of Concept\nNumerous examples and attack implementations can be found in this paper . If you're looking for a practical tool that can crack your mt_rand implementation's seed value, see this project and run the following commands in a console with php5 and OpenWall's tool installed:\n\n`root$ php -r 'mt_srand(13333337); echo mt_rand( ), \"\\n\";'`\nAfter that, copy the output (1863134308) and execute the following commands:\n\n`root$ gcc php_mt_seed.c -o php_mt_seedroot$ ./php_mt_seed 1863134308`\nAfter waiting ~1 minute you should have a few possible seeds corresponding to their PHP versions, next to your installed PHP version you should see something akin to:\n\nseed = 0x00cb7359 = 13333337 (PHP 7.1.0+)\nHey, that's your seed!\n\n## \ud83d\udca5 Impact\nAn attacker could takeover accounts at random by enumerating and using access tokens.\n\n## \ud83d\udcdd References\n\n- https://openwall.com/php_mt_seedhttps://crypto.di.uoa.gr/CRYPTO.SEC/Randomness_Attacks_files/paper.pdf\n- https://github.com/mautic/mautic/blob/5213e320b4ef4d0c51bb84c1d46a1071e8e4f7fc/app/bundles/PointBundle/Controller/TriggerController.php#L187\n- https://github.com/mautic/mautic/releases/tag/3.3.4\n- https://github.com/mautic/mautic/releases/tag/4.0.0",
+  "aliases": [
+    "CVE-2021-27913"
+  ],
+  "modified": "2024-02-16T08:21:55.344923Z",
+  "published": "2021-09-01T18:41:06Z",
+  "related": [
+    "CVE-2021-27913"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2021-08-30T16:15:00Z",
+    "cwe_ids": [
+      "CWE-327"
+    ],
+    "severity": "LOW",
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-30T18:02:40Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/mautic/mautic/security/advisories/GHSA-x7g2-wrrp-r6h3"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-27913"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/mautic/mautic/commit/d1cad766a2de74e6c6b89d6d78c2a5f2e36ba91c"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/mautic/core/CVE-2021-27913.yaml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/mautic/mautic"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "mautic/core",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/mautic/core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.3.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.0-beta",
+        "1.0.0-beta2",
+        "1.0.0-beta3",
+        "1.0.0-beta4",
+        "1.0.0-rc1",
+        "1.0.0-rc2",
+        "1.0.0-rc3",
+        "1.0.0-rc4",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.0.4",
+        "1.0.5",
+        "1.1.0",
+        "1.1.1",
+        "1.1.2",
+        "1.1.3",
+        "1.2.0",
+        "1.2.0-beta1",
+        "1.2.1",
+        "1.2.2",
+        "1.2.3",
+        "1.2.4",
+        "1.3.0",
+        "1.3.1",
+        "1.4.0",
+        "1.4.1",
+        "2.0.0",
+        "2.0.1",
+        "2.1.0",
+        "2.1.1",
+        "2.10.0",
+        "2.10.0-beta",
+        "2.10.1",
+        "2.11.0",
+        "2.11.0-beta",
+        "2.12.0",
+        "2.12.0-beta",
+        "2.12.1",
+        "2.12.1-beta",
+        "2.12.2",
+        "2.12.2-beta",
+        "2.13.0",
+        "2.13.0-beta",
+        "2.13.1",
+        "2.14.0",
+        "2.14.0-beta",
+        "2.14.1",
+        "2.14.1-beta",
+        "2.14.2",
+        "2.14.2-beta",
+        "2.15.0",
+        "2.15.0-beta",
+        "2.15.1",
+        "2.15.1-beta",
+        "2.15.2",
+        "2.15.2-beta",
+        "2.15.3",
+        "2.15.3-beta",
+        "2.16.0",
+        "2.16.0-beta",
+        "2.16.1",
+        "2.16.1-beta",
+        "2.16.2",
+        "2.16.2-beta",
+        "2.16.3",
+        "2.16.3-beta",
+        "2.16.4",
+        "2.16.5",
+        "2.2.0",
+        "2.2.1",
+        "2.3.0",
+        "2.4.0",
+        "2.5.0",
+        "2.5.1",
+        "2.6.0",
+        "2.6.1",
+        "2.7.0",
+        "2.7.1",
+        "2.8.0",
+        "2.8.1",
+        "2.8.2",
+        "2.9.0",
+        "2.9.0-beta",
+        "2.9.1",
+        "2.9.2",
+        "3.0.0",
+        "3.0.0-alpha",
+        "3.0.0-beta",
+        "3.0.0-beta2",
+        "3.0.1",
+        "3.0.2",
+        "3.0.2-rc",
+        "3.1.0",
+        "3.1.0-rc",
+        "3.1.1",
+        "3.1.1-rc",
+        "3.1.2",
+        "3.1.2-rc",
+        "3.2.0",
+        "3.2.0-rc",
+        "3.2.1",
+        "3.2.2",
+        "3.2.2-rc",
+        "3.2.3",
+        "3.2.4",
+        "3.2.5",
+        "3.2.5-rc",
+        "3.3.0",
+        "3.3.0-rc",
+        "3.3.1",
+        "3.3.2",
+        "3.3.2-rc",
+        "3.3.3",
+        "3.3.3-rc"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-x7g2-wrrp-r6h3/GHSA-x7g2-wrrp-r6h3.json"
+      }
+    },
+    {
+      "package": {
+        "name": "mautic/core",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/mautic/core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0-alpha1"
+            },
+            {
+              "fixed": "4.0.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0-alpha1",
+        "4.0.0-beta",
+        "4.0.0-rc"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-x7g2-wrrp-r6h3/GHSA-x7g2-wrrp-r6h3.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:N/I:N/A:L"
+    }
+  ]
+}

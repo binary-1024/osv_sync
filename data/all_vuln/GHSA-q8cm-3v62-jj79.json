@@ -1,0 +1,458 @@
+{
+  "id": "GHSA-q8cm-3v62-jj79",
+  "summary": "Remote code execution in Apache Jackrabbit",
+  "details": "Java object deserialization issue in Jackrabbit webapp/standalone on all platforms allows attacker to remotely execute code via RMIVersions up to (including) 2.20.10 (stable branch) and 2.21.17 (unstable branch) use the component \"commons-beanutils\", which contains a class that can be used for remote code execution over RMI.\n\nUsers are advised to immediately update to versions 2.20.11 or 2.21.18. Note that earlier stable branches (1.0.x .. 2.18.x) have been EOLd already and do not receive updates anymore.\n\nIn general, RMI support can expose vulnerabilities by the mere presence of an exploitable class on the classpath. Even if Jackrabbit itself does not contain any code known to be exploitable anymore, adding other components to your server can expose the same type of problem. We therefore recommend to disable RMI access altogether (see further below), and will discuss deprecating RMI support in future Jackrabbit releases.\n\nHow to check whether RMI support is enabledRMI support can be over an RMI-specific TCP port, and over an HTTP binding. Both are by default enabled in Jackrabbit webapp/standalone.\n\nThe native RMI protocol by default uses port 1099. To check whether it is enabled, tools like \"netstat\" can be used to check.\n\nRMI-over-HTTP in Jackrabbit by default uses the path \"/rmi\". So when running standalone on port 8080, check whether an HTTP GET request on localhost:8080/rmi returns 404 (not enabled) or 200 (enabled). Note that the HTTP path may be different when the webapp is deployed in a container as non-root context, in which case the prefix is under the user's control.\n\nTurning off RMIFind web.xml (either in JAR/WAR file or in unpacked web application folder), and remove the declaration and the mapping definition for the RemoteBindingServlet:\n\n\u00a0 \u00a0 \u00a0 \u00a0 <servlet>\n\u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0 <servlet-name>RMI</servlet-name>\n\u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0 <servlet-class>org.apache.jackrabbit.servlet.remote.RemoteBindingServlet</servlet-class>\n\u00a0 \u00a0 \u00a0 \u00a0 </servlet>\n\n\u00a0 \u00a0 \u00a0 \u00a0 <servlet-mapping>\n\u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0 <servlet-name>RMI</servlet-name>\n\u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0 <url-pattern>/rmi</url-pattern>\n\u00a0 \u00a0 \u00a0 \u00a0 </servlet-mapping>\n\nFind the bootstrap.properties file (in $REPOSITORY_HOME), and set\n\n\u00a0 \u00a0 \u00a0 \u00a0  rmi.enabled=false\n\n\u00a0 \u00a0 and also remove\n\n\u00a0 \u00a0 \u00a0 \u00a0  rmi.host\n\u00a0 \u00a0 \u00a0 \u00a0  rmi.port\n\u00a0 \u00a0 \u00a0 \u00a0  rmi.url-pattern\n\n\u00a0If there is no file named bootstrap.properties in $REPOSITORY_HOME, it is located somewhere in the classpath. In this case, place a copy in $REPOSITORY_HOME and modify it as explained.\n\n\u00a0",
+  "aliases": [
+    "CVE-2023-37895"
+  ],
+  "modified": "2025-02-13T19:13:50.567914Z",
+  "published": "2023-07-25T15:30:26Z",
+  "database_specific": {
+    "nvd_published_at": "2023-07-25T15:15:13Z",
+    "cwe_ids": [
+      "CWE-502"
+    ],
+    "severity": "CRITICAL",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-07-25T19:25:30Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-37895"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/apache/jackrabbit"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.apache.org/list.html?users@jackrabbit.apache.org"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.apache.org/thread/j03b3qdhborc2jrhdc4d765d3jkh8bfw"
+    },
+    {
+      "type": "WEB",
+      "url": "http://seclists.org/fulldisclosure/2023/Jul/43"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2023/07/25/8"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.apache.jackrabbit:jackrabbit-webapp",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.jackrabbit/jackrabbit-webapp"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.21.0"
+            },
+            {
+              "fixed": "2.21.18"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.21.0",
+        "2.21.1",
+        "2.21.10",
+        "2.21.11",
+        "2.21.12",
+        "2.21.13",
+        "2.21.14",
+        "2.21.15",
+        "2.21.16",
+        "2.21.17",
+        "2.21.2",
+        "2.21.3",
+        "2.21.4",
+        "2.21.5",
+        "2.21.6",
+        "2.21.7",
+        "2.21.8",
+        "2.21.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-q8cm-3v62-jj79/GHSA-q8cm-3v62-jj79.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.apache.jackrabbit:jackrabbit-webapp",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.jackrabbit/jackrabbit-webapp"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.0.0"
+            },
+            {
+              "fixed": "2.20.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.2.1",
+        "1.2.2",
+        "1.2.3",
+        "1.3",
+        "1.3.1",
+        "1.3.3",
+        "1.4",
+        "1.5.0",
+        "1.5.2",
+        "1.5.3",
+        "1.5.4",
+        "1.5.5",
+        "1.5.6",
+        "1.5.7",
+        "1.6.0",
+        "1.6.1",
+        "1.6.2",
+        "1.6.4",
+        "1.6.5",
+        "2.0-beta1",
+        "2.0-beta3",
+        "2.0-beta4",
+        "2.0-beta5",
+        "2.0-beta6",
+        "2.0.0",
+        "2.0.3",
+        "2.0.5",
+        "2.1.0",
+        "2.1.1",
+        "2.1.2",
+        "2.1.3",
+        "2.1.5",
+        "2.1.6",
+        "2.10.0",
+        "2.10.1",
+        "2.10.2",
+        "2.10.3",
+        "2.10.4",
+        "2.10.5",
+        "2.10.6",
+        "2.10.7",
+        "2.10.8",
+        "2.10.9",
+        "2.11.0",
+        "2.11.1",
+        "2.11.2",
+        "2.11.3",
+        "2.12.0",
+        "2.12.1",
+        "2.12.10",
+        "2.12.11",
+        "2.12.2",
+        "2.12.3",
+        "2.12.4",
+        "2.12.5",
+        "2.12.6",
+        "2.12.7",
+        "2.12.8",
+        "2.12.9",
+        "2.13.0",
+        "2.13.1",
+        "2.13.2",
+        "2.13.3",
+        "2.13.4",
+        "2.13.5",
+        "2.13.6",
+        "2.13.7",
+        "2.14.0",
+        "2.14.1",
+        "2.14.10",
+        "2.14.2",
+        "2.14.3",
+        "2.14.4",
+        "2.14.5",
+        "2.14.6",
+        "2.14.7",
+        "2.14.8",
+        "2.14.9",
+        "2.15.0",
+        "2.15.1",
+        "2.15.2",
+        "2.15.3",
+        "2.15.4",
+        "2.15.5",
+        "2.15.6",
+        "2.15.7",
+        "2.15.8",
+        "2.16.0",
+        "2.16.1",
+        "2.16.10",
+        "2.16.2",
+        "2.16.3",
+        "2.16.4",
+        "2.16.5",
+        "2.16.6",
+        "2.16.7",
+        "2.16.8",
+        "2.16.9",
+        "2.17.0",
+        "2.17.1",
+        "2.17.2",
+        "2.17.3",
+        "2.17.4",
+        "2.17.5",
+        "2.17.6",
+        "2.17.7",
+        "2.18.0",
+        "2.18.1",
+        "2.18.2",
+        "2.18.3",
+        "2.18.4",
+        "2.18.5",
+        "2.18.6",
+        "2.19.0",
+        "2.19.1",
+        "2.19.2",
+        "2.19.3",
+        "2.19.4",
+        "2.19.5",
+        "2.19.6",
+        "2.2.0",
+        "2.2.1",
+        "2.2.10",
+        "2.2.11",
+        "2.2.12",
+        "2.2.13",
+        "2.2.2",
+        "2.2.4",
+        "2.2.5",
+        "2.2.7",
+        "2.2.8",
+        "2.2.9",
+        "2.20.0",
+        "2.20.1",
+        "2.20.10",
+        "2.20.2",
+        "2.20.3",
+        "2.20.4",
+        "2.20.5",
+        "2.20.6",
+        "2.20.7",
+        "2.20.8",
+        "2.20.9",
+        "2.3.0",
+        "2.3.2",
+        "2.3.3",
+        "2.3.4",
+        "2.3.5",
+        "2.3.6",
+        "2.3.7",
+        "2.4.0",
+        "2.4.1",
+        "2.4.2",
+        "2.4.3",
+        "2.4.4",
+        "2.4.5",
+        "2.4.6",
+        "2.4.7",
+        "2.4.8",
+        "2.5.0",
+        "2.5.1",
+        "2.5.2",
+        "2.5.3",
+        "2.6.0",
+        "2.6.1",
+        "2.6.10",
+        "2.6.2",
+        "2.6.3",
+        "2.6.4",
+        "2.6.5",
+        "2.6.6",
+        "2.6.7",
+        "2.6.8",
+        "2.6.9",
+        "2.7.0",
+        "2.7.1",
+        "2.7.2",
+        "2.7.3",
+        "2.7.4",
+        "2.7.5",
+        "2.8.0",
+        "2.8.1",
+        "2.8.10",
+        "2.8.2",
+        "2.8.3",
+        "2.8.4",
+        "2.8.5",
+        "2.8.6",
+        "2.8.7",
+        "2.8.8",
+        "2.8.9",
+        "2.9.0",
+        "2.9.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-q8cm-3v62-jj79/GHSA-q8cm-3v62-jj79.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.apache.jackrabbit:jackrabbit-standalone",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.jackrabbit/jackrabbit-standalone"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.21.0"
+            },
+            {
+              "fixed": "2.21.18"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-q8cm-3v62-jj79/GHSA-q8cm-3v62-jj79.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "org.apache.jackrabbit:jackrabbit-standalone",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.jackrabbit/jackrabbit-standalone"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.0.0"
+            },
+            {
+              "fixed": "2.20.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.5.0",
+        "1.5.2",
+        "1.5.3",
+        "1.5.4",
+        "1.5.5",
+        "1.5.6",
+        "1.6.1",
+        "1.6.2",
+        "1.6.4",
+        "1.6.5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-q8cm-3v62-jj79/GHSA-q8cm-3v62-jj79.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.apache.jackrabbit:jackrabbit-standalone-components",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.jackrabbit/jackrabbit-standalone-components"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.21.0"
+            },
+            {
+              "fixed": "2.21.18"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.21.0",
+        "2.21.1",
+        "2.21.10",
+        "2.21.11",
+        "2.21.12",
+        "2.21.13",
+        "2.21.14",
+        "2.21.15",
+        "2.21.16",
+        "2.21.17",
+        "2.21.2",
+        "2.21.3",
+        "2.21.4",
+        "2.21.5",
+        "2.21.6",
+        "2.21.7",
+        "2.21.8",
+        "2.21.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-q8cm-3v62-jj79/GHSA-q8cm-3v62-jj79.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.apache.jackrabbit:jackrabbit-standalone-components",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.jackrabbit/jackrabbit-standalone-components"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.0.0"
+            },
+            {
+              "fixed": "2.20.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.19.2",
+        "2.19.3",
+        "2.19.4",
+        "2.19.5",
+        "2.19.6",
+        "2.20.0",
+        "2.20.1",
+        "2.20.10",
+        "2.20.2",
+        "2.20.3",
+        "2.20.4",
+        "2.20.5",
+        "2.20.6",
+        "2.20.7",
+        "2.20.8",
+        "2.20.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-q8cm-3v62-jj79/GHSA-q8cm-3v62-jj79.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

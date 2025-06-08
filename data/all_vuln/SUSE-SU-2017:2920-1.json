@@ -1,0 +1,716 @@
+{
+  "id": "SUSE-SU-2017:2920-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 12 GA LTS kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2017-15649: net/packet/af_packet.c in the Linux kernel allowed local users to gain privileges via crafted system calls that trigger mishandling of packet_fanout data structures, because of a race condition (involving fanout_add and packet_do_bind) that leads to a use-after-free, a different vulnerability than CVE-2017-6346 (bnc#1064388).\n- CVE-2015-9004: kernel/events/core.c in the Linux kernel mishandled counter grouping, which allowed local users to gain privileges via a crafted application, related to the perf_pmu_register and perf_event_open functions (bnc#1037306).\n- CVE-2016-10229: udp.c in the Linux kernel allowed remote attackers to execute arbitrary code via UDP traffic that triggers an unsafe second checksum calculation during execution of a recv system call with the MSG_PEEK flag (bnc#1032268).\n- CVE-2016-9604: The handling of keyrings starting with '.' in KEYCTL_JOIN_SESSION_KEYRING, which could have allowed local users to manipulate privileged keyrings, was fixed (bsc#1035576)\n- CVE-2017-1000363: Linux drivers/char/lp.c Out-of-Bounds Write. Due to a missing bounds check, and the fact that parport_ptr integer is static, a 'secure boot' kernel command line adversary (can happen due to bootloader vulns, e.g. Google Nexus 6's CVE-2016-10277, where due to a vulnerability the adversary has partial control over the command line) can overflow the parport_nr array in the following code, by appending many (>LP_NO) 'lp=none' arguments to the command line (bnc#1039456).\n- CVE-2017-1000365: The Linux Kernel imposes a size restriction on the arguments and environmental strings passed through RLIMIT_STACK/RLIM_INFINITY (1/4 of the size), but did not take the argument and environment pointers into account, which allowed attackers to bypass this limitation. (bnc#1039354).\n- CVE-2017-1000380: sound/core/timer.c in the Linux kernel is vulnerable to a data race in the ALSA /dev/snd/timer driver resulting in local users being able to read information belonging to other users, i.e., uninitialized memory contents may be disclosed when a read and an ioctl happen at the same time (bnc#1044125).\n- CVE-2017-10661: Race condition in fs/timerfd.c in the Linux kernel allowed local users to gain privileges or cause a denial of service (list corruption or use-after-free) via simultaneous file-descriptor operations that leverage improper might_cancel queueing (bnc#1053152).\n- CVE-2017-11176: The mq_notify function in the Linux kernel did not set the sock pointer to NULL upon entry into the retry logic. During a user-space close of a Netlink socket, it allowed attackers to cause a denial of service (use-after-free) or possibly have unspecified other impact (bnc#1048275).\n- CVE-2017-12153: A security flaw was discovered in the nl80211_set_rekey_data() function in net/wireless/nl80211.c in the Linux kernel This function did not check whether the required attributes are present in a Netlink request. This request can be issued by a user with the CAP_NET_ADMIN capability and may result in a NULL pointer dereference and system crash (bnc#1058410).\n- CVE-2017-12154: The prepare_vmcs02 function in arch/x86/kvm/vmx.c in the Linux kernel did not ensure that the 'CR8-load exiting' and 'CR8-store exiting' L0 vmcs02 controls exist in cases where L1 omits the 'use TPR shadow' vmcs12 control, which allowed KVM L2 guest OS users to obtain read and write access to the hardware CR8 register (bnc#1058507).\n- CVE-2017-12762: In /drivers/isdn/i4l/isdn_net.c: A user-controlled buffer is copied into a local buffer of constant size using strcpy without a length check which can cause a buffer overflow. (bnc#1053148).\n- CVE-2017-13080: Wi-Fi Protected Access (WPA and WPA2) allowed reinstallation of the Group Temporal Key (GTK) during the group key handshake, allowing an attacker within radio range to replay frames from access points to clients (bnc#1063667).\n- CVE-2017-14051: An integer overflow in the qla2x00_sysfs_write_optrom_ctl function in drivers/scsi/qla2xxx/qla_attr.c in the Linux kernel allowed local users to cause a denial of service (memory corruption and system crash) by leveraging root access (bnc#1056588).\n- CVE-2017-14106: The tcp_disconnect function in net/ipv4/tcp.c in the Linux kernel allowed local users to cause a denial of service (__tcp_select_window divide-by-zero error and system crash) by triggering a disconnect within a certain tcp_recvmsg code path (bnc#1056982).\n- CVE-2017-14140: The move_pages system call in mm/migrate.c in the Linux kernel doesn't check the effective uid of the target process, enabling a local attacker to learn the memory layout of a setuid executable despite ASLR (bnc#1057179).\n- CVE-2017-15265: Use-after-free vulnerability in the Linux kernel allowed local users to have unspecified impact via vectors related to /dev/snd/seq (bnc#1062520).\n- CVE-2017-15274: security/keys/keyctl.c in the Linux kernel did not consider the case of a NULL payload in conjunction with a nonzero length value, which allowed local users to cause a denial of service (NULL pointer dereference and OOPS) via a crafted add_key or keyctl system call, a different vulnerability than CVE-2017-12192 (bnc#1045327).\n- CVE-2017-2647: The KEYS subsystem in the Linux kernel allowed local users to gain privileges or cause a denial of service (NULL pointer dereference and system crash) via vectors involving a NULL value for a certain match field, related to the keyring_search_iterator function in keyring.c (bnc#1030593).\n- CVE-2017-6951: The keyring_search_aux function in security/keys/keyring.c in the Linux kernel allowed local users to cause a denial of service (NULL pointer dereference and OOPS) via a request_key system call for the 'dead' type (bnc#1029850).\n- CVE-2017-7482: A potential memory corruption was fixed in decoding of krb5 principals in the kernels kerberos handling. (bnc#1046107).\n- CVE-2017-7487: The ipxitf_ioctl function in net/ipx/af_ipx.c in the Linux kernel mishandled reference counts, which allowed local users to cause a denial of service (use-after-free) or possibly have unspecified other impact via a failed SIOCGIFADDR ioctl call for an IPX interface (bnc#1038879).\n- CVE-2017-7518: The Linux kernel was vulnerable to an incorrect debug exception(#DB) error. It could occur while emulating a syscall instruction and potentially lead to guest privilege escalation. (bsc#1045922).\n- CVE-2017-7541: The brcmf_cfg80211_mgmt_tx function in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c in the Linux kernel allowed local users to cause a denial of service (buffer overflow and system crash) or possibly gain privileges via a crafted NL80211_CMD_FRAME Netlink packet (bnc#1049645).\n- CVE-2017-7542: The ip6_find_1stfragopt function in net/ipv6/output_core.c in the Linux kernel allowed local users to cause a denial of service (integer overflow and infinite loop) by leveraging the ability to open a raw socket (bnc#1049882).\n- CVE-2017-7889: The mm subsystem in the Linux kernel did not properly enforce the CONFIG_STRICT_DEVMEM protection mechanism, which allowed local users to read or write to kernel memory locations in the first megabyte (and bypass slab-allocation access restrictions) via an application that opens the /dev/mem file, related to arch/x86/mm/init.c and drivers/char/mem.c (bnc#1034405).\n- CVE-2017-8106: The handle_invept function in arch/x86/kvm/vmx.c in the Linux kernel 3.12 allowed privileged KVM guest OS users to cause a denial of service (NULL pointer dereference and host OS crash) via a single-context INVEPT instruction with a NULL EPT pointer (bnc#1035877).\n- CVE-2017-8831: The saa7164_bus_get function in drivers/media/pci/saa7164/saa7164-bus.c in the Linux kernel allowed local users to cause a denial of service (out-of-bounds array access) or possibly have unspecified other impact by changing a certain sequence-number value, aka a 'double fetch' vulnerability (bnc#1037994).\n- CVE-2017-8890: The inet_csk_clone_lock function in net/ipv4/inet_connection_sock.c in the Linux kernel allowed attackers to cause a denial of service (double free) or possibly have unspecified other impact by leveraging use of the accept system call (bnc#1038544).\n- CVE-2017-8924: The edge_bulk_in_callback function in drivers/usb/serial/io_ti.c in the Linux kernel allowed local users to obtain sensitive information (in the dmesg ringbuffer and syslog) from uninitialized kernel memory by using a crafted USB device (posing as an io_ti USB serial device) to trigger an integer underflow (bnc#1037182 bsc#1038982).\n- CVE-2017-8925: The omninet_open function in drivers/usb/serial/omninet.c in the Linux kernel allowed local users to cause a denial of service (tty exhaustion) by leveraging reference count mishandling (bnc#1037183 bsc#1038981).\n- CVE-2017-9074: The IPv6 fragmentation implementation in the Linux kernel did not consider that the nexthdr field may be associated with an invalid option, which allowed local users to cause a denial of service (out-of-bounds read and BUG) or possibly have unspecified other impact via crafted socket and send system calls (bnc#1039882).\n- CVE-2017-9075: The sctp_v6_create_accept_sk function in net/sctp/ipv6.c in the Linux kernel mishandled inheritance, which allowed local users to cause a denial of service or possibly have unspecified other impact via crafted system calls, a related issue to CVE-2017-8890 (bnc#1039883).\n- CVE-2017-9076: The dccp_v6_request_recv_sock function in net/dccp/ipv6.c in the Linux kernel mishandled inheritance, which allowed local users to cause a denial of service or possibly have unspecified other impact via crafted system calls, a related issue to CVE-2017-8890 (bnc#1039885).\n- CVE-2017-9077: The tcp_v6_syn_recv_sock function in net/ipv6/tcp_ipv6.c in the Linux kernel mishandled inheritance, which allowed local users to cause a denial of service or possibly have unspecified other impact via crafted system calls, a related issue to CVE-2017-8890 (bnc#1040069).\n- CVE-2017-9242: The __ip6_append_data function in net/ipv6/ip6_output.c in the Linux kernel is too late in checking whether an overwrite of an skb data structure may occur, which allowed local users to cause a denial of service (system crash) via crafted system calls (bnc#1041431).\n\nThe following non-security bugs were fixed:\n\n- btrfs: Fix a data space underflow warning (bsc#985562, bsc#975596, bsc#984779, bsc#1008353, bsc#1017941).\n- dm-mpath: always return reservation conflict. bsc#938162\n- getcwd: Close race with d_move called by lustre (bsc#1052593).\n- ipv4: Should use consistent conditional judgement for ip fragment in __ip_append_data and ip_finish_output (bsc#1041958).\n- ipv6: Should use consistent conditional judgement for ip6 fragment between __ip6_append_data and ip6_finish_output (bsc#1041958).\n- kabi: avoid bogus kabi errors in ip_output.c (bsc#1041958).\n- keys: Disallow keyrings beginning with '.' to be joined as session keyrings (bnc#1035576).\n- mm/mmap.c: do not blow on PROT_NONE MAP_FIXED holes in the stack (bnc#1039348).\n- net: account for current skb length when deciding about UFO (bsc#1041958).\n- nfsd4: minor NFSv2/v3 write decoding cleanup (bsc#1034670 CVE#2017-7645).\n- nfsd: check for oversized NFSv2/v3 arguments (bsc#1034670 CVE#2017-7645).\n- nfsd: stricter decoding of write-like NFSv2/v3 ops (bsc#1034670 CVE#2017-7645).\n- printk: prevent userland from spoofing kernel messages (bsc#1039721).\n- reiserfs: do not preallocate blocks for extended attributes (bsc#990682).\n- tcp: do not inherit fastopen_req from parent (bsc#1038544).\n- udp: disallow UFO for sockets with SO_NO_CHECK option (bsc#1041958).\n- usb: wusbcore: fix NULL-deref at probe (bsc#1045487).\n- vsock: Detach QP check should filter out non matching QPs (bsc#1036752 bsc#1047408).\n- vsock: Fix lockdep issue (bsc#977417 bsc#1047408).\n- vsock: sock_put wasn't safe to call in interrupt context (bsc#977417 bsc#1047408).\n- xfs: XFS_IS_REALTIME_INODE() should be false if no rt device present (bsc#1058524).\n",
+  "modified": "2025-05-02T04:04:54.988849Z",
+  "published": "2017-11-02T13:02:36Z",
+  "related": [
+    "CVE-2015-9004",
+    "CVE-2016-10229",
+    "CVE-2016-9604",
+    "CVE-2017-1000363",
+    "CVE-2017-1000365",
+    "CVE-2017-1000380",
+    "CVE-2017-10661",
+    "CVE-2017-11176",
+    "CVE-2017-12153",
+    "CVE-2017-12154",
+    "CVE-2017-12762",
+    "CVE-2017-13080",
+    "CVE-2017-14051",
+    "CVE-2017-14106",
+    "CVE-2017-14140",
+    "CVE-2017-15265",
+    "CVE-2017-15274",
+    "CVE-2017-15649",
+    "CVE-2017-2647",
+    "CVE-2017-6951",
+    "CVE-2017-7482",
+    "CVE-2017-7487",
+    "CVE-2017-7518",
+    "CVE-2017-7541",
+    "CVE-2017-7542",
+    "CVE-2017-7889",
+    "CVE-2017-8106",
+    "CVE-2017-8831",
+    "CVE-2017-8890",
+    "CVE-2017-8924",
+    "CVE-2017-8925",
+    "CVE-2017-9074",
+    "CVE-2017-9075",
+    "CVE-2017-9076",
+    "CVE-2017-9077",
+    "CVE-2017-9242"
+  ],
+  "upstream": [
+    "CVE-2015-9004",
+    "CVE-2016-10229",
+    "CVE-2016-9604",
+    "CVE-2017-1000363",
+    "CVE-2017-1000365",
+    "CVE-2017-1000380",
+    "CVE-2017-10661",
+    "CVE-2017-11176",
+    "CVE-2017-12153",
+    "CVE-2017-12154",
+    "CVE-2017-12762",
+    "CVE-2017-13080",
+    "CVE-2017-14051",
+    "CVE-2017-14106",
+    "CVE-2017-14140",
+    "CVE-2017-15265",
+    "CVE-2017-15274",
+    "CVE-2017-15649",
+    "CVE-2017-2647",
+    "CVE-2017-6951",
+    "CVE-2017-7482",
+    "CVE-2017-7487",
+    "CVE-2017-7518",
+    "CVE-2017-7541",
+    "CVE-2017-7542",
+    "CVE-2017-7889",
+    "CVE-2017-8106",
+    "CVE-2017-8831",
+    "CVE-2017-8890",
+    "CVE-2017-8924",
+    "CVE-2017-8925",
+    "CVE-2017-9074",
+    "CVE-2017-9075",
+    "CVE-2017-9076",
+    "CVE-2017-9077",
+    "CVE-2017-9242"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2017/suse-su-20172920-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008353"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012422"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1017941"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1029850"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1030593"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1032268"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1034405"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1034670"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1035576"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1035877"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1036752"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1037182"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1037183"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1037306"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1037994"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1038544"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1038879"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1038981"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1038982"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039348"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039349"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039354"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039456"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039721"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039882"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039883"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1039885"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1040069"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1041431"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1041958"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1044125"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1045327"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1045487"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1045922"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1046107"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1047408"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1048275"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1049645"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1049882"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1052593"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1053148"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1053152"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1056588"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1056982"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1057179"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1058038"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1058410"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1058507"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1058524"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1062520"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1063667"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1064388"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/938162"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975596"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/977417"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/984779"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/985562"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/990682"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-9004"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-10229"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9604"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-1000363"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-1000365"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-1000380"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-10661"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-11176"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-12153"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-12154"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-12762"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-13080"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-14051"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-14106"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-14140"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-15265"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-15274"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-15649"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-2647"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6951"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7482"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7487"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7518"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7541"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7542"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7889"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-8106"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-8831"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-8890"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-8924"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-8925"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-9074"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-9075"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-9076"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-9077"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-9242"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Module for Public Cloud 12",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Public%20Cloud%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.61-52.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-ec2-extra": "3.12.61-52.101.1",
+            "kernel-ec2": "3.12.61-52.101.1",
+            "kernel-ec2-devel": "3.12.61-52.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2920-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.61-52.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.61-52.101.1",
+            "kernel-devel": "3.12.61-52.101.1",
+            "kernel-default-base": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-xen": "1-8.1",
+            "kernel-default-man": "3.12.61-52.101.1",
+            "kernel-xen-devel": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-default": "1-8.1",
+            "kernel-source": "3.12.61-52.101.1",
+            "kernel-default": "3.12.61-52.101.1",
+            "kernel-xen-base": "3.12.61-52.101.1",
+            "kernel-syms": "3.12.61-52.101.1",
+            "kernel-default-devel": "3.12.61-52.101.1",
+            "kernel-xen": "3.12.61-52.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2920-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.61-52.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.61-52.101.1",
+            "kernel-devel": "3.12.61-52.101.1",
+            "kernel-default-base": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-xen": "1-8.1",
+            "kernel-default-man": "3.12.61-52.101.1",
+            "kernel-xen-devel": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-default": "1-8.1",
+            "kernel-source": "3.12.61-52.101.1",
+            "kernel-default": "3.12.61-52.101.1",
+            "kernel-xen-base": "3.12.61-52.101.1",
+            "kernel-syms": "3.12.61-52.101.1",
+            "kernel-default-devel": "3.12.61-52.101.1",
+            "kernel-xen": "3.12.61-52.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2920-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.61-52.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.61-52.101.1",
+            "kernel-devel": "3.12.61-52.101.1",
+            "kernel-default-base": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-xen": "1-8.1",
+            "kernel-default-man": "3.12.61-52.101.1",
+            "kernel-xen-devel": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-default": "1-8.1",
+            "kernel-source": "3.12.61-52.101.1",
+            "kernel-default": "3.12.61-52.101.1",
+            "kernel-xen-base": "3.12.61-52.101.1",
+            "kernel-syms": "3.12.61-52.101.1",
+            "kernel-default-devel": "3.12.61-52.101.1",
+            "kernel-xen": "3.12.61-52.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2920-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 12-LTSS",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2012-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.61-52.101.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.61-52.101.1",
+            "kernel-devel": "3.12.61-52.101.1",
+            "kernel-default-base": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-xen": "1-8.1",
+            "kernel-default-man": "3.12.61-52.101.1",
+            "kernel-xen-devel": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-default": "1-8.1",
+            "kernel-source": "3.12.61-52.101.1",
+            "kernel-default": "3.12.61-52.101.1",
+            "kernel-xen-base": "3.12.61-52.101.1",
+            "kernel-syms": "3.12.61-52.101.1",
+            "kernel-default-devel": "3.12.61-52.101.1",
+            "kernel-xen": "3.12.61-52.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2920-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12_Update_28",
+        "ecosystem": "SUSE:Linux Enterprise Server 12-LTSS",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12_Update_28&distro=SUSE%20Linux%20Enterprise%20Server%2012-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-8.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.61-52.101.1",
+            "kernel-devel": "3.12.61-52.101.1",
+            "kernel-default-base": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-xen": "1-8.1",
+            "kernel-default-man": "3.12.61-52.101.1",
+            "kernel-xen-devel": "3.12.61-52.101.1",
+            "kgraft-patch-3_12_61-52_101-default": "1-8.1",
+            "kernel-source": "3.12.61-52.101.1",
+            "kernel-default": "3.12.61-52.101.1",
+            "kernel-xen-base": "3.12.61-52.101.1",
+            "kernel-syms": "3.12.61-52.101.1",
+            "kernel-default-devel": "3.12.61-52.101.1",
+            "kernel-xen": "3.12.61-52.101.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2920-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

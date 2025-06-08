@@ -1,0 +1,72 @@
+{
+  "id": "GHSA-955p-rc5h-hg6h",
+  "summary": "Double free in arenavec",
+  "details": "Affected versions of this crate did not guard against potential panics that may happen from user-provided functions T::default() and T::drop().\n\nPanic within T::default() leads to dropping uninitialized T, when it is invoked from common::Slice::<T, H>::new(). Panic within T::drop() leads to double drop of T, when it is invoked either from common::SliceVec::<T, H>::resize_with() or common::SliceVec::<T, H>::resize()\n\nEither case causes memory corruption in the heap memory.",
+  "aliases": [
+    "CVE-2021-29930",
+    "CVE-2021-29931",
+    "GHSA-327x-39hh-65wf",
+    "RUSTSEC-2021-0040"
+  ],
+  "modified": "2023-11-08T04:05:43.636978Z",
+  "published": "2021-08-25T20:55:04Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-415"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-19T17:08:56Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29931"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/ibabushkin/arenavec/issues/1"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/ibabushkin/arenavec"
+    },
+    {
+      "type": "WEB",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2021-0040.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "arenavec",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/arenavec"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "0.1.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-955p-rc5h-hg6h/GHSA-955p-rc5h-hg6h.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

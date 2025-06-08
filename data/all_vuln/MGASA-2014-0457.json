@@ -1,0 +1,94 @@
+{
+  "id": "MGASA-2014-0457",
+  "summary": "Updated dbus packages fix security vulnerabilitiy",
+  "details": "The patch issued by the D-Bus maintainers for CVE-2014-3636 was based on\nincorrect reasoning, and does not fully prevent the attack described as\n\"CVE-2014-3636 part A\", which is repeated below. Preventing that attack\nrequires raising the system dbus-daemon's RLIMIT_NOFILE (ulimit -n) to\na higher value.\n\nBy queuing up the maximum allowed number of fds, a malicious sender\ncould reach the system dbus-daemon's RLIMIT_NOFILE (ulimit -n, typically\n1024 on Linux). This would act as a denial of service in two ways:\n\n* new clients would be unable to connect to the dbus-daemon\n* when receiving a subsequent message from a non-malicious client that\n  contained a fd, dbus-daemon would receive the MSG_CTRUNC flag,\n  indicating that the list of fds was truncated; kernel fd-passing APIs\n  do not provide any way to recover from that, so dbus-daemon responds\n  to MSG_CTRUNC by disconnecting the sender, causing denial of service\n  to that sender.\n\nThis update resolves the issue (CVE-2014-7824).\n\nAlso default auth_timeout that was changed from 30s to 5s in MGASA-2014-0395,\nand raised to 20s in MGAA-2014-0182 is now changed back to 30s as there\nstill are reports about failing dbus connections.\n",
+  "modified": "2014-11-15T18:14:59Z",
+  "published": "2014-11-15T18:31:46Z",
+  "related": [
+    "CVE-2014-7824"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0457.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=14494"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://advisories.mageia.org/MGAA-2014-0182.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://openwall.com/lists/oss-security/2014/11/10/2"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "dbus",
+        "ecosystem": "Mageia:3",
+        "purl": "pkg:rpm/mageia/dbus?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.6.8-4.8.mga3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0457.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "dbus",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/dbus?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.6.18-1.8.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0457.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

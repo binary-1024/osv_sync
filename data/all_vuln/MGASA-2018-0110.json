@@ -1,0 +1,68 @@
+{
+  "id": "MGASA-2018-0110",
+  "summary": "Updated curl packages fix security vulnerability",
+  "details": "It was reported that reading an HTTP/2 trailer could mess up future trailers\nsince the stored size was one byte less than required. When accessed, the data\nis read out of bounds and causes either a crash or that the (too large) data\ngets passed to the libcurl callback. This might lead to a denial-of-service\nsituation or an information disclosure if someone has a service that echoes\nback or uses the trailers for something (CVE-2018-1000005).\n\nWhen asked to send custom headers in its HTTP requests, libcurl will send that\nset of headers first to the host in the initial URL but also, if asked to\nfollow redirects and a 30X HTTP response code is returned, to the host\nmentioned in URL in the Location: response header value. Sending the same set\nof headers to subsequest hosts is in particular a problem for applications\nthat pass on custom Authorization: headers, as this header often contains\nprivacy sensitive information or data that could allow others to impersonate\nthe libcurl-using client's request (CVE-2018-1000008).\n",
+  "modified": "2018-02-06T05:50:03Z",
+  "published": "2018-02-06T06:25:44Z",
+  "related": [
+    "CVE-2018-1000005",
+    "CVE-2018-1000008"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0110.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22445"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/adv_2018-824a.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/adv_2018-b3bf.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "curl",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/curl?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.54.1-2.5.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0110.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,527 @@
+{
+  "id": "SUSE-SU-2021:3877-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 12 SP5 kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- Unprivileged BPF has been disabled by default to reduce attack surface as too many security issues have happened in the past (jsc#SLE-22573)\n\n  You can reenable via systemctl setting /proc/sys/kernel/unprivileged_bpf_disabled to 0. (kernel.unprivileged_bpf_disabled = 0)\n\n- CVE-2021-0941: In bpf_skb_change_head of filter.c, there is a possible out of bounds read due to a use after free. This could lead to local escalation of privilege with System execution privileges needed. User interaction is not needed for exploitation (bnc#1192045).\n- CVE-2021-31916: An out-of-bounds (OOB) memory write flaw was found in list_devices in drivers/md/dm-ioctl.c in the Multi-device driver module in the Linux kernel A bound check failure allowed an attacker with special user (CAP_SYS_ADMIN) privilege to gain access to out-of-bounds memory leading to a system crash or a leak of internal kernel information. The highest threat from this vulnerability is to system availability (bnc#1192781).\n- CVE-2021-20322: Make the ipv4 and ipv6 ICMP exception caches less predictive to avoid information leaks about UDP ports in use. (bsc#1191790)\n- CVE-2021-34981: Fixed file refcounting in cmtp when cmtp_attach_device fails. (bsc#1191961)\n\nThe following non-security bugs were fixed:\n\n- arm64: pgtable: make __pte_to_phys/__phys_to_pte_val inline functions (git-fixes).\n- arm64/sve: Use correct size when reinitialising SVE state (git-fixes).\n- bpf: Add kconfig knob for disabling unpriv bpf by default (jsc#SLE-22913)\n- bpf: Disallow unprivileged bpf by default (jsc#SLE-22913).\n- bpf: Fix potential race in tail call compatibility check (git-fixes).\n- bpf: Move owner type, jited info into array auxiliary data (bsc#1141655).\n- bpf: Use kvmalloc for map values in syscall (stable-5.14.16).\n- btrfs: fix memory ordering between normal and ordered work functions (git-fixes).\n- config: disable unprivileged BPF by default (jsc#SLE-22913) \n- drivers: base: cacheinfo: Get rid of DEFINE_SMP_CALL_CACHE_FUNCTION() (git-fixes).\n- drm: fix spectre issue in vmw_execbuf_ioctl (bsc#1192802).\n- EDAC/sb_edac: Fix top-of-high-memory value for Broadwell/Haswell (bsc#1114648).\n- fuse: fix page stealing (bsc#1192718).\n- gigaset: fix spectre issue in do_data_b3_req (bsc#1192802).\n- hisax: fix spectre issues (bsc#1192802).\n- hysdn: fix spectre issue in hycapi_send_message (bsc#1192802).\n- i2c: synquacer: fix deferred probing (git-fixes).\n- ibmvnic: check failover_pending in login response (bsc#1190523 ltc#194510).\n- ibmvnic: do not stop queue in xmit (bsc#1192273 ltc#194629).\n- ibmvnic: Process crqs after enabling interrupts (bsc#1192273 ltc#194629).\n- infiniband: fix spectre issue in ib_uverbs_write (bsc#1192802).\n- iwlwifi: fix spectre issue in iwl_dbgfs_update_pm (bsc#1192802).\n- media: dvb_ca_en50221: prevent using slot_info for Spectre attacs (bsc#1192802).\n- media: dvb_ca_en50221: sanity check slot number from userspace (bsc#1192802).\n- media: wl128x: get rid of a potential spectre issue (bsc#1192802).\n- mm/hugetlb: initialize hugetlb_usage in mm_init (bsc#1192906).\n- mpt3sas: fix spectre issues (bsc#1192802).\n- net: sock_diag: Fix spectre v1 gadget in __sock_diag_cmd() (bsc#1192802).\n- osst: fix spectre issue in osst_verify_frame (bsc#1192802).\n- prctl: allow to setup brk for et_dyn executables (git-fixes).\n- printk/console: Allow to disable console output by using console='' or console=null (bsc#1192753).\n- printk: handle blank console arguments passed in (bsc#1192753).\n- printk: Remove printk.h inclusion in percpu.h (bsc#1192987).\n- Revert 'ibmvnic: check failover_pending in login response' (bsc#1190523 ltc#194510).\n- Revert 'x86/kvm: fix vcpu-id indexed array sizes' (git-fixes).\n- scsi: be2iscsi: Fix an error handling path in beiscsi_dev_probe() (git-fixes).\n- scsi: BusLogic: Fix missing pr_cont() use (git-fixes).\n- scsi: core: Fix error handling of scsi_host_alloc() (git-fixes).\n- scsi: core: Fix spelling in a source code comment (git-fixes).\n- scsi: core: Only put parent device if host state differs from SHOST_CREATED (git-fixes).\n- scsi: core: Put .shost_dev in failure path if host state changes to RUNNING (git-fixes).\n- scsi: core: Retry I/O for Notify (Enable Spinup) Required error (git-fixes).\n- scsi: csiostor: Add module softdep on cxgb4 (git-fixes).\n- scsi: csiostor: Uninitialized data in csio_ln_vnp_read_cbfn() (git-fixes).\n- scsi: dc395: Fix error case unwinding (git-fixes).\n- scsi: FlashPoint: Rename si_flags field (git-fixes).\n- scsi: iscsi: Fix iface sysfs attr detection (git-fixes).\n- scsi: libsas: Use _safe() loop in sas_resume_port() (git-fixes).\n- scsi: mpt3sas: Fix error return value in _scsih_expander_add() (git-fixes).\n- scsi: qedf: Add pointer checks in qedf_update_link_speed() (git-fixes).\n- scsi: qedf: Fix error codes in qedf_alloc_global_queues() (git-fixes).\n- scsi: qedi: Fix error codes in qedi_alloc_global_queues() (git-fixes).\n- scsi: qla2xxx: Fix a memory leak in an error path of qla2x00_process_els() (git-fixes).\n- scsi: qla2xxx: Make sure that aborted commands are freed (git-fixes).\n- scsi: snic: Fix an error message (git-fixes).\n- scsi: ufs: ufshcd-pltfrm: Fix memory leak due to probe defer (git-fixes).\n- soc: fsl: dpio: replace smp_processor_id with raw_smp_processor_id (git-fixes).\n- swiotlb-xen: avoid double free (git-fixes).\n- sysvipc/sem: mitigate semnum index against spectre v1 (bsc#1192802).\n- tracing: use %ps format string to print symbols (git-fixes).\n- tty: serial: fsl_lpuart: fix the wrong mapbase value (git-fixes).\n- Update config files: Add CONFIG_BPF_UNPRIV_DEFAULT_OFF is not set\n- x86/xen: Mark cpu_bringup_and_idle() as dead_end_function (git-fixes).\n- x86/Xen: swap NX determination and GDT setup on BSP (git-fixes).\n- xen: Fix implicit type conversion (git-fixes).\n- xen-pciback: Fix return in pm_ctrl_init() (git-fixes).\n- xen-pciback: redo VF placement in the virtual topology (git-fixes).\n- xen/x86: fix PV trap handling on secondary processors (git-fixes).\n",
+  "modified": "2025-05-02T04:10:29.445728Z",
+  "published": "2021-12-02T07:20:11Z",
+  "related": [
+    "CVE-2021-0941",
+    "CVE-2021-20322",
+    "CVE-2021-31916",
+    "CVE-2021-34981"
+  ],
+  "upstream": [
+    "CVE-2021-0941",
+    "CVE-2021-20322",
+    "CVE-2021-31916",
+    "CVE-2021-34981"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2021/suse-su-20213877-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1114648"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1141655"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1190523"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191790"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1191961"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192045"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192048"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192273"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192718"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192750"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192753"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192781"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192802"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192906"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1192987"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-0941"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-20322"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-31916"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-34981"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "dlm-kmp-default": "4.12.14-122.103.1",
+            "gfs2-kmp-default": "4.12.14-122.103.1",
+            "ocfs2-kmp-default": "4.12.14-122.103.1",
+            "cluster-md-kmp-default": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-kgraft": "4.12.14-122.103.1",
+            "kernel-default-kgraft-devel": "4.12.14-122.103.1",
+            "kgraft-patch-4_12_14-122_103-default": "1-8.5.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP5_Update_26",
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 12 SP5",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP5_Update_26&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-8.5.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-kgraft": "4.12.14-122.103.1",
+            "kernel-default-kgraft-devel": "4.12.14-122.103.1",
+            "kgraft-patch-4_12_14-122_103-default": "1-8.5.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "4.12.14-122.103.1",
+            "kernel-obs-build": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-build",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-obs-build&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "4.12.14-122.103.1",
+            "kernel-obs-build": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-122.103.1",
+            "kernel-devel": "4.12.14-122.103.1",
+            "kernel-default-base": "4.12.14-122.103.1",
+            "kernel-default-man": "4.12.14-122.103.1",
+            "kernel-default": "4.12.14-122.103.1",
+            "kernel-source": "4.12.14-122.103.1",
+            "kernel-syms": "4.12.14-122.103.1",
+            "kernel-default-devel": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-122.103.1",
+            "kernel-devel": "4.12.14-122.103.1",
+            "kernel-default-base": "4.12.14-122.103.1",
+            "kernel-default-man": "4.12.14-122.103.1",
+            "kernel-default": "4.12.14-122.103.1",
+            "kernel-source": "4.12.14-122.103.1",
+            "kernel-syms": "4.12.14-122.103.1",
+            "kernel-default-devel": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-122.103.1",
+            "kernel-devel": "4.12.14-122.103.1",
+            "kernel-default-base": "4.12.14-122.103.1",
+            "kernel-default-man": "4.12.14-122.103.1",
+            "kernel-default": "4.12.14-122.103.1",
+            "kernel-source": "4.12.14-122.103.1",
+            "kernel-syms": "4.12.14-122.103.1",
+            "kernel-default-devel": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-122.103.1",
+            "kernel-devel": "4.12.14-122.103.1",
+            "kernel-default-base": "4.12.14-122.103.1",
+            "kernel-default-man": "4.12.14-122.103.1",
+            "kernel-default": "4.12.14-122.103.1",
+            "kernel-source": "4.12.14-122.103.1",
+            "kernel-syms": "4.12.14-122.103.1",
+            "kernel-default-devel": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-122.103.1",
+            "kernel-devel": "4.12.14-122.103.1",
+            "kernel-default-base": "4.12.14-122.103.1",
+            "kernel-default-man": "4.12.14-122.103.1",
+            "kernel-default": "4.12.14-122.103.1",
+            "kernel-source": "4.12.14-122.103.1",
+            "kernel-syms": "4.12.14-122.103.1",
+            "kernel-default-devel": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.12.14-122.103.1",
+            "kernel-devel": "4.12.14-122.103.1",
+            "kernel-default-base": "4.12.14-122.103.1",
+            "kernel-default-man": "4.12.14-122.103.1",
+            "kernel-default": "4.12.14-122.103.1",
+            "kernel-source": "4.12.14-122.103.1",
+            "kernel-syms": "4.12.14-122.103.1",
+            "kernel-default-devel": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Workstation Extension 12 SP5",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Workstation%20Extension%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-122.103.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-extra": "4.12.14-122.103.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:3877-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

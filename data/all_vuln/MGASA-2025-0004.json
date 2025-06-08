@@ -1,0 +1,63 @@
+{
+  "id": "MGASA-2025-0004",
+  "summary": "Updated opencontainers-runc packages fix security vulnerability",
+  "details": "runc 1.1.13 and earlier as well as 1.2.0-rc2 and earlier can be tricked into\ncreating empty files or directories in arbitrary locations in the host\nfilesystem by sharing a volume between two containers and exploiting a race\nwith os.MkdirAll. While this can be used to create empty files, existing\nfiles **will not** be truncated.  An attacker must have the ability to start\ncontainers using some kind of custom volume configuration. Containers using\nuser namespaces are still affected, but the scope of places an attacker can\ncreate inodes can be significantly reduced.  Sufficiently strict LSM policies\n(SELinux/Apparmor) can also in principle block this attack -- we suspect the\nindustry standard SELinux policy may restrict this attack's scope but the\nexact scope of protection hasn't been analysed.  This is exploitable using\nrunc directly as well as through Docker and Kubernetes.\n",
+  "modified": "2025-01-10T19:28:27Z",
+  "published": "2025-01-10T19:54:34Z",
+  "related": [
+    "CVE-2024-45310"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2025-0004.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=33519"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openwall.com/lists/oss-security/2024/09/03/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "opencontainers-runc",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/opencontainers-runc?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.14-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2025-0004.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

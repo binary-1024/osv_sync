@@ -1,0 +1,87 @@
+{
+  "id": "MGASA-2018-0460",
+  "summary": "Updated apache packages fix security vulnerabilities",
+  "details": "mod_authnz_ldap, if configured with AuthLDAPCharsetConfig, uses the\nAccept-Language header value to lookup the right charset encoding when\nverifying the user's credentials. If the header value is not present in\nthe charset conversion table, a fallback mechanism is used to truncate\nit to a two characters value to allow a quick retry (for example,\n'en-US' is truncated to 'en'). A header value of less than two\ncharacters forces an out of bound write of one NUL byte to a memory\nlocation that is not part of the string. In the worst case, quite\nunlikely, the process would crash which could be used as a Denial of\nService attack. In the more likely case, this memory is already\nreserved for future use and the issue has no effect at all\n(CVE-2017-15710).\n\nA regular expression could match '$' to a newline character in a\nmalicious filename, rather than matching only the end of the filename.\nleading to corruption of uploaded files (CVE-2017-15715).\n\nWhen mod_session is configured to forward its session data to CGI\napplications (SessionEnv on, not the default), a remote user may\ninfluence their content by using a \\\"Session\\\" header leading to\nunexpected behavior (CVE-2018-1283).\n\nDue to an out of bound access after a size limit being reached by\nreading the HTTP header, a specially crafted request could lead to\nremote denial of service (CVE-2018-1301).\n\nWhen an HTTP/2 stream was destroyed after being handled, it could have\nwritten a NULL pointer potentially to an already freed memory. The\nmemory pools maintained by the server make this vulnerability hard to\ntrigger in usual configurations, the reporter and the team could not\nreproduce it outside debug builds, so it is classified as low risk\n(CVE-2018-1302).\n\nA specially crafted HTTP request header could lead to crash due to an\nout of bound read while preparing data to be cached in shared memory\n(CVE-2018-1303).\n\nWhen generating an HTTP Digest authentication challenge, the nonce sent\nto prevent reply attacks was not correctly generated using a pseudo-\nrandom seed. In a cluster of servers using a common Digest\nauthentication configuration, HTTP requests could be replayed across\nservers by an attacker without detection (CVE-2018-1312).\n\nFixed a worker exhaustion that could have lead to a denial of service\nvia specially crafted HTTP/2 requests (CVE-2018-1333).\n\nIn Apache HTTP Server by sending continuous, large SETTINGS frames a\nclient can occupy a connection, server thread and CPU time without any\nconnection timeout coming to effect. This affects only HTTP/2\nconnections (CVE-2018-11763).\n\nThe apache package has been updated to version 2.4.37, fixing these\nissues and several other bugs.  See the upstream CHANGES files for\ndetails.\n",
+  "modified": "2018-11-20T10:38:12Z",
+  "published": "2018-11-20T11:11:24Z",
+  "related": [
+    "CVE-2017-15710",
+    "CVE-2017-15715",
+    "CVE-2018-11763",
+    "CVE-2018-1283",
+    "CVE-2018-1301",
+    "CVE-2018-1302",
+    "CVE-2018-1303",
+    "CVE-2018-1312",
+    "CVE-2018-1333"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0460.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22833"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.apache.org/dist/httpd/CHANGES_2.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.apache.org/dist/httpd/CHANGES_2.4.37"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/opensuse-updates/2018-05/msg00023.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/opensuse-updates/2018-08/msg00123.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/opensuse-updates/2018-10/msg00081.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "apache",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/apache?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.37-1.2.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0460.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

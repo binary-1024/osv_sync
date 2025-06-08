@@ -1,0 +1,107 @@
+{
+  "id": "GHSA-wppf-gqj5-fc4f",
+  "summary": "REDAXO allows Arbitrary File Upload in the mediapool page",
+  "details": "### Summary\nAn arbitrary file upload vulnerability was identified in the redaxo. This flaw permits users to upload malicious files, which can lead to JavaScript code execution and distribute malware. \n\n### Details\nOn the latest version of Redaxo, v5.18.2, the mediapool/media page is vulnerable to  arbitrary file upload.\n\n### PoC\n1. Log in to the portal then navigate to `Mediapool`.\n2. Upload a png file (ex: poc.png)\n\n![1](https://github.com/user-attachments/assets/e9165434-d2cd-437b-87a3-f9527d4f3070)\n\n\n3. Intercept the upload HTTP request on burp suite and change `filename: poc.1html`,  `Content-Type:image/html` and insert the malicious html code. (ex: `<IFRAME SRC=\"javascript:alert(1);\"></IFRAME>`) \n\n![2](https://github.com/user-attachments/assets/f8da0e6b-e807-46be-a867-dc31b1e13e57)\n\n4. Forward the request.\n\n5. Navigate to the file.\n\n![3](https://github.com/user-attachments/assets/4c44c5cf-8467-452d-b249-cf2d72e0d328)\n![4](https://github.com/user-attachments/assets/29db80e3-a5b9-4354-a292-c1ae7189931a)\n\n\n### Impact\nExploiting an arbitrary file upload vulnerability enables attackers to execute malicious code on a server.",
+  "aliases": [
+    "CVE-2025-27411"
+  ],
+  "modified": "2025-03-05T19:45:42.829389Z",
+  "published": "2025-03-05T18:31:35Z",
+  "database_specific": {
+    "nvd_published_at": "2025-03-05T16:15:40Z",
+    "cwe_ids": [
+      "CWE-434"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-03-05T18:31:35Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/redaxo/redaxo/security/advisories/GHSA-wppf-gqj5-fc4f"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-27411"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/redaxo/redaxo/commit/3b2159bb45da0ab6cfaef5c8cf8b602ee5e2fb37"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/redaxo/redaxo"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "redaxo/source",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/redaxo/source"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.18.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.10.0",
+        "5.10.0-beta1",
+        "5.10.0-beta2",
+        "5.10.1",
+        "5.11.0",
+        "5.11.0-beta1",
+        "5.11.1",
+        "5.11.2",
+        "5.12.0",
+        "5.12.0-beta1",
+        "5.12.0-beta2",
+        "5.12.0-beta3",
+        "5.12.1",
+        "5.13.0",
+        "5.13.0-beta1",
+        "5.13.0-beta2",
+        "5.13.1",
+        "5.13.2",
+        "5.13.3",
+        "5.14.0",
+        "5.14.0-beta1",
+        "5.14.0-beta2",
+        "5.14.1",
+        "5.14.2",
+        "5.14.3",
+        "5.15.0",
+        "5.15.0-beta1",
+        "5.15.1",
+        "5.16.0",
+        "5.16.0-beta1",
+        "5.16.1",
+        "5.17.0",
+        "5.17.1",
+        "5.18.0",
+        "5.18.1",
+        "5.18.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-wppf-gqj5-fc4f/GHSA-wppf-gqj5-fc4f.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

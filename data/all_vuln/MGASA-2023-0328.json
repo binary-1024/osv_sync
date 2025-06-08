@@ -1,0 +1,179 @@
+{
+  "id": "MGASA-2023-0328",
+  "summary": "Updated kernel packages fix security vulnerabilities and other bugs",
+  "details": "This kernel update is based on upstream 6.5.11 and fixes or adds\nmitigations for at least the following security issues:\n\nA use-after-free vulnerability was found in drivers/nvme/target/tcp.c`\nin `nvmet_tcp_free_crypto` due to a logical bug in the NVMe-oF/TCP\nsubsystem in the Linux kernel. This issue may allow a malicious user to\ncause a use-after-free and double-free problem, which may permit remote\ncode execution or lead to local privilege escalation in case that the\nattacker already has local privileges. (CVE-2023-5178)\n\nx86: KVM: SVM: always update the x2avic msr interception:\nThe following problem exists since x2avic was enabled in the KVM:\nsvm_set_x2apic_msr_interception is called to enable the interception of\nthe x2apic msrs.\nIn particular it is called at the moment the guest resets its apic.\nAssuming that the guest's apic is in x2apic mode, the reset will bring\nit back to the xapic mode.\nThe svm_set_x2apic_msr_interception however has an erroneous check for\n'!apic_x2apic_mode()' which prevents it from doing anything in this case.\nAs a result of this, all x2apic msrs are left unintercepted, and that\nexposes the bare metal x2apic (if enabled) to the guest.\nRemoving the erroneous '!apic_x2apic_mode()' check fixes that.\n(CVE-2023-5090)\n\nIn unprivileged Xen guests event handling can cause a deadlock with\nXen console handling. The evtchn_rwlock and the hvc_lock are taken in\nopposite sequence in __hvc_poll() and in Xen console IRQ handling.\nThis is fixed by xen/events: replace evtchn_rwlock with RCU\n(CVE-2023-34324)\n\nA use-after-free vulnerability in the Linux kernel's fs/smb/client\ncomponent can be exploited to achieve local privilege escalation. In\ncase of an error in smb3_fs_context_parse_param, ctx->password was freed\nbut the field was not set to NULL which could lead to double free. We\nrecommend upgrading past commit e6e43b8aa7cd3c3af686caf0c2e11819a886d705\n(CVE-2023-5345)\n\nA flaw was found in the Netfilter subsystem in the Linux kernel. The\nnfnl_osf_add_callback function did not validate the user mode controlled\nopt_num field. This flaw allows a local privileged (CAP_NET_ADMIN)\nattacker to trigger an out-of-bounds read, leading to a crash or\ninformation disclosure. (CVE-2023-39189)\n\nThe reference count changes made as part of the CVE-2023-33951 and\nCVE-2023-33952 fixes exposed a use-after-free flaw in the way memory\nobjects were handled when they were being used to store a surface. When\nrunning inside a VMware guest with 3D acceleration enabled, a local,\nunprivileged user could potentially use this flaw to escalate their\nprivileges. (CVE-2023-5633)\n\nA heap out-of-bounds write vulnerability in the Linux kernel's Linux\nKernel Performance Events (perf) component can be exploited to achieve\nlocal privilege escalation. If perf_read_group() is called while an\nevent's sibling_list is smaller than its child's sibling_list, it can\nincrement or write to memory locations outside of the allocated buffer.\nWe recommend upgrading past commit\n32671e3799ca2e4590773fd0e63aaa4229e50c06. (CVE-2023-5717)\n\nAn issue was discovered in the Linux kernel before 6.5.9, exploitable by\nlocal users with userspace access to MMIO registers. Incorrect access\nchecking in the #VC handler and instruction emulation of the SEV-ES\nemulation of MMIO accesses could lead to arbitrary write access to\nkernel memory (and thus privilege escalation). This depends on a race\ncondition through which userspace can replace an instruction before the\n#VC handler reads it. (CVE-2023-46813)\n\nA null pointer dereference flaw was found in the Linux kernel API for\nthe cryptographic algorithm scatterwalk functionality. This issue occurs\nwhen a user constructs a malicious packet with specific socket\nconfiguration, which could allow a local user to crash the system or\nescalate their privileges on the system. (CVE-2023-6176)\n\nBluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification\n1.0B through 5.2 may permit an unauthenticated nearby device to spoof\nthe BD_ADDR of the peer device to complete pairing without knowledge of\nthe PIN. (CVE-2020-26555)\n\nA flaw was found in the Linux kernel's IP framework for transforming\npackets (XFRM subsystem). This issue may allow a malicious user with\nCAP_NET_ADMIN privileges to directly dereference a NULL pointer in\nxfrm_update_ae_params(), leading to a possible kernel crash and denial\nof service. (CVE-2023-3772)\n\nA flaw was found in the Linux kernel's IP framework for transforming\npackets (XFRM subsystem). This issue may allow a malicious user with\nCAP_NET_ADMIN privileges to cause a 4 byte out-of-bounds read of\nXFRMA_MTIMER_THRESH when parsing netlink attributes, leading to\npotential leakage of sensitive heap data to userspace. (CVE-2023-3773)\n\nA flaw was found in KVM AMD Secure Encrypted Virtualization (SEV) in the\nLinux kernel. A KVM guest using SEV-ES or SEV-SNP with multiple vCPUs\ncan trigger a double fetch race condition vulnerability and invoke the\n`VMGEXIT` handler recursively. If an attacker manages to call the handler\nmultiple times, they can trigger a stack overflow and cause a denial of\nservice or potentially guest-to-host escape in kernel configurations\nwithout stack guard pages (`CONFIG_VMAP_STACK`). (CVE-2023-4155) \n\nImproper access control in the Intel(R) Ethernet Controller RDMA driver\nfor linux before version 1.9.30 may allow an unauthenticated user to\npotentially enable escalation of privilege via network access.\n(CVE-2023-25775)\n\nThe fix for XSA-423 added logic to Linux'es netback driver to deal with\na frontend splitting a packet in a way such that not all of the headers\nwould come in one piece. Unfortunately the logic introduced there didn't\naccount for the extreme case of the entire packet being split into as\nmany pieces as permitted by the protocol, yet still being smaller than\nthe area that's specially dealt with to keep all (possible) headers\ntogether. Such an unusual packet would therefore trigger a buffer\noverrun in the driver. (CVE-2023-34319) \n\nAnd fixes at least one normal bug about sleep lockups: (bug #32082)\n",
+  "modified": "2023-11-28T16:59:44Z",
+  "published": "2023-11-28T17:12:52Z",
+  "related": [
+    "CVE-2020-26555",
+    "CVE-2023-25775",
+    "CVE-2023-34319",
+    "CVE-2023-34324",
+    "CVE-2023-3772",
+    "CVE-2023-3773",
+    "CVE-2023-39189",
+    "CVE-2023-4155",
+    "CVE-2023-46813",
+    "CVE-2023-5090",
+    "CVE-2023-5178",
+    "CVE-2023-5345",
+    "CVE-2023-5633",
+    "CVE-2023-5717",
+    "CVE-2023-6176"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2023-0328.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=32537"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=32082"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.11"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.5.11-5.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0328.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.0.10-37.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0328.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.24-50.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0328.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

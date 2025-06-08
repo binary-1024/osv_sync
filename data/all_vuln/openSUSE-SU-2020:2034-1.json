@@ -1,0 +1,599 @@
+{
+  "id": "openSUSE-SU-2020:2034-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe openSUSE Leap 15.1 kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2020-28915: A buffer over-read (at the framebuffer layer) in the fbcon code could be used by local attackers to read kernel memory, aka CID-6735b4632def (bnc#1178886).\n- CVE-2020-25669: A use-after-free in teardown paths of sunkbd was fixed (bsc#1178182).\n- CVE-2020-25705: A flaw in the way reply ICMP packets are limited in the Linux kernel functionality was found that allowed to quickly scan open UDP ports. This flaw allowed an off-path remote user to effectively bypassing source port UDP randomization. The highest threat from this vulnerability is to confidentiality and possibly integrity, because software that relies on UDP source port randomization are indirectly affected as well. Kernel versions may be vulnerable to this issue (bnc#1175721 bnc#1178782).\n- CVE-2020-25704: A a memory leak in perf_event_parse_addr_filter() was foxed (bsc#1178393, CVE-2020-25704).\n\nThe following non-security bugs were fixed:\n\n- ACPI: NFIT: Fix comparison to '-ENXIO' (git-fixes).\n- bpf: Zero-fill re-used per-cpu map element (git-fixes).\n- can: af_can: prevent potential access of uninitialized member in canfd_rcv() (git-fixes).\n- can: af_can: prevent potential access of uninitialized member in can_rcv() (git-fixes).\n- can: dev: can_restart(): post buffer from the right context (git-fixes).\n- can: m_can: m_can_handle_state_change(): fix state change (git-fixes).\n- can: m_can: m_can_stop(): set device to software init mode before closing (git-fixes).\n- can: mcba_usb: mcba_usb_start_xmit(): first fill skb, then pass to can_put_echo_skb() (git-fixes).\n- can: peak_usb: fix potential integer overflow on shift of a int (git-fixes).\n- docs: ABI: sysfs-c2port: remove a duplicated entry (git-fixes).\n- drbd: code cleanup by using sendpage_ok() to check page for kernel_sendpage() (bsc#1172873).\n- drm/i915: Break up error capture compression loops with cond_resched() (git-fixes).\n- drm/vc4: drv: Add error handding for bind (git-fixes).\n- Drop sysctl files for dropped archs, add ppc64le and arm64 (bsc#1178838). Also fix the ppc64 page size.\n- fs/proc/array.c: allow reporting eip/esp for all coredumping threads (bsc#1050549).\n- ftrace: Fix recursion check for NMI test (git-fixes).\n- ftrace: Handle tracing when switching between context (git-fixes).\n- futex: Do not enable IRQs unconditionally in put_pi_state() (bsc#1067665).\n- futex: Handle transient 'ownerless' rtmutex state correctly (bsc#1067665).\n- hv_netvsc: Add XDP support (bsc#1177819, bsc#1177820).\n- hv_netvsc: deal with bpf API differences in 4.12 (bsc#1177819, bsc#1177820).\n- hv_netvsc: Fix XDP refcnt for synthetic and VF NICs (bsc#1177819, bsc#1177820).\n- hv_netvsc: make recording RSS hash depend on feature flag (bsc#1178853, bsc#1178854).\n- hv_netvsc: record hardware hash in skb (bsc#1178853, bsc#1178854).\n- hyperv_fb: Update screen_info after removing old framebuffer (bsc#1175306).\n- inet_diag: Fix error path to cancel the meseage in inet_req_diag_fill() (git-fixes).\n- Input: adxl34x - clean up a data type in adxl34x_probe() (git-fixes).\n- kthread_worker: prevent queuing delayed work from timer_fn when it is being canceled (git-fixes).\n- libceph: use sendpage_ok() in ceph_tcp_sendpage() (bsc#1172873).\n- locking/lockdep: Add debug_locks check in __lock_downgrade() (bsc#1050549).\n- locking/percpu-rwsem: Use this_cpu_{inc,dec}() for read_count (bsc#1050549).\n- locktorture: Print ratio of acquisitions, not failures (bsc#1050549).\n- mac80211: minstrel: fix tx status processing corner case (git-fixes).\n- mac80211: minstrel: remove deferred sampling code (git-fixes).\n- memcg: fix NULL pointer dereference in __mem_cgroup_usage_unregister_event (bsc#1177703).\n- mmc: sdhci-of-esdhc: Handle pulse width detection erratum for more SoCs (git-fixes).\n- mm/memcg: fix refcount error while moving and swapping (bsc#1178686).\n- net: add WARN_ONCE in kernel_sendpage() for improper zero-copy send (bsc#1172873).\n- net: ena: Capitalize all log strings and improve code readability (bsc#1177397).\n- net: ena: Change license into format to SPDX in all files (bsc#1177397).\n- net: ena: Change log message to netif/dev function (bsc#1177397).\n- net: ena: Change RSS related macros and variables names (bsc#1177397).\n- net: ena: ethtool: Add new device statistics (bsc#1177397).\n- net: ena: ethtool: add stats printing to XDP queues (bsc#1177397).\n- net: ena: ethtool: convert stat_offset to 64 bit resolution (bsc#1177397).\n- net: ena: Fix all static chekers' warnings (bsc#1177397).\n- net: ena: Remove redundant print of placement policy (bsc#1177397).\n- net: ena: xdp: add queue counters for xdp actions (bsc#1177397).\n- netfilter: nat: can't use dst_hold on noref dst (bsc#1178878).\n- net: introduce helper sendpage_ok() in include/linux/net.h (bsc#1172873). kABI workaround for including mm.h in include/linux/net.h (bsc#1172873).\n- net/mlx4_core: Fix init_hca fields offset (git-fixes).\n- net: usb: qmi_wwan: add Telit LE910Cx 0x1230 composition (git-fixes).\n- NFSv4.1: fix handling of backchannel binding in BIND_CONN_TO_SESSION (bsc#1170630).\n- nvme-tcp: check page by sendpage_ok() before calling kernel_sendpage() (bsc#1172873).\n- pinctrl: intel: Set default bias in case no particular value given (git-fixes).\n- powerpc/pseries/cpuidle: add polling idle for shared processor guests (bsc#1178765 ltc#188968).\n- powerpc/vnic: Extend 'failover pending' window (bsc#1176855 ltc#187293).\n- powerpc/vnic: Extend 'failover pending' window (bsc#1176855 ltc#187293).\n- regulator: avoid resolve_supply() infinite recursion (git-fixes).\n- regulator: fix memory leak with repeated set_machine_constraints() (git-fixes).\n- regulator: ti-abb: Fix array out of bound read access on the first transition (git-fixes).\n- regulator: workaround self-referent regulators (git-fixes).\n- Revert 'cdc-acm: hardening against malicious devices' (git-fixes).\n- ring-buffer: Fix recursion protection transitions between interrupt context (git-fixes).\n- scsi: libiscsi: use sendpage_ok() in iscsi_tcp_segment_map() (bsc#1172873).\n- scsi: lpfc: Fix initial FLOGI failure due to BBSCN not supported (git-fixes).\n- thunderbolt: Add the missed ida_simple_remove() in ring_request_msix() (git-fixes).\n- time: Prevent undefined behaviour in timespec64_to_ns() (git-fixes).\n- USB: Add NO_LPM quirk for Kingston flash drive (git-fixes).\n- usb: core: driver: fix stray tabs in error messages (git-fixes).\n- usb: host: ehci-tegra: Fix error handling in tegra_ehci_probe() (git-fixes).\n- USB: serial: cyberjack: fix write-URB completion race (git-fixes).\n- USB: serial: ftdi_sio: add support for FreeCalypso JTAG+UART adapters (git-fixes).\n- USB: serial: option: add Cellient MPL200 card (git-fixes).\n- USB: serial: option: add LE910Cx compositions 0x1203, 0x1230, 0x1231 (git-fixes).\n- USB: serial: option: add Quectel EC200T module support (git-fixes).\n- USB: serial: option: add Telit FN980 composition 0x1055 (git-fixes).\n- USB: serial: option: Add Telit FT980-KS composition (git-fixes).\n- USB: serial: pl2303: add device-id for HP GC device (git-fixes).\n- video: hyperv: hyperv_fb: Obtain screen resolution from Hyper-V host (bsc#1175306).\n- video: hyperv: hyperv_fb: Support deferred IO for Hyper-V frame buffer driver (bsc#1175306).\n- video: hyperv: hyperv_fb: Use physical memory for fb on HyperV Gen 1 VMs (bsc#1175306).\n- vt: Disable KD_FONT_OP_COPY (bsc#1178589).\n- x86/kexec: Use up-to-dated screen_info copy to fill boot params (bsc#1175306).\n- xfs: fix a missing unlock on error in xfs_fs_map_blocks (git-fixes).\n- xfs: fix flags argument to rmap lookup when converting shared file rmaps (git-fixes).\n- xfs: fix rmap key and record comparison functions (git-fixes).\n",
+  "modified": "2025-05-07T18:11:54.285142Z",
+  "published": "2020-11-26T13:50:49Z",
+  "related": [
+    "CVE-2020-25669",
+    "CVE-2020-25704",
+    "CVE-2020-25705",
+    "CVE-2020-28915"
+  ],
+  "upstream": [
+    "CVE-2020-25669",
+    "CVE-2020-25704",
+    "CVE-2020-25705",
+    "CVE-2020-28915"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/7GIP2AYRG3VCHD6CCU4URBF5KVBKIT63/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1050549"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1067665"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1170630"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1172873"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1175306"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1175721"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1176855"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1176983"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1177397"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1177703"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1177819"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1177820"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178182"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178393"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178589"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178686"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178765"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178782"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178838"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178853"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178854"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178878"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178886"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/927455"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-25669"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-25704"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-25705"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-28915"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-debug",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-debug&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-default&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-docs&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-kvmsmall",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-kvmsmall&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-build",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-obs-build&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-obs-qa",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-obs-qa&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-source&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-syms&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-vanilla",
+        "ecosystem": "openSUSE:Leap 15.1",
+        "purl": "pkg:rpm/opensuse/kernel-vanilla&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.12.14-lp151.28.83.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-debug-devel": "4.12.14-lp151.28.83.1",
+            "kernel-source-vanilla": "4.12.14-lp151.28.83.1",
+            "kernel-default-base": "4.12.14-lp151.28.83.1",
+            "kernel-macros": "4.12.14-lp151.28.83.1",
+            "kernel-docs": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default": "4.12.14-lp151.28.83.1",
+            "kernel-source": "4.12.14-lp151.28.83.1",
+            "kernel-debug": "4.12.14-lp151.28.83.1",
+            "kernel-syms": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall": "4.12.14-lp151.28.83.1",
+            "kernel-devel": "4.12.14-lp151.28.83.1",
+            "kernel-debug-base": "4.12.14-lp151.28.83.1",
+            "kernel-obs-qa": "4.12.14-lp151.28.83.1",
+            "kernel-kvmsmall-base": "4.12.14-lp151.28.83.1",
+            "kernel-docs-html": "4.12.14-lp151.28.83.1",
+            "kernel-obs-build": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-devel": "4.12.14-lp151.28.83.1",
+            "kernel-default-devel": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla-base": "4.12.14-lp151.28.83.1",
+            "kernel-vanilla": "4.12.14-lp151.28.83.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2034-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

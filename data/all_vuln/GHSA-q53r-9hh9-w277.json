@@ -1,0 +1,253 @@
+{
+  "id": "GHSA-q53r-9hh9-w277",
+  "summary": "pimcore/customer-data-framework vulnerable to SQL Injection",
+  "details": "An SQL injection vulnerability allows any authenticated user to execute arbitrary SQL commands on the server. This can lead to unauthorized access to sensitive data, data modification, or even complete control over the server.\n\nDetails\nThe vulnerability is found in the URL parameters of the following endpoint:\n\n`GET /admin/customermanagementframework/customers/list?add-new-customer=1&apply-segment-selection=Apply&filterDefinition[allowedRoleIds][]=1&filterDefinition[allowedUserIds][]=2&filterDefinition[id]=0&filterDefinition[name]=RDFYjolf&filterDefinition[readOnly]=on&filterDefinition[shortcutAvailable]=on&filter[active]=1&filter[email]=testing%40example.com&filter[firstname]=RDFYjolf&filter[id]=1&filter[lastname]=RDFYjolf&filter[operator-customer]=AND&filter[operator-segments]=%40%40dz1Uu&filter[search]=the&filter[segments][832][]=847&filter[segments][833][]=835&filter[segments][874][]=876&filter[showSegments][]=832 HTTP/1.1`\n\nThe parameters filterDefinition and filter are vulnerable to SQL injection. When a specially crafted input is provided, it results in an SQL error, indicating that the input is being directly used in an SQL query without proper sanitization.\n\nPoC\nTo reproduce the vulnerability, follow these steps:\n\nOpen a web browser or a tool like curl or Postman.\nAuthenticate with valid user credentials.\nNavigate to the following URL with the vulnerable parameters:\n```\nhttps://demo.pimcore.fun/admin/customermanagementframework/customers/list?add-new-customer=1&apply-segment-selection=Apply&filterDefinition[allowedRoleIds][]=1&filterDefinition[allowedUserIds][]=2&filterDefinition[id]=0&filterDefinition[name]=RDFYjolf&filterDefinition[readOnly]=on&filterDefinition[shortcutAvailable]=on&filter[active]=1&filter[email]=testing%40example.com&filter[firstname]=RDFYjolf&filter[id]=1&filter[lastname]=RDFYjolf&filter[operator-customer]=AND&filter[operator-segments]=%40%40dz1Uu&filter[search]=the&filter[segments][832][]=847&filter[segments][833][]=835&filter[segments][874][]=876&filter[showSegments][]=832\nObserve the error message indicating an SQL error:\nError while building customer list: An exception occurred while executing a query: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '@_0 ON `fltr_seg_832_0_@_0`.fieldname IN ('manualSegments','calculatedSegment...' at line 1\n```\nImpact\nThis is an SQL injection vulnerability. It impacts any authenticated user who can access the affected endpoint. An attacker can exploit this vulnerability to execute arbitrary SQL commands, potentially leading to data breaches, data loss, or full server compromise.",
+  "aliases": [
+    "CVE-2024-11956"
+  ],
+  "modified": "2025-01-28T19:27:07.078642Z",
+  "published": "2025-01-28T19:14:50Z",
+  "related": [
+    "CVE-2024-11956"
+  ],
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-564"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-01-28T19:14:50Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/pimcore/pimcore/security/advisories/GHSA-q53r-9hh9-w277"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-11956"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pimcore/customer-data-framework/releases/tag/v4.2.1"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/pimcore/pimcore"
+    },
+    {
+      "type": "WEB",
+      "url": "https://vuldb.com/?ctiid.293906"
+    },
+    {
+      "type": "WEB",
+      "url": "https://vuldb.com/?id.293906"
+    },
+    {
+      "type": "WEB",
+      "url": "https://vuldb.com/?submit.451863"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "pimcore/customer-management-framework-bundle",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/pimcore/customer-management-framework-bundle"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.1",
+        "1.3.17",
+        "2.4.5",
+        "2.5.1",
+        "v1.1.0",
+        "v1.1.1",
+        "v1.10.0",
+        "v1.10.1",
+        "v1.11.0",
+        "v1.12.0",
+        "v1.12.1",
+        "v1.13.0",
+        "v1.13.1",
+        "v1.14.0",
+        "v1.14.1",
+        "v1.14.2",
+        "v1.14.3",
+        "v1.14.4",
+        "v1.2.0",
+        "v1.2.1",
+        "v1.2.2",
+        "v1.2.3",
+        "v1.2.4",
+        "v1.2.5",
+        "v1.2.6",
+        "v1.3.0",
+        "v1.3.1",
+        "v1.3.10",
+        "v1.3.11",
+        "v1.3.12",
+        "v1.3.13",
+        "v1.3.14",
+        "v1.3.15",
+        "v1.3.16",
+        "v1.3.18",
+        "v1.3.19",
+        "v1.3.2",
+        "v1.3.20",
+        "v1.3.21",
+        "v1.3.3",
+        "v1.3.4",
+        "v1.3.5",
+        "v1.3.6",
+        "v1.3.7",
+        "v1.3.8",
+        "v1.3.9",
+        "v1.4.0",
+        "v1.4.1",
+        "v1.4.10",
+        "v1.4.11",
+        "v1.4.12",
+        "v1.4.2",
+        "v1.4.3",
+        "v1.4.4",
+        "v1.4.5",
+        "v1.4.6",
+        "v1.4.7",
+        "v1.4.8",
+        "v1.4.9",
+        "v1.5.0",
+        "v1.5.1",
+        "v1.5.2",
+        "v1.5.3",
+        "v1.5.4",
+        "v1.5.5",
+        "v1.6",
+        "v1.6.1",
+        "v1.6.2",
+        "v1.6.3",
+        "v1.6.4",
+        "v1.6.5",
+        "v1.6.6",
+        "v1.6.7",
+        "v1.7.0",
+        "v1.7.1",
+        "v1.7.2",
+        "v1.7.3",
+        "v1.7.4",
+        "v1.8.0",
+        "v1.9.0",
+        "v1.9.1",
+        "v2.0.0",
+        "v2.0.1",
+        "v2.1.0",
+        "v2.2.0",
+        "v2.2.1",
+        "v2.3.0",
+        "v2.3.1",
+        "v2.3.2",
+        "v2.3.3",
+        "v2.4.0",
+        "v2.4.1",
+        "v2.4.2",
+        "v2.4.3",
+        "v2.4.4",
+        "v2.4.6",
+        "v2.4.7",
+        "v2.5.0",
+        "v2.5.2",
+        "v2.5.3",
+        "v2.5.4",
+        "v2.5.5",
+        "v2.5.6",
+        "v2.5.7",
+        "v2.6.0",
+        "v2.6.1",
+        "v2.6.2",
+        "v3.0.0",
+        "v3.0.1",
+        "v3.0.2",
+        "v3.0.3",
+        "v3.1.0",
+        "v3.1.1",
+        "v3.2.0",
+        "v3.2.1",
+        "v3.2.10",
+        "v3.2.11",
+        "v3.2.12",
+        "v3.2.13",
+        "v3.2.14",
+        "v3.2.2",
+        "v3.2.3",
+        "v3.2.4",
+        "v3.2.5",
+        "v3.2.6",
+        "v3.2.7",
+        "v3.2.8",
+        "v3.2.9",
+        "v3.3.0",
+        "v3.3.1",
+        "v3.3.10",
+        "v3.3.2",
+        "v3.3.3",
+        "v3.3.4",
+        "v3.3.5",
+        "v3.3.6",
+        "v3.3.7",
+        "v3.3.8",
+        "v3.3.9",
+        "v3.4.0",
+        "v3.4.1",
+        "v3.4.2",
+        "v3.4.3",
+        "v3.4.4",
+        "v3.4.5",
+        "v4.0.0",
+        "v4.0.0-BETA1",
+        "v4.0.0-BETA2",
+        "v4.0.0-RC1",
+        "v4.0.0-RC2",
+        "v4.0.1",
+        "v4.0.2",
+        "v4.0.3",
+        "v4.0.4",
+        "v4.0.5",
+        "v4.0.6",
+        "v4.0.7",
+        "v4.1.0",
+        "v4.1.1",
+        "v4.1.2",
+        "v4.2.0",
+        "v4.2.0-RC1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-q53r-9hh9-w277/GHSA-q53r-9hh9-w277.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H"
+    },
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N"
+    }
+  ]
+}

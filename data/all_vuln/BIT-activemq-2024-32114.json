@@ -1,0 +1,54 @@
+{
+  "id": "BIT-activemq-2024-32114",
+  "details": "In Apache ActiveMQ 6.x, the default configuration doesn't secure the API web context (where the Jolokia JMX REST API and the Message REST API are located).It means that anyone can use these layers without any required authentication. Potentially, anyone can interact with the broker (using Jolokia JMX REST API) and/or produce/consume messages or purge/delete destinations (using the Message REST API).To mitigate, users can update the default conf/jetty.xml configuration file to add authentication requirement:<bean id=\"securityConstraintMapping\" class=\"org.eclipse.jetty.security.ConstraintMapping\">\u00a0 <property name=\"constraint\" ref=\"securityConstraint\" />\u00a0 <property name=\"pathSpec\" value=\"/\" /></bean>Or we encourage users to upgrade to Apache ActiveMQ 6.1.2 where the default configuration has been updated with authentication by default.",
+  "aliases": [
+    "CVE-2024-32114",
+    "GHSA-gj5m-m88j-v7c3"
+  ],
+  "modified": "2024-05-04T08:11:42.112926Z",
+  "published": "2024-05-04T07:16:13.914Z",
+  "database_specific": {
+    "cpes": [
+      "cpe:2.3:a:apache:activemq:*:*:*:*:*:*:*:*"
+    ],
+    "severity": "High"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://activemq.apache.org/security-advisories.data/CVE-2024-32114-announcement.txt"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "activemq",
+        "ecosystem": "Bitnami",
+        "purl": "pkg:bitnami/activemq"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "6.0.0"
+            },
+            {
+              "fixed": "6.1.2"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/activemq/BIT-activemq-2024-32114.json"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:A/AC:L/PR:N/UI:R/S:C/C:H/I:N/A:H"
+        }
+      ]
+    }
+  ],
+  "schema_version": "1.6.0"
+}

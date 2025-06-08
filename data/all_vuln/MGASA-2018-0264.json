@@ -1,0 +1,176 @@
+{
+  "id": "MGASA-2018-0264",
+  "summary": "Updated kernel-tmb packages fix security vulnerabilities",
+  "details": "This kernel-tmb update is based on the upstream 4.14.44 and fixes at least\nthe following security issues:\n\nThis update adds KPTI mitigation for Meltdown (CVE-2017-5754) on 32bit x86.\n\nThe netfilter subsystem in the Linux kernel through 4.15.7 mishandles the\ncase of a rule blob that contains a jump but lacks a user-defined chain,\nwhich allows local users to cause a denial of service (NULL pointer\ndereference) by leveraging the CAP_NET_RAW or CAP_NET_ADMIN capability,\nrelated to arpt_do_table in net/ipv4/netfilter/arp_tables.c, ipt_do_table\nin net/ipv4/netfilter/ip_tables.c, and ip6t_do_table in\nnet/ipv6/netfilter/ip6_tables.c (CVE-2018-1065).\n\nA flaw was found in the Linux kernel implementation of 32 bit syscall\ninterface for bridging allowing a privileged user to arbitrarily write\nto a limited range of kernel memory. This flaw can be exploited not only\nby a system's privileged user (a real \"root\" user), but also by an\nattacker who is a privileged user (a \"root\" user) in a user+network\nnamespace (CVE-2018-1068).\n\nOn x86, MOV SS and POP SS behave strangely if they encounter a data\nbreakpoint. If this occurs in a KVM guest, KVM incorrectly thinks that\na #DB instruction was caused by the undocumented ICEBP instruction. This\nresults in #DB being delivered to the guest kernel with an incorrect RIP\non the stack. On most guest kernels, this will allow a guest user to DoS\nthe guest kernel or even to escalate privilege to that of the guest kernel\n(CVE-2018-1087).\n\nThe ext4_iget function in fs/ext4/inode.c in the Linux kernel through\n4.15.15 mishandles the case of a root directory with a zero i_links_count,\nwhich allows attackers to cause a denial of service (ext4_process_freed_data\nNULL pointer dereference and OOPS) via a crafted ext4 image (CVE-2018-1092).\n\nThe ext4_valid_block_bitmap function in fs/ext4/balloc.c in the Linux kernel\nthrough 4.15.15 allows attackers to cause a denial of service (out-of-bounds\nread and system crash) via a crafted ext4 image because balloc.c and ialloc.c\ndo not validate bitmap block numbers (CVE-2018-1093).\n\nThe ext4_fill_super function in fs/ext4/super.c in the Linux kernel through\n4.15.15 does not always initialize the crc32c checksum driver, which allows\nattackers to cause a denial of service (ext4_xattr_inode_hash NULL pointer\ndereference and system crash) via a crafted ext4 image (CVE-2018-1094).\n\nThe ext4_xattr_check_entries function in fs/ext4/xattr.c in the Linux kernel\nthrough 4.15.15 does not properly validate xattr sizes, which causes\nmisinterpretation of a size as an error code, and consequently allows\nattackers to cause a denial of service (get_acl NULL pointer dereference and\nsystem crash) via a crafted ext4 image (CVE-2018-1095).\n\nBy mmap()ing a FUSE-backed file onto a process's memory containing command\nline arguments (or environment strings), an attacker can cause utilities\nfrom psutils or procps (such as ps, w) or any other program which makes a\nread() call to the /proc/<pid>/cmdline (or /proc/<pid>/environ) files to\nblock indefinitely (denial of service) or for some controlled time (as a\nsynchronization primitive for other attacks) (CVE-2018-1120).\n\nA null pointer dereference in dccp_write_xmit() function in\nnet/dccp/output.c in the Linux kernel before v4.16-rc7 allows a local\nuser to cause a denial of service by a number of certain crafted\nsystem calls (CVE-2018-1130).\n\nSpeculative Store Bypass (SSB) \u2013 also known as Spectre Variant 4.\nSystems with microprocessors utilizing speculative execution and speculative\nexecution of memory reads before the addresses of all prior memory writes\nare known may allow unauthorized disclosure of information to an attacker\nwith local user access via a side-channel analysis (CVE-2018-3639).\nNOTE! This fix only apply to Amd hardware so far as Intel CPUs need a\nfixed microcode update in order for the fix to get activated. At the time\nof this release we dont yet know when Intel will release new microcode.\n\nThe Linux kernel does not properly handle debug exceptions delivered after a\nstack switch operation via mov SS or pop SS instructions. During the stack\nswitch operation, the exceptions are deferred. As a result, a local user can\ncause the kernel to crash (CVE-2018-8897).\n\nA race condition vulnerability exists in the sound system, that can\nlead to a deadlock and denial of service condition (CVE-2018-1000004).\n\nA flaw was found in the Linux kernel where an out of memory (oom) killing\nof a process that has large spans of mlocked memory can result in\ndeferencing a NULL pointer, leading to denial of service (CVE-2018-1000200).\n\nWireGuard has been updated to 0.0.20180519.\n\nFor other fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2018-05-31T20:34:08Z",
+  "related": [
+    "CVE-2017-5754",
+    "CVE-2018-1000004",
+    "CVE-2018-1000200",
+    "CVE-2018-1065",
+    "CVE-2018-1068",
+    "CVE-2018-1087",
+    "CVE-2018-1092",
+    "CVE-2018-1093",
+    "CVE-2018-1094",
+    "CVE-2018-1095",
+    "CVE-2018-1120",
+    "CVE-2018-1130",
+    "CVE-2018-3639",
+    "CVE-2018-8897"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0264.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=23076"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.19"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.20"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.21"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.22"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.24"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.25"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.26"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.27"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.28"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.29"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.30"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.31"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.32"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.33"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.34"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.35"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.36"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.37"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.38"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.39"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.40"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.41"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.42"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.43"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.44"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-tmb",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.44-2.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0264.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

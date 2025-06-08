@@ -1,0 +1,66 @@
+{
+  "id": "GHSA-7vxc-q7rv-qfj8",
+  "summary": "SUCHMOKUO node-worker-threads-pool denial of service Vulnerability",
+  "details": "An issue was discovered in StaticPool in SUCHMOKUO node-worker-threads-pool version 1.4.3 that allows attackers to cause a denial of service.\n\nThis can be mitigated by manually creating a timeout. For example:\n\n```ts\nconst { StaticPool } = require(\\\"node-worker-threads-pool\\\");\n\t\n\tconst staticPool = new StaticPool({\n size: 1,\n task: (n) => {\n while (n) {\n console.log(\\\"a\\\");\n }\n return n;\n }\n});\n \n staticPool.createExecutor().setTimeout(10).exec(1).then((result) => {\n console.log(\\\"result from thread pool:\\\", result);\n}).catch(() => console.error('timeout'));\n```",
+  "aliases": [
+    "CVE-2021-29057"
+  ],
+  "modified": "2024-10-03T17:26:26Z",
+  "published": "2023-08-11T15:30:46Z",
+  "database_specific": {
+    "nvd_published_at": "2023-08-11T14:15:12Z",
+    "cwe_ids": [
+      "CWE-400",
+      "CWE-770"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-08-11T22:16:44Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29057"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/SUCHMOKUO/node-worker-threads-pool/issues/20"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/SUCHMOKUO/node-worker-threads-pool"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "node-worker-threads-pool",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/node-worker-threads-pool"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "1.4.3"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/08/GHSA-7vxc-q7rv-qfj8/GHSA-7vxc-q7rv-qfj8.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

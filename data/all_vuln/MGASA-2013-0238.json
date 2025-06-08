@@ -1,0 +1,116 @@
+{
+  "id": "MGASA-2013-0238",
+  "summary": "Updated phpmyadmin packages fix security vulnerabilities",
+  "details": "Using a crafted SQL query, it was possible to produce an XSS on the SQL query\nform (PMASA-2013-8)(CVE-2013-4995).\n\nIn the setup/index.php, using a crafted # hash with a Javascript event,\nuntrusted JS code could be executed. In the Display chart view, a chart title\ncontaining HTML code was rendered unescaped, leading to possible JavaScript\ncode execution via events. A malicious user with permission to create\ndatabases or users having HTML tags in their name, could trigger an XSS\nvulnerability by issuing a sleep query with a long delay. In the server\nstatus monitor, the query parameters were shown unescaped. By configuring a\nmalicious URL for the phpMyAdmin logo link in the navigation sidebar,\nuntrusted script code could be executed when a user clicked the logo.\nThe setup field for \"List of trusted proxies for IP allow/deny\" Ajax\nvalidation code returned the unescaped input on errors, leading to possible\nJavaScript execution by entering arbitrary HTML (PMASA-2013-9).\nAlso, due to not properly validating the version.json file, which is fetched\nfrom the phpMyAdmin.net website, could lead to an XSS attack, if a crafted\nversion.json file would be presented (PMASA-2013-11).\n(CVE-2013-4996, CVE-2013-4997)\n\nBy calling some scripts that are part of phpMyAdmin in an unexpected way, it\nis possible to trigger phpMyAdmin to display a PHP error message which\ncontains the full path of the directory where phpMyAdmin is installed\n(PMASA-2013-12)(CVE-2013-4998, CVE-2013-5000)\n\nWhen calling schema_export.php with crafted parameters, it is possible to\ntrigger an XSS (PMASA-2013-14)(CVE-2013-5002).\n\nDue to a missing validation of parameters passed to schema_export.php and\npmd_pdf.php, it was possible to inject SQL statements that would run with the\nprivileges of the control user. This gives read and write access to the\ntables of the configuration storage database, and if the control user has the\nnecessary privileges, read access to some tables of the mysql database\n(PMASA-2013-15)(CVE-2013-5003).\n",
+  "modified": "2013-07-30T16:00:02Z",
+  "published": "2013-07-29T14:06:10Z",
+  "related": [
+    "CVE-2013-4995",
+    "CVE-2013-4996",
+    "CVE-2013-4997",
+    "CVE-2013-4998",
+    "CVE-2013-5000",
+    "CVE-2013-5002",
+    "CVE-2013-5003"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2013-0238.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.phpmyadmin.net/home_page/security/PMASA-2013-8.php"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.phpmyadmin.net/home_page/security/PMASA-2013-9.php"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.phpmyadmin.net/home_page/security/PMASA-2013-11.php"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.phpmyadmin.net/home_page/security/PMASA-2013-12.php"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.phpmyadmin.net/home_page/security/PMASA-2013-14.php"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.phpmyadmin.net/home_page/security/PMASA-2013-15.php"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=10872"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "phpmyadmin",
+        "ecosystem": "Mageia:2",
+        "purl": "pkg:rpm/mageia/phpmyadmin?arch=source&distro=mageia-2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.5.8.2-1.mga2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2013-0238.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "phpmyadmin",
+        "ecosystem": "Mageia:3",
+        "purl": "pkg:rpm/mageia/phpmyadmin?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.5.8.2-1.mga3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2013-0238.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

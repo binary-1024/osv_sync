@@ -1,0 +1,133 @@
+{
+  "id": "MGASA-2022-0324",
+  "summary": "Updated kernel packages fix security vulnerabilities",
+  "details": "This kernel update is based on upstream 5.15.65 and fixes at least the\nfollowing security issues:\n\nAn out-of-bounds memory read flaw was found in the Linux kernel's BPF\nsubsystem in how a user calls the bpf_tail_call function with a key\nlarger than the max_entries of the map. This flaw allows a local user\nto gain unauthorized access to data (CVE-2022-2905).\n\nA race condition was found in the Linux kernel's IP framework for\ntransforming packets (XFRM subsystem) when multiple calls to\nxfrm_probe_algs occurred simultaneously. This flaw could allow a local\nattacker to potentially trigger an out-of-bounds write or leak kernel\nheap memory by performing an out-of-bounds read and copying it into a\nsocket (CVE-2022-3028).\n\nThere exists a use-after-free in io_uring in the Linux kernel.\nSignalfd_poll() and binder_poll() use a waitqueue whose lifetime is the\ncurrent task. It will send a POLLFREE notification to all waiters before\nthe queue is freed. Unfortunately, the io_uring poll doesn't handle\nPOLLFREE. This allows a use-after-free to occur if a signalfd or binder\nfd is polled with io_uring poll, and the waitqueue gets freed\n(CVE-2022-3176).\n\nAn issue was discovered in net/netfilter/nf_tables_api.c in the kernel\nbefore 5.19.6. A denial of service can occur upon binding to an already\nbound chain (CVE-2022-39190).\n\nmm/rmap.c in the Linux kernel before 5.19.7 has a use-after-free related\nto leaf anon_vma double reuse (CVE-2022-42703).\n\nOther fixes in this update:\n- A fix for an issue causing excessive logging (mga#30779) due to an\n  uppstream change that was included in the 5.15.62 kernel update released\n  as MGASA-2022-0305.\n- bpf, cgroup: Fix kernel BUG in purge_effective_progs\n- bpf: Restrict bpf_sys_bpf to CAP_PERFMON\n- Revert \"xhci: turn off port power in shutdown\" as it causes some systems\n  to hang on shutdown.\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-10-23T19:26:13Z",
+  "published": "2022-09-10T20:26:43Z",
+  "related": [
+    "CVE-2022-2905",
+    "CVE-2022-3028",
+    "CVE-2022-3176",
+    "CVE-2022-39190",
+    "CVE-2022-42703"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0324.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=30813"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=30779"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.63"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.64"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.65"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.65-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0324.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.1.38-1.5.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0324.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.21-1.5.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0324.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

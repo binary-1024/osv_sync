@@ -1,0 +1,102 @@
+{
+  "id": "MGASA-2014-0325",
+  "summary": "Updated openssl packages fix security vulnerabilities",
+  "details": "A flaw in OBJ_obj2txt may cause pretty printing functions such as\nX509_name_oneline, X509_name_print_ex et al. to leak some information from\nthe stack. Applications may be affected if they echo pretty printing output\nto the attacker. OpenSSL SSL/TLS clients and servers themselves are not\naffected (CVE-2014-3508).\n\nThe issue affects OpenSSL clients and allows a malicious server to crash\nthe client with a null pointer dereference (read) by specifying an SRP\nciphersuite even though it was not properly negotiated with the client. This\ncan be exploited through a Denial of Service attack (CVE-2014-5139).\n\nIf a multithreaded client connects to a malicious server using a resumed\nsession and the server sends an ec point format extension it could write up\nto 255 bytes to freed memory (CVE-2014-3509).\n\nAn attacker can force an error condition which causes openssl to crash\nwhilst processing DTLS packets due to memory being freed twice. This can be\nexploited through a Denial of Service attack (CVE-2014-3505).\n\nAn attacker can force openssl to consume large amounts of memory whilst\nprocessing DTLS handshake messages. This can be exploited through a Denial\nof Service attack (CVE-2014-3506).\n\nBy sending carefully crafted DTLS packets an attacker could cause openssl to\nleak memory. This can be exploited through a Denial of Service attack\n(CVE-2014-3507).\n\nOpenSSL DTLS clients enabling anonymous (EC)DH ciphersuites are subject to a\ndenial of service attack. A malicious server can crash the client with a\nnull pointer dereference (read) by specifying an anonymous (EC)DH\nciphersuite and sending carefully crafted handshake messages\n(CVE-2014-3510).\n\nA flaw in the OpenSSL SSL/TLS server code causes the server to negotiate\nTLS 1.0 instead of higher protocol versions when the ClientHello message is\nbadly fragmented. This allows a man-in-the-middle attacker to force a\ndowngrade to TLS 1.0 even if both the server and the client support a higher\nprotocol version, by modifying the client's TLS records (CVE-2014-3511).\n\nA malicious client or server can send invalid SRP parameters and overrun\nan internal buffer. Only applications which are explicitly set up for SRP\nuse are affected (CVE-2014-3512).\n",
+  "modified": "2014-08-12T09:05:43Z",
+  "published": "2014-08-12T09:16:46Z",
+  "related": [
+    "CVE-2014-3505",
+    "CVE-2014-3506",
+    "CVE-2014-3507",
+    "CVE-2014-3508",
+    "CVE-2014-3509",
+    "CVE-2014-3510",
+    "CVE-2014-3511",
+    "CVE-2014-3512",
+    "CVE-2014-5139"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0325.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=13874"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.openssl.org/news/secadv_20140806.txt"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2014/dsa-2998"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openssl",
+        "ecosystem": "Mageia:3",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.1e-1.10.mga3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0325.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "openssl",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.1e-8.7.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0325.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

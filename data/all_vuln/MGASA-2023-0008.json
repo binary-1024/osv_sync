@@ -1,0 +1,98 @@
+{
+  "id": "MGASA-2023-0008",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on upstream 5.15.88 and fixes atleast\nthe following security issues:\n\nA use-after-free flaw was found in the Linux kernel\u2019s SGI GRU driver in\nthe way the first gru_file_unlocked_ioctl function is called by the user,\nwhere a fail pass occurs in the gru_check_chiplet_assignment function.\nThis flaw allows a local user to crash or potentially escalate their\nprivileges on the system (CVE-2022-3424).\n\nA vulnerability in the function btf_dump_name_dups of the file \ntools/lib/bpf/ btf_dump.c of the component libbpf. This flaw allows a\nmanipulation that may lea to a use-after-free issue (CVE-2022-3534).\n\nA vulnerability was found in area_cache_get in drivers/net/ethernet/\nnetronome/nfp/nfpcore/nfp_cppcore.c in the Netronome Flow Processor (NFP)\ndriver in the Linux kernel. This flaw allows a manipulation that may lead\nto a use-after-free issue (CVE-2022-3545).\n\nGuests can trigger NIC interface reset/abort/crash via netback. It is\npossible for a guest to trigger a NIC interface reset/abort/crash in a\nLinux based network backend by sending certain kinds of packets. It appears\nto be an (unwritten?) assumption in the rest of the Linux network stack\nthat packet  protocol headers are all contained within the linear section\nof the SKB and some NICs behave badly if this is not the case. This has\nbeen reported to occur with Cisco (enic) and Broadcom NetXtrem II BCM5780\n(bnx2x) though it may be an issue with other NICs/drivers as well. In case\nthe frontend is sending requests with split headers, netback will forward\nthose violating above mentioned assumption to the networking core,\nresulting in said misbehavior (CVE-2022-3643, XSA-423).\n\nAn out-of-bounds memory write vulnerability was found in the Linux kernel\nvmwgfx driver in vmw_kms_cursor_snoop due to a missing check of a memcpy\nlength. This flaw allows a local, unprivileged attacker with access to\neither the /dev/dri/card0 or /dev/dri/rendererD128 and able to issue an\nioctl() on the resulting file descriptor, to crash the system, causing\na denial of service (CVE-2022-36280).\n\nA use-after-free flaw was found in the Linux kernel\u2019s dvb-core subsystem\n(DVB API used by Digital TV devices) in how a user physically removed a\nUSB device (such as a DVB demultiplexer device) while running malicious\ncode. This flaw allows a local user to crash or potentially escalate their\nprivileges on the system (CVE-2022-41218).\n\nAn issue was discovered in the Linux kernel through 6.0.10. l2cap_config_req\nin net/bluetooth/l2cap_core.c has an integer wraparound via L2CAP_CONF_REQ\npackets (CVE-2022-45934).\n\nIn the Linux kernel before 6.1.6, a NULL pointer dereference bug in the\ntraffic control subsystem allows an unprivileged user to trigger a denial\nof service (system crash) via a crafted traffic control configuration that\nis set up with \"tc qdisc\" and \"tc class\" commands. This affects qdisc_graft\nin net/sched/sch_api.c (CVE-2022-47929).\n\nA vulnerability in the kernel ksmbd allows a remote attacker to perform a\ndenial of service (DoS) attack. The vulnerability exists due to a boundary\nerror within the ksmbd_decode_ntlmssp_auth_blob() function in ksmbd when\nhandling NTLMv2 authentication. A remote attacker can send specially\ncrafted data to ksmbd, trigger a heap-based buffer overflow and perform a\ndenial of service (DoS) attack (CVE-2023-0210).\n\nALSA: pcm: Move rwsem lock inside snd_ctl_elem_read to prevent UAF\n(CVE-2023-0266).\n\ncbq_classify in net/sched/sch_cbq.c in the Linux kernel through 6.1.4 allows\nattackers to cause a denial of service (slab-out-of-bounds read) because of\ntype confusion (non-negative numbers can sometimes indicate a TC_ACT_SHOT\ncondition rather than valid classification results) (CVE-2023-23454).\n\natm_tc_enqueue in net/sched/sch_atm.c in the Linux kernel through 6.1.4\nallows attackers to cause a denial of service because of type confusion\n(non-negative numbers can sometimes indicate a TC_ACT_SHOT condition\nrather than valid classification results) (CVE-2023-23455).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2023-01-22T19:36:51Z",
+  "published": "2023-01-22T20:39:23Z",
+  "related": [
+    "CVE-2022-3424",
+    "CVE-2022-3534",
+    "CVE-2022-3545",
+    "CVE-2022-36280",
+    "CVE-2022-3643",
+    "CVE-2022-41218",
+    "CVE-2022-45934",
+    "CVE-2022-47929",
+    "CVE-2023-0210",
+    "CVE-2023-0266",
+    "CVE-2023-23454",
+    "CVE-2023-23455"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2023-0008.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=31406"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.83"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.84"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.85"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.86"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.87"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.88"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://xenbits.xenproject.org/xsa/advisory-423.txt"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.88-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0008.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

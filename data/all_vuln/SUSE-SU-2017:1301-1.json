@@ -1,0 +1,1367 @@
+{
+  "id": "SUSE-SU-2017:1301-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 11 SP4 kernel was updated to receive various security and bugfixes.\n\nNotable new features:\n\n- Toleration of newer crypto hardware for z Systems\n- USB 2.0 Link power management for Haswell-ULT\n\nThe following security bugs were fixed:\n\n- CVE-2017-7308: The packet_set_ring function in net/packet/af_packet.c in the Linux kernel did not properly validate certain block-size data, which allowed local users to cause a denial of service (overflow) or possibly have unspecified other impact via crafted system calls (bnc#1031579)\n- CVE-2017-2671: The ping_unhash function in net/ipv4/ping.c in the Linux kernel was  too late in obtaining a certain lock and consequently could not ensure that disconnect function calls are safe, which allowed local users to cause a denial of service (panic) by leveraging access to the protocol value of IPPROTO_ICMP in a socket system call (bnc#1031003)\n- CVE-2017-7184: The xfrm_replay_verify_len function in net/xfrm/xfrm_user.c in the Linux kernel did not validate certain size data after an XFRM_MSG_NEWAE update, which allowed local users to obtain root privileges or cause a denial of service (heap-based out-of-bounds access) by leveraging the CAP_NET_ADMIN capability (bsc#1030573).\n- CVE-2017-5970: The ipv4_pktinfo_prepare function in net/ipv4/ip_sockglue.c in the Linux kernel allowed attackers to cause a denial of service (system crash) via (1) an application that made crafted system calls or possibly (2) IPv4 traffic with invalid IP options (bsc#1024938).\n- CVE-2017-7616: Incorrect error handling in the set_mempolicy and mbind compat syscalls in mm/mempolicy.c in the Linux kernel allowed local users to obtain sensitive information from uninitialized stack data by triggering failure of a certain bitmap operation (bsc#1033336).\n- CVE-2017-7294: The vmw_surface_define_ioctl function in drivers/gpu/drm/vmwgfx/vmwgfx_surface.c in the Linux kernel did not validate addition of certain levels data, which allowed local users to trigger an integer overflow and out-of-bounds write, and cause a denial of service (system hang or crash) or possibly gain privileges, via a crafted ioctl call for a /dev/dri/renderD* device (bnc#1031440)\n- CVE-2017-7261: The vmw_surface_define_ioctl function in drivers/gpu/drm/vmwgfx/vmwgfx_surface.c in the Linux kernel did not check for a zero value of certain levels data, which allowed local users to cause a denial of service (ZERO_SIZE_PTR dereference, and GPF and possibly panic) via a crafted ioctl call for a /dev/dri/renderD* device (bnc#1031052)\n- CVE-2017-7187: The sg_ioctl function in drivers/scsi/sg.c in the Linux kernel allowed local users to cause a denial of service (stack-based buffer overflow) or possibly have unspecified other impact via a large command size in an SG_NEXT_CMD_LEN ioctl call, leading to out-of-bounds write access in the sg_write function (bnc#1030213)\n- CVE-2017-6348: The hashbin_delete function in net/irda/irqueue.c in the Linux kernel improperly managed lock dropping, which allowed local users to cause a denial of service (deadlock) via crafted operations on IrDA devices (bnc#1027178)\n- CVE-2017-5669: The do_shmat function in ipc/shm.c in the Linux kernel did not restrict the address calculated by a certain rounding operation, which allowed local users to map page zero, and consequently bypass a protection mechanism that exists for the mmap system call, by making crafted shmget and shmat system calls in a privileged context (bnc#1026914)\n- CVE-2015-3288: mm/memory.c in the Linux kernel mishandled anonymous pages, which allowed local users to gain privileges or cause a denial of service (page tainting) via a crafted application that triggers writing to page zero (bsc#979021).\n- CVE-2016-10200: Race condition in the L2TPv3 IP Encapsulation feature in the Linux kernel allowed local users to gain privileges or cause a denial of service (use-after-free) by making multiple bind system calls without properly ascertaining whether a socket has the SOCK_ZAPPED status, related to net/l2tp/l2tp_ip.c and net/l2tp/l2tp_ip6.c (bnc#1028415)\n- CVE-2016-5243: The tipc_nl_compat_link_dump function in net/tipc/netlink_compat.c in the Linux kernel did not properly copy a certain string, which allowed local users to obtain sensitive information from kernel stack memory by reading a Netlink message (bnc#983212)\n- CVE-2017-6353: net/sctp/socket.c in the Linux kernel did not properly restrict association peel-off operations during certain wait states, which allowed local users to cause a denial of service (invalid unlock and double free) via a multithreaded application (bnc#1027066)\n- CVE-2017-6214: The tcp_splice_read function in net/ipv4/tcp.c in the Linux kernel allowed remote attackers to cause a denial of service (infinite loop and soft lockup) via vectors involving a TCP packet with the URG flag (bnc#1026722)\n- CVE-2017-6074: The dccp_rcv_state_process function in net/dccp/input.c in the Linux kernel mishandled DCCP_PKT_REQUEST packet data structures in the LISTEN state, which allowed local users to obtain root privileges or cause a denial of service (double free) via an application that made an IPV6_RECVPKTINFO setsockopt system call (bnc#1026024)\n- CVE-2017-5986: Race condition in the sctp_wait_for_sndbuf function in net/sctp/socket.c in the Linux kernel allowed local users to cause a denial of service (assertion failure and panic) via a multithreaded application that peels off an association in a certain buffer-full state (bsc#1025235)\n- CVE-2015-8970: crypto/algif_skcipher.c in the Linux kernel did not verify that a setkey operation has been performed on an AF_ALG socket an accept system call is processed, which allowed local users to cause a denial of service (NULL pointer dereference and system crash) via a crafted application that does not supply a key, related to the lrw_crypt function in crypto/lrw.c (bsc#1008374).\n\nThe following non-security bugs were fixed:\n\n- NFSD: do not risk using duplicate owner/file/delegation ids (bsc#1029212).\n- RAID1: avoid unnecessary spin locks in I/O barrier code (bsc#982783, bsc#1026260).\n- SUNRPC: Clean up the slot table allocation (bsc#1013862).\n- SUNRPC: Initalise the struct xprt upon allocation (bsc#1013862).\n- USB: cdc-acm: fix broken runtime suspend (bsc#1033771).\n- USB: cdc-acm: fix open and suspend race (bsc#1033771).\n- USB: cdc-acm: fix potential urb leak and PM imbalance in write (bsc#1033771).\n- USB: cdc-acm: fix runtime PM for control messages (bsc#1033771).\n- USB: cdc-acm: fix runtime PM imbalance at shutdown (bsc#1033771).\n- USB: cdc-acm: fix shutdown and suspend race (bsc#1033771).\n- USB: cdc-acm: fix write and resume race (bsc#1033771).\n- USB: cdc-acm: fix write and suspend race (bsc#1033771).\n- USB: hub: Fix crash after failure to read BOS descriptor\n- USB: serial: iuu_phoenix: fix NULL-deref at open (bsc#1033794).\n- USB: serial: kl5kusb105: fix line-state error handling (bsc#1021256).\n- USB: serial: mos7720: fix NULL-deref at open (bsc#1033816).\n- USB: serial: mos7720: fix parallel probe (bsc#1033816).\n- USB: serial: mos7720: fix parport use-after-free on probe errors (bsc#1033816).\n- USB: serial: mos7720: fix use-after-free on probe errors (bsc#1033816).\n- USB: serial: mos7840: fix NULL-deref at open (bsc#1034026).\n- USB: xhci-mem: use passed in GFP flags instead of GFP_KERNEL (bsc#1023014).\n- Update metadata for serial fixes (bsc#1013070)\n- Use PF_LESS_THROTTLE in loop device thread (bsc#1027101).\n- clocksource: Remove 'weak' from clocksource_default_clock() declaration (bnc#1013018).\n- dlm: backport 'fix lvb invalidation conditions' (bsc#1005651).\n- drm/mgag200: Add support for G200e rev 4 (bnc#995542, comment #81)\n- enic: set skb->hash type properly (bsc#911105).\n- ext4: fix mballoc breakage with 64k block size (bsc#1013018).\n- ext4: fix stack memory corruption with 64k block size (bsc#1013018).\n- ext4: reject inodes with negative size (bsc#1013018).\n- fuse: initialize fc->release before calling it (bsc#1013018).\n- i40e/i40evf: Break up xmit_descriptor_count from maybe_stop_tx (bsc#985561).\n- i40e/i40evf: Fix mixed size frags and linearization (bsc#985561).\n- i40e/i40evf: Limit TSO to 7 descriptors for payload instead of 8 per packet (bsc#985561).\n- i40e/i40evf: Rewrite logic for 8 descriptor per packet check (bsc#985561).\n- i40e: Fix TSO with more than 8 frags per segment issue (bsc#985561).\n- i40e: Impose a lower limit on gso size (bsc#985561).\n- i40e: Limit TX descriptor count in cases where frag size is greater than 16K (bsc#985561).\n- i40e: avoid null pointer dereference (bsc#909486).\n- jbd: Fix oops in journal_remove_journal_head() (bsc#1017143).\n- jbd: do not wait (forever) for stale tid caused by wraparound (bsc#1020229).\n- kABI: mask struct xfs_icdinode change (bsc#1024788).\n- kabi: Protect xfs_mount and xfs_buftarg (bsc#1024508).\n- kabi: fix (bsc#1008893).\n- lockd: use init_utsname for id encoding (bsc#1033804).\n- lockd: use rpc client's cl_nodename for id encoding (bsc#1033804).\n- md linear: fix a race between linear_add() and linear_congested() (bsc#1018446).\n- md/linear: shutup lockdep warnning (bsc#1018446).\n- mm/mempolicy.c: do not put mempolicy before using its nodemask (bnc#931620).\n- ocfs2: do not write error flag to user structure we cannot copy from/to (bsc#1013018).\n- ocfs2: fix crash caused by stale lvb with fsdlm plugin (bsc#1013800).\n- ocfs2: fix error return code in ocfs2_info_handle_freefrag() (bsc#1013018).\n- ocfs2: null deref on allocation error (bsc#1013018).\n- pciback: only check PF if actually dealing with a VF (bsc#999245).\n- pciback: use pci_physfn() (bsc#999245).\n- posix-timers: Fix stack info leak in timer_create() (bnc#1013018).\n- powerpc,cpuidle: Dont toggle CPUIDLE_FLAG_IGNORE while setting smt_snooze_delay (bsc#1023163).\n- powerpc/fadump: Fix the race in crash_fadump() (bsc#1022971).\n- powerpc/fadump: Reserve memory at an offset closer to bottom of RAM (bsc#1032141).\n- powerpc/fadump: Update fadump documentation (bsc#1032141).\n- powerpc/nvram: Fix an incorrect partition merge (bsc#1016489).\n- powerpc/vdso64: Use double word compare on pointers (bsc#1016489).\n- rcu: Call out dangers of expedited RCU primitives (bsc#1008893).\n- rcu: Direct algorithmic SRCU implementation (bsc#1008893).\n- rcu: Flip ->completed only once per SRCU grace period (bsc#1008893).\n- rcu: Implement a variant of Peter's SRCU algorithm (bsc#1008893).\n- rcu: Increment upper bit only for srcu_read_lock() (bsc#1008893).\n- rcu: Remove fast check path from __synchronize_srcu() (bsc#1008893).\n- s390/kmsg: add missing kmsg descriptions (bnc#1025702).\n- s390/vmlogrdr: fix IUCV buffer allocation (bnc#1025702).\n- s390/zcrypt: Introduce CEX6 toleration\n- sched/core: Fix TASK_DEAD race in finish_task_switch() (bnc#1013018).\n- sched/loadavg: Fix loadavg artifacts on fully idle and on fully loaded systems (bnc#1013018).\n- scsi: zfcp: do not trace pure benign residual HBA responses at default level (bnc#1025702).\n- scsi: zfcp: fix rport unblock race with LUN recovery (bnc#1025702).\n- scsi: zfcp: fix use-after-'free' in FC ingress path after TMF (bnc#1025702).\n- scsi: zfcp: fix use-after-free by not tracing WKA port open/close on failed send (bnc#1025702).\n- sfc: reduce severity of PIO buffer alloc failures (bsc#1019168).\n- tcp: abort orphan sockets stalling on zero window probes (bsc#1021913).\n- vfs: split generic splice code from i_mutex locking (bsc#1024788).\n- virtio_scsi: fix memory leak on full queue condition (bsc#1028880).\n- vmxnet3: segCnt can be 1 for LRO packets (bsc#988065, bsc#1029770).\n- xen-blkfront: correct maximum segment accounting (bsc#1018263).\n- xen-blkfront: do not call talk_to_blkback when already connected to blkback.\n- xen-blkfront: free resources if xlvbd_alloc_gendisk fails.\n- xfs: Fix lock ordering in splice write (bsc#1024788).\n- xfs: Make xfs_icdinode->di_dmstate atomic_t (bsc#1024788).\n- xfs: do not assert fail on non-async buffers on ioacct decrement (bsc#1024508).\n- xfs: exclude never-released buffers from buftarg I/O accounting (bsc#1024508).\n- xfs: fix buffer overflow dm_get_dirattrs/dm_get_dirattrs2 (bsc#989056).\n- xfs: fix up xfs_swap_extent_forks inline extent handling (bsc#1023888).\n- xfs: kill xfs_itruncate_start (bsc#1024788).\n- xfs: remove the i_new_size field in struct xfs_inode (bsc#1024788).\n- xfs: remove the i_size field in struct xfs_inode (bsc#1024788).\n- xfs: remove xfs_itruncate_data (bsc#1024788).\n- xfs: replace global xfslogd wq with per-mount wq (bsc#1024508).\n- xfs: split xfs_itruncate_finish (bsc#1024788).\n- xfs: split xfs_setattr (bsc#1024788).\n- xfs: track and serialize in-flight async buffers against unmount (bsc#1024508).\n- xfs_dmapi: fix the debug compilation of xfs_dmapi (bsc#989056).\n",
+  "modified": "2025-05-02T04:04:32.849402Z",
+  "published": "2017-05-15T15:06:35Z",
+  "related": [
+    "CVE-2015-3288",
+    "CVE-2015-8970",
+    "CVE-2016-10200",
+    "CVE-2016-5243",
+    "CVE-2017-2671",
+    "CVE-2017-5669",
+    "CVE-2017-5970",
+    "CVE-2017-5986",
+    "CVE-2017-6074",
+    "CVE-2017-6214",
+    "CVE-2017-6348",
+    "CVE-2017-6353",
+    "CVE-2017-7184",
+    "CVE-2017-7187",
+    "CVE-2017-7261",
+    "CVE-2017-7294",
+    "CVE-2017-7308",
+    "CVE-2017-7616"
+  ],
+  "upstream": [
+    "CVE-2015-3288",
+    "CVE-2015-8970",
+    "CVE-2016-10200",
+    "CVE-2016-5243",
+    "CVE-2017-2671",
+    "CVE-2017-5669",
+    "CVE-2017-5970",
+    "CVE-2017-5986",
+    "CVE-2017-6074",
+    "CVE-2017-6214",
+    "CVE-2017-6348",
+    "CVE-2017-6353",
+    "CVE-2017-7184",
+    "CVE-2017-7187",
+    "CVE-2017-7261",
+    "CVE-2017-7294",
+    "CVE-2017-7308",
+    "CVE-2017-7616"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2017/suse-su-20171301-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1005651"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008374"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008893"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013018"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013070"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013800"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013862"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1016489"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1017143"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1018263"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1018446"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1019168"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1020229"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1021256"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1021913"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1022971"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023014"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023163"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1023888"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024508"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024788"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1024938"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1025235"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1025702"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1026024"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1026260"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1026722"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1026914"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027066"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027101"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1027178"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1028415"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1028880"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1029212"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1029770"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1030213"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1030573"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031003"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031052"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031440"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1031579"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1032141"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1033336"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1033771"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1033794"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1033804"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1033816"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1034026"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/909486"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/911105"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/931620"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/979021"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/982783"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/983212"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/985561"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/988065"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/989056"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/995542"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/999245"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-3288"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8970"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-10200"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5243"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-2671"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5669"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5970"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5986"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6074"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6214"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6348"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-6353"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7184"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7187"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7261"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7294"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7308"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-7616"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-docs",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-docs&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-docs": "3.0.101-100.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-bigmem",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-bigmem&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ppc64",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-ppc64&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-bigmem",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-bigmem&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ppc64",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-ppc64&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-100.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-100.1",
+            "kernel-default-man": "3.0.101-100.1",
+            "kernel-ec2": "3.0.101-100.1",
+            "kernel-default": "3.0.101-100.1",
+            "kernel-source": "3.0.101-100.1",
+            "kernel-bigmem": "3.0.101-100.1",
+            "kernel-pae-base": "3.0.101-100.1",
+            "kernel-syms": "3.0.101-100.1",
+            "kernel-bigmem-base": "3.0.101-100.1",
+            "kernel-pae": "3.0.101-100.1",
+            "kernel-ppc64-devel": "3.0.101-100.1",
+            "kernel-ec2-devel": "3.0.101-100.1",
+            "kernel-ppc64-base": "3.0.101-100.1",
+            "kernel-trace-devel": "3.0.101-100.1",
+            "kernel-trace": "3.0.101-100.1",
+            "kernel-ec2-base": "3.0.101-100.1",
+            "kernel-ppc64": "3.0.101-100.1",
+            "kernel-xen-base": "3.0.101-100.1",
+            "kernel-xen-devel": "3.0.101-100.1",
+            "kernel-bigmem-devel": "3.0.101-100.1",
+            "kernel-trace-base": "3.0.101-100.1",
+            "kernel-default-devel": "3.0.101-100.1",
+            "kernel-pae-devel": "3.0.101-100.1",
+            "kernel-xen": "3.0.101-100.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1301-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

@@ -1,0 +1,112 @@
+{
+  "id": "GHSA-53jx-vvf9-4x38",
+  "summary": "StaticHandler disclosure of classpath resources on Windows when mounted on a wildcard route",
+  "details": "### Summary\n\nWhen running vertx web applications that serve files using `StaticHandler` on Windows Operating Systems and Windows File Systems, if the mount point is a wildcard (`*`) then an attacker can exfiltrate any class path resource.\n\n\n### Details\nWhen computing the relative path to locate the resource, in case of wildcards, the code:\n\nhttps://github.com/vert-x3/vertx-web/blob/62c0d66fa1c179ae6a4d57344631679a2b97e60f/vertx-web/src/main/java/io/vertx/ext/web/impl/Utils.java#L83\n\nreturns the user input (without validation) as the segment to lookup. Even though checks are performed to avoid escaping the sandbox, given that the input was not sanitized `\\` are not properly handled and an attacker can build a path that is valid within the classpath.\n\n### PoC\n\nhttps://github.com/adrien-aubert-drovio/vertx-statichandler-windows-traversal-path-vulnerability",
+  "aliases": [
+    "CVE-2023-24815"
+  ],
+  "modified": "2023-11-08T04:11:48.822029Z",
+  "published": "2023-02-10T03:27:58Z",
+  "related": [
+    "CVE-2023-24815"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2023-02-09T18:15:00Z",
+    "github_reviewed_at": "2023-02-10T03:27:58Z",
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "cwe_ids": [
+      "CWE-22"
+    ]
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/vert-x3/vertx-web/security/advisories/GHSA-53jx-vvf9-4x38"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-24815"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/vert-x3/vertx-web/commit/9e3a783b1d1a731055e9049078b1b1494ece9c15"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/vert-x3/vertx-web"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/vert-x3/vertx-web/blob/62c0d66fa1c179ae6a4d57344631679a2b97e60f/vertx-web/src/main/java/io/vertx/ext/web/impl/Utils.java#L83"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "io.vertx:vertx-web",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/io.vertx/vertx-web"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.3.8"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0",
+        "4.0.1",
+        "4.0.2",
+        "4.0.3",
+        "4.1.0",
+        "4.1.0.Beta1",
+        "4.1.0.CR1",
+        "4.1.0.CR2",
+        "4.1.1",
+        "4.1.2",
+        "4.1.3",
+        "4.1.4",
+        "4.1.5",
+        "4.1.6",
+        "4.1.7",
+        "4.1.8",
+        "4.2.0",
+        "4.2.0.Beta1",
+        "4.2.0.CR1",
+        "4.2.1",
+        "4.2.2",
+        "4.2.3",
+        "4.2.4",
+        "4.2.5",
+        "4.2.6",
+        "4.2.7",
+        "4.3.0",
+        "4.3.1",
+        "4.3.2",
+        "4.3.3",
+        "4.3.4",
+        "4.3.5",
+        "4.3.6",
+        "4.3.7"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/02/GHSA-53jx-vvf9-4x38/GHSA-53jx-vvf9-4x38.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N"
+    }
+  ]
+}

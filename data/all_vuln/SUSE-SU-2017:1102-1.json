@@ -1,0 +1,898 @@
+{
+  "id": "SUSE-SU-2017:1102-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SLE-11 SP4 kernel was updated to 3.0.101.rt130-68 to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2017-5551: The simple_set_acl function in fs/posix_acl.c in the Linux kernel preserved the setgid bit during\n  a setxattr call involving a tmpfs filesystem, which allowed local users to gain group privileges by leveraging the\n  existence of a setgid program with restrictions on execute permissions.  NOTE: this vulnerability exists because of\n  an incomplete fix for CVE-2016-7097 (bnc#1021258).\n- CVE-2016-7097: posix_acl: Clear SGID bit when setting file permissions (bsc#995968).\n- CVE-2016-10088: The sg implementation in the Linux kernel did not properly restrict write operations in situations\n  where the KERNEL_DS option is set, which allowed local users to read or write to arbitrary kernel memory locations or\n  cause a denial of service (use-after-free) by leveraging access to a /dev/sg device, related to block/bsg.c and \n  drivers/scsi/sg.c.  NOTE: this vulnerability exists because of an incomplete fix for CVE-2016-9576 (bnc#1017710).\n- CVE-2016-5696: TCP, when using a large Window Size, made it easier for remote attackers to guess sequence numbers and\n  cause a denial of service (connection loss) to persistent TCP connections by repeatedly injecting a TCP RST packet,\n  especially in protocols that use long-lived connections, such as BGP (bnc#989152).\n- CVE-2015-1350: Denial of service in notify_change for filesystem xattrs (bsc#914939).\n- CVE-2016-8632: The tipc_msg_build function in net/tipc/msg.c in the Linux kernel did not validate the relationship\n  between the minimum fragment length and the maximum packet size, which allowed local users to gain privileges or cause\n  a denial of service (heap-based buffer overflow) by leveraging the CAP_NET_ADMIN capability (bnc#1008831).\n- CVE-2016-8399: An elevation of privilege vulnerability in the kernel networking subsystem could have enabled a local\n  malicious application to execute arbitrary code within the context of the kernel. This issue is rated as Moderate\n  because it first requires compromising a privileged process and current compiler optimizations restrict access to the\n  vulnerable code. (bnc#1014746).\n- CVE-2016-9793: The sock_setsockopt function in net/core/sock.c in the Linux kernel mishandled negative values of \n  sk_sndbuf and sk_rcvbuf, which allowed local users to cause a denial of service (memory corruption and system crash)\n  or possibly have unspecified other impact by leveraging the CAP_NET_ADMIN capability for a crafted setsockopt system\n  call with the (1) SO_SNDBUFFORCE or (2) SO_RCVBUFFORCE option (bnc#1013531).\n- CVE-2012-6704: The sock_setsockopt function in net/core/sock.c in the Linux\n  kernel mishandled negative values of sk_sndbuf and sk_rcvbuf, which allowed\n  local users to cause a denial of service (memory corruption and system crash)\n  or possibly have unspecified other impact by leveraging the CAP_NET_ADMIN\n  capability for a crafted setsockopt system call with the (1) SO_SNDBUF or (2)\n  SO_RCVBUF option (bnc#1013542).\n- CVE-2016-9756: arch/x86/kvm/emulate.c in the Linux kernel did not properly\n  initialize Code Segment (CS) in certain error cases, which allowed local users\n  to obtain sensitive information from kernel stack memory via a crafted\n  application (bnc#1013038).\n- CVE-2016-9576: splice: introduce FMODE_SPLICE_READ and FMODE_SPLICE_WRITE  (bsc#1013604)\n- CVE-2016-9794: ALSA: pcm : Call kill_fasync() in stream lock (bsc#1013533)\n- CVE-2016-3841: KABI workaround for ipv6: add complete rcu protection around  np->opt (bsc#992566).\n- CVE-2016-9685: Multiple memory leaks in error paths in fs/xfs/xfs_attr_list.c\n  in the Linux kernel allowed local users to cause a denial of service (memory\n  consumption) via crafted XFS filesystem operations (bnc#1012832).\n- CVE-2015-8962: Double free vulnerability in the sg_common_write function in\n  drivers/scsi/sg.c in the Linux kernel allowed local users to gain privileges or\n  cause a denial of service (memory corruption and system crash) by detaching a\n  device during an SG_IO ioctl call (bnc#1010501).\n- CVE-2016-9555: The sctp_sf_ootb function in net/sctp/sm_statefuns.c in the\n  Linux kernel lacks chunk-length checking for the first chunk, which allowed\n  remote attackers to cause a denial of service (out-of-bounds slab access) or\n  possibly have unspecified other impact via crafted SCTP data (bnc#1011685).\n  - CVE-2016-7910: Use-after-free vulnerability in the disk_seqf_stop function in\n  block/genhd.c in the Linux kernel allowed local users to gain privileges by\n  leveraging the execution of a certain stop operation even if the corresponding\n  start operation had failed (bnc#1010716).\n- CVE-2016-7911: Race condition in the get_task_ioprio function in\n  block/ioprio.c in the Linux kernel allowed local users to gain privileges or\n  cause a denial of service (use-after-free) via a crafted ioprio_get system call\n  (bnc#1010711).\n- CVE-2013-6368: The KVM subsystem in the Linux kernel allowed local users to\n  gain privileges or cause a denial of service (system crash) via a VAPIC\n  synchronization operation involving a page-end address (bnc#853052).\n- CVE-2015-8964: The tty_set_termios_ldisc function in drivers/tty/tty_ldisc.c\n  in the Linux kernel allowed local users to obtain sensitive information from\n  kernel memory by reading a tty data structure (bnc#1010507).\n- CVE-2016-7916: Revert 'proc: prevent accessing /proc/<PID>/environ until it's ready (bsc#1010467)'\n- CVE-2016-8646: The hash_accept function in crypto/algif_hash.c in the Linux\n  kernel allowed local users to cause a denial of service (OOPS) by attempting to\n  trigger use of in-kernel hash algorithms for a socket that has received zero\n  bytes of data (bnc#1010150).\n- CVE-2016-8633: drivers/firewire/net.c in the Linux kernel before 4.8.7, in\n  certain unusual hardware configurations, allowed remote attackers to execute\n  arbitrary code via crafted fragmented packets (bnc#1008833).\n- CVE-2016-7042: KEYS: Fix short sprintf buffer in /proc/keys show function  (bsc#1004517).\n- CVE-2015-8956: Bluetooth: Fix potential NULL dereference in RFCOMM bind  callback (bsc#1003925).\n- CVE-2016-7117: net: Fix use after free in the recvmmsg exit path (bsc#1003077).\n\nThe following non-security bugs were fixed:\n\n- blacklist.conf: 45f13df be2net: Enable Wake-On-LAN from shutdown for Skyhawk\n- blacklist.conf: c9cc599 net/mlx4_core: Fix QUERY FUNC CAP flags\n\n- 8250_pci: Fix potential use-after-free in error path (bsc#1013070).\n- IB/mlx4: Fix error flow when sending mads under SRIOV (bsc#786036).\n- IB/mlx4: Fix incorrect MC join state bit-masking on SR-IOV (bsc#786036).\n- IB/mlx4: Fix memory leak if QP creation failed (bsc#786036).\n- IB/mlx4: Fix potential deadlock when sending mad to wire (bsc#786036).\n- IB/mlx4: Forbid using sysfs to change RoCE pkeys (bsc#786036).\n- IB/mlx4: Use correct subnet-prefix in QP1 mads under SR-IOV (bsc#786036).\n- apparmor: fix IRQ stack overflow during free_profile (bsc#1009875).\n- arch/powerpc: Remove duplicate/redundant Altivec entries (bsc#967716).\n- be2net: Do not leak iomapped memory on removal (bug#925065).\n- block_dev: do not test bdev->bd_contains when it is not stable (bsc#1008557).\n- bna: Add synchronization for tx ring (bsc#993739).\n- bnx2x: Correct ringparam estimate when DOWN (bsc#1020214).\n- bnx2x: fix lockdep splat (bsc#908684).\n- cifs: revert fs/cifs: fix wrongly prefixed path to root (bsc#963655)\n- config.conf: add bigmem flavour on ppc64\n- cpumask, nodemask: implement cpumask/nodemask_pr_args() (bnc1003866).\n- cpumask_set_cpu_local_first => cpumask_local_spread, lament (bug#919382).\n- crypto: add ghash-generic in the supported.conf(bsc#1016824)\n- crypto: aesni - Add support for 192 & 256 bit keys to AESNI RFC4106 (bsc#913387, #bsc1016831).\n- dm space map metadata: fix sm_bootstrap_get_nr_blocks()\n- dm thin: fix race condition when destroying thin pool workqueue\n- dm: do not call dm_sync_table() when creating new devices (bnc#901809, bsc#1008893).\n- drm/mgag200: Added support for the new deviceID for G200eW3 (bnc#1019348)\n- ext3: Avoid premature failure of ext3_has_free_blocks() (bsc#1016668).\n- ext4: do not leave i_crtime.tv_sec uninitialized (bsc#1013018).\n- ext4: fix reference counting bug on block allocation error (bsc#1013018).\n- fs/cifs: Compare prepaths when comparing superblocks (bsc#799133).\n- fs/cifs: Fix memory leaks in cifs_do_mount() (bsc#799133).\n- fs/cifs: Fix regression which breaks DFS mounting (bsc#799133).\n- fs/cifs: Move check for prefix path to within cifs_get_root() (bsc#799133).\n- fs/cifs: cifs_get_root shouldn't use path with tree name (bsc#963655, bsc#979681).\n- fs/cifs: make share unaccessible at root level mountable (bsc#799133).\n- futex: Acknowledge a new waiter in counter before plist (bsc#851603).\n- futex: Drop refcount if requeue_pi() acquired the rtmutex (bsc#851603).\n- hpilo: Add support for iLO5 (bsc#999101).\n- hv: do not lose pending heartbeat vmbus packets (bnc#1006919).\n- hv: vmbus: avoid scheduling in interrupt context in vmbus_initiate_unload() (bnc#986337).\n- hv: vmbus: avoid wait_for_completion() on crash (bnc#986337).\n- hv: vmbus: do not loose HVMSG_TIMER_EXPIRED messages (bnc#986337).\n- hv: vmbus: do not send CHANNELMSG_UNLOAD on pre-Win2012R2 hosts (bnc#986337).\n- hv: vmbus: handle various crash scenarios (bnc#986337).\n- hv: vmbus: remove code duplication in message handling (bnc#986337).\n- hv: vss: run only on supported host versions (bnc#986337).\n- i40e: fix an uninitialized variable bug (bsc#909484).\n- ibmveth: calculate gso_segs for large packets (bsc#1019165, bsc#1019148).\n- ibmveth: set correct gso_size and gso_type (bsc#1019165, bsc#1019148).\n- igb: Enable SR-IOV configuration via PCI sysfs interface (bsc#909491).\n- igb: Fix NULL assignment to incorrect variable in igb_reset_q_vector (bsc#795297).\n- igb: Fix oops caused by missing queue pairing (bsc#909491).\n- igb: Fix oops on changing number of rings (bsc#909491).\n- igb: Remove unnecessary flag setting in igb_set_flag_queue_pairs() (bsc#909491).\n- igb: Unpair the queues when changing the number of queues (bsc#909491).\n- ipv6: replacing a rt6_info needs to purge possible propagated rt6_infos too (bsc#865783).\n- kabi-fix for flock_owner addition (bsc#998689).\n- kexec: add a kexec_crash_loaded() function (bsc#973691).\n- kvm: APIC: avoid instruction emulation for EOI writes (bsc#989680).\n- kvm: Distangle eventfd code from irqchip (bsc#989680).\n- kvm: Iterate over only vcpus that are preempted (bsc#989680).\n- kvm: Record the preemption status of vcpus using preempt notifiers (bsc#989680).\n- kvm: VMX: Pass vcpu to __vmx_complete_interrupts (bsc#989680).\n- kvm: fold kvm_pit_timer into kvm_kpit_state (bsc#989680).\n- kvm: make processes waiting on vcpu mutex killable (bsc#989680).\n- kvm: nVMX: Add preemption timer support (bsc#989680).\n- kvm: remove a wrong hack of delivery PIT intr to vcpu0 (bsc#989680).\n- kvm: use symbolic constant for nr interrupts (bsc#989680).\n- kvm: x86: Remove support for reporting coalesced APIC IRQs (bsc#989680).\n- kvm: x86: Run PIT work in own kthread (bsc#989680).\n- kvm: x86: limit difference between kvmclock updates (bsc#989680).\n- kvm: x86: only channel 0 of the i8254 is linked to the HPET (bsc#960689).\n- lib/vsprintf: implement bitmap printing through '%*pb[l]' (bnc#1003866).\n- libata: introduce ata_host->n_tags to avoid oops on SAS controllers (bsc#871728).\n- libata: remove n_tags to avoid kABI breakage (bsc#871728).\n- libata: support the ata host which implements a queue depth less than 32 (bsc#871728)\n- libfc: Do not take rdata->rp_mutex when processing a -FC_EX_CLOSED ELS response (bsc#962846).\n- libfc: Fixup disc_mutex handling (bsc#962846).\n- libfc: Issue PRLI after a PRLO has been received (bsc#962846).\n- libfc: Revisit kref handling (bnc#990245).\n- libfc: Update rport reference counting (bsc#953233).\n- libfc: do not send ABTS when resetting exchanges (bsc#962846).\n- libfc: fixup locking of ptp_setup() (bsc#962846).\n- libfc: reset exchange manager during LOGO handling (bsc#962846).\n- libfc: send LOGO for PLOGI failure (bsc#962846).\n- locking/mutex: Explicitly mark task as running after wakeup (bsc#1012411).\n- md/raid10: Fix memory leak when raid10 reshape completes\n- md/raid10: always set reshape_safe when initializing reshape_position\n- md: Drop sending a change uevent when stopping (bsc#1003568).\n- md: check command validity early in md_ioctl() (bsc#1004520).\n- md: fix problem when adding device to read-only array with bitmap (bnc#771065).\n- memstick: mspro_block: add missing curly braces (bsc#1016688).\n- mlx4: add missing braces in verify_qp_parameters (bsc#786036).\n- mm, vmscan: Do not wait for page writeback for GFP_NOFS allocations (bnc#763198).\n- mm/memory.c: actually remap enough memory (bnc#1005903).\n- mm/memory_hotplug.c: check for missing sections in test_pages_in_a_zone() (bnc#961589).\n- mm: fix crashes from mbind() merging vmas (bnc#1005877).\n- mm: fix sleeping function warning from __put_anon_vma (bnc#1005857).\n- dcache: move the call of __d_drop(anon) into __d_materialise_unique(dentry, anon) (bsc#984194).\n- mpi: Fix NULL ptr dereference in mpi_powm() [ver #3] (bsc#1011820).\n- mremap: enforce rmap src/dst vma ordering in case of vma_merge() succeeding in copy_vma() (bsc#1008645).\n- mshyperv: fix recognition of Hyper-V guest crash MSR's (bnc#986337).\n- net/mlx4: Copy/set only sizeof struct mlx4_eqe bytes (bsc#786036).\n- net/mlx4_core: Allow resetting VF admin mac to zero (bsc#919382).\n- net/mlx4_core: Avoid returning success in case of an error flow (bsc#786036).\n- net/mlx4_core: Do not BUG_ON during reset when PCI is offline (bsc#924708).\n- net/mlx4_core: Do not access comm channel if it has not yet been initialized (bsc#924708 bsc#786036).\n- net/mlx4_core: Fix error message deprecation for ConnectX-2 cards (bug#919382).\n- net/mlx4_core: Fix the resource-type enum in res tracker to conform to FW spec (bsc#786036).\n- net/mlx4_core: Implement pci_resume callback (bsc#924708).\n- net/mlx4_core: Update the HCA core clock frequency after INIT_PORT (bug#919382).\n- net/mlx4_en: Choose time-stamping shift value according to HW frequency (bsc#919382).\n- net/mlx4_en: Fix HW timestamp init issue upon system startup (bsc#919382).\n- net/mlx4_en: Fix potential deadlock in port statistics flow (bsc#786036).\n- net/mlx4_en: Move filters cleanup to a proper location (bsc#786036).\n- net/mlx4_en: Remove dependency between timestamping capability and service_task (bsc#919382).\n- net/mlx4_en: fix spurious timestamping callbacks (bsc#919382).\n- netfilter: ipv4: defrag: set local_df flag on defragmented skb (bsc#907611).\n- netfront: do not truncate grant references.\n- netvsc: fix incorrect receive checksum offloading (bnc#1006917).\n- nfs4: reset states to use open_stateid when returning delegation voluntarily (bsc#1007944).\n- nfs: Fix an LOCK/OPEN race when unlinking an open file (bsc#956514).\n- nfsv4.1: Fix an NFSv4.1 state renewal regression (bnc#863873).\n- nfsv4: Cap the transport reconnection timer at 1/2 lease period (bsc#1014410).\n- nfsv4: Cleanup the setting of the nfs4 lease period (bsc#1014410).\n- nfsv4: Handle timeouts correctly when probing for lease validity (bsc#1014410).\n- nfsv4: add flock_owner to open context (bnc#998689).\n- nfsv4: change nfs4_do_setattr to take an open_context instead of a nfs4_state (bnc#998689).\n- nfsv4: change nfs4_select_rw_stateid to take a lock_context inplace of lock_owner (bnc#998689).\n- nfsv4: enhance nfs4_copy_lock_stateid to use a flock stateid if there is one (bnc#998689).\n- nvme: Automatic namespace rescan (bsc#1017686).\n- nvme: Metadata format support (bsc#1017686).\n- ocfs2: fix BUG_ON() in ocfs2_ci_checkpointed() (bnc#1019783).\n- oom: print nodemask in the oom report (bnc#1003866).\n- pci_ids: Add PCI device ID functions 3 and 4 for newer F15h models\n- pm / hibernate: Fix rtree_next_node() to avoid walking off list ends (bnc#860441).\n- posix-timers: Remove remaining uses of tasklist_lock (bnc#997401).\n- posix-timers: Use sighand lock instead of tasklist_lock for task clock sample (bnc#997401).\n- posix-timers: Use sighand lock instead of tasklist_lock on timer deletion (bnc#997401).\n- powerpc/64: Fix incorrect return value from __copy_tofrom_user (bsc#1005896).\n- powerpc/MSI: Fix race condition in tearing down MSI interrupts (bsc#1010201, [2016-10-04] Pending Base Kernel Fixes).\n- powerpc/mm/hash64: Fix subpage protection with 4K HPTE config (bsc#1010201, [2016-10-04] Pending Base Kernel Fixes).\n- powerpc/mm: Add 64TB support (bsc#928138,fate#319026).\n- powerpc/mm: Change the swap encoding in pte (bsc#973203).\n- powerpc/mm: Convert virtual address to vpn (bsc#928138,fate#319026).\n- powerpc/mm: Fix hash computation function (bsc#928138,fate#319026).\n- powerpc/mm: Increase the slice range to 64TB (bsc#928138,fate#319026).\n- powerpc/mm: Make KERN_VIRT_SIZE not dependend on PGTABLE_RANGE (bsc#928138,fate#319026).\n- powerpc/mm: Make some of the PGTABLE_RANGE dependency explicit (bsc#928138,fate#319026).\n- powerpc/mm: Replace open coded CONTEXT_BITS value (bsc#928138,fate#319026).\n- powerpc/mm: Simplify hpte_decode (bsc#928138,fate#319026).\n- powerpc/mm: Update VSID allocation documentation (bsc#928138,fate#319026).\n- powerpc/mm: Use 32bit array for slb cache (bsc#928138,fate#319026).\n- powerpc/mm: Use hpt_va to compute virtual address (bsc#928138,fate#319026).\n- powerpc/mm: Use the required number of VSID bits in slbmte (bsc#928138,fate#319026).\n- powerpc/numa: Fix multiple bugs in memory_hotplug_max() (bsc#1010201, [2016-10-04] Pending Base Kernel Fixes).\n- powerpc/pseries: Use H_CLEAR_HPT to clear MMU hash table during kexec (bsc#1003813).\n- powerpc: Add ability to build little endian kernels (bsc#967716).\n- powerpc: Avoid load of static chain register when calling nested functions through a pointer on 64bit (bsc#967716).\n- powerpc: Build fix for powerpc KVM (bsc#928138,fate#319026).\n- powerpc: Do not build assembly files with ABIv2 (bsc#967716).\n- powerpc: Do not use ELFv2 ABI to build the kernel (bsc#967716).\n- powerpc: Fix 64 bit builds with binutils 2.24 (bsc#967716).\n- powerpc: Fix error when cross building TAGS & cscope (bsc#967716).\n- powerpc: Make VSID_BITS* dependency explicit (bsc#928138,fate#319026).\n- powerpc: Make the vdso32 also build big-endian (bsc#967716).\n- powerpc: Move kdump default base address to half RMO size on 64bit (bsc#1003344).\n- powerpc: Remove altivec fix for gcc versions before 4.0 (bsc#967716).\n- powerpc: Remove buggy 9-year-old test for binutils < 2.12.1 (bsc#967716).\n- powerpc: Rename USER_ESID_BITS* to ESID_BITS* (bsc#928138,fate#319026).\n- powerpc: Require gcc 4.0 on 64-bit (bsc#967716).\n- powerpc: Update kernel VSID range (bsc#928138,fate#319026).\n- powerpc: blacklist fixes for unsupported subarchitectures ppc32 only: 6e0fdf9af216 powerpc: fix typo 'CONFIG_PMAC'\n  obscure hardware: f7e9e3583625 powerpc: Fix missing L2 cache size in /sys/devices/system/cpu\n- powerpc: dtc is required to build dtb files (bsc#967716).\n- powerpc: fix typo 'CONFIG_PPC_CPU' (bsc#1010201, [2016-10-04] Pending Base Kernel Fixes).\n- powerpc: scan_features() updates incorrect bits for REAL_LE (bsc#1010201, [2016-10-04] Pending Base Kernel Fixes).\n- printk/sched: Introduce special printk_sched() for those awkward (bsc#1013042, bsc#996541, bsc#1015878).\n- ptrace: __ptrace_may_access() should not deny sub-threads (bsc#1012851).\n- qlcnic: fix a loop exit condition better (bsc#909350).\n- qlcnic: fix a timeout loop (bsc#909350)\n- qlcnic: use the correct ring in qlcnic_83xx_process_rcv_ring_diag() (bnc#800999).\n- reiserfs: fix race in prealloc discard (bsc#987576).\n- rpm/constraints.in: Bump ppc64 disk requirements to fix OBS builds again\n- rpm/kernel-binary.spec.in: Export a make-stderr.log file (bsc#1012422)\n- rpm/package-descriptions: add -bigmem description\n- rt2x00: fix rfkill regression on rt2500pci (bnc#748806).\n- s390/cio: fix accidental interrupt enabling during resume (bnc#1003677, LTC#147606).\n- s390/time: LPAR offset handling (bnc#1003677, LTC#146920).\n- s390/time: move PTFF definitions (bnc#1003677, LTC#146920).\n- scsi: lpfc: Set elsiocb contexts to NULL after freeing it (bsc#996557).\n- scsi: lpfc: avoid double free of resource identifiers (bsc#989896).\n- scsi: zfcp: spin_lock_irqsave() is not nestable (bsc#1003677,LTC#147374).\n- scsi_error: count medium access timeout only once per EH run (bsc#993832).\n- scsi_error: fixup crash in scsi_eh_reset (bsc#993832)\n- serial: 8250_pci: Detach low-level driver during PCI error recovery (bsc#1013070).\n- sfc: on MC reset, clear PIO buffer linkage in TXQs (bsc#909618).\n- softirq: sirq threads raising another sirq delegate to the proper thread Otherwise, high priority timer threads expend\n  cycles precessing other sirqs, potentially increasing wakeup latencies as thes process sirqs at a priority other than\n  the priority specified by the user.\n- sunrpc/cache: drop reference when sunrpc_cache_pipe_upcall() detects a race (bnc#803320).\n- sunrpc: Enforce an upper limit on the number of cached credentials (bsc#1012917).\n- sunrpc: Fix reconnection timeouts (bsc#1014410).\n- sunrpc: Fix two issues with drop_caches and the sunrpc auth cache (bsc#1012917).\n- sunrpc: Limit the reconnect backoff timer to the max RPC message timeout (bsc#1014410).\n- tcp: fix inet6_csk_route_req() for link-local addresses (bsc#1010175).\n- tcp: pass fl6 to inet6_csk_route_req() (bsc#1010175).\n- tcp: plug dst leak in tcp_v6_conn_request() (bsc#1010175).\n- tcp: use inet6_csk_route_req() in tcp_v6_send_synack() (bsc#1010175).\n- tg3: Avoid NULL pointer dereference in tg3_io_error_detected() (bsc#908458).\n- tg3: Fix temperature reporting (bnc#790588).\n- tty: Signal SIGHUP before hanging up ldisc (bnc#989764).\n- usb: console: fix potential use after free (bsc#1015817).\n- usb: console: fix uninitialised ldisc semaphore (bsc#1015817).\n- usb: cp210x: Corrected USB request type definitions (bsc#1015932).\n- usb: cp210x: relocate private data from USB interface to port (bsc#1015932).\n- usb: cp210x: work around cp2108 GET_LINE_CTL bug (bsc#1015932).\n- usb: ftdi_sio: fix null deref at port probe (bsc#1015796).\n- usb: hub: Fix auto-remount of safely removed or ejected USB-3 devices (bsc#922634).\n- usb: hub: Fix unbalanced reference count/memory leak/deadlocks (bsc#968010).\n- usb: ipaq.c: fix a timeout loop (bsc#1015848).\n- usb: opticon: fix non-atomic allocation in write path (bsc#1015803).\n- usb: option: fix runtime PM handling (bsc#1015752).\n- usb: serial: cp210x: add 16-bit register access functions (bsc#1015932).\n- usb: serial: cp210x: add 8-bit and 32-bit register access functions (bsc#1015932).\n- usb: serial: cp210x: add new access functions for large registers (bsc#1015932).\n- usb: serial: cp210x: fix hardware flow-control disable (bsc#1015932).\n- usb: serial: fix potential use-after-free after failed probe (bsc#1015828).\n- usb: serial: io_edgeport: fix memory leaks in attach error path (bsc#1016505).\n- usb: serial: io_edgeport: fix memory leaks in probe error path (bsc#1016505).\n- usb: serial: keyspan: fix use-after-free in probe error path (bsc#1016520).\n- usb: sierra: fix AA deadlock in open error path (bsc#1015561).\n- usb: sierra: fix remote wakeup (bsc#1015561).\n- usb: sierra: fix urb and memory leak in resume error path (bsc#1015561).\n- usb: sierra: fix urb and memory leak on disconnect (bsc#1015561).\n- usb: sierra: fix use after free at suspend/resume (bsc#1015561).\n- usb: usb_wwan: fix potential blocked I/O after resume (bsc#1015760).\n- usb: usb_wwan: fix race between write and resume (bsc#1015760).\n- usb: usb_wwan: fix urb leak at shutdown (bsc#1015760).\n- usb: usb_wwan: fix urb leak in write error path (bsc#1015760).\n- usb: usb_wwan: fix write and suspend race (bsc#1015760).\n- usbhid: add ATEN CS962 to list of quirky devices (bsc#1007615).\n- usblp: do not set TASK_INTERRUPTIBLE before lock (bsc#1015844).\n- vmxnet3: Wake queue from reset work (bsc#999907).\n- x86, amd_nb: Clarify F15h, model 30h GART and L3 support\n- x86/MCE/intel: Cleanup CMCI storm logic (bsc#929141).\n- x86/asm/traps: Disable tracing and kprobes in fixup_bad_iret and sync_regs (bsc#909077).\n- x86/cpu/amd: Set X86_FEATURE_EXTD_APICID for future processors\n- x86/gart: Check for GART support before accessing GART registers\n- xenbus: do not invoke ->is_ready() for most device states (bsc#987333).\n- zcrypt: Fix hang condition on crypto card config-off (bsc#1016320).\n- zcrypt: Fix invalid domain response handling (bsc#1016320).\n- zfcp: Fix erratic device offline during EH (bsc#993832).\n- zfcp: close window with unblocked rport during rport gone (bnc#1003677).\n- zfcp: fix D_ID field with actual value on tracing SAN responses (bnc#1003677).\n- zfcp: fix ELS/GS request&response length for hardware data router (bnc#1003677).\n- zfcp: fix payload trace length for SAN request&response (bnc#1003677).\n- zfcp: restore tracing of handle for port and LUN with HBA records (bnc#1003677).\n- zfcp: restore: Dont use 0 to indicate invalid LUN in rec trace (bnc#1003677).\n- zfcp: retain trace level for SCSI and HBA FSF response records (bnc#1003677).\n- zfcp: trace full payload of all SAN records (req,resp,iels) (bnc#1003677).\n- zfcp: trace on request for open and close of WKA port (bnc#1003677).\n",
+  "modified": "2025-05-02T04:03:47.184239Z",
+  "published": "2017-04-25T14:34:26Z",
+  "related": [
+    "CVE-2004-0230",
+    "CVE-2012-6704",
+    "CVE-2013-6368",
+    "CVE-2015-1350",
+    "CVE-2015-8956",
+    "CVE-2015-8962",
+    "CVE-2015-8964",
+    "CVE-2016-10088",
+    "CVE-2016-3841",
+    "CVE-2016-5696",
+    "CVE-2016-7042",
+    "CVE-2016-7097",
+    "CVE-2016-7117",
+    "CVE-2016-7910",
+    "CVE-2016-7911",
+    "CVE-2016-7916",
+    "CVE-2016-8399",
+    "CVE-2016-8632",
+    "CVE-2016-8633",
+    "CVE-2016-8646",
+    "CVE-2016-9555",
+    "CVE-2016-9576",
+    "CVE-2016-9685",
+    "CVE-2016-9756",
+    "CVE-2016-9793",
+    "CVE-2016-9794",
+    "CVE-2017-5551"
+  ],
+  "upstream": [
+    "CVE-2004-0230",
+    "CVE-2012-6704",
+    "CVE-2013-6368",
+    "CVE-2015-1350",
+    "CVE-2015-8956",
+    "CVE-2015-8962",
+    "CVE-2015-8964",
+    "CVE-2016-10088",
+    "CVE-2016-3841",
+    "CVE-2016-5696",
+    "CVE-2016-7042",
+    "CVE-2016-7097",
+    "CVE-2016-7117",
+    "CVE-2016-7910",
+    "CVE-2016-7911",
+    "CVE-2016-7916",
+    "CVE-2016-8399",
+    "CVE-2016-8632",
+    "CVE-2016-8633",
+    "CVE-2016-8646",
+    "CVE-2016-9555",
+    "CVE-2016-9576",
+    "CVE-2016-9685",
+    "CVE-2016-9756",
+    "CVE-2016-9793",
+    "CVE-2016-9794",
+    "CVE-2017-5551"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2017/suse-su-20171102-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1003077"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1003344"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1003568"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1003677"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1003813"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1003866"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1003925"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1004517"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1004520"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1005857"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1005877"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1005896"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1005903"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1006917"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1006919"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1007615"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1007944"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008557"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008645"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008831"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008833"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1008893"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1009875"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1010150"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1010175"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1010201"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1010467"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1010501"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1010507"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1010711"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1010716"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1011685"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1011820"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012411"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012422"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012832"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012851"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012917"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013018"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013038"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013042"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013070"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013531"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013533"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013542"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1013604"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1014410"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1014454"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1014746"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015561"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015752"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015760"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015796"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015803"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015817"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015828"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015844"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015848"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015878"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1015932"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1016320"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1016505"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1016520"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1016668"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1016688"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1016824"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1016831"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1017686"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1017710"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1019148"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1019165"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1019348"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1019783"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1020214"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1021258"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/748806"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/763198"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/771065"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/786036"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/790588"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/795297"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/799133"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/800999"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/803320"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/821612"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/824171"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/851603"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/853052"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/860441"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/863873"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/865783"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/871728"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/901809"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/907611"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/908458"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/908684"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/909077"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/909350"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/909484"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/909491"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/909618"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/913387"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/914939"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/919382"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/922634"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/924708"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/925065"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/928138"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/929141"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/953233"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956514"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/960689"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/961589"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/962846"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963655"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/967716"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968010"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/969340"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/973203"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/973691"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/979681"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/984194"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/986337"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/987333"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/987576"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/989152"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/989680"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/989764"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/989896"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/990245"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/992566"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/992991"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/993739"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/993832"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/995968"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/996541"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/996557"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/997401"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/998689"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/999101"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/999907"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2004-0230"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2012-6704"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2013-6368"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-1350"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8956"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8962"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8964"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-10088"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3841"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-5696"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-7042"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-7097"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-7117"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-7910"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-7911"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-7916"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-8399"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-8632"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-8633"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-8646"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9555"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9576"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9685"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9756"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9793"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-9794"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5551"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-68.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-68.1",
+            "kernel-rt-devel": "3.0.101.rt130-68.1",
+            "kernel-rt_trace": "3.0.101.rt130-68.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-68.1",
+            "kernel-source-rt": "3.0.101.rt130-68.1",
+            "kernel-rt": "3.0.101.rt130-68.1",
+            "kernel-syms-rt": "3.0.101.rt130-68.1",
+            "kernel-rt-base": "3.0.101.rt130-68.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1102-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-rt_trace",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-rt_trace&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-68.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-68.1",
+            "kernel-rt-devel": "3.0.101.rt130-68.1",
+            "kernel-rt_trace": "3.0.101.rt130-68.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-68.1",
+            "kernel-source-rt": "3.0.101.rt130-68.1",
+            "kernel-rt": "3.0.101.rt130-68.1",
+            "kernel-syms-rt": "3.0.101.rt130-68.1",
+            "kernel-rt-base": "3.0.101.rt130-68.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1102-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-source-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-68.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-68.1",
+            "kernel-rt-devel": "3.0.101.rt130-68.1",
+            "kernel-rt_trace": "3.0.101.rt130-68.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-68.1",
+            "kernel-source-rt": "3.0.101.rt130-68.1",
+            "kernel-rt": "3.0.101.rt130-68.1",
+            "kernel-syms-rt": "3.0.101.rt130-68.1",
+            "kernel-rt-base": "3.0.101.rt130-68.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1102-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms-rt",
+        "ecosystem": "SUSE:Linux Enterprise Real Time 11 SP4",
+        "purl": "pkg:rpm/suse/kernel-syms-rt&distro=SUSE%20Linux%20Enterprise%20Real%20Time%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101.rt130-68.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-rt_trace-base": "3.0.101.rt130-68.1",
+            "kernel-rt-devel": "3.0.101.rt130-68.1",
+            "kernel-rt_trace": "3.0.101.rt130-68.1",
+            "kernel-rt_trace-devel": "3.0.101.rt130-68.1",
+            "kernel-source-rt": "3.0.101.rt130-68.1",
+            "kernel-rt": "3.0.101.rt130-68.1",
+            "kernel-syms-rt": "3.0.101.rt130-68.1",
+            "kernel-rt-base": "3.0.101.rt130-68.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:1102-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

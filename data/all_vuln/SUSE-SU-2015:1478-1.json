@@ -1,0 +1,636 @@
+{
+  "id": "SUSE-SU-2015:1478-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise Server 11 SP2 LTSS kernel was updated to\nreceive various security and bugfixes.\n\nThe following security bugs were fixed:\n- CVE-2015-5707: An integer overflow in the SCSI generic driver could\n  be potentially used by local attackers to crash the kernel or execute\n  code.\n- CVE-2015-2830: arch/x86/kernel/entry_64.S in the Linux kernel did\n  not prevent the TS_COMPAT flag from reaching a user-mode task, which\n  might have allowed local users to bypass the seccomp or audit protection\n  mechanism via a crafted application that uses the (1) fork or (2) close\n  system call, as demonstrated by an attack against seccomp before 3.16\n  (bnc#926240).\n- CVE-2015-0777: drivers/xen/usbback/usbback.c in the Linux kernel\n  allowed guest OS users to obtain sensitive information from uninitialized\n  locations in host OS kernel memory via unspecified vectors (bnc#917830).\n- CVE-2015-2150: Xen and the Linux kernel did not properly restrict access\n  to PCI command registers, which might have allowed local guest users to\n  cause a denial of service (non-maskable interrupt and host crash) by\n  disabling the (1) memory or (2) I/O decoding for a PCI Express device\n  and then accessing the device, which triggers an Unsupported Request\n  (UR) response (bnc#919463).\n- CVE-2015-5364: A remote denial of service (hang) via UDP flood with\n  incorrect package checksums was fixed. (bsc#936831).\n- CVE-2015-5366: A remote denial of service (unexpected error returns)\n  via UDP flood with incorrect package checksums was fixed. (bsc#936831).\n- CVE-2015-1420: CVE-2015-1420: Race condition in the handle_to_path\n  function in fs/fhandle.c in the Linux kernel allowed local users to bypass\n  intended size restrictions and trigger read operations on additional\n  memory locations by changing the handle_bytes value of a file handle\n  during the execution of this function (bnc#915517).\n- CVE-2015-4700: A local user could have created a bad instruction in\n  the JIT processed BPF code, leading to a kernel crash (bnc#935705).\n- CVE-2015-1805: The (1) pipe_read and (2) pipe_write implementations in\n  fs/pipe.c in the Linux kernel did not properly consider the side effects\n  of failed __copy_to_user_inatomic and __copy_from_user_inatomic calls,\n  which allowed local users to cause a denial of service (system crash)\n  or possibly gain privileges via a crafted application, aka an 'I/O vector\n  array overrun' (bnc#933429).\n- CVE-2015-3331: The __driver_rfc4106_decrypt function in\n  arch/x86/crypto/aesni-intel_glue.c in the Linux kernel did not properly\n  determine the memory locations used for encrypted data, which allowed\n  context-dependent attackers to cause a denial of service (buffer overflow\n  and system crash) or possibly execute arbitrary code by triggering a\n  crypto API call, as demonstrated by use of a libkcapi test program with\n  an AF_ALG(aead) socket (bnc#927257).\n- CVE-2015-2922: The ndisc_router_discovery function in net/ipv6/ndisc.c\n  in the Neighbor Discovery (ND) protocol implementation in the IPv6 stack\n  in the Linux kernel allowed remote attackers to reconfigure a hop-limit\n  setting via a small hop_limit value in a Router Advertisement (RA)\n  message (bnc#922583).\n- CVE-2015-2041: net/llc/sysctl_net_llc.c in the Linux kernel used an\n  incorrect data type in a sysctl table, which allowed local users to\n  obtain potentially sensitive information from kernel memory or possibly\n  have unspecified other impact by accessing a sysctl entry (bnc#919007).\n- CVE-2015-3636: The ping_unhash function in net/ipv4/ping.c in the\n  Linux kernel did not initialize a certain list data structure during an\n  unhash operation, which allowed local users to gain privileges or cause\n  a denial of service (use-after-free and system crash) by leveraging the\n  ability to make a SOCK_DGRAM socket system call for the IPPROTO_ICMP or\n  IPPROTO_ICMPV6 protocol, and then making a connect system call after a\n  disconnect (bnc#929525).\n- CVE-2014-8086: Race condition in the ext4_file_write_iter function\n  in fs/ext4/file.c in the Linux kernel allowed local users to cause a\n  denial of service (file unavailability) via a combination of a write\n  action and an F_SETFL fcntl operation for the O_DIRECT flag (bnc#900881).\n- CVE-2014-8159: The InfiniBand (IB) implementation in the Linux kernel\n  did not properly restrict use of User Verbs for registration of memory\n  regions, which allowed local users to access arbitrary physical memory\n  locations, and consequently cause a denial of service (system crash)\n  or gain privileges, by leveraging permissions on a uverbs device under\n  /dev/infiniband/ (bnc#914742).\n- CVE-2014-9683: Off-by-one error in the ecryptfs_decode_from_filename\n  function in fs/ecryptfs/crypto.c in the eCryptfs subsystem in the Linux\n  kernel allowed local users to cause a denial of service (buffer overflow\n  and system crash) or possibly gain privileges via a crafted filename\n  (bnc#918333).\n- CVE-2015-2042: net/rds/sysctl.c in the Linux kernel used an incorrect\n  data type in a sysctl table, which allowed local users to obtain\n  potentially sensitive information from kernel memory or possibly have\n  unspecified other impact by accessing a sysctl entry (bnc#919018).\n- CVE-2015-1421: Use-after-free vulnerability in the sctp_assoc_update\n  function in net/sctp/associola.c in the Linux kernel allowed remote\n  attackers to cause a denial of service (slab corruption and panic) or\n  possibly have unspecified other impact by triggering an INIT collision\n  that leads to improper handling of shared-key data (bnc#915577).\n\nThe following non-security bugs were fixed:\n- HID: add ALWAYS_POLL quirk for a Logitech 0xc007 (bnc#931474).\n- HID: add HP OEM mouse to quirk ALWAYS_POLL (bnc#931474).\n- HID: add quirk for PIXART OEM mouse used by HP (bnc#931474).\n- HID: usbhid: add always-poll quirk (bnc#931474).\n- HID: usbhid: add another mouse that needs QUIRK_ALWAYS_POLL (bnc#931474).\n- HID: usbhid: enable always-poll quirk for Elan Touchscreen 009b (bnc#931474).\n- HID: usbhid: enable always-poll quirk for Elan Touchscreen 0103 (bnc#931474).\n- HID: usbhid: enable always-poll quirk for Elan Touchscreen 016f (bnc#931474).\n- HID: usbhid: enable always-poll quirk for Elan Touchscreen.\n- HID: usbhid: fix PIXART optical mouse (bnc#931474).\n- HID: usbhid: more mice with ALWAYS_POLL (bnc#931474).\n- HID: usbhid: yet another mouse with ALWAYS_POLL (bnc#931474).\n- bnx2x: Fix kdump when iommu=on (bug#921769).\n- cifs: fix use-after-free bug in find_writable_file (bnc#909477).\n- coredump: ensure the fpu state is flushed for proper multi-threaded core dump (bsc#904671, bsc#929360).\n- dm: fixed that LVM merge snapshot of root logical volume were not working (bsc#928801)\n- deal with deadlock in d_walk fix (bnc#929148, bnc#929283).\n- e1000: do not enable dma receives until after dma address has been setup (bsc#821931).\n- fsnotify: Fix handling of renames in audit (bnc#915200).\n- inet: add a redirect generation id in inetpeer (bnc#860593).\n- inetpeer: initialize -&gt;redirect_genid in inet_getpeer() (bnc#860593).\n- kabi: hide bnc#860593 changes of struct inetpeer_addr_base (bnc#860593).\n- kernel: fix data corruption when reading /proc/sysinfo (bsc#891087, bsc#937986, LTC#114480).\n- libata: prevent HSM state change race between ISR and PIO (bsc#923245).\n- time, ntp: Do not update time_state in middle of leap second (bsc#912916).\n- s390-3215-tty-close-crash.patch: kernel: 3215 tty close crash (bsc#916010, LTC#120873).\n- s390-3215-tty-close-race.patch: kernel: 3215 console crash (bsc#916010, LTC#94302).\n- s390-3215-tty-hang.patch: Renamed from patches.arch/s390-tty-hang.patch.\n- s390-3215-tty-hang.patch: Update references (bnc#898693, bnc#897995, LTC#114562).\n- s390-dasd-retry-partition-detection.patch: s390/dasd: retry partition detection (bsc#916010, LTC#94302).\n- s390-dasd-retry-partition-detection.patch: Update references (bsc#916010, LTC#120565).\n- s390-sclp-tty-refcount.patch: kernel: sclp console tty reference counting (bsc#916010, LTC#115466).\n- scsi: vmw_pvscsi: Fix pvscsi_abort() function (bnc#940398 bsc#930934).\n- scsi/sg: sg_start_req(): make sure that there is not too many elements in iovec (bsc#940338).\n- x86, xsave: remove thread_has_fpu() bug check in __sanitize_i387_state() (bsc#904671, bsc#929360).\n- x86-mm-send-tlb-flush-ipis-to-online-cpus-only.patch: x86, mm: Send tlb flush IPIs to online cpus only (bnc#798406).\n- x86/mm: Improve AMD Bulldozer ASLR workaround (bsc#937032).\n- x86/reboot: Fix a warning message triggered by stop_other_cpus() (bnc#930284).\n- xen: Correctly re-enable interrupts in xen_spin_wait() (bsc#879878, bsc#908870).\n- xfs: prevent deadlock trying to cover an active log (bsc#917093).\n  ",
+  "modified": "2025-05-02T04:04:09.116345Z",
+  "published": "2015-08-20T15:22:44Z",
+  "related": [
+    "CVE-2014-8086",
+    "CVE-2014-8159",
+    "CVE-2014-9683",
+    "CVE-2015-0777",
+    "CVE-2015-1420",
+    "CVE-2015-1421",
+    "CVE-2015-1805",
+    "CVE-2015-2041",
+    "CVE-2015-2042",
+    "CVE-2015-2150",
+    "CVE-2015-2830",
+    "CVE-2015-2922",
+    "CVE-2015-3331",
+    "CVE-2015-3636",
+    "CVE-2015-4700",
+    "CVE-2015-5364",
+    "CVE-2015-5366",
+    "CVE-2015-5707"
+  ],
+  "upstream": [
+    "CVE-2014-8086",
+    "CVE-2014-8159",
+    "CVE-2014-9683",
+    "CVE-2015-0777",
+    "CVE-2015-1420",
+    "CVE-2015-1421",
+    "CVE-2015-1805",
+    "CVE-2015-2041",
+    "CVE-2015-2042",
+    "CVE-2015-2150",
+    "CVE-2015-2830",
+    "CVE-2015-2922",
+    "CVE-2015-3331",
+    "CVE-2015-3636",
+    "CVE-2015-4700",
+    "CVE-2015-5364",
+    "CVE-2015-5366",
+    "CVE-2015-5707"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2015/suse-su-20151478-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/798406"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/821931"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/860593"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/879878"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/891087"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/897995"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/898693"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/900881"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/904671"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/908870"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/909477"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/912916"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/914742"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/915200"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/915517"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/915577"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/916010"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/917093"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/917830"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/918333"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/919007"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/919018"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/919463"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/921769"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/922583"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/923245"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/926240"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/927257"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/928801"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/929148"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/929283"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/929360"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/929525"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/930284"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/930934"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/931474"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/933429"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/935705"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/936831"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/937032"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/937986"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/940338"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/940398"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2014-8086"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2014-8159"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2014-9683"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-0777"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-1420"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-1421"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-1805"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-2041"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-2042"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-2150"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-2830"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-2922"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-3331"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-3636"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-4700"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-5364"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-5366"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-5707"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.7.37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.7.37.1",
+            "kernel-default-man": "3.0.101-0.7.37.1",
+            "kernel-ec2": "3.0.101-0.7.37.1",
+            "kernel-default": "3.0.101-0.7.37.1",
+            "kernel-source": "3.0.101-0.7.37.1",
+            "kernel-pae-base": "3.0.101-0.7.37.1",
+            "kernel-syms": "3.0.101-0.7.37.1",
+            "kernel-trace": "3.0.101-0.7.37.1",
+            "kernel-pae": "3.0.101-0.7.37.1",
+            "kernel-trace-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-base": "3.0.101-0.7.37.1",
+            "kernel-xen-devel": "3.0.101-0.7.37.1",
+            "kernel-xen-base": "3.0.101-0.7.37.1",
+            "kernel-trace-base": "3.0.101-0.7.37.1",
+            "kernel-default-devel": "3.0.101-0.7.37.1",
+            "kernel-pae-devel": "3.0.101-0.7.37.1",
+            "kernel-xen": "3.0.101-0.7.37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1478-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.7.37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.7.37.1",
+            "kernel-default-man": "3.0.101-0.7.37.1",
+            "kernel-ec2": "3.0.101-0.7.37.1",
+            "kernel-default": "3.0.101-0.7.37.1",
+            "kernel-source": "3.0.101-0.7.37.1",
+            "kernel-pae-base": "3.0.101-0.7.37.1",
+            "kernel-syms": "3.0.101-0.7.37.1",
+            "kernel-trace": "3.0.101-0.7.37.1",
+            "kernel-pae": "3.0.101-0.7.37.1",
+            "kernel-trace-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-base": "3.0.101-0.7.37.1",
+            "kernel-xen-devel": "3.0.101-0.7.37.1",
+            "kernel-xen-base": "3.0.101-0.7.37.1",
+            "kernel-trace-base": "3.0.101-0.7.37.1",
+            "kernel-default-devel": "3.0.101-0.7.37.1",
+            "kernel-pae-devel": "3.0.101-0.7.37.1",
+            "kernel-xen": "3.0.101-0.7.37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1478-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.7.37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.7.37.1",
+            "kernel-default-man": "3.0.101-0.7.37.1",
+            "kernel-ec2": "3.0.101-0.7.37.1",
+            "kernel-default": "3.0.101-0.7.37.1",
+            "kernel-source": "3.0.101-0.7.37.1",
+            "kernel-pae-base": "3.0.101-0.7.37.1",
+            "kernel-syms": "3.0.101-0.7.37.1",
+            "kernel-trace": "3.0.101-0.7.37.1",
+            "kernel-pae": "3.0.101-0.7.37.1",
+            "kernel-trace-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-base": "3.0.101-0.7.37.1",
+            "kernel-xen-devel": "3.0.101-0.7.37.1",
+            "kernel-xen-base": "3.0.101-0.7.37.1",
+            "kernel-trace-base": "3.0.101-0.7.37.1",
+            "kernel-default-devel": "3.0.101-0.7.37.1",
+            "kernel-pae-devel": "3.0.101-0.7.37.1",
+            "kernel-xen": "3.0.101-0.7.37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1478-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.7.37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.7.37.1",
+            "kernel-default-man": "3.0.101-0.7.37.1",
+            "kernel-ec2": "3.0.101-0.7.37.1",
+            "kernel-default": "3.0.101-0.7.37.1",
+            "kernel-source": "3.0.101-0.7.37.1",
+            "kernel-pae-base": "3.0.101-0.7.37.1",
+            "kernel-syms": "3.0.101-0.7.37.1",
+            "kernel-trace": "3.0.101-0.7.37.1",
+            "kernel-pae": "3.0.101-0.7.37.1",
+            "kernel-trace-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-base": "3.0.101-0.7.37.1",
+            "kernel-xen-devel": "3.0.101-0.7.37.1",
+            "kernel-xen-base": "3.0.101-0.7.37.1",
+            "kernel-trace-base": "3.0.101-0.7.37.1",
+            "kernel-default-devel": "3.0.101-0.7.37.1",
+            "kernel-pae-devel": "3.0.101-0.7.37.1",
+            "kernel-xen": "3.0.101-0.7.37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1478-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.7.37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.7.37.1",
+            "kernel-default-man": "3.0.101-0.7.37.1",
+            "kernel-ec2": "3.0.101-0.7.37.1",
+            "kernel-default": "3.0.101-0.7.37.1",
+            "kernel-source": "3.0.101-0.7.37.1",
+            "kernel-pae-base": "3.0.101-0.7.37.1",
+            "kernel-syms": "3.0.101-0.7.37.1",
+            "kernel-trace": "3.0.101-0.7.37.1",
+            "kernel-pae": "3.0.101-0.7.37.1",
+            "kernel-trace-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-base": "3.0.101-0.7.37.1",
+            "kernel-xen-devel": "3.0.101-0.7.37.1",
+            "kernel-xen-base": "3.0.101-0.7.37.1",
+            "kernel-trace-base": "3.0.101-0.7.37.1",
+            "kernel-default-devel": "3.0.101-0.7.37.1",
+            "kernel-pae-devel": "3.0.101-0.7.37.1",
+            "kernel-xen": "3.0.101-0.7.37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1478-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.7.37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.7.37.1",
+            "kernel-default-man": "3.0.101-0.7.37.1",
+            "kernel-ec2": "3.0.101-0.7.37.1",
+            "kernel-default": "3.0.101-0.7.37.1",
+            "kernel-source": "3.0.101-0.7.37.1",
+            "kernel-pae-base": "3.0.101-0.7.37.1",
+            "kernel-syms": "3.0.101-0.7.37.1",
+            "kernel-trace": "3.0.101-0.7.37.1",
+            "kernel-pae": "3.0.101-0.7.37.1",
+            "kernel-trace-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-base": "3.0.101-0.7.37.1",
+            "kernel-xen-devel": "3.0.101-0.7.37.1",
+            "kernel-xen-base": "3.0.101-0.7.37.1",
+            "kernel-trace-base": "3.0.101-0.7.37.1",
+            "kernel-default-devel": "3.0.101-0.7.37.1",
+            "kernel-pae-devel": "3.0.101-0.7.37.1",
+            "kernel-xen": "3.0.101-0.7.37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1478-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.7.37.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.7.37.1",
+            "kernel-default-man": "3.0.101-0.7.37.1",
+            "kernel-ec2": "3.0.101-0.7.37.1",
+            "kernel-default": "3.0.101-0.7.37.1",
+            "kernel-source": "3.0.101-0.7.37.1",
+            "kernel-pae-base": "3.0.101-0.7.37.1",
+            "kernel-syms": "3.0.101-0.7.37.1",
+            "kernel-trace": "3.0.101-0.7.37.1",
+            "kernel-pae": "3.0.101-0.7.37.1",
+            "kernel-trace-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-devel": "3.0.101-0.7.37.1",
+            "kernel-ec2-base": "3.0.101-0.7.37.1",
+            "kernel-xen-devel": "3.0.101-0.7.37.1",
+            "kernel-xen-base": "3.0.101-0.7.37.1",
+            "kernel-trace-base": "3.0.101-0.7.37.1",
+            "kernel-default-devel": "3.0.101-0.7.37.1",
+            "kernel-pae-devel": "3.0.101-0.7.37.1",
+            "kernel-xen": "3.0.101-0.7.37.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1478-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

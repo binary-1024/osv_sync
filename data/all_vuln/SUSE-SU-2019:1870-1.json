@@ -1,0 +1,560 @@
+{
+  "id": "SUSE-SU-2019:1870-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 12 SP1 kernel was updated to receive various security and bugfixes.\n\n\nThe following security bugs were fixed:\n\n- CVE-2018-5390 aka 'SegmentSmack': A remote attacker even with relatively low bandwidth could have caused lots of CPU usage\n  by triggering the worst case scenario during IP and/or TCP fragment reassembly (bsc#1102340)\n- CVE-2018-7191: In the tun subsystem in the Linux kernel, dev_get_valid_name was not called before register_netdevice. This allowed local users to cause a denial of service (NULL pointer dereference and panic) via an ioctl(TUNSETIFF) call with a dev name containing a / character. (bnc#1135603)\n- CVE-2018-20836: A race condition in smp_task_timedout() and smp_task_done() in drivers/scsi/libsas/sas_expander.c, could have lead to a use-after-free. (bnc#1134395)\n- CVE-2019-12614: An unchecked kstrdup might have allowed an attacker to cause denial of service (a NULL pointer dereference and system crash). (bnc#1137194)\n- CVE-2019-12818: The nfc_llcp_build_tlv function in net/nfc/llcp_commands.c may have returned NULL. If the caller did not check for this, it would trigger a NULL pointer dereference. This would cause denial of service. (bnc#1138293)\n- CVE-2019-12456: An issue in the MPT3COMMAND case in _ctl_ioctl_main() allowed local users to cause a denial of service or possibly have unspecified other impact by changing the value of ioc_number between two kernel reads of that value, aka a 'double fetch' vulnerability. (bsc#1136922)\n- CVE-2019-11487: An attacker could have triggered use-after-free via page reference count overflow on slow filesystems with at least of 140 GiB of RAM available. (bnc#1133190)\n\nThe following non-security bugs were fixed:\n\n- fuse: Don't access pipe->buffers without pipe_lock() (Prerequisity for CVE-2019-11487, bsc#1133190).\n- fuse: call pipe_buf_release() under pipe lock (Prerequisity for CVE-2019-11487, bsc#1133190).\n- mm: /proc/pid/maps: Check permissions when opening proc pid maps (bsc#1130159).\n- pipe: add pipe_buf_get() helper (Prerequisity for CVE-2019-11487, bsc#1133190).\n- tcp: refine memory limit test in tcp_fragment() after CVE-2019-11478 fix (bsc#1139751).\n- x86/bugs: do not default to IBRS even on SKL (bsc#1112824).\n\n",
+  "modified": "2025-05-02T04:08:10.590167Z",
+  "published": "2019-07-17T12:57:10Z",
+  "related": [
+    "CVE-2018-20836",
+    "CVE-2018-5390",
+    "CVE-2018-7191",
+    "CVE-2019-11487",
+    "CVE-2019-12456",
+    "CVE-2019-12614",
+    "CVE-2019-12818"
+  ],
+  "upstream": [
+    "CVE-2018-20836",
+    "CVE-2018-5390",
+    "CVE-2018-7191",
+    "CVE-2019-11487",
+    "CVE-2019-12456",
+    "CVE-2019-12614",
+    "CVE-2019-12818"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2019/suse-su-20191870-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1102340"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1112824"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1130159"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1133190"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1134395"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1135603"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1136922"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1137194"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1138293"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1139751"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-20836"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-5390"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-7191"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-11487"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-12456"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-12614"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-12818"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Module for Public Cloud 12",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Public%20Cloud%2012"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-ec2-extra": "3.12.74-60.64.118.1",
+            "kernel-ec2": "3.12.74-60.64.118.1",
+            "kernel-ec2-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP1_Update_35",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP1_Update_35&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-2.3.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-default-man": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-default-man": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-default-man": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.74-60.64.118.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-default-man": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP1_Update_35",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP1_Update_35&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-2.3.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "3.12.74-60.64.118.1",
+            "kernel-devel": "3.12.74-60.64.118.1",
+            "kernel-default-base": "3.12.74-60.64.118.1",
+            "kernel-default-man": "3.12.74-60.64.118.1",
+            "kernel-xen-devel": "3.12.74-60.64.118.1",
+            "kernel-source": "3.12.74-60.64.118.1",
+            "kernel-default": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-xen": "1-2.3.1",
+            "kernel-xen-base": "3.12.74-60.64.118.1",
+            "kernel-syms": "3.12.74-60.64.118.1",
+            "kgraft-patch-3_12_74-60_64_118-default": "1-2.3.1",
+            "kernel-xen": "3.12.74-60.64.118.1",
+            "kernel-default-devel": "3.12.74-60.64.118.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1870-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

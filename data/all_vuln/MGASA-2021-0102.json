@@ -1,0 +1,78 @@
+{
+  "id": "MGASA-2021-0102",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on upstream 5.10.19 and fixes at least\nthe following security issues:\n\nAn information disclosure vulnerability exists in the ARM SIGPAGE\nfunctionality of Linux Kernel. A userland application can read the\ncontents of the sigpage, which can leak kernel memory contents. An\nattacker can read a process\u2019s memory at a specific offset to trigger\nthis vulnerability (CVE-2021-21781).\n\nAn issue was discovered in the Linux kernel 3.11 through 5.10.16, as used\nby Xen. To service requests to the PV backend, the driver maps grant\nreferences provided by the frontend. In this process, errors may be\nencountered. In one case, an error encountered earlier might be\ndiscarded by later processing, resulting in the caller assuming\nsuccessful mapping, and hence subsequent operations trying to access\nspace that wasn't mapped. In another case, internal state would be\ninsufficiently updated, preventing safe recovery from the error\n(CVE-2021-26930).\n\nAn issue was discovered in the Linux kernel 2.6.39 through 5.10.16, as\nused in Xen. Block, net, and SCSI backends consider certain errors a\nplain bug, deliberately causing a kernel crash. For errors potentially\nbeing at least under the influence of guests (such as out of memory\nconditions), it isn't correct to assume a plain bug. Memory allocations\npotentially causing such crashes occur only when Linux is running in\nPV mode, though (CVE-2021-26931).\n\nAn issue was discovered in the Linux kernel 3.2 through 5.10.16, as used\nby Xen. Grant mapping operations often occur in batch hypercalls, where\na number of operations are done in a single hypercall, the success or\nfailure of each one is reported to the backend driver, and the backend\ndriver then loops over the results, performing follow-up actions based\non the success or failure of each operation. Unfortunately, when running\nin PV mode, the Linux backend drivers mishandle this: Some errors are\nignored, effectively implying their success from the success of related\nbatch elements. In other cases, errors resulting from one batch element\nlead to further batch elements not being inspected, and hence successful\nones to not be possible to properly unmap upon error recovery. Only\nsystems with Linux backends running in PV mode are vulnerable. Linux\nbackends run in HVM / PVH modes are not vulnerable (CVE-2021-26932).\n\nIt also adds the following fixes:\n- enable ACPI_EC_DEBUGFS (mga#28415)\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2021-03-04T12:26:19Z",
+  "related": [
+    "CVE-2021-21781",
+    "CVE-2021-26930",
+    "CVE-2021-26931",
+    "CVE-2021-26932"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0102.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=28471"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=28415"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.17"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.18"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.19"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.19-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0102.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

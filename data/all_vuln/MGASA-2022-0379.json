@@ -1,0 +1,163 @@
+{
+  "id": "MGASA-2022-0379",
+  "summary": "Updated kernel packages fix security vulnerabilities",
+  "details": "This kernel update is based on upstream 5.15.74 and fixes at least the\nfollowing security issues:\n\nA flaw was found in the Linux kernel. The existing KVM SEV API has a\nvulnerability that allows a non-root (host) user-level application to\ncrash the host kernel by creating a confidential guest VM instance in\nAMD CPU that supports Secure Encrypted Virtualization (SEV)\n(CVE-2022-0171).\n\nA flaw was found in vDPA with VDUSE backend. There are currently no checks\nin VDUSE kernel driver to ensure the size of the device config space is in\nline with the features advertised by the VDUSE userspace application. In\ncase of a mismatch, Virtio drivers config read helpers do not initialize\nthe memory indirectly passed to vduse_vdpa_get_config() returning\nuninitialized memory from the stack. This could cause undefined behavior or\ndata leaks in Virtio drivers (CVE-2022-2308).\n\nAn issue was found in the Linux kernel in nf_conntrack_irc where the\nmessage handling can be confused and incorrectly matches the message.\nA firewall may be able to be bypassed when users are using unencrypted\nIRC with nf_conntrack_irc configured (CVE-2022-2663).\n\nA flaw in the i740 driver. The Userspace program could pass any values\nto the driver through ioctl() interface. The driver doesn't check the\nvalue of 'pixclock', so it may cause a divide by zero error\n(CVE-2022-3061).\n\nA race condition flaw was found in the Linux kernel sound subsystem due\nto improper locking. It could lead to a NULL pointer dereference while\nhandling the SNDCTL_DSP_SYNC ioctl. A privileged local user (root or\nmember of the audio group) could use this flaw to crash the system,\nresulting in a denial of service condition (CVE-2022-3303).\n\nA flaw was found in the Linux kernel networking code. A use-after-free\nwas found in the way the sch_sfb enqueue function used the socket buffer\n(SKB) cb field after the same SKB had been enqueued (and freed) into a\nchild qdisc. This flaw allows a local, unprivileged user to crash the\nsystem, causing a denial of service (CVE-2022-3586).\n\nIn binder_inc_ref_for_node of binder.c, there is a possible way to corrupt\nmemory due to a use after free. This could lead to local escalation of\nprivilege with no additional execution privileges needed. User interaction\nis not needed for exploitation (CVE-2022-20421).\n\nAn issue was discovered in the Linux kernel before 5.19. In pxa3xx_gcu_write\nin drivers/video/fbdev/pxa3xx-gcu.c, the count parameter has a type conflict\nof size_t versus int, causing an integer overflow and bypassing the size\ncheck. After that, because it is used as the third argument to\ncopy_from_user(), a heap overflow may occur (CVE-2022-39842).\n\nAn issue was discovered in the Linux kernel through 5.19.8.\ndrivers/firmware/efi/capsule-loader.c has a race condition with a resultant\nuse-after-free (CVE-2022-40307).\n\ndrivers/scsi/stex.c in the Linux kernel through 5.19.9 allows local users\nto obtain sensitive information from kernel memory because\nstex_queuecommand_lck lacks a memset for the PASSTHRU_CMD case\n(CVE-2022-40768).\n\nAn issue was discovered in the Linux kernel before 5.19.16. Attackers able\nto inject WLAN frames could cause a buffer overflow in the\nieee80211_bss_info_update function in net/mac80211/scan.c (CVE-2022-41674).\n\nA use-after-free in the mac80211 stack when parsing a multi-BSSID element\nin the Linux kernel 5.2 through 5.19.x before 5.19.16 could be used by\nattackers (able to inject WLAN frames) to crash the kernel and potentially\nexecute code (CVE-2022-42719).\n\nVarious refcounting bugs in the multi-BSS handling in the mac80211 stack\nin the Linux kernel 5.1 through 5.19.x before 5.19.16 could be used by\nlocal attackers (able to inject WLAN frames) to trigger use-after-free\nconditions to potentially execute code (CVE-2022-42720).\n\nA list management bug in BSS handling in the mac80211 stack in the Linux\nkernel 5.1 through 5.19.x before 5.19.16 could be used by local attackers\n(able to inject WLAN frames) to corrupt a linked list and, in turn,\npotentially execute code (CVE-2022-42721).\n\nIn the Linux kernel 5.8 through 5.19.x before 5.19.16, local attackers\nable to inject WLAN frames into the mac80211 stack could cause a NULL\npointer dereference denial-of-service attack against the beacon protection\nof P2P devices (CVE-2022-42722).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-11-27T18:23:57Z",
+  "published": "2022-10-23T20:35:49Z",
+  "related": [
+    "CVE-2022-0171",
+    "CVE-2022-20421",
+    "CVE-2022-2308",
+    "CVE-2022-2663",
+    "CVE-2022-3061",
+    "CVE-2022-3303",
+    "CVE-2022-3586",
+    "CVE-2022-39842",
+    "CVE-2022-40307",
+    "CVE-2022-40768",
+    "CVE-2022-41674",
+    "CVE-2022-42719",
+    "CVE-2022-42720",
+    "CVE-2022-42721",
+    "CVE-2022-42722"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0379.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=30969"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.66"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.67"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.68"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.69"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.70"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.71"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.72"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.73"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.74"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.74-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0379.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.1.38-1.6.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0379.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.21-1.6.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0379.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

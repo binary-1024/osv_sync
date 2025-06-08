@@ -1,0 +1,60 @@
+{
+  "id": "MGASA-2015-0160",
+  "summary": "Updated perl-Module-Signature packages fix security vulnerabilities",
+  "details": "Updated perl-Module-Signature package fixes the following security \nvulnerabilities reported by John Lightsey:\n\nModule::Signature could be tricked into interpreting the unsigned\nportion of a SIGNATURE file as the signed portion due to faulty parsing\nof the PGP signature boundaries.\n\nWhen verifying the contents of a CPAN module, Module::Signature\nignored some files in the extracted tarball that were not listed in the\nsignature file. This included some files in the t/ directory that would\nexecute automatically during \"make test\"\n\nWhen generating checksums from the signed manifest, Module::Signature\nused two argument open() calls to read the files. This allowed embedding\narbitrary shell commands into the SIGNATURE file that would execute\nduring the signature verification process.\n\nSeveral modules were loaded at runtime inside the extracted module\ndirectory. Modules like Text::Diff are not guaranteed to be available on\nall platforms and could be added to a malicious module so that they\nwould load from the '.' path in @INC.\n",
+  "modified": "2015-04-18T08:11:11Z",
+  "published": "2015-04-18T08:21:36Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2015-0160.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=15643"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://openwall.com/lists/oss-security/2015/04/07/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "perl-Module-Signature",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/perl-Module-Signature?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.730.0-2.1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0160.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

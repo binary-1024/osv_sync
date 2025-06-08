@@ -1,0 +1,159 @@
+{
+  "id": "GHSA-pqr6-cmr2-h8hf",
+  "summary": "snappy-java's Integer Overflow vulnerability in shuffle leads to DoS",
+  "details": "## Summary\nDue to unchecked multiplications, an integer overflow may occur, causing a fatal error.\n## Impact\nDenial of Service\n## Description\nThe function [shuffle(int[] input)](https://github.com/xerial/snappy-java/blob/05c39b2ca9b5b7b39611529cc302d3d796329611/src/main/java/org/xerial/snappy/BitShuffle.java#L107) in the file [BitShuffle.java](https://github.com/xerial/snappy-java/blob/master/src/main/java/org/xerial/snappy/BitShuffle.java) receives an array of integers and applies a bit shuffle on it. It does so by multiplying the length by 4 and passing it to the natively compiled shuffle function.\n\n```java\npublic static byte[] shuffle(int[] input) throws IOException {\n        byte[] output = new byte[input.length * 4];\n        int numProcessed = impl.shuffle(input, 0, 4, input.length * 4, output, 0);\n        assert(numProcessed == input.length * 4);\n        return output;\n    }\n\n```\n\nSince the length is not tested, the multiplication by four can cause an integer overflow and become a smaller value than the true size, or even zero or negative. In the case of a negative value, a \u201cjava.lang.NegativeArraySizeException\u201d exception will raise, which can crash the program. In a case of a value that is zero or too small, the code that afterwards references the shuffled array will assume a bigger size of the array, which might cause exceptions such as \u201cjava.lang.ArrayIndexOutOfBoundsException\u201d.\nThe same issue exists also when using the \u201cshuffle\u201d functions that receive a double, float, long and short, each using a different multiplier that may cause the same issue.\n\n## Steps To Reproduce\nCompile and run the following code:\n\n```java\npackage org.example;\nimport org.xerial.snappy.BitShuffle;\n\nimport java.io.*;\n\n\npublic class Main {\n\n    public static void main(String[] args) throws IOException {\n        int[] original = new int[0x40000000];\n        byte[] shuffled = BitShuffle.shuffle(original);\n        System.out.println(shuffled[0]);\n    }\n}\n\n```\nThe program will crash, showing the following error (or similar):\n\n```\nException in thread \"main\" java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0\n\tat org.example.Main.main(Main.java:12)\n\nProcess finished with exit code 1\n\n```\n\nAlternatively - compile and run the following code:\n\n```java\npackage org.example;\nimport org.xerial.snappy.BitShuffle;\n\nimport java.io.*;\n\n\npublic class Main {\n\n    public static void main(String[] args) throws IOException {\n        int[] original = new int[0x20000000];\n        byte[] shuffled = BitShuffle.shuffle(original);\n    }\n}\n\n```\nThe program will crash with the following error (or similar):\n\n```\nException in thread \"main\" java.lang.NegativeArraySizeException: -2147483648\n\tat org.xerial.snappy.BitShuffle.shuffle(BitShuffle.java:108)\n\tat org.example.Main.main(Main.java:11)\n```",
+  "aliases": [
+    "CVE-2023-34453"
+  ],
+  "modified": "2024-02-16T08:00:57.023897Z",
+  "published": "2023-06-15T16:13:20Z",
+  "related": [
+    "CGA-8pqj-995r-975g",
+    "CVE-2023-34453"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2023-06-15T17:15:09Z",
+    "cwe_ids": [
+      "CWE-190"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-06-15T16:13:20Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/xerial/snappy-java/security/advisories/GHSA-pqr6-cmr2-h8hf"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-34453"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xerial/snappy-java/commit/820e2e074c58748b41dbd547f4edba9e108ad905"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/xerial/snappy-java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xerial/snappy-java/blob/05c39b2ca9b5b7b39611529cc302d3d796329611/src/main/java/org/xerial/snappy/BitShuffle.java#L107"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xerial/snappy-java/blob/master/src/main/java/org/xerial/snappy/BitShuffle.java"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.xerial.snappy:snappy-java",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.xerial.snappy/snappy-java"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.10.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.1-rc1",
+        "1.0.1-rc2",
+        "1.0.1-rc3",
+        "1.0.1-rc4",
+        "1.0.3",
+        "1.0.3-rc1",
+        "1.0.3-rc2",
+        "1.0.3-rc3",
+        "1.0.3-rc4",
+        "1.0.3.1",
+        "1.0.3.2",
+        "1.0.3.3",
+        "1.0.4",
+        "1.0.4.1",
+        "1.0.5",
+        "1.0.5-M1",
+        "1.0.5-M2",
+        "1.0.5-M3",
+        "1.0.5-M4",
+        "1.0.5.1",
+        "1.0.5.2",
+        "1.0.5.3",
+        "1.0.5.4",
+        "1.1.0",
+        "1.1.0-M1",
+        "1.1.0-M2",
+        "1.1.0-M3",
+        "1.1.0-M4",
+        "1.1.0.1",
+        "1.1.1",
+        "1.1.1-M1",
+        "1.1.1-M2",
+        "1.1.1-M3",
+        "1.1.1-M4",
+        "1.1.1.1",
+        "1.1.1.2",
+        "1.1.1.3",
+        "1.1.1.4",
+        "1.1.1.5",
+        "1.1.1.6",
+        "1.1.1.7",
+        "1.1.10.0",
+        "1.1.2",
+        "1.1.2-M1",
+        "1.1.2-RC1",
+        "1.1.2-RC2",
+        "1.1.2-RC3",
+        "1.1.2.1",
+        "1.1.2.2",
+        "1.1.2.3",
+        "1.1.2.4",
+        "1.1.2.5",
+        "1.1.2.6",
+        "1.1.3-M1",
+        "1.1.3-M2",
+        "1.1.4",
+        "1.1.4-M1",
+        "1.1.4-M2",
+        "1.1.4-M3",
+        "1.1.7",
+        "1.1.7.1",
+        "1.1.7.2",
+        "1.1.7.3",
+        "1.1.7.4",
+        "1.1.7.5",
+        "1.1.7.6",
+        "1.1.7.7",
+        "1.1.7.8",
+        "1.1.8",
+        "1.1.8.1",
+        "1.1.8.2",
+        "1.1.8.3",
+        "1.1.8.4",
+        "1.1.9.0",
+        "1.1.9.1"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.1.10.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-pqr6-cmr2-h8hf/GHSA-pqr6-cmr2-h8hf.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

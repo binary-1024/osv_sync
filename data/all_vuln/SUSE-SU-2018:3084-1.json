@@ -1,0 +1,1413 @@
+{
+  "id": "SUSE-SU-2018:3084-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 12 SP2 LTSS kernel was updated to receive various security and bugfixes.\n\n- CVE-2018-10853: A flaw was found in the way the KVM hypervisor emulated instructions such as sgdt/sidt/fxsave/fxrstor. It did not check current privilege(CPL) level while emulating unprivileged instructions. An unprivileged guest user/process could use this flaw to potentially escalate privileges inside guest (bnc#1097104).\n- CVE-2018-10876: A flaw was found in Linux kernel in the ext4 filesystem code. A use-after-free is possible in ext4_ext_remove_space() function when mounting and operating a crafted ext4 image. (bnc#1099811)\n- CVE-2018-10877: Linux kernel ext4 filesystem is vulnerable to an out-of-bound access in the ext4_ext_drop_refs() function when operating on a crafted ext4 filesystem image. (bnc#1099846)\n- CVE-2018-10878: A flaw was found in the Linux kernel's ext4 filesystem. A local user can cause an out-of-bounds write and a denial of service or unspecified other impact is possible by mounting and operating a crafted ext4 filesystem image. (bnc#1099813)\n- CVE-2018-10879: A flaw was found in the Linux kernel's ext4 filesystem. A local user can cause a use-after-free in ext4_xattr_set_entry function and a denial of service or unspecified other impact may occur by renaming a file in a crafted ext4 filesystem image. (bnc#1099844)\n- CVE-2018-10880: Linux kernel is vulnerable to a stack-out-of-bounds write in the ext4 filesystem code when mounting and writing to a crafted ext4 image in ext4_update_inline_data(). An attacker could use this to cause a system crash and a denial of service. (bnc#1099845)\n- CVE-2018-10881: A flaw was found in the Linux kernel's ext4 filesystem. A local user can cause an out-of-bound access in ext4_get_group_info function, a denial of service, and a system crash by mounting and operating on a crafted ext4 filesystem image. (bnc#1099864)\n- CVE-2018-10882: A flaw was found in the Linux kernel's ext4 filesystem. A local user can cause an out-of-bound write in in fs/jbd2/transaction.c code, a denial of service, and a system crash by unmounting a crafted ext4 filesystem image. (bnc#1099849)\n- CVE-2018-10883: A flaw was found in the Linux kernel's ext4 filesystem. A local user can cause an out-of-bounds write in jbd2_journal_dirty_metadata(), a denial of service, and a system crash by mounting and operating on a crafted ext4 filesystem image. (bnc#1099863)\n- CVE-2018-10902: It was found that the raw midi kernel driver did not protect against concurrent access which leads to a double realloc (double free) in snd_rawmidi_input_params() and snd_rawmidi_output_status() which are part of snd_rawmidi_ioctl() handler in rawmidi.c file. A malicious local attacker could possibly use this for privilege escalation (bnc#1105322).\n- CVE-2018-10938: A crafted network packet sent remotely by an attacker may force the kernel to enter an infinite loop in the cipso_v4_optptr() function in net/ipv4/cipso_ipv4.c leading to a denial-of-service. A certain non-default configuration of LSM (Linux Security Module) and NetLabel should be set up on a system before an attacker could leverage this flaw (bnc#1106016).\n- CVE-2018-10940: The cdrom_ioctl_media_changed function in drivers/cdrom/cdrom.c allowed local attackers to use a incorrect bounds check in the CDROM driver CDROM_MEDIA_CHANGED ioctl to read out kernel memory (bnc#1092903).\n- CVE-2018-12896: An Integer Overflow in kernel/time/posix-timers.c in the POSIX timer code is caused by the way the overrun accounting works. Depending on interval and expiry time values, the overrun can be larger than INT_MAX, but the accounting is int based. This basically made the accounting values, which are visible to user space via timer_getoverrun(2) and siginfo::si_overrun, random. For example, a local user can cause a denial of service (signed integer overflow) via crafted mmap, futex, timer_create, and timer_settime system calls (bnc#1099922).\n- CVE-2018-13093: There is a NULL pointer dereference and panic in lookup_slow() on a NULL inode->i_ops pointer when doing pathwalks on a corrupted xfs image. This occurs because of a lack of proper validation that cached inodes are free during allocation (bnc#1100001).\n- CVE-2018-13094: An OOPS may occur for a corrupted xfs image after xfs_da_shrink_inode() is called with a NULL bp (bnc#1100000).\n- CVE-2018-13095: A denial of service (memory corruption and BUG) can occur for a corrupted xfs image upon encountering an inode that is in extent format, but has more extents than fit in the inode fork (bnc#1099999).\n- CVE-2018-14617: There is a NULL pointer dereference and panic in hfsplus_lookup() in fs/hfsplus/dir.c when opening a file (that is purportedly a hard link) in an hfs+ filesystem that has malformed catalog data, and is mounted read-only without a metadata directory (bnc#1102870).\n- CVE-2018-14678: The xen_failsafe_callback entry point in arch/x86/entry/entry_64.S did not properly maintain RBX, which allowed local users to cause a denial of service (uninitialized memory usage and system crash). Within Xen, 64-bit x86 PV Linux guest OS users can trigger a guest OS crash or possibly gain privileges (bnc#1102715).\n- CVE-2018-15572: The spectre_v2_select_mitigation function in arch/x86/kernel/cpu/bugs.c did not always fill RSB upon a context switch, which made it easier for attackers to conduct userspace-userspace spectreRSB attacks (bnc#1102517 bnc#1105296).\n- CVE-2018-15594: arch/x86/kernel/paravirt.c mishandled certain indirect calls, which made it easier for attackers to conduct Spectre-v2 attacks against paravirtual guests (bnc#1105348).\n- CVE-2018-16276: Local attackers could use user access read/writes with incorrect bounds checking in the yurex USB driver to crash the kernel or potentially escalate privileges (bnc#1106095).\n- CVE-2018-16658: An information leak in cdrom_ioctl_drive_status in drivers/cdrom/cdrom.c could be used by local attackers to read kernel memory because a cast from unsigned long to int interferes with bounds checking. This is similar to CVE-2018-10940 (bnc#1107689).\n- CVE-2018-17182: The vmacache_flush_all function in mm/vmacache.c mishandled sequence number overflows. An attacker can trigger a use-after-free (and possibly gain privileges) via certain thread creation, map, unmap, invalidation, and dereference operations (bnc#1108399).\n- CVE-2018-6554: Memory leak in the irda_bind function in net/irda/af_irda.c and later in drivers/staging/irda/net/af_irda.c allowed local users to cause a denial of service (memory consumption) by repeatedly binding an AF_IRDA socket (bnc#1106509).\n- CVE-2018-6555: The irda_setsockopt function in net/irda/af_irda.c and later in drivers/staging/irda/net/af_irda.c allowed local users to cause a denial of service (ias_object use-after-free and system crash) or possibly have unspecified other impact via an AF_IRDA socket (bnc#1106511).\n- CVE-2018-7757: Memory leak in the sas_smp_get_phy_events function in drivers/scsi/libsas/sas_expander.c allowed local users to cause a denial of service (memory consumption) via many read accesses to files in the /sys/class/sas_phy directory, as demonstrated by the /sys/class/sas_phy/phy-1:0:12/invalid_dword_count file (bnc#1084536).\n- CVE-2018-9363: A buffer overflow in bluetooth HID report processing could be used by malicious bluetooth devices to crash the kernel or potentially execute code (bnc#1105292).\nThe following security bugs were fixed:\n- CVE-2018-7480: The blkcg_init_queue function in block/blk-cgroup.c allowed local users to cause a denial of service (double free) or possibly have unspecified other impact by triggering a creation failure (bnc#1082863).\n\nThe following non-security bugs were fixed:\n\n- atm: Preserve value of skb->truesize when accounting to vcc (bsc#1089066).\n- bcache: avoid unncessary cache prefetch bch_btree_node_get() (bsc#1064232).\n- bcache: calculate the number of incremental GC nodes according to the total of btree nodes (bsc#1064232).\n- bcache: display rate debug parameters to 0 when writeback is not running (bsc#1064232).\n- bcache: do not check return value of debugfs_create_dir() (bsc#1064232).\n- bcache: finish incremental GC (bsc#1064232).\n- bcache: fix error setting writeback_rate through sysfs interface (bsc#1064232).\n- bcache: fix I/O significant decline while backend devices registering (bsc#1064232).\n- bcache: free heap cache_set->flush_btree in bch_journal_free (bsc#1064232).\n- bcache: make the pr_err statement used for ENOENT only in sysfs_attatch section (bsc#1064232).\n- bcache: release dc->writeback_lock properly in bch_writeback_thread() (bsc#1064232).\n- bcache: set max writeback rate when I/O request is idle (bsc#1064232).\n- bcache: simplify the calculation of the total amount of flash dirty data (bsc#1064232).\n- ext4: check for allocation block validity with block group locked (bsc#1104495).\n- ext4: do not update checksum of new initialized bitmaps (bnc#1012382).\n- ext4: fix check to prevent initializing reserved inodes (bsc#1104319).\n- ext4: fix false negatives *and* false positives in ext4_check_descriptors() (bsc#1103445).\n- ibmvnic: Include missing return code checks in reset function (bnc#1107966).\n- kABI: protect struct x86_emulate_ops (kabi).\n- kabi/severities: Ignore missing cpu_tss_tramp (bsc#1099597)\n- kabi: x86/speculation/l1tf: Increase l1tf memory limit for Nehalem+ (bnc#1105536).\n- kvm: MMU: always terminate page walks at level 1 (bsc#1062604).\n- kvm: MMU: simplify last_pte_bitmap (bsc#1062604).\n- kvm: nVMX: update last_nonleaf_level when initializing nested EPT (bsc#1062604).\n- kvm: VMX: fixes for vmentry_l1d_flush module parameter (bsc#1106369).\n- kvm: VMX: Work around kABI breakage in 'enum vmx_l1d_flush_state' (bsc#1106369).\n- net: add skb_condense() helper (bsc#1089066).\n- net: adjust skb->truesize in pskb_expand_head() (bsc#1089066).\n- net: adjust skb->truesize in ___pskb_trim() (bsc#1089066).\n- net: ena: Eliminate duplicate barriers on weakly-ordered archs (bsc#1108239).\n- net: ena: fix device destruction to gracefully free resources (bsc#1108239).\n- net: ena: fix driver when PAGE_SIZE == 64kB (bsc#1108239).\n- net: ena: fix incorrect usage of memory barriers (bsc#1108239).\n- net: ena: fix missing calls to READ_ONCE (bsc#1108239).\n- net: ena: fix missing lock during device destruction (bsc#1108239).\n- net: ena: fix potential double ena_destroy_device() (bsc#1108239).\n- net: ena: fix surprise unplug NULL dereference kernel crash (bsc#1108239).\n- net: ena: Fix use of uninitialized DMA address bits field (bsc#1108239).\n- netfilter: xt_CT: fix refcnt leak on error path (bnc#1012382 bsc#1100152).\n- netlink: do not enter direct reclaim from netlink_trim() (bsc#1042286).\n- nfs: Use an appropriate work queue for direct-write completion (bsc#1082519).\n- ovl: fix random return value on mount (bsc#1099993).\n- ovl: fix uid/gid when creating over whiteout (bsc#1099993).\n- ovl: modify ovl_permission() to do checks on two inodes (bsc#1106512).\n- ovl: override creds with the ones from the superblock mounter (bsc#1099993).\n- powerpc: Avoid code patching freed init sections (bnc#1107735).\n- powerpc/livepatch: Fix livepatch stack access (bsc#1094466).\n- powerpc/modules: Do not try to restore r2 after a sibling call (bsc#1094466).\n- powerpc/tm: Avoid possible userspace r1 corruption on reclaim (bsc#1109333).\n- powerpc/tm: Fix userspace r13 corruption (bsc#1109333).\n- provide special timeout module parameters for EC2 (bsc#1065364).\n- stop_machine: Atomically queue and wake stopper threads (git-fixes).\n- stop_machine, sched: Fix migrate_swap() vs. active_balance() deadlock (bsc#1088810).\n- usbip: vhci_sysfs: fix potential Spectre v1 (bsc#1096547).\n- x86/entry/64: Remove %ebx handling from error_entry/exit (bnc#1102715).\n- x86/speculation/l1tf: Fix off-by-one error when warning that system has too much RAM (bnc#1105536).\n- x86/speculation/l1tf: Increase l1tf memory limit for Nehalem+ (bnc#1105536).\n- x86/speculation/l1tf: Suggest what to do on systems with too much RAM (bnc#1105536).\n- x86/speculation: Use ARCH_CAPABILITIES to skip L1D flush on vmentry (bsc#1106369).\n- x86: Drop kernel trampoline stack. It is involved in breaking kdump/kexec infrastucture. (bsc#1099597)\n- xen: avoid crash in disable_hotplug_cpu (bsc#1106594).\n- xen/blkback: do not keep persistent grants too long (bsc#1085042).\n- xen/blkback: move persistent grants flags to bool (bsc#1085042).\n- xen/blkfront: cleanup stale persistent grants (bsc#1085042).\n- xen/blkfront: reorder tests in xlblk_init() (bsc#1085042).\n- xfs: add a new xfs_iext_lookup_extent_before helper (bsc#1095344).\n- xfs: add asserts for the mmap lock in xfs_{insert,collapse}_file_space (bsc#1095344).\n- xfs: add a xfs_bmap_fork_to_state helper (bsc#1095344).\n- xfs: add a xfs_iext_update_extent helper (bsc#1095344).\n- xfs: add comments documenting the rebalance algorithm (bsc#1095344).\n- xfs: add some comments to xfs_iext_insert/xfs_iext_insert_node (bsc#1095344).\n- xfs: add xfs_trim_extent (bsc#1095344).\n- xfs: allow unaligned extent records in xfs_bmbt_disk_set_all (bsc#1095344).\n- xfs: borrow indirect blocks from freed extent when available (bsc#1095344).\n- xfs: cleanup xfs_bmap_last_before (bsc#1095344).\n- xfs: do not create overlapping extents in xfs_bmap_add_extent_delay_real (bsc#1095344).\n- xfs: do not rely on extent indices in xfs_bmap_collapse_extents (bsc#1095344).\n- xfs: do not rely on extent indices in xfs_bmap_insert_extents (bsc#1095344).\n- xfs: do not set XFS_BTCUR_BPRV_WASDEL in xfs_bunmapi (bsc#1095344).\n- xfs: during btree split, save new block key & ptr for future insertion (bsc#1095344).\n- xfs: factor out a helper to initialize a local format inode fork (bsc#1095344).\n- xfs: fix memory leak in xfs_iext_free_last_leaf (bsc#1095344).\n- xfs: fix number of records handling in xfs_iext_split_leaf (bsc#1095344).\n- xfs: handle indlen shortage on delalloc extent merge (bsc#1095344).\n- xfs: handle zero entries case in xfs_iext_rebalance_leaf (bsc#1095344).\n- xfs: improve kmem_realloc (bsc#1095344).\n- xfs: inline xfs_shift_file_space into callers (bsc#1095344).\n- xfs: introduce the xfs_iext_cursor abstraction (bsc#1095344).\n- xfs: iterate over extents in xfs_bmap_extents_to_btree (bsc#1095344).\n- xfs: iterate over extents in xfs_iextents_copy (bsc#1095344).\n- xfs: make better use of the 'state' variable in xfs_bmap_del_extent_real (bsc#1095344).\n- xfs: merge xfs_bmap_read_extents into xfs_iread_extents (bsc#1095344).\n- xfs: move pre/post-bmap tracing into xfs_iext_update_extent (bsc#1095344).\n- xfs: move some code around inside xfs_bmap_shift_extents (bsc#1095344).\n- xfs: move some more code into xfs_bmap_del_extent_real (bsc#1095344).\n- xfs: move xfs_bmbt_irec and xfs_exntst_t to xfs_types.h (bsc#1095344).\n- xfs: move xfs_iext_insert tracepoint to report useful information (bsc#1095344).\n- xfs: new inode extent list lookup helpers (bsc#1095344).\n- xfs: pass an on-disk extent to xfs_bmbt_validate_extent (bsc#1095344).\n- xfs: pass a struct xfs_bmbt_irec to xfs_bmbt_lookup_eq (bsc#1095344).\n- xfs: pass a struct xfs_bmbt_irec to xfs_bmbt_update (bsc#1095344).\n- xfs: pass struct xfs_bmbt_irec to xfs_bmbt_validate_extent (bsc#1095344).\n- xfs: provide helper for counting extents from if_bytes (bsc#1095344).\n- xfs: refactor delalloc accounting in xfs_bmap_add_extent_delay_real (bsc#1095344).\n- xfs: refactor delalloc indlen reservation split into helper (bsc#1095344).\n- xfs: refactor dir2 leaf readahead shadow buffer cleverness (bsc#1095344).\n- xfs: refactor xfs_bmap_add_extent_delay_real (bsc#1095344).\n- xfs: refactor xfs_bmap_add_extent_hole_delay (bsc#1095344).\n- xfs: refactor xfs_bmap_add_extent_hole_real (bsc#1095344).\n- xfs: refactor xfs_bmap_add_extent_unwritten_real (bsc#1095344).\n- xfs: refactor xfs_bunmapi_cow (bsc#1095344).\n- xfs: refactor xfs_del_extent_real (bsc#1095344).\n- xfs: remove a duplicate assignment in xfs_bmap_add_extent_delay_real (bsc#1095344).\n- xfs: remove all xfs_bmbt_set_* helpers except for xfs_bmbt_set_all (bsc#1095344).\n- xfs: remove a superflous assignment in xfs_iext_remove_node (bsc#1095344).\n- xfs: Remove dead code from inode recover function (bsc#1105396).\n- xfs: remove if_rdev (bsc#1095344).\n- xfs: remove prev argument to xfs_bmapi_reserve_delalloc (bsc#1095344).\n- xfs: remove support for inlining data/extents into the inode fork (bsc#1095344).\n- xfs: remove the never fully implemented UUID fork format (bsc#1095344).\n- xfs: remove the nr_extents argument to xfs_iext_insert (bsc#1095344).\n- xfs: remove the nr_extents argument to xfs_iext_remove (bsc#1095344).\n- xfs: remove XFS_BMAP_MAX_SHIFT_EXTENTS (bsc#1095344).\n- xfs: remove XFS_BMAP_TRACE_EXLIST (bsc#1095344).\n- xfs: remove xfs_bmbt_get_state (bsc#1095344).\n- xfs: remove xfs_bmse_shift_one (bsc#1095344).\n- xfs: rename bno to end in __xfs_bunmapi (bsc#1095344).\n- xfs: repair malformed inode items during log recovery (bsc#1105396).\n- xfs: replace xfs_bmbt_lookup_ge with xfs_bmbt_lookup_first (bsc#1095344).\n- xfs: replace xfs_qm_get_rtblks with a direct call to xfs_bmap_count_leaves (bsc#1095344).\n- xfs: rewrite getbmap using the xfs_iext_* helpers (bsc#1095344).\n- xfs: rewrite xfs_bmap_count_leaves using xfs_iext_get_extent (bsc#1095344).\n- xfs: rewrite xfs_bmap_first_unused to make better use of xfs_iext_get_extent (bsc#1095344).\n- xfs: simplify the xfs_getbmap interface (bsc#1095344).\n- xfs: simplify validation of the unwritten extent bit (bsc#1095344).\n- xfs: split indlen reservations fairly when under reserved (bsc#1095344).\n- xfs: split xfs_bmap_shift_extents (bsc#1095344).\n- xfs: switch xfs_bmap_local_to_extents to use xfs_iext_insert (bsc#1095344).\n- xfs: treat idx as a cursor in xfs_bmap_add_extent_delay_real (bsc#1095344).\n- xfs: treat idx as a cursor in xfs_bmap_add_extent_hole_delay (bsc#1095344).\n- xfs: treat idx as a cursor in xfs_bmap_add_extent_hole_real (bsc#1095344).\n- xfs: treat idx as a cursor in xfs_bmap_add_extent_unwritten_real (bsc#1095344).\n- xfs: treat idx as a cursor in xfs_bmap_collapse_extents (bsc#1095344).\n- xfs: treat idx as a cursor in xfs_bmap_del_extent_* (bsc#1095344).\n- xfs: update freeblocks counter after extent deletion (bsc#1095344).\n- xfs: update got in xfs_bmap_shift_update_extent (bsc#1095344).\n- xfs: use a b+tree for the in-core extent list (bsc#1095344).\n- xfs: use correct state defines in xfs_bmap_del_extent_{cow,delay} (bsc#1095344).\n- xfs: use new extent lookup helpers in xfs_bmapi_read (bsc#1095344).\n- xfs: use new extent lookup helpers in xfs_bmapi_write (bsc#1095344).\n- xfs: use new extent lookup helpers in __xfs_bunmapi (bsc#1095344).\n- xfs: use the state defines in xfs_bmap_del_extent_real (bsc#1095344).\n- xfs: use xfs_bmap_del_extent_delay for the data fork as well (bsc#1095344).\n- xfs: use xfs_iext_*_extent helpers in xfs_bmap_shift_extents (bsc#1095344).\n- xfs: use xfs_iext_*_extent helpers in xfs_bmap_split_extent_at (bsc#1095344).\n- xfs: use xfs_iext_get_extent instead of open coding it (bsc#1095344).\n- xfs: use xfs_iext_get_extent in xfs_bmap_first_unused (bsc#1095344).\n",
+  "modified": "2025-05-02T04:07:26.084509Z",
+  "published": "2018-10-09T12:00:14Z",
+  "related": [
+    "CVE-2018-10853",
+    "CVE-2018-10876",
+    "CVE-2018-10877",
+    "CVE-2018-10878",
+    "CVE-2018-10879",
+    "CVE-2018-10880",
+    "CVE-2018-10881",
+    "CVE-2018-10882",
+    "CVE-2018-10883",
+    "CVE-2018-10902",
+    "CVE-2018-10938",
+    "CVE-2018-10940",
+    "CVE-2018-12896",
+    "CVE-2018-13093",
+    "CVE-2018-13094",
+    "CVE-2018-13095",
+    "CVE-2018-14617",
+    "CVE-2018-14678",
+    "CVE-2018-15572",
+    "CVE-2018-15594",
+    "CVE-2018-16276",
+    "CVE-2018-16658",
+    "CVE-2018-17182",
+    "CVE-2018-6554",
+    "CVE-2018-6555",
+    "CVE-2018-7480",
+    "CVE-2018-7757",
+    "CVE-2018-9363"
+  ],
+  "upstream": [
+    "CVE-2018-10853",
+    "CVE-2018-10876",
+    "CVE-2018-10877",
+    "CVE-2018-10878",
+    "CVE-2018-10879",
+    "CVE-2018-10880",
+    "CVE-2018-10881",
+    "CVE-2018-10882",
+    "CVE-2018-10883",
+    "CVE-2018-10902",
+    "CVE-2018-10938",
+    "CVE-2018-10940",
+    "CVE-2018-12896",
+    "CVE-2018-13093",
+    "CVE-2018-13094",
+    "CVE-2018-13095",
+    "CVE-2018-14617",
+    "CVE-2018-14678",
+    "CVE-2018-15572",
+    "CVE-2018-15594",
+    "CVE-2018-16276",
+    "CVE-2018-16658",
+    "CVE-2018-17182",
+    "CVE-2018-6554",
+    "CVE-2018-6555",
+    "CVE-2018-7480",
+    "CVE-2018-7757",
+    "CVE-2018-9363"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2018/suse-su-20183084-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1012382"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1042286"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1062604"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1064232"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1065364"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1082519"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1082863"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1084536"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1085042"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1088810"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1089066"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1092903"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1094466"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1095344"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1096547"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1097104"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099597"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099811"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099813"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099844"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099845"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099846"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099849"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099863"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099864"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099922"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099993"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099999"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100000"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100001"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100152"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1102517"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1102715"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1102870"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1103445"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1104319"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1104495"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1105292"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1105296"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1105322"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1105348"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1105396"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1105536"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106016"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106095"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106369"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106509"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106511"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106512"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1106594"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1107689"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1107735"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1107966"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1108239"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1108399"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1109333"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10853"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10876"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10877"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10878"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10879"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10880"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10881"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10882"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10883"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10902"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10938"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-10940"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-12896"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-13093"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-13094"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-13095"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-14617"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-14678"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-15572"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-15594"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-16276"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-16658"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-17182"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-6554"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-6555"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-7480"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-7757"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-9363"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_25",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_25&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.4.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "lttng-modules",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/lttng-modules&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.1-9.6.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 12 SP2",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "dlm-kmp-default": "4.4.121-92.95.1",
+            "gfs2-kmp-default": "4.4.121-92.95.1",
+            "cluster-network-kmp-default": "4.4.121-92.95.1",
+            "ocfs2-kmp-default": "4.4.121-92.95.1",
+            "cluster-md-kmp-default": "4.4.121-92.95.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_25",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_25&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.4.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "lttng-modules",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP2",
+        "purl": "pkg:rpm/suse/lttng-modules&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.1-9.6.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_25",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_25&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.4.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "lttng-modules",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-LTSS",
+        "purl": "pkg:rpm/suse/lttng-modules&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.1-9.6.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "kernel-default-man": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1",
+            "kernel-default-devel": "4.4.121-92.95.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1",
+            "kernel-default-devel": "4.4.121-92.95.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1",
+            "kernel-default-devel": "4.4.121-92.95.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "lttng-modules",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/lttng-modules&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.1-9.6.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1",
+            "kernel-default-devel": "4.4.121-92.95.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.95.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_25",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_25&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.4.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "lttng-modules",
+        "ecosystem": "SUSE:Enterprise Storage 4",
+        "purl": "pkg:rpm/suse/lttng-modules&distro=SUSE%20Enterprise%20Storage%204"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.1-9.6.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.95.1",
+            "kernel-devel": "4.4.121-92.95.1",
+            "kernel-default-base": "4.4.121-92.95.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.95-9.6.1",
+            "kernel-default": "4.4.121-92.95.1",
+            "kernel-source": "4.4.121-92.95.1",
+            "kernel-syms": "4.4.121-92.95.1",
+            "kgraft-patch-4_4_121-92_95-default": "1-3.4.1",
+            "kernel-default-devel": "4.4.121-92.95.1",
+            "lttng-modules": "2.7.1-9.6.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:3084-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

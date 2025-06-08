@@ -1,0 +1,82 @@
+{
+  "id": "MGASA-2019-0009",
+  "summary": "Updated pdns-recursor packages fix security vulnerabilities",
+  "details": "A vulnerability was in found in PowerDNS Recursor. The issue is a memory\nleak occurring while parsing some malformed records, due to the fact\nthat some memory is allocated parsing a record and is not always\nproperly released if the record is not valid. It allows a malicious auth\nserver to cause a denial of service by sending specially crafted records\nin response to a legitimate query by an authorized user (CVE-2018-10851).\n\nAn issue has been found in PowerDNS Recursor allowing a remote user to\ncraft a DNS query that will cause an answer without DNSSEC records to be\ninserted into the packet cache and be returned to clients asking for\nDNSSEC records, thus hiding the presence of DNSSEC signatures for a\nspecific qname and qtype. For a DNSSEC-signed domain, this means that\nclients performing DNSSEC validation by themselves might consider the\nanswer to be bogus until it expires from the packet cache, leading to a\ndenial of service (CVE-2018-14626).\n\nAn issue has been found in PowerDNS Recursor from 4.0.0 up to and\nincluding 4.1.4. A remote attacker sending a DNS query for a meta-type\nlike OPT can lead to a zone being wrongly cached as failing DNSSEC\nvalidation. It only arises if the parent zone is signed, and all the\nauthoritative servers for that parent zone answer with FORMERR to a\nquery for at least one of the meta-types. As a result, subsequent\nqueries from clients requesting DNSSEC validation will be answered with\na ServFail (CVE-2018-14644).\n\nAn issue has been found in PowerDNS Recursor where a remote attacker\nsending a DNS query can trigger an out-of-bounds memory read while\ncomputing the hash of the query for a packet cache lookup, possibly\nleading to a crash (CVE-2018-16855).\n",
+  "modified": "2019-01-05T18:03:30Z",
+  "published": "2019-01-05T18:30:16Z",
+  "related": [
+    "CVE-2018-10851",
+    "CVE-2018-14626",
+    "CVE-2018-14644",
+    "CVE-2018-16855"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0009.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=23815"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://doc.powerdns.com/recursor/security-advisories/powerdns-advisory-2018-04.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://doc.powerdns.com/recursor/security-advisories/powerdns-advisory-2018-06.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://docs.powerdns.com/recursor/security-advisories/powerdns-advisory-2018-07.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://docs.powerdns.com/recursor/security-advisories/powerdns-advisory-2018-09.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/U5BJ2CLRPCLSDHOH3VAABZZP4GVKGLL5/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "pdns-recursor",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/pdns-recursor?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.1.8-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0009.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

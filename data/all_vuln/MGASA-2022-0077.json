@@ -1,0 +1,78 @@
+{
+  "id": "MGASA-2022-0077",
+  "summary": "Updated nodejs packages fix security vulnerability",
+  "details": "Improper handling of URI Subject Alternative Names (Medium). Accepting\narbitrary Subject Alternative Name (SAN) types, unless a PKI is specifically\ndefined to use a particular SAN type, can result in bypassing\nname-constrained intermediates. Node.js was accepting URI SAN types, which\nPKIs are often not defined to use. Additionally, when a protocol allows URI\nSANs, Node.js did not match the URI correctly. Versions of Node.js with the\nfix for this disable the URI SAN type when checking a certificate against a\nhostname. This behavior can be reverted through the --security-revert\ncommand-line option. (CVE-2021-44531)\n\nNode.js converts SANs (Subject Alternative Names) to a string format. It\nuses this string to check peer certificates against hostnames when validating\nconnections. The string format was subject to an injection vulnerability when\nname constraints were used within a certificate chain, allowing the bypass of\nthese name constraints. Versions of Node.js with the fix for this escape SANs\ncontaining the problematic characters in order to prevent the injection. This\nbehavior can be reverted through the --security-revert command-line option.\n(CVE-2021-44532)\n\nNode.js did not handle multi-value Relative Distinguished Names correctly.\nAttackers could craft certificate subjects containing a single-value Relative\nDistinguished Name that would be interpreted as a multi-value Relative\nDistinguished Name, for example, in order to inject a Common Name that would\nallow bypassing the certificate subject verification. Affected versions of\nNode.js do not accept multi-value Relative Distinguished Names and are thus\nnot vulnerable to such attacks themselves. However, third-party code that\nuses node's ambiguous presentation of certificate subjects may be vulnerable.\n(CVE-2021-44533)\n\nDue to the formatting logic of the console.table() function it was not safe\nto allow user controlled input to be passed to the properties parameter while\nsimultaneously passing a plain object with at least one property as the first\nparameter, which could be __proto__. The prototype pollution has very limited\ncontrol, in that it only allows an empty string to be assigned to numerical\nkeys of the object prototype. Versions of Node.js with the fix for this use a\nnull protoype for the object these properties are being assigned to.\n(CVE-2022-21824)\n",
+  "modified": "2022-02-22T19:35:08Z",
+  "published": "2022-02-22T20:15:16Z",
+  "related": [
+    "CVE-2021-44531",
+    "CVE-2021-44532",
+    "CVE-2021-44533",
+    "CVE-2022-21824"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0077.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=29872"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://nodejs.org/en/blog/vulnerability/jan-2022-security-releases/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://nodejs.org/en/blog/release/v16.13.2/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/IVGBTAQ3N7X3RJRMPD3QZXD76V4HSOEP/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/GUMNNY6AYZUDPQ3DHTM3JZST2C37ZYJB/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "nodejs",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/nodejs?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "14.18.3-2.1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0077.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

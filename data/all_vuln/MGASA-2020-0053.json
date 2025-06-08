@@ -1,0 +1,76 @@
+{
+  "id": "MGASA-2020-0053",
+  "summary": "Updated mbedtls packages fix security vulnerabilities",
+  "details": "This update from mbedTLS 2.16.2 to mbedTLS 2.16.4 fixes several security\nvulnerabilities, among which:\n\nThe deterministic ECDSA calculation reused the scheme's HMAC-DRBG to\nimplement blinding. Because of this for the same key and message the\nsame blinding value was generated. This reduced the effectiveness of the\ncountermeasure and leaked information about the private key through side\nchannels (CVE-2019-16910).\n\nFix side channel vulnerability in ECDSA. Our bignum implementation is not\nconstant time/constant trace, so side channel attacks can retrieve the blinded\nvalue, factor it (as it is smaller than RSA keys and not guaranteed to have\nonly large prime factors), and then, by brute force, recover the key\n(CVE-2019-18222).\n\nSee release notes for details.\n",
+  "modified": "2020-01-28T07:28:12Z",
+  "published": "2020-01-28T07:52:40Z",
+  "related": [
+    "CVE-2019-16910",
+    "CVE-2019-18222"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2020-0053.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=25952"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://tls.mbed.org/tech-updates/releases/mbedtls-2.16.3-and-2.7.12-released"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://tls.mbed.org/tech-updates/releases/mbedtls-2.16.4-and-2.7.13-released"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://tls.mbed.org/tech-updates/security-advisories/mbedtls-security-advisory-2019-10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://tls.mbed.org/tech-updates/security-advisories/mbedtls-security-advisory-2019-12"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "mbedtls",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/mbedtls?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.16.4-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0053.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

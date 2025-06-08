@@ -1,0 +1,107 @@
+{
+  "id": "GHSA-ww7x-3gxh-qm6r",
+  "summary": "Validation of SignedInfo",
+  "details": "Validation of an XML Signature requires verification that the hash value of the related XML-document (after any optional transformations and/or normalizations) matches a specific DigestValue-value, but also that the cryptografic signature on the SignedInfo-tree (the one that contains the DigestValue) verifies and matches a trusted public key.\n\nWithin the simpleSAMLphp/xml-security library (https://github.com/simplesamlphp/xml-security), the hash is being validated using SignedElementTrait::validateReference, and the signature is being verified in SignedElementTrait::verifyInternal\n\nhttps://github.com/simplesamlphp/xml-security/blob/master/src/XML/SignedElementTrait.php:\n\n![afbeelding](https://user-images.githubusercontent.com/841045/285817284-a7b7b3b4-768a-46e8-a34b-61790b6e23a5.png)\n\nWhat stands out is that the signature is being calculated over the canonical version of the SignedInfo-tree. The validateReference method, however, uses the original non-canonicalized version of SignedInfo.\n\n### Impact\nIf an attacker somehow (i.e. by exploiting a bug in PHP's canonicalization function) manages to manipulate the canonicalized version's DigestValue, it would be potentially be possible to forge the signature. No possibilities to exploit this were found during the investigation.",
+  "aliases": [
+    "CVE-2023-49087"
+  ],
+  "modified": "2025-02-13T05:30:56.383976Z",
+  "published": "2023-11-28T18:52:19Z",
+  "related": [
+    "CVE-2023-49087"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2023-11-30T06:15:47Z",
+    "cwe_ids": [
+      "CWE-345"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-11-28T18:52:19Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/simplesamlphp/xml-security/security/advisories/GHSA-ww7x-3gxh-qm6r"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-49087"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/simplesamlphp/xml-security/commit/f509e3083dd7870cce5880c804b5122317287581"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/simplesamlphp/xml-security"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/simplesamlphp/xml-security/blob/master/src/XML/SignedElementTrait.php"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "simplesamlphp/xml-security",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/simplesamlphp/xml-security"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.6.11"
+            },
+            {
+              "fixed": "1.6.12"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.6.11",
+        "v1.6.11"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-ww7x-3gxh-qm6r/GHSA-ww7x-3gxh-qm6r.json"
+      }
+    },
+    {
+      "package": {
+        "name": "simplesamlphp/saml2",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/simplesamlphp/saml2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5.0.0-alpha.12"
+            },
+            {
+              "fixed": "5.0.0-alpha.13"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.0.0-alpha.12",
+        "v5.0.0-alpha.12"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-ww7x-3gxh-qm6r/GHSA-ww7x-3gxh-qm6r.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+    }
+  ]
+}

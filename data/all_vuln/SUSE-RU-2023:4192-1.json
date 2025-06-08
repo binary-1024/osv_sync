@@ -1,0 +1,795 @@
+{
+  "id": "SUSE-RU-2023:4192-1",
+  "summary": "Recommended update for libssh2_org",
+  "details": "This update for libssh2_org fixes the following issues:\n\n- Upgrade to version 1.11.0 in SLE-15: [jsc#PED-7040]\n\nUpdate to 1.11.0:\n\n  * Enhancements and bugfixes\n\n    - Adds support for encrypt-then-mac (ETM) MACs\n    - Adds support for AES-GCM crypto protocols\n    - Adds support for sk-ecdsa-sha2-nistp256 and sk-ssh-ed25519 keys\n    - Adds support for RSA certificate authentication\n    - Adds FIDO support with *_sk() functions\n    - Adds RSA-SHA2 key upgrading to OpenSSL, WinCNG, mbedTLS, OS400 backends\n    - Adds Agent Forwarding and libssh2_agent_sign()\n    - Adds support for Channel Signal message libssh2_channel_signal_ex()\n    - Adds support to get the user auth banner message libssh2_userauth_banner()\n    - Adds LIBSSH2_NO_{MD5, HMAC_RIPEMD, DSA, RSA, RSA_SHA1, ECDSA, ED25519,\n      AES_CBC, AES_CTR, BLOWFISH, RC4, CAST, 3DES} options\n    - Adds direct stream UNIX sockets with libssh2_channel_direct_streamlocal_ex()\n    - Adds wolfSSL support to CMake file\n    - Adds mbedTLS 3.x support\n    - Adds LibreSSL 3.5 support\n    - Adds support for CMake 'unity' builds\n    - Adds CMake support for building shared and static libs in a single pass\n    - Adds symbol hiding support to CMake\n    - Adds support for libssh2.rc for all build tools\n    - Adds .zip, .tar.xz and .tar.bz2 release tarballs\n    - Enables ed25519 key support for LibreSSL 3.7.0 or higher\n    - Improves OpenSSL 1.1 and 3 compatibility\n    - Now requires OpenSSL 1.0.2 or newer\n    - Now requires CMake 3.1 or newer\n    - SFTP: Adds libssh2_sftp_open_ex_r() and libssh2_sftp_open_r() extended APIs\n    - SFTP: No longer has a packet limit when reading a directory\n    - SFTP: now parses attribute extensions if they exist\n    - SFTP: no longer will busy loop if SFTP fails to initialize\n    - SFTP: now clear various errors as expected\n    - SFTP: no longer skips files if the line buffer is too small\n    - SCP: add option to not quote paths\n    - SCP: Enables 64-bit offset support unconditionally\n    - Now skips leading \\r and \\n characters in banner_receive()\n    - Enables secure memory zeroing with all build tools on all platforms\n    - No longer logs SSH_MSG_REQUEST_FAILURE packets from keepalive\n    - Speed up base64 encoding by 7x\n    - Assert if there is an attempt to write a value that is too large\n    - WinCNG: fix memory leak in _libssh2_dh_secret()\n    - Added protection against possible null pointer dereferences\n    - Agent now handles overly large comment lengths\n    - Now ensure KEX replies don't include extra bytes\n    - Fixed possible buffer overflow when receiving SSH_MSG_USERAUTH_BANNER\n    - Fixed possible buffer overflow in keyboard interactive code path\n    - Fixed overlapping memcpy()\n    - Fixed Windows UWP builds\n    - Fixed DLL import name\n    - Renamed local RANDOM_PADDING macro to avoid unexpected define on Windows\n    - Support for building with gcc versions older than 8\n    - Improvements to CMake, Makefile, NMakefile, GNUmakefile, autoreconf files\n    - Restores ANSI C89 compliance\n    - Enabled new compiler warnings and fixed/silenced them\n    - Improved error messages\n    - Now uses CIFuzz\n    - Numerous minor code improvements\n    - Improvements to CI builds\n    - Improvements to unit tests\n    - Improvements to doc files\n    - Improvements to example files\n    - Removed 'old gex' build option\n    - Removed no-encryption/no-mac builds\n    - Removed support for NetWare and Watcom wmake build files\n\n- Bump to version 1.10.0\n\n  * Enhancements and bugfixes:\n\n      * support ECDSA certificate authentication\n      * fix detailed _libssh2_error being overwritten by generic errors\n      * unified error handling\n      * fix _libssh2_random() silently discarding errors\n      * don't error if using keys without RSA\n      * avoid OpenSSL latent error in FIPS mode\n      * fix EVP_Cipher interface change in openssl 3\n      * fix potential overwrite of buffer when reading stdout of command\n      * use string_buf in ecdh_sha2_nistp() to avoid attempting to parse malformed data\n      * correct a typo which may lead to stack overflow\n      * fix random big number generation to match openssl\n      * added key exchange group16-sha512 and group18-sha512.\n      * add support for an OSS Fuzzer fuzzing target\n      * adds support for ECDSA for both key exchange and host key algorithms\n      * clean up curve25519 code\n      * update the min, preferred and max DH group values based on RFC 8270.\n      * changed type of LIBSSH2_FX_* constants to unsigned long\n      * added diffie-hellman-group14-sha256 kex\n      * fix for use of uninitialized aes_ctr_cipher.key_len when using HAVE_OPAQUE_STRUCTS, regression\n      * fixes memory leaks and use after free AES EVP_CIPHER contexts when using OpenSSL 1.0.x.\n      * fixes crash with delayed compression option using Bitvise server.\n      * adds support for PKIX key reading\n      * use new API to parse data in packet_x11_open() for better bounds checking.\n      * double the static buffer size when reading and writing known hosts\n      * improved bounds checking in packet_queue_listener\n      * improve message parsing (CVE-2019-17498)\n      * improve bounds checking in kex_agree_methods()\n      * adding SSH agent forwarding.\n      * fix agent forwarding message, updated example.\n      * added integration test code and cmake target. Added example to cmake list.\n      * don't call `libssh2_crypto_exit()` until `_libssh2_initialized` count is down to zero.\n      * add an EWOULDBLOCK check for better portability\n      * fix off by one error when loading public keys with no id\n      * fix use-after-free crash on reinitialization of openssl backend\n      * preserve error info from agent_list_identities()\n      * make sure the error code is set in _libssh2_channel_open()\n      * fixed misspellings\n      * fix potential typecast error for `_libssh2_ecdsa_key_get_curve_type`\n      * rename _libssh2_ecdsa_key_get_curve_type to _libssh2_ecdsa_get_curve_type\n",
+  "modified": "2025-05-02T04:09:02.602992Z",
+  "published": "2023-10-25T08:35:13Z",
+  "related": [
+    "CVE-2019-17498"
+  ],
+  "upstream": [
+    "CVE-2019-17498"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/-2023-4192/suse-ru-20234192-1/"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-17498"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Micro 5.3",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Micro%205.3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Micro 5.4",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Micro%205.4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Micro 5.5",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Micro%205.5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP4",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP5",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15 SP1-LTSS",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1",
+            "libssh2-1-32bit": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15 SP2-LTSS",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1",
+            "libssh2-1-32bit": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15 SP3-ESPOS",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015%20SP3-ESPOS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise High Performance Computing 15 SP3-LTSS",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20High%20Performance%20Computing%2015%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Server 15 SP1-LTSS",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Server%2015%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1",
+            "libssh2-1-32bit": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Server 15 SP2-LTSS",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Server%2015%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1",
+            "libssh2-1-32bit": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Server 15 SP3-LTSS",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Server%2015%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15 SP1",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015%20SP1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1",
+            "libssh2-1-32bit": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15 SP2",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1",
+            "libssh2-1-32bit": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 15 SP3",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2015%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Manager Proxy 4.2",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Manager%20Proxy%204.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Manager Server 4.2",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Manager%20Server%204.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Micro 5.1",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Micro%205.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Linux Enterprise Micro 5.2",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Linux%20Enterprise%20Micro%205.2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "SUSE:Enterprise Storage 7.1",
+        "purl": "pkg:rpm/suse/libssh2_org&distro=SUSE%20Enterprise%20Storage%207.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "openSUSE:Leap Micro 5.3",
+        "purl": "pkg:rpm/opensuse/libssh2_org&distro=openSUSE%20Leap%20Micro%205.3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "openSUSE:Leap Micro 5.4",
+        "purl": "pkg:rpm/opensuse/libssh2_org&distro=openSUSE%20Leap%20Micro%205.4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "openSUSE:Leap 15.4",
+        "purl": "pkg:rpm/opensuse/libssh2_org&distro=openSUSE%20Leap%2015.4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1",
+            "libssh2-1-32bit": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "libssh2_org",
+        "ecosystem": "openSUSE:Leap 15.5",
+        "purl": "pkg:rpm/opensuse/libssh2_org&distro=openSUSE%20Leap%2015.5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-150000.4.19.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libssh2-1": "1.11.0-150000.4.19.1",
+            "libssh2-devel": "1.11.0-150000.4.19.1",
+            "libssh2-1-32bit": "1.11.0-150000.4.19.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2023:4192-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

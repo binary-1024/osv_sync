@@ -1,0 +1,73 @@
+{
+  "id": "RUSTSEC-2023-0007",
+  "summary": "Timing Oracle in RSA Decryption",
+  "details": "A timing based side channel exists in the OpenSSL RSA Decryption implementation\nwhich could be sufficient to recover a plaintext across a network in a\nBleichenbacher style attack. To achieve a successful decryption an attacker\nwould have to be able to send a very large number of trial messages for\ndecryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5,\nRSA-OEAP and RSASVE.\n\nFor example, in a TLS connection, RSA is commonly used by a client to send an\nencrypted pre-master secret to the server. An attacker that had observed a\ngenuine connection between a client and a server could use this flaw to send\ntrial messages to the server and record the time taken to process them. After a\nsufficiently large number of messages the attacker could recover the pre-master\nsecret used for the original connection and thus be able to decrypt the\napplication data sent over that connection.",
+  "aliases": [
+    "CVE-2022-4304",
+    "GHSA-p52g-cm5j-mjv4"
+  ],
+  "modified": "2023-11-08T04:10:41.059156Z",
+  "published": "2023-02-07T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/openssl-src"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2023-0007.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.openssl.org/news/secadv/20230207.txt"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openssl-src",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/openssl-src"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "111.25.0"
+            },
+            {
+              "introduced": "300.0.0"
+            },
+            {
+              "fixed": "300.0.12"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": null,
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2023-0007.json",
+        "categories": [
+          "crypto-failure"
+        ]
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

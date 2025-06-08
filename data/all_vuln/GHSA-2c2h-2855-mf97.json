@@ -1,0 +1,232 @@
+{
+  "id": "GHSA-2c2h-2855-mf97",
+  "summary": "Apache Camel: Camel Message Header Injection via Improper Filtering",
+  "details": "Bypass/Injection vulnerability in Apache Camel components under particular conditions.\n\nThis issue affects Apache Camel: from 4.9.0 through <= 4.10.1, from 4.8.0 through <= 4.8.4, from 3.10.0 through <= 3.22.3.\n\nUsers are recommended to upgrade to version 4.10.2 for 4.10.x LTS, 4.8.5 for 4.8.x LTS and 3.22.4 for 3.x releases.\n\nThis vulnerability is present in Camel's default incoming header filter, that allows an attacker to include Camel specific headers that for some Camel components can alter the behaviours such as the camel-bean component, to call another method on the bean, than was coded in the application. In the `camel-jms` component, then a malicious header can be used to send the message to another queue (on the same broker) than was coded in the application. This could also be seen by using the camel-exec component.\n\nThe attacker would need to inject custom headers, such as HTTP protocols. So if you have Camel applications that are directly connected to the internet via HTTP, then an attacker could include malicious HTTP headers in the HTTP requests that are send to the Camel application.\n\nAll the known Camel HTTP component such as `camel-servlet`, `camel-jetty`, `camel-undertow`, `camel-platform-http`, and `camel-netty-http` would be vulnerable out of the box.\n\nIn these conditions an attacker could be able to forge a Camel header name and make the bean component invoking other methods in the same bean.\n\nIn terms of usage of the default header filter strategy the list of components using that is: \n\n  *  camel-activemq\n  *  camel-activemq6\n  *  camel-amqp\n  *  camel-aws2-sqs\n  *  camel-azure-servicebus\n  *  camel-cxf-rest\n  *  camel-cxf-soap\n  *  camel-http\n  *  camel-jetty\n  *  camel-jms\n  *  camel-kafka\n  *  camel-knative\n  *  camel-mail\n  *  camel-nats\n  *  camel-netty-http\n  *  camel-platform-http\n  *  camel-rest\n  *  camel-sjms\n  *  camel-spring-rabbitmq\n  *  camel-stomp\n  *  camel-tahu\n  *  camel-undertow\n  *  camel-xmpp\n\nThe vulnerability arises due to a bug in the default filtering mechanism that only blocks headers starting with \"Camel\", \"camel\", or \"org.apache.camel.\". \n\nMitigation: You can easily work around this in your Camel applications by removing the headers in your Camel routes. There are many ways of doing this, also globally or per route. This means you could use the removeHeaders EIP, to filter out anything like \"cAmel, cAMEL\" etc, or in general everything not starting with \"Camel\", \"camel\" or \"org.apache.camel.\".",
+  "aliases": [
+    "CVE-2025-27636"
+  ],
+  "modified": "2025-03-25T18:42:44.655065Z",
+  "published": "2025-03-09T15:31:19Z",
+  "database_specific": {
+    "nvd_published_at": "2025-03-09T13:15:34Z",
+    "cwe_ids": [
+      "CWE-178"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-03-10T20:49:46Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-27636"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/apache/camel/commit/23a833eec6131a3cdce6e4b1b40b3ac2035b6adf"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/apache/camel/commit/45a6b74f7f8af8fd58f197566938a9534392a624"
+    },
+    {
+      "type": "WEB",
+      "url": "https://camel.apache.org/security/CVE-2025-27636.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/akamai/CVE-2025-27636-Apache-Camel-PoC/blob/main/src/main/java/com/example/camel/VulnerableCamel.java"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/apache/camel"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/apache/camel/blob/camel-4.9.0/core/camel-support/src/main/java/org/apache/camel/support/DefaultHeaderFilterStrategy.java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://issues.apache.org/jira/browse/CAMEL-21828"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.apache.org/thread/l3zcg3vts88bmc7w8172wkgw610y693z"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2025/03/09/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.apache.camel:camel-support",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.camel/camel-support"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "3.10.0"
+            },
+            {
+              "fixed": "3.22.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.10.0",
+        "3.11.0",
+        "3.11.1",
+        "3.11.2",
+        "3.11.3",
+        "3.11.4",
+        "3.11.5",
+        "3.11.6",
+        "3.11.7",
+        "3.12.0",
+        "3.13.0",
+        "3.14.0",
+        "3.14.1",
+        "3.14.10",
+        "3.14.2",
+        "3.14.3",
+        "3.14.4",
+        "3.14.5",
+        "3.14.6",
+        "3.14.7",
+        "3.14.8",
+        "3.14.9",
+        "3.15.0",
+        "3.16.0",
+        "3.17.0",
+        "3.18.0",
+        "3.18.1",
+        "3.18.2",
+        "3.18.3",
+        "3.18.4",
+        "3.18.5",
+        "3.18.6",
+        "3.18.7",
+        "3.18.8",
+        "3.19.0",
+        "3.20.0",
+        "3.20.1",
+        "3.20.2",
+        "3.20.3",
+        "3.20.4",
+        "3.20.5",
+        "3.20.6",
+        "3.20.7",
+        "3.20.8",
+        "3.20.9",
+        "3.21.0",
+        "3.21.1",
+        "3.21.2",
+        "3.21.3",
+        "3.21.4",
+        "3.21.5",
+        "3.22.0",
+        "3.22.1",
+        "3.22.2",
+        "3.22.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-2c2h-2855-mf97/GHSA-2c2h-2855-mf97.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.apache.camel:camel-support",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.camel/camel-support"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.0.0-M1"
+            },
+            {
+              "fixed": "4.8.5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0",
+        "4.0.0-M1",
+        "4.0.0-M2",
+        "4.0.0-M3",
+        "4.0.0-RC1",
+        "4.0.0-RC2",
+        "4.0.1",
+        "4.0.2",
+        "4.0.3",
+        "4.0.4",
+        "4.0.5",
+        "4.0.6",
+        "4.1.0",
+        "4.2.0",
+        "4.3.0",
+        "4.4.0",
+        "4.4.1",
+        "4.4.2",
+        "4.4.3",
+        "4.4.4",
+        "4.4.5",
+        "4.5.0",
+        "4.6.0",
+        "4.7.0",
+        "4.8.0",
+        "4.8.1",
+        "4.8.2",
+        "4.8.3",
+        "4.8.4"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-2c2h-2855-mf97/GHSA-2c2h-2855-mf97.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.apache.camel:camel-support",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.apache.camel/camel-support"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.9.0"
+            },
+            {
+              "fixed": "4.10.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.10.0",
+        "4.10.1",
+        "4.9.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-2c2h-2855-mf97/GHSA-2c2h-2855-mf97.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N"
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+{
+  "id": "GHSA-562r-vg33-8x8h",
+  "summary": "TemporaryFolder on unix-like systems does not limit access to created files",
+  "details": "**Vulnerability**\n\n`PreparedStatement.setText(int, InputStream)`\nand\n\n`PreparedStatemet.setBytea(int, InputStream)`\n\nwill create a temporary file if the InputStream is larger than 51k\n\n \nExample of vulnerable code:\n\n```java\nString s = \"some very large string greater than 51200 bytes\";\n\nPreparedStatement.setInputStream(1, new ByteArrayInputStream(s.getBytes()) );\n```\nThis will create a temporary file which is readable by other users on Unix like systems, but not MacOS.\n\nImpact\nOn Unix like systems, the system's temporary directory is shared between all users on that system. Because of this, when files and directories are written into this directory they are, by default, readable by other users on that same system.\n\nThis vulnerability does not allow other users to overwrite the contents of these directories or files. This is purely an information disclosure vulnerability.\n\nWhen analyzing the impact of this vulnerability, here are the important questions to ask:\n\nIs the driver running in an environment where the OS has other untrusted users.\nIf yes, and you answered 'yes' to question 1, this vulnerability impacts you.\nIf no, this vulnerability does not impact you.\nPatches\nBecause certain JDK file system APIs were only added in JDK 1.7, this this fix is dependent upon the version of the JDK you are using.\n\nJava 1.8 and higher users: this vulnerability is fixed in 42.2.27, 42.3.8, 42.4.3, 42.5.1\nJava 1.7 users: this vulnerability is fixed in 42.2.27.jre7\nJava 1.6 and lower users: no patch is available; you must use the workaround below.\nWorkarounds\nIf you are unable to patch, or are stuck running on Java 1.6, specifying the java.io.tmpdir system environment variable to a directory that is exclusively owned by the executing user will fix this vulnerability.\n\nReferences\n[CWE-200: Exposure of Sensitive Information to an Unauthorized Actor](https://cwe.mitre.org/data/definitions/200.html)\nFix commit https://github.com/pgjdbc/pgjdbc/commit/9008dc9aade6dbfe4efafcd6872ebc55f4699cf5\nSimilar Vulnerabilities\nGoogle Guava - https://github.com/google/guava/issues/4011\nApache Ant - https://nvd.nist.gov/vuln/detail/CVE-2020-1945\nJetBrains Kotlin Compiler - https://nvd.nist.gov/vuln/detail/CVE-2020-15824",
+  "aliases": [
+    "BIT-postgresql-jdbc-driver-2022-41946",
+    "CVE-2022-41946"
+  ],
+  "modified": "2024-03-29T15:57:07.839153Z",
+  "published": "2022-11-23T22:17:25Z",
+  "related": [
+    "CVE-2022-41946"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2022-11-23T20:15:00Z",
+    "cwe_ids": [
+      "CWE-200",
+      "CWE-668"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-11-23T22:17:25Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/pgjdbc/pgjdbc/security/advisories/GHSA-562r-vg33-8x8h"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41946"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pgjdbc/pgjdbc/commit/9008dc9aade6dbfe4efafcd6872ebc55f4699cf5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/pgjdbc/pgjdbc"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2022/12/msg00003.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/25TY2L3RMVNOC7VAHJEAO7PTT6M6JJAD"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/25TY2L3RMVNOC7VAHJEAO7PTT6M6JJAD"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20240329-0003"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.postgresql:postgresql",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.postgresql/postgresql"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "42.2.0"
+            },
+            {
+              "fixed": "42.2.27"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "42.2.0",
+        "42.2.0.jre6",
+        "42.2.0.jre7",
+        "42.2.1",
+        "42.2.1.jre6",
+        "42.2.1.jre7",
+        "42.2.10",
+        "42.2.10.jre6",
+        "42.2.10.jre7",
+        "42.2.11",
+        "42.2.11.jre6",
+        "42.2.11.jre7",
+        "42.2.12",
+        "42.2.12.jre6",
+        "42.2.12.jre7",
+        "42.2.13",
+        "42.2.13.jre6",
+        "42.2.13.jre7",
+        "42.2.14",
+        "42.2.14.jre6",
+        "42.2.14.jre7",
+        "42.2.15",
+        "42.2.15.jre6",
+        "42.2.15.jre7",
+        "42.2.16",
+        "42.2.16.jre6",
+        "42.2.16.jre7",
+        "42.2.17",
+        "42.2.17.jre6",
+        "42.2.17.jre7",
+        "42.2.18",
+        "42.2.18.jre6",
+        "42.2.18.jre7",
+        "42.2.19",
+        "42.2.19.jre6",
+        "42.2.19.jre7",
+        "42.2.2",
+        "42.2.2.jre6",
+        "42.2.2.jre7",
+        "42.2.20",
+        "42.2.20.jre6",
+        "42.2.20.jre7",
+        "42.2.21",
+        "42.2.21.jre6",
+        "42.2.21.jre7",
+        "42.2.22",
+        "42.2.22.jre6",
+        "42.2.22.jre7",
+        "42.2.23",
+        "42.2.23.jre6",
+        "42.2.23.jre7",
+        "42.2.24",
+        "42.2.24.jre6",
+        "42.2.24.jre7",
+        "42.2.25",
+        "42.2.25.jre6",
+        "42.2.25.jre7",
+        "42.2.26",
+        "42.2.26.jre6",
+        "42.2.26.jre7",
+        "42.2.3",
+        "42.2.3.jre6",
+        "42.2.3.jre7",
+        "42.2.4",
+        "42.2.4.jre6",
+        "42.2.4.jre7",
+        "42.2.5",
+        "42.2.5.jre6",
+        "42.2.5.jre7",
+        "42.2.6",
+        "42.2.6.jre6",
+        "42.2.6.jre7",
+        "42.2.7",
+        "42.2.7.jre6",
+        "42.2.7.jre7",
+        "42.2.8",
+        "42.2.8.jre6",
+        "42.2.8.jre7",
+        "42.2.9",
+        "42.2.9.jre6",
+        "42.2.9.jre7"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-562r-vg33-8x8h/GHSA-562r-vg33-8x8h.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.postgresql:postgresql",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.postgresql/postgresql"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "42.3.0"
+            },
+            {
+              "fixed": "42.3.8"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "42.3.0",
+        "42.3.1",
+        "42.3.2",
+        "42.3.3",
+        "42.3.4",
+        "42.3.5",
+        "42.3.6",
+        "42.3.7"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-562r-vg33-8x8h/GHSA-562r-vg33-8x8h.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.postgresql:postgresql",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.postgresql/postgresql"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "42.4.0"
+            },
+            {
+              "fixed": "42.4.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "42.4.0",
+        "42.4.1",
+        "42.4.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-562r-vg33-8x8h/GHSA-562r-vg33-8x8h.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.postgresql:postgresql",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.postgresql/postgresql"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "42.5.0"
+            },
+            {
+              "fixed": "42.5.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "42.5.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-562r-vg33-8x8h/GHSA-562r-vg33-8x8h.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

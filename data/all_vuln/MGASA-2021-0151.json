@@ -1,0 +1,277 @@
+{
+  "id": "MGASA-2021-0151",
+  "summary": "Updated kernel packages fix security issues",
+  "details": "This kernel update is based on upstream 5.10.25 and fixes at least the\nfollowing security issues:\n\nUnprivileged BPF programs running on affected systems can bypass the\nprotection and execute speculatively out-of-bounds loads from any location\nwithin the kernel memory. This can be abused to extract contents of kernel\nmemory via side-channel (CVE-2020-27170).\n\nUnprivileged BPF programs running on affected 64-bit systems can exploit\nthis to execute speculatively out-of-bounds loads from 4GB window within\nthe kernel memory. This can be abused to extract contents of kernel memory\nvia side-channel (CVE-2020-27171).\n\nAn issue was discovered in the Linux kernel through 5.11.3. A kernel pointer\nleak can be used to determine the address of the iscsi_transport structure.\nWhen an iSCSI transport is registered with the iSCSI subsystem, the\ntransport's handle is available to unprivileged users via the sysfs file\nsystem, at /sys/class/iscsi_transport/$TRANSPORT_NAME/handle. When read, the\nshow_transport_handle function (in drivers/scsi/scsi_transport_iscsi.c) is\ncalled, which leaks the handle. This handle is actually the pointer to an\niscsi_transport struct in the kernel module's global variables\n(CVE-2021-27363).\n\nAn issue was discovered in the Linux kernel through 5.11.3. drivers/scsi/\nscsi_transport_iscsi.c is adversely affected by the ability of an\nunprivileged user to craft Netlink messages (CVE-2021-27364).\n\nAn issue was discovered in the Linux kernel through 5.11.3. Certain iSCSI\ndata structures do not have appropriate length constraints or checks, and\ncan exceed the PAGE_SIZE value. An unprivileged user can send a Netlink\nmessage that is associated with iSCSI, and has a length up to the maximum\nlength of a Netlink message (CVE-2021-27365).\n\nAn issue was discovered in the Linux kernel through 5.11.6.\nfastrpc_internal_invoke in drivers/misc/fastrpc.c does not prevent user\napplications from sending kernel RPC messages (CVE-2021-28375).\n\nIt also adds the following fixes:\n- arm(64): enable W1_MASTER_GPIO (mga#28596)\n- wireguard-tools have been updated to v1.0.20210315\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2021-03-22T17:17:19Z",
+  "related": [
+    "CVE-2020-27170",
+    "CVE-2020-27171",
+    "CVE-2021-27363",
+    "CVE-2021-27364",
+    "CVE-2021-27365",
+    "CVE-2021-28375"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0151.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=28610"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=28596"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.21"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.22"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.24"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.25"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.25-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0151.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.1.18-11.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0151.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.13-17.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0151.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "wireguard-tools",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/wireguard-tools?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.20210315-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0151.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.25-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0151.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.1.18-21.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0151.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.13-37.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0151.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "wireguard-tools",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/wireguard-tools?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.20210315-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0151.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

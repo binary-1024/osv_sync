@@ -1,0 +1,402 @@
+{
+  "id": "SUSE-SU-2018:2344-2",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\n\nThe SUSE Linux Enterprise 12 SP2 LTSS kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2018-3620: Local attackers on baremetal systems could use speculative code patterns on hyperthreaded processors to read data present in the L1 Datacache used by other hyperthreads on the same CPU core, potentially leaking sensitive data. (bnc#1087081).\n- CVE-2018-3646: Local attackers in virtualized guest systems could use speculative code patterns on hyperthreaded processors to read data present in the L1 Datacache used by other hyperthreads on the same CPU core, potentially leaking sensitive data, even from other virtual machines or the host system. (bnc#1089343).\n- CVE-2018-5390 aka 'SegmentSmack': The Linux Kernel can be forced to make very expensive calls to tcp_collapse_ofo_queue() and tcp_prune_ofo_queue() for every incoming packet which can lead to a denial of service (bnc#1102340).\n- CVE-2018-5391 aka 'FragmentSmack': A flaw in the IP packet reassembly could be used by remote attackers to consume lots of CPU time (bnc#1103097).\n- CVE-2018-14734: drivers/infiniband/core/ucma.c allowed ucma_leave_multicast to access a certain data structure after a cleanup step in ucma_process_join, which allowed attackers to cause a denial of service (use-after-free) (bnc#1103119).\n- CVE-2017-18344: The timer_create syscall implementation in kernel/time/posix-timers.c didn't properly validate the sigevent->sigev_notify field, which leads to out-of-bounds access in the show_timer function (called when /proc/$PID/timers is read). This allowed userspace applications to read arbitrary kernel memory (on a kernel built with CONFIG_POSIX_TIMERS and CONFIG_CHECKPOINT_RESTORE) (bnc#1102851 bnc#1103580).\n- CVE-2018-9385: When printing the 'driver_override' option from with-in the amba driver, a very long line could expose one additional uninitialized byte (bnc#1100491).\n- CVE-2018-13053: The alarm_timer_nsleep function in kernel/time/alarmtimer.c had an integer overflow via a large relative timeout because ktime_add_safe is not used (bnc#1099924).\n- CVE-2018-13405: The inode_init_owner function in fs/inode.c allowed local users to create files with an unintended group ownership, in a scenario where a directory is SGID to a certain group and is writable by a user who is not a member of that group. Here, the non-member can trigger creation of a plain file whose group ownership is that group. The intended behavior was that the non-member can trigger creation of a directory (but not a plain file) whose group ownership is that group. The non-member can escalate privileges by making the plain file executable and SGID (bnc#1100416).\n- CVE-2018-13406: An integer overflow in the uvesafb_setcmap function in drivers/video/fbdev/uvesafb.c could result in local attackers being able to crash the kernel or potentially elevate privileges because kmalloc_array is not used (bnc#1098016 1100418).\n- CVE-2018-5814: Multiple race condition errors when handling probe, disconnect, and rebind operations could be exploited to trigger a use-after-free condition or a NULL pointer dereference by sending multiple USB over IP packets (bnc#1096480).\n\nThe following non-security bugs were fixed:\n\n- Add support for 5,25,50, and 100G to 802.3ad bonding driver (bsc#1096978)\n- bcache: add backing_request_endio() for bi_end_io (bsc#1064232).\n- bcache: add CACHE_SET_IO_DISABLE to struct cache_set flags (bsc#1064232).\n- bcache: add io_disable to struct cached_dev (bsc#1064232).\n- bcache: add journal statistic (bsc#1076110).\n- bcache: Add __printf annotation to __bch_check_keys() (bsc#1064232).\n- bcache: add stop_when_cache_set_failed option to backing device (bsc#1064232).\n- bcache: add wait_for_kthread_stop() in bch_allocator_thread() (bsc#1064232).\n- bcache: Annotate switch fall-through (bsc#1064232).\n- bcache: closures: move control bits one bit right (bsc#1076110).\n- bcache: correct flash only vols (check all uuids) (bsc#1064232).\n- bcache: count backing device I/O error for writeback I/O (bsc#1064232).\n- bcache: do not attach backing with duplicate UUID (bsc#1076110).\n- bcache: Fix a compiler warning in bcache_device_init() (bsc#1064232).\n- bcache: fix cached_dev->count usage for bch_cache_set_error() (bsc#1064232).\n- bcache: fix crashes in duplicate cache device register (bsc#1076110).\n- bcache: fix error return value in memory shrink (bsc#1064232).\n- bcache: fix for allocator and register thread race (bsc#1076110).\n- bcache: fix for data collapse after re-attaching an attached device (bsc#1076110).\n- bcache: fix high CPU occupancy during journal (bsc#1076110).\n- bcache: Fix, improve efficiency of closure_sync() (bsc#1076110).\n- bcache: fix inaccurate io state for detached bcache devices (bsc#1064232).\n- bcache: fix incorrect sysfs output value of strip size (bsc#1064232).\n- bcache: Fix indentation (bsc#1064232).\n- bcache: fix kcrashes with fio in RAID5 backend dev (bsc#1076110).\n- bcache: Fix kernel-doc warnings (bsc#1064232).\n- bcache: fix misleading error message in bch_count_io_errors() (bsc#1064232).\n- bcache: fix using of loop variable in memory shrink (bsc#1064232).\n- bcache: fix writeback target calc on large devices (bsc#1076110).\n- bcache: fix wrong return value in bch_debug_init() (bsc#1076110).\n- bcache: mark closure_sync() __sched (bsc#1076110).\n- bcache: move closure debug file into debug directory (bsc#1064232).\n- bcache: properly set task state in bch_writeback_thread() (bsc#1064232).\n- bcache: quit dc->writeback_thread when BCACHE_DEV_DETACHING is set (bsc#1064232).\n- bcache: reduce cache_set devices iteration by devices_max_used (bsc#1064232).\n- bcache: Reduce the number of sparse complaints about lock imbalances (bsc#1064232).\n- bcache: Remove an unused variable (bsc#1064232).\n- bcache: ret IOERR when read meets metadata error (bsc#1076110).\n- bcache: return 0 from bch_debug_init() if CONFIG_DEBUG_FS=n (bsc#1064232).\n- bcache: return attach error when no cache set exist (bsc#1076110).\n- bcache: segregate flash only volume write streams (bsc#1076110).\n- bcache: set CACHE_SET_IO_DISABLE in bch_cached_dev_error() (bsc#1064232).\n- bcache: set dc->io_disable to true in conditional_stop_bcache_device() (bsc#1064232).\n- bcache: set error_limit correctly (bsc#1064232).\n- bcache: set writeback_rate_update_seconds in range [1, 60] seconds (bsc#1064232).\n- bcache: stop bcache device when backing device is offline (bsc#1064232).\n- bcache: stop dc->writeback_rate_update properly (bsc#1064232).\n- bcache: stop writeback thread after detaching (bsc#1076110).\n- bcache: store disk name in struct cache and struct cached_dev (bsc#1064232).\n- bcache: Suppress more warnings about set-but-not-used variables (bsc#1064232).\n- bcache: use pr_info() to inform duplicated CACHE_SET_IO_DISABLE set (bsc#1064232).\n- bcache: Use PTR_ERR_OR_ZERO() (bsc#1076110).\n- bpf: properly enforce index mask to prevent out-of-bounds speculation (bsc#1098425).\n- cifs: Check for timeout on Negotiate stage (bsc#1091171).\n- cifs: fix bad/NULL ptr dereferencing in SMB2_sess_setup() (bsc#1090123).\n- cpu/hotplug: Add sysfs state interface (bsc#1089343).\n- cpu/hotplug: Provide knobs to control SMT (bsc#1089343).\n- cpu/hotplug: Split do_cpu_down() (bsc#1089343).\n- ext4: fix unsupported feature message formatting (bsc#1098435).\n- Hang/soft lockup in d_invalidate with simultaneous calls (bsc#1094248, bsc@1097140).\n- ixgbe: fix possible race in reset subtask (bsc#1101557).\n- ixgbe: Refactor queue disable logic to take completion time into account (bsc#1101557).\n- ixgbe: Reorder Tx/Rx shutdown to reduce time needed to stop device (bsc#1101557).\n- ixgbe: use atomic bitwise operations when handling reset requests (bsc#1101557).\n- kabi/severities: add PASS to drivers/md/bcache/*, no one uses bcache kernel module.\n- procfs: add tunable for fd/fdinfo dentry retention (bsc#1086652).\n- sched/sysctl: Check user input value of sysctl_sched_time_avg (bsc#1100089).\n- signals: avoid unnecessary taking of sighand->siglock (bsc#1096130).\n- x86/CPU/AMD: Do not check CPUID max ext level before parsing SMP info (bsc#1089343).\n- x86/cpu/AMD: Evaluate smp_num_siblings early (bsc#1089343).\n- x86/CPU/AMD: Move TOPOEXT reenablement before reading smp_num_siblings (bsc#1089343). Update config files.\n- x86/cpu/AMD: Remove the pointless detect_ht() call (bsc#1089343).\n- x86/cpu/common: Provide detect_ht_early() (bsc#1089343).\n- x86/cpu/intel: Evaluate smp_num_siblings early (bsc#1089343).\n- x86/cpu: Remove the pointless CPU printout (bsc#1089343).\n- x86/cpu/topology: Provide detect_extended_topology_early() (bsc#1089343).\n- x86/mm: Simplify p[g4um]d_page() macros (1087081).\n- x86/pti: do not report XenPV as vulnerable (bsc#1097551).\n- x86/smpboot: Do not use smp_num_siblings in __max_logical_packages calculation (bsc#1089343).\n- x86/smp: Provide topology_is_primary_thread() (bsc#1089343).\n- x86/topology: Add topology_max_smt_threads() (bsc#1089343).\n- x86/topology: Provide topology_smt_supported() (bsc#1089343).\n- xen/grant-table: log the lack of grants (bnc#1085042).\n",
+  "modified": "2025-05-02T04:06:41.432182Z",
+  "published": "2018-10-18T12:49:01Z",
+  "related": [
+    "CVE-2017-18344",
+    "CVE-2018-13053",
+    "CVE-2018-13405",
+    "CVE-2018-13406",
+    "CVE-2018-14734",
+    "CVE-2018-3620",
+    "CVE-2018-3646",
+    "CVE-2018-5390",
+    "CVE-2018-5391",
+    "CVE-2018-5814",
+    "CVE-2018-9385"
+  ],
+  "upstream": [
+    "CVE-2017-18344",
+    "CVE-2018-13053",
+    "CVE-2018-13405",
+    "CVE-2018-13406",
+    "CVE-2018-14734",
+    "CVE-2018-3620",
+    "CVE-2018-3646",
+    "CVE-2018-5390",
+    "CVE-2018-5391",
+    "CVE-2018-5814",
+    "CVE-2018-9385"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2018/suse-su-20182344-2/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1064232"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076110"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1083635"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1085042"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1086652"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1087081"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1089343"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1090123"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1091171"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1094248"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1096130"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1096480"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1096978"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1097140"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1097551"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1098016"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1098425"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1098435"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1099924"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100089"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100416"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100418"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1100491"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1101557"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1102340"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1102851"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1103097"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1103119"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1103580"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-18344"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-13053"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-13405"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-13406"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-14734"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-3620"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-3646"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-5390"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-5391"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-5814"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-9385"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.92.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.92.1",
+            "kernel-devel": "4.4.121-92.92.1",
+            "kernel-default-base": "4.4.121-92.92.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.92-9.4.1",
+            "kernel-default": "4.4.121-92.92.1",
+            "kernel-source": "4.4.121-92.92.1",
+            "kgraft-patch-4_4_121-92_92-default": "1-3.7.1",
+            "kernel-syms": "4.4.121-92.92.1",
+            "lttng-modules": "2.7.1-9.4.1",
+            "kernel-default-devel": "4.4.121-92.92.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2344-2.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.92.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.92.1",
+            "kernel-devel": "4.4.121-92.92.1",
+            "kernel-default-base": "4.4.121-92.92.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.92-9.4.1",
+            "kernel-default": "4.4.121-92.92.1",
+            "kernel-source": "4.4.121-92.92.1",
+            "kgraft-patch-4_4_121-92_92-default": "1-3.7.1",
+            "kernel-syms": "4.4.121-92.92.1",
+            "lttng-modules": "2.7.1-9.4.1",
+            "kernel-default-devel": "4.4.121-92.92.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2344-2.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.92.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.92.1",
+            "kernel-devel": "4.4.121-92.92.1",
+            "kernel-default-base": "4.4.121-92.92.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.92-9.4.1",
+            "kernel-default": "4.4.121-92.92.1",
+            "kernel-source": "4.4.121-92.92.1",
+            "kgraft-patch-4_4_121-92_92-default": "1-3.7.1",
+            "kernel-syms": "4.4.121-92.92.1",
+            "lttng-modules": "2.7.1-9.4.1",
+            "kernel-default-devel": "4.4.121-92.92.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2344-2.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kgraft-patch-SLE12-SP2_Update_24",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12-SP2_Update_24&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1-3.7.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.92.1",
+            "kernel-devel": "4.4.121-92.92.1",
+            "kernel-default-base": "4.4.121-92.92.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.92-9.4.1",
+            "kernel-default": "4.4.121-92.92.1",
+            "kernel-source": "4.4.121-92.92.1",
+            "kgraft-patch-4_4_121-92_92-default": "1-3.7.1",
+            "kernel-syms": "4.4.121-92.92.1",
+            "lttng-modules": "2.7.1-9.4.1",
+            "kernel-default-devel": "4.4.121-92.92.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2344-2.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "lttng-modules",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "purl": "pkg:rpm/suse/lttng-modules&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.1-9.4.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-macros": "4.4.121-92.92.1",
+            "kernel-devel": "4.4.121-92.92.1",
+            "kernel-default-base": "4.4.121-92.92.1",
+            "lttng-modules-kmp-default": "2.7.1_k4.4.121_92.92-9.4.1",
+            "kernel-default": "4.4.121-92.92.1",
+            "kernel-source": "4.4.121-92.92.1",
+            "kgraft-patch-4_4_121-92_92-default": "1-3.7.1",
+            "kernel-syms": "4.4.121-92.92.1",
+            "lttng-modules": "2.7.1-9.4.1",
+            "kernel-default-devel": "4.4.121-92.92.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:2344-2.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

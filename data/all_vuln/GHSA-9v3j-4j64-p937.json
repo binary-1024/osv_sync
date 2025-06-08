@@ -1,0 +1,155 @@
+{
+  "id": "GHSA-9v3j-4j64-p937",
+  "summary": "OroPlatform vulnerable to path traversal during temporary file manipulations",
+  "details": "### Impact\nPath Traversal is possible in `Oro\\Bundle\\GaufretteBundle\\FileManager::getTemporaryFileName`. \nWith this method, an attacker can pass the path to a non-existent file, which will allow writing the content to a new file that will be available during script execution. The file will be deleted immediately after the script ends. \n\n### Workarounds\nApply patch\n```patch\n--- a/vendor/oro/platform/src/Oro/Bundle/GaufretteBundle/FileManager.php\n+++ b/vendor/oro/platform/src/Oro/Bundle/GaufretteBundle/FileManager.php\n@@ -614,6 +614,10 @@\n      */\n     public function getTemporaryFileName(string $suggestedFileName = null): string\n     {\n+        if ($suggestedFileName) {\n+            $suggestedFileName = basename($suggestedFileName);\n+        }\n+\n         $tmpDir = ini_get('upload_tmp_dir');\n         if (!$tmpDir || !is_dir($tmpDir) || !is_writable($tmpDir)) {\n             $tmpDir = sys_get_temp_dir();\n\n```\n\nOr decorate `Oro\\Bundle\\GaufretteBundle\\FileManager::getTemporaryFileName` in your customization and clear `$suggestedFileName` argument\n\n```php\n    public function getTemporaryFileName(string $suggestedFileName = null): string\n    {\n        if ($suggestedFileName) {\n            $suggestedFileName = basename($suggestedFileName);\n        }\n\n        return parent::getTemporaryFileName($suggestedFileName);\n    }\n```\n\n### References\n - [Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal)\n - [How to Decorate Services](https://symfony.com/doc/5.4/service_container/service_decoration.html)\n\n",
+  "aliases": [
+    "CVE-2022-41951"
+  ],
+  "modified": "2024-02-16T08:15:01.929951Z",
+  "published": "2023-11-27T23:28:52Z",
+  "related": [
+    "CVE-2022-41951"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2023-11-27T21:15:07Z",
+    "cwe_ids": [
+      "CWE-22"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-11-27T23:28:52Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/oroinc/platform/security/advisories/GHSA-9v3j-4j64-p937"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41951"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/oroinc/platform"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "oro/platform",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/oro/platform"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.1.0"
+            },
+            {
+              "last_affected": "4.1.13"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.1.0",
+        "4.1.1",
+        "4.1.1-rc",
+        "4.1.1-rc2",
+        "4.1.10",
+        "4.1.11",
+        "4.1.12",
+        "4.1.13",
+        "4.1.2",
+        "4.1.3",
+        "4.1.4",
+        "4.1.5",
+        "4.1.6",
+        "4.1.7",
+        "4.1.8",
+        "4.1.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-9v3j-4j64-p937/GHSA-9v3j-4j64-p937.json"
+      }
+    },
+    {
+      "package": {
+        "name": "oro/platform",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/oro/platform"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "4.2.0"
+            },
+            {
+              "last_affected": "4.2.10"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.2.0",
+        "4.2.1",
+        "4.2.10",
+        "4.2.2",
+        "4.2.3",
+        "4.2.4",
+        "4.2.5",
+        "4.2.6",
+        "4.2.7",
+        "4.2.8",
+        "4.2.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-9v3j-4j64-p937/GHSA-9v3j-4j64-p937.json"
+      }
+    },
+    {
+      "package": {
+        "name": "oro/platform",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/oro/platform"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5.0.0"
+            },
+            {
+              "fixed": "5.0.8"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.0.0",
+        "5.0.1",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "5.0.6",
+        "5.0.7"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-9v3j-4j64-p937/GHSA-9v3j-4j64-p937.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H"
+    }
+  ]
+}

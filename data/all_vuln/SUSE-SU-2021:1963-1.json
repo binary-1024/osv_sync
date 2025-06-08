@@ -1,0 +1,371 @@
+{
+  "id": "SUSE-SU-2021:1963-1",
+  "summary": "Security update for crowbar-openstack, grafana, kibana, monasca-installer, python-Django, python-py, rubygem-activerecord-session_store",
+  "details": "This update for crowbar-openstack, grafana, kibana, monasca-installer, python-Django, python-py, rubygem-activerecord-session_store contains the following fixes:\n\nSecurity fixes included in this update:\n\n\ncrowbar-openstack:\n- CVE-2016-8611: Added rate limiting for the '/images' API POST method\n(bsc#1005886).\n\ngrafana:\n- CVE-2021-27358: Fixed a denial of service via remote API call\n(bsc#1183803)\n\nkibana:\n- CVE-2017-11499: Fixed a vulnerability in nodejs, related to the\nHashTable implementation, which could cause a denial of service\n(bsc#1044849)\n- CVE-2017-11481: Fixed a cross site scripting vulnerability via via URL\nfields (bsc#1044849)\n\npython-Django:\n- CVE-2021-3281: Fixed a directory traversal via archive.extract()\n(bsc#1181379)\n- CVE-2021-28658: Fixed a directory traversal via uploaded files\n(bsc#1184148)\n- CVE-2021-31542: Fixed a directory traversal via uploaded files with\nsuitably crafted file names (bsc#1185623)\n- CVE-2021-33203:Fixed potential path-traversal via admindocs'\nTemplateDetailView (bsc#1186608)\n- CVE-2021-33571: Tighten validator checks to not allow leading zeros in\nIPv4 addresses, which potentially leads to further attacks (bsc#1186611)\n\npython-py:\n- CVE-2020-29651: Fixed a denial of service via regular expressions\n(bsc#1179805)\n\nrubygem-activerecord-session_store:\n- CVE-2019-25025: Fixed a timing attacks targeting the session id which\ncould allow an attack to hijack sessions (bsc#1183174)\n\n\nNon-security fixes included in this update:\n\nChanges in crowbar-openstack:\n- Update to version 4.0+git.1616146720.44daffca0:\n  * monasca: restart Kibana on update (bsc#1044849)\n\nChanges in grafana_Update:\n- Add CVE-2021-27358.patch (bsc#1183803, CVE-2021-27358)\n  * Prevent unauthenticated remote attackers from causing a DoS through the\n    snapshots API.\n\nChanges in kibana_Update:\n- Ensure /etc/sysconfig/kibana is present\n\n- Update to Kibana 4.6.6 (bsc#1044849, CVE-2017-11499, ESA-2017-14,\n  ESA-2017-16)\n  * [4.6] ignore forked code for babel transpile build phase (#13483)\n  * Allow more than match queries in custom filters (#8614) (#10857)\n  * [state] don't make extra $location.replace() calls (#9954)\n  * [optimizer] move to querystring-browser package for up-to-date api\n  * [state/unhashUrl] use encode-uri-query to generate cleanly encoded urls\n  * server: refactor log_interceptor to be more DRY (#9617)\n  * server: downgrade ECANCELED logs to debug (#9616)\n  * server: do not treat logged warnings as errors (#8746) (#9610)\n  * [server/logger] downgrade EPIPE errors to debug level (#9023)\n  * Add basepath when redirecting from a trailling slash (#9035)\n  * [es/kibanaIndex] use unmapped_type rather than ignore_unmapped (#8968)\n  * [server/shortUrl] validate urls before shortening them\n- Add CVE-2017-11481.patch (bsc#1044849, CVE-2017-11481)\n  * This fixes an XSS vulnerability in URL fields\n- Remove %dir declaration from /opt/kibana/optimize to ensure\n  no files owned by root end up in there\n- Exclude /opt/kibana/optimize from %fdupes\n- Restart service on upgrade\n- Do not copy LICENSE.txt and README.txt to /opt/kibana\n- Fix rpmlint warnings/errors\n- Switch to explicit patch application\n- Fix source URL\n- Fix logic for systemd/systemv detection\n\nChanges in monasca-installer_Update:\n- Add support-influxdb-1.2.patch (SOC-11435)\n\nChanges in python-Django_Update:\n- Fixed potential path-traversal via admindocs' TemplateDetailView.(bsc#1186608, CVE-2021-33203)\n-  Prevented leading zeros in IPv4 addresses. (bsc#1186611, CVE-2021-33571)\n- Add delegate-os-path-filename-generation-to-storage.patch (bsc#1185623)\n    * Needed for CVE-2021-31542.patch to apply\n- Tightened path & file name sanitation in file uploads. (bsc#1185623, CVE-2021-31542)\n- Fixed potential directory-traversal via uploaded files. (bsc#1184148, CVE-2021-28658)\n- Fixes a potential directory traversal when extracting archives. (bsc#1181379, CVE-2021-3281)\n\nChanges in python-py_Update:\n- Add CVE-2020-29651.patch (CVE-2020-29651, bsc#1179805)\n  * svnwc: fix regular expression vulnerable to DoS in blame functionality\n- Ensure /usr/share/licenses exists\n\nChanges in rubygem-activerecord-session_store_Update:\n- added CVE-2019-25025.patch (CVE-2019-25025, bsc#1183174)\n  * This requires CVE-2019-16782.patch to be included in\n    rubygem-actionpack-4_2 to work correctly.\n\n",
+  "modified": "2025-05-02T04:29:43.236565Z",
+  "published": "2021-06-11T13:14:14Z",
+  "related": [
+    "CVE-2017-11481",
+    "CVE-2017-11499",
+    "CVE-2019-25025",
+    "CVE-2020-29651",
+    "CVE-2021-27358",
+    "CVE-2021-28658",
+    "CVE-2021-31542",
+    "CVE-2021-3281",
+    "CVE-2021-33203",
+    "CVE-2021-33571"
+  ],
+  "upstream": [
+    "CVE-2017-11481",
+    "CVE-2017-11499",
+    "CVE-2019-25025",
+    "CVE-2020-29651",
+    "CVE-2021-27358",
+    "CVE-2021-28658",
+    "CVE-2021-31542",
+    "CVE-2021-3281",
+    "CVE-2021-33203",
+    "CVE-2021-33571"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2021/suse-su-20211963-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1044849"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179805"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1181379"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1183803"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1184148"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1185623"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186608"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1186611"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-11481"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-11499"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2019-25025"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-29651"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-27358"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-28658"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-31542"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-3281"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-33203"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2021-33571"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "crowbar-openstack",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/crowbar-openstack&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.0+git.1616146720.44daffca0-9.81.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python-Django": "1.8.19-3.29.1",
+            "grafana": "6.7.4-1.24.2",
+            "crowbar-openstack": "4.0+git.1616146720.44daffca0-9.81.2",
+            "monasca-installer": "20180608_12.47-16.2",
+            "python-py": "1.8.1-11.16.2",
+            "kibana": "4.6.6-9.2",
+            "ruby2.1-rubygem-activerecord-session_store": "0.1.2-3.4.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:1963-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "grafana",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/grafana&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.7.4-1.24.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python-Django": "1.8.19-3.29.1",
+            "grafana": "6.7.4-1.24.2",
+            "crowbar-openstack": "4.0+git.1616146720.44daffca0-9.81.2",
+            "monasca-installer": "20180608_12.47-16.2",
+            "python-py": "1.8.1-11.16.2",
+            "kibana": "4.6.6-9.2",
+            "ruby2.1-rubygem-activerecord-session_store": "0.1.2-3.4.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:1963-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kibana",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/kibana&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.6.6-9.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python-Django": "1.8.19-3.29.1",
+            "grafana": "6.7.4-1.24.2",
+            "crowbar-openstack": "4.0+git.1616146720.44daffca0-9.81.2",
+            "monasca-installer": "20180608_12.47-16.2",
+            "python-py": "1.8.1-11.16.2",
+            "kibana": "4.6.6-9.2",
+            "ruby2.1-rubygem-activerecord-session_store": "0.1.2-3.4.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:1963-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "monasca-installer",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/monasca-installer&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20180608_12.47-16.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python-Django": "1.8.19-3.29.1",
+            "grafana": "6.7.4-1.24.2",
+            "crowbar-openstack": "4.0+git.1616146720.44daffca0-9.81.2",
+            "monasca-installer": "20180608_12.47-16.2",
+            "python-py": "1.8.1-11.16.2",
+            "kibana": "4.6.6-9.2",
+            "ruby2.1-rubygem-activerecord-session_store": "0.1.2-3.4.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:1963-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "python-Django",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/python-Django&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.8.19-3.29.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python-Django": "1.8.19-3.29.1",
+            "grafana": "6.7.4-1.24.2",
+            "crowbar-openstack": "4.0+git.1616146720.44daffca0-9.81.2",
+            "monasca-installer": "20180608_12.47-16.2",
+            "python-py": "1.8.1-11.16.2",
+            "kibana": "4.6.6-9.2",
+            "ruby2.1-rubygem-activerecord-session_store": "0.1.2-3.4.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:1963-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "python-py",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/python-py&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.8.1-11.16.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python-Django": "1.8.19-3.29.1",
+            "grafana": "6.7.4-1.24.2",
+            "crowbar-openstack": "4.0+git.1616146720.44daffca0-9.81.2",
+            "monasca-installer": "20180608_12.47-16.2",
+            "python-py": "1.8.1-11.16.2",
+            "kibana": "4.6.6-9.2",
+            "ruby2.1-rubygem-activerecord-session_store": "0.1.2-3.4.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:1963-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "rubygem-activerecord-session_store",
+        "ecosystem": "SUSE:OpenStack Cloud 7",
+        "purl": "pkg:rpm/suse/rubygem-activerecord-session_store&distro=SUSE%20OpenStack%20Cloud%207"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.1.2-3.4.2"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python-Django": "1.8.19-3.29.1",
+            "grafana": "6.7.4-1.24.2",
+            "crowbar-openstack": "4.0+git.1616146720.44daffca0-9.81.2",
+            "monasca-installer": "20180608_12.47-16.2",
+            "python-py": "1.8.1-11.16.2",
+            "kibana": "4.6.6-9.2",
+            "ruby2.1-rubygem-activerecord-session_store": "0.1.2-3.4.2"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:1963-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

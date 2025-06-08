@@ -1,0 +1,126 @@
+{
+  "id": "SUSE-SU-2018:1077-1",
+  "summary": "Security update for kvm",
+  "details": "This update for kvm fixes the following issues:\n\n- This update has the next round of Spectre v2 related patches,\n  which now integrates with corresponding changes in libvirt. A\n  January 2018 release of qemu initially addressed the Spectre v2\n  vulnerability for KVM guests by exposing the spec-ctrl feature\n  for all x86 vcpu types, which was the quick and dirty approach,\n  but not the proper solution. We remove that initial patch and now\n  rely on patches from upstream. This update defines spec_ctrl and\n  ibpb cpu feature flags as well as new cpu models which are clones\n  of existing models with either -IBRS or -IBPB added to the end of\n  the model name. These new vcpu models explicitly include the new\n  feature(s), whereas the feature flags can be added to the cpu\n  parameter as with other features. In short, for continued Spectre\n  v2 protection, ensure that either the appropriate cpu feature\n  flag is added to the QEMU command-line, or one of the new cpu\n  models is used. Although migration from older versions is\n  supported, the new cpu features won't be properly exposed to the\n  guest until it is restarted with the cpu features explicitly\n  added. A reboot is insufficient.\n- A warning patch is added which attempts to detect a migration\n  from a qemu version which had the quick and dirty fix (it only\n  detects certain cases, but hopefully is helpful.)\n  For additional information on Spectre v2 as it relates to QEMU,\n  see: https://www.qemu.org/2018/02/14/qemu-2-11-1-and-spectre-update/\n  (CVE-2017-5715 bsc#1068032)\n- A patch is added to continue to detect Spectre v2 mitigation\n  features (as shown by cpuid), and if found provide that feature\n  to guests, even if running on older KVM (kernel) versions which\n  do not yet expose that feature to QEMU. (bsc#1082276)\n  These two patches will be removed when we can reasonably assume\n  everyone is running with the appropriate updates.\n\n- Security fixes for the following CVE issues:\n  (bsc#1076114 CVE-2018-5683)\n  (bsc#1083291 CVE-2018-7550)\n- This patch is already included, add here for CVE track\n  (bsc#1076179 CVE-2017-18030)\n\n- Toolchain changes have cause the built size of pxe-virtio.rom to\n  exceed 64K. Tweak rarely used strings in code to reduce size of\n  the binary so it fits again.\n\n- Eliminate bogus use of CPUID_7_0_EDX_PRED_CMD which we've\n  carried since the initial Spectre v2 patch was added. EDX bit\n  27 of CPUID Leaf 07H, Sub-leaf 0 provides status on STIBP, and\n  not the PRED_CMD MSR. Exposing the STIBP CPUID feature bit to the\n  guest is wrong in general, since the VM doesn't directly control\n  the scheduling of physical hyperthreads. This is left strictly to\n  the L0 hypervisor.\n",
+  "modified": "2025-05-02T04:06:38.027223Z",
+  "published": "2018-04-25T12:14:56Z",
+  "related": [
+    "CVE-2017-18030",
+    "CVE-2017-5715",
+    "CVE-2018-5683",
+    "CVE-2018-7550"
+  ],
+  "upstream": [
+    "CVE-2017-18030",
+    "CVE-2017-5715",
+    "CVE-2018-5683",
+    "CVE-2018-7550"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2018/suse-su-20181077-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1068032"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076114"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076179"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1082276"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1083291"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-18030"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5715"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-5683"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-7550"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kvm",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.2-60.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kvm": "1.4.2-60.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1077-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kvm",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.2-60.9.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kvm": "1.4.2-60.9.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1077-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

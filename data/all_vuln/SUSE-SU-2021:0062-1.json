@@ -1,0 +1,94 @@
+{
+  "id": "SUSE-SU-2021:0062-1",
+  "summary": "Security update for nodejs12",
+  "details": "This update for nodejs12 fixes the following issues:\n\n- New upstream LTS version 12.20.1:\n  * CVE-2020-8265: use-after-free in TLSWrap (High) bug in TLS\n    implementation. When writing to a TLS enabled socket,\n    node::StreamBase::Write calls node::TLSWrap::DoWrite with\n    a freshly allocated WriteWrap object as first argument.\n    If the DoWrite method does not return an error, this object is\n    passed back to the caller as part of a StreamWriteResult structure.\n    This may be exploited to corrupt memory leading to a\n    Denial of Service or potentially other exploits (bsc#1180553)\n  * CVE-2020-8287: HTTP Request Smuggling allow two copies of a\n    header field in a http request. For example, two Transfer-Encoding\n    header fields. In this case Node.js identifies the first header\n    field and ignores the second. This can lead to HTTP Request\n    Smuggling (https://cwe.mitre.org/data/definitions/444.html).\n    (bsc#1180554)\n  * CVE-2020-1971: OpenSSL - EDIPARTYNAME NULL pointer de-reference\n    (High) This is a vulnerability in OpenSSL which may be exploited\n    through Node.js. (bsc#1179491)\n\n- New upstream LTS version 12.20.0:\n  * deps:\n    + update llhttp '2.1.2' -> '2.1.3'\n    + update uv '1.39.0' -> '1.40.0'\n    + update uvwasi '0.0.10' -> '0.0.11'\n  * fs: add .ref() and .unref() methods to watcher classes\n  * http: added scheduling option to http agent\n  * module:\n    + exports pattern support\n    + named exports for CJS via static analysis\n  * n-api: add more property defaults (gh#35214)\n\n- New upstream LTS version 12.19.1:\n  * deps: Denial of Service through DNS request (High).\n  A Node.js application that allows an attacker to trigger a DNS\n  request for a host of their choice could trigger a Denial of Service\n  by getting the application to resolve a DNS record with\n  a larger number of responses (bsc#1178882, CVE-2020-8277)\n\n- New upstream LTS version 12.19.0:\n  * crypto: add randomInt function\n  * deps:\n    + upgrade to libuv 1.39.0\n    + deps: upgrade npm to 6.14.7\n    + deps: upgrade to libuv 1.38.1\n  * doc: deprecate process.umask() with no arguments\n  * module:\n    + package 'imports' field\n    + module: deprecate module.parent\n  * n-api: create N-API version 7\n  * zlib: switch to lazy init for zlib streams\n",
+  "modified": "2025-05-02T04:10:24.176170Z",
+  "published": "2021-01-11T14:01:49Z",
+  "related": [
+    "CVE-2020-1971",
+    "CVE-2020-8265",
+    "CVE-2020-8277",
+    "CVE-2020-8287"
+  ],
+  "upstream": [
+    "CVE-2020-1971",
+    "CVE-2020-8265",
+    "CVE-2020-8277",
+    "CVE-2020-8287"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2021/suse-su-20210062-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1178882"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1179491"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1180553"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1180554"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-1971"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-8265"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-8277"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2020-8287"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "nodejs12",
+        "ecosystem": "SUSE:Linux Enterprise Module for Web and Scripting 15 SP2",
+        "purl": "pkg:rpm/suse/nodejs12&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Web%20and%20Scripting%2015%20SP2"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "12.20.1-4.10.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "nodejs12": "12.20.1-4.10.1",
+            "nodejs12-docs": "12.20.1-4.10.1",
+            "nodejs12-devel": "12.20.1-4.10.1",
+            "npm12": "12.20.1-4.10.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2021:0062-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

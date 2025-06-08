@@ -1,0 +1,66 @@
+{
+  "id": "RUSTSEC-2025-0018",
+  "summary": "Potential out-of-bounds read with a malformed ELF file and the HashTable API.",
+  "details": "Affected versions of this crate only validated the `index` argument of\n`HashTable::get_bucket` and `HashTable::get_chain` against the input-controlled\n`bucket_count` and `chain_count` fields, but not against the size of the ELF\nsection. As a result, a malformed ELF file could trigger out-of-bounds reads in\na consumer of the HashTable API by setting these fields to inappropriately large\nvalues that would fall outside the relevant hash table section, and by\nintroducing correspondingly out-of-bounds hash table indexes elsewhere in the ELF\nfile.",
+  "modified": "2025-03-26T17:38:20Z",
+  "published": "2025-03-26T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/xmas-elf"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2025-0018.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/nrc/xmas-elf/issues/86"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "xmas-elf",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/xmas-elf"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.10.0"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [
+            "xmas_elf::hash::HashTable::get_bucket",
+            "xmas_elf::hash::HashTable::get_chain"
+          ],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": null,
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2025-0018.json",
+        "categories": [
+          "memory-exposure"
+        ]
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

@@ -1,0 +1,82 @@
+{
+  "id": "MGASA-2020-0217",
+  "summary": "Updated ansible packages fix security vulnerabilities",
+  "details": "Updated ansible package fixes security vulnerabilities:\n\nA race condition flaw was found in Ansible Engine when running a playbook\nwith an unprivileged become user. When Ansible needs to run a module with\nbecome user, the temporary directory is created in /var/tmp. This directory\nis created with \"umask 77 && mkdir -p <dir>\"; this operation does not fail\nif the directory already exists and is owned by another user. An attacker\ncould take advantage to gain control of the become user as the target\ndirectory can be retrieved by iterating '/proc/<pid>/cmdline'\n(CVE-2020-1733).\n\nA flaw was found in the Ansible Engine when the fetch module is used. An\nattacker could intercept the module, inject a new path, and then choose a\nnew destination path on the controller node (CVE-2020-1735).\n\nA flaw was found in the Ansible Engine when using the Extract-Zip function\nfrom the win_unzip module as the extracted file(s) are not checked if they\nbelong to the destination folder. An attacker could take advantage of this\nflaw by crafting an archive anywhere in the file system, using a path\ntraversal (CVE-2020-1737).\n\nA flaw was found in Ansible Engine. When a password is set with the\nargument \"password\" of svn module, it is used on svn command line,\ndisclosing to other users within the same node. An attacker could take\nadvantage by reading the cmdline file from that particular PID on the\nprocfs (CVE-2020-1739).\n\nA flaw was found in Ansible Engine when using Ansible Vault for editing\nencrypted files. When a user executes \"ansible-vault edit\", another user\non the same computer can read the old and new secret, as it is created in\na temporary file with mkstemp and the returned file descriptor is closed\nand the method write_data is called to write the existing secret in the\nfile. This method will delete the file before recreating it insecurely\n(CVE-2020-1740).\n\nA flaw was found in the Ansible Engine when the ldap_attr and ldap_entry\ncommunity modules are used. The issue discloses the LDAP bind password to\nstdout or a log file if a playbook task is written using the bind_pw in\nthe parameters field. The highest threat from this vulnerability is data\nconfidentiality (CVE-2020-1746).\n\nA security flaw was found in the Ansible Engine when managing Kubernetes\nusing the k8s connection plugin. Sensitive parameters such as passwords\nand tokens are passed to the kubectl command line instead of using\nenvironment variables or an input configuration file, which is safer.\nThis flaw discloses passwords and tokens from the process list, and the\nno_log directive from the debug module would not be reflected in the\nunderlying command-line tools options, displaying passwords and tokens\non stdout and log files (CVE-2020-1753).\n\nA flaw was found in the Ansible Engine. When using ansible_facts as a\nsubkeyof itself, and promoting it to a variable when injecting is enabled,\noverwriting the ansible_facts after the clean, an attacker could take\nadvantage of this by altering the ansible_facts leading to privilege\nescalation or code injection. The highest threat from this vulnerability\nare to data integrity and system availability (CVE-2020-10684).\n\nA flaw was found on Ansible Engine when using modules which decrypts vault\nfiles such as assemble, script, unarchive, win_copy, aws_s3 or copy modules.\nThe temporary directory is created in /tmp leaves the secrets unencrypted.\nOn Operating Systems which /tmp is not a tmpfs but part of the root\npartition, the directory is only cleared on boot and the decrypted data\nremains when the host is switched off. The system will be vulnerable when\nthe system is not running. So decrypted data must be cleared as soon as\npossible and the data which normally is encrypted is sensible\n(CVE-2020-10685).\n",
+  "modified": "2020-05-24T17:23:16Z",
+  "published": "2020-05-24T18:04:47Z",
+  "related": [
+    "CVE-2020-10684",
+    "CVE-2020-1733",
+    "CVE-2020-1735",
+    "CVE-2020-1737",
+    "CVE-2020-1739",
+    "CVE-2020-1740",
+    "CVE-2020-1746",
+    "CVE-2020-1753"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2020-0217.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=26349"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ansible/ansible/blob/v2.7.17/changelogs/CHANGELOG-v2.7.rst"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/FWDK3QUVBULS3Q3PQTGEKUQYPSNOU5M3/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://access.redhat.com/errata/RHSA-2020:1544"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://access.redhat.com/errata/RHSA-2020:2142"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ansible",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/ansible?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.18-1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0217.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

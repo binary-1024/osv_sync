@@ -1,0 +1,65 @@
+{
+  "id": "MGASA-2020-0242",
+  "summary": "Updated vino packages fix security vulnerability",
+  "details": "Updated vino packages fix security vulnerabilities:\n\nThe rfbProcessClientNormalMessage function in libvncserver/rfbserver.c in\nLibVNCServer did not properly handle attempts to send a large amount of\nClientCutText data, which allowed remote attackers to cause a denial of\nservice (memory consumption or daemon crash) via a crafted message that\nwas processed by using a single unchecked malloc (CVE-2014-6053).\n\nAn issue was discovered in LibVNCServer. rfbProcessClientNormalMessage()\nin rfbserver.c did not sanitize msg.cct.length, leading to access to\nuninitialized and potentially sensitive data or possibly unspecified other\nimpact (e.g., an integer overflow) via specially crafted VNC packets\n(CVE-2018-7225).\n\nLibVNC contained a memory leak in VNC server code, which allowed an\nattacker to read stack memory and could be abused for information\ndisclosure. Combined with another vulnerability, it could be used to\nleak stack memory and bypass ASLR. This attack appeared to be exploitable\nvia network connectivity (CVE-2019-15681).\n\nThe bundled libvncserver code in vino has been patched to fix these issues.\n",
+  "modified": "2020-06-06T00:14:16Z",
+  "published": "2020-06-10T21:39:20Z",
+  "related": [
+    "CVE-2014-6053",
+    "CVE-2018-7225",
+    "CVE-2019-15681"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2020-0242.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=25786"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/lts/security/2019/dla-2014"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "vino",
+        "ecosystem": "Mageia:7",
+        "purl": "pkg:rpm/mageia/vino?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.22.0-3.1.mga7"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0242.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

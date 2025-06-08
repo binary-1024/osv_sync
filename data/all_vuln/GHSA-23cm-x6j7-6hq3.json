@@ -1,0 +1,78 @@
+{
+  "id": "GHSA-23cm-x6j7-6hq3",
+  "summary": "matrix-js-sdk can be tricked into disclosing E2EE room keys to a participating homeserver",
+  "details": "### Impact\n\nA logic error in the room key sharing functionality of matrix-js-sdk before 12.4.1 allows a malicious Matrix homeserver\u2020 participating in an encrypted room to steal room encryption keys from affected Matrix clients participating in that room. This allows the homeserver to decrypt end-to-end encrypted messages sent by affected clients.\n\n\u2020 Or anyone with access to the account of the original recipient of an encrypted message.\n\nKnown clients affected (via their use of vulnerable versions of matrix-js-sdk):\n\n- Element Web (1.8.2 and earlier)\n- Element Desktop (1.8.2 and earlier)\n- SchildiChat Web (1.7.32-sc1 and earlier)\n- SchildiChat Desktop (1.7.32-sc1 and earlier)\n- Cinny (1.2.0 and earlier)\n\n### Patch\n\nThis was fixed in https://github.com/matrix-org/matrix-js-sdk/commit/894c24880da0e1cc81818f51c0db80e3c9fb2be9.\n\n### Workarounds\nTo prevent a homeserver from being able to steal the room keys, vulnerable clients can be taken offline or signed out. If signing out, care should be taken to either set up Secure Backup or export E2E room keys in order to preserve access to past messages.",
+  "aliases": [
+    "CVE-2021-40823"
+  ],
+  "modified": "2023-11-08T04:06:49.200441Z",
+  "published": "2021-09-14T20:24:18Z",
+  "database_specific": {
+    "nvd_published_at": "2021-09-13T19:15:00Z",
+    "cwe_ids": [
+      "CWE-200",
+      "CWE-327"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-09-14T18:08:41Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/matrix-org/matrix-js-sdk/security/advisories/GHSA-23cm-x6j7-6hq3"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-40823"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/matrix-org/matrix-js-sdk/commit/894c24880da0e1cc81818f51c0db80e3c9fb2be9"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/matrix-org/matrix-js-sdk"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/matrix-org/matrix-js-sdk/releases/tag/v12.4.1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://matrix.org/blog/2021/09/13/vulnerability-disclosure-key-sharing"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "matrix-js-sdk",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/matrix-js-sdk"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "12.4.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-23cm-x6j7-6hq3/GHSA-23cm-x6j7-6hq3.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

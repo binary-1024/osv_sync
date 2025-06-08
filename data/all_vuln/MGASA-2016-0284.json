@@ -1,0 +1,78 @@
+{
+  "id": "MGASA-2016-0284",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This update is based on the upstream 4.4.16 kernel and fixes at least theese\nsecurity issues:\n\nnfsd in the Linux kernel through 4.6.3 allows local users to bypass intended\nfile-permission restrictions by setting a POSIX ACL, related to nfs2acl.c,\nnfs3acl.c, and nfs4acl.c. (CVE-2016-1237).\n\nThe ecryptfs_privileged_open function in fs/ecryptfs/kthread.c in the Linux\nkernel before 4.6.3 allows  local users to gain privileges or cause a denial\nof service (stack memory consumption) via vectors involving crafted mmap\ncalls for /proc pathnames, leading to recursive pagefault handling\n(CVE-2016-1583). \n\nThe key_reject_and_link function in security/keys/key.c in the Linux kernel\nthrough 4.6.3 does not ensure that a certain data structure is initialized,\nwhich allows local users to cause a denial of service (system crash) via\nvectors involving a crafted keyctl request2 command (CVE-2016-4470).\n\nUse-after-free vulnerability in mm/percpu.c in the Linux kernel through 4.6\nallows local users to cause a denial of service (BUG) or possibly have\nunspecified other impact via crafted use of the mmap and bpf system calls\n(CVE-2016-4794).\n\nThe tipc_nl_publ_dump function in net/tipc/socket.c in the Linux kernel\nthrough 4.6 does not verify socket existence, which allows local users to\ncause a denial of service (NULL pointer dereference and system crash) or\npossibly have unspecified other impact via a dumpit operation\n(CVE-2016-4951).\n\nThe compat IPT_SO_SET_REPLACE setsockopt implementation in the netfilter\nsubsystem in the Linux kernel before 4.6.3 allows local users to gain\nprivileges or cause a denial of service (memory corruption) by leveraging\nin-container root access to provide a crafted offset value that triggers\nan unintended decrement. (CVE-2016-4997).\n\nThe IPT_SO_SET_REPLACE setsockopt implementation in the netfilter subsystem\nin the Linux kernel before 4.6 allows local users to cause a denial of\nservice (out-of-bounds read) or possibly obtain sensitive information from\nkernel heap memory by leveraging in-container root access to provide a\ncrafted offset value that leads to crossing a ruleset blob boundary\n(CVE-2016-4998).\n\nMultiple heap-based buffer overflows in the hiddev_ioctl_usage function in\ndrivers/hid/usbhid/hiddev.c in the Linux kernel through 4.6.3 allow local\nusers to cause a denial of service or possibly have unspecified other impact\nvia a crafted (1) HIDIOCGUSAGES or (2) HIDIOCSUSAGES ioctl call\n(CVE-2016-5829).\n\nFor other fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2016-08-31T15:32:33Z",
+  "related": [
+    "CVE-2016-1237",
+    "CVE-2016-1583",
+    "CVE-2016-4470",
+    "CVE-2016-4794",
+    "CVE-2016-4951",
+    "CVE-2016-4997",
+    "CVE-2016-4998",
+    "CVE-2016-5829"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0284.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=19057"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.16"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.16-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0284.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

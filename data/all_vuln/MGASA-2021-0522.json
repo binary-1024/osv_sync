@@ -1,0 +1,64 @@
+{
+  "id": "MGASA-2021-0522",
+  "summary": "Updated freerdp packages fix security vulnerability",
+  "details": "All FreeRDP clients prior to version 2.4.1 using gateway connections\n('/gt:rpc') fail to validate input data. A malicious gateway might allow\nclient memory to be written out of bounds. This issue has been resolved in\nversion 2.4.1. If you are unable to update then use `/gt:http` rather than\n/gt:rdp connections if possible or use a direct connection without a\ngateway. (CVE-2021-41159)\n\nIn affected versions a malicious server might trigger out of bound writes\nin a connected client. Connections using GDI or SurfaceCommands to send\ngraphics updates to the client might send `0` width/height or out of bound\nrectangles to trigger out of bound writes. With `0` width or heigth the\nmemory allocation will be `0` but the missing bounds checks allow writing\nto the pointer at this (not allocated) region. This issue has been patched\nin FreeRDP 2.4.1. (CVE-2021-41160)\n",
+  "modified": "2021-11-25T11:22:19Z",
+  "published": "2021-11-25T13:06:13Z",
+  "related": [
+    "CVE-2021-41159",
+    "CVE-2021-41160"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0522.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=29654"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://access.redhat.com/errata/RHSA-2021:4622"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "freerdp",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/freerdp?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.2.0-1.1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0522.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

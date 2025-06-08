@@ -1,0 +1,107 @@
+{
+  "id": "MGASA-2022-0262",
+  "summary": "Updated golang packages fix security vulnerability",
+  "details": "net/http: improper sanitization of Transfer-Encoding header\nThe HTTP/1 client accepted some invalid Transfer-Encoding headers as\nindicating a \"chunked\" encoding. This could potentially allow for request\nsmuggling, but only if combined with an intermediate server that also\nimproperly failed to reject the header as invalid. (CVE-2022-1705)\n\nWhen httputil.ReverseProxy.ServeHTTP was called with a Request.Header map\ncontaining a nil value for the X-Forwarded-For header, ReverseProxy would\nset the client IP as the value of the X-Forwarded-For header, contrary to\nits documentation. In the more usual case where a Director function set\nthe X-Forwarded-For header value to nil, ReverseProxy would leave the\nheader unmodified as expected. (CVE-2022-32148)\n\ncompress/gzip: stack exhaustion in Reader.Read\nCalling Reader.Read on an archive containing a large number of\nconcatenated 0-length compressed files can cause a panic due to stack\nexhaustion. (CVE-2022-30631)\n\nencoding/xml: stack exhaustion in Unmarshal\nCalling Unmarshal on a XML document into a Go struct which has a nested\nfield that uses the any field tag can cause a panic due to stack\nexhaustion. (CVE-2022-30633)\n\nencoding/xml: stack exhaustion in Decoder.Skip\nCalling Decoder.Skip when parsing a deeply nested XML document can cause a\npanic due to stack exhaustion. (CVE-2022-28131)\n\nencoding/gob: stack exhaustion in Decoder.Decode\nCalling Decoder.Decode on a message which contains deeply nested\nstructures can cause a panic due to stack exhaustion. (CVE-2022-30635)\n\npath/filepath: stack exhaustion in Glob\nCalling Glob on a path which contains a large number of path separators\ncan cause a panic due to stack exhaustion. (CVE-2022-30632)\n\nio/fs: stack exhaustion in Glob\nCalling Glob on a path which contains a large number of path separators\ncan cause a panic due to stack exhaustion. (CVE-2022-30630)\n\ngo/parser: stack exhaustion in all Parse* functions\nCalling any of the Parse functions on Go source code which contains deeply\nnested types or declarations can cause a panic due to stack exhaustion.\n(CVE-2022-1962)\n",
+  "modified": "2022-07-16T19:10:07Z",
+  "published": "2022-07-16T19:58:20Z",
+  "related": [
+    "CVE-2022-1705",
+    "CVE-2022-1962",
+    "CVE-2022-28131",
+    "CVE-2022-30630",
+    "CVE-2022-30631",
+    "CVE-2022-30632",
+    "CVE-2022-30633",
+    "CVE-2022-30635",
+    "CVE-2022-32148"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0262.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=30639"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://groups.google.com/g/golang-announce/c/nqrv9fbR0zE"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/CUFBL2GZMN756YELNBCPJO3MTCGYXSYH/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/53188"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/53423"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/53168"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/53611"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/53614"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/53416"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/53415"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/53616"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "golang",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/golang?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.17.12-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0262.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

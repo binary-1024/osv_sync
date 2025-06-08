@@ -1,0 +1,230 @@
+{
+  "id": "MGASA-2018-0417",
+  "summary": "Updated kernel packages fix security vulnerabilities",
+  "details": "This kernel update is based on the upstream 4.14.78 and fixes at least the\nfollowing security issues:\n\nAn issue was discovered in the fd_locked_ioctl function in\ndrivers/block/floppy.c in the Linux kernel through 4.15.7. The floppy\ndriver will copy a kernel pointer to user memory in response to the\nFDGETPRM ioctl. An attacker can send the FDGETPRM ioctl and use the\nobtained kernel pointer to discover the location of kernel code and data\nand bypass kernel security protections such as KASLR (CVE-2018-7755).\n\nA security flaw was found in the chap_server_compute_md5() function in the\nISCSI target code in the Linux kernel in a way an authentication request\nfrom an ISCSI initiator is processed. An unauthenticated remote attacker\ncan cause a stack buffer overflow and smash up to 17 bytes of the stack.\nThe attack requires the iSCSI target to be enabled on the victim host.\nDepending on how the target's code was built (i.e. depending on a compiler,\ncompile flags and hardware architecture) an attack may lead to a system\ncrash and thus to a denial-of-service or possibly to a non-authorized\naccess to data exported by an iSCSI target. Due to the nature of the flaw,\nprivilege escalation cannot be fully ruled out, although we believe it is\nhighly unlikely (CVE-2018-14633).\n\nAn issue was discovered in xenvif_set_hash_mapping in\ndrivers/net/xen-netback/hash.c in the Linux kernel through 4.18.1, as used\nin Xen through 4.11.x and other products. The Linux netback driver allows\nfrontends to control mapping of requests to request queues. When processing\na request to set or change this mapping, some input validation (e.g., for\nan integer overflow) was missing or flawed, leading to OOB access in hash\nhandling. A malicious or buggy frontend may cause the (usually privileged)\nbackend to make out of bounds memory accesses, potentially resulting in\none or more of privilege escalation, Denial of Service (DoS), or\ninformation leaks (CVE-2018-15471).\n\nSince Linux kernel version 3.2, the mremap() syscall performs TLB flushes\nafter dropping pagetable locks. If a syscall such as ftruncate() removes\nentries from the pagetables of a task that is in the middle of mremap(),\na stale TLB entry can remain for a short time that permits access to a\nphysical page after it has been released back to the page allocator and\nreused (CVE-2018-18281).\n\nIn the Linux kernel 4.14.x, 4.15.x, 4.16.x, 4.17.x, and 4.18.x before\n4.18.13, faulty computation of numeric bounds in the BPF verifier permits\nout-of-bounds memory accesses because adjust_scalar_min_max_vals in\nkernel/bpf/verifier.c mishandles 32-bit right shifts (CVE-2018-18445).\n\nOther fixes in this update:\n* WireGuard has been updated 0.0.20181018\n\nFor other uptstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2018-10-27T09:45:46Z",
+  "related": [
+    "CVE-2018-14633",
+    "CVE-2018-15471",
+    "CVE-2018-18281",
+    "CVE-2018-18445",
+    "CVE-2018-7755"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0417.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=23687"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.71"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.72"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.73"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.74"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.75"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.76"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.77"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.78"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.78-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0417.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-userspace-headers",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.78-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0417.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-vboxadditions",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.18-10.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0417.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.18-10.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0417.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.13-70.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0417.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "wireguard-tools",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/wireguard-tools?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.0.20181018-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0417.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

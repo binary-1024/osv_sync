@@ -1,0 +1,126 @@
+{
+  "id": "GHSA-wmx7-pw49-88jx",
+  "summary": "Craft CMS Allows TOTP Token To Stay Valid After Use",
+  "details": "Craft CMS 5 allows reuse of TOTP tokens multiple times within the validity period.\n\n### Impact\n\nAn attacker is able to re-submit a valid TOTP token to establish an authenticated session. This requires that the attacker has knowledge of the victim's credentials.\n\nA TOTP token can be used multiple times to establish an authenticated session.\n[RFC 6238](https://www.rfc-editor.org/rfc/rfc6238) insists that an OTP must not be used more than once.\n\n> The verifier MUST NOT accept the second attempt of the OTP after the successful validation has been issued for the first OTP, which ensures one-time only use of an OTP.\n\nThe OWASP Application Security Verification Standard v4.0.3 (ASVS) [reiterates\nthis property with requirement 2.8.4](https://github.com/OWASP/ASVS/blob/v4.0.3/4.0/en/0x11-V2-Authentication.md#v28-one-time-verifier).\n\n> Verify that time-based OTP can be used only once within the validity period.\n\nIt should also be noted that the validity period of an TOTP token is 2 minutes. This makes a successful brute force attack more likely, since the four tokens are valid at the same time.\n\n### Patches\n\nThis has been patched in Craft 5.2.3.\n\nReferences:\n\nhttps://github.com/sbaresearch/advisories/tree/public/2024/SBA-ADV 2024061701_CraftCMS_TOTP_Valid_After_Use\n\nhttps://github.com/craftcms/cms/releases/tag/5.2.3",
+  "aliases": [
+    "CVE-2024-41800"
+  ],
+  "modified": "2024-07-26T21:50:01.875030Z",
+  "published": "2024-07-25T17:58:01Z",
+  "related": [
+    "CVE-2024-41800"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-07-25T17:15:11Z",
+    "cwe_ids": [
+      "CWE-287"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-07-25T17:58:01Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/craftcms/cms/security/advisories/GHSA-wmx7-pw49-88jx"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-41800"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/craftcms/cms/commit/7c790fa5ad5a8cb8016cb6793ec3554c4c079e38"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/craftcms/cms"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/craftcms/cms/releases/tag/5.2.3"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sbaresearch/advisories/tree/public/2024/SBA-ADV-20240617-01_CraftCMS_TOTP_Valid_After_Use"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "craftcms/cms",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/craftcms/cms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5.0.0-beta.1"
+            },
+            {
+              "fixed": "5.2.3"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.0.0",
+        "5.0.0-RC1",
+        "5.0.0-beta.1",
+        "5.0.0-beta.10",
+        "5.0.0-beta.11",
+        "5.0.0-beta.2",
+        "5.0.0-beta.3",
+        "5.0.0-beta.4",
+        "5.0.0-beta.5",
+        "5.0.0-beta.6",
+        "5.0.0-beta.7",
+        "5.0.0-beta.8",
+        "5.0.0-beta.9",
+        "5.0.1",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "5.0.6",
+        "5.1.0",
+        "5.1.1",
+        "5.1.10",
+        "5.1.2",
+        "5.1.3",
+        "5.1.4",
+        "5.1.5",
+        "5.1.6",
+        "5.1.7",
+        "5.1.8",
+        "5.1.9",
+        "5.2.0",
+        "5.2.0-beta.1",
+        "5.2.0-beta.2",
+        "5.2.0-beta.3",
+        "5.2.0-beta.4",
+        "5.2.0-beta.5",
+        "5.2.0-beta.6",
+        "5.2.1",
+        "5.2.2"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 5.2.2",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-wmx7-pw49-88jx/GHSA-wmx7-pw49-88jx.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:N/I:H/A:N"
+    },
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:P/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N"
+    }
+  ]
+}

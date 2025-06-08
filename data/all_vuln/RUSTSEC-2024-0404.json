@@ -1,0 +1,63 @@
+{
+  "id": "RUSTSEC-2024-0404",
+  "summary": "Unsoundness in anstream",
+  "details": "When given a valid UTF8 string \"\u00f6\\x1b\ud83d\ude00\", the function in\ncrates/anstream/src/adapter/strip.rs will be confused. The UTF8\nbytes are \\xc3\\xb6 then \\x1b then \\xf0\\x9f\\x98\\x80.\n\nWhen looping over \"non-printable bytes\" \\x1b\\xf0 will be\nconsidered as some non-printable sequence.\n\nThis will produce a broken str from the incorrectly segmented\nbytes via str::from_utf8_unchecked, and that should never happen.\n\nFull credit goes to @Ralith who reviewed this code and\nasked @burakemir to follow up.",
+  "modified": "2024-12-04T12:39:59Z",
+  "published": "2024-09-08T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/anstream"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2024-0404.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/rust-cli/anstyle/issues/156"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "anstream",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/anstream"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.6.8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [
+            "anstream::adapter::strip_str"
+          ],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": null,
+        "informational": "unsound",
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2024-0404.json",
+        "categories": []
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

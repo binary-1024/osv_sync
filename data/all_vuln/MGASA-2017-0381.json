@@ -1,0 +1,200 @@
+{
+  "id": "MGASA-2017-0381",
+  "summary": "Updated kernel packages fix security vulnerabilities",
+  "details": "This kernel update is based on upstream 4.9.56 and fixes at least the\nfollowing security issues:\n\nA flaw was found in the way the Linux KVM module processed the trap flag(TF)\nbit in EFLAGS during emulation of the syscall instruction, which leads to a\ndebug exception(#DB) being raised in the guest stack. A user/process inside\na guest could use this flaw to potentially escalate their privileges inside\nthe guest (CVE-2017-7518).\n\nA kernel data leak due to an out-of-bound read was found in the Linux kernel\nin inet_diag_msg_sctp{,l}addr_fill() and sctp_get_sctp_info() functions\npresent since version 4.7-rc1 through version 4.13. A data leak happens when\nthese functions fill in sockaddr data structures used to export socket's\ndiagnostic information. As a result, up to 100 bytes of the slab data could\nbe leaked to a userspace (CVE-2017-7558).\n\nA security flaw was discovered in nl80211_set_rekey_data() function in the\nLinux kernel since v3.1-rc1 through v4.13. This function does not check\nwhether the required attributes are present in a netlink request. This\nrequest can be issued by a user with CAP_NET_ADMIN privilege and may result\nin NULL dereference and a system crash (CVE-2017-12153).\n\nLinux kernel built with the KVM visualization support (CONFIG_KVM), with\nnested visualization (nVMX) feature enabled (nested=1), is vulnerable to a\ncrash due to disabled external interrupts. As L2 guest could acce s (r/w)\nhardware CR8 register of the host(L0). In a nested visualization setup,\nL2 guest user could use this flaw to potentially crash the host(L0)\nresulting in DoS (CVE-2017-12154).\n\nThe tcp_disconnect function in net/ipv4/tcp.c in the Linux kernel before\n4.12 allows local users to cause a denial of service (__tcp_select_window\ndivide-by-zero error and system crash) by triggering a disconnect within a\ncertain tcp_recvmsg code path (CVE-2017-14106).\n\nThe atyfb_ioctl function in drivers/video/fbdev/aty/atyfb_base.c in the\nLinux kernel through 4.12.10 does not initialize a certain data structure,\nwhich allows local users to obtain sensitive information from kernel stack\nmemory by reading locations associated with padding bytes (CVE-2017-14156).\n\nIt was found that the iscsi_if_rx() function in scsi_transport_iscsi.c in\nthe Linux kernel since v2.6.24-rc1 through 4.13.2 allows local users to\ncause a denial of service (a system panic) by making a number of certain\nsyscalls by leveraging incorrect length validation in the kernel code\n(CVE-2017-14489).\n\nThe sg_ioctl function in drivers/scsi/sg.c in the Linux kernel before 4.13.4\nallows local users to obtain sensitive information from uninitialized kernel\nheap-memory locations via an SG_GET_REQUEST_TABLE ioctl call for /dev/sg0\n(CVE-2017-14991).\n\nThe tpacket_rcv() function in 'net/packet/af_packet.c' file in the Linux\nkernel before 4.13 mishandles vnet headers, which might allow local users\nto cause a denial of service (buffer overflow, and disk and memory\ncorruption) or possibly have unspecified other impact via crafted system\ncalls (CVE-2017-14497).\n\nA reachable assertion failure flaw was found in the Linux kernel built with\nKVM virtualisation(CONFIG_KVM) support with Virtual Function I/O feature\n(CONFIG_VFIO) enabled. This failure could occur if a malicious guest device\nsent a virtual interrupt (guest IRQ) with a larger (>1024) index value\n(CVE-2017-1000252).\n\nFor other upstream fixes in this update, read the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2017-10-19T22:05:51Z",
+  "related": [
+    "CVE-2017-1000252",
+    "CVE-2017-12153",
+    "CVE-2017-12154",
+    "CVE-2017-14106",
+    "CVE-2017-14156",
+    "CVE-2017-14489",
+    "CVE-2017-14497",
+    "CVE-2017-14991",
+    "CVE-2017-7518",
+    "CVE-2017-7558"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0381.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=21849"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.9.51"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.9.52"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.9.53"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.9.54"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.9.55"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.9.56"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.9.56-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0381.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-userspace-headers",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.9.56-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0381.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-vboxadditions",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.26-6.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0381.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.26-6.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0381.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.12-46.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0381.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

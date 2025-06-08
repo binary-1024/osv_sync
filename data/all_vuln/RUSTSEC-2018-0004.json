@@ -1,0 +1,77 @@
+{
+  "id": "RUSTSEC-2018-0004",
+  "summary": "Malicious input could cause uninitialized memory to be exposed",
+  "details": "Affected versions of Claxon made an invalid assumption about the decode buffer\nsize being a multiple of a value read from the bitstream. This could cause parts\nof the decode buffer to not be overwritten. If the decode buffer was newly\nallocated and uninitialized, this uninitialized memory could be exposed.\n\nThis allows an attacker to observe parts of the uninitialized memory in the\ndecoded audio stream.\n\nThe flaw was corrected by checking that the value read from the bitstream divides\nthe decode buffer size, and returning a format error if it does not. If an error\nis returned, the decode buffer is not exposed. Regression tests and an\nadditional fuzzer have been added to prevent similar flaws in the future.",
+  "aliases": [
+    "CVE-2018-20992",
+    "GHSA-8c6g-4xc5-w96c"
+  ],
+  "modified": "2023-11-08T04:00:13.431426Z",
+  "published": "2018-08-25T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/claxon"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2018-0004.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/ruuda/claxon/commit/8f28ec275e412dd3af4f3cda460605512faf332c"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "claxon",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/claxon"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.3.2"
+            },
+            {
+              "introduced": "0.4.0-0"
+            },
+            {
+              "fixed": "0.4.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N",
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2018-0004.json",
+        "categories": []
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "MGASA-2014-0032",
+  "summary": "Updated ntp packages work around security vulnerability",
+  "details": "The \"monlist\" command of the NTP protocol is currently abused in a DDoS\nreflection attack. This is done by spoofing packets from addresses to\nwhich the attack is directed to. The ntp installations itself are not\ntarget of the attack, but they are part of the DDoS network which the\nattacker is driving (CVE-2013-5211).\n\n** IMPORTANT **\n\nNote: the workaround for this issue is not a change in the software, but\ninstead is a change in the default configuration.  In most cases, the\nconfiguration change will need to be made manually by administrators in\nthe /etc/ntp.conf file, as the package will only install the updated\nconfiguration as /etc/ntp.conf.rpmnew. The following lines should be added\nto the end of /etc/ntp.conf:\n\n# Permit time synchronization with our time source, but do not\n# permit the source to query or modify the service on this system.\nrestrict default nomodify notrap nopeer noquery\n",
+  "modified": "2014-01-31T16:44:50Z",
+  "published": "2014-01-31T16:44:56Z",
+  "related": [
+    "CVE-2013-5211"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0032.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=12326"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.kb.cert.org/vuls/id/348126"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://support.ntp.org/bin/view/Main/SecurityNotice#DRDoS_Amplification_Attack_using"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://lists.opensuse.org/opensuse-security-announce/2014-01/msg00005.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ntp",
+        "ecosystem": "Mageia:3",
+        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.6p5-12.1.mga3"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0032.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

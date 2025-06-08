@@ -1,0 +1,97 @@
+{
+  "id": "GHSA-892p-pqrr-hxqr",
+  "summary": "Information Disclosure via Flags override link",
+  "details": "## Summary\n\nAn information disclosure vulnerability affecting Flags SDK has been addressed. It impacted `flags` \u22643.2.0 and `@vercel/flags` \u22643.1.1 and in certain circumstances, allowed a bad actor with detailed knowledge of the vulnerability to list all flags returned by the flags discovery endpoint (`.well-known/vercel/flags`).\n\n## Impact\n\nThis vulnerability allowed for information disclosure, where a bad actor could gain access to a list of all feature flags exposed through the flags discovery endpoint, including the:\n\n- Flag names\n- Flag descriptions\n- Available options and their labels (e.g. `true`, `false`)\n- Default flag values\n\nNot impacted:\n\n- Flags providers were not accessible\n\nNo write access nor additional customer data was exposed, this is limited to just the values noted above. Vercel has automatically mitigated this incident on behalf of our customers for the default flags discovery endpoint at `.well-known/vercel/flags`. Flags Explorer will be disabled and show a warning notice until upgraded to `flags@4.0.0`.\n\n## Resolution\n\nThe `verifyAccess` function was patched within `flags@4.0.0`. \n\nUsers of `@vercel/flags` should also migrate to `flags@4.0.0`.\n\nFor further guidance on upgrading your version, please see our [upgrade guide](https://github.com/vercel/flags/blob/main/packages/flags/guides/upgrade-to-v4.md).\n\n## Mitigations\n\nVercel implemented a network-level mitigation to prevent the default flags discovery endpoint at `/.well-known/vercel/flags` being reachable, which automatically protects Vercel deployments against exploitation of this issue. Users need to upgrade to `flags@4.0.0` to re-enable the Flags Explorer.\n\nThis automatic mitigation is not effective in two scenarios:\n\n- When using the Flags SDK on Pages Router, as the original non-rewritten route would still be accessible, e.g. `/api/vercel/flags`.\n- When using a custom path for the flags discovery endpoint.\n\nIf you are not protected by the Vercel default mitigation you can temporarily deny access to the other exposed flags discovery endpoints through a custom WAF rule while you upgrade to the latest version.\n\n## References\n\n- https://vercel.com/changelog/information-disclosure-in-flags-sdk-cve-2025-46332\n- https://github.com/vercel/flags/blob/main/packages/flags/guides/upgrade-to-v4.md",
+  "aliases": [
+    "CVE-2025-46332"
+  ],
+  "modified": "2025-05-02T19:57:14.024114Z",
+  "published": "2025-05-02T19:28:40Z",
+  "database_specific": {
+    "nvd_published_at": "2025-05-02T17:15:52Z",
+    "cwe_ids": [
+      "CWE-200"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-02T19:28:40Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/vercel/flags/security/advisories/GHSA-892p-pqrr-hxqr"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46332"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/vercel/flags"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/vercel/flags/blob/main/packages/flags/guides/upgrade-to-v4.md"
+    },
+    {
+      "type": "WEB",
+      "url": "https://vercel.com/changelog/information-disclosure-in-flags-sdk-cve-2025-46332"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "flags",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/flags"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.0.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.2.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-892p-pqrr-hxqr/GHSA-892p-pqrr-hxqr.json"
+      }
+    },
+    {
+      "package": {
+        "name": "@vercel/flags",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/%40vercel/flags"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "3.1.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-892p-pqrr-hxqr/GHSA-892p-pqrr-hxqr.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N"
+    }
+  ]
+}

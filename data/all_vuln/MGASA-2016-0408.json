@@ -1,0 +1,143 @@
+{
+  "id": "MGASA-2016-0408",
+  "summary": "Updated virtualbox packages fixes security vulnerabilities",
+  "details": "This update provides virtualbox 5.1.10 maintenance release and resolves\nat least the following security issues:\n\nOpenSSL through 1.0.2h incorrectly uses pointer arithmetic for heap-buffer\nboundary checks, which might allow remote attackers to cause a denial of\nservice (integer overflow and application crash) or possibly have\nunspecified other impact by leveraging unexpected malloc behavior, related\nto s3_srvr.c, ssl_sess.c, and t1_lib.c (CVE-2016-2177).\n\nThe dsa_sign_setup function in crypto/dsa/dsa_ossl.c in OpenSSL through\n1.0.2h does not properly ensure the use of constant-time operations, which\nmakes it easier for local users to discover a DSA private key via a timing\nside-channel attack (CVE-2016-2178).\n\nThe DTLS implementation in OpenSSL before 1.1.0 does not properly restrict\nthe lifetime of queue entries associated with unused out-of-order messages,\nwhich allows remote attackers to cause a denial of service (memory\nconsumption) by maintaining many crafted DTLS sessions simultaneously,\nrelated to d1_lib.c, statem_dtls.c, statem_lib.c, and statem_srvr.c\n(CVE-2016-2179).\n\nThe TS_OBJ_print_bio function in crypto/ts/ts_lib.c in the X.509 Public Key\nInfrastructure Time-Stamp Protocol (TSP) implementation in OpenSSL through\n1.0.2h allows remote attackers to cause a denial of service (out-of-bounds\nread and application crash) via a crafted time-stamp file that is mishandled\nby the \"openssl ts\" command (CVE-2016-2180).\n\nThe Anti-Replay feature in the DTLS implementation in OpenSSL before 1.1.0\nmishandles early use of a new epoch number in conjunction with a large\nsequence number, which allows remote attackers to cause a denial of service\n(false-positive packet drops) via spoofed DTLS records, related to\nrec_layer_d1.c and ssl3_record.c (CVE-2016-2181).\n\nThe Anti-Replay feature in the DTLS implementation in OpenSSL before 1.1.0\nmishandles early use of a new epoch number in conjunction with a large\nsequence number, which allows remote attackers to cause a denial of service\n(false-positive packet drops) via spoofed DTLS records, related to\nrec_layer_d1.c and ssl3_record.c (CVE-2016-2182).\n\nThe DES and Triple DES ciphers, as used in the TLS, SSH, and IPSec protocols\nand other protocols and products, have a birthday bound of approximately\nfour billion blocks, which makes it easier for remote attackers to obtain\ncleartext data via a birthday attack against a long-duration encrypted\nsession, as demonstrated by an HTTPS session using Triple DES in CBC mode,\naka a \"Sweet32\" attack (CVE-2016-2183).\n\nUnspecified vulnerability in the Oracle VM VirtualBox component before\n5.0.28 and 5.1.x before 5.1.8 in Oracle Virtualization allows local users\nto affect confidentiality, integrity, and availability via vectors related\nto Core, a different vulnerability than CVE-2016-5538 (CVE-2016-5501).\n\nUnspecified vulnerability in the Oracle VM VirtualBox component before\n5.0.28 and 5.1.x before 5.1.8 in Oracle Virtualization allows local users\nto affect confidentiality, integrity, and availability via vectors related\nto Core, a different vulnerability than CVE-2016-5501 (CVE-2016-5538).\n\nUnspecified vulnerability in the Oracle VM VirtualBox component before \n5.1.4 in Oracle Virtualization allows remote attackers to affect\nconfidentiality and integrity via vectors related to VRDE (CVE-2016-5605).\n\nUnspecified vulnerability in the Oracle VM VirtualBox component before\n5.0.28 and 5.1.x before 5.1.8 in Oracle Virtualization allows local users\nto affect availability via vectors related to Core, a different\nvulnerability than CVE-2016-5613 (CVE-2016-5608).\n\nUnspecified vulnerability in the Oracle VM VirtualBox component before\n5.0.28 and 5.1.x before 5.1.8 in Oracle Virtualization allows local users\nto affect confidentiality, integrity, and availability via vectors related\nto Core (CVE-2016-5610, CVE-2016-5611)\n\nUnspecified vulnerability in the Oracle VM VirtualBox component before\n5.0.28 and 5.1.x before 5.1.8 in Oracle Virtualization allows local users\nto affect availability via vectors related to Core, a different\nvulnerability than CVE-2016-5608 (CVE-2016-5613).\n\nThe tls_decrypt_ticket function in ssl/t1_lib.c in OpenSSL before 1.1.0\ndoes not consider the HMAC size during validation of the ticket length,\nwhich allows remote attackers to cause a denial of service via a ticket\nthat is too short (CVE-2016-6302).\n\nInteger overflow in the MDC2_Update function in crypto/mdc2/mdc2dgst.c\nin OpenSSL before 1.1.0 allows remote attackers to cause a denial of\nservice (out-of-bounds write and application crash) or possibly have\nunspecified other impact via unknown vectors (CVE-2016-6303).\n\nMultiple memory leaks in t1_lib.c in OpenSSL before 1.0.1u, 1.0.2 before\n1.0.2i, and 1.1.0 before 1.1.0a allow remote attackers to cause a denial\nof service (memory consumption) via large OCSP Status Request extensions\n(CVE-2016-6304).\n\nThe ssl3_read_bytes function in record/rec_layer_s3.c in OpenSSL 1.1.0\nbefore 1.1.0a allows remote attackers to cause a denial of service\n(infinite loop) by triggering a zero-length record in an SSL_peek call\n(CVE-2016-6305).\n\nThe certificate parser in OpenSSL before 1.0.1u and 1.0.2 before 1.0.2i\nmight allow remote attackers to cause a denial of service (out-of-bounds\nread) via crafted certificate operations, related to s3_clnt.c and\ns3_srvr.c (CVE-2016-6306).\n\nThe state-machine implementation in OpenSSL 1.1.0 before 1.1.0a allocates\nmemory before checking for an excessive length, which might allow remote\nattackers to cause a denial of service (memory consumption) via crafted\nTLS messages, related to statem/statem.c and statem/statem_lib.c\n(CVE-2016-6307).\n\nstatem/statem_dtls.c in the DTLS implementation in OpenSSL 1.1.0 before\n1.1.0a allocates memory before checking for an excessive length, which\nmight allow remote attackers to cause a denial of service (memory\nconsumption) via crafted DTLS messages (CVE-2016-6308).\n\nstatem/statem.c in OpenSSL 1.1.0a does not consider memory-block movement\nafter a realloc call, which allows remote attackers to cause a denial of\nservice (use-after-free) or possibly execute arbitrary code via a crafted\nTLS session (CVE-2016-6309).\n\ncrypto/x509/x509_vfy.c in OpenSSL 1.0.2i allows remote attackers to cause\na denial of service (NULL pointer dereference and application crash) by\ntriggering a CRL operation (CVE-2016-7052).\n\nFor other fixes in this update, read the referenced changelog.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2016-12-05T21:49:27Z",
+  "related": [
+    "CVE-2016-2177",
+    "CVE-2016-2178",
+    "CVE-2016-2179",
+    "CVE-2016-2180",
+    "CVE-2016-2181",
+    "CVE-2016-2182",
+    "CVE-2016-2183",
+    "CVE-2016-5501",
+    "CVE-2016-5538",
+    "CVE-2016-5605",
+    "CVE-2016-5608",
+    "CVE-2016-5610",
+    "CVE-2016-5611",
+    "CVE-2016-5613",
+    "CVE-2016-6302",
+    "CVE-2016-6303",
+    "CVE-2016-6304",
+    "CVE-2016-6305",
+    "CVE-2016-6306",
+    "CVE-2016-6307",
+    "CVE-2016-6308",
+    "CVE-2016-6309",
+    "CVE-2016-7052"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0408.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=19213"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.oracle.com/technetwork/security-advisory/cpuoct2016-2881722.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.virtualbox.org/wiki/Changelog"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kmod-vboxadditions",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.10-1.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0408.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.10-1.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0408.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "virtualbox",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/virtualbox?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.10-1.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0408.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

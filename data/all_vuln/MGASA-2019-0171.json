@@ -1,0 +1,250 @@
+{
+  "id": "MGASA-2019-0171",
+  "summary": "Updated kernel-tmb packages fixes security vulnerabilities",
+  "details": "This kernel update provides the upstream 4.14.119 that adds the kernel side\nmitigations for the Microarchitectural Data Sampling (MDS, also called\nZombieLoad attack) vulnerabilities in Intel processors that can allow\nattackers to retrieve data being processed inside a CPU. To complete the\nmitigations new microcode is also needed, either by installing the\nmicrocode-0.20190514-1.mga6 package, or get an updated bios / uefi\nfirmware from the motherboard vendor.\n\nThe fixed / mitigated issues are:\n\nModern Intel microprocessors implement hardware-level micro-optimizations\nto improve the performance of writing data back to CPU caches. The write\noperation is split into STA (STore Address) and STD (STore Data)\nsub-operations. These sub-operations allow the processor to hand-off\naddress generation logic into these sub-operations for optimized writes.\nBoth of these sub-operations write to a shared distributed processor\nstructure called the 'processor store buffer'. As a result, an\nunprivileged attacker could use this flaw to read private data resident\nwithin the CPU's processor store buffer. (CVE-2018-12126)\n\nMicroprocessors use a \u2018load port\u2019 subcomponent to perform load operations\nfrom memory or IO. During a load operation, the load port receives data\nfrom the memory or IO subsystem and then provides the data to the CPU\nregisters and operations in the CPU\u2019s pipelines. Stale load operations\nresults are stored in the 'load port' table until overwritten by newer\noperations. Certain load-port operations triggered by an attacker can be\nused to reveal data about previous stale requests leaking data back to the\nattacker via a timing side-channel. (CVE-2018-12127)\n\nA flaw was found in the implementation of the \"fill buffer\", a mechanism\nused by modern CPUs when a cache-miss is made on L1 CPU cache. If an\nattacker can generate a load operation that would create a page fault,\nthe execution will continue speculatively with incorrect data from the\nfill buffer while the data is fetched from higher level caches. This\nresponse time can be measured to infer data in the fill buffer.\n(CVE-2018-12130)\n\nUncacheable memory on some microprocessors utilizing speculative execution\nmay allow an authenticated user to potentially enable information disclosure\nvia a side channel with local access. (CVE-2019-11091)\n\n\nIt also fixes at least the following security issues:\n\nCross-hyperthread Spectre v2 mitigation is now provided by the Single\nThread Indirect Branch Predictors (STIBP) support. Note that STIBP also\nrequires the functionality be supported by the Intel microcode in use.\n\nIt was found that cephx authentication protocol did not verify ceph clients\ncorrectly and was vulnerable to replay attack. Any attacker having access\nto ceph cluster network who is able to sniff packets on network can use\nthis vulnerability to authenticate with ceph service and perform actions\nallowed by ceph service (CVE-2018-1128).\n\nA flaw was found in the way signature calculation was handled by cephx\nauthentication protocol. An attacker having access to ceph cluster network\nwho is able to alter the message payload was able to bypass signature\nchecks done by cephx protocol (CVE-2018-1129).\n\nA flaw was found in the Linux Kernel where an attacker may be able to have\nan uncontrolled read to kernel-memory from within a vm guest. A race\ncondition between connect() and close() function may allow an attacker\nusing the AF_VSOCK protocol to gather a 4 byte information leak or possibly\nintercept or corrupt AF_VSOCK messages destined to other clients\n(CVE-2018-14625).\n\nA security flaw was found in the Linux kernel in a way that the cleancache\nsubsystem clears an inode after the final file truncation (removal). The\nnew file created with the same inode may contain leftover pages from\ncleancache and the old file data instead of the new one (CVE-2018-16862).\n\nA use-after-free issue was found in the way the Linux kernel's KVM\nhypervisor processed posted interrupts when nested(=1) virtualization is\nenabled. In nested_get_vmcs12_pages(), in case of an error while\nprocessing posted interrupt address, it unmaps the 'pi_desc_page' without\nresetting 'pi_desc' descriptor address, which is later used in\npi_test_and_clear_on(). A guest user/process could use this flaw to crash\nthe host kernel resulting in DoS or potentially gain privileged access to\na system (CVE-2018-16882).\n\nA flaw was found in the Linux kernel's NFS41+ subsystem. NFS41+ shares\nmounted in different network namespaces at the same time can make\nbc_svc_process() use wrong back-channel IDs and cause a use-after-free\nvulnerability. Thus a malicious container user can cause a host kernel\nmemory corruption and a system panic. Due to the nature of the flaw,\nprivilege escalation cannot be fully ruled out (CVE-2018-16884).\n\nThe userfaultfd implementation in the Linux kernel before 4.19.7 mishandles\naccess control for certain UFFDIO_ ioctl calls, as demonstrated by allowing\nlocal users to write data into holes in a tmpfs file (if the user has\nread-only access to that file, and that file contains holes)\n(CVE-2018-18397).\n\nIn the Linux kernel through 4.19.6, a local user could exploit a\nuse-after-free in the ALSA driver by supplying a malicious USB Sound device\n(with zero interfaces) (CVE-2018-19824).\n\nA flaw was found in the Linux kernel in the function hso_probe() which\nreads if_num value from the USB device (as an u8) and uses it without a\nlength check to index an array, resulting in an OOB memory read in\nhso_probe() or hso_get_config_data(). An attacker with a forged USB\ndevice and physical access to a system (needed to connect such a device)\ncan cause a system crash and a denial of service (CVE-2018-19985).\n\nLinux Linux kernel version at least v4.8 onwards, probably well before\ncontains a Insufficient input validation vulnerability in bnx2x network\ncard driver that can result in DoS: Network card firmware assertion takes\ncard off-line. This attack appear to be exploitable via An attacker on a\nmust pass a very large, specially crafted packet to the bnx2x card.\nThis can be done from an untrusted guest VM (CVE-2018-1000026)\n\nAn issue was discovered in can_can_gw_rcv in net/can/gw.c in the Linux\nkernel through 4.19.13. The CAN frame modification rules allow bitwise\nlogical operations that can be also applied to the can_dlc field. Because\nof a missing check, the CAN drivers may write arbitrary content beyond\nthe data registers in the CAN controller's I/O memory when processing\ncan-gw manipulated outgoing frames. This is related to cgw_csum_xor_rel.\nAn unprivileged user can trigger a system crash (general protection fault)\n(CVE-2019-3701).\n\nA flaw was found in the Linux kernel in the function hid_debug_events_read()\nin drivers/hid/hid-debug.c file which may enter an infinite loop with\ncertain parameters passed from a userspace. A local privileged user (\"root\")\ncan cause a system lock up and a denial of service (CVE-2019-3819).\nA flaw was found in the Linux kernel's vfio interface implementation that\npermits violation of the user's locked memory limit. If a device is bound\nto a vfio driver, such as vfio-pci, and the local attacker is\nadministratively granted ownership of the device, it may cause a system\nmemory exhaustion and thus a denial of service (DoS) (CVE-2019-3882).\n\nIn the Linux kernel before 4.20.8, kvm_ioctl_create_device in\nvirt/kvm/kvm_main.c mishandles reference counting because of a race\ncondition, leading to a use-after-free (CVE-2019-6974).\n\nA use-after-free vulnerability was found in the way the Linux kernel's KVM\nhypervisor emulates a preemption timer for L2 guests when nested (=1)\nvirtualization is enabled. This high resolution timer(hrtimer) runs when\na L2 guest is active. After VM exit, the sync_vmcs12() timer object is\nstopped. The use-after-free occurs if the timer object is freed before\ncalling sync_vmcs12() routine. A guest user/process could use this flaw\nto crash the host kernel resulting in a denial of service or, potentially,\ngain privileged access to a system (CVE-2019-7221).\n\nAn information leakage issue was found in the way Linux kernel's KVM\nhypervisor handled page fault exceptions while emulating instructions\nlike VMXON, VMCLEAR, VMPTRLD, and VMWRITE with memory address as an\noperand. It occurs if the operand is a mmio address, as the returned\nexception object holds uninitialized stack memory contents. A guest\nuser/process could use this flaw to leak host's stack memory contents\nto a guest (CVE-2019-7222).\n\nkernel/bpf/verifier.c in the Linux kernel before 4.20.6 performs undesirable\nout-of-bounds speculation on pointer arithmetic in various cases, including\ncases of different branches with different state or limits to sanitize,\nleading to side-channel attacks (CVE-2019-7308).\n\nIn the Linux kernel before 4.20.14, expand_downwards in mm/mmap.c lacks\na check for the mmap minimum address, which makes it easier for attackers\nto exploit kernel NULL pointer dereferences on non-SMAP platforms. This is\nrelated to a capability check for the wrong task (CVE-2019-9213).\n\nThe Siemens R3964 line discipline driver in drivers/tty/n_r3964.c in the\nLinux kernel before 5.0.8 has multiple race conditions (CVE-2019-11486).\n\nThe coredump implementation in the Linux kernel before 5.0.10 does not use\nlocking or other mechanisms to prevent vma layout or vma flags changes while\nit runs, which allows local users to obtain sensitive information, cause a\ndenial of service, or possibly have unspecified other impact by triggering\na race condition with mmget_not_zero or get_task_mm calls (CVE-2019-11599).\n\nIt also fixes signal handling issues causing powertop to crash and some\ntracing tools to fail on execve tests.\n\nNdiswrapper has been updated to 1.62\n\nWireGuard has been updated to 0.0.20190406.\n\nFor other uptstream fixes in this update, see the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2019-05-16T08:25:22Z",
+  "related": [
+    "CVE-2018-1000026",
+    "CVE-2018-1128",
+    "CVE-2018-1129",
+    "CVE-2018-12126",
+    "CVE-2018-12127",
+    "CVE-2018-12130",
+    "CVE-2018-14625",
+    "CVE-2018-16862",
+    "CVE-2018-16882",
+    "CVE-2018-16884",
+    "CVE-2018-18397",
+    "CVE-2018-19824",
+    "CVE-2018-19985",
+    "CVE-2019-11091",
+    "CVE-2019-11486",
+    "CVE-2019-11599",
+    "CVE-2019-3701",
+    "CVE-2019-3819",
+    "CVE-2019-3882",
+    "CVE-2019-6974",
+    "CVE-2019-7221",
+    "CVE-2019-7222",
+    "CVE-2019-7308",
+    "CVE-2019-9213"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0171.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24774"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/mds.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.79"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.80"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.81"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.82"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.83"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.84"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.85"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.86"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.87"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.88"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.89"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.90"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.91"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.92"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.93"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.94"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.95"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.96"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.97"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.98"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.100"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.101"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.102"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.103"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.104"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.105"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.106"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.107"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.108"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.109"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.110"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.111"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.112"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.113"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.114"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.115"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.116"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.117"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.118"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.119"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-tmb",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.119-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0171.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

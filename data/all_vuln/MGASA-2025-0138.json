@@ -1,0 +1,67 @@
+{
+  "id": "MGASA-2025-0138",
+  "summary": "Updated haproxy packages fix security vulnerability",
+  "details": "BUG/MEDIUM: sample: fix risk of overflow when replacing multiple regex\nback-refsAleandro Prudenzano of Doyensec and Edoardo Geraci of Codean\nLabs reported a bug in sample_conv_regsub(), which can cause\nreplacements of multiple back-references to overflow the temporary trash\nbuffer. The problem happens when doing \"regsub(match,replacement,g)\":\nwe're replacing every occurrence of \"match\" with \"replacement\" in the\ninput sample, which requires a length check. For this, a max is applied,\nso that a replacement may not use more than the remaining length in the\nbuffer. However, the length check is made on the replaced pattern and\nnot on the temporary buffer used to carry the new string. This results\nin the remaining size to be usable for each input match, which can go\nbeyond the temporary buffer size if more than one occurrence has to be\nreplaced with something that's larger than the remaining room.\n",
+  "modified": "2025-04-25T17:01:51Z",
+  "published": "2025-04-25T17:34:34Z",
+  "related": [
+    "CVE-2025-32464"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2025-0138.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=34186"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://ubuntu.com/security/notices/USN-7431-1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/message/QIY5CFNUWQY6R6BCFXJMFVWXB3WVUQRS/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "haproxy",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/haproxy?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.14-1.1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2025-0138.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

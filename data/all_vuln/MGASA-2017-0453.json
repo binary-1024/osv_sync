@@ -1,0 +1,95 @@
+{
+  "id": "MGASA-2017-0453",
+  "summary": "Updated openssl packages fix security vulnerabilities",
+  "details": "OpenSSL 1.0.2 (starting from version 1.0.2b) introduced an \"error state\"\nmechanism. The intent was that if a fatal error occurred during a\nhandshake then OpenSSL would move into the error state and would\nimmediately fail if you attempted to continue the handshake. This works\nas designed for the explicit handshake functions (SSL_do_handshake(),\nSSL_accept() and SSL_connect()), however due to a bug it does not work\ncorrectly if SSL_read() or SSL_write() is called directly. In that\nscenario, if the handshake fails then a fatal error will be returned in\nthe initial function call. If SSL_read()/SSL_write() is subsequently\ncalled by the application for the same SSL object then it will succeed\nand the data is passed without being decrypted/encrypted directly from\nthe SSL/TLS record layer. In order to exploit this issue an application\nbug would have to be present that resulted in a call to\nSSL_read()/SSL_write() being issued after having already received a\nfatal error. OpenSSL version 1.0.2b-1.0.2m are affected. Fixed in\nOpenSSL 1.0.2n. OpenSSL 1.1.0 is not affected. (CVE-2017-3737)\n\nThere is an overflow bug in the AVX2 Montgomery multiplication procedure\nused in exponentiation with 1024-bit moduli. No EC algorithms are\naffected. Analysis suggests that attacks against RSA and DSA as a result\nof this defect would be very difficult to perform and are not believed\nlikely. Attacks against DH1024 are considered just feasible, because\nmost of the work necessary to deduce information about a private key may\nbe performed offline. The amount of resources required for such an\nattack would be significant. However, for an attack on TLS to be\nmeaningful, the server would have to share the DH1024 private key among\nmultiple clients, which is no longer an option since CVE-2016-0701. This\nonly affects processors that support the AVX2 but not ADX extensions\nlike Intel Haswell (4th generation). Note: The impact from this issue is\nsimilar to CVE-2017-3736, CVE-2017-3732 and CVE-2015-3193. OpenSSL\nversion 1.0.2-1.0.2m and 1.1.0-1.1.0g are affected. Fixed in OpenSSL\n1.0.2n. Due to the low severity of this issue we are not issuing a new\nrelease of OpenSSL 1.1.0 at this time. The fix will be included in\nOpenSSL 1.1.0h when it becomes available. The fix is also available in\ncommit e502cc86d in the OpenSSL git repository. (CVE-2017-3738)\n",
+  "modified": "2017-12-16T22:55:48Z",
+  "published": "2017-12-16T23:20:04Z",
+  "related": [
+    "CVE-2017-3737",
+    "CVE-2017-3738"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0453.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22185"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.openssl.org/news/secadv/20171207.txt"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://usn.ubuntu.com/usn/usn-3512-1/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openssl",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.2n-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0453.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "openssl",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.2n-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0453.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

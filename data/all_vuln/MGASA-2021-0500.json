@@ -1,0 +1,61 @@
+{
+  "id": "MGASA-2021-0500",
+  "summary": "Updated docker packages fix security vulnerabilities",
+  "details": "Updated docker packages fix security vulnerabilities:\n\nA bug was found in Moby (Docker Engine) where attempting to copy files\nusing `docker cp` into a specially-crafted container can result in Unix\nfile permission changes for existing files in the hosts filesystem,\nwidening access to others. This bug does not directly allow files to be\nread, modified, or executed without an additional cooperating process\n(CVE-2021-41089).\n\nA bug was found in Moby (Docker Engine) where the data directory (typically\n'/var/lib/docker') contained subdirectories with insufficiently restricted\npermissions, allowing otherwise unprivileged Linux users to traverse\ndirectory contents and execute programs. When containers included executable\nprograms with extended permission bits (such as 'setuid'), unprivileged\nLinux users could discover and execute those programs. When the UID of an\nunprivileged Linux user on the host collided with the file owner or group\ninside a container, the unprivileged Linux user on the host could discover,\nread, and modify those files (CVE-2021-41091).\n\nA bug was found in the Docker CLI where running 'docker login \nmy-private-registry.example.com' with a misconfigured configuration file\n(typically '~/.docker/config.json') listing a 'credsStore' or 'credHelpers'\nthat could not be executed would result in any provided credentials being\nsent to 'registry-1.docker.io' rather than the intended private registry\n(CVE-2021-41092).\n",
+  "modified": "2021-10-31T10:46:32Z",
+  "published": "2021-10-31T11:12:48Z",
+  "related": [
+    "CVE-2021-41089",
+    "CVE-2021-41091",
+    "CVE-2021-41092"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0500.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=29527"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "docker",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/docker?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20.10.9-3.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0500.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

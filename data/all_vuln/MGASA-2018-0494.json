@@ -1,0 +1,66 @@
+{
+  "id": "MGASA-2018-0494",
+  "summary": "Updated keepalived package fixes security vulnerabilities",
+  "details": "keepalived before version 2.0.9 didn't check for pathnames with symlinks\nwhen writing data to a temporary file upon a call to PrintData or\nPrintStats. This allowed local users to overwrite arbitrary files if\nfs.protected_symlinks is set to 0, as demonstrated by a symlink from\n/tmp/keepalived.data or /tmp/keepalived.stats to /etc/passwd\n(CVE-2018-19044).\n\nkeepalived before version 2.0.9 used mode 0666 when creating new\ntemporary files upon a call to PrintData or PrintStats, potentially\nleaking sensitive information (CVE-2018-19045).\n\nkeepalived before version 2.0.10 didn't check for existing plain files\nwhen writing data to a temporary file upon a call to PrintData or\nPrintStats. If a local attacker had previously created a file with the\nexpected name (e.g., /tmp/keepalived.data or /tmp/keepalived.stats),\nwith read access for the attacker and write access for the keepalived\nprocess, then this potentially leaked sensitive information\n(CVE-2018-19046).\n\nkeepalived before version 2.0.9 has a heap-based buffer overflow when\nparsing HTTP status codes resulting in DoS or possibly unspecified other\nimpact, because extract_status_code in lib/html.c has no validation of\nthe status code and instead writes an unlimited amount of data to the\nheap (CVE-2018-19115).\n",
+  "modified": "2018-12-29T22:57:27Z",
+  "published": "2018-12-29T23:24:32Z",
+  "related": [
+    "CVE-2018-19044",
+    "CVE-2018-19045",
+    "CVE-2018-19046",
+    "CVE-2018-19115"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0494.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24063"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/6YQ7NS6S7B7V2X5NEUJKMTNXL3YPD7H3/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "keepalived",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/keepalived?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.10-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0494.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

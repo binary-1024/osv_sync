@@ -1,0 +1,68 @@
+{
+  "id": "MGASA-2015-0111",
+  "summary": "Updated openssl packages fix security vulnerabilities",
+  "details": "Updated openssl packages fix security vulnerabilities:\n\nThe function ASN1_TYPE_cmp will crash with an invalid read if an attempt is\nmade to compare ASN.1 boolean types. Since ASN1_TYPE_cmp is used to check\ncertificate signature algorithm consistency this can be used to crash any\ncertificate verification operation and exploited in a DoS attack. Any\napplication which performs certificate verification is vulnerable including\nOpenSSL clients and servers which enable client authentication\n(CVE-2015-0286).\n\nReusing a structure in ASN.1 parsing may allow an attacker to cause\nmemory corruption via an invalid write. Such reuse is and has been\nstrongly discouraged and is believed to be rare. Certificate parsing,\nOpenSSL clients, and OpenSSL servers are not affected (CVE-2015-0287).\n\nThe PKCS#7 parsing code does not handle missing outer ContentInfo correctly.\nAn attacker can craft malformed ASN.1-encoded PKCS#7 blobs with\nmissing content and trigger a NULL pointer dereference on parsing.\nOpenSSL clients and servers are not affected (CVE-2015-0289).\n\nA malicious client can trigger an OPENSSL_assert (i.e., an abort) in\nservers that both support SSLv2 and enable export cipher suites by sending\na specially crafted SSLv2 CLIENT-MASTER-KEY message (CVE-2015-0293).\n\nA malformed EC private key file consumed via the d2i_ECPrivateKey function\ncould cause a use after free condition. This, in turn, could cause a double\nfree in several private key parsing functions (such as d2i_PrivateKey\nor EVP_PKCS82PKEY) and could lead to a DoS attack or memory corruption\nfor applications that receive EC private keys from untrusted\nsources. This scenario is considered rare (CVE-2015-0209).\n\nThe function X509_to_X509_REQ will crash with a NULL pointer dereference if\nthe certificate key is invalid. This function is rarely used in practice\n(CVE-2015-0288).\n",
+  "modified": "2015-03-19T16:38:29Z",
+  "published": "2015-03-19T16:47:16Z",
+  "related": [
+    "CVE-2015-0209",
+    "CVE-2015-0286",
+    "CVE-2015-0287",
+    "CVE-2015-0288",
+    "CVE-2015-0289",
+    "CVE-2015-0293"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2015-0111.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=15530"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://openssl.org/news/secadv_20150319.txt"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openssl",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.1m-1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0111.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

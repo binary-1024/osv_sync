@@ -1,0 +1,88 @@
+{
+  "id": "GHSA-hwrr-rhmm-vcvf",
+  "summary": "NULL Pointer Dereference in Kubernetes CSI snapshot-controller",
+  "details": "Kubernetes CSI snapshot-controller prior to v2.1.3 and v3.0.2 could panic when processing a VolumeSnapshot custom resource when:\n\n- The VolumeSnapshot referenced a non-existing PersistentVolumeClaim and the VolumeSnapshot did not reference any VolumeSnapshotClass.\n- The snapshot-controller crashes, is automatically restarted by Kubernetes, and processes the same VolumeSnapshot custom resource after the restart, entering an endless crashloop.\n\nOnly the volume snapshot feature is affected by this vulnerability. When exploited, users can\u00e2\u20ac\u2122t take snapshots of their volumes or delete the snapshots. All other Kubernetes functionality is not affected.",
+  "aliases": [
+    "CVE-2020-8569"
+  ],
+  "modified": "2023-11-08T04:04:17.423885Z",
+  "published": "2022-02-15T01:57:18Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "github_reviewed_at": "2021-05-12T21:41:14Z",
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "cwe_ids": [
+      "CWE-476"
+    ]
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-8569"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/kubernetes-csi/external-snapshotter/issues/380"
+    },
+    {
+      "type": "WEB",
+      "url": "https://groups.google.com/g/kubernetes-security-announce/c/1EzCr1qUxxU"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "github.com/kubernetes-csi/external-snapshotter/v2",
+        "ecosystem": "Go",
+        "purl": "pkg:golang/github.com/kubernetes-csi/external-snapshotter/v2"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.1.3"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-hwrr-rhmm-vcvf/GHSA-hwrr-rhmm-vcvf.json"
+      }
+    },
+    {
+      "package": {
+        "name": "github.com/kubernetes-csi/external-snapshotter/v3",
+        "ecosystem": "Go",
+        "purl": "pkg:golang/github.com/kubernetes-csi/external-snapshotter/v3"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "3.0.0"
+            },
+            {
+              "fixed": "3.0.2"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-hwrr-rhmm-vcvf/GHSA-hwrr-rhmm-vcvf.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "id": "MGASA-2019-0189",
+  "summary": "Updated postgresql packages fix security vulnerabilities",
+  "details": "Updated postgresql packages fix security vulnerabilities\n\nCVE-2019-10129: Memory disclosure in partition routing\nPrior to this release, a user running PostgreSQL 11 can read arbitrary\nbytes of server memory by executing a purpose-crafted INSERT statement\nto a partitioned table.\n\nCVE-2019-10130: Selectivity estimators bypass row security policies\nPostgreSQL maintains statistics for tables by sampling data available in\ncolumns; this data is consulted during the query planning process. Prior\nto this release, a user able to execute SQL queries with permissions to\nread a given column could craft a leaky operator that could read whatever\ndata had been sampled from that column. If this happened to include values\nfrom rows that the user is forbidden to see by a row security policy, the\nuser could effectively bypass the policy. This is fixed by only allowing\na non-leakproof operator to use this data if there are no relevant row\nsecurity policies for the table.\n",
+  "modified": "2019-06-10T18:39:25Z",
+  "published": "2019-06-10T19:17:03Z",
+  "related": [
+    "CVE-2019-10129",
+    "CVE-2019-10130"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2019-0189.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=24798"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "postgresql9.4",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/postgresql9.4?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.4.22-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0189.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "postgresql9.6",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/postgresql9.6?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.6.13-3.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0189.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

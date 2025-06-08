@@ -1,0 +1,79 @@
+{
+  "id": "GHSA-vx2x-9cff-fhjw",
+  "summary": "DSInternals Credential Roaming Elevation of Privilege Vulnerability",
+  "details": "### Impact\n\nA vulnerability exists in the `DSInternals.Common.Data.RoamedCredential.Save()` method, which incorrectly parses the `msPKIAccountCredentials` LDAP attribute values. As a consequence, a malicious actor would be able to modify the file system of the computer where an application using this function is executed with administrative privileges.\n\nA [similar security issue](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-30170) used to be present in the Windows operating system, as DSInternals re-implements the Credential Roaming feature of Windows.\n\n### Exploitability\n\nThe vulnerability can be exploited under the following circumstances:\n- An attacker is able to modify the `msPKIAccountCredentials` attribute of a user account in Active Directory. This attribute is used by the Credential Roaming feature of Windows and each AD user can modify their own roamed credentials. AND\n- A 3rd party application uses the `DSInternals.Common` library to export roamed credentials from Active Directory to a file system. AND\n- The application has administrative privileges on the local system.\n\nThe probability of any 3rd-party product using the `DSInternals.Common` library being affected by this vulnerability is extremely low.\n\n### Patches\n\nThe issue had been fixed in DSInternals 4.8.\n\n### References\n\nhttps://www.mandiant.com/resources/blog/apt29-windows-credential-roaming\n",
+  "modified": "2024-12-03T06:08:14.546218Z",
+  "published": "2022-12-06T21:13:49Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-12-06T21:13:49Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/MichaelGrafnetter/DSInternals/security/advisories/GHSA-vx2x-9cff-fhjw"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-30170"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/MichaelGrafnetter/DSInternals"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.mandiant.com/resources/blog/apt29-windows-credential-roaming"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "DSInternals.Common",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/DSInternals.Common"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.21"
+            },
+            {
+              "fixed": "4.8"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.21.0",
+        "2.21.2",
+        "3.0.0",
+        "3.1.0",
+        "3.2.0",
+        "3.6.0",
+        "4.0.0",
+        "4.1.0",
+        "4.2.0",
+        "4.3.0",
+        "4.4.0",
+        "4.5.0",
+        "4.7.0"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-vx2x-9cff-fhjw/GHSA-vx2x-9cff-fhjw.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "GHSA-2xv9-ghh9-xc69",
+  "summary": "radashi Allows Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')",
+  "details": "### Impact\n\nThis is a prototype pollution vulnerability. It impacts users of the `set` function within the Radashi library. If an attacker can control parts of the `path` argument to the `set` function, they could potentially modify the prototype of all objects in the JavaScript runtime, leading to unexpected behavior, denial of service, or even remote code execution in some specific scenarios.\n\n### Patches\n\nThe vulnerability has been patched in commit [`8147abc8cfc3cfe9b9a17cd389076a5d97235a66`](https://github.com/radashi-org/radashi/commit/8147abc8cfc3cfe9b9a17cd389076a5d97235a66). Users should upgrade to a version of Radashi that includes this commit. The fix utilizes a new helper function, `isDangerousKey`, to prevent the use of `__proto__`, `prototype`, or `constructor` as keys in the path, throwing an error if any are encountered. This check is bypassed for objects with a `null` prototype.\n\n### Workarounds\n\nUsers on older versions can mitigate this vulnerability by sanitizing the `path` argument provided to the `set` function to ensure that no part of the path string is `__proto__`, `prototype`, or `constructor`. For example, by checking each segment of the path before passing it to the `set` function.\n\n### References\n\n- Git commit: [`8147abc8cfc3cfe9b9a17cd389076a5d97235a66`](https://github.com/radashi-org/radashi/commit/8147abc8cfc3cfe9b9a17cd389076a5d97235a66)\n- CWE-1321: Improperly Controlled Modification of Dynamically-Determined Object Attributes ('Prototype Pollution'): https://cwe.mitre.org/data/definitions/1321.html",
+  "aliases": [
+    "CVE-2025-48054"
+  ],
+  "modified": "2025-05-27T15:27:40.224377Z",
+  "published": "2025-05-27T15:03:05Z",
+  "database_specific": {
+    "nvd_published_at": "2025-05-27T05:15:23Z",
+    "cwe_ids": [
+      "CWE-1321"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-27T15:03:05Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/radashi-org/radashi/security/advisories/GHSA-2xv9-ghh9-xc69"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-48054"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/radashi-org/radashi/commit/8147abc8cfc3cfe9b9a17cd389076a5d97235a66"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/radashi-org/radashi"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "radashi",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/radashi"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "12.5.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2xv9-ghh9-xc69/GHSA-2xv9-ghh9-xc69.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:H/SC:N/SI:N/SA:N/E:U"
+    }
+  ]
+}

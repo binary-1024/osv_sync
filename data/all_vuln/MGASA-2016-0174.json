@@ -1,0 +1,78 @@
+{
+  "id": "MGASA-2016-0174",
+  "summary": "Updated ntp packages fix security vulnerabilities",
+  "details": "Updated ntp packages fix security vulnerabilities:\n\nIt is possible to change the time of an ntpd client or deny service to an ntpd\nclient by forcing it to change from basic client/server mode to interleaved\nsymmetric mode. An attacker can spoof a packet from a legitimate ntpd server\nwith an origin timestamp that matches the peer->dst timestamp recorded for that\nserver. After making this switch, the client will reject all future legitimate\nserver responses. It is possible to force the victim client to move time after\nthe mode has been changed. ntpq gives no indication that the mode has been\nswitched (CVE-2016-1548).\n\nAn exploitable vulnerability exists in the message authentication functionality\nof Network Time Protocol libntp. An attacker can send a series of crafted\nmessages to attempt to recover the message digest key (CVE-2016-1550).\n\nIf ntpd was expressly configured to allow for remote configuration, a\nmalicious user who knows the controlkey for ntpq or the requestkey for ntpdc\n(if mode7 is expressly enabled) can create a session with ntpd and if an\nexisting association is unconfigured using the same IP twice on the unconfig\ndirective line, ntpd will abort (CVE-2016-2516).\n\nUsing a crafted packet to create a peer association with hmode > 7 causes the\nMATCH_ASSOC() lookup to make an out-of-bounds reference (CVE-2016-2518).\n\nNote that CVE-2016-2516, as well as other known but unfixed vulnerabilities\nin ntpd, are also mitigated by not allowing remote configuration, which is\nthe default in Mageia.\n",
+  "modified": "2016-05-13T21:48:22Z",
+  "published": "2016-05-13T21:54:49Z",
+  "related": [
+    "CVE-2016-1548",
+    "CVE-2016-1550",
+    "CVE-2016-2516",
+    "CVE-2016-2518"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0174.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=18378"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.talosintel.com/reports/TALOS-2016-0082/"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.talosintel.com/reports/TALOS-2016-0084/"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://support.ntp.org/bin/view/Main/SecurityNotice#April_2016_NTP_4_2_8p7_Security"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/IFPKQDCJCLLEPK5D5RBOGCBNDW5TNIBM/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ntp",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.6p5-24.5.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0174.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

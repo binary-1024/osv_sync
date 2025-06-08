@@ -1,0 +1,68 @@
+{
+  "id": "MGASA-2014-0527",
+  "summary": "Updated apache packages fix security vulnerabilities",
+  "details": "Updated apache packages fix security vulnerabilities:\n\nA NULL pointer dereference flaw was found in the way the mod_cache httpd\nmodule handled Content-Type headers. A malicious HTTP server could cause\nthe httpd child process to crash when the Apache HTTP server was configured\nto proxy to a server with caching enabled (CVE-2014-3581).\n\nA flaw was found in the way httpd handled HTTP Trailer headers when\nprocessing requests using chunked encoding. A malicious client could use\nTrailer headers to set additional HTTP headers after header processing was\nperformed by other modules. This could, for example, lead to a bypass of\nheader restrictions defined with mod_headers (CVE-2013-5704).\n\nNote: With this update, httpd has been modified to not merge HTTP Trailer\nheaders with other HTTP request headers. A newly introduced configuration\ndirective MergeTrailers can be used to re-enable the old method of\nprocessing Trailer headers, which also re-introduces the aforementioned\nflaw.\n\nThis update also fixes the following bug:\n\nPrior to this update, the mod_proxy_wstunnel module failed to set up an\nSSL connection when configured to use a back end server using the \"wss:\"\nURL scheme, causing proxied connections to fail. In these updated packages,\nSSL is used when proxying to \"wss:\" back end servers (rhbz#1141950).\n",
+  "modified": "2014-12-13T20:08:45Z",
+  "published": "2014-12-13T20:16:05Z",
+  "related": [
+    "CVE-2014-3581",
+    "CVE-2014-5704"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2014-0527.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=14773"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1141950"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://rhn.redhat.com/errata/RHSA-2014-1972.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "apache",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/apache?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.7-5.4.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0527.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

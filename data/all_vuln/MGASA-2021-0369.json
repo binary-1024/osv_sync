@@ -1,0 +1,85 @@
+{
+  "id": "MGASA-2021-0369",
+  "summary": "Updated golang packages fix security vulnerabilities",
+  "details": "encoding/xml in Go before 1.15.9 and 1.16.x before 1.16.1 has an infinite loop\nif a custom TokenReader (for xml.NewTokenDecoder) returns EOF in the middle of\nan element. This can occur in the Decode, DecodeElement, or Skip method\n(CVE-2021-27918).\n\nnet/http in Go before 1.15.12 and 1.16.x before 1.16.4 allows remote attackers\nto cause a denial of service (panic) via a large header to ReadRequest or\nReadResponse. Server, Transport, and Client can each be affected in some\nconfigurations (CVE-2021-31525).\n\nA security issue has been found in Go before version 1.16.5. The LookupCNAME,\nLookupSRV, LookupMX, LookupNS, and LookupAddr functions in net, and their\nrespective methods on the Resolver type may return arbitrary values retrieved\nfrom DNS which do not follow the established RFC 1035 rules for domain names.\nIf these names are used without further sanitization, for instance unsafely\nincluded in HTML, they may allow for injection of unexpected content. Note\nthat LookupTXT may still return arbitrary values that could require\nsanitization before further use (CVE-2021-33195).\n\nA security issue has been found in Go. Due to a pre-allocation optimization in\nzip.NewReader, a malformed archive which indicates it has a significant number\nof files can cause either a panic or memory exhaustion (CVE-2021-33196).\n\nReverseProxy fails to delete the Connection headers (as well as other legacy\nhop-by-hop headers, which however per RFC 7230 need to also be specified in\nConnection) if there are multiple ones and the first is empty, due to an\nincorrect Get(h) == \"\" check. This can lead to a security issue if the proxy\nis adding an important header, like X-Forwarded-For, and is sitting in front\nof another proxy which can be instructed by an attacker to drop that header as\na hop-by-hop header (CVE-2021-33197).\n\nA security issue has been found in Go before version 1.16.5. The SetString and\nUnmarshalText methods of math/big.Rat may cause a panic or an unrecoverable\nfatal error if passed inputs with very large exponents (CVE-2021-33198).\n\nThe crypto/tls package of Go through 1.16.5 does not properly assert that the\ntype of public key in an X.509 certificate matches the expected type when\ndoing a RSA based key exchange, allowing a malicious TLS server to cause a TLS\nclient to panic (CVE-2021-34558).\n",
+  "modified": "2021-07-25T08:16:19Z",
+  "published": "2021-07-25T08:34:17Z",
+  "related": [
+    "CVE-2021-27918",
+    "CVE-2021-31525",
+    "CVE-2021-33195",
+    "CVE-2021-33196",
+    "CVE-2021-33197",
+    "CVE-2021-33198",
+    "CVE-2021-34558"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2021-0369.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=29037"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/EXHOWUQKHNS4LEJ2GTYWY2EEAYVCKECW/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/4PG5AXR4LXEWYU5DHYEVESCXWKO3HFHO/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/QLUQXBCOPWP72ZSS3SM3CTURM7XOYALQ/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/AKQH4LHYIFOWBEGMGHD7S7TTV7JL4U7W/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/OZJXXUXBI66VV2PXRNAWN4MCE3AOHNBA/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "golang",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/golang?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.15.14-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0369.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

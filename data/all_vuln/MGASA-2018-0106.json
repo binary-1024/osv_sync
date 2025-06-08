@@ -1,0 +1,209 @@
+{
+  "id": "MGASA-2018-0106",
+  "summary": "Updated kernel packages fix security vulnerabilities",
+  "details": "This kernel update is based on the upstream 4.14.16 and and fixes\nseveral security issues.\n\nThe most important fixes in this update is for the security issue named\n\"Spectre, variant 2 (CVE-2017-5715)\" that is partly mitigated by enabling\nretpoline support. For full retpoline mitigation, kernel needs to be built\nwith a retpoline-aware cpmpiler (something we just added in testing), so\nnext kernel will be built with full retpoline mititgation.\nFor the security issue known as \"Spectre, variant 1\" there are some\nlfence bits added but full fix also needs microcode support, and that is\nsomething we dont have control over.\n\nThe BPF interpreter has been used as part of the spectre 2 attack\nCVE-2017-5715. To make attacker job harder introduce BPF_JIT_ALWAYS_ON\nconfig option that removes interpreter from the kernel in favor of JIT-only\nmode. This is now enabled by default in Mageia kernels.\n\nKVM on x86 gained a memory barrier on vmcs field lookup as part of\nmitigating Spectre variant 2 (CVE-2017-5753).\n\nOther security fixes in this update:\n\nLinux kernel version 3.3-rc1 and later is affected by a vulnerability lies\nin the processing of incoming L2CAP commands - ConfigRequest, and\nConfigResponse messages. This info leak is a result of uninitialized stack\nvariables that may be returned to an attacker in their uninitialized state.\nBy manipulating the code flows that precede the handling of these\nconfiguration messages, an attacker can also gain some control over which\ndata will be held in the uninitialized stack variables. This can allow him\nto bypass KASLR, and stack canaries protection - as both pointers and stack\ncanaries may be leaked in this manner (CVE-2017-1000410).\n\nThe dccp_disconnect function in net/dccp/proto.c in the Linux kernel through\n4.14.3 allows local users to gain privileges or cause a denial of service\n(use-after-free) via an AF_UNSPEC connect system call during the DCCP_LISTEN\nstate (CVE-2017-8824).\n\nWireGuard has been updated to 0.0.20180118.\n\nFor other fixes, see the referenced changelogs.\n",
+  "modified": "2018-02-05T18:46:48Z",
+  "published": "2018-02-05T19:12:45Z",
+  "related": [
+    "CVE-2017-1000410",
+    "CVE-2017-5715",
+    "CVE-2017-5753",
+    "CVE-2017-8824"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0106.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22454"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.16"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.16-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0106.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-userspace-headers",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.16-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0106.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-vboxadditions",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.6-4.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0106.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.6-4.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0106.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.13-14.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0106.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "wireguard-tools",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/wireguard-tools?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.0.20180118-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0106.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

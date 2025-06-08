@@ -1,0 +1,105 @@
+{
+  "id": "MGASA-2017-0041",
+  "summary": "Updated java-1.8.0-openjdk packages fix security vulnerabilities",
+  "details": "It was discovered that the RMI registry and DCG implementations in the\nRMI component of OpenJDK performed deserialization of untrusted inputs.\nA remote attacker could possibly use this flaw to execute arbitrary code\nwith the privileges of RMI registry or a Java RMI application\n(CVE-2017-3241).\n\nThis issue was addressed by introducing whitelists of classes that can\nbe deserialized by RMI registry or DCG. These whitelists can be\ncustomized using the newly introduced sun.rmi.registry.registryFilter\nand sun.rmi.transport.dgcFilter security properties.\n\nMultiple flaws were discovered in the Libraries and Hotspot components\nin OpenJDK. An untrusted Java application or applet could use these\nflaws to completely bypass Java sandbox restrictions (CVE-2017-3272,\nCVE-2017-3289).\n\nA covert timing channel flaw was found in the DSA implementation in the\nLibraries component of OpenJDK. A remote attacker could possibly use\nthis flaw to extract certain information about the used key via a timing\nside channel (CVE-2016-5548).\n\nIt was discovered that the Libraries component of OpenJDK accepted ECSDA\nsignatures using non-canonical DER encoding. This could cause a Java\napplication to accept signature in an incorrect format not accepted by\nother cryptographic tools (CVE-2016-5546).\n\nIt was discovered that the 2D component of OpenJDK performed parsing of\niTXt and zTXt PNG image chunks even when configured to ignore metadata.\nAn attacker able to make a Java application parse a specially crafted\nPNG image could cause the application to consume an excessive amount of\nmemory (CVE-2017-3253).\n\nIt was discovered that the Libraries component of OpenJDK did not\nvalidate the length of the object identifier read from the DER input\nbefore allocating memory to store the OID. An attacker able to make a\nJava application decode a specially crafted DER input could cause the\napplication to consume an excessive amount of memory (CVE-2016-5547).\n\nIt was discovered that the JAAS component of OpenJDK did not use the\ncorrect way to extract user DN from the result of the user search LDAP\nquery. A specially crafted user LDAP entry could cause the application\nto use an incorrect DN (CVE-2017-3252).\n\nIt was discovered that the Networking component of OpenJDK failed to\nproperly parse user info from the URL. A remote attacker could cause a\nJava application to incorrectly parse an attacker supplied URL and\ninterpret it differently from other applications processing the same URL\n(CVE-2016-5552).\n\nMultiple flaws were found in the Networking components in OpenJDK. An\nuntrusted Java application or applet could use these flaws to bypass\ncertain Java sandbox restrictions (CVE-2017-3261, CVE-2017-3231).\n\nA flaw was found in the way the DES/3DES cipher was used as part of the\nTLS/SSL protocol. A man-in-the-middle attacker could use this flaw to\nrecover some plaintext data by capturing large amounts of encrypted\ntraffic between TLS/SSL server and client if the communication used a\nDES/3DES based ciphersuite (CVE-2016-2183).\n\nThis update mitigates the CVE-2016-2183 issue by adding 3DES cipher\nsuites to the list of legacy algorithms (defined using the\njdk.tls.legacyAlgorithms security property) so they are only used if\nconnecting TLS/SSL client and server do not share any other non-legacy\ncipher suite.\n",
+  "modified": "2017-02-05T20:07:50Z",
+  "published": "2017-02-05T20:42:41Z",
+  "related": [
+    "CVE-2016-2183",
+    "CVE-2016-5546",
+    "CVE-2016-5547",
+    "CVE-2016-5548",
+    "CVE-2016-5552",
+    "CVE-2017-3231",
+    "CVE-2017-3241",
+    "CVE-2017-3252",
+    "CVE-2017-3253",
+    "CVE-2017-3261",
+    "CVE-2017-3272",
+    "CVE-2017-3289"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0041.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=20165"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.oracle.com/technetwork/security-advisory/cpujan2017-2881727.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://rhn.redhat.com/errata/RHSA-2017-0180.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "java-1.8.0-openjdk",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/java-1.8.0-openjdk?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.8.0.121-1.b14.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0041.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "copy-jdk-configs",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/copy-jdk-configs?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0041.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

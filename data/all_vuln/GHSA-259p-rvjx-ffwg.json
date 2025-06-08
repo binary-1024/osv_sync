@@ -1,0 +1,121 @@
+{
+  "id": "GHSA-259p-rvjx-ffwg",
+  "summary": "Panel::Software Customized WiX .be TEMP folder is vulnerable to DLL redirection attacks that allow the attacker to escalate privileges",
+  "details": "# Summary\n\n.be TEMP folder is vulnerable to DLL redirection attacks that allow the attacker to escalate privileges.\n\n# Details\n\nIf the bundle is not run as admin, the user's TEMP folder is used and not the system TEMP folder. A utility is able to monitor the user's TEMP folder for changes and drop its own DLL into the .be/.Local folder immediately when the .be folder is created. When the burn engine elevates, the malicious DLL receives elevated privileges.\n\n# PoC\n\nAs a standard, non-admin user:\n\n1.  Monitor the user's TEMP folder for changes using ReadDirectoryChangesW\n1.  On FILE_ACTION_ADDED, check if the folder name is .be\n1.  Create a folder in .be named after the bundle + .Local (e.g. MyInstaller.exe.Local)\n1.  Put the malicious COMCTL32.DLL in the .Local folder following the naming used for the real DLL (e.g. MyInstaller.exe.Local/x86_microsoft.windows.common-controls_.../COMCTL32.dll)\n1.  Do hacker things when the engine escalates and the malicious DLL is loaded\n\nProper naming for the path can be obtained by using GetModuleHandle(\"comctl32.dll\") and GetModuleFileName.\n\n# Impact\n\nDLL redirection utilizing .exe.Local Windows capability. This impacts any installer built with the WiX installer framework.\n",
+  "modified": "2024-12-05T05:28:27.696416Z",
+  "published": "2024-02-08T18:24:21Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-426"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-08T18:24:21Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/nirbar/wix3/security/advisories/GHSA-259p-rvjx-ffwg"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/nirbar/wix3"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "PanelSW.Custom.WiX",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/PanelSW.Custom.WiX"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.15.0-a44"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.12.0-b100",
+        "3.12.0-b45",
+        "3.12.0-b48",
+        "3.12.0-b53",
+        "3.12.0-b57",
+        "3.12.0-b59",
+        "3.12.0-b60",
+        "3.12.0-b69",
+        "3.12.0-b82",
+        "3.12.0-b83",
+        "3.12.0-b84",
+        "3.12.0-b85",
+        "3.12.0-b86",
+        "3.12.0-b88",
+        "3.12.0-b89",
+        "3.12.0-b91",
+        "3.12.0-b92",
+        "3.12.0-b93",
+        "3.12.0-b99",
+        "3.12.0-c101",
+        "3.12.0-c104",
+        "3.12.0-c105",
+        "3.12.0-c106",
+        "3.12.0-c107",
+        "3.12.0-c108",
+        "3.12.0-c110",
+        "3.12.0-c111",
+        "3.12.0-c112",
+        "3.12.0-c113",
+        "3.12.0-c114",
+        "3.12.0-c115",
+        "3.12.0-c116",
+        "3.12.0-c117",
+        "3.12.0-c121",
+        "3.12.0-c123",
+        "3.12.0-c124",
+        "3.12.0-c126",
+        "3.12.0-c127",
+        "3.12.0-c129",
+        "3.12.0-c130",
+        "3.12.0-c135",
+        "3.12.0-c150",
+        "3.12.0-c156",
+        "3.12.0-c158",
+        "3.12.0-c161",
+        "3.12.0-c162",
+        "3.12.0-c165",
+        "3.12.0-c166",
+        "3.12.0-c167",
+        "3.12.0-c176",
+        "3.12.0-c177",
+        "3.12.0-c182",
+        "3.12.0-c183",
+        "3.12.0-c185",
+        "3.12.0-c186",
+        "3.12.0-c187",
+        "3.12.0-c188",
+        "3.12.0-c189",
+        "3.12.0-c190",
+        "3.12.0-c193",
+        "3.12.0-c194"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-259p-rvjx-ffwg/GHSA-259p-rvjx-ffwg.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H"
+    }
+  ]
+}

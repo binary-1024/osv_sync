@@ -1,0 +1,331 @@
+{
+  "id": "GHSA-4jp3-q2qm-9fmw",
+  "summary": "Improper Restriction of Rendered UI Layers or Frames in Sylius",
+  "details": "### Impact\n\nIt is possible for a page controlled by an attacker to load the website within an iframe. This will enable a clickjacking attack, in which the attacker's page overlays the target application's interface with a different interface provided by the attacker\n\n### Patches\n\nThe issue is fixed in versions: 1.9.10, 1.10.11, 1.11.2, and above.\n\n### Workarounds\n\nEvery response from app should have an X-Frame-Options header set to: ``sameorigin``. To achieve that you just need to add a new **subscriber** in your app. \n\n```php\n<?php\n\n// src/EventListener/XFrameOptionsSubscriber.php\n\nnamespace App\\EventListener\n\nfinal class XFrameOptionsSubscriber implements EventSubscriberInterface\n{\n    public static function getSubscribedEvents(): array\n    {\n        return [\n            KernelEvents::RESPONSE => 'onKernelResponse',\n        ];\n    }\n\n    public function onKernelResponse(ResponseEvent $event): void\n    {\n        if (!$this->isMainRequest($event)) {\n            return;\n        }\n\n        $response = $event->getResponse();\n\n        $response->headers->set('X-Frame-Options', 'sameorigin');\n    }\n\n    private function isMainRequest(ResponseEvent $event): bool\n    {\n        if (\\method_exists($event, 'isMainRequest')) {\n            return $event->isMainRequest();\n        }\n\n        return $event->isMasterRequest();\n    }\n}\n\n```\n\nAnd register it in the container:\n\n```yaml\n# config/services.yaml\nservices:\n    # ...\n    App\\EventListener\\XFrameOptionsSubscriber:\n        tags: ['kernel.event_subscriber']\n```\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [Sylius issues](https://github.com/Sylius/Sylius/issues)\n* Email us at [security@sylius.com](mailto:security@sylius.com)\n",
+  "aliases": [
+    "CVE-2022-24733"
+  ],
+  "modified": "2023-11-08T04:08:34.207714Z",
+  "published": "2022-03-14T21:55:33Z",
+  "related": [
+    "CVE-2022-24733"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2022-03-14T19:15:00Z",
+    "github_reviewed_at": "2022-03-14T21:55:33Z",
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "cwe_ids": [
+      "CWE-1021"
+    ]
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/Sylius/security/advisories/GHSA-4jp3-q2qm-9fmw"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-24733"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Sylius/Sylius"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/Sylius/releases/tag/v1.10.11"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/Sylius/releases/tag/v1.11.2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/Sylius/releases/tag/v1.9.10"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "sylius/sylius",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/sylius/sylius"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.9.10"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v0.1.0",
+        "v0.10.0",
+        "v0.11.0",
+        "v0.12.0",
+        "v0.13.0",
+        "v0.14.0",
+        "v0.15.0",
+        "v0.16.0",
+        "v0.17.0",
+        "v0.18.0",
+        "v0.19.0",
+        "v0.2.0",
+        "v0.3.0",
+        "v0.5.0",
+        "v0.6.0",
+        "v0.7.0",
+        "v0.8.0",
+        "v0.9.0",
+        "v1.0.0",
+        "v1.0.0-alpha.1",
+        "v1.0.0-alpha.2",
+        "v1.0.0-beta.1",
+        "v1.0.0-beta.2",
+        "v1.0.0-beta.3",
+        "v1.0.0-rc.1",
+        "v1.0.0-rc.2",
+        "v1.0.1",
+        "v1.0.10",
+        "v1.0.11",
+        "v1.0.12",
+        "v1.0.13",
+        "v1.0.14",
+        "v1.0.15",
+        "v1.0.16",
+        "v1.0.17",
+        "v1.0.18",
+        "v1.0.2",
+        "v1.0.3",
+        "v1.0.4",
+        "v1.0.5",
+        "v1.0.6",
+        "v1.0.7",
+        "v1.0.8",
+        "v1.0.9",
+        "v1.1.0",
+        "v1.1.0-RC",
+        "v1.1.1",
+        "v1.1.10",
+        "v1.1.11",
+        "v1.1.12",
+        "v1.1.13",
+        "v1.1.14",
+        "v1.1.15",
+        "v1.1.16",
+        "v1.1.17",
+        "v1.1.18",
+        "v1.1.2",
+        "v1.1.3",
+        "v1.1.4",
+        "v1.1.5",
+        "v1.1.6",
+        "v1.1.7",
+        "v1.1.8",
+        "v1.1.9",
+        "v1.2.0",
+        "v1.2.0-BETA",
+        "v1.2.0-RC",
+        "v1.2.1",
+        "v1.2.10",
+        "v1.2.11",
+        "v1.2.12",
+        "v1.2.13",
+        "v1.2.14",
+        "v1.2.15",
+        "v1.2.16",
+        "v1.2.17",
+        "v1.2.2",
+        "v1.2.3",
+        "v1.2.4",
+        "v1.2.5",
+        "v1.2.6",
+        "v1.2.7",
+        "v1.2.8",
+        "v1.2.9",
+        "v1.3.0",
+        "v1.3.0-BETA",
+        "v1.3.1",
+        "v1.3.10",
+        "v1.3.11",
+        "v1.3.12",
+        "v1.3.13",
+        "v1.3.14",
+        "v1.3.15",
+        "v1.3.16",
+        "v1.3.2",
+        "v1.3.3",
+        "v1.3.4",
+        "v1.3.5",
+        "v1.3.6",
+        "v1.3.7",
+        "v1.3.8",
+        "v1.3.9",
+        "v1.4.0",
+        "v1.4.0-BETA.1",
+        "v1.4.1",
+        "v1.4.10",
+        "v1.4.11",
+        "v1.4.12",
+        "v1.4.2",
+        "v1.4.3",
+        "v1.4.4",
+        "v1.4.5",
+        "v1.4.6",
+        "v1.4.7",
+        "v1.4.8",
+        "v1.4.9",
+        "v1.5.0",
+        "v1.5.0-RC.1",
+        "v1.5.1",
+        "v1.5.2",
+        "v1.5.3",
+        "v1.5.4",
+        "v1.5.5",
+        "v1.5.6",
+        "v1.5.7",
+        "v1.5.8",
+        "v1.5.9",
+        "v1.6.0",
+        "v1.6.0-ALPHA.1",
+        "v1.6.0-ALPHA.2",
+        "v1.6.0-RC.1",
+        "v1.6.1",
+        "v1.6.2",
+        "v1.6.3",
+        "v1.6.4",
+        "v1.6.5",
+        "v1.6.6",
+        "v1.6.7",
+        "v1.6.8",
+        "v1.6.9",
+        "v1.7.0",
+        "v1.7.0-ALPHA.1",
+        "v1.7.0-ALPHA.2",
+        "v1.7.0-RC.1",
+        "v1.7.1",
+        "v1.7.10",
+        "v1.7.11",
+        "v1.7.2",
+        "v1.7.3",
+        "v1.7.4",
+        "v1.7.5",
+        "v1.7.6",
+        "v1.7.7",
+        "v1.7.8",
+        "v1.7.9",
+        "v1.8.0",
+        "v1.8.0-RC.1",
+        "v1.8.1",
+        "v1.8.10",
+        "v1.8.11",
+        "v1.8.12",
+        "v1.8.2",
+        "v1.8.3",
+        "v1.8.4",
+        "v1.8.5",
+        "v1.8.6",
+        "v1.8.7",
+        "v1.8.8",
+        "v1.8.9",
+        "v1.9.0",
+        "v1.9.0-ALPHA.1",
+        "v1.9.0-ALPHA.2",
+        "v1.9.0-BETA.1",
+        "v1.9.0-BETA.2",
+        "v1.9.0-BETA.3",
+        "v1.9.0-RC.1",
+        "v1.9.0-RC.2",
+        "v1.9.1",
+        "v1.9.2",
+        "v1.9.3",
+        "v1.9.4",
+        "v1.9.5",
+        "v1.9.6",
+        "v1.9.7",
+        "v1.9.8",
+        "v1.9.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/03/GHSA-4jp3-q2qm-9fmw/GHSA-4jp3-q2qm-9fmw.json"
+      }
+    },
+    {
+      "package": {
+        "name": "sylius/sylius",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/sylius/sylius"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.10.0"
+            },
+            {
+              "fixed": "1.10.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.10.0",
+        "v1.10.1",
+        "v1.10.10",
+        "v1.10.2",
+        "v1.10.3",
+        "v1.10.4",
+        "v1.10.5",
+        "v1.10.6",
+        "v1.10.7",
+        "v1.10.8",
+        "v1.10.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/03/GHSA-4jp3-q2qm-9fmw/GHSA-4jp3-q2qm-9fmw.json"
+      }
+    },
+    {
+      "package": {
+        "name": "sylius/sylius",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/sylius/sylius"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.11.0"
+            },
+            {
+              "fixed": "1.11.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.11.0",
+        "v1.11.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/03/GHSA-4jp3-q2qm-9fmw/GHSA-4jp3-q2qm-9fmw.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

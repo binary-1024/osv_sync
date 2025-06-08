@@ -1,0 +1,59 @@
+{
+  "id": "MGASA-2024-0347",
+  "summary": "Updated python-urllib3 packages fix security vulnerability",
+  "details": "When using urllib3's proxy support with ProxyManager, the\nProxy-Authorization header is only sent to the configured proxy, as\nexpected.\nHowever, when sending HTTP requests without using urllib3's proxy\nsupport, it's possible to accidentally configure the Proxy-Authorization\nheader even though it won't have any effect as the request is not using\na forwarding proxy or a tunneling proxy. In those cases, urllib3 doesn't\ntreat the Proxy-Authorization HTTP header as one carrying authentication\nmaterial and thus doesn't strip the header on cross-origin redirects.\nBecause this is a highly unlikely scenario, we believe the severity of\nthis vulnerability is low for almost all users. Out of an abundance of\ncaution urllib3 will automatically strip the Proxy-Authorization header\nduring cross-origin redirects to avoid the small chance that users are\ndoing this on accident.\nUsers should use urllib3's proxy support or disable automatic redirects\nto achieve safe processing of the Proxy-Authorization header, but we\nstill decided to strip the header by default in order to further protect\nusers who aren't using the correct approach.\n",
+  "modified": "2024-11-08T21:43:39Z",
+  "published": "2024-11-08T22:09:56Z",
+  "related": [
+    "CVE-2024-37891"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2024-0347.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=33716"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "python-urllib3",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/python-urllib3?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.26.20-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0347.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "id": "MGASA-2016-0015",
+  "summary": "Updated kernel-tmb packages provides 4.1 longterm kernel and fixes security issues",
+  "details": "This kernel-tmb update provides an upgrade to the upstream 4.1 longterm\nkernel series, currently based on 4.1.15 and resolves at least the\nfollowing security issues:\n\nIt was found that the Linux kernel's keyring implementation would leak\nmemory when adding a key to a keyring via the add_key() function. A\nlocal attacker could use this flaw to exhaust all available memory on\nthe system. (CVE-2015-1333)\n\nA flaw was found in the Linux kernel where the deletion of a file or\ndirectory could trigger an unmount and reveal data under a mount point.\nThis flaw was inadvertently introduced with the new feature of being able\nto lazily unmount a mount tree when using file system user namespaces.\n(CVE-2015-4176)\n\nA flaw was discovered in the kernel's collect_mounts function. If the kernel\naudit subsystem called collect_mounts to audit an unmounted path, it could\npanic the system. With this flaw, an unprivileged user could call umount\n(MNT_DETACH) to launch a denial-of-service attack. (CVE-2015-4177)\n\nA flaw was found in the Linux kernel which is related to the user namespace\nlazily unmounting file systems. The fs_pin struct has two members (m_list\nand s_list) which are usually initialized on use in the pin_insert_group\nfunction. However, these members might go unmodified; in this case, the\nsystem panics when it attempts to destroy or free them. This flaw could be\nused to launch a denial-of-service attack. (CVE-2015-4178)\n\nA DoS flaw was found for a Linux kernel built for the x86 architecture which\nhad the KVM virtualization support(CONFIG_KVM) enabled. The kernel would be\nvulnerable to a NULL pointer dereference flaw in Linux kernel's\nkvm_apic_has_events() function while doing an ioctl. An unprivileged user\nable to access the \"/dev/kvm\" device could use this flaw to crash the system\nkernel. (CVE-2015-4692)\n\nA flaw was found in the kernel's implementation of the Berkeley Packet\nFilter (BPF). A local attacker could craft BPF code to crash the system\nby creating a situation in which the JIT compiler would fail to correctly\noptimize the JIT image on the last pass. This would lead to the CPU\nexecuting instructions that were not part of the JIT code. (CVE-2015-4700)\n\nThe virtnet_probe function in drivers/net/virtio_net.c in the Linux kernel\nbefore 4.2 attempts to support a FRAGLIST feature without proper memory\nallocation, which allows guest OS users to cause a denial of service (buffer\noverflow and memory corruption) via a crafted sequence of fragmented packets.\n(CVE-2015-5156)\n\nMoein Ghasemzadeh discovered that the USB WhiteHEAT serial driver contained\nhardcoded attributes about the USB devices. An attacker could construct a\nfake WhiteHEAT USB device that, when inserted, causes a denial of service\n(system crash) (CVE-2015-5257).\n\nA guest to host DoS issue was found affecting various hypervisors. In that,\na guest can DoS the host by triggering an infinite stream of \"alignment\ncheck\" (#AC) exceptions. This causes the microcode to enter an infinite loop\nwhere the core never receives another interrupt. The host kernel panics due\nto this effect (CVE-2015-5307).\n\nThe get_bitmap_file function in drivers/md/md.c in the Linux kernel before\n4.1.6 does not initialize a certain bitmap data structure, which allows\nlocal users to obtain sensitive information from kernel memory via a\nGET_BITMAP_FILE ioctl call. (CVE-2015-5697)\n\nUse-after-free vulnerability in the path_openat function in fs/namei.c in\nthe Linux kernel 3.x and 4.x before 4.0.4 allows local users to cause a\ndenial of service or possibly have unspecified other impact via O_TMPFILE\nfilesystem operations that leverage a duplicate cleanup operation.\n(CVE-2015-5706)\n\nIt was discovered that an integer overflow error existed in the SCSIgeneric\n(sg) driver in the Linux kernel. A local attacker with writepermission to a\nSCSI generic device could use this to cause a denial of service (system\ncrash) or potentially escalate their privileges. (CVE-2015-5707)\n\nThe __rds_conn_create function in net/rds/connection.c in the Linux kernel\nthrough 4.2.3 allows local users to cause a denial of service (NULL pointer\ndereference and system crash) or possibly have unspecified other impact by\nusing a socket that was not properly bound (CVE-2015-6937).\n\nThe key_gc_unused_keys function in security/keys/gc.c in the Linux kernel\nthrough 4.2.6 allows local users to cause a denial of service (OOPS) via\ncrafted keyctl commands (CVE-2015-7872).\n\nThe vivid_fb_ioctl function in drivers/media/platform/vivid/vivid-osd.c in\nthe Linux kernel through 4.3.3 does not initialize a certain structure\nmember, which allows local users to obtain sensitive information from\nkernel memory via a crafted application (CVE-2015-7884).\n\nThe dgnc_mgmt_ioctl function in drivers/staging/dgnc/dgnc_mgmt.c in the\nLinux kernel through 4.3.3 does not initialize a certain structure member,\nwhich allows local users to obtain sensitive information from kernel memory\nvia a crafted application (CVE-2015-7885).\n\nA guest to host DoS issue was found affecting various hypervisors. In that,\na guest can DoS the host by triggering an infinite stream of \"debug check\"\n(#DB) exceptions. This causes the microcode to enter an infinite loop where\nthe core never receives another interrupt. The host kernel panics due to\nthis effect (CVE-2015-8104).\n\nFelix Wilhelm discovered a race condition in the Xen paravirtualized\ndrivers which can cause double fetch vulnerabilities. An attacker in the\nparavirtualized guest could exploit this flaw to cause a denial of service\n(crash the host) or potentially execute arbitrary code on the host\n(CVE-2015-8550 / XSA-155).\n\nKonrad Rzeszutek Wilk discovered the Xen PCI backend driver does not\nperform sanity checks on the device's state. An attacker could exploit\nthis flaw to cause a denial of service (NULL dereference) on the host\n(CVE-2015-8551 / XSA-157).\n\nKonrad Rzeszutek Wilk discovered the Xen PCI backend driver does not\nperform sanity checks on the device's state. An attacker could exploit\nthis flaw to cause a denial of service by flooding the logging system\nwith WARN() messages causing the initial domain to exhaust disk space\n(CVE-2015-8552 / XSA-157).\n\nThe ovl_setattr function in fs/overlayfs/inode.c in the Linux kernel\nthrough 4.3.3 attempts to merge distinct setattr operations, which allows\nlocal users to bypass intended access restrictions and modify the\nattributes of arbitrary overlay files via a crafted application\n(CVE-2015-8660).\n\nFor other upstream fixes, see the referenced changelogs.\n\nOther fixes in this update:\n* improve ath10k (QCA99X0, QCA988X, QCA6174) support (mga#16915)\n* silence a harmless warning on 32bit non-dt hardware (mga#17010)\n* fix regression with AlpsPS/2 ALPS DualPoint TouchPad of a Dell\n  Latitude D600 (mga#17034)\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2016-01-14T01:44:39Z",
+  "related": [
+    "CVE-2015-1333",
+    "CVE-2015-4176",
+    "CVE-2015-4177",
+    "CVE-2015-4178",
+    "CVE-2015-4692",
+    "CVE-2015-4700",
+    "CVE-2015-5156",
+    "CVE-2015-5257",
+    "CVE-2015-5307",
+    "CVE-2015-5697",
+    "CVE-2015-5706",
+    "CVE-2015-5707",
+    "CVE-2015-6937",
+    "CVE-2015-7312",
+    "CVE-2015-7872",
+    "CVE-2015-7884",
+    "CVE-2015-7885",
+    "CVE-2015-8104",
+    "CVE-2015-8550",
+    "CVE-2015-8551",
+    "CVE-2015-8552",
+    "CVE-2015-8660"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0015.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=17401"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=16915"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=17010"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=17034"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://kernelnewbies.org/Linux_4.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://kernelnewbies.org/Linux_4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.1.15"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-tmb",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.1.15-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0015.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

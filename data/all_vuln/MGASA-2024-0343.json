@@ -1,0 +1,152 @@
+{
+  "id": "MGASA-2024-0343",
+  "summary": "Updated buildah, podman, skopeo packages fix security vulnerabilities",
+  "details": "A flaw was found in Buildah (and subsequently Podman Build) which allows\ncontainers to mount arbitrary locations on the host filesystem into\nbuild containers. A malicious Containerfile can use a dummy image with a\nsymbolic link to the root filesystem as a mount source and cause the\nmount operation to mount the host root filesystem inside the RUN step.\nThe commands inside the RUN step will then have read-write access to the\nhost filesystem, allowing for full container escape at build time.\n(CVE-2024-1753)\nA flaw was found in the github.com/containers/image library. This flaw\nallows attackers to trigger unexpected authenticated registry accesses\non behalf of a victim user, causing resource exhaustion, local path\ntraversal, and other attacks. (CVE-2024-3727)\nWhen parsing a multipart form (either explicitly with\nRequest.ParseMultipartForm or implicitly with Request.FormValue,\nRequest.PostFormValue, or Request.FormFile), limits on the total size of\nthe parsed form were not applied to the memory consumed while reading a\nsingle form line. This permits a maliciously crafted input containing\nvery long lines to cause allocation of arbitrarily large amounts of\nmemory, potentially leading to memory exhaustion. With fix, the\nParseMultipartForm function now correctly limits the maximum size of\nform lines. (CVE-2023-45290)\nPackage jose aims to provide an implementation of the Javascript Object\nSigning and Encryption set of standards. An attacker could send a JWE\ncontaining compressed data that used large amounts of memory and CPU\nwhen decompressed by Decrypt or DecryptMulti. Those functions now return\nan error if the decompressed data would exceed 250kB or 10x the\ncompressed size (whichever is larger). This vulnerability has been\npatched in versions 4.0.1, 3.0.3 and 2.6.3. (CVE-2024-28180)\njose is JavaScript module for JSON Object Signing and Encryption,\nproviding support for JSON Web Tokens (JWT), JSON Web Signature (JWS),\nJSON Web Encryption (JWE), JSON Web Key (JWK), JSON Web Key Set (JWKS),\nand more. A vulnerability has been identified in the JSON Web Encryption\n(JWE) decryption interfaces, specifically related to the support for\ndecompressing plaintext after its decryption. Under certain conditions\nit is possible to have the user's environment consume unreasonable\namount of CPU time or memory during JWE Decryption operations. This\nissue has been patched in versions 2.0.7 and 4.15.5. (CVE-2024-28176)\nA flaw was found in Go. When FIPS mode is enabled on a system, container\nruntimes may incorrectly handle certain file paths due to improper\nvalidation in the containers/common Go library. This flaw allows an\nattacker to exploit symbolic links and trick the system into mounting\nsensitive host directories inside a container. This issue also allows\nattackers to access critical host files, bypassing the intended\nisolation between containers and the host system. (CVE-2024-9341)\ngo-retryablehttp prior to 0.7.7 did not sanitize urls when writing them\nto its log file. This could lead to go-retryablehttp writing sensitive\nHTTP basic auth credentials to its log file. This vulnerability,\nCVE-2024-6104, was fixed in go-retryablehttp 0.7.7. (CVE-2024-6104)\nA vulnerability exists in the bind-propagation option of the Dockerfile\nRUN --mount instruction. The system does not properly validate the input\npassed to this option, allowing users to pass arbitrary parameters to\nthe mount instruction. This issue can be exploited to mount sensitive\ndirectories from the host into a container during the build process and,\nin some cases, modify the contents of those mounted files. Even if\nSELinux is used, this vulnerability can bypass its protection by\nallowing the source directory to be relabeled to give the container\naccess to host files. (CVE-2024-9407)\n",
+  "modified": "2024-11-01T17:02:37Z",
+  "published": "2024-11-01T17:26:56Z",
+  "related": [
+    "CVE-2023-45290",
+    "CVE-2024-1753",
+    "CVE-2024-28176",
+    "CVE-2024-28180",
+    "CVE-2024-3727",
+    "CVE-2024-6104",
+    "CVE-2024-9341",
+    "CVE-2024-9407"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2024-0343.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=33036"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/containers/buildah/security/advisories/GHSA-pmf3-c36m-g5cf"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/containers/podman/security/advisories/GHSA-874v-pj72-92f3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/CYT3D2P3OJKISNFKOOHGY6HCUCQZYAVR/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lwn.net/Articles/978101/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lwn.net/Articles/978102/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.suse.com/pipermail/sle-security-updates/2024-July/018858.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/message/PJ4RBOYLRKSRUVS77S4OAZ7SQJWH36K2/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/message/MYMA7BZJZTURAPGKHV2ACU3HBJTKVYMK/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "buildah",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/buildah?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.37.4-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0343.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "podman",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/podman?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.9.5-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0343.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "skopeo",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/skopeo?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.16.1-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0343.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "id": "MGASA-2018-0423",
+  "summary": "Updated curl packages fix security vulnerabilities",
+  "details": "Updated curl packages fix security vulnerabilities:\n\nPeter Wu discovered that curl incorrectly handled certain SMTP buffers. A\nremote attacker could use this issue to cause curl to crash, resulting in\na denial of service, or possibly execute arbitrary code (CVE-2018-0500).\n\nZhaoyang Wu discovered that cURL, an URL transfer library, contains a buffer\noverflow in the NTLM authentication code triggered by passwords that exceed\n2GB in length on 32bit systems (CVE-2018-14618).\n\nPhan Thanh discovered that curl incorrectly handled certain FTP paths.\nAn attacker could use this to cause a denial of service or possibly\nexecute arbitrary code (CVE-2018-1000120).\n\nDario Weisser discovered that curl incorrectly handled certain LDAP URLs.\nAn attacker could possibly use this issue to cause a denial of service\n(CVE-2018-1000121).\n\nMax Dymond discovered that curl incorrectly handled certain RTSP data. An\nattacker could possibly use this to cause a denial of service or even to\nget access to sensitive data (CVE-2018-1000122).\n\nA heap-based buffer overflow can happen when closing down an FTP connection\nwith very long server command replies. When doing FTP transfers, curl keeps\na spare \"closure handle\" around internally that will be used when an FTP\nconnection gets shut down since the original curl easy handle is then\nalready removed. FTP server response data that gets cached from the original\ntransfer might then be larger than the default buffer size (16 KB) allocated\nin the \"closure handle\", which can lead to a buffer overwrite. The contents\nand size of that overwrite is controllable by the server (CVE-2018-1000300).\n\ncurl can be tricked into reading data beyond the end of a heap based buffer\nused to store downloaded content. When servers send RTSP responses back to\ncurl, the data starts out with a set of headers. curl parses that data to\nseparate it into a number of headers to deal with those appropriately and to\nfind the end of the headers that signal the start of the \"body\" part. The\nfunction that splits up the response into headers is called\n\"Curl_http_readwrite_headers()\" and in situations where it can't find a\nsingle header in the buffer, it might end up leaving a pointer pointing\ninto the buffer instead of to the start of the buffer which then later on\nmay lead to an out of buffer read when code assumes that pointer points to\na full buffer size worth of memory to use. This could potentially lead to\ninformation leakage but most likely a crash/denial of service for\napplications if a server triggers this flaw (CVE-2018-1000301).\n",
+  "modified": "2018-10-30T17:34:48Z",
+  "published": "2018-10-30T18:01:43Z",
+  "related": [
+    "CVE-2018-0500",
+    "CVE-2018-1000120",
+    "CVE-2018-1000121",
+    "CVE-2018-1000122",
+    "CVE-2018-1000300",
+    "CVE-2018-1000301",
+    "CVE-2018-14618"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0423.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22772"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/adv_2018-9cd6.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/adv_2018-97a2.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/adv_2018-b047.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/adv_2018-82c2.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/adv_2018-b138.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/adv_2018-70a2.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://curl.haxx.se/docs/CVE-2018-14618.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://usn.ubuntu.com/3598-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/DOHQJ7DDUE5U4L6FHSUVPFQ7TAZLWSMI/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://usn.ubuntu.com/3710-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2018/dsa-4286"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "curl",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/curl?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.54.1-2.7.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0423.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

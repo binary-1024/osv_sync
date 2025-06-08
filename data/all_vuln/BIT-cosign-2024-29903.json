@@ -1,0 +1,77 @@
+{
+  "id": "BIT-cosign-2024-29903",
+  "summary": "Cosign vulnerable to machine-wide denial of service via malicious artifacts",
+  "details": "Cosign provides code signing and transparency for containers and binaries. Prior to version 2.2.4, maliciously-crafted software artifacts can cause denial of service of the machine running Cosign thereby impacting all services on the machine. The root cause is that Cosign creates slices based on the number of signatures, manifests or attestations in untrusted artifacts. As such, the untrusted artifact can control the amount of memory that Cosign allocates. The exact issue is Cosign allocates excessive memory on the lines that creates a slice of the same length as the manifests. Version 2.2.4 contains a patch for the vulnerability.",
+  "aliases": [
+    "CVE-2024-29903",
+    "GHSA-95pr-fxf5-86gv",
+    "GO-2024-2719"
+  ],
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-04-12T07:17:12.054Z",
+  "database_specific": {
+    "cpes": [
+      "cpe:2.3:a:sigstore:cosign:*:*:*:*:*:*:*:*",
+      "cpe:2.3:a:sigstore:cosign:*:*:*:*:*:go:*:*"
+    ],
+    "severity": "High"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/sigstore/cosign/blob/14795db16417579fac0c00c11e166868d7976b61/pkg/cosign/verify.go#L948-L955"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sigstore/cosign/blob/286a98a4a99c1b2f32f84b0d560e324100312280/pkg/oci/remote/signatures.go#L56-L70"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sigstore/cosign/commit/629f5f8fa672973503edde75f84dcd984637629e"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sigstore/cosign/releases/tag/v2.2.4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sigstore/cosign/security/advisories/GHSA-95pr-fxf5-86gv"
+    },
+    {
+      "type": "WEB",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-29903"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "cosign",
+        "ecosystem": "Bitnami",
+        "purl": "pkg:bitnami/cosign"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.2.4"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/cosign/BIT-cosign-2024-29903.json"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      ]
+    }
+  ],
+  "schema_version": "1.6.0"
+}

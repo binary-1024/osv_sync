@@ -1,0 +1,269 @@
+{
+  "id": "GHSA-65cv-r6x7-79hv",
+  "summary": "Cross site scripting vulnerability in ActionView",
+  "details": "There is a possible cross site scripting (XSS) vulnerability in ActionView's JavaScript literal escape helpers.  Views that use the `j` or `escape_javascript` methods may be susceptible to XSS attacks.\n\n### Impact\n\nThere is a possible XSS vulnerability in the `j` and `escape_javascript` methods in ActionView.  These methods are used for escaping JavaScript string literals.  Impacted code will look something like this:\n\n```erb\n<script>let a = `<%= j unknown_input %>`</script>\n```\n\nor\n\n```erb\n<script>let a = `<%= escape_javascript unknown_input %>`</script>\n```\n\n### Releases\n\nThe 6.0.2.2 and 5.2.4.2 releases are available at the normal locations.\n\n### Workarounds\n\nFor those that can't upgrade, the following monkey patch may be used:\n\n```ruby\nActionView::Helpers::JavaScriptHelper::JS_ESCAPE_MAP.merge!(\n  {\n    \"`\" => \"\\\\`\",\n    \"$\" => \"\\\\$\"\n  }\n)\n\nmodule ActionView::Helpers::JavaScriptHelper\n  alias :old_ej :escape_javascript\n  alias :old_j :j\n\n  def escape_javascript(javascript)\n    javascript = javascript.to_s\n    if javascript.empty?\n      result = \"\"\n    else\n      result = javascript.gsub(/(\\\\|<\\/|\\r\\n|\\342\\200\\250|\\342\\200\\251|[\\n\\r\"']|[`]|[$])/u, JS_ESCAPE_MAP)\n    end\n    javascript.html_safe? ? result.html_safe : result\n  end\n\n  alias :j :escape_javascript\nend\n```\n\n### Patches\n\nTo aid users who aren't able to upgrade immediately we have provided patches for\nthe two supported release series. They are in git-am format and consist of a\nsingle changeset.\n\n* [5-2-js-helper-xss.patch](https://gist.github.com/tenderlove/c042ff49f0347c37e99183a6502accc6#file-5-2-js-helper-xss-patch) - Patch for 5.2 series\n* [6-0-js-helper-xss.patch](https://gist.github.com/tenderlove/c042ff49f0347c37e99183a6502accc6#file-6-0-js-helper-xss-patch) - Patch for 6.0 series\n\nPlease note that only the 5.2 and 6.0 series are supported at present. Users\nof earlier unsupported releases are advised to upgrade as soon as possible as we\ncannot guarantee the continued availability of security fixes for unsupported\nreleases.\n\n### Credits\n\nThanks to Jesse Campos from Chef Secure",
+  "aliases": [
+    "CVE-2020-5267"
+  ],
+  "modified": "2024-02-16T08:23:07.935097Z",
+  "published": "2020-03-19T17:30:29Z",
+  "related": [
+    "CVE-2020-5267"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2020-03-19T18:15:00Z",
+    "cwe_ids": [
+      "CWE-80"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-03-19T17:29:40Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/rails/rails/security/advisories/GHSA-65cv-r6x7-79hv"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-5267"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rails/rails/commit/033a738817abd6e446e1b320cb7d1a5c15224e9a"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionview/CVE-2020-5267.yml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://groups.google.com/forum/#!topic/rubyonrails-security/55reWMM_Pg8"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2020/03/msg00022.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/XJ7NUWXAEVRQCROIIBV4C6WXO6IR3KSB"
+    },
+    {
+      "type": "WEB",
+      "url": "http://lists.opensuse.org/opensuse-security-announce/2020-05/msg00019.html"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2020/03/19/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "actionview",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/actionview"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.4.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.1.0",
+        "4.1.0.beta1",
+        "4.1.0.beta2",
+        "4.1.0.rc1",
+        "4.1.0.rc2",
+        "4.1.1",
+        "4.1.10",
+        "4.1.10.rc1",
+        "4.1.10.rc2",
+        "4.1.10.rc3",
+        "4.1.10.rc4",
+        "4.1.11",
+        "4.1.12",
+        "4.1.12.rc1",
+        "4.1.13",
+        "4.1.13.rc1",
+        "4.1.14",
+        "4.1.14.1",
+        "4.1.14.2",
+        "4.1.14.rc1",
+        "4.1.14.rc2",
+        "4.1.15",
+        "4.1.15.rc1",
+        "4.1.16",
+        "4.1.16.rc1",
+        "4.1.2",
+        "4.1.2.rc1",
+        "4.1.2.rc2",
+        "4.1.2.rc3",
+        "4.1.3",
+        "4.1.4",
+        "4.1.5",
+        "4.1.6",
+        "4.1.6.rc1",
+        "4.1.6.rc2",
+        "4.1.7",
+        "4.1.7.1",
+        "4.1.8",
+        "4.1.9",
+        "4.1.9.rc1",
+        "4.2.0",
+        "4.2.0.beta1",
+        "4.2.0.beta2",
+        "4.2.0.beta3",
+        "4.2.0.beta4",
+        "4.2.0.rc1",
+        "4.2.0.rc2",
+        "4.2.0.rc3",
+        "4.2.1",
+        "4.2.1.rc1",
+        "4.2.1.rc2",
+        "4.2.1.rc3",
+        "4.2.1.rc4",
+        "4.2.10",
+        "4.2.10.rc1",
+        "4.2.11",
+        "4.2.11.1",
+        "4.2.11.2",
+        "4.2.11.3",
+        "4.2.2",
+        "4.2.3",
+        "4.2.3.rc1",
+        "4.2.4",
+        "4.2.4.rc1",
+        "4.2.5",
+        "4.2.5.1",
+        "4.2.5.2",
+        "4.2.5.rc1",
+        "4.2.5.rc2",
+        "4.2.6",
+        "4.2.6.rc1",
+        "4.2.7",
+        "4.2.7.1",
+        "4.2.7.rc1",
+        "4.2.8",
+        "4.2.8.rc1",
+        "4.2.9",
+        "4.2.9.rc1",
+        "4.2.9.rc2",
+        "5.0.0",
+        "5.0.0.1",
+        "5.0.0.beta1",
+        "5.0.0.beta1.1",
+        "5.0.0.beta2",
+        "5.0.0.beta3",
+        "5.0.0.beta4",
+        "5.0.0.racecar1",
+        "5.0.0.rc1",
+        "5.0.0.rc2",
+        "5.0.1",
+        "5.0.1.rc1",
+        "5.0.1.rc2",
+        "5.0.2",
+        "5.0.2.rc1",
+        "5.0.3",
+        "5.0.4",
+        "5.0.4.rc1",
+        "5.0.5",
+        "5.0.5.rc1",
+        "5.0.5.rc2",
+        "5.0.6",
+        "5.0.6.rc1",
+        "5.0.7",
+        "5.0.7.1",
+        "5.0.7.2",
+        "5.1.0",
+        "5.1.0.beta1",
+        "5.1.0.rc1",
+        "5.1.0.rc2",
+        "5.1.1",
+        "5.1.2",
+        "5.1.2.rc1",
+        "5.1.3",
+        "5.1.3.rc1",
+        "5.1.3.rc2",
+        "5.1.3.rc3",
+        "5.1.4",
+        "5.1.4.rc1",
+        "5.1.5",
+        "5.1.5.rc1",
+        "5.1.6",
+        "5.1.6.1",
+        "5.1.6.2",
+        "5.1.7",
+        "5.1.7.rc1",
+        "5.2.0",
+        "5.2.0.beta1",
+        "5.2.0.beta2",
+        "5.2.0.rc1",
+        "5.2.0.rc2",
+        "5.2.1",
+        "5.2.1.1",
+        "5.2.1.rc1",
+        "5.2.2",
+        "5.2.2.1",
+        "5.2.2.rc1",
+        "5.2.3",
+        "5.2.3.rc1",
+        "5.2.4",
+        "5.2.4.1",
+        "5.2.4.rc1"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 5.2.4.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/03/GHSA-65cv-r6x7-79hv/GHSA-65cv-r6x7-79hv.json"
+      }
+    },
+    {
+      "package": {
+        "name": "actionview",
+        "ecosystem": "RubyGems",
+        "purl": "pkg:gem/actionview"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "6.0.0"
+            },
+            {
+              "fixed": "6.0.2.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "6.0.0",
+        "6.0.1",
+        "6.0.1.rc1",
+        "6.0.2",
+        "6.0.2.1",
+        "6.0.2.rc1",
+        "6.0.2.rc2"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 6.0.2.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/03/GHSA-65cv-r6x7-79hv/GHSA-65cv-r6x7-79hv.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:N"
+    }
+  ]
+}

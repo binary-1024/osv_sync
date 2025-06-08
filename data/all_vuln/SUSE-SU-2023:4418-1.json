@@ -1,0 +1,164 @@
+{
+  "id": "SUSE-SU-2023:4418-1",
+  "summary": "Security update for postgresql14",
+  "details": "This update for postgresql14 fixes the following issues:\n\nSecurity issues fixed:\n\n* CVE-2023-5868: Fix handling of unknown-type\n  arguments in DISTINCT 'any' aggregate functions. This error led\n  to a text-type value being interpreted as an unknown-type value\n  (that is, a zero-terminated string) at runtime. This could\n  result in disclosure of server memory following the text value. (bsc#1216962)\n* CVE-2023-5869: Detect integer overflow while\n  computing new array dimensions. When assigning new elements to\n  array subscripts that are outside the current array bounds, an\n  undetected integer overflow could occur in edge cases. Memory\n  stomps that are potentially exploitable for arbitrary code\n  execution are possible, and so is disclosure of server memory. (bsc#1216961)\n* CVE-2023-5870: Prevent the pg_signal_backend role\n  from signalling background workers and autovacuum processes.\n  The documentation says that pg_signal_backend cannot issue\n  signals to superuser-owned processes. It was able to signal\n  these background  processes, though, because they advertise a\n  role OID of zero. Treat that as indicating superuser ownership.\n  The security implications of cancelling one of these process\n  types are fairly small so far as the core code goes (we'll just\n  start another one), but extensions might add background workers\n  that are more vulnerable.\n  Also ensure that the is_superuser parameter is set correctly in\n  such processes. No specific security consequences are known for\n  that oversight, but it might be significant for some extensions.\n  (bsc#1216960)\n\n\n- updated to 14.10 https://www.postgresql.org/docs/14/release-14-10.html\n- Overhaul postgresql-README.SUSE and move it from the binary\n  package to the noarch wrapper package.\n- Change the unix domain socket location from /var/run to /run.\n",
+  "modified": "2025-05-02T04:36:02.220831Z",
+  "published": "2023-11-13T11:22:35Z",
+  "related": [
+    "CVE-2023-5868",
+    "CVE-2023-5869",
+    "CVE-2023-5870"
+  ],
+  "upstream": [
+    "CVE-2023-5868",
+    "CVE-2023-5869",
+    "CVE-2023-5870"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2023/suse-su-20234418-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1216022"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1216734"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1216960"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1216961"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1216962"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-5868"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-5869"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2023-5870"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "postgresql14",
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
+        "purl": "pkg:rpm/suse/postgresql14&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "14.10-3.33.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "postgresql14-devel": "14.10-3.33.1",
+            "postgresql14-server-devel": "14.10-3.33.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:4418-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "postgresql14",
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
+        "purl": "pkg:rpm/suse/postgresql14&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "14.10-3.33.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "postgresql14-docs": "14.10-3.33.1",
+            "postgresql14-contrib": "14.10-3.33.1",
+            "postgresql14-plpython": "14.10-3.33.1",
+            "postgresql14": "14.10-3.33.1",
+            "postgresql14-plperl": "14.10-3.33.1",
+            "postgresql14-pltcl": "14.10-3.33.1",
+            "postgresql14-server": "14.10-3.33.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:4418-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "postgresql14",
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
+        "purl": "pkg:rpm/suse/postgresql14&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "14.10-3.33.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "postgresql14-docs": "14.10-3.33.1",
+            "postgresql14-contrib": "14.10-3.33.1",
+            "postgresql14-plpython": "14.10-3.33.1",
+            "postgresql14": "14.10-3.33.1",
+            "postgresql14-plperl": "14.10-3.33.1",
+            "postgresql14-pltcl": "14.10-3.33.1",
+            "postgresql14-server": "14.10-3.33.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2023:4418-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

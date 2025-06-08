@@ -1,0 +1,319 @@
+{
+  "id": "GHSA-p6gg-5hf4-4rgj",
+  "summary": "Graylog vulnerable to instantiation of arbitrary classes triggered by API request",
+  "details": "### Summary\n\nArbitrary classes can be loaded and instantiated using a HTTP PUT request to the `/api/system/cluster_config/` endpoint.\n\n### Details\n\nGraylog's cluster config system uses fully qualified class names as config keys. To validate the existence of the requested class before using them, Graylog loads the class using the class loader. \n\nhttps://github.com/Graylog2/graylog2-server/blob/e458db8bf4f789d4d19f1b37f0263f910c8d036c/graylog2-server/src/main/java/org/graylog2/rest/resources/system/ClusterConfigResource.java#L208-L214\n\n\n### PoC\nA request of the following form will output the content of the `/etc/passwd` file:\n\n```\ncurl -u admin:<admin-password> -X PUT http://localhost:9000/api/system/cluster_config/java.io.File \\\n    -H \"Content-Type: application/json\" \\\n    -H \"X-Requested-By: poc\" \\\n    -d '\"/etc/passwd\"'\n```\n\nTo perform the request, authorization is required. Only users posessing the `clusterconfigentry:create` and `clusterconfigentry:edit` permissions are allowed to do so. These permissions are usually only granted to `Admin` users.\n\n### Impact\n\nIf a user with the appropriate permissions performs the request, arbitrary classes with 1-arg String constructors can be instantiated. \n\nThis will execute arbitrary code that is run during class instantiation.\n\nIn the specific use case of `java.io.File`, the behaviour of the internal web-server stack will lead to information exposure by including the entire file content in the response to the REST request.\n\n### Credits\n\nAnalysis provided by Fabian Yamaguchi - Whirly Labs (Pty) Ltd",
+  "aliases": [
+    "CVE-2024-24824"
+  ],
+  "modified": "2024-02-16T08:02:33.792696Z",
+  "published": "2024-02-07T18:23:43Z",
+  "related": [
+    "CVE-2024-24824"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2024-02-07T18:15:55Z",
+    "cwe_ids": [
+      "CWE-284"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-07T18:23:43Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/security/advisories/GHSA-p6gg-5hf4-4rgj"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24824"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/commit/75ef2b8d60e7d67f859b79fe712c8ae7b2e861d8"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/commit/7f8ef7fa8edf493106d5ef6f777d4da02c5194d9"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Graylog2/graylog2-server"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/blob/e458db8bf4f789d4d19f1b37f0263f910c8d036c/graylog2-server/src/main/java/org/graylog2/rest/resources/system/ClusterConfigResource.java#L208-L214"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.graylog2:graylog2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.graylog2/graylog2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "5.1.11"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.1.0",
+        "2.1.0-alpha.1",
+        "2.1.0-alpha.2",
+        "2.1.0-beta.1",
+        "2.1.0-beta.2",
+        "2.1.0-beta.3",
+        "2.1.0-beta.4",
+        "2.1.0-rc.1",
+        "2.1.1",
+        "2.1.2",
+        "2.1.3",
+        "2.2.0",
+        "2.2.0-alpha.1",
+        "2.2.0-alpha.2",
+        "2.2.0-alpha.3",
+        "2.2.0-alpha.4",
+        "2.2.0-beta.1",
+        "2.2.0-beta.2",
+        "2.2.0-beta.3",
+        "2.2.0-beta.4",
+        "2.2.0-beta.5",
+        "2.2.0-beta.6",
+        "2.2.0-rc.1",
+        "2.2.1",
+        "2.2.2",
+        "2.2.3",
+        "2.3.0",
+        "2.3.0-alpha.1",
+        "2.3.0-alpha.2",
+        "2.3.0-alpha.3",
+        "2.3.0-beta.1",
+        "2.3.0-rc.1",
+        "2.3.0-rc.2",
+        "2.3.1",
+        "2.3.2",
+        "2.4.0",
+        "2.4.0-alpha.1",
+        "2.4.0-alpha.2",
+        "2.4.0-alpha.3",
+        "2.4.0-beta.1",
+        "2.4.0-beta.2",
+        "2.4.0-beta.3",
+        "2.4.0-beta.4",
+        "2.4.0-rc.1",
+        "2.4.0-rc.2",
+        "2.4.1",
+        "2.4.2",
+        "2.4.3",
+        "2.4.4",
+        "2.4.5",
+        "2.4.6",
+        "2.4.7",
+        "2.5.0",
+        "2.5.0-alpha.1",
+        "2.5.0-beta.1",
+        "2.5.1",
+        "2.5.2",
+        "3.0.0",
+        "3.0.0-alpha.0",
+        "3.0.0-alpha.1",
+        "3.0.0-alpha.2",
+        "3.0.0-alpha.3",
+        "3.0.0-alpha.4",
+        "3.0.0-alpha.5",
+        "3.0.0-beta.1",
+        "3.0.0-beta.2",
+        "3.0.0-beta.3",
+        "3.0.0-beta.4",
+        "3.0.0-rc.1",
+        "3.0.0-rc.2",
+        "3.0.1",
+        "3.0.2",
+        "3.1.0",
+        "3.1.0-beta.2",
+        "3.1.0-beta.3",
+        "3.1.0-rc.1",
+        "3.1.0-rc.2",
+        "3.1.1",
+        "3.1.2",
+        "3.1.3",
+        "3.1.4",
+        "3.2.0",
+        "3.2.1",
+        "3.2.2",
+        "3.2.3",
+        "3.2.4",
+        "3.2.5",
+        "3.3.0",
+        "3.3.0-beta.3",
+        "3.3.0-rc.1",
+        "3.3.10",
+        "3.3.11",
+        "3.3.12",
+        "3.3.13",
+        "3.3.14",
+        "3.3.15",
+        "3.3.17",
+        "3.3.2",
+        "3.3.3",
+        "3.3.4",
+        "3.3.5",
+        "3.3.6",
+        "3.3.7",
+        "3.3.8",
+        "3.3.9",
+        "4.0.0",
+        "4.0.0-beta.4",
+        "4.0.0-rc.1",
+        "4.0.0-rc.2",
+        "4.0.1",
+        "4.0.10",
+        "4.0.11",
+        "4.0.12",
+        "4.0.13",
+        "4.0.14",
+        "4.0.16",
+        "4.0.17",
+        "4.0.2",
+        "4.0.3",
+        "4.0.4",
+        "4.0.5",
+        "4.0.6",
+        "4.0.7",
+        "4.0.8",
+        "4.0.9",
+        "4.1.0",
+        "4.1.0-beta.1",
+        "4.1.0-beta.2",
+        "4.1.0-rc.1",
+        "4.1.1",
+        "4.1.11",
+        "4.1.12",
+        "4.1.13",
+        "4.1.14",
+        "4.1.2",
+        "4.1.3",
+        "4.1.4",
+        "4.1.5",
+        "4.1.6",
+        "4.1.7",
+        "4.1.8",
+        "4.1.9",
+        "4.2.0",
+        "4.2.0-beta.1",
+        "4.2.0-rc.1",
+        "4.2.1",
+        "4.2.10",
+        "4.2.11",
+        "4.2.12",
+        "4.2.13",
+        "4.2.2",
+        "4.2.3",
+        "4.2.5",
+        "4.2.6",
+        "4.2.7",
+        "4.2.8",
+        "4.2.9",
+        "4.3.0",
+        "4.3.1",
+        "4.3.10",
+        "4.3.11",
+        "4.3.12",
+        "4.3.13",
+        "4.3.14",
+        "4.3.15",
+        "4.3.2",
+        "4.3.3",
+        "4.3.4",
+        "4.3.5",
+        "4.3.6",
+        "4.3.7",
+        "4.3.8",
+        "4.3.9",
+        "5.0.0",
+        "5.0.1",
+        "5.0.10",
+        "5.0.11",
+        "5.0.12",
+        "5.0.13",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "5.0.6",
+        "5.0.7",
+        "5.0.8",
+        "5.0.9",
+        "5.1.0",
+        "5.1.1",
+        "5.1.10",
+        "5.1.2",
+        "5.1.3",
+        "5.1.4",
+        "5.1.5",
+        "5.1.6",
+        "5.1.7",
+        "5.1.8",
+        "5.1.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-p6gg-5hf4-4rgj/GHSA-p6gg-5hf4-4rgj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.graylog2:graylog2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.graylog2/graylog2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5.2.0-alpha.1"
+            },
+            {
+              "fixed": "5.2.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.2.0",
+        "5.2.0-alpha.1",
+        "5.2.0-beta.1",
+        "5.2.0-beta.2",
+        "5.2.0-beta.3",
+        "5.2.0-rc.1",
+        "5.2.0-rc.2",
+        "5.2.1",
+        "5.2.2",
+        "5.2.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-p6gg-5hf4-4rgj/GHSA-p6gg-5hf4-4rgj.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "MGASA-2015-0246",
+  "summary": "Updated openssl package fixes security vulnerabilities",
+  "details": "A vulnerability in the TLS protocol allows a man-in-the-middle attacker to\ndowngrade vulnerable TLS connections using ephemeral Diffie-Hellman key\nexchange to 512-bit export-grade cryptography. This vulnerability is known\nas Logjam (CVE-2015-4000).\n\nWhen processing an ECParameters structure OpenSSL enters an infinite loop if\nthe curve specified is over a specially malformed binary polynomial field.\nThis can be used to perform denial of service against any system which\nprocesses public keys, certificate requests or certificates.  This includes\nTLS clients and TLS servers with client authentication enabled\n(CVE-2015-1788).\n\nX509_cmp_time does not properly check the length of the ASN1_TIME string and\ncan read a few bytes out of bounds. In addition, X509_cmp_time accepts an\narbitrary number of fractional seconds in the time string. An attacker can\nuse this to craft malformed certificates and CRLs of various sizes and\npotentially cause a segmentation fault, resulting in a DoS on applications\nthat verify certificates or CRLs. TLS clients that verify CRLs are affected.\nTLS clients and servers with client authentication enabled may be affected\nif they use custom verification callbacks (CVE-2015-1789).\n\nThe PKCS#7 parsing code does not handle missing inner EncryptedContent\ncorrectly. An attacker can craft malformed ASN.1-encoded PKCS#7 blobs\nwith missing content and trigger a NULL pointer dereference on parsing\n(CVE-2015-1790).\n\nIf a NewSessionTicket is received by a multi-threaded client when attempting\nto reuse a previous ticket then a race condition can occur potentially\nleading to a double free of the ticket data (CVE-2015-1791).\n\nWhen verifying a signedData message the CMS code can enter an infinite loop\nif presented with an unknown hash function OID. This can be used to perform\ndenial of service against any system which verifies signedData messages\nusing the CMS code (CVE-2015-1792).\n",
+  "modified": "2015-06-19T13:22:09Z",
+  "published": "2015-06-19T13:33:05Z",
+  "related": [
+    "CVE-2015-1788",
+    "CVE-2015-1789",
+    "CVE-2015-1790",
+    "CVE-2015-1791",
+    "CVE-2015-1792",
+    "CVE-2015-4000"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2015-0246.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=16071"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://openssl.org/news/secadv_20150611.txt"
+    },
+    {
+      "type": "REPORT",
+      "url": "http://www.ubuntu.com/usn/usn-2639-1/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openssl",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.1o-1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0246.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

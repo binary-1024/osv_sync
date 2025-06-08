@@ -1,0 +1,67 @@
+{
+  "id": "RUSTSEC-2020-0090",
+  "summary": "Thex<T> allows data races of non-Send types across threads",
+  "details": "`thex::Thex<T>` implements `Sync` for all types `T`. However, it is missing a\nbound for `T: Send`.\n\nThis allows non-Send types such as `Rc` to be sent across thread boundaries\nwhich can trigger undefined behavior and memory corruption.",
+  "aliases": [
+    "CVE-2020-35927",
+    "GHSA-j42v-6wpm-r847"
+  ],
+  "modified": "2023-11-08T04:03:39.830805Z",
+  "published": "2020-12-08T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/thex"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2020-0090.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "thex",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/thex"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2020-0090.json",
+        "categories": [
+          "memory-corruption",
+          "thread-safety"
+        ]
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}

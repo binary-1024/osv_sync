@@ -1,0 +1,2028 @@
+{
+  "id": "SUSE-SU-2016:1203-1",
+  "summary": "Security update for the Linux Kernel",
+  "details": "\nThe SUSE Linux Enterprise 11 SP3 kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n- CVE-2013-7446: Use-after-free vulnerability in net/unix/af_unix.c in\n  the Linux kernel allowed local users to bypass intended AF_UNIX socket\n  permissions or cause a denial of service (panic) via crafted epoll_ctl\n  calls (bnc#955654).\n- CVE-2015-7509: fs/ext4/namei.c in the Linux kernel allowed physically\n  proximate attackers to cause a denial of service (system crash) via\n  a crafted no-journal filesystem, a related issue to CVE-2013-2015\n  (bnc#956707).\n- CVE-2015-7515: An out of bounds memory access in the aiptek USB\n  driver could be used by physical local attackers to crash the kernel\n  (bnc#956708).\n- CVE-2015-7550: The keyctl_read_key function in security/keys/keyctl.c\n  in the Linux kernel did not properly use a semaphore, which allowed\n  local users to cause a denial of service (NULL pointer dereference and\n  system crash) or possibly have unspecified other impact via a crafted\n  application that leverages a race condition between keyctl_revoke and\n  keyctl_read calls (bnc#958951).\n- CVE-2015-7566: A malicious USB device could cause kernel crashes in\n  the visor device driver (bnc#961512).\n- CVE-2015-7799: The slhc_init function in drivers/net/slip/slhc.c in\n  the Linux kernel did not ensure that certain slot numbers are valid,\n  which allowed local users to cause a denial of service (NULL pointer\n  dereference and system crash) via a crafted PPPIOCSMAXCID ioctl call\n  (bnc#949936).\n- CVE-2015-8215: net/ipv6/addrconf.c in the IPv6 stack in the Linux\n  kernel did not validate attempted changes to the MTU value, which allowed\n  context-dependent attackers to cause a denial of service (packet loss)\n  via a value that is (1) smaller than the minimum compliant value or\n  (2) larger than the MTU of an interface, as demonstrated by a Router\n  Advertisement (RA) message that is not validated by a daemon, a different\n  vulnerability than CVE-2015-0272.  NOTE: the scope of CVE-2015-0272 is\n  limited to the NetworkManager product (bnc#955354).\n- CVE-2015-8539: The KEYS subsystem in the Linux kernel allowed\n  local users to gain privileges or cause a denial of service (BUG)\n  via crafted keyctl commands that negatively instantiate a key, related\n  to security/keys/encrypted-keys/encrypted.c, security/keys/trusted.c,\n  and security/keys/user_defined.c (bnc#958463).\n- CVE-2015-8543: The networking implementation in the Linux kernel\n  did not validate protocol identifiers for certain protocol families,\n  which allowed local users to cause a denial of service (NULL function\n  pointer dereference and system crash) or possibly gain privileges by\n  leveraging CLONE_NEWUSER support to execute a crafted SOCK_RAW application\n  (bnc#958886).\n- CVE-2015-8550: Optimizations introduced by the compiler could have\n  lead to double fetch vulnerabilities, potentially possibly leading to\n  arbitrary code execution in backend (bsc#957988). (bsc#957988 XSA-155).\n- CVE-2015-8551: The PCI backend driver in Xen, when running on an\n  x86 system and using Linux as the driver domain, allowed local guest\n  administrators to hit BUG conditions and cause a denial of service\n  (NULL pointer dereference and host OS crash) by leveraging a system with\n  access to a passed-through MSI or MSI-X capable physical PCI device\n  and a crafted sequence of XEN_PCI_OP_* operations, aka 'Linux pciback\n  missing sanity checks (bnc#957990).\n- CVE-2015-8552: The PCI backend driver in Xen, when running on an\n  x86 system and using Linux as the driver domain, allowed local guest\n  administrators to generate a continuous stream of WARN messages and\n  cause a denial of service (disk consumption) by leveraging a system with\n  access to a passed-through MSI or MSI-X capable physical PCI device and\n  XEN_PCI_OP_enable_msi operations, aka 'Linux pciback missing sanity checks\n  (bnc#957990).\n- CVE-2015-8569: The (1) pptp_bind and (2) pptp_connect functions in\n  drivers/net/ppp/pptp.c in the Linux kernel do not verify an address\n  length, which allowed local users to obtain sensitive information from\n  kernel memory and bypass the KASLR protection mechanism via a crafted\n  application (bnc#959190).\n- CVE-2015-8575: The sco_sock_bind function in net/bluetooth/sco.c in\n  the Linux kernel did not verify an address length, which allowed local\n  users to obtain sensitive information from kernel memory and bypass the\n  KASLR protection mechanism via a crafted application (bnc#959399).\n- CVE-2015-8767: net/sctp/sm_sideeffect.c in the Linux kernel did not\n  properly manage the relationship between a lock and a socket, which\n  allowed local users to cause a denial of service (deadlock) via a crafted\n  sctp_accept call (bnc#961509).\n- CVE-2015-8785: The fuse_fill_write_pages function in fs/fuse/file.c\n  in the Linux kernel allowed local users to cause a denial of service\n  (infinite loop) via a writev system call that triggers a zero length\n  for the first segment of an iov (bnc#963765).\n- CVE-2015-8812: A flaw was found in the CXGB3 kernel driver when\n  the network was considered congested. The kernel would incorrectly\n  misinterpret the congestion as an error condition and incorrectly\n  free/clean up the skb. When the device would then send the skb's queued,\n  these structures would be referenced and may panic the system\n  or allow an attacker to escalate privileges in a use-after-free\n  scenario.(bsc#966437).\n- CVE-2015-8816: A malicious USB device could cause kernel crashes in\n  the in hub_activate() function (bnc#968010).\n- CVE-2016-0723: Race condition in the tty_ioctl function in\n  drivers/tty/tty_io.c in the Linux kernel allowed local users to obtain\n  sensitive information from kernel memory or cause a denial of service\n  (use-after-free and system crash) by making a TIOCGETD ioctl call during\n  processing of a TIOCSETD ioctl call (bnc#961500).\n- CVE-2016-2069: A race in invalidating paging structures that were not\n  in use locally could have lead to disclosoure of information or arbitrary\n  code exectution (bnc#963767).\n- CVE-2016-2143: On zSeries a fork of a large process could have caused\n  memory corruption due to incorrect page table handling. (bnc#970504,\n  LTC#138810).\n- CVE-2016-2184: A malicious USB device could cause kernel crashes in\n  the alsa usb-audio device driver (bsc#971125).\n- CVE-2016-2185: A malicious USB device could cause kernel crashes in\n  the usb_driver_claim_interface function (bnc#971124).\n- CVE-2016-2186: A malicious USB device could cause kernel crashes in\n  the powermate device driver (bnc#970958).\n- CVE-2016-2384: A double free on the ALSA umidi object was\n  fixed. (bsc#966693).\n- CVE-2016-2543: A missing NULL check at remove_events ioctl in the ALSA\n  seq driver was fixed. (bsc#967972).\n- CVE-2016-2544: Fix race at timer setup and close in the ALSA seq driver\n  was fixed. (bsc#967973).\n- CVE-2016-2545: A double unlink of active_list in the ALSA timer driver\n  was fixed. (bsc#967974).\n- CVE-2016-2546: A race among ALSA timer ioctls was fixed (bsc#967975).\n- CVE-2016-2547,CVE-2016-2548: The ALSA slave\n  timer list handling was hardened against hangs and\n  races. (CVE-2016-2547,CVE-2016-2548,bsc#968011,bsc#968012).\n- CVE-2016-2549: A stall in ALSA hrtimer handling was fixed (bsc#968013).\n- CVE-2016-2782: A malicious USB device could cause kernel crashes in\n  the visor device driver (bnc#968670).\n- CVE-2016-3137: A malicious USB device could cause kernel crashes in\n  the cypress_m8 device driver (bnc#970970).\n- CVE-2016-3139: A malicious USB device could cause kernel crashes in\n  the wacom device driver (bnc#970909).\n- CVE-2016-3140: A malicious USB device could cause kernel crashes in\n  the digi_acceleport device driver (bnc#970892).\n- CVE-2016-3156: A quadratic algorithm could lead to long\n  kernel ipv4 hangs when removing a device with a large number of\n  addresses. (bsc#971360).\n- CVE-2016-3955: A remote buffer overflow in the usbip driver could be used\n  by authenticated attackers to crash the kernel. (bsc#975945)\n- CVE-2016-2847: A local user could exhaust kernel memory by pushing lots of data\n  into pipes. (bsc#970948).\n- CVE-2016-2188: A malicious USB device could cause kernel crashes in the\n  iowarrior device driver (bnc#970956).\n- CVE-2016-3138: A malicious USB device could cause kernel crashes in the\n  cdc-acm device driver (bnc#970911).\n\nThe following non-security bugs were fixed:\n- af_unix: Guard against other == sk in unix_dgram_sendmsg (bsc#973570).\n- blktap: also call blkif_disconnect() when frontend switched to closed (bsc#952976).\n- blktap: refine mm tracking (bsc#952976).\n- cachefiles: Avoid deadlocks with fs freezing (bsc#935123).\n- cifs: Schedule on hard mount retry (bsc#941514).\n- cpuset: Fix potential deadlock w/ set_mems_allowed (bsc#960857, bsc#974646).\n- dcache: use IS_ROOT to decide where dentry is hashed (bsc#949752).\n- driver: Vmxnet3: Fix ethtool -S to return correct rx queue stats (bsc#950750).\n- drm/i915: Change semantics of hw_contexts_disabled (bsc#963276).\n- drm/i915: Evict CS TLBs between batches (bsc#758040).\n- drm/i915: Fix SRC_COPY width on 830/845g (bsc#758040).\n- e1000e: Do not read ICR in Other interrupt (bsc#924919).\n- e1000e: Do not write lsc to ics in msi-x mode (bsc#924919).\n- e1000e: Fix msi-x interrupt automask (bsc#924919).\n- e1000e: Remove unreachable code (bsc#924919).\n- ext3: fix data=journal fast mount/umount hang (bsc#942082).\n- ext3: NULL dereference in ext3_evict_inode() (bsc#942082).\n- firmware: Create directories for external firmware (bsc#959312).\n- firmware: Simplify directory creation (bsc#959312).\n- fs: Avoid deadlocks of fsync_bdev() and fs freezing (bsc#935123).\n- fs: Fix deadlocks between sync and fs freezing (bsc#935123).\n- ftdi_sio: private backport of TIOCMIWAIT (bnc#956375).\n- ipr: Fix incorrect trace indexing (bsc#940913).\n- ipr: Fix invalid array indexing for HRRQ (bsc#940913).\n- ipv6: make fib6 serial number per namespace (bsc#965319).\n- ipv6: mld: fix add_grhead skb_over_panic for devs with large MTUs (bsc#956852).\n- ipv6: per netns fib6 walkers (bsc#965319).\n- ipv6: per netns FIB garbage collection (bsc#965319).\n- ipv6: replace global gc_args with local variable (bsc#965319).\n- jbd: Fix unreclaimed pages after truncate in data=journal mode (bsc#961516).\n- kabi: protect struct netns_ipv6 after FIB6 GC series (bsc#965319).\n- kbuild: create directory for dir/file.o (bsc#959312).\n- kexec: Fix race between panic() and crash_kexec() called directly (bnc#937444).\n- lpfc: Fix null ndlp dereference in target_reset_handler (bsc#951392).\n- mld, igmp: Fix reserved tailroom calculation (bsc#956852).\n- mm-memcg-print-statistics-from-live-counters-fix (bnc#969307).\n- netfilter: xt_recent: fix namespace destroy path (bsc#879378).\n- nfs4: treat lock owners as opaque values (bnc#968141).\n- nfs: Fix handling of re-write-before-commit for mmapped NFS pages (bsc#964201).\n- nfs: use smaller allocations for 'struct id_map' (bsc#965923).\n- nfsv4: Fix two infinite loops in the mount code (bsc#954628).\n- nfsv4: Recovery of recalled read delegations is broken (bsc#956514).\n- panic/x86: Allow cpus to save registers even if they (bnc#940946).\n- panic/x86: Fix re-entrance problem due to panic on (bnc#937444).\n- pciback: do not allow MSI-X ops if PCI_COMMAND_MEMORY is not set.\n- pciback: for XEN_PCI_OP_disable_msi[|x] only disable if device has MSI(X) enabled.\n- pciback: return error on XEN_PCI_OP_enable_msi when device has MSI or MSI-X enabled.\n- pciback: return error on XEN_PCI_OP_enable_msix when device has MSI or MSI-X enabled.\n- pci: Update VPD size with correct length (bsc#958906).\n- quota: Fix deadlock with suspend and quotas (bsc#935123).\n- rdma/ucma: Fix AB-BA deadlock (bsc#963998).\n- README.BRANCH: Switch to LTSS mode\n- Refresh patches.xen/xen3-08-x86-ldt-make-modify_ldt-synchronous.patch (bsc#959705).\n- Restore kabi after lock-owner change (bnc#968141).\n- s390/pageattr: Do a single TLB flush for change_page_attr (bsc#940413).\n- scsi_dh_rdac: always retry MODE SELECT on command lock violation (bsc#956949).\n- scsi: mpt2sas: Rearrange the the code so that the completion queues are initialized prior to sending the request to controller firmware (bsc#967863).\n- skb: Add inline helper for getting the skb end offset from head (bsc#956852).\n- sunrcp: restore fair scheduling to priority queues (bsc#955308).\n- sunrpc: refactor rpcauth_checkverf error returns (bsc#955673).\n- tcp: avoid order-1 allocations on wifi and tx path (bsc#956852).\n- tcp: fix skb_availroom() (bsc#956852).\n- tg3: 5715 does not link up when autoneg off (bsc#904035).\n- Update patches.fixes/mm-exclude-reserved-pages-from-dirtyable-memory-fix.patch (bnc#940017, bnc#949298, bnc#947128).\n- usb: ftdi_sio: fix race condition in TIOCMIWAIT, and abort of TIOCMIWAIT when the device is removed (bnc#956375).\n- usb: ftdi_sio: fix status line change handling for TIOCMIWAIT and TIOCGICOUNT (bnc#956375).\n- usb: ftdi_sio: fix tiocmget and tiocmset return values (bnc#956375).\n- usb: ftdi_sio: fix tiocmget indentation (bnc#956375).\n- usb: ftdi_sio: optimise chars_in_buffer (bnc#956375).\n- usb: ftdi_sio: refactor modem-control status retrieval (bnc#956375).\n- usb: ftdi_sio: remove unnecessary memset (bnc#956375).\n- usb: ftdi_sio: use ftdi_get_modem_status in chars_in_buffer (bnc#956375).\n- usb: ftdi_sio: use generic chars_in_buffer (bnc#956375).\n- usb: serial: export usb_serial_generic_chars_in_buffer (bnc#956375).\n- usb: serial: ftdi_sio: Add missing chars_in_buffer function (bnc#956375).\n- usbvision fix overflow of interfaces array (bnc#950998).\n- veth: extend device features (bsc#879381).\n- vfs: Provide function to get superblock and wait for it to thaw (bsc#935123).\n- vmxnet3: adjust ring sizes when interface is down (bsc#950750).\n- vmxnet3: fix building without CONFIG_PCI_MSI (bsc#958912).\n- vmxnet3: fix ethtool ring buffer size setting (bsc#950750).\n- vmxnet3: fix netpoll race condition (bsc#958912).\n- writeback: Skip writeback for frozen filesystem (bsc#935123).\n- x86/evtchn: make use of PHYSDEVOP_map_pirq.\n- x86, kvm: fix kvm's usage of kernel_fpu_begin/end() (bsc#961518).\n- x86, kvm: fix maintenance of guest/host xcr0 state (bsc#961518).\n- x86, kvm: use kernel_fpu_begin/end() in kvm_load/put_guest_fpu() (bsc#961518).\n- x86/mce: Fix return value of mce_chrdev_read() when erst is disabled (bsc#934787).\n- xen/panic/x86: Allow cpus to save registers even if they (bnc#940946).\n- xen/panic/x86: Fix re-entrance problem due to panic on (bnc#937444).\n- xen: x86: mm: drop TLB flush from ptep_set_access_flags (bsc#948330).\n- xen: x86: mm: only do a local tlb flush in ptep_set_access_flags() (bsc#948330).\n- xfrm: do not segment UFO packets (bsc#946122).\n- xhci: silence TD warning (bnc#939955).\n",
+  "modified": "2025-05-02T04:04:01.876038Z",
+  "published": "2016-05-03T13:29:41Z",
+  "related": [
+    "CVE-2013-7446",
+    "CVE-2015-7509",
+    "CVE-2015-7515",
+    "CVE-2015-7550",
+    "CVE-2015-7566",
+    "CVE-2015-7799",
+    "CVE-2015-8215",
+    "CVE-2015-8539",
+    "CVE-2015-8543",
+    "CVE-2015-8550",
+    "CVE-2015-8551",
+    "CVE-2015-8552",
+    "CVE-2015-8569",
+    "CVE-2015-8575",
+    "CVE-2015-8767",
+    "CVE-2015-8785",
+    "CVE-2015-8812",
+    "CVE-2015-8816",
+    "CVE-2016-0723",
+    "CVE-2016-2069",
+    "CVE-2016-2143",
+    "CVE-2016-2184",
+    "CVE-2016-2185",
+    "CVE-2016-2186",
+    "CVE-2016-2188",
+    "CVE-2016-2384",
+    "CVE-2016-2543",
+    "CVE-2016-2544",
+    "CVE-2016-2545",
+    "CVE-2016-2546",
+    "CVE-2016-2547",
+    "CVE-2016-2548",
+    "CVE-2016-2549",
+    "CVE-2016-2782",
+    "CVE-2016-2847",
+    "CVE-2016-3137",
+    "CVE-2016-3138",
+    "CVE-2016-3139",
+    "CVE-2016-3140",
+    "CVE-2016-3156",
+    "CVE-2016-3955"
+  ],
+  "upstream": [
+    "CVE-2013-7446",
+    "CVE-2015-7509",
+    "CVE-2015-7515",
+    "CVE-2015-7550",
+    "CVE-2015-7566",
+    "CVE-2015-7799",
+    "CVE-2015-8215",
+    "CVE-2015-8539",
+    "CVE-2015-8543",
+    "CVE-2015-8550",
+    "CVE-2015-8551",
+    "CVE-2015-8552",
+    "CVE-2015-8569",
+    "CVE-2015-8575",
+    "CVE-2015-8767",
+    "CVE-2015-8785",
+    "CVE-2015-8812",
+    "CVE-2015-8816",
+    "CVE-2016-0723",
+    "CVE-2016-2069",
+    "CVE-2016-2143",
+    "CVE-2016-2184",
+    "CVE-2016-2185",
+    "CVE-2016-2186",
+    "CVE-2016-2188",
+    "CVE-2016-2384",
+    "CVE-2016-2543",
+    "CVE-2016-2544",
+    "CVE-2016-2545",
+    "CVE-2016-2546",
+    "CVE-2016-2547",
+    "CVE-2016-2548",
+    "CVE-2016-2549",
+    "CVE-2016-2782",
+    "CVE-2016-2847",
+    "CVE-2016-3137",
+    "CVE-2016-3138",
+    "CVE-2016-3139",
+    "CVE-2016-3140",
+    "CVE-2016-3156",
+    "CVE-2016-3955"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2016/suse-su-20161203-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/758040"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/781018"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/879378"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/879381"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/904035"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/924919"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/934787"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/935123"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/937444"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/939955"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/940017"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/940413"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/940913"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/940946"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/941514"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/942082"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/946122"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/947128"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/948330"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/949298"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/949752"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/949936"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/950750"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/950998"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/951392"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/952976"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/954628"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/955308"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/955354"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/955654"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/955673"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956375"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956514"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956707"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956708"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956709"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956852"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/956949"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/957988"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/957990"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/958463"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/958886"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/958906"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/958912"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/958951"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/959190"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/959312"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/959399"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/959705"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/960857"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/961500"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/961509"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/961512"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/961516"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/961518"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963276"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963765"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963767"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/963998"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/964201"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/965319"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/965923"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/966437"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/966693"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/967863"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/967972"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/967973"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/967974"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/967975"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968010"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968011"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968012"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968013"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968141"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/968670"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/969307"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970504"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970892"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970909"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970911"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970948"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970956"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970958"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/970970"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971124"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971125"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/971360"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/973570"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/974646"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/975945"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2013-7446"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7509"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7515"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7550"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7566"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-7799"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8215"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8539"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8543"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8550"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8551"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8552"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8569"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8575"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8767"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8785"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8812"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2015-8816"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-0723"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2069"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2143"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2184"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2185"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2186"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2188"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2384"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2543"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2544"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2545"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2546"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2547"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2548"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2549"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2782"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-2847"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3137"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3138"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3139"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3140"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3156"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2016-3955"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-bigsmp",
+        "ecosystem": "SUSE:OpenStack Cloud 5",
+        "purl": "pkg:rpm/suse/kernel-bigsmp&distro=SUSE%20OpenStack%20Cloud%205"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:OpenStack Cloud 5",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20OpenStack%20Cloud%205"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:OpenStack Cloud 5",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20OpenStack%20Cloud%205"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:OpenStack Cloud 5",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20OpenStack%20Cloud%205"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:OpenStack Cloud 5",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20OpenStack%20Cloud%205"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:OpenStack Cloud 5",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20OpenStack%20Cloud%205"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:OpenStack Cloud 5",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20OpenStack%20Cloud%205"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-bigsmp",
+        "ecosystem": "SUSE:Manager 2.1",
+        "purl": "pkg:rpm/suse/kernel-bigsmp&distro=SUSE%20Manager%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Manager 2.1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Manager%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Manager 2.1",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Manager%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Manager 2.1",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Manager%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Manager 2.1",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Manager%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Manager 2.1",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Manager%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Manager 2.1",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Manager%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-bigsmp",
+        "ecosystem": "SUSE:Manager Proxy 2.1",
+        "purl": "pkg:rpm/suse/kernel-bigsmp&distro=SUSE%20Manager%20Proxy%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Manager Proxy 2.1",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Manager%20Proxy%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Manager Proxy 2.1",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Manager%20Proxy%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Manager Proxy 2.1",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Manager%20Proxy%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Manager Proxy 2.1",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Manager%20Proxy%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Manager Proxy 2.1",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Manager%20Proxy%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Manager Proxy 2.1",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Manager%20Proxy%202.1"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-bigsmp",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-bigsmp&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.79.1",
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-pae-base": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-pae": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-default",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.79.1",
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-pae-base": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-pae": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-ec2",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-ec2&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.79.1",
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-pae-base": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-pae": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-pae",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-pae&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.79.1",
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-pae-base": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-pae": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-source",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-source&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.79.1",
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-pae-base": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-pae": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-syms",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-syms&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.79.1",
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-pae-base": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-pae": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-trace",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-trace&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.79.1",
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-pae-base": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-pae": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-xen",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kernel-xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.101-0.47.79.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kernel-pae-devel": "3.0.101-0.47.79.1",
+            "kernel-default-base": "3.0.101-0.47.79.1",
+            "kernel-default-man": "3.0.101-0.47.79.1",
+            "kernel-ec2": "3.0.101-0.47.79.1",
+            "kernel-source": "3.0.101-0.47.79.1",
+            "kernel-default": "3.0.101-0.47.79.1",
+            "kernel-pae-base": "3.0.101-0.47.79.1",
+            "kernel-syms": "3.0.101-0.47.79.1",
+            "kernel-trace": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-base": "3.0.101-0.47.79.1",
+            "kernel-trace-devel": "3.0.101-0.47.79.1",
+            "kernel-ec2-devel": "3.0.101-0.47.79.1",
+            "kernel-pae": "3.0.101-0.47.79.1",
+            "kernel-ec2-base": "3.0.101-0.47.79.1",
+            "kernel-xen-devel": "3.0.101-0.47.79.1",
+            "kernel-xen-base": "3.0.101-0.47.79.1",
+            "kernel-bigsmp": "3.0.101-0.47.79.1",
+            "kernel-trace-base": "3.0.101-0.47.79.1",
+            "kernel-default-devel": "3.0.101-0.47.79.1",
+            "kernel-bigsmp-devel": "3.0.101-0.47.79.1",
+            "kernel-xen": "3.0.101-0.47.79.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:1203-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

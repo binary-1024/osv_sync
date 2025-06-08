@@ -1,0 +1,70 @@
+{
+  "id": "GHSA-869w-47c6-fq8q",
+  "summary": "Babylon Integer Overflow in Distribution Module CumulativeRewardRatio Calculation Leading to Chain Halt",
+  "details": "### Summary\nMinting large amount of tokens through ibc transfer and then depositing them in validator rewards pool (via `DepositValidatorRewardsPool` message) can lead to integer overflow panic when calculating `cumulative_reward_ratio` for the validator.\n\nThis calculation happens in `x/epoching` module `EndBlocker`, thus the panic will halt the chain.\n\n### Impact\n\nDenial of Service - Due to panic in the `EndBlocker` Babylon Genesis will halt",
+  "aliases": [
+    "GO-2025-3687"
+  ],
+  "modified": "2025-05-22T14:57:31Z",
+  "published": "2025-05-15T14:05:50Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-190",
+      "CWE-770"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-15T14:05:50Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/babylonlabs-io/babylon/security/advisories/GHSA-869w-47c6-fq8q"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/babylonlabs-io/babylon/commit/f0a29d60f206268b56992fa50f38a48077eb4f59"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/babylonlabs-io/babylon"
+    },
+    {
+      "type": "WEB",
+      "url": "https://pkg.go.dev/vuln/GO-2025-3687"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "github.com/babylonlabs-io/babylon",
+        "ecosystem": "Go",
+        "purl": "pkg:golang/github.com/babylonlabs-io/babylon"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-869w-47c6-fq8q/GHSA-869w-47c6-fq8q.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+    }
+  ]
+}

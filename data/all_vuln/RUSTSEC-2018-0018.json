@@ -1,0 +1,66 @@
+{
+  "id": "RUSTSEC-2018-0018",
+  "summary": "smallvec creates uninitialized value of any type",
+  "details": "Affected versions of this crate called `mem::uninitialized()` to create values of a user-supplied type `T`.\nThis is unsound e.g. if `T` is a reference type (which must be non-null and thus may not remain uninitialized).\n \nThe flaw was corrected by avoiding the use of `mem::uninitialized()`, using `MaybeUninit` instead.",
+  "aliases": [
+    "CVE-2018-25023",
+    "GHSA-55m5-whcv-c49c",
+    "GHSA-66p5-j55p-32r9"
+  ],
+  "modified": "2023-11-08T04:00:14.788260Z",
+  "published": "2018-09-25T12:00:00Z",
+  "database_specific": {
+    "license": "CC0-1.0"
+  },
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://crates.io/crates/smallvec"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2018-0018.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/servo/rust-smallvec/issues/126"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "smallvec",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/smallvec"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.6.13"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "os": [],
+          "functions": [],
+          "arch": []
+        }
+      },
+      "database_specific": {
+        "cvss": null,
+        "informational": "unsound",
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2018-0018.json",
+        "categories": []
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}

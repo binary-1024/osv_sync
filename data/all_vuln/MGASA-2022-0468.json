@@ -1,0 +1,85 @@
+{
+  "id": "MGASA-2022-0468",
+  "summary": "Updated heimdal packages fix security vulnerability",
+  "details": "Isaac Boukris reported that the Heimdal KDC before 7.7.1 does not apply\ndelegation_not_allowed (aka not-delegated) user attributes for S4U2Self.\nInstead the forwardable flag is set even if the impersonated client has\nthe not-delegated flag set. (CVE-2019-14870)\n\nJoseph Sutton discovered that the Heimdal KDC before 7.7.1 does not check\nfor missing missing sname in TGS-REQ (Ticket Granting Server Request)\nbefore before dereferencing. An authenticated user could use this flaw to\ncrash the KDC. (CVE-2021-3671)\n\nIt was discovered that Heimdal is prone to a NULL dereference in acceptors\nwhen the initial SPNEGO token has no acceptable mechanisms, which may\nresult in denial of service for a server application that uses the Simple\nand Protected GSSAPI Negotiation Mechanism (SPNEGO). (CVE-2021-44758)\n\nEvgeny Legerov reported that the DES and Triple-DES decryption routines in\nthe Heimdal GSSAPI library before 7.7.1 were prone to buffer overflow on\nmalloc() allocated memory when presented with a maliciously small packet.\nIn addition, the Triple-DES and RC4 (arcfour) decryption routine were\nprone to non-constant time leaks, which could potentially yield to a leak\nof secret key material when using these ciphers. (CVE-2022-3437)\n\nIt was discovered that Heimdal's PKI certificate validation library before\n7.7.1 can under some circumstances perform an out-of-bounds memory access\nwhen normalizing Unicode, which may result in denial of service. (CVE-2022-41916)\n\nGreg Hudson discovered an integer multiplication overflow in the Privilege\nAttribute Certificate (PAC) parsing routine, which may result in denial of\nservice for Heimdal KDCs and possibly Heimdal servers (e.g., via GSS-API)\non 32-bit systems. (CVE-2022-42898)\n\nDouglas Bagnall and the Heimdal maintainers independently discovered that\nHeimdal's ASN.1 compiler before 7.7.1 generates code that allows specially\ncrafted DER encodings of CHOICEs to invoke the wrong free() function on the\ndecoded structure upon decode error, which may result in remote code\nexecution in the Heimdal KDC and possibly the Kerberos client, the X.509\nlibrary, and other components as well. (CVE-2022-44640)\n",
+  "modified": "2022-12-17T17:44:06Z",
+  "published": "2022-12-17T18:48:08Z",
+  "related": [
+    "CVE-2019-14870",
+    "CVE-2021-3671",
+    "CVE-2021-44758",
+    "CVE-2022-3437",
+    "CVE-2022-41916",
+    "CVE-2022-42898",
+    "CVE-2022-44640"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0468.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=31172"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2022/dsa-5286"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2022/dsa-5287"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/lts/security/2022/dla-3206"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/heimdal/heimdal/security/advisories/GHSA-q77c-9qvp-qfw4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/AYXWFESBZJMBNACFDHWWH7KETGKUXDPO/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "heimdal",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/heimdal?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.7.1-1.2.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0468.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

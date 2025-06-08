@@ -1,0 +1,120 @@
+{
+  "id": "MGASA-2017-0162",
+  "summary": "Updated zoneminder packages fix security vulnerability",
+  "details": "This update fixes the following security issues:\n\nInformation disclosure and authentication bypass vulnerability exists in\nthe Apache HTTP Server configuration bundled with ZoneMinder v1.30 and\nv1.29, which allows a remote unauthenticated attacker to browse all\ndirectories in the web root, e.g., a remote unauthenticated attacker can\nview all CCTV images on the server via the /events URI. (CVE-2016-10140)\n\nCross-site scripting (XSS) vulnerability in Zoneminder 1.30 and earlier\nallows remote attackers to inject arbitrary web script or HTML via the\nformat parameter in a download log request to index.php. (CVE-2016-10201)\n\nCross-site scripting (XSS) vulnerability in Zoneminder 1.30 and earlier\nallows remote attackers to inject arbitrary web script or HTML via the\npath info to index.php. (CVE-2016-10202)\n\nCross-site scripting (XSS) vulnerability in Zoneminder 1.30 and earlier\nallows remote attackers to inject arbitrary web script or HTML via the\nname when creating a new monitor. (CVE-2016-10203)\n\nSQL injection vulnerability in Zoneminder 1.30 and earlier allows remote\nattackers to execute arbitrary SQL commands via the limit parameter in a\nlog query request to index.php. (CVE-2016-10204)\n\nSession fixation vulnerability in Zoneminder 1.30 and earlier allows\nremote attackers to hijack web sessions via the ZMSESSID cookie.\n(CVE-2016-10205)\n\nCross-site request forgery (CSRF) vulnerability in Zoneminder 1.30 and\nearlier allows remote attackers to hijack the authentication of users for\nrequests that change passwords and possibly have unspecified other impact\nas demonstrated by a crafted user action request to index.php.\n(CVE-2016-10206)\n\nMultiple reflected XSS vulnerabilities exist within form and link input\nparameters of ZoneMinder v1.30 and v1.29, an open-source CCTV server web\napplication, which allows a remote attacker to execute malicious scripts\nwithin an authenticated client's browser. The URL is /zm/index.php and\nsample parameters could include action=login&view=postlogin[XSS]\nview=console[XSS] view=groups[XSS]\nview=events&filter[terms][1][cnj]=and[XSS]\nview=events&filter%5Bterms%5D%5B1%5D%5Bcnj%5D=and[XSS]\nview=events&filter%5Bterms%5D%5B1%5D%5Bcnj%5D=[XSS]and\nview=events&limit=1%22%3E%3C/a%3E[XSS] (among others). (CVE-2017-5367)\n\nZoneMinder v1.30 and v1.29, an open-source CCTV server web application, is\nvulnerable to CSRF (Cross Site Request Forgery) which allows a remote\nattack to make changes to the web application as the current logged in\nvictim. If the victim visits a malicious web page, the attacker can\nsilently and automatically create a new admin user within the web\napplication for remote persistence and further attacks. The URL is\n/zm/index.php and sample parameters could include action=user uid=0\nnewUser[Username]=attacker1 newUser[Password]=Password1234\nconf_password=Password1234 newUser[System]=Edit (among others).\n(CVE-2017-5368)\n\nA file disclosure and inclusion vulnerability exists in web/views/file.php\nin ZoneMinder 1.x through v1.30.0 because of unfiltered user-input being\npassed to readfile(), which allows an authenticated attacker to read local\nsystem files (e.g., /etc/passwd) in the context of the web server user\n(www-data). The attack vector is a .. (dot dot) in the path parameter\nwithin a zm/index.php?view=file&path= request. (CVE-2017-5595)\n\nA Cross-Site Scripting (XSS) was discovered in ZoneMinder 1.30.2. The\nvulnerability exists due to insufficient filtration of user-supplied data\n(postLoginQuery) passed to the\n\"ZoneMinder-master/web/skins/classic/views/js/postlogin.js.php\" URL. An\nattacker could execute arbitrary HTML and script code in a browser in the\ncontext of the vulnerable website. (CVE-2017-7203)\n\nNotes for sysadmins:\n1. CRSF attacks are now blocked by setting the ZoneMinder variable\n   'ENABLE_CSRF_MAGIC' to 'yes'. During system update you may want to\n   check that this variable is set. In Mageia 'yes' is the default for new\n   installs of ZoneMInder.\n2. Changes have been made to /etc/httpd/conf/site.d/zoneminder.conf to\n   mitigate CVE-2016-10140. Make sure to accept the new configuration when\n   updating existing systems.\n",
+  "modified": "2017-06-09T22:51:08Z",
+  "published": "2017-06-09T23:05:58Z",
+  "related": [
+    "CVE-2016-10140",
+    "CVE-2016-10201",
+    "CVE-2016-10202",
+    "CVE-2016-10203",
+    "CVE-2016-10204",
+    "CVE-2016-10205",
+    "CVE-2016-10206",
+    "CVE-2017-5367",
+    "CVE-2017-5368",
+    "CVE-2017-5595",
+    "CVE-2017-7203"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0162.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=20215"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ZoneMinder/ZoneMinder/releases/tag/1.30.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ZoneMinder/ZoneMinder/releases"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ZoneMinder/ZoneMinder/commit/c5906a5d4f9adc7bdaabcf035fe223997883018b"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ZoneMinder/ZoneMinder/pull/1764"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ZoneMinder/ZoneMinder/commit/ea5342abd2ef3b7dfb1b05e59ccf420196264340"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ZoneMinder/ZoneMinder/commit/8b19fca9927cdec07cc9dd09bdcf2496a5ae69b3"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "zoneminder",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/zoneminder?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.30.4-1.1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0162.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "perl-Sys-MemInfo",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/perl-Sys-MemInfo?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.910.0-1.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0162.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

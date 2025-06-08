@@ -1,0 +1,283 @@
+{
+  "id": "MGASA-2018-0062",
+  "summary": "kernel update provides 4.14 series and fixes security vulnerabilities",
+  "details": "This kernel update provides an upgrade to the 4.14 longterm branch,\ncurrently based on 4.14.10. It also fixes at least the following\nsecurity issues:\n\nAn elevation of privilege vulnerability in the Broadcom wi-fi driver\n(CVE-2017-0786).\n\nUse-after-free vulnerability in the snd_pcm_info function in the ALSA\nsubsystem in the Linux kernel allows attackers to gain privileges via\nunspecified vectors (CVE-2017-0861).\n\nLinux kernel built with the Kernel-based Virtual Machine(CONFIG_KVM)\nsupport is vulnerable to an incorrect debug exception(#DB) error. It\ncould occur while emulating a syscall instruction. A user/process\ninside guest could use this flaw to potentially escalate their\nprivileges inside guest. Linux guests are not affected.(CVE-2017-7518).\n\narch/x86/kvm/mmu.c in the Linux kernel through 4.13.5, when nested\nvirtualisation is used, does not properly traverse guest pagetable\nentries to resolve a guest virtual address, which allows L1 guest OS\nusers to execute arbitrary code on the host OS or cause a denial of\nservice (incorrect index during page walking, and host OS crash), aka\nan \"MMU potential stack buffer overrun\" (CVE-2017-12188).\n\nThe bio_map_user_iov and bio_unmap_user functions in block/bio.c in the\nLinux kernel before 4.13.8 do unbalanced refcounting when a SCSI I/O\nvector has small consecutive buffers belonging to the same page. The\nbio_add_pc_page function merges them into one, but the page reference\nis never dropped. This causes a memory leak and possible system lockup\n(exploitable against the host OS by a guest OS user, if a SCSI disk is\npassed through to a virtual machine) due to an out-of-memory condition\n(CVE-2017-12190).\n\nThe assoc_array_insert_into_terminal_node function in lib/assoc_array.c\nin the Linux kernel before 4.13.11 mishandles node splitting, which allows\nlocal users to cause a denial of service (NULL pointer dereference and\npanic) via a crafted application, as demonstrated by the keyring key type,\nand key addition and link creation operations (CVE-2017-12193).\n\nWi-Fi Protected Access (WPA and WPA2) allows reinstallation of the Group\nTemporal Key (GTK) during the group key handshake, allowing an attacker\nwithin radio range to replay frames from access points to clients\n(CVE-2017-13080).\n\nThe sctp_do_peeloff function in net/sctp/socket.c in the Linux kernel\nbefore 4.14 does not check whether the intended netns is used in a\npeel-off action, which allows local users to cause a denial of\nservice (use-after-free and system crash) or possibly have unspecified\nother impact via crafted system calls (CVE-2017-15115).\n\nRace condition in the ALSA subsystem in the Linux kernel before 4.13.8\nallows local users to cause a denial of service (use-after-free) or\npossibly have unspecified other impact via crafted /dev/snd/seq ioctl\ncalls, related to sound/core/seq/seq_clientmgr.c and \nsound/core/seq/seq_ports.c (CVE-2017-15265)\n\nThe KEYS subsystem in the Linux kernel through 4.13.7 mishandles use of\nadd_key for a key that already exists but is uninstantiated, which allows\nlocal users to cause a denial of service (NULL pointer dereference and\nsystem crash) or possibly have unspecified other impact via a crafted\nsystem call (CVE-2017-15299).\n\nThe XFRM dump policy implementation in net/xfrm/xfrm_user.c in the Linux\nkernel before 4.13.11 allows local users to gain privileges or cause a\ndenial of service (use-after-free) via a crafted SO_RCVBUF setsockopt\nsystem call in conjunction with XFRM_MSG_GETPOLICY Netlink messages\n(CVE-2017-16939).\n\nThe walk_hugetlb_range function in mm/pagewalk.c in the Linux kernel\nbefore 4.14.2 mishandles holes in hugetlb ranges, which allows local\nusers to obtain sensitive information from uninitialized kernel memory\nvia crafted use of the mincore() system call (CVE-2017-16994).\n\nThe check_alu_op function in kernel/bpf/verifier.c in the Linux kernel\nthrough 4.14.8 allows local users to cause a denial of service (memory\ncorruption) or possibly have unspecified other impact by leveraging\nincorrect sign extension (CVE-2017-16995).\n\nkernel/bpf/verifier.c in the Linux kernel through 4.14.8 allows local\nusers to cause a denial of service (memory corruption) or possibly have\nunspecified other impact by leveraging register truncation mishandling\n(CVE-2017-16996).\n\nThe KVM implementation in the Linux kernel through 4.14.7 allows attackers\nto obtain potentially sensitive information from kernel memory, aka a\nwrite_mmio stack-based out-of-bounds read, related to arch/x86/kvm/x86.c\nand include/trace/events/kvm.h (CVE-2017-17741).\n\nkernel/bpf/verifier.c in the Linux kernel through 4.14.8 allows local\nusers to cause a denial of service (memory corruption) or possibly have\nunspecified other impact by leveraging mishandling of 32-bit ALU ops\n(CVE-2017-17852).\n\nkernel/bpf/verifier.c in the Linux kernel through 4.14.8 allows local\nusers to cause a denial of service (memory corruption) or possibly have\nunspecified other impact by leveraging incorrect BPF_RSH signed bounds\ncalculations (CVE-2017-17853).\n\nkernel/bpf/verifier.c in the Linux kernel through 4.14.8 allows local\nusers to cause a denial of service (integer overflow and memory\ncorruption) or possibly have unspecified other impact by leveraging\nunrestricted integer values for pointer arithmetic (CVE-2017-17854).\n\nkernel/bpf/verifier.c in the Linux kernel through 4.14.8 allows local\nusers to cause a denial of service (memory corruption) or possibly have\nunspecified other impact by leveraging improper use of pointers in\nplace of scalars (CVE-2017-17855).\n\nkernel/bpf/verifier.c in the Linux kernel through 4.14.8 allows local\nusers to cause a denial of service (memory corruption) or possibly\nhave unspecified other impact by leveraging the lack of stack-pointer\nalignment enforcement (CVE-2017-17856).\n\nThe check_stack_boundary function in kernel/bpf/verifier.c in the Linux\nkernel through 4.14.8 allows local users to cause a denial of service\n(memory corruption) or possibly have unspecified other impact by\nleveraging mishandling of invalid variable stack read operations\n(CVE-2017-17857).\n\nkernel/bpf/verifier.c in the Linux kernel through 4.14.8 ignores\nunreachable code, even though it would still be processed by JIT\ncompilers. This behavior, also considered an improper branch-pruning\nlogic issue, could possibly be used by local users for denial of\nservice (CVE-2017-17862).\n\nkernel/bpf/verifier.c in the Linux kernel 4.9.x through 4.9.71 does not\ncheck the relationship between pointer values and the BPF stack, which\nallows local users to cause a denial of service (integer overflow or\ninvalid memory access) or possibly have unspecified other impact\n(CVE-2017-17863).\n\nkernel/bpf/verifier.c in the Linux kernel before 4.14 mishandles\nstates_equal comparisons between the pointer data type and the\nUNKNOWN_VALUE data type, which allows local users to obtain potentially\nsensitive address information, aka a \"pointer leak\" (CVE-2017-17864).\n\nThe timer_create syscall implementation in kernel/time/posix-timers.c\nin the Linux kernel before 4.14.8 doesn't properly validate the\nsigevent->sigev_notify field, which leads to out-of-bounds access in\nthe show_timer function (called when /proc/$PID/timers is read).\nThis allows userspace applications to read arbitrary kernel memory\n(on a kernel built with CONFIG_POSIX_TIMERS and\nCONFIG_CHECKPOINT_RESTORE)(CVE-2017-18344).\n\nThe Linux Kernel 2.6.32 and later are affected by a denial of service,\nby flooding the diagnostic port 0x80 an exception can be triggered\nleading to a kernel panic (CVE-2017-1000407).\n\nThis update also adds support for WireGuard VPN.\n\nFor other changes in this update, read the referenced changelogs.\n",
+  "modified": "2022-02-17T18:21:47Z",
+  "published": "2018-01-06T00:53:31Z",
+  "related": [
+    "CVE-2017-0786",
+    "CVE-2017-0861",
+    "CVE-2017-1000407",
+    "CVE-2017-12188",
+    "CVE-2017-12190",
+    "CVE-2017-12193",
+    "CVE-2017-13080",
+    "CVE-2017-15115",
+    "CVE-2017-15265",
+    "CVE-2017-15299",
+    "CVE-2017-16939",
+    "CVE-2017-16994",
+    "CVE-2017-16995",
+    "CVE-2017-16996",
+    "CVE-2017-17741",
+    "CVE-2017-17852",
+    "CVE-2017-17853",
+    "CVE-2017-17854",
+    "CVE-2017-17855",
+    "CVE-2017-17856",
+    "CVE-2017-17857",
+    "CVE-2017-17862",
+    "CVE-2017-17863",
+    "CVE-2017-17864",
+    "CVE-2017-18344",
+    "CVE-2017-7518"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2018-0062.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=22166"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://kernelnewbies.org/Linux_4.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://kernelnewbies.org/Linux_4.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://kernelnewbies.org/Linux_4.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://kernelnewbies.org/Linux_4.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://kernelnewbies.org/Linux_4.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.wireguard.com/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.10-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0062.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kernel-userspace-headers",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.10-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0062.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-vboxadditions",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.2-5.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0062.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-virtualbox",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.2-5.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0062.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kmod-xtables-addons",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.13-8.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0062.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "wireguard-tools",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/wireguard-tools?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.0.20171221-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0062.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

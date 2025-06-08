@@ -1,0 +1,96 @@
+{
+  "id": "MGASA-2015-0127",
+  "summary": "Updated python-django packages fix security vulnerabilities",
+  "details": "Updated python-django and python-django14 packages fix security\nvulnerabilities:\n\nThe ModelAdmin.readonly_fields attribute in the Django admin allows\ndisplaying model fields and model attributes. While the former were correctly\nescaped, the latter were not. Thus untrusted content could be injected into\nthe admin, presenting an exploitation vector for XSS attacks (CVE-2015-2241).\n\nDjango relies on user input in some cases to redirect the user to an \"on\nsuccess\" URL. The security checks for these redirects accepted URLs with\nleading control characters and so considered URLs like \\x08javascript:...\nsafe. This issue doesn't affect Django currently, however, if a developer\nrelies on is_safe_url() to provide safe redirect targets and puts such a URL\ninto a link, they could suffer from an XSS attack as some browsers such as\nGoogle Chrome ignore control characters at the start of a URL in an anchor\nhref (CVE-2015-2317).\n\nNote that the CVE-2015-2241 issue does not affect python-django14 directly,\nbut client code using it may be affected.  Please see the March 9th upstream\nadvisory for more information on this.\n",
+  "modified": "2015-04-03T12:59:09Z",
+  "published": "2015-04-03T13:11:23Z",
+  "related": [
+    "CVE-2015-2241",
+    "CVE-2015-2316",
+    "CVE-2015-2317"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2015-0127.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=15528"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.djangoproject.com/weblog/2015/mar/09/security-releases/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.djangoproject.com/weblog/2015/mar/18/security-releases/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "python-django",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/python-django?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.5.9-1.2.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0127.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "python-django14",
+        "ecosystem": "Mageia:4",
+        "purl": "pkg:rpm/mageia/python-django14?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.20-1.mga4"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0127.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "MGASA-2025-0105",
+  "summary": "Updated tomcat tomcat packages fix security vulnerabilities",
+  "details": "Time-of-check Time-of-use (TOCTOU) Race Condition vulnerability in\nApache Tomcat. This issue affects Apache Tomcat: from 11.0.0-M1 through\n11.0.1, from 10.1.0-M1 through 10.1.33, from 9.0.0.M1 through 9.0.97.\nThe mitigation for CVE-2024-50379 was incomplete. Users running Tomcat\non a case insensitive file system with the default servlet write enabled\n(readonly initialisation parameter set to the non-default value of\nfalse) may need additional configuration to fully mitigate\nCVE-2024-50379 depending on which version of Java they are using with\nTomcat: - running on Java 8 or Java 11: the system property\nsun.io.useCanonCaches must be explicitly set to false (it defaults to\ntrue) - running on Java 17: the system property sun.io.useCanonCaches,\nif set, must be set to false (it defaults to false) - running on Java 21\nonwards: no further configuration is required (the system property and\nthe problematic cache have been removed) Tomcat 11.0.3, 10.1.35 and\n9.0.99 onwards will include checks that sun.io.useCanonCaches is set\nappropriately before allowing the default servlet to be write enabled on\na case insensitive file system. Tomcat will also set\nsun.io.useCanonCaches to false by default where it can. (CVE-2004-56337)\nPath Equivalence: 'file.Name' (Internal Dot) leading to Remote Code\nExecution and/or Information disclosure and/or malicious content added\nto uploaded files via write enabled Default Servlet in Apache Tomcat.\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.2, from\n10.1.0-M1 through 10.1.34, from 9.0.0.M1 through 9.0.98. If all of the\nfollowing were true, a malicious user was able to view security\nsensitive files and/or inject content into those files: - writes enabled\nfor the default servlet (disabled by default) - support for partial PUT\n(enabled by default) - a target URL for security sensitive uploads that\nwas a sub-directory of a target URL for public uploads - attacker\nknowledge of the names of security sensitive files being uploaded - the\nsecurity sensitive files also being uploaded via partial PUT If all of\nthe following were true, a malicious user was able to perform remote\ncode execution: - writes enabled for the default servlet (disabled by\ndefault) - support for partial PUT (enabled by default) - application\nwas using Tomcat's file based session persistence with the default\nstorage location - application included a library that may be leveraged\nin a deserialization attack Users are recommended to upgrade to version\n11.0.3, 10.1.35 or 9.0.99, which fixes the issue (CVE-2025-24813).\n",
+  "modified": "2025-03-19T23:10:47Z",
+  "published": "2025-03-19T23:44:37Z",
+  "related": [
+    "CVE-2004-56337",
+    "CVE-2025-24813"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2025-0105.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=34112"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/message/WQRQ6JSFISH4LSDOH7IDJHNYPKMGUF5X/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "tomcat",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/tomcat?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.0.102-1.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2025-0105.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

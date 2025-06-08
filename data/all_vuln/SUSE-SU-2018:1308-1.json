@@ -1,0 +1,157 @@
+{
+  "id": "SUSE-SU-2018:1308-1",
+  "summary": "Security update for kvm",
+  "details": "\n  \nThis update for kvm fixes the following issues:\n\nThis update has the next round of Spectre v2 related patches,\nwhich now integrates with corresponding changes in libvirt. A\nJanuary 2018 release of qemu initially addressed the Spectre v2\nvulnerability for KVM guests by exposing the spec-ctrl feature\nfor all x86 vcpu types, which was the quick and dirty approach,\nbut not the proper solution. We remove that initial patch and now\nrely on patches from upstream. This update defines spec_ctrl and\nibpb cpu feature flags as well as new cpu models which are clones\nof existing models with either -IBRS or -IBPB added to the end of\nthe model name. These new vcpu models explicitly include the new\nfeature(s), whereas the feature flags can be added to the cpu\nparameter as with other features. In short, for continued Spectre\nv2 protection, ensure that either the appropriate cpu feature\nflag is added to the QEMU command-line, or one of the new cpu\nmodels is used. Although migration from older versions is\nsupported, the new cpu features won't be properly exposed to the\nguest until it is restarted with the cpu features explicitly\nadded. A reboot is insufficient.\n\nA warning patch is added which attempts to detect a migration\nfrom a qemu version which had the quick and dirty fix (it only\ndetects certain cases, but hopefully is helpful.)\n\nFor additional information on Spectre v2 as it relates to QEMU,\nsee:\n\thttps://www.qemu.org/2018/02/14/qemu-2-11-1-and-spectre-update/\n\n(CVE-2017-5715 bsc#1068032)\n\nA patch is added to continue to detect Spectre v2 mitigation\nfeatures (as shown by cpuid), and if found provide that feature\nto guests, even if running on older KVM (kernel) versions which\ndo not yet expose that feature to QEMU. (bsc#1082276)\n\nAdditional security fixes:\n\n- CVE-2018-5683: An out-of-bounds read in vga_draw_text routine was fixed which could lead to crashes or information leakage. (bsc#1076114)\n- CVE-2018-7550: multiboot OOB access while loading kernel image was fixed that could lead to crashes (bsc#1083291)\n- CVE-2017-18030: An out-of-bounds access in cirrus_invalidate_region routine could lead to crashes or information leakage (bsc#1076179)\n\n- Eliminate bogus use of CPUID_7_0_EDX_PRED_CMD which we've\n  carried since the initial Spectre v2 patch was added. EDX bit\n  27 of CPUID Leaf 07H, Sub-leaf 0 provides status on STIBP, and\n  not the PRED_CMD MSR. Exposing the STIBP CPUID feature bit to the\n  guest is wrong in general, since the VM doesn't directly control\n  the scheduling of physical hyperthreads. This is left strictly to\n  the L0 hypervisor.\n",
+  "modified": "2025-05-02T04:06:38.087989Z",
+  "published": "2018-05-16T13:59:32Z",
+  "related": [
+    "CVE-2017-18030",
+    "CVE-2017-5715",
+    "CVE-2018-5683",
+    "CVE-2018-7550"
+  ],
+  "upstream": [
+    "CVE-2017-18030",
+    "CVE-2017-5715",
+    "CVE-2018-5683",
+    "CVE-2018-7550"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.suse.com/support/update/announcement/2018/suse-su-20181308-1/"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1068032"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076114"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1076179"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1082276"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.suse.com/1083291"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-18030"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2017-5715"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-5683"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.suse.com/security/cve/CVE-2018-7550"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kvm",
+        "ecosystem": "SUSE:Linux Enterprise Point of Sale 11 SP3",
+        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Point%20of%20Sale%2011%20SP3"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.2-53.17.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kvm": "1.4.2-53.17.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1308-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kvm",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-LTSS",
+        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-LTSS"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.2-53.17.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kvm": "1.4.2-53.17.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1308-1.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "kvm",
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP3-TERADATA",
+        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP3-TERADATA"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.2-53.17.1"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kvm": "1.4.2-53.17.1"
+          }
+        ]
+      },
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1308-1.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0"
+}

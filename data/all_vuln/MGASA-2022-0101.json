@@ -1,0 +1,89 @@
+{
+  "id": "MGASA-2022-0101",
+  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "details": "This kernel-linus update is based on upstream 5.15.28 and fixes at least\nthe following security issues:\n\nNon-transparent sharing of branch predictor selectors between contexts\nin some Intel(R) Processors may allow an authorized user to potentially\nenable information disclosure via local access (CVE-2022-0001).\n\nNon-transparent sharing of branch predictor within a context in some\nIntel(R) Processors may allow an authorized user to potentially enable\ninformation disclosure via local access (CVE-2022-0002).\n\nA memory leak flaw was found in the Linux kernel\u2019s ICMPv6 networking\nprotocol, in the way a user generated malicious ICMPv6 packets. This\nflaw allows a remote user to crash the system (CVE-2022-0742).\n\nSeveral Linux PV device frontends are using the grant table interfaces\nfor removing access rights of the backends in ways being subject to\nrace conditions, resulting in potential data leaks, data corruption\nby malicious backends, and denial of service triggered by malicious\nbackends:\n\nblkfront, netfront, scsifront and the gntalloc driver are testing\nwhether a grant reference is still in use. If this is not the case,\nthey assume that a following removal of the granted access will always\nsucceed, which is not true in case the backend has mapped the granted\npage between those two operations. As a result the backend can keep\naccess to the memory page of the guest no matter how the page will be\nused after the frontend I/O has finished. The xenbus driver has a\nsimilar problem, as it doesn't check the success of removing the\ngranted access of a shared ring buffer (blkfront: CVE-2022-23036,\nnetfront: CVE-2022-23037, scsifront: CVE-2022-23038,\ngntalloc: CVE-2022-23039, xenbus: CVE-2022-23040)\n\nblkfront, netfront, scsifront, usbfront, dmabuf, xenbus, 9p, kbdfront,\nand pvcalls are using a functionality to delay freeing a grant reference\nuntil it is no longer in use, but the freeing of the related data page\nis not synchronized with dropping the granted access. As a result the\nbackend can keep access to the memory page even after it has been freed\nand then re-used for a different purpose (CVE-2022-23041).\n\nnetfront will fail a BUG_ON() assertion if it fails to revoke access in\nthe rx path. This will result in a Denial of Service (DoS) situation of\nthe guest which can be triggered by the backend (CVE-2022-23042).\n\nCertain Arm Cortex and Neoverse processors through 2022-03-08 do not\nproperly restrict cache speculation, aka Spectre-BHB. An attacker can\nleverage the shared branch history in the Branch History Buffer (BHB)\nto influence mispredicted branches. Then, cache allocation can allow\nthe attacker to obtain sensitive information (CVE-2022-23960).\n\nIt was found that the default LFENCE-based Spectre v2 mitigation on\nAMD cpus is insufficient to mitigate such attacks. Becuse of that,\nthe code have been switched to use generic retpolines on AMD cpus\nby default.\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "modified": "2022-03-15T18:50:23Z",
+  "published": "2022-03-14T16:51:52Z",
+  "related": [
+    "CVE-2022-0001",
+    "CVE-2022-0002",
+    "CVE-2022-0742",
+    "CVE-2022-23036",
+    "CVE-2022-23037",
+    "CVE-2022-23038",
+    "CVE-2022-23039",
+    "CVE-2022-23040",
+    "CVE-2022-23041",
+    "CVE-2022-23042",
+    "CVE-2022-23960"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2022-0101.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=30158"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00598.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://developer.arm.com/support/arm-security-updates/speculative-processor-vulnerability/spectre-bhb"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://seclists.org/oss-sec/2022/q1/173"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.27"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.28"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "kernel-linus",
+        "ecosystem": "Mageia:8",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.28-1.mga8"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0101.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

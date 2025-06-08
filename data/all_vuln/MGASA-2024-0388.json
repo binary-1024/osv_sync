@@ -1,0 +1,68 @@
+{
+  "id": "MGASA-2024-0388",
+  "summary": "Updated python-aiohttp packages fix security vulnerabilities",
+  "details": "When using aiohttp as a web server and configuring static routes, it is\nnecessary to specify the root path for static files. Additionally, the\noption 'follow_symlinks' can be used to determine whether to follow\nsymbolic links outside the static root directory. When 'follow_symlinks'\nis set to True, there is no validation to check if reading a file is\nwithin the root directory. This can lead to directory traversal\nvulnerabilities, resulting in unauthorized access to arbitrary files on\nthe system, even when symlinks are not present. Disabling\nfollow_symlinks and using a reverse proxy are encouraged mitigations.\nCVE-2024-23334\nThe Python parser parses newlines in chunk extensions incorrectly which\ncan lead to request smuggling vulnerabilities under certain conditions.\nIf a pure Python version of aiohttp is installed (i.e. without the usual\nC extensions) or `AIOHTTP_NO_EXTENSIONS` is enabled, then an attacker\nmay be able to execute a request smuggling attack to bypass certain\nfirewalls or proxy protections. CVE-2024-52304\n",
+  "modified": "2024-12-04T16:31:42Z",
+  "published": "2024-12-04T16:58:15Z",
+  "related": [
+    "CVE-2024-23334",
+    "CVE-2024-52304"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2024-0388.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=33544"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://ubuntu.com/security/notices/USN-6991-1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.suse.com/pipermail/sle-security-updates/2024-November/019855.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "python-aiohttp",
+        "ecosystem": "Mageia:9",
+        "purl": "pkg:rpm/mageia/python-aiohttp?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.8.3-3.2.mga9"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0388.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

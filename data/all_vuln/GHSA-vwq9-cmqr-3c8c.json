@@ -1,0 +1,106 @@
+{
+  "id": "GHSA-vwq9-cmqr-3c8c",
+  "summary": "Insertion of Sensitive Information into Log File in Jenkins Configuration as Code Plugin",
+  "details": "Configuration as Code Plugin logs the changes it applies to the Jenkins system log. Secrets such as passwords should be masked (i.e. replaced with asterisks) in that log to prevent accidental disclosure.\n\nBetween Configuration as Code Plugin 0.8-alpha and 1.0, log messages contained values if the values were specified using properties in the YAML file (SECURITY-929).\n\nSince Configuration as Code Plugin 1.1, log messages in Configuration as Code Plugin instead mask values of type `Secret`, which is used in Jenkins to store the values encrypted on disk. This did not work in many instances, as plugins could use the `Secret` type to store credentials encrypted on disk while not having the Secret type appear in their Java API.\n\nConfiguration as Code Plugin now inspects the type and looks for a field, getter, or constructor argument corresponding to the property, making the secret detection much more robust for the purpose of log message masking. As a workaround, administrators can configure the logging level of the logger `io.jenkins.plugins.casc.Attribute` to a level that does not include `INFO` messages. See the logging documentation for details.",
+  "aliases": [
+    "CVE-2019-10343"
+  ],
+  "modified": "2024-02-16T08:16:26.356098Z",
+  "published": "2022-05-24T16:51:50Z",
+  "database_specific": {
+    "nvd_published_at": "2019-07-31T13:15:00Z",
+    "cwe_ids": [
+      "CWE-532"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-06-28T23:08:40Z"
+  },
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2019-10343"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/configuration-as-code-plugin/commit/73afe3cb10a723cb06e29c2e5499206aadae3a0d"
+    },
+    {
+      "type": "WEB",
+      "url": "https://jenkins.io/security/advisory/2019-07-31/#SECURITY-1279"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2019/07/31/1"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "io.jenkins:configuration-as-code",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/io.jenkins/configuration-as-code"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.25"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.10-alpha",
+        "0.11-alpha",
+        "0.6-alpha",
+        "0.7-alpha",
+        "0.8-alpha",
+        "0.9-alpha",
+        "1.0",
+        "1.0-rc1",
+        "1.0-rc2",
+        "1.0-rc3",
+        "1.1",
+        "1.10",
+        "1.11",
+        "1.12",
+        "1.13",
+        "1.14",
+        "1.15",
+        "1.16",
+        "1.17",
+        "1.18",
+        "1.19",
+        "1.2",
+        "1.20",
+        "1.21",
+        "1.22",
+        "1.23",
+        "1.24",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+        "1.8",
+        "1.9"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.24",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-vwq9-cmqr-3c8c/GHSA-vwq9-cmqr-3c8c.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}

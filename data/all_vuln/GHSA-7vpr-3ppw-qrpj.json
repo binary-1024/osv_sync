@@ -1,0 +1,1198 @@
+{
+  "id": "GHSA-7vpr-3ppw-qrpj",
+  "summary": "Imageflow affected by libwebp zero-day and should not be used with malicious source images.",
+  "details": "### Impact\n\nThis vulnerability affects deployments of Imageflow that involve decoding or processing malicious source .webp files. If you only process your own trusted files, this should not affect you (but you should update anyway). \n\nImageflow relies on Google's [libwebp] library to decode .webp images, and is affected by the recent zero-day out-of-bounds write vulnerability [CVE-2023-4863](https://nvd.nist.gov/vuln/detail/CVE-2023-4863) and https://github.com/advisories/GHSA-j7hp-h8jx-5ppr. The libwebp vulnerability also affects Chrome, Android, macOS, and other consumers of the library).\n\nlibwebp patched [the vulnerability](https://github.com/webmproject/libwebp/commit/2af26267cdfcb63a88e5c74a85927a12d6ca1d76 ) and released [1.3.2](https://github.com/webmproject/libwebp/releases/tag/v1.3.2) \n\nThis was patched in [libwebp-sys in 0.9.3 and 0.9.4](https://github.com/NoXF/libwebp-sys/commits/master)\n\n**[Imageflow v2.0.0-preview8](https://github.com/imazen/imageflow/releases/tag/v2.0.0-preview8) uses the patched version of libwebp as well as updated versions of all dependencies.**\n\nNote: preview 8 requires libc 2.31 or higher on linux and macOS 11 or higher. These restrictions are due to the oldest supported versions of those platforms (which is reflected on Github Actions).\n\n### Patches\n\n**Imageflow v2.0.0-preview8 use the patched version (v1.3.2) of libwebp and libwebp-sys 0.9.4.**\n**Imageflow.AllPlatforms 0.10.2 is patched**\n**Imageflow.Server v0.8.2 is patched**\n**ImageResizer.Plugins.Imageflow 5.0.12 is patched**\n\n### Workarounds\n\nDisable webp decoding using `EnabledCodecs::disable_decoder(NamedDecoders::WebPDecoder)` if using the Rust API. \n\nOnly files that meet the following criteria will be passed to libwebp: \n\n```rust\nbytes.starts_with(b\"RIFF\") && bytes[8..12].starts_with(b\"WEBP\")\n```\n\nYou can utilize matching logic to block webp inputs in your language of choice.\n\n### References\n\nhttps://github.com/advisories/GHSA-j7hp-h8jx-5ppr\nhttps://nvd.nist.gov/vuln/detail/CVE-2023-4863\nhttps://github.com/webmproject/libwebp/commit/2af26267cdfcb63a88e5c74a85927a12d6ca1d76 \nhttps://github.com/NoXF/libwebp-sys/commits/master",
+  "modified": "2024-12-01T05:29:47.941976Z",
+  "published": "2023-09-27T21:16:16Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-09-27T21:16:16Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/imazen/imageflow/security/advisories/GHSA-7vpr-3ppw-qrpj"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/imazen/imageflow/commit/24894940403a8491fd6495759b8f996ea2da8ad8"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/imazen/imageflow"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "Imageflow.AllPlatforms",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.AllPlatforms"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.10.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.10.0",
+        "0.7.22",
+        "0.7.23",
+        "0.7.24",
+        "0.7.31",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5",
+        "0.9.0",
+        "0.9.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.win-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.win-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0-rc11",
+        "1.0.0-rc12",
+        "1.0.0-rc13",
+        "1.0.0-rc14",
+        "1.1.0-rc18",
+        "1.2.0-rc20",
+        "1.2.0-rc22",
+        "1.2.0-rc24",
+        "1.2.0-rc25",
+        "1.2.0-rc26",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62",
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.osx-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.osx-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62",
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.2-rc66",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.win-x86",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.win-x86"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0-rc1-1",
+        "1.0.0-rc10",
+        "1.0.0-rc11",
+        "1.0.0-rc12",
+        "1.0.0-rc13",
+        "1.0.0-rc14",
+        "1.0.0-rc3a",
+        "1.0.0-rc5a",
+        "1.0.0-rc6",
+        "1.0.0-rc7",
+        "1.0.0-rc8",
+        "1.0.0-rc9",
+        "1.1.0-rc18",
+        "1.2.0-rc20",
+        "1.2.0-rc22",
+        "1.2.0-rc24",
+        "1.2.0-rc25",
+        "1.2.0-rc26",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62",
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.ubuntu-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.ubuntu-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.2-rc66",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.ubuntu-x86_64-haswell",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.ubuntu-x86_64-haswell"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.2-rc66",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.win-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.win-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0-rc11",
+        "1.0.0-rc12",
+        "1.0.0-rc13",
+        "1.0.0-rc14",
+        "1.1.0-rc18",
+        "1.2.0-rc20",
+        "1.2.0-rc22",
+        "1.2.0-rc24",
+        "1.2.0-rc25",
+        "1.2.0-rc26",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62",
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.osx-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.osx-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62",
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.2-rc66",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.win-x86",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.win-x86"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0-rc10",
+        "1.0.0-rc11",
+        "1.0.0-rc12",
+        "1.0.0-rc13",
+        "1.0.0-rc14",
+        "1.1.0-rc18",
+        "1.2.0-rc20",
+        "1.2.0-rc22",
+        "1.2.0-rc24",
+        "1.2.0-rc25",
+        "1.2.0-rc26",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62",
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.ubuntu-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.ubuntu-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.2-rc66",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.ubuntu-x86_64-haswell",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.ubuntu-x86_64-haswell"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.0-preview6"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.6.0-rc63",
+        "1.7.0-rc64",
+        "1.7.1-rc65",
+        "1.7.2-rc66",
+        "1.7.3-rc67",
+        "2.0.0-preview1",
+        "2.0.0-preview2",
+        "2.0.0-preview3",
+        "2.0.0-preview4",
+        "2.0.0-preview5"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.ubuntu_18_04-x86_64-haswell",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.ubuntu_18_04-x86_64-haswell"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0-rc17",
+        "1.1.0-rc18",
+        "1.2.0-rc27",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.1-rc31",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.1-rc55",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.0.0-preview6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.ubuntu_18_04-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.ubuntu_18_04-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0-rc18",
+        "1.2.0-rc25",
+        "1.2.0-rc27",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.1-rc31",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.1-rc55",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.0.0-preview6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.osx_10_11-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.osx_10_11-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0-rc1-1",
+        "1.0.0-rc10",
+        "1.0.0-rc11",
+        "1.0.0-rc12",
+        "1.0.0-rc13",
+        "1.0.0-rc14",
+        "1.0.0-rc2-1",
+        "1.0.0-rc3",
+        "1.0.0-rc3a",
+        "1.0.0-rc5a",
+        "1.0.0-rc6",
+        "1.0.0-rc7",
+        "1.0.0-rc8",
+        "1.0.0-rc9",
+        "1.1.0-rc18",
+        "1.2.0-rc27",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.1-rc55",
+        "1.5.2-rc56",
+        "1.5.4-rc58"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.0.0-preview6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeRuntime.ubuntu_16_04-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeRuntime.ubuntu_16_04-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0-rc18",
+        "1.2.0-rc27",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.1-rc31",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.1-rc55",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.0.0-preview6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.ubuntu_18_04-x86_64-haswell",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.ubuntu_18_04-x86_64-haswell"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0-rc17",
+        "1.1.0-rc18",
+        "1.2.0-rc27",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.1-rc31",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.1-rc55",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.0.0-preview6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.ubuntu_16_04-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.ubuntu_16_04-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0-rc18",
+        "1.2.0-rc27",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.1-rc31",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.1-rc55",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.0.0-preview6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.ubuntu_18_04-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.ubuntu_18_04-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0-rc18",
+        "1.2.0-rc27",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.1-rc31",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.3.9-rc39",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.1-rc55",
+        "1.5.2-rc56",
+        "1.5.3-rc57",
+        "1.5.4-rc58",
+        "1.5.5-rc59",
+        "1.5.6-rc60",
+        "1.5.7-rc61",
+        "1.5.8-rc62"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.0.0-preview6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.NativeTool.osx_10_11-x86_64",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.NativeTool.osx_10_11-x86_64"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.0.0-rc10",
+        "1.0.0-rc11",
+        "1.0.0-rc12",
+        "1.0.0-rc13",
+        "1.0.0-rc14",
+        "1.1.0-rc18",
+        "1.2.0-rc27",
+        "1.2.1-rc28",
+        "1.2.2-rc29",
+        "1.3.0-rc30",
+        "1.3.2-rc32",
+        "1.3.3-rc33",
+        "1.3.4-rc34",
+        "1.3.5-rc35",
+        "1.3.6-rc36",
+        "1.3.7-rc37",
+        "1.3.8-rc38",
+        "1.4.0-rc40",
+        "1.4.1-rc41",
+        "1.4.10-rc50",
+        "1.4.11-rc51",
+        "1.4.12-rc52",
+        "1.4.13-rc53",
+        "1.4.2-rc42",
+        "1.4.3-rc43",
+        "1.4.4-rc44",
+        "1.4.5-rc45",
+        "1.4.6-rc46",
+        "1.4.8-rc48",
+        "1.4.9-rc49",
+        "1.5.0-rc54",
+        "1.5.1-rc55",
+        "1.5.2-rc56",
+        "1.5.4-rc58"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.0.0-preview6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "Imageflow.Server",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/Imageflow.Server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.8.2"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1.1",
+        "0.1.2",
+        "0.1.3",
+        "0.1.4",
+        "0.1.5",
+        "0.1.6",
+        "0.1.7",
+        "0.1.8",
+        "0.1.9",
+        "0.2.0",
+        "0.2.1",
+        "0.3.0",
+        "0.3.1",
+        "0.3.10",
+        "0.3.11",
+        "0.3.12",
+        "0.3.2",
+        "0.3.3",
+        "0.3.4",
+        "0.3.5",
+        "0.3.6",
+        "0.3.7",
+        "0.3.8",
+        "0.3.9",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.4.3",
+        "0.4.3-build136",
+        "0.5.0",
+        "0.5.1",
+        "0.5.10",
+        "0.5.2",
+        "0.5.3",
+        "0.5.3-build174",
+        "0.5.5",
+        "0.5.6",
+        "0.5.7",
+        "0.5.8",
+        "0.5.9",
+        "0.6.3",
+        "0.6.4",
+        "0.6.5",
+        "0.6.6",
+        "0.6.7",
+        "0.7.0",
+        "0.7.1",
+        "0.7.6",
+        "0.7.7",
+        "0.7.8",
+        "0.7.9",
+        "0.8.0",
+        "0.8.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    },
+    {
+      "package": {
+        "name": "ImageResizer.Plugins.Imageflow",
+        "ecosystem": "NuGet",
+        "purl": "pkg:nuget/ImageResizer.Plugins.Imageflow"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.0.12"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "5.0.10-preview07",
+        "5.0.11-preview08",
+        "5.0.3-preview04",
+        "5.0.4-preview01",
+        "5.0.5-preview02",
+        "5.0.6-preview03",
+        "5.0.7-preview-04",
+        "5.0.8-preview05",
+        "5.0.9-preview06"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-7vpr-3ppw-qrpj/GHSA-7vpr-3ppw-qrpj.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H"
+    }
+  ]
+}

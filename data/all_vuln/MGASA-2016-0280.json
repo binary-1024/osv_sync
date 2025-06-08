@@ -1,0 +1,73 @@
+{
+  "id": "MGASA-2016-0280",
+  "summary": "Updated openssh packages fix security vulnerability",
+  "details": "The do_setup_env function in session.c in sshd in OpenSSH through 7.2p2,\nwhen the UseLogin feature is enabled and PAM is configured to read\n.pam_environment files in user home directories, allows local users to\ngain privileges by triggering a crafted environment for the /bin/login\nprogram, as demonstrated by an LD_PRELOAD environment variable\n(CVE-2015-8325).\n\nWhen SSHD tries to authenticate a non-existing user, it will pick up a\nfake password structure hard-coded in the SSHD source code. An attacker\ncan measure timing information to determine if a user exists when\nverifying a password (CVE-2016-6210).\n\nThe auth_password function in auth-passwd.c in sshd in OpenSSH before 7.3\ndoes not limit password lengths for password authentication, which allows\nremote attackers to cause a denial of service (crypt CPU consumption) via\na long string (CVE-2016-6515).\n\nNote that CVE-2015-8325 and CVE-2016-6210 wouldn't affect most Mageia\nsystems, as UseLogin is not enabled by default and Mageia uses Blowfish\npassword hashes by default.\n",
+  "modified": "2016-08-31T15:18:09Z",
+  "published": "2016-08-31T15:32:33Z",
+  "related": [
+    "CVE-2015-8325",
+    "CVE-2016-6210",
+    "CVE-2016-6515"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0280.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=18222"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.debian.org/security/2016/dsa-3550"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2016-6210"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/thread/X2L6RW34VFNXYNVVN2CN73YAGJ5VMTFU/"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "openssh",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/openssh?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.6p1-5.9.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0280.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}

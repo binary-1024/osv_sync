@@ -1,0 +1,91 @@
+{
+  "id": "MGASA-2017-0396",
+  "summary": "Updated wget packages fix security vulnerabilities",
+  "details": "The http.c:skip_short_body() function is called in some circumstances,\nsuch as when processing redirects. When the response is sent chunked,\nthe chunk parser uses strtol() to read each chunk's length, but\ndoesn't check that the chunk length is a non-negative number. The\ncode then tries to skip the chunk in pieces of 512 bytes by using the\nMIN() macro, but ends up passing the negative chunk length to\nconnect.c:fd_read(). As fd_read() takes an int argument, the high\n32 bits of the chunk length are discarded, leaving fd_read() with\na completely attacker controlled length argument (CVE-2017-13089).\n\nThe retr.c:fd_read_body() function is called when processing OK\nresponses. When the response is sent chunked, the chunk parser uses\nstrtol() to read each chunk's length, but doesn't check that the chunk\nlength is a non-negative number. The code then tries to read the chunk\nin pieces of 8192 bytes by using the MIN() macro, but ends up passing\nthe negative chunk length to retr.c:fd_read(). As fd_read() takes an\nint argument, the high 32 bits of the chunk length are discarded,\nleaving fd_read() with a completely attacker controlled length\nargument. The attacker can corrupt malloc metadata after the allocated\nbuffer (CVE-2017-13090).\n",
+  "modified": "2017-10-30T10:35:30Z",
+  "published": "2017-10-30T19:23:17Z",
+  "related": [
+    "CVE-2017-13089",
+    "CVE-2017-13090"
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2017-0396.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=21947"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://www.viestintavirasto.fi/en/cybersecurity/vulnerabilities/2017/haavoittuvuus-2017-037.html"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "wget",
+        "ecosystem": "Mageia:5",
+        "purl": "pkg:rpm/mageia/wget?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.15-5.3.mga5"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0396.json"
+      },
+      "versions": []
+    },
+    {
+      "package": {
+        "name": "wget",
+        "ecosystem": "Mageia:6",
+        "purl": "pkg:rpm/mageia/wget?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.19.2-1.mga6"
+            }
+          ]
+        }
+      ],
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0396.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "credits": [
+    {
+      "name": "Mageia",
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "type": "COORDINATOR"
+    }
+  ]
+}
