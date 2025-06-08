@@ -1,0 +1,206 @@
+{
+  "id": "GHSA-wf8f-6423-gfxg",
+  "summary": "Jackson-core Vulnerable to Memory Disclosure via Source Snippet in JsonLocation",
+  "details": "### Overview\n\nA flaw in Jackson-core's `JsonLocation._appendSourceDesc` method allows up to 500 bytes of unintended memory content to be included in exception messages. When parsing JSON from a byte array with an offset and length, the exception message incorrectly reads from the beginning of the array instead of the logical payload start. This results in possible **information disclosure** in systems using **pooled or reused buffers**, like Netty or Vert.x.\n\n### Details\n\nThe vulnerability affects the creation of exception messages like:\n\n```\nJsonParseException: Unexpected character ... at [Source: (byte[])...]\n```\n\nWhen `JsonFactory.createParser(byte[] data, int offset, int len)` is used, and an error occurs while parsing, the exception message should include a snippet from the specified logical payload. However, the method `_appendSourceDesc` ignores the `offset`, and always starts reading from index `0`.\n\nIf the buffer contains residual sensitive data from a previous request, such as credentials or document contents, that data may be exposed if the exception is propagated to the client.\n\nThe issue particularly impacts server applications using:\n\n* Pooled byte buffers (e.g., Netty)\n* Frameworks that surface parse errors in HTTP responses\n* Default Jackson settings (i.e., `INCLUDE_SOURCE_IN_LOCATION` is enabled)\n\nA documented real-world example is [CVE-2021-22145](https://nvd.nist.gov/vuln/detail/CVE-2021-22145) in Elasticsearch, which stemmed from the same root cause.\n\n### Attack Scenario\n\nAn attacker sends malformed JSON to a service using Jackson and pooled byte buffers (e.g., Netty-based HTTP servers). If the server reuses a buffer and includes the parser\u2019s exception in its HTTP 400 response, the attacker may receive residual data from previous requests.\n\n### Proof of Concept\n\n```java\nbyte[] buffer = new byte[1000];\nSystem.arraycopy(\"SECRET\".getBytes(), 0, buffer, 0, 6);\nSystem.arraycopy(\"{ \\\"bad\\\": }\".getBytes(), 0, buffer, 700, 10);\n\nJsonFactory factory = new JsonFactory();\nJsonParser parser = factory.createParser(buffer, 700, 20);\nparser.nextToken(); // throws exception\n\n// Exception message will include \"SECRET\"\n```\n\n### Patches\nThis issue was silently fixed in jackson-core version 2.13.0, released on September 30, 2021, via [PR #652](https://github.com/FasterXML/jackson-core/pull/652).\n\nAll users should upgrade to version 2.13.0 or later.\n\n### Workarounds\nIf upgrading is not immediately possible, applications can mitigate the issue by:\n\n1. **Disabling exception message exposure to clients** \u2014 avoid returning parsing exception messages in HTTP responses.\n2. **Disabling source inclusion in exceptions** by setting:\n\n   ```java\n   jsonFactory.disable(JsonFactory.Feature.INCLUDE_SOURCE_IN_LOCATION);\n   ```\n\n    This prevents Jackson from embedding any source content in exception messages, avoiding leakage.\n\n\n### References\n* [Pull Request #652 (Fix implementation)](https://github.com/FasterXML/jackson-core/pull/652)\n* [CVE-2021-22145 (Elasticsearch exposure of this flaw)](https://nvd.nist.gov/vuln/detail/CVE-2021-22145)",
+  "aliases": [
+    "CVE-2025-49128"
+  ],
+  "modified": "2025-06-07T00:54:46.814569Z",
+  "published": "2025-06-07T00:10:42Z",
+  "related": [
+    "CGA-w99f-h8p7-76rg"
+  ],
+  "database_specific": {
+    "nvd_published_at": "2025-06-06T22:15:23Z",
+    "cwe_ids": [
+      "CWE-209"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-07T00:10:42Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/FasterXML/jackson-core/security/advisories/GHSA-wf8f-6423-gfxg"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-22145"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-49128"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FasterXML/jackson-core/pull/652"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FasterXML/jackson-core/commit/a6c297682737dde13337cb7c3020f299518609a8"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/FasterXML/jackson-core"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "com.fasterxml.jackson.core:jackson-core",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/com.fasterxml.jackson.core/jackson-core"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.13.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.4",
+        "2.0.5",
+        "2.0.6",
+        "2.1.0",
+        "2.1.1",
+        "2.1.2",
+        "2.1.3",
+        "2.1.4",
+        "2.1.5",
+        "2.10.0",
+        "2.10.0.pr1",
+        "2.10.0.pr2",
+        "2.10.0.pr3",
+        "2.10.1",
+        "2.10.2",
+        "2.10.3",
+        "2.10.4",
+        "2.10.5",
+        "2.11.0",
+        "2.11.0.rc1",
+        "2.11.1",
+        "2.11.2",
+        "2.11.3",
+        "2.11.4",
+        "2.12.0",
+        "2.12.0-rc1",
+        "2.12.0-rc2",
+        "2.12.1",
+        "2.12.2",
+        "2.12.3",
+        "2.12.4",
+        "2.12.5",
+        "2.12.6",
+        "2.12.7",
+        "2.13.0-rc1",
+        "2.13.0-rc2",
+        "2.2.0",
+        "2.2.0-rc1",
+        "2.2.1",
+        "2.2.2",
+        "2.2.3",
+        "2.2.4",
+        "2.3.0",
+        "2.3.0-rc1",
+        "2.3.1",
+        "2.3.2",
+        "2.3.3",
+        "2.3.4",
+        "2.3.5",
+        "2.4.0",
+        "2.4.0-rc1",
+        "2.4.0-rc2",
+        "2.4.0-rc3",
+        "2.4.1",
+        "2.4.1.1",
+        "2.4.2",
+        "2.4.3",
+        "2.4.4",
+        "2.4.5",
+        "2.4.6",
+        "2.5.0",
+        "2.5.0-rc1",
+        "2.5.1",
+        "2.5.2",
+        "2.5.3",
+        "2.5.4",
+        "2.5.5",
+        "2.6.0",
+        "2.6.0-rc1",
+        "2.6.0-rc2",
+        "2.6.0-rc3",
+        "2.6.0-rc4",
+        "2.6.1",
+        "2.6.2",
+        "2.6.3",
+        "2.6.4",
+        "2.6.5",
+        "2.6.6",
+        "2.6.7",
+        "2.7.0",
+        "2.7.0-rc1",
+        "2.7.0-rc2",
+        "2.7.0-rc3",
+        "2.7.1",
+        "2.7.2",
+        "2.7.3",
+        "2.7.4",
+        "2.7.5",
+        "2.7.6",
+        "2.7.7",
+        "2.7.8",
+        "2.7.9",
+        "2.8.0",
+        "2.8.0.rc1",
+        "2.8.0.rc2",
+        "2.8.1",
+        "2.8.10",
+        "2.8.11",
+        "2.8.2",
+        "2.8.3",
+        "2.8.4",
+        "2.8.5",
+        "2.8.6",
+        "2.8.7",
+        "2.8.8",
+        "2.8.9",
+        "2.9.0",
+        "2.9.0.pr1",
+        "2.9.0.pr2",
+        "2.9.0.pr3",
+        "2.9.0.pr4",
+        "2.9.1",
+        "2.9.10",
+        "2.9.2",
+        "2.9.3",
+        "2.9.4",
+        "2.9.5",
+        "2.9.6",
+        "2.9.7",
+        "2.9.8",
+        "2.9.9"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-wf8f-6423-gfxg/GHSA-wf8f-6423-gfxg.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+    }
+  ]
+}
