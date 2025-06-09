@@ -1,0 +1,62 @@
+{
+  "id": "GHSA-v3ph-2q5q-cg88",
+  "summary": "@haxtheweb/haxcms-nodejs Iframe Phishing vulnerability",
+  "details": "### Summary\n\nIn the HAX site editor, users can create a website block to load another site in an iframe. The application allows users to supply a target URL in the website block. When the HAX site is visited, the client's browser will query the supplied URL.\n\n### Affected Resources\n\n- [Operations.php:868](https://github.com/haxtheweb/haxcms-php/blob/master/system/backend/php/lib/Operations.php#L868)\n- `https://<site>/<user>/system/api/saveNode`\n\n### PoC\n\n1. Set the URL in an iframe pointing to an attacker-controlled server running Responder\n\n![image](https://github.com/user-attachments/assets/baac23ec-7b1e-49cf-864d-c3550b2c71bf)\n\n2. Once another user visits the site, they are prompted to sign in.\n\n![image](https://github.com/user-attachments/assets/a3a0b75d-e12f-49cf-8669-9686353a92e2)\n\n3. If a user inputs credentials, the username and password hash are outputted in Responder.\n\n![image](https://github.com/user-attachments/assets/428542d3-8cf5-4bfa-b759-e630c3ee6ac3)\n\n### Impact\n\nAn authenticated attacker can create a HAX site with a website block pointing at an attacker-controlled server running Responder or a similar tool. The attacker can then conduct a phishing attack by convincing another user to visit their malicious HAX site to harvest credentials.",
+  "modified": "2025-06-09T19:07:21Z",
+  "published": "2025-06-09T19:07:21Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-1021"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-09T19:07:21Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/haxtheweb/issues/security/advisories/GHSA-v3ph-2q5q-cg88"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/haxtheweb/haxcms-nodejs/commit/5368eb9b278ca47cd9a83b8d3e6216375615b8f5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/haxtheweb/issues"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "@haxtheweb/haxcms-nodejs",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/%40haxtheweb/haxcms-nodejs"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "11.0.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-v3ph-2q5q-cg88/GHSA-v3ph-2q5q-cg88.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N"
+    }
+  ]
+}
