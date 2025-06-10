@@ -3,9 +3,10 @@
   "summary": "SpiceDB checks involving relations with caveats can result in no permission when permission is expected",
   "details": "### Impact\n\nOn schemas involving arrows with caveats on the arrow\u2019ed relation, when the path to resolve a CheckPermission request involves the evaluation of multiple caveated branches, requests may return a negative response when a positive response is expected.\n\nFor example, given this schema:\n\n```\ndefinition user {}\n\ndefinition office {\n\trelation parent: office\n\trelation manager: user\n\tpermission read = manager + parent->read\n}\n\ndefinition group {\n\trelation parent: office\n\tpermission read = parent->read\n}\n\ndefinition document {\n\trelation owner: group with equals\n\tpermission read = owner->read\n}\n\ncaveat equals(actual string, required string) {\n\tactual == required\n}\n```\n\nand these relationships:\n\n```\noffice:headoffice#manager@user:maria\noffice:branch1#parent@office:headoffice\ngroup:admins#parent@office:branch1\ngroup:managers#parent@office:headoffice\ndocument:budget#owner@group:admins[equals:{\"required\":\"admin\"}]\ndocument:budget#owner@group:managers[equals:{\"required\":\"manager\"}]\n```\n\nPermission for `'document:budget#read@user:maria with {\"actual\" : \"admin\"}'` is returned as NO_PERMISSION when HAS_PERMISSION is the correct answer.\n\n### Patches\nUpgrade to v1.44.2.\n\n### Workarounds\nDo not use caveats in your schema over an arrow\u2019ed relation.",
   "aliases": [
-    "CVE-2025-49011"
+    "CVE-2025-49011",
+    "GO-2025-3744"
   ],
-  "modified": "2025-06-06T22:42:15.811209Z",
+  "modified": "2025-06-10T17:59:25.308381Z",
   "published": "2025-06-06T21:41:00Z",
   "database_specific": {
     "nvd_published_at": "2025-06-06T18:15:35Z",
