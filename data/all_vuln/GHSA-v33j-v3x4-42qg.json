@@ -1,0 +1,59 @@
+{
+  "id": "GHSA-v33j-v3x4-42qg",
+  "summary": "Regex literal in Hurl files are not escaped when exported to HTML, allowing injections",
+  "details": "Given this Hurl file:\n\nregex.hurl:\n\n```\nGET https://foo.com\nHTTP 200\n[Asserts]\njsonpath \"$.body\" matches /<img src=\"\" onerror=\"alert('Hi!')\">/\n```\n\nWhen exported to HTML:\n\n```\n$ hurlfmt --out html regex.hurl\n<pre><code class=\"language-hurl\"><span class=\"hurl-entry\"><span class=\"request\"><span class=\"line\"><span class=\"method\">GET</span> <span class=\"url\">https://foo.com</span></span>\n</span><span class=\"response\"><span class=\"line\"><span class=\"version\">HTTP</span> <span class=\"number\">200</span></span>\n<span class=\"line\"><span class=\"section-header\">[Asserts]</span></span>\n<span class=\"line\"><span class=\"query-type\">jsonpath</span> <span class=\"string\">\"$.body\"</span> <span class=\"predicate-type\">matches</span> <span class=\"regex\">/<img src=\"\" onerror=\"alert('Hi!')\">/</span></span>\n</span></span><span class=\"line\"></span>\n</code></pre>\n```\n\nThe regex literal `/<img src=\"\" onerror=\"alert('Hi!')\">/` is not escaped:\n\n`<span class=\"regex\">/<img src=\"\" onerror=\"alert('Hi!')\">/</span></span>`\n\nWhen opened in a browser, the code is run without user interaction:\n\n![regex](https://github.com/user-attachments/assets/9c20a2ff-900f-4420-b38b-1e7648749119)",
+  "modified": "2025-06-11T14:46:37Z",
+  "published": "2025-06-11T14:46:37Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-11T14:46:37Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Orange-OpenSource/hurl/security/advisories/GHSA-v33j-v3x4-42qg"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Orange-OpenSource/hurl/commit/248ac41cfa1797c52241c6ef756490d90027cdf2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Orange-OpenSource/hurl/commit/7dcdbd1796785392b1e829d1f07c6687b9a8f27d"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Orange-OpenSource/hurl"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "hurl",
+        "ecosystem": "crates.io",
+        "purl": "pkg:cargo/hurl"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.0.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 6.1.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-v33j-v3x4-42qg/GHSA-v33j-v3x4-42qg.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0"
+}
