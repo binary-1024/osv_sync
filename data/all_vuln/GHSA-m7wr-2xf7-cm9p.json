@@ -1,13 +1,13 @@
 {
   "id": "GHSA-m7wr-2xf7-cm9p",
   "summary": "pgx SQL Injection via Line Comment Creation",
-  "details": "### Impact\n\nSQL injection can occur when all of the following conditions are met:\n\n1. The non-default simple protocol is used.\n2. A placeholder for a numeric value must be immediately preceded by a minus.\n3. There must be a second placeholder for a string value after the first placeholder; both\nmust be on the same line.\n4. Both parameter values must be user-controlled.\n\ne.g. \n\nSimple mode must be enabled:\n\n```go\n// connection string includes \"prefer_simple_protocol=true\"\n// or\n// directly enabled in code\nconfig.ConnConfig.PreferSimpleProtocol = true\n```\n\nParameterized query:\n\n```sql\nSELECT * FROM example WHERE result=-$1 OR name=$2;\n```\n\nParameter values:\n\n`$1` => `-42`\n`$2` => `\"foo\\n 1 AND 1=0 UNION SELECT * FROM secrets; --\"`\n\nResulting query after preparation:\n\n```sql\nSELECT * FROM example WHERE result=--42 OR name= 'foo\n1 AND 1=0 UNION SELECT * FROM secrets; --';\n```\n\n### Patches\n\nThe problem is resolved in v4.18.2.\n\n### Workarounds\n\nDo not use the simple protocol or do not place a minus directly before a placeholder.\n",
+  "details": "### Impact\n\nSQL injection can occur when all of the following conditions are met:\n\n1. The non-default simple protocol is used.\n2. A placeholder for a numeric value must be immediately preceded by a minus.\n3. There must be a second placeholder for a string value after the first placeholder; both\nmust be on the same line.\n4. Both parameter values must be user-controlled.\n\ne.g. \n\nSimple mode must be enabled:\n\n```go\n// connection string includes \"prefer_simple_protocol=true\"\n// or\n// directly enabled in code\nconfig.ConnConfig.PreferSimpleProtocol = true\n```\n\nParameterized query:\n\n```sql\nSELECT * FROM example WHERE result=-$1 OR name=$2;\n```\n\nParameter values:\n\n`$1` => `-42`\n`$2` => `\"foo\\n 1 AND 1=0 UNION SELECT * FROM secrets; --\"`\n\nResulting query after preparation:\n\n```sql\nSELECT * FROM example WHERE result=--42 OR name= 'foo\n1 AND 1=0 UNION SELECT * FROM secrets; --';\n```\n\n### Patches\n\nThe problem is resolved in v4.18.2.\n\n### Workarounds\n\nDo not use the simple protocol or do not place a minus directly before a placeholder.",
   "aliases": [
     "CGA-35q3-95v9-4mm7",
     "CVE-2024-27289",
     "GO-2024-2605"
   ],
-  "modified": "2024-10-22T05:29:00.121356Z",
+  "modified": "2025-06-13T20:45:26Z",
   "published": "2024-03-04T20:13:11Z",
   "related": [
     "CGA-2f2h-4cg8-w423",
@@ -44,12 +44,20 @@
       "url": "https://github.com/jackc/pgx/security/advisories/GHSA-m7wr-2xf7-cm9p"
     },
     {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-27289"
+    },
+    {
       "type": "WEB",
       "url": "https://github.com/jackc/pgx/commit/f94eb0e2f96782042c96801b5ac448f44f0a81df"
     },
     {
       "type": "PACKAGE",
       "url": "https://github.com/jackc/pgx"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.sonarsource.com/blog/double-dash-double-trouble-a-subtle-sql-injection-flaw"
     }
   ],
   "affected": [
