@@ -1,0 +1,66 @@
+{
+  "id": "GHSA-f7gq-h8jv-h3cq",
+  "summary": "ash_authentication_phoenix has Insufficient Session Expiration",
+  "details": "### Impact\n\nSession tokens remain valid on the server after user logout, creating a security gap where:\n\n- Compromised tokens (via XSS, network interception, or device theft) continue to work even after the user logs out\n  - The sessions stored in the database still expire, limiting the duration during which this could be exploited\n- Users cannot fully invalidate their sessions when logging out from shared or potentially compromised devices \n  - by default, changing one's password *does* invalidate all other sessions, so changing your password as a security measure would have been effective\n- May cause compliance issues with security frameworks requiring complete session \n### Patches\nUpgrade to version 2.10.0. After upgrading, users must update their AuthController implementation to use the new `clear_session/2` function with their OTP app name. You will be prompted to do so with a compile-time error.\n\nIf you do not have the setting `require_token_presence_for_authentication?` set to `true` in the `tokens` section, you will see a separate error:\n\n```\n** (Spark.Error.DslError) authentication -> session_identifier:\nMust set `authentication.session_identifier` to either `:jti` or `:unsafe`.\n\n...\n```\n\nIn order to revoke sessions on log out when not storing tokens directly in the session, we must have some unique identifier with which to do so. You should prefer to enable `require_token_presence_for_authentication?` if possible, instead of setting this to `:jti`. Note that whatever you do here, if you did not previously have `require_token_presence_for_authentication?` set to `true`, setting it to `true` *or* setting `authentication.session_identifier` to `:jti` will log out all of your currently authenticated users.\n\n### Workarounds\nYou can manually revoke tokens in your `logout/2` handler in your auth controller.",
+  "aliases": [
+    "CVE-2025-4754"
+  ],
+  "modified": "2025-06-17T15:12:21.020493Z",
+  "published": "2025-06-17T14:20:46Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-613"
+    ],
+    "severity": "LOW",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-17T14:20:46Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/team-alembic/ash_authentication_phoenix/security/advisories/GHSA-f7gq-h8jv-h3cq"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/team-alembic/ash_authentication_phoenix/commit/a3253fb4fc7145aeb403537af1c24d3a8d51ffb1"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/team-alembic/ash_authentication_phoenix"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "ash_authentication_phoenix",
+        "ecosystem": "Hex",
+        "purl": "pkg:hex/ash_authentication_phoenix"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.10.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.9.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-f7gq-h8jv-h3cq/GHSA-f7gq-h8jv-h3cq.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:L/VI:L/VA:N/SC:N/SI:N/SA:N"
+    }
+  ]
+}
