@@ -1,0 +1,280 @@
+{
+  "id": "GHSA-h7qf-qmf3-85qg",
+  "summary": "Allure Report allows Improper XXE Restriction via DocumentBuilderFactory",
+  "details": "### Summary\nA critical XML External Entity (XXE) vulnerability exists in the xunit-xml-plugin used by Allure 2. The plugin fails to securely configure the XML parser (`DocumentBuilderFactory`) and allows external entity expansion when processing test result .xml files. This allows attackers to read arbitrary files from the file system and potentially trigger server-side request forgery (SSRF).\n\n### Details\nIn `\\allure2-main\\plugins\\xunit-xml-plugin\\src\\main\\java\\io\\qameta\\allure\\xunitxml\\XunitXmlPlugin.java` the application uses `DocumentBuilderFactory` without disabling DTDs or external entities. By generating a report with a malicious xml file within it, an attacker can perform XXE to leverage SSRF, or to read system files.\n\n### PoC\nTo recreate this vulnerability, you need to install allure for command-line (In my POC I used a Windows 11 Machine). \n\n1. Create a folder called `allure`, and within it, create a malicious XML file. I will attach my SSRF and file reading payloads, however, for the rest of the POC, I will focus on reading system files for better screenshots.\n##SSRF (replace webhook link with your own)\n![image](https://github.com/user-attachments/assets/a1a9a438-b6f1-4675-973f-a43847a84519)\n\n##Reading System Files\n![image](https://github.com/user-attachments/assets/eb0e1e60-1f76-42e7-b68d-2137bed62fe9)\n\n2. Put the malicious .xml file into the `allure` directory created previously\n3. Run the following command to run the report `allure generate C:\\path\\to\\directory\\allure -o report --clean`\n4. To view and confirm the executed payload, run `allure open report`\n5. When the report opens, confirm the payload executedby going to `Categories > Product defects > <payload response>`\n![image](https://github.com/user-attachments/assets/e7244550-2e9f-4066-b282-86f1eb8cf5e4)\n\n\n\n### Impact\nThe explained XXE vulnerability can lead to Arbitrary File Disclosure and Server-Side Request Forgery. This exploitation can also be carried out silently, meaning it can be carried out without user interaction if the tool is automated within an application, and can go undetected with a carefully crafted payload. This could allow a malicious actor to view other source codes which may contain API or product keys, internal application URLs, or other secret items. This makes it an especially high risk when ran within a CI/CD platform.",
+  "aliases": [
+    "CVE-2025-52888"
+  ],
+  "modified": "2025-06-25T14:57:14.551226Z",
+  "published": "2025-06-25T14:14:09Z",
+  "database_specific": {
+    "nvd_published_at": "2025-06-24T20:15:26Z",
+    "cwe_ids": [
+      "CWE-611"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-25T14:14:09Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/allure-framework/allure2/security/advisories/GHSA-h7qf-qmf3-85qg"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-52888"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/allure-framework/allure2/commit/cbcb33719851ff70adce85d38e15d20fc58d4eb7"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/allure-framework/allure2"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "io.qameta.allure.plugins:xunit-xml-plugin",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/io.qameta.allure.plugins/xunit-xml-plugin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.34.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.10.0",
+        "2.11.0",
+        "2.12.0",
+        "2.12.1",
+        "2.13.0",
+        "2.13.1",
+        "2.13.10",
+        "2.13.2",
+        "2.13.3",
+        "2.13.4",
+        "2.13.5",
+        "2.13.6",
+        "2.13.7",
+        "2.13.8",
+        "2.13.9",
+        "2.14.0",
+        "2.15.0",
+        "2.16.0",
+        "2.16.1",
+        "2.17.0",
+        "2.17.1",
+        "2.17.2",
+        "2.17.3",
+        "2.18.0",
+        "2.18.1",
+        "2.19.0",
+        "2.20.0",
+        "2.20.1",
+        "2.21.0",
+        "2.22.0",
+        "2.22.1",
+        "2.22.2",
+        "2.22.3",
+        "2.22.4",
+        "2.23.0",
+        "2.23.1",
+        "2.24.0",
+        "2.24.1",
+        "2.25.0",
+        "2.26.0",
+        "2.27.0",
+        "2.28.0",
+        "2.29.0",
+        "2.30.0",
+        "2.31.0",
+        "2.32.0",
+        "2.32.2",
+        "2.33.0",
+        "2.34.0",
+        "2.8.0",
+        "2.8.1",
+        "2.9.0"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.34.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-h7qf-qmf3-85qg/GHSA-h7qf-qmf3-85qg.json"
+      }
+    },
+    {
+      "package": {
+        "name": "io.qameta.allure.plugins:junit-xml-plugin",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/io.qameta.allure.plugins/junit-xml-plugin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.34.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.10.0",
+        "2.11.0",
+        "2.12.0",
+        "2.12.1",
+        "2.13.0",
+        "2.13.1",
+        "2.13.10",
+        "2.13.2",
+        "2.13.3",
+        "2.13.4",
+        "2.13.5",
+        "2.13.6",
+        "2.13.7",
+        "2.13.8",
+        "2.13.9",
+        "2.14.0",
+        "2.15.0",
+        "2.16.0",
+        "2.16.1",
+        "2.17.0",
+        "2.17.1",
+        "2.17.2",
+        "2.17.3",
+        "2.18.0",
+        "2.18.1",
+        "2.19.0",
+        "2.20.0",
+        "2.20.1",
+        "2.21.0",
+        "2.22.0",
+        "2.22.1",
+        "2.22.2",
+        "2.22.3",
+        "2.22.4",
+        "2.23.0",
+        "2.23.1",
+        "2.24.0",
+        "2.24.1",
+        "2.25.0",
+        "2.26.0",
+        "2.27.0",
+        "2.28.0",
+        "2.29.0",
+        "2.30.0",
+        "2.31.0",
+        "2.32.0",
+        "2.32.2",
+        "2.33.0",
+        "2.34.0",
+        "2.8.0",
+        "2.8.1",
+        "2.9.0"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.34.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-h7qf-qmf3-85qg/GHSA-h7qf-qmf3-85qg.json"
+      }
+    },
+    {
+      "package": {
+        "name": "io.qameta.allure.plugins:trx-plugin",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/io.qameta.allure.plugins/trx-plugin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.34.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.10.0",
+        "2.11.0",
+        "2.12.0",
+        "2.12.1",
+        "2.13.0",
+        "2.13.1",
+        "2.13.10",
+        "2.13.2",
+        "2.13.3",
+        "2.13.4",
+        "2.13.5",
+        "2.13.6",
+        "2.13.7",
+        "2.13.8",
+        "2.13.9",
+        "2.14.0",
+        "2.15.0",
+        "2.16.0",
+        "2.16.1",
+        "2.17.0",
+        "2.17.1",
+        "2.17.2",
+        "2.17.3",
+        "2.18.0",
+        "2.18.1",
+        "2.19.0",
+        "2.20.0",
+        "2.20.1",
+        "2.21.0",
+        "2.22.0",
+        "2.22.1",
+        "2.22.2",
+        "2.22.3",
+        "2.22.4",
+        "2.23.0",
+        "2.23.1",
+        "2.24.0",
+        "2.24.1",
+        "2.25.0",
+        "2.26.0",
+        "2.27.0",
+        "2.28.0",
+        "2.29.0",
+        "2.30.0",
+        "2.31.0",
+        "2.32.0",
+        "2.32.2",
+        "2.33.0",
+        "2.34.0",
+        "2.8.0",
+        "2.8.1",
+        "2.9.0"
+      ],
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.34.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-h7qf-qmf3-85qg/GHSA-h7qf-qmf3-85qg.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ]
+}
