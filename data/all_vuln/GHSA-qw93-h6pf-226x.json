@@ -3,9 +3,10 @@
   "summary": "OctoPrint Authenticated Reverse Proxy Page Authentication Bypass",
   "details": "### Impact\n\nOctoPrint versions up until and including 1.10.3 contain a vulnerability that allows an attacker to bypass the login redirect and directly access the rendered HTML of certain frontend pages. \n\nThe impact on data exposure is minimal because, typically, data is loaded via API requests that correctly enforce user authentication. In the current codebase, cases where data is directly embedded in the page content are rare. However, one notable exception is the authenticated variant of the reverse proxy test page, which displays the IP addresses of configured reverse proxies. \n\nThe primary risk lies in potential future modifications to the codebase that might incorrectly rely on the vulnerable internal functions for authentication checks, leading to security vulnerabilities.\n\n### Patches\n\nThe vulnerability has been patched in version 1.11.0.\n\n### Details\n\nAn authentication bypass vulnerability exists in the following functions defined in [octoprint/server/util/init.py](https://github.com/OctoPrint/OctoPrint/blob/d79a0d20f3f1c7f2edb56dedda3b70267a937e65/src/octoprint/server/util/__init__.py):\n\n- `require_login`\n- `require_login_with`\n- `require_fresh_login_with`\n\nBy adding the HTTP header `X-Preemptive-Recording: yes` to HTTP requests, these functions allow requests to proceed without redirecting to the login screen, effectively bypassing the login mechanism in the frontend. However, this only grants access to frontend page content, while authenticated API endpoints still enforce proper session validation.\n\n### Credits\n\nThis vulnerability was discovered and responsibly disclosed to OctoPrint by Jacopo Tediosi",
   "aliases": [
-    "CVE-2025-32788"
+    "CVE-2025-32788",
+    "PYSEC-2025-56"
   ],
-  "modified": "2025-04-23T15:40:16.136391Z",
+  "modified": "2025-06-27T18:14:53.754456Z",
   "published": "2025-04-22T16:49:43Z",
   "database_specific": {
     "nvd_published_at": "2025-04-22T18:15:59Z",
