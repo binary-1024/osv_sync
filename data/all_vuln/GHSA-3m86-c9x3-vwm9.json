@@ -1,0 +1,99 @@
+{
+  "id": "GHSA-3m86-c9x3-vwm9",
+  "summary": "Graylog vulnerable to privilege escalation through API tokens",
+  "details": "### Impact\n\nGraylog users can gain elevated privileges by creating and using API tokens for the local Administrator or any other user for whom the malicious user knows the ID.\n\nFor the attack to succeed, the attacker needs a user account in Graylog. They can then proceed to issue hand-crafted requests to the Graylog REST API and exploit a weak permission check for token creation.\n\n### Workarounds\n\nIn Graylog version `6.2.0` and above, regular users can be restricted from creating API tokens. The respective configuration can be found in `System > Configuration > Users > \"Allow users to create personal access tokens\"`. This option should be *Disabled*, so that only administrators are allowed to create tokens.\n\n### Recommended Actions\n\nAfter upgrading Graylog from a vulnerable version to a patched version, administrators are advised to perform the following steps to ensure the integrity of their system:\n\n#### Review API tokens \nAn overview of all existing API tokens is available at `System > Users and Teams > Token Management`. Please review this list carefully and ensure each token is there for a reason.  \n\n#### Check Audit Log (Graylog Enterprise only)\nGraylog Enterprise provides an audit log that can be used to review which API tokens were created when the system was vulnerable. Please search the Audit Log for `action:create token` and match the *Actor* with the user for whom the token was created. In most cases this should be the same user, but there might be legitimate reasons for users to be allowed to create tokens for other users. If in doubt, please review the user's actual permissions.\n\n#### Review API token creation requests\nGraylog Open does not provide audit logging, but many setups contain infrastructure components, like reverse proxies, in front of the Graylog REST API. These components often provide HTTP access logs. Please check the access logs to detect malicious token creations by reviewing all API token requests to the `/api/users/{user_id}/tokens/{token_name}` endpoint (`{user_id}` and `{token_name}` may be arbitrary strings).",
+  "aliases": [
+    "CVE-2025-53106"
+  ],
+  "modified": "2025-06-30T19:59:24.584323Z",
+  "published": "2025-06-30T19:35:38Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-285"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-30T19:35:38Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/security/advisories/GHSA-3m86-c9x3-vwm9"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/commit/6936bd16a783c2944a3d2f1e83902062520f90e3"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Graylog2/graylog2-server/commit/9215b8f1fd32566c31e6f7447ed864df3590c157"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Graylog2/graylog2-server"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "org.graylog2:graylog2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.graylog2/graylog2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "6.2.0"
+            },
+            {
+              "fixed": "6.2.4"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "6.2.0",
+        "6.2.1",
+        "6.2.2",
+        "6.2.3"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-3m86-c9x3-vwm9/GHSA-3m86-c9x3-vwm9.json"
+      }
+    },
+    {
+      "package": {
+        "name": "org.graylog2:graylog2-server",
+        "ecosystem": "Maven",
+        "purl": "pkg:maven/org.graylog2/graylog2-server"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "6.3.0-alpha.1"
+            },
+            {
+              "fixed": "6.3.0-rc.2"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-3m86-c9x3-vwm9/GHSA-3m86-c9x3-vwm9.json"
+      },
+      "versions": []
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H"
+    }
+  ]
+}
