@@ -1,0 +1,72 @@
+{
+  "id": "GHSA-xg8h-j46f-w952",
+  "summary": "Pillow vulnerability can cause write buffer overflow on BCn encoding",
+  "details": "There is a heap buffer overflow when writing a sufficiently large (>64k encoded with default settings) image in the DDS format due to writing into a buffer without checking for available space. \n\nThis only affects users who save untrusted data as a compressed DDS image. \n\n* Unclear how large the potential write could be. It is likely limited by process segfault, so it's not necessarily deterministic. It may be practically unbounded. \n* Unclear if there's a restriction on the bytes that could be emitted. It's likely that the only restriction is that the bytes would be emitted in chunks of 8 or 16. \n\nThis was introduced in Pillow 11.2.0 when the feature was added.",
+  "aliases": [
+    "CVE-2025-48379"
+  ],
+  "modified": "2025-07-01T18:27:22.946300Z",
+  "published": "2025-07-01T17:29:37Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-122"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-01T17:29:37Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/python-pillow/Pillow/security/advisories/GHSA-xg8h-j46f-w952"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/python-pillow/Pillow/pull/9041"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/python-pillow/Pillow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/python-pillow/Pillow/releases/tag/11.3.0"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "pillow",
+        "ecosystem": "PyPI",
+        "purl": "pkg:pypi/pillow"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "11.2.0"
+            },
+            {
+              "fixed": "11.3.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "11.2.1"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-xg8h-j46f-w952/GHSA-xg8h-j46f-w952.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H"
+    }
+  ]
+}
