@@ -1,0 +1,69 @@
+{
+  "id": "GHSA-pr9r-gxgp-9rm8",
+  "summary": "n8n Vulnerable to Denial of Service via Malformed Binary Data Requests",
+  "details": "## Summary\nDenial of Service vulnerability in `/rest/binary-data` endpoint when processing empty filesystem URIs (`filesystem://` or `filesystem-v2://`).\n\n### Impact\nThis is a Denial of Service (DoS) vulnerability that allows authenticated attackers to cause service unavailability through malformed filesystem URI requests. The vulnerability affects:\n\n- The `/rest/binary-data` endpoint\n- n8n.cloud instances (confirmed HTTP/2 524 timeout responses)\n\nAttackers can exploit this by sending GET requests with empty filesystem URIs (`filesystem://` or `filesystem-v2://`) to the `/rest/binary-data` endpoint, causing resource exhaustion and service disruption.\n\n### Patches\n\nThe issue has been patched in [1.99.0](https://github.com/n8n-io/n8n/releases/tag/n8n%401.99.0).\nAll users should upgrade to this version or later.\n\nThe fix introduces strict checking of URI patterns.\n\nPatch commit: https://github.com/n8n-io/n8n/pull/16229",
+  "aliases": [
+    "CVE-2025-49595"
+  ],
+  "modified": "2025-07-03T14:59:51.236120Z",
+  "published": "2025-07-03T14:06:01Z",
+  "database_specific": {
+    "nvd_published_at": null,
+    "cwe_ids": [
+      "CWE-400"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-03T14:06:01Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/n8n-io/n8n/security/advisories/GHSA-pr9r-gxgp-9rm8"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/n8n-io/n8n/pull/16229"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/n8n-io/n8n/commit/43c52a8b4f844e91b02e3cc9df92826a2d7b6052"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/n8n-io/n8n"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "n8n",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/n8n"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.99.0"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-pr9r-gxgp-9rm8/GHSA-pr9r-gxgp-9rm8.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ]
+}
