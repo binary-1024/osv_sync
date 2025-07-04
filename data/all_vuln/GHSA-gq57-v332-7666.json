@@ -1,0 +1,81 @@
+{
+  "id": "GHSA-gq57-v332-7666",
+  "summary": "n8n is vulnerable to Improper Authorization through its `/stop` endpoint",
+  "details": "## Summary\n\nAn authorization vulnerability was discovered in the `/rest/executions/:id/stop` endpoint of n8n. An authenticated user can stop workflow executions that they do not own or that have not been shared with them, leading to potential business disruption.\n\n### Impact\n\nThis is an **improper authorization** vulnerability. While most API methods enforce user-scoped access to workflow execution IDs, the `/stop` endpoint fails to do so. An attacker can guess or enumerate execution IDs (which are sequential and partially exposed via verbose error messages) and terminate active workflows initiated by other users.\n\n**Who is impacted:**\n- Environments where multiple users with varying trust levels share access to the same n8n instance.\n- All users running long-running or time-sensitive workflows (e.g., using the `wait` node).\n\nAn attacker with authenticated access can exploit this flaw to:\n- Disrupt other users\u2019 workflow executions.\n- Cause denial of service for business-critical automations.\n\n### Patches\n\nThe issue was addressed in https://github.com/n8n-io/n8n/pull/16405. Users should upgrade to version >= 1.99.1.\n\nUsers should upgrade to this version or later to ensure proper authorization checks are enforced before stopping workflow executions.\n\n### Workarounds\n\nTo mitigate this issue without upgrading:\n- Restrict access to the `/rest/executions/:id/stop` endpoint via reverse proxy or API gateway.",
+  "aliases": [
+    "CVE-2025-52554"
+  ],
+  "modified": "2025-07-03T21:50:48Z",
+  "published": "2025-07-03T20:23:35Z",
+  "database_specific": {
+    "nvd_published_at": "2025-07-03T20:15:23Z",
+    "cwe_ids": [
+      "CWE-862"
+    ],
+    "severity": "MODERATE",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-03T20:23:35Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/n8n-io/n8n/security/advisories/GHSA-gq57-v332-7666"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-52554"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/n8n-io/n8n/pull/16405"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/dudanogueira/n8n/commit/ca2f90c7fbaa1d661ade2f45d587d9469bc287e1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/n8n-io/n8n/commit/e5edc60e344924230baafb11fa1f0af788e9ca9a"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/n8n-io/n8n"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "n8n",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/n8n"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.99.1"
+            }
+          ]
+        }
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-gq57-v332-7666/GHSA-gq57-v332-7666.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N"
+    },
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:H/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X"
+    }
+  ]
+}

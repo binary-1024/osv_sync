@@ -1,0 +1,212 @@
+{
+  "id": "GHSA-prmv-7r8c-794g",
+  "summary": "Citizen vulnerable to Stored XSS through short descriptions",
+  "details": "### Summary\nShort descriptions set via the [ShortDescription extension](https://www.mediawiki.org/wiki/Extension:ShortDescription) are inserted as raw HTML by the Citizen skin, allowing any user to insert arbitrary HTML into the DOM by editing a page.\n\n### Details\nThe `shortdesc` property, which contains unsanitized user input, is retrieved from the OutputPage and returned as the tagline:\nhttps://github.com/StarCitizenTools/mediawiki-skins-Citizen/blob/0d8a44011e02a081618359a1e90f462478e807aa/includes/Components/CitizenComponentPageHeading.php#L249-L251\nThe tagline is then provided to the template data:\nhttps://github.com/StarCitizenTools/mediawiki-skins-Citizen/blob/0d8a44011e02a081618359a1e90f462478e807aa/includes/Components/CitizenComponentPageHeading.php#L270-L275\nThe template then inserts the tagline into raw HTML without doing any escaping:\nhttps://github.com/StarCitizenTools/mediawiki-skins-Citizen/blob/0d8a44011e02a081618359a1e90f462478e807aa/templates/PageHeading.mustache#L12\n\n### PoC\n1. Enable Citizen and ShortDescription\n2. Add `{{SHORTDESC:&lt;img src=\"\" onerror=\"alert('citizen shortdescription xss')\"&gt;}}` to a page\n3. Visit the page\n![image](https://github.com/user-attachments/assets/d45f3626-c5eb-4477-86af-d15d3a1edb96)\n![image](https://github.com/user-attachments/assets/84a8c447-d441-4bd6-b6d6-48e504527c4e)\n\n\n### Impact\nArbitrary HTML can be inserted into the DOM by any user, allowing for JavaScript to be executed.",
+  "aliases": [
+    "CVE-2025-53370"
+  ],
+  "modified": "2025-07-03T22:27:20.020611Z",
+  "published": "2025-07-03T21:29:16Z",
+  "database_specific": {
+    "nvd_published_at": "2025-07-03T20:15:23Z",
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-03T21:29:16Z"
+  },
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/security/advisories/GHSA-prmv-7r8c-794g"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-53370"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/aedbceb3380bb48db6b59e272fc187529c71c8ca"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/c85a40bddc8651fff66df83a72debddcb34f0521"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/releases/tag/v3.4.0"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "name": "starcitizentools/citizen-skin",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/starcitizentools/citizen-skin"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "1.9.4"
+            },
+            {
+              "fixed": "3.4.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.10.0",
+        "v1.13.0",
+        "v1.14.0",
+        "v1.14.1",
+        "v1.15.0",
+        "v1.16.0",
+        "v1.16.1",
+        "v1.17.0",
+        "v1.17.1",
+        "v1.17.2",
+        "v1.17.3",
+        "v1.17.4",
+        "v1.17.5",
+        "v1.17.6",
+        "v1.17.7",
+        "v1.17.8",
+        "v1.17.9",
+        "v1.9.4",
+        "v1.9.5",
+        "v2.0.0",
+        "v2.0.0-alpha.0",
+        "v2.0.0-alpha.1",
+        "v2.0.0-alpha.2",
+        "v2.0.0-beta.0",
+        "v2.0.0-beta.1",
+        "v2.0.0-beta.2",
+        "v2.0.0-beta.3",
+        "v2.0.0-beta.4",
+        "v2.0.1",
+        "v2.1.0",
+        "v2.10.0",
+        "v2.10.1",
+        "v2.11.0",
+        "v2.11.1",
+        "v2.12.0",
+        "v2.13.0",
+        "v2.13.1",
+        "v2.13.2",
+        "v2.13.3",
+        "v2.13.4",
+        "v2.13.5",
+        "v2.14.0",
+        "v2.14.1",
+        "v2.15.0",
+        "v2.15.1",
+        "v2.16.0",
+        "v2.16.1",
+        "v2.17.0",
+        "v2.17.1",
+        "v2.17.2",
+        "v2.18.0",
+        "v2.18.1",
+        "v2.19.0",
+        "v2.2.0",
+        "v2.20.0",
+        "v2.21.0",
+        "v2.22.0",
+        "v2.22.1",
+        "v2.23.0",
+        "v2.24.0",
+        "v2.25.0",
+        "v2.26.0",
+        "v2.27.0",
+        "v2.28.0",
+        "v2.29.0",
+        "v2.3.0",
+        "v2.3.1",
+        "v2.3.2",
+        "v2.3.3",
+        "v2.3.4",
+        "v2.3.5",
+        "v2.3.6",
+        "v2.30.0",
+        "v2.31.0",
+        "v2.32.0",
+        "v2.33.0",
+        "v2.34.0",
+        "v2.35.0",
+        "v2.36.0",
+        "v2.37.0",
+        "v2.38.0",
+        "v2.38.1",
+        "v2.38.2",
+        "v2.38.3",
+        "v2.39.0",
+        "v2.39.1",
+        "v2.39.2",
+        "v2.39.3",
+        "v2.39.4",
+        "v2.4.0",
+        "v2.4.1",
+        "v2.4.2",
+        "v2.4.3",
+        "v2.4.4",
+        "v2.40.0",
+        "v2.40.1",
+        "v2.40.2",
+        "v2.5.0",
+        "v2.5.1",
+        "v2.5.2",
+        "v2.6.0",
+        "v2.6.1",
+        "v2.6.2",
+        "v2.6.3",
+        "v2.6.4",
+        "v2.6.5",
+        "v2.6.6",
+        "v2.7.0",
+        "v2.7.1",
+        "v2.7.10",
+        "v2.7.11",
+        "v2.7.2",
+        "v2.7.3",
+        "v2.7.4",
+        "v2.7.5",
+        "v2.7.6",
+        "v2.7.7",
+        "v2.7.8",
+        "v2.7.9",
+        "v2.8.0",
+        "v2.8.1",
+        "v2.8.2",
+        "v2.8.3",
+        "v2.8.4",
+        "v2.8.5",
+        "v2.9.0",
+        "v2.9.1",
+        "v3.0.0",
+        "v3.1.0",
+        "v3.2.0",
+        "v3.3.0",
+        "v3.3.1",
+        "v3.3.2"
+      ],
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-prmv-7r8c-794g/GHSA-prmv-7r8c-794g.json"
+      }
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L"
+    }
+  ]
+}
