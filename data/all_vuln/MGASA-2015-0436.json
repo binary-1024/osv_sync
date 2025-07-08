@@ -1,14 +1,46 @@
 {
-  "id": "MGASA-2015-0436",
-  "summary": "Updated krb5 packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0436.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "krb5",
+        "purl": "pkg:rpm/mageia/krb5?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.12.2-8.1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Updated krb5 packages fix security vulnerabilities:\n\nIn MIT krb5 1.5 and later, applications which call\ngss_inquire_context() on a partially-established SPNEGO context can\ncause the GSS-API library to read from a pointer using the wrong type,\ngenerally causing a process crash.  This bug may go unnoticed, because\nthe most common SPNEGO authentication scenario establishes the context\nafter just one call to gss_accept_sec_context().  Java server\napplications using the native JGSS provider are vulnerable to this\nbug.  A carefully crafted SPNEGO packet might allow the\ngss_inquire_context() call to succeed with attacker-determined\nresults, but applications should not make access control decisions\nbased on gss_inquire_context() results prior to context establishment\n(CVE-2015-2695).\n\nIn MIT krb5 1.9 and later, applications which call\ngss_inquire_context() on a partially-established IAKERB context can\ncause the GSS-API library to read from a pointer using the wrong type,\ngenerally causing a process crash.  Java server applications using the\nnative JGSS provider are vulnerable to this bug.  A carefully crafted\nIAKERB packet might allow the gss_inquire_context() call to succeed\nwith attacker-determined results, but applications should not make\naccess control decisions based on gss_inquire_context() results prior\nto context establishment (CVE-2015-2696).\n\nIn MIT krb5 1.7 and later, an authenticated attacker may be able to\ncause a KDC to crash using a TGS request with a large realm field\nbeginning with a null byte.  If the KDC attempts to find a referral to\nanswer the request, it constructs a principal name for lookup using\nkrb5_build_principal() with the requested realm.  Due to a bug in this\nfunction, the null byte causes only one byte be allocated for the\nrealm field of the constructed principal, far less than its length.\nSubsequent operations on the lookup principal may cause a read beyond\nthe end of the mapped memory region, causing the KDC process to crash\n(CVE-2015-2697).\n",
+  "id": "MGASA-2015-0436",
   "modified": "2015-11-07T20:03:11Z",
   "published": "2015-11-07T20:11:27Z",
-  "related": [
-    "CVE-2015-2695",
-    "CVE-2015-2696",
-    "CVE-2015-2697"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -23,43 +55,11 @@
       "url": "https://lists.fedoraproject.org/pipermail/package-announce/2015-November/170683.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "krb5",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/krb5?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.12.2-8.1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2015-0436.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2015-2695",
+    "CVE-2015-2696",
+    "CVE-2015-2697"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated krb5 packages fix security vulnerabilities"
 }

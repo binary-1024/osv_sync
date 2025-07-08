@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-rg3q-prf8-qxmp",
-  "summary": "Arbitrary command injection in embano1/wip ",
-  "details": "## Summary\nThe  `embano1/wip` action uses the `github.event.pull_request.title` parameter in an insecure way. The title parameter is used in a run statement - resulting in a command injection vulnerability due to string interpolation.\n\n## Details and Impact\nThis vulnerability can be triggered by any user on GitHub. They just need to create a pull request with a commit message containing an exploit. (Note that first-time PR requests will not be run - but the attacker can submit a valid PR before submitting an invalid PR). The commit can be genuine, but the commit message can be malicious. \n\nThis can be used to execute code on the GitHub runners (potentially use it for crypto-mining, and waste your resources) and can be used to exfiltrate any secrets that you use in the CI pipeline (including repository tokens). [Here](https://securitylab.github.com/research/github-actions-untrusted-input/) is a set of blog posts by Github's security team explaining this issue.\n\n## How to update existing workflows\n\nReplace the following line in your workflow using this action with the `v2` branch name or commit pointing to this branch:\n\n```yaml\n    uses: embano1/wip@v2\n```\n\nOr using the exact commit:\n\n```yaml\n    uses: embano1/wip@c25450f77ed02c20d00b76ee3b33ff43838739a2 # v2\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-rg3q-prf8-qxmp/GHSA-rg3q-prf8-qxmp.json"
+      },
+      "package": {
+        "ecosystem": "GitHub Actions",
+        "name": "embano1/wip"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-30623"
   ],
-  "modified": "2023-11-08T04:12:26.338450Z",
-  "published": "2023-04-24T22:32:32Z",
-  "related": [
-    "CVE-2023-30623"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-04-24T22:15:09Z",
     "cwe_ids": [
       "CWE-77"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-04-24T22:32:32Z"
+    "github_reviewed_at": "2023-04-24T22:32:32Z",
+    "nvd_published_at": "2023-04-24T22:15:09Z",
+    "severity": "HIGH"
   },
+  "details": "## Summary\nThe  `embano1/wip` action uses the `github.event.pull_request.title` parameter in an insecure way. The title parameter is used in a run statement - resulting in a command injection vulnerability due to string interpolation.\n\n## Details and Impact\nThis vulnerability can be triggered by any user on GitHub. They just need to create a pull request with a commit message containing an exploit. (Note that first-time PR requests will not be run - but the attacker can submit a valid PR before submitting an invalid PR). The commit can be genuine, but the commit message can be malicious. \n\nThis can be used to execute code on the GitHub runners (potentially use it for crypto-mining, and waste your resources) and can be used to exfiltrate any secrets that you use in the CI pipeline (including repository tokens). [Here](https://securitylab.github.com/research/github-actions-untrusted-input/) is a set of blog posts by Github's security team explaining this issue.\n\n## How to update existing workflows\n\nReplace the following line in your workflow using this action with the `v2` branch name or commit pointing to this branch:\n\n```yaml\n    uses: embano1/wip@v2\n```\n\nOr using the exact commit:\n\n```yaml\n    uses: embano1/wip@c25450f77ed02c20d00b76ee3b33ff43838739a2 # v2\n```",
+  "id": "GHSA-rg3q-prf8-qxmp",
+  "modified": "2023-11-08T04:12:26.338450Z",
+  "published": "2023-04-24T22:32:32Z",
   "references": [
     {
       "type": "WEB",
@@ -41,36 +62,15 @@
       "url": "https://securitylab.github.com/research/github-actions-untrusted-input"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "embano1/wip",
-        "ecosystem": "GitHub Actions"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-rg3q-prf8-qxmp/GHSA-rg3q-prf8-qxmp.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-30623"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Arbitrary command injection in embano1/wip "
 }

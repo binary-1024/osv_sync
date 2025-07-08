@@ -1,18 +1,46 @@
 {
-  "id": "GHSA-7336-ghhp-f2qj",
-  "summary": "Shopware Remote Code Execution Vulnerability",
-  "details": "Under certain circumstances, it\u2019s possible to execute an unauthorized foreign code in Shopware in versions prior to 5.2.16. One possible threat is if a template that doesn\u2019t derive from the Shopware standard has been completely copied. Themes or plugins that execute or overwrite the following template code are vulnerable.\n\n- Affected file: emotion.tpl\n\nPath template file \"Emotion template\": templates / _default / frontend / forms / elements.tpl\nPath template file \"Responsive template\": themes/Frontend/Bare/frontend/forms/elements.tpl\n\nThe complete line beginning with: `{eval var=$sSupport.sFields[$sKey]...` should be exchanged with the following:\n\n```\n{$sSupport.sFields[$sKey]|replace:'{literal}':''|replace:'{/literal}':''|replace:'%*%':\"{s name='RequiredField' namespace='frontend/register/index'}{/s}\"}\n```",
-  "modified": "2024-12-06T05:42:56.820929Z",
-  "published": "2024-05-21T20:52:57Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-7336-ghhp-f2qj/GHSA-7336-ghhp-f2qj.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "shopware/shopware",
+        "purl": "pkg:composer/shopware/shopware"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.2.15"
+            },
+            {
+              "fixed": "5.2.16"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "5.2.15",
+        "v5.2.15"
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-74"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-05-21T20:52:57Z"
+    "github_reviewed_at": "2024-05-21T20:52:57Z",
+    "nvd_published_at": null,
+    "severity": "CRITICAL"
   },
+  "details": "Under certain circumstances, it\u2019s possible to execute an unauthorized foreign code in Shopware in versions prior to 5.2.16. One possible threat is if a template that doesn\u2019t derive from the Shopware standard has been completely copied. Themes or plugins that execute or overwrite the following template code are vulnerable.\n\n- Affected file: emotion.tpl\n\nPath template file \"Emotion template\": templates / _default / frontend / forms / elements.tpl\nPath template file \"Responsive template\": themes/Frontend/Bare/frontend/forms/elements.tpl\n\nThe complete line beginning with: `{eval var=$sSupport.sFields[$sKey]...` should be exchanged with the following:\n\n```\n{$sSupport.sFields[$sKey]|replace:'{literal}':''|replace:'{/literal}':''|replace:'%*%':\"{s name='RequiredField' namespace='frontend/register/index'}{/s}\"}\n```",
+  "id": "GHSA-7336-ghhp-f2qj",
+  "modified": "2024-12-06T05:42:56.820929Z",
+  "published": "2024-05-21T20:52:57Z",
   "references": [
     {
       "type": "WEB",
@@ -35,40 +63,12 @@
       "url": "https://github.com/shopware5/shopware"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "shopware/shopware",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/shopware/shopware"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "5.2.15"
-            },
-            {
-              "fixed": "5.2.16"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "5.2.15",
-        "v5.2.15"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-7336-ghhp-f2qj/GHSA-7336-ghhp-f2qj.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Shopware Remote Code Execution Vulnerability"
 }

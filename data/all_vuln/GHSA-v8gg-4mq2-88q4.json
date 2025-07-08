@@ -1,24 +1,91 @@
 {
-  "id": "GHSA-v8gg-4mq2-88q4",
-  "summary": "Strapi may leak sensitive user information, user reset password, tokens via content-manager views",
-  "details": "### Summary\nI can get access to user  reset password tokens if I have the configure view permissions\n![b37a6fd9eae06027e7d91266f1908a3d](https://user-images.githubusercontent.com/34578426/246782921-fbc007d3-ffec-45de-a1f1-a4287cd507ac.png)\n![6c1da5b3bfbb3bca97c8d064be0ecb05](https://user-images.githubusercontent.com/34578426/246783044-7d716dde-6f27-4d01-9521-42720c6ce92e.gif)\n\n### Details\n/content-manager/relations route does not remove private fields or ensure that they can't be selected\n\n### PoC\nInstall fresh strapi instance\nstart up strapi and create an account\ncreate a new content-type\ngive the content-type a relation with admin users and save\ngo to Admin panel roles Author and then plugins.\nEnable for content-manager collection types the configure view\nIn the collection time now only give them access to the collection you created for this.\nCreate a new admin user account with the Author role\nLog out and request a password reset for the main admin user.\nLogin on the newly created account\ngo to the collection type you created for this test and click the create new entry button,\nclick in the create new entry view on configure view.\nselect the admin user relation we created click on resetPasswordToken\nNow go back to the create an entry view and when selection the relation we created we now see the reset tokken\n\n### Impact\nImpact is that the none admin user now has the reset token of the admin users account and can resets its password using that to escalate his privilege's\n\nStill you need the configure view permission to be able to escalate your privilege's ",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-v8gg-4mq2-88q4/GHSA-v8gg-4mq2-88q4.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@strapi/plugin-content-manager",
+        "purl": "pkg:npm/%40strapi/plugin-content-manager"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.11.7"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-v8gg-4mq2-88q4/GHSA-v8gg-4mq2-88q4.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@strapi/admin",
+        "purl": "pkg:npm/%40strapi/admin"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.11.7"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-v8gg-4mq2-88q4/GHSA-v8gg-4mq2-88q4.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@strapi/utils",
+        "purl": "pkg:npm/%40strapi/utils"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.11.7"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-36472"
   ],
-  "modified": "2023-11-08T04:12:57.103507Z",
-  "published": "2023-09-13T16:31:31Z",
-  "related": [
-    "CVE-2023-36472"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-09-15T19:15:08Z",
     "cwe_ids": [
       "CWE-200"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-09-13T16:31:31Z"
+    "github_reviewed_at": "2023-09-13T16:31:31Z",
+    "nvd_published_at": "2023-09-15T19:15:08Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nI can get access to user  reset password tokens if I have the configure view permissions\n![b37a6fd9eae06027e7d91266f1908a3d](https://user-images.githubusercontent.com/34578426/246782921-fbc007d3-ffec-45de-a1f1-a4287cd507ac.png)\n![6c1da5b3bfbb3bca97c8d064be0ecb05](https://user-images.githubusercontent.com/34578426/246783044-7d716dde-6f27-4d01-9521-42720c6ce92e.gif)\n\n### Details\n/content-manager/relations route does not remove private fields or ensure that they can't be selected\n\n### PoC\nInstall fresh strapi instance\nstart up strapi and create an account\ncreate a new content-type\ngive the content-type a relation with admin users and save\ngo to Admin panel roles Author and then plugins.\nEnable for content-manager collection types the configure view\nIn the collection time now only give them access to the collection you created for this.\nCreate a new admin user account with the Author role\nLog out and request a password reset for the main admin user.\nLogin on the newly created account\ngo to the collection type you created for this test and click the create new entry button,\nclick in the create new entry view on configure view.\nselect the admin user relation we created click on resetPasswordToken\nNow go back to the create an entry view and when selection the relation we created we now see the reset tokken\n\n### Impact\nImpact is that the none admin user now has the reset token of the admin users account and can resets its password using that to escalate his privilege's\n\nStill you need the configure view permission to be able to escalate your privilege's ",
+  "id": "GHSA-v8gg-4mq2-88q4",
+  "modified": "2023-11-08T04:12:57.103507Z",
+  "published": "2023-09-13T16:31:31Z",
   "references": [
     {
       "type": "WEB",
@@ -37,82 +104,15 @@
       "url": "https://github.com/strapi/strapi/releases/tag/v4.11.7"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@strapi/plugin-content-manager",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40strapi/plugin-content-manager"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.11.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-v8gg-4mq2-88q4/GHSA-v8gg-4mq2-88q4.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@strapi/admin",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40strapi/admin"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.11.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-v8gg-4mq2-88q4/GHSA-v8gg-4mq2-88q4.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@strapi/utils",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40strapi/utils"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.11.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-v8gg-4mq2-88q4/GHSA-v8gg-4mq2-88q4.json"
-      }
-    }
+  "related": [
+    "CVE-2023-36472"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Strapi may leak sensitive user information, user reset password, tokens via content-manager views"
 }

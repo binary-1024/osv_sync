@@ -1,21 +1,55 @@
 {
-  "id": "GHSA-85p4-q357-72h9",
-  "summary": "Apache Storm Local Information Disclosure Vulnerability in Storm-core on Unix-Like systems due temporary files ",
-  "details": "On unix-like systems, the temporary directory is shared between all user. As such, writing to this directory using APIs that do not explicitly set the file/directory permissions can lead to information disclosure. Of note, this does not impact modern MacOS Operating Systems.\n\nThe method File.createTempFile on unix-like systems creates a file with predefined name (so easily identifiable) and by default will create this file with the permissions -rw-r--r--. Thus, if sensitive information is written to this file, other local users can read this information.\n\nFile.createTempFile(String, String) will create a temporary file in the system temporary directory if the 'java.io.tmpdir' system property is not explicitly set. \n\nThis affects the class\u00a0 https://github.com/apache/storm/blob/master/storm-core/src/jvm/org/apache/storm/utils/TopologySpoutLag.java#L99 \u00a0and was introduced by\u00a0 https://issues.apache.org/jira/browse/STORM-3123 \n\nIn practice, this has a very limited impact as this class is used only if\u00a0ui.disable.spout.lag.monitoring\n\n is set to false, but its value is true by default.\nMoreover, the temporary file gets deleted soon after its creation.\n\nThe solution is to use\u00a0 Files.createTempFile https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#createTempFile(java.lang.String,java.lang.String,java.nio.file.attribute.FileAttribute...) \u00a0instead.\n\nWe recommend that all users upgrade to the latest version of Apache Storm.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-85p4-q357-72h9/GHSA-85p4-q357-72h9.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.apache.storm:storm-core",
+        "purl": "pkg:maven/org.apache.storm/storm-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.6.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.0.0",
+        "2.1.0",
+        "2.1.1",
+        "2.2.0",
+        "2.2.1",
+        "2.3.0",
+        "2.4.0",
+        "2.5.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-43123"
   ],
-  "modified": "2025-02-13T19:37:26.741496Z",
-  "published": "2023-11-23T12:30:23Z",
   "database_specific": {
-    "nvd_published_at": "2023-11-23T10:15:07Z",
     "cwe_ids": [
       "CWE-200"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-11-24T16:53:46Z"
+    "github_reviewed_at": "2023-11-24T16:53:46Z",
+    "nvd_published_at": "2023-11-23T10:15:07Z",
+    "severity": "MODERATE"
   },
+  "details": "On unix-like systems, the temporary directory is shared between all user. As such, writing to this directory using APIs that do not explicitly set the file/directory permissions can lead to information disclosure. Of note, this does not impact modern MacOS Operating Systems.\n\nThe method File.createTempFile on unix-like systems creates a file with predefined name (so easily identifiable) and by default will create this file with the permissions -rw-r--r--. Thus, if sensitive information is written to this file, other local users can read this information.\n\nFile.createTempFile(String, String) will create a temporary file in the system temporary directory if the 'java.io.tmpdir' system property is not explicitly set. \n\nThis affects the class\u00a0 https://github.com/apache/storm/blob/master/storm-core/src/jvm/org/apache/storm/utils/TopologySpoutLag.java#L99 \u00a0and was introduced by\u00a0 https://issues.apache.org/jira/browse/STORM-3123 \n\nIn practice, this has a very limited impact as this class is used only if\u00a0ui.disable.spout.lag.monitoring\n\n is set to false, but its value is true by default.\nMoreover, the temporary file gets deleted soon after its creation.\n\nThe solution is to use\u00a0 Files.createTempFile https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#createTempFile(java.lang.String,java.lang.String,java.nio.file.attribute.FileAttribute...) \u00a0instead.\n\nWe recommend that all users upgrade to the latest version of Apache Storm.",
+  "id": "GHSA-85p4-q357-72h9",
+  "modified": "2025-02-13T19:37:26.741496Z",
+  "published": "2023-11-23T12:30:23Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -50,46 +84,12 @@
       "url": "http://www.openwall.com/lists/oss-security/2023/11/23/1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.apache.storm:storm-core",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.apache.storm/storm-core"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.0.0"
-            },
-            {
-              "fixed": "2.6.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.0.0",
-        "2.1.0",
-        "2.1.1",
-        "2.2.0",
-        "2.2.1",
-        "2.3.0",
-        "2.4.0",
-        "2.5.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-85p4-q357-72h9/GHSA-85p4-q357-72h9.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Apache Storm Local Information Disclosure Vulnerability in Storm-core on Unix-Like systems due temporary files "
 }

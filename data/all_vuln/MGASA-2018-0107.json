@@ -1,19 +1,154 @@
 {
-  "id": "MGASA-2018-0107",
-  "summary": "Updated kernel packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.114-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel-userspace-headers",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.114-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kmod-vboxadditions",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.30-8.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kmod-virtualbox",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.30-8.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kmod-xtables-addons",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.10-58.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel update is based on the upstream 4.4.114 and and fixes\nseveral security issues.\n\nThe most important fixes in this update is for the security issue named\n\"Spectre, variant 2 (CVE-2017-5715)\" that is partly mitigated by enabling\nretpoline support. For full retpoline mitigation, kernel needs to be built\nwith a retpoline-aware cpmpiler, something that wont happend in Mga5 as\nMageia 5 has reached End of Support at December 31st, 2017 (even if we\nhave been providing some extended support due to Meltdown/Spectre issues.\nIf you want to receive further fixes regarding theese issues, you really\nneed to upgrade to Mageia 6.\n\nThe BPF interpreter has been used as part of the spectre 2 attack\nCVE-2017-5715. To make attacker job harder introduce BPF_JIT_ALWAYS_ON\nconfig option that removes interpreter from the kernel in favor of JIT-only\nmode. Note: In Mageia 5 we have BPF disabled by default, so it's not\nreally an issue, but the fixes are still needed in case someone enables it \n\nKVM on x86 gained a memory barrier on vmcs field lookup as part of\nmitigating Spectre variant 2 (CVE-2017-5753).\n\nOther security fixes in this update:\n\nThe vhci_hcd driver in the Linux Kernel before version 4.14.8 and 4.4.114\nallows allows local attackers to disclose kernel memory addresses.\nSuccessful exploitation requires that a USB device is attached over IP\n(CVE-2017-16911).\n\nThe \"get_pipe()\" function (drivers/usb/usbip/stub_rx.c) in the Linux\nKernel before version 4.14.8, 4.9.71, and 4.4.114 allows attackers to\ncause a denial of service (out-of-bounds read) via a specially crafted\nUSB over IP packet (CVE-2017-16912).\n\nThe \"stub_recv_cmd_submit()\" function (drivers/usb/usbip/stub_rx.c) in the\nLinux Kernel before version 4.14.8, 4.9.71, and 4.4.114 when handling\nCMD_SUBMIT packets allows attackers to cause a denial of service (arbitrary\nmemory allocation) via a specially crafted USB over IP packet\n(CVE-2017-16913).\n\nThe \"stub_send_ret_submit()\" function (drivers/usb/usbip/stub_tx.c) in the\nLinux Kernel before version 4.14.8, 4.9.71, 4.1.49, and 4.4.107 allows\nattackers to cause a denial of service (NULL pointer dereference) via a\nspecially crafted USB over IP packet (CVE-2017-16914).\n\nLinux kernel version 3.3-rc1 and later is affected by a vulnerability lies\nin the processing of incoming L2CAP commands - ConfigRequest, and\nConfigResponse messages. This info leak is a result of uninitialized stack\nvariables that may be returned to an attacker in their uninitialized state.\nBy manipulating the code flows that precede the handling of these\nconfiguration messages, an attacker can also gain some control over which\ndata will be held in the uninitialized stack variables. This can allow him\nto bypass KASLR, and stack canaries protection - as both pointers and stack\ncanaries may be leaked in this manner (CVE-2017-1000410).\n\nThe dccp_disconnect function in net/dccp/proto.c in the Linux kernel through\n4.14.3 allows local users to gain privileges or cause a denial of service\n(use-after-free) via an AF_UNSPEC connect system call during the DCCP_LISTEN\nstate (CVE-2017-8824).\n\nFor other fixes, see the referenced changelogs.\n",
+  "id": "MGASA-2018-0107",
   "modified": "2018-02-05T18:47:02Z",
   "published": "2018-02-05T19:12:45Z",
-  "related": [
-    "CVE-2017-1000410",
-    "CVE-2017-16911",
-    "CVE-2017-16912",
-    "CVE-2017-16913",
-    "CVE-2017-16914",
-    "CVE-2017-5715",
-    "CVE-2017-5753",
-    "CVE-2017-8824"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -36,151 +171,16 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.114"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.114-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kernel-userspace-headers",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.114-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-vboxadditions",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.1.30-8.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-virtualbox",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.1.30-8.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-xtables-addons",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.10-58.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0107.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2017-1000410",
+    "CVE-2017-16911",
+    "CVE-2017-16912",
+    "CVE-2017-16913",
+    "CVE-2017-16914",
+    "CVE-2017-5715",
+    "CVE-2017-5753",
+    "CVE-2017-8824"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel packages fix security vulnerabilities"
 }

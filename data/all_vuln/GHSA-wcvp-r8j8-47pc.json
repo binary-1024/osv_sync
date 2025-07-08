@@ -1,24 +1,48 @@
 {
-  "id": "GHSA-wcvp-r8j8-47pc",
-  "summary": "Double free in toodee",
-  "details": "When inserting rows from an iterator at a particular index, toodee would shift items over, duplicating their ownership. The space reserved for the new elements was based on the len() returned by the ExactSizeIterator.\n\nThis could result in elements in the array being freed twice if the iterator panics. Uninitialized or previously freed elements could also be exposed if the len() didn't match the number of elements.\n\nThese issues were fixed in commit `ced70c17` by temporarily setting the length of the array smaller while processing it and adding assertions on the number of elements returned by the iterator.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-wcvp-r8j8-47pc/GHSA-wcvp-r8j8-47pc.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "toodee",
+        "purl": "pkg:cargo/toodee"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.3.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-28028",
     "CVE-2021-28029",
     "GHSA-xm9m-2vj8-fmfr",
     "RUSTSEC-2021-0028"
   ],
-  "modified": "2023-11-08T04:05:27.607591Z",
-  "published": "2021-09-01T18:30:35Z",
   "database_specific": {
-    "nvd_published_at": "2021-03-05T09:15:00Z",
     "cwe_ids": [
       "CWE-415"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-08-30T21:56:42Z"
+    "github_reviewed_at": "2021-08-30T21:56:42Z",
+    "nvd_published_at": "2021-03-05T09:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "When inserting rows from an iterator at a particular index, toodee would shift items over, duplicating their ownership. The space reserved for the new elements was based on the len() returned by the ExactSizeIterator.\n\nThis could result in elements in the array being freed twice if the iterator panics. Uninitialized or previously freed elements could also be exposed if the len() didn't match the number of elements.\n\nThese issues were fixed in commit `ced70c17` by temporarily setting the length of the array smaller while processing it and adding assertions on the number of elements returned by the iterator.",
+  "id": "GHSA-wcvp-r8j8-47pc",
+  "modified": "2023-11-08T04:05:27.607591Z",
+  "published": "2021-09-01T18:30:35Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -41,36 +65,12 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2021-0028.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "toodee",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/toodee"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.3.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-wcvp-r8j8-47pc/GHSA-wcvp-r8j8-47pc.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Double free in toodee"
 }

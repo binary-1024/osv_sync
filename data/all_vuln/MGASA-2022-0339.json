@@ -1,13 +1,46 @@
 {
-  "id": "MGASA-2022-0339",
-  "summary": "Updated redis packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0339.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "redis",
+        "purl": "pkg:rpm/mageia/redis?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.0.16-1.1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Redis is an in-memory database that persists on disk. By exploiting\nweaknesses in the Lua script execution environment, an attacker with\naccess to Redis prior to version 7.0.0 or 6.2.7 can inject Lua code that\nwill execute with the (potentially higher) privileges of another Redis\nuser. The Lua script execution environment in Redis provides some measures\nthat prevent a script from creating side effects that persist and can\naffect the execution of the same, or different script, at a later time.\nSeveral weaknesses of these measures have been publicly known for a long\ntime, but they had no security impact as the Redis security model did not\nendorse the concept of users or privileges. With the introduction of ACLs\nin Redis 6.0, these weaknesses can be exploited by a less privileged\nusers to inject Lua code that will execute at a later time, when a\nprivileged user executes a Lua script. The problem is fixed in Redis\nversions 7.0.0 and 6.2.7. An additional workaround to mitigate this\nproblem without patching the redis-server executable, if Lua scripting is\nnot being used, is to block access to `SCRIPT LOAD` and `EVAL` commands\nusing ACL rules. (CVE-2022-24735)\n\nRedis is an in-memory database that persists on disk. Prior to versions\n6.2.7 and 7.0.0, an attacker attempting to load a specially crafted Lua\nscript can cause NULL pointer dereference which will result with a crash\nof the redis-server process. The problem is fixed in Redis versions 7.0.0\nand 6.2.7. An additional workaround to mitigate this problem without\npatching the redis-server executable, if Lua scripting is not being used,\nis to block access to `SCRIPT LOAD` and `EVAL` commands using ACL rules.\n(CVE-2022-24736)\n",
+  "id": "MGASA-2022-0339",
   "modified": "2022-09-21T17:16:49Z",
   "published": "2022-09-21T18:15:27Z",
-  "related": [
-    "CVE-2022-24735",
-    "CVE-2022-24736"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -34,43 +67,10 @@
       "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/thread/NERGELOQ43TXPK5SCGTMYFI4KDXITL74/"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "redis",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/redis?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "6.0.16-1.1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2022-0339.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-24735",
+    "CVE-2022-24736"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated redis packages fix security vulnerability"
 }

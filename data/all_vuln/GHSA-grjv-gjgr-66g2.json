@@ -1,26 +1,46 @@
 {
-  "id": "GHSA-grjv-gjgr-66g2",
-  "summary": "SpiceDB exclusions can result in no permission returned when permission expected",
-  "details": "### Background\n\nUse of an exclusion under an arrow that has multiple resources may resolve to `NO_PERMISSION` when permission is expected.\n\nFor example, given this schema:\n\n```zed\ndefinition user {}\n\ndefinition folder {\n  relation member: user\n  relation banned: user\n  permission view = member - banned\n}\n\ndefinition resource {\n  relation folder: folder\n  permission view = folder->view\n}\n```\n\nIf the resource exists under *multiple* folders and the user has access to view more than a single folder, SpiceDB may report the user does not have access due to a failure in the exclusion dispatcher to request that *all* the folders in which the user is a member be returned\n\n### Impact\n\nPermission is returned as `NO_PERMISSION` when `PERMISSION` is expected on the `CheckPermission` API.\n\n### Workarounds\n\nNone\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-grjv-gjgr-66g2/GHSA-grjv-gjgr-66g2.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/authzed/spicedb",
+        "purl": "pkg:golang/github.com/authzed/spicedb"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.33.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-38361",
     "GO-2024-2939"
   ],
-  "modified": "2024-11-18T16:26:46Z",
-  "published": "2024-06-20T16:24:01Z",
-  "related": [
-    "CGA-pfrr-qxjv-xmf4",
-    "CVE-2024-38361"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-06-20T23:15:52Z",
     "cwe_ids": [
       "CWE-281"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-06-20T16:24:01Z"
+    "github_reviewed_at": "2024-06-20T16:24:01Z",
+    "nvd_published_at": "2024-06-20T23:15:52Z",
+    "severity": "MODERATE"
   },
+  "details": "### Background\n\nUse of an exclusion under an arrow that has multiple resources may resolve to `NO_PERMISSION` when permission is expected.\n\nFor example, given this schema:\n\n```zed\ndefinition user {}\n\ndefinition folder {\n  relation member: user\n  relation banned: user\n  permission view = member - banned\n}\n\ndefinition resource {\n  relation folder: folder\n  permission view = folder->view\n}\n```\n\nIf the resource exists under *multiple* folders and the user has access to view more than a single folder, SpiceDB may report the user does not have access due to a failure in the exclusion dispatcher to request that *all* the folders in which the user is a member be returned\n\n### Impact\n\nPermission is returned as `NO_PERMISSION` when `PERMISSION` is expected on the `CheckPermission` API.\n\n### Workarounds\n\nNone\n",
+  "id": "GHSA-grjv-gjgr-66g2",
+  "modified": "2024-11-18T16:26:46Z",
+  "published": "2024-06-20T16:24:01Z",
   "references": [
     {
       "type": "WEB",
@@ -39,40 +59,20 @@
       "url": "https://github.com/authzed/spicedb"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/authzed/spicedb",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/authzed/spicedb"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.33.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-grjv-gjgr-66g2/GHSA-grjv-gjgr-66g2.json"
-      }
-    }
+  "related": [
+    "CGA-pfrr-qxjv-xmf4",
+    "CVE-2024-38361"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "SpiceDB exclusions can result in no permission returned when permission expected"
 }

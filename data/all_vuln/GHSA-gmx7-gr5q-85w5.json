@@ -1,18 +1,42 @@
 {
-  "id": "GHSA-gmx7-gr5q-85w5",
-  "summary": "magic-crypt uses insecure cryptographic algorithms",
-  "details": "This crate uses a number of cryptographic algorithms that are no longer considered secure and it uses them in ways that do not guarantee the integrity of the encrypted data.\n\n`MagicCrypt64` uses the insecure DES block cipher in CBC mode without authentication. This allows for practical brute force and padding oracle attacks and does not protect the integrity of the encrypted data. Key and IV are generated from user input using CRC64, which is not at all a key derivation function.\n\n`MagicCrypt64`, `MagicCrypt128`, `MagicCrypt192`, and `MagicCrypt256` are all vulnerable to padding-oracle attacks. None of them protect the integrity of the ciphertext. Furthermore, none use password-based key derivation functions, even though the key is intended to be generated from a password.\n\nEach of the implementations are unsound in that they use uninitialized memory without `MaybeUninit` or equivalent structures.\n\nFor more information, visit the [issue](https://github.com/magiclen/rust-magiccrypt/issues/17).\n",
-  "modified": "2024-12-30T16:53:24Z",
-  "published": "2024-12-30T16:53:24Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-gmx7-gr5q-85w5/GHSA-gmx7-gr5q-85w5.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "magic-crypt",
+        "purl": "pkg:cargo/magic-crypt"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "4.0.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-326"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-12-30T16:53:24Z"
+    "github_reviewed_at": "2024-12-30T16:53:24Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
   },
+  "details": "This crate uses a number of cryptographic algorithms that are no longer considered secure and it uses them in ways that do not guarantee the integrity of the encrypted data.\n\n`MagicCrypt64` uses the insecure DES block cipher in CBC mode without authentication. This allows for practical brute force and padding oracle attacks and does not protect the integrity of the encrypted data. Key and IV are generated from user input using CRC64, which is not at all a key derivation function.\n\n`MagicCrypt64`, `MagicCrypt128`, `MagicCrypt192`, and `MagicCrypt256` are all vulnerable to padding-oracle attacks. None of them protect the integrity of the ciphertext. Furthermore, none use password-based key derivation functions, even though the key is intended to be generated from a password.\n\nEach of the implementations are unsound in that they use uninitialized memory without `MaybeUninit` or equivalent structures.\n\nFor more information, visit the [issue](https://github.com/magiclen/rust-magiccrypt/issues/17).\n",
+  "id": "GHSA-gmx7-gr5q-85w5",
+  "modified": "2024-12-30T16:53:24Z",
+  "published": "2024-12-30T16:53:24Z",
   "references": [
     {
       "type": "WEB",
@@ -27,30 +51,6 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2024-0430.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "magic-crypt",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/magic-crypt"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "4.0.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-gmx7-gr5q-85w5/GHSA-gmx7-gr5q-85w5.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "magic-crypt uses insecure cryptographic algorithms"
 }

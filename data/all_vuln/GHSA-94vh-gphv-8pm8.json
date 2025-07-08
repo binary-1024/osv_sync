@@ -1,29 +1,47 @@
 {
-  "id": "GHSA-94vh-gphv-8pm8",
-  "summary": "zip Incorrectly Canonicalizes Paths during Archive Extraction Leading to Arbitrary File Write",
-  "details": "### Summary\n\n\nIn the archive extraction routine of affected versions of the `zip` crate, symbolic links earlier in the archive are allowed to be used for later files in the archive without validation of the final canonicalized path, allowing maliciously crafted archives to overwrite arbitrary files in the file system when extracted.\n\n### Details\n\nThis is a variant of the [zip-slip](https://github.com/snyk/zip-slip-vulnerability) vulnerability, we can make the extraction logic step outside of the target directory by creating a symlink to the parent directory and then extracting further files through that symlink.\n\nThe documentation of the [`::zip::read::ZipArchive::extract`] method is in my opinion implying this should not happen:\n\n> \"Paths are sanitized with ZipFile::enclosed_name.\" ...\n> [`::zip::read::FileOptions::enclosed_name`] ... is resistant to path-based exploits ... can\u2019t resolve to a path outside the current directory.\n\n\nMost archive software either decline to extract symlinks that traverse out of the directory or defer creation of symlinks after all files have been created to prevent unexpected behavior when later entries depend on earlier symbolic link entries.\n\n### PoC\n\nhttps://gist.github.com/eternal-flame-AD/bf71ef4f6828e741eb12ce7fd47b7b85\n\n### Impact\n\nUsers who extract untrusted archive files using the following high-level API method may be affected and critical files on the system may be overwritten with arbitrary file permissions, which can potentially lead to code execution.\n\n- zip::unstable::stream::ZipStreamReader::extract\n- zip::read::ZipArchive::extract",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-94vh-gphv-8pm8/GHSA-94vh-gphv-8pm8.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "zip",
+        "purl": "pkg:cargo/zip"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.3.0"
+            },
+            {
+              "fixed": "2.3.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-29787"
   ],
-  "modified": "2025-03-19T15:51:04Z",
-  "published": "2025-03-17T21:26:32Z",
-  "related": [
-    "CGA-53wm-6fvr-fcf9",
-    "CGA-g5xh-8m57-q3f2",
-    "CGA-g69r-8m6g-x2q3",
-    "CGA-hc3v-747c-95w7"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-03-17T14:15:22Z",
     "cwe_ids": [
       "CWE-180",
       "CWE-22",
       "CWE-61"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-03-17T21:26:32Z"
+    "github_reviewed_at": "2025-03-17T21:26:32Z",
+    "nvd_published_at": "2025-03-17T14:15:22Z",
+    "severity": "HIGH"
   },
+  "details": "### Summary\n\n\nIn the archive extraction routine of affected versions of the `zip` crate, symbolic links earlier in the archive are allowed to be used for later files in the archive without validation of the final canonicalized path, allowing maliciously crafted archives to overwrite arbitrary files in the file system when extracted.\n\n### Details\n\nThis is a variant of the [zip-slip](https://github.com/snyk/zip-slip-vulnerability) vulnerability, we can make the extraction logic step outside of the target directory by creating a symlink to the parent directory and then extracting further files through that symlink.\n\nThe documentation of the [`::zip::read::ZipArchive::extract`] method is in my opinion implying this should not happen:\n\n> \"Paths are sanitized with ZipFile::enclosed_name.\" ...\n> [`::zip::read::FileOptions::enclosed_name`] ... is resistant to path-based exploits ... can\u2019t resolve to a path outside the current directory.\n\n\nMost archive software either decline to extract symlinks that traverse out of the directory or defer creation of symlinks after all files have been created to prevent unexpected behavior when later entries depend on earlier symbolic link entries.\n\n### PoC\n\nhttps://gist.github.com/eternal-flame-AD/bf71ef4f6828e741eb12ce7fd47b7b85\n\n### Impact\n\nUsers who extract untrusted archive files using the following high-level API method may be affected and critical files on the system may be overwritten with arbitrary file permissions, which can potentially lead to code execution.\n\n- zip::unstable::stream::ZipStreamReader::extract\n- zip::read::ZipArchive::extract",
+  "id": "GHSA-94vh-gphv-8pm8",
+  "modified": "2025-03-19T15:51:04Z",
+  "published": "2025-03-17T21:26:32Z",
   "references": [
     {
       "type": "WEB",
@@ -50,36 +68,18 @@
       "url": "https://github.com/zip-rs/zip2/releases/tag/v2.3.0"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "zip",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/zip"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.3.0"
-            },
-            {
-              "fixed": "2.3.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-94vh-gphv-8pm8/GHSA-94vh-gphv-8pm8.json"
-      }
-    }
+  "related": [
+    "CGA-53wm-6fvr-fcf9",
+    "CGA-g5xh-8m57-q3f2",
+    "CGA-g69r-8m6g-x2q3",
+    "CGA-hc3v-747c-95w7"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:L/UI:N/VC:L/VI:H/VA:N/SC:H/SI:H/SA:H"
+      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:L/UI:N/VC:L/VI:H/VA:N/SC:H/SI:H/SA:H",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "zip Incorrectly Canonicalizes Paths during Archive Extraction Leading to Arbitrary File Write"
 }

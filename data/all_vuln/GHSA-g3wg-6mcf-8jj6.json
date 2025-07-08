@@ -1,26 +1,462 @@
 {
-  "id": "GHSA-g3wg-6mcf-8jj6",
-  "summary": "Local Temp Directory Hijacking Vulnerability",
-  "details": "### Impact\nOn Unix like systems, the system's temporary directory is shared between all users on that system.  A collocated user can observe the process of creating a temporary sub directory in the shared temporary directory and race to complete the creation of the temporary subdirectory.  If the attacker wins the race then they will have read and write permission to the subdirectory used to unpack web applications, including their WEB-INF/lib jar files and JSP files.  If any code is ever executed out of this temporary directory, this can lead to a local privilege escalation vulnerability.\n\nAdditionally, any user code uses of [WebAppContext::getTempDirectory](https://www.eclipse.org/jetty/javadoc/9.4.31.v20200723/org/eclipse/jetty/webapp/WebAppContext.html#getTempDirectory()) would similarly be vulnerable.\n\nAdditionally, any user application code using the `ServletContext` attribute for the tempdir will also be impacted.\nSee: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html#TEMPDIR\n\nFor example:\n```java\nimport java.io.File;\nimport java.io.IOException;\nimport javax.servlet.ServletContext;\nimport javax.servlet.ServletException;\nimport javax.servlet.http.HttpServlet;\nimport javax.servlet.http.HttpServletRequest;\nimport javax.servlet.http.HttpServletResponse;\n\npublic class ExampleServlet extends HttpServlet {\n    @Override\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\n        File tempDir = (File)getServletContext().getAttribute(ServletContext.TEMPDIR); // Potentially compromised\n        // do something with that temp dir\n    }\n}\n```\n\nExample: The JSP library itself will use the container temp directory for compiling the JSP source into Java classes before executing them.\n\n### CVSSv3.1 Evaluation\n\nThis vulnerability has been calculated to have a [CVSSv3.1 score of 7.8/10 (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H&version=3.1)\n\n### Patches\nFixes were applied to the 9.4.x branch with:\n- https://github.com/eclipse/jetty.project/commit/53e0e0e9b25a6309bf24ee3b10984f4145701edb\n- https://github.com/eclipse/jetty.project/commit/9ad6beb80543b392c91653f6bfce233fc75b9d5f\n\nThese will be included in releases: 9.4.33, 10.0.0.beta3, 11.0.0.beta3\n\n### Workarounds\n\nA work around is to set a temporary directory, either for the server or the context, to a directory outside of the shared temporary file system.\nFor recent releases, a temporary directory can be created simple by creating a directory called `work` in the ${jetty.base} directory (the parent directory of the `webapps` directory).\nAlternately the java temporary directory can be set with the System Property `java.io.tmpdir`.    A more detailed description of how jetty selects a temporary directory is below.\n\nThe Jetty search order for finding a temporary directory is as follows:\n\n1. If the [`WebAppContext` has a temp directory specified](https://www.eclipse.org/jetty/javadoc/current/org/eclipse/jetty/webapp/WebAppContext.html#setTempDirectory(java.io.File)), use it.\n2. If the `ServletContext` has the `javax.servlet.context.tempdir` attribute set, and if directory exists, use it.\n3. If a `${jetty.base}/work` directory exists, use it (since Jetty 9.1)\n4. If a `ServletContext` has the `org.eclipse.jetty.webapp.basetempdir` attribute set, and if the directory exists, use it.\n5. Use `System.getProperty(\"java.io.tmpdir\")` and use it.\n\nJetty will end traversal at the first successful step.\nTo mitigate this vulnerability the directory must be set to one that is not writable by an attacker.  To avoid information leakage, the directory should also not be readable by an attacker.\n\n#### Setting a Jetty server temporary directory.\n\nChoices 3 and 5 apply to the server level, and will impact all deployed webapps on the server.\n\nFor choice 3  just create that work directory underneath your `${jetty.base}` and restart Jetty.\n\nFor choice 5, just specify your own `java.io.tmpdir` when you start the JVM for Jetty.\n\n``` shell\n[jetty-distribution]$ java -Djava.io.tmpdir=/var/web/work -jar start.jar\n```\n\n#### Setting a Context specific temporary directory.\n\nThe rest of the choices require you to configure the context for that deployed webapp (seen as `${jetty.base}/webapps/<context>.xml`)\n\nExample (excluding the DTD which is version specific):\n\n``` xml\n<Configure class=\"org.eclipse.jetty.webapp.WebAppContext\">\n  <Set name=\"contextPath\"><Property name=\"foo\"/></Set>\n  <Set name=\"war\">/var/web/webapps/foo.war</Set>\n  <Set name=\"tempDirectory\">/var/web/work/foo</Set>\n</Configure>\n```\n\n### References\n \n - https://github.com/eclipse/jetty.project/issues/5451\n - [CWE-378: Creation of Temporary File With Insecure Permissions](https://cwe.mitre.org/data/definitions/378.html)\n - [CWE-379: Creation of Temporary File in Directory with Insecure Permissions](https://cwe.mitre.org/data/definitions/379.html)\n - [CodeQL Query PR To Detect Similar Vulnerabilities](https://github.com/github/codeql/pull/4473)\n\n### Similar Vulnerabilities\n\nSimilar, but not the same.\n\n - JUnit 4 - https://github.com/junit-team/junit4/security/advisories/GHSA-269g-pwp5-87pp\n - Google Guava - https://github.com/google/guava/issues/4011\n - Apache Ant - https://nvd.nist.gov/vuln/detail/CVE-2020-1945\n - JetBrains Kotlin Compiler - https://nvd.nist.gov/vuln/detail/CVE-2020-15824\n\n### For more information\n\nThe original report of this vulnerability is below:\n\n> On Thu, 15 Oct 2020 at 21:14, Jonathan Leitschuh <jonathan.leitschuh@gmail.com> wrote:\n> Hi WebTide Security Team,\n>\n> I'm a security researcher writing some custom CodeQL queries to find Local Temporary Directory Hijacking Vulnerabilities. One of my queries flagged an issue in Jetty.\n>\n> https://lgtm.com/query/5615014766184643449/\n>\n> I've recently been looking into security vulnerabilities involving the temporary directory because on unix-like systems, the system temporary directory is shared between all users.\n> There exists a race condition between the deletion of the temporary file and the creation of the directory.\n>\n> ```java\n> // ensure file will always be unique by appending random digits\n> tmpDir = File.createTempFile(temp, \".dir\", parent); // Attacker knows the full path of the file that will be generated\n> // delete the file that was created\n> tmpDir.delete(); // Attacker sees file is deleted and begins a race to create their own directory before Jetty.\n> // and make a directory of the same name\n> // SECURITY VULNERABILITY: Race Condition! - Attacker beats Jetty and now owns this directory\n> tmpDir.mkdirs();\n> ```\n>\n> https://github.com/eclipse/jetty.project/blob/1b59672b7f668b8a421690154b98b4b2b03f254b/jetty-webapp/src/main/java/org/eclipse/jetty/webapp/WebInfConfiguration.java#L511-L518\n>\n> In several cases the `parent` parameter will not be the system temporary directory. However, there is one case where it will be, as the last fallback.\n>\n>\n> https://github.com/eclipse/jetty.project/blob/1b59672b7f668b8a421690154b98b4b2b03f254b/jetty-webapp/src/main/java/org/eclipse/jetty/webapp/WebInfConfiguration.java#L467-L468\n>\n> If any code is ever executed out of this temporary directory, this can lead to a local privilege\u00a0escalation vulnerability.\n>\n> Would your team be willing to open a GitHub security advisory to continue the discussion and disclosure there?\u00a0https://github.com/eclipse/jetty.project/security/advisories\n>\n> **This vulnerability disclosure follows Google's [90-day vulnerability disclosure policy](https://www.google.com/about/appsecurity/) (I'm not an employee of Google, I just like their policy). Full disclosure will occur either at the end of the 90-day deadline or whenever a patch is made widely available, whichever occurs first.**\n>\n> Cheers,\n> Jonathan Leitschuh\n\n\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.4.33.v20201020"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "7.0.0.M0",
+        "7.0.0.M1",
+        "7.0.0.M2",
+        "7.0.0.M3",
+        "7.0.0.M4",
+        "7.0.0.RC0",
+        "7.0.0.RC1",
+        "7.0.0.RC2",
+        "7.0.0.RC3",
+        "7.0.0.RC4",
+        "7.0.0.RC5",
+        "7.0.0.RC6",
+        "7.0.0.v20091005",
+        "7.0.1.v20091125",
+        "7.0.2.RC0",
+        "7.0.2.v20100331",
+        "7.1.0.RC0",
+        "7.1.0.RC1",
+        "7.1.0.v20100505",
+        "7.1.1.v20100517",
+        "7.1.2.v20100523",
+        "7.1.3.v20100526",
+        "7.1.4.v20100610",
+        "7.1.5.v20100705",
+        "7.1.6.v20100715",
+        "7.2.0.RC0",
+        "7.2.0.v20101020",
+        "7.2.1.v20101111",
+        "7.2.2.v20101205",
+        "7.3.0.v20110203",
+        "7.3.1.v20110307",
+        "7.4.0.RC0",
+        "7.4.0.v20110414",
+        "7.4.1.v20110513",
+        "7.4.2.v20110526",
+        "7.4.3.v20110701",
+        "7.4.4.v20110707",
+        "7.4.5.v20110725",
+        "7.5.0.RC0",
+        "7.5.0.RC1",
+        "7.5.0.RC2",
+        "7.5.0.v20110901",
+        "7.5.1.v20110908",
+        "7.5.2.v20111006",
+        "7.5.3.v20111011",
+        "7.5.4.v20111024",
+        "7.6.0.RC0",
+        "7.6.0.RC1",
+        "7.6.0.RC2",
+        "7.6.0.RC3",
+        "7.6.0.RC4",
+        "7.6.0.RC5",
+        "7.6.0.v20120127",
+        "7.6.1.v20120215",
+        "7.6.10.v20130312",
+        "7.6.11.v20130520",
+        "7.6.12.v20130726",
+        "7.6.13.v20130916",
+        "7.6.14.v20131031",
+        "7.6.15.v20140411",
+        "7.6.16.v20140903",
+        "7.6.17.v20150415",
+        "7.6.18.v20150929",
+        "7.6.19.v20160209",
+        "7.6.2.v20120308",
+        "7.6.20.v20160902",
+        "7.6.21.v20160908",
+        "7.6.3.v20120416",
+        "7.6.4.v20120524",
+        "7.6.5.v20120716",
+        "7.6.6.v20120903",
+        "7.6.7.v20120910",
+        "7.6.8.v20121106",
+        "7.6.9.v20130131",
+        "8.0.0.M0",
+        "8.0.0.M1",
+        "8.0.0.M2",
+        "8.0.0.M3",
+        "8.0.0.RC0",
+        "8.0.0.v20110901",
+        "8.0.1.v20110908",
+        "8.0.2.v20111006",
+        "8.0.3.v20111011",
+        "8.0.4.v20111024",
+        "8.1.0.RC0",
+        "8.1.0.RC1",
+        "8.1.0.RC2",
+        "8.1.0.RC4",
+        "8.1.0.RC5",
+        "8.1.0.v20120127",
+        "8.1.1.v20120215",
+        "8.1.10.v20130312",
+        "8.1.11.v20130520",
+        "8.1.12.v20130726",
+        "8.1.13.v20130916",
+        "8.1.14.v20131031",
+        "8.1.15.v20140411",
+        "8.1.16.v20140903",
+        "8.1.17.v20150415",
+        "8.1.18.v20150929",
+        "8.1.19.v20160209",
+        "8.1.2.v20120308",
+        "8.1.20.v20160902",
+        "8.1.21.v20160908",
+        "8.1.22.v20160922",
+        "8.1.3.v20120416",
+        "8.1.4.v20120524",
+        "8.1.5.v20120716",
+        "8.1.6.v20120903",
+        "8.1.7.v20120910",
+        "8.1.8.v20121106",
+        "8.1.9.v20130131",
+        "8.2.0.v20160908",
+        "9.0.0.M0",
+        "9.0.0.M1",
+        "9.0.0.M2",
+        "9.0.0.M3",
+        "9.0.0.M4",
+        "9.0.0.M5",
+        "9.0.0.RC0",
+        "9.0.0.RC1",
+        "9.0.0.RC2",
+        "9.0.0.v20130308",
+        "9.0.1.v20130408",
+        "9.0.2.v20130417",
+        "9.0.3.v20130506",
+        "9.0.4.v20130625",
+        "9.0.5.v20130815",
+        "9.0.6.v20130930",
+        "9.0.7.v20131107",
+        "9.1.0.M0",
+        "9.1.0.RC0",
+        "9.1.0.RC1",
+        "9.1.0.RC2",
+        "9.1.0.v20131115",
+        "9.1.1.v20140108",
+        "9.1.2.v20140210",
+        "9.1.3.v20140225",
+        "9.1.4.v20140401",
+        "9.1.5.v20140505",
+        "9.1.6.v20160112",
+        "9.2.0.M0",
+        "9.2.0.M1",
+        "9.2.0.RC0",
+        "9.2.0.v20140526",
+        "9.2.1.v20140609",
+        "9.2.10.v20150310",
+        "9.2.11.M0",
+        "9.2.11.v20150529",
+        "9.2.12.M0",
+        "9.2.12.v20150709",
+        "9.2.13.v20150730",
+        "9.2.14.v20151106",
+        "9.2.15.v20160210",
+        "9.2.16.v20160414",
+        "9.2.17.v20160517",
+        "9.2.18.v20160721",
+        "9.2.19.v20160908",
+        "9.2.2.v20140723",
+        "9.2.20.v20161216",
+        "9.2.21.v20170120",
+        "9.2.22.v20170606",
+        "9.2.23.v20171218",
+        "9.2.24.v20180105",
+        "9.2.25.v20180606",
+        "9.2.26.v20180806",
+        "9.2.27.v20190403",
+        "9.2.28.v20190418",
+        "9.2.29.v20191105",
+        "9.2.3.v20140905",
+        "9.2.30.v20200428",
+        "9.2.4.v20141103",
+        "9.2.5.v20141112",
+        "9.2.6.v20141205",
+        "9.2.7.v20150116",
+        "9.2.8.v20150217",
+        "9.2.9.v20150224",
+        "9.3.0.M0",
+        "9.3.0.M1",
+        "9.3.0.M2",
+        "9.3.0.RC0",
+        "9.3.0.RC1",
+        "9.3.0.v20150612",
+        "9.3.1.v20150714",
+        "9.3.10.M0",
+        "9.3.10.v20160621",
+        "9.3.11.M0",
+        "9.3.11.v20160721",
+        "9.3.12.v20160915",
+        "9.3.13.M0",
+        "9.3.13.v20161014",
+        "9.3.14.v20161028",
+        "9.3.15.v20161220",
+        "9.3.16.v20170120",
+        "9.3.17.RC0",
+        "9.3.17.v20170317",
+        "9.3.18.v20170406",
+        "9.3.19.v20170502",
+        "9.3.2.v20150730",
+        "9.3.20.v20170531",
+        "9.3.21.M0",
+        "9.3.21.RC0",
+        "9.3.21.v20170918",
+        "9.3.22.v20171030",
+        "9.3.23.v20180228",
+        "9.3.24.v20180605",
+        "9.3.25.v20180904",
+        "9.3.26.v20190403",
+        "9.3.27.v20190418",
+        "9.3.28.v20191105",
+        "9.3.29.v20201019",
+        "9.3.3.v20150827",
+        "9.3.30.v20211001",
+        "9.3.4.RC0",
+        "9.3.4.RC1",
+        "9.3.4.v20151007",
+        "9.3.5.v20151012",
+        "9.3.6.v20151106",
+        "9.3.7.RC0",
+        "9.3.7.RC1",
+        "9.3.7.v20160115",
+        "9.3.8.RC0",
+        "9.3.8.v20160314",
+        "9.3.9.M0",
+        "9.3.9.M1",
+        "9.3.9.v20160517",
+        "9.4.0.M0",
+        "9.4.0.M1",
+        "9.4.0.RC0",
+        "9.4.0.RC1",
+        "9.4.0.RC2",
+        "9.4.0.RC3",
+        "9.4.0.v20161208",
+        "9.4.0.v20180619",
+        "9.4.1.v20170120",
+        "9.4.1.v20180619",
+        "9.4.10.RC0",
+        "9.4.10.RC1",
+        "9.4.10.v20180503",
+        "9.4.11.v20180605",
+        "9.4.12.RC0",
+        "9.4.12.RC1",
+        "9.4.12.RC2",
+        "9.4.12.v20180830",
+        "9.4.13.v20181111",
+        "9.4.14.v20181114",
+        "9.4.15.v20190215",
+        "9.4.16.v20190411",
+        "9.4.17.v20190418",
+        "9.4.18.v20190429",
+        "9.4.19.v20190610",
+        "9.4.2.v20170220",
+        "9.4.2.v20180619",
+        "9.4.20.v20190813",
+        "9.4.21.v20190926",
+        "9.4.22.v20191022",
+        "9.4.23.v20191118",
+        "9.4.24.v20191120",
+        "9.4.25.v20191220",
+        "9.4.26.v20200117",
+        "9.4.27.v20200227",
+        "9.4.28.v20200408",
+        "9.4.29.v20200521",
+        "9.4.3.v20170317",
+        "9.4.3.v20180619",
+        "9.4.30.v20200611",
+        "9.4.31.v20200723",
+        "9.4.32.v20200930",
+        "9.4.4.v20170414",
+        "9.4.4.v20180619",
+        "9.4.5.v20170502",
+        "9.4.5.v20180619",
+        "9.4.6.v20170531",
+        "9.4.6.v20180619",
+        "9.4.7.RC0",
+        "9.4.7.v20170914",
+        "9.4.7.v20180619",
+        "9.4.8.v20171121",
+        "9.4.8.v20180619",
+        "9.4.9.v20180320"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.mortbay.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.mortbay.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.4.33"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "7.0.0.pre4",
+        "7.0.0.pre5"
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 10.0.0.beta2",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0.beta1"
+            },
+            {
+              "fixed": "10.0.0.beta3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "10.0.0.beta1",
+        "10.0.0.beta2"
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 10.0.0.beta2",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.mortbay.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.mortbay.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0.beta1"
+            },
+            {
+              "fixed": "10.0.0.beta3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 11.0.0.beta2",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.0.beta1"
+            },
+            {
+              "fixed": "11.0.0.beta3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "11.0.0.beta1",
+        "11.0.0.beta2"
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 11.0.0.beta2",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.mortbay.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.mortbay.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.0.beta1"
+            },
+            {
+              "fixed": "11.0.0.beta3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2020-27216"
   ],
-  "modified": "2024-03-13T05:33:39.122153Z",
-  "published": "2020-11-04T17:50:24Z",
-  "related": [
-    "CVE-2020-27216"
-  ],
   "database_specific": {
-    "nvd_published_at": "2020-10-23T13:15:00Z",
     "cwe_ids": [
       "CWE-378",
       "CWE-379",
       "CWE-552"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-11-04T17:48:31Z"
+    "github_reviewed_at": "2020-11-04T17:48:31Z",
+    "nvd_published_at": "2020-10-23T13:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nOn Unix like systems, the system's temporary directory is shared between all users on that system.  A collocated user can observe the process of creating a temporary sub directory in the shared temporary directory and race to complete the creation of the temporary subdirectory.  If the attacker wins the race then they will have read and write permission to the subdirectory used to unpack web applications, including their WEB-INF/lib jar files and JSP files.  If any code is ever executed out of this temporary directory, this can lead to a local privilege escalation vulnerability.\n\nAdditionally, any user code uses of [WebAppContext::getTempDirectory](https://www.eclipse.org/jetty/javadoc/9.4.31.v20200723/org/eclipse/jetty/webapp/WebAppContext.html#getTempDirectory()) would similarly be vulnerable.\n\nAdditionally, any user application code using the `ServletContext` attribute for the tempdir will also be impacted.\nSee: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html#TEMPDIR\n\nFor example:\n```java\nimport java.io.File;\nimport java.io.IOException;\nimport javax.servlet.ServletContext;\nimport javax.servlet.ServletException;\nimport javax.servlet.http.HttpServlet;\nimport javax.servlet.http.HttpServletRequest;\nimport javax.servlet.http.HttpServletResponse;\n\npublic class ExampleServlet extends HttpServlet {\n    @Override\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\n        File tempDir = (File)getServletContext().getAttribute(ServletContext.TEMPDIR); // Potentially compromised\n        // do something with that temp dir\n    }\n}\n```\n\nExample: The JSP library itself will use the container temp directory for compiling the JSP source into Java classes before executing them.\n\n### CVSSv3.1 Evaluation\n\nThis vulnerability has been calculated to have a [CVSSv3.1 score of 7.8/10 (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H&version=3.1)\n\n### Patches\nFixes were applied to the 9.4.x branch with:\n- https://github.com/eclipse/jetty.project/commit/53e0e0e9b25a6309bf24ee3b10984f4145701edb\n- https://github.com/eclipse/jetty.project/commit/9ad6beb80543b392c91653f6bfce233fc75b9d5f\n\nThese will be included in releases: 9.4.33, 10.0.0.beta3, 11.0.0.beta3\n\n### Workarounds\n\nA work around is to set a temporary directory, either for the server or the context, to a directory outside of the shared temporary file system.\nFor recent releases, a temporary directory can be created simple by creating a directory called `work` in the ${jetty.base} directory (the parent directory of the `webapps` directory).\nAlternately the java temporary directory can be set with the System Property `java.io.tmpdir`.    A more detailed description of how jetty selects a temporary directory is below.\n\nThe Jetty search order for finding a temporary directory is as follows:\n\n1. If the [`WebAppContext` has a temp directory specified](https://www.eclipse.org/jetty/javadoc/current/org/eclipse/jetty/webapp/WebAppContext.html#setTempDirectory(java.io.File)), use it.\n2. If the `ServletContext` has the `javax.servlet.context.tempdir` attribute set, and if directory exists, use it.\n3. If a `${jetty.base}/work` directory exists, use it (since Jetty 9.1)\n4. If a `ServletContext` has the `org.eclipse.jetty.webapp.basetempdir` attribute set, and if the directory exists, use it.\n5. Use `System.getProperty(\"java.io.tmpdir\")` and use it.\n\nJetty will end traversal at the first successful step.\nTo mitigate this vulnerability the directory must be set to one that is not writable by an attacker.  To avoid information leakage, the directory should also not be readable by an attacker.\n\n#### Setting a Jetty server temporary directory.\n\nChoices 3 and 5 apply to the server level, and will impact all deployed webapps on the server.\n\nFor choice 3  just create that work directory underneath your `${jetty.base}` and restart Jetty.\n\nFor choice 5, just specify your own `java.io.tmpdir` when you start the JVM for Jetty.\n\n``` shell\n[jetty-distribution]$ java -Djava.io.tmpdir=/var/web/work -jar start.jar\n```\n\n#### Setting a Context specific temporary directory.\n\nThe rest of the choices require you to configure the context for that deployed webapp (seen as `${jetty.base}/webapps/<context>.xml`)\n\nExample (excluding the DTD which is version specific):\n\n``` xml\n<Configure class=\"org.eclipse.jetty.webapp.WebAppContext\">\n  <Set name=\"contextPath\"><Property name=\"foo\"/></Set>\n  <Set name=\"war\">/var/web/webapps/foo.war</Set>\n  <Set name=\"tempDirectory\">/var/web/work/foo</Set>\n</Configure>\n```\n\n### References\n \n - https://github.com/eclipse/jetty.project/issues/5451\n - [CWE-378: Creation of Temporary File With Insecure Permissions](https://cwe.mitre.org/data/definitions/378.html)\n - [CWE-379: Creation of Temporary File in Directory with Insecure Permissions](https://cwe.mitre.org/data/definitions/379.html)\n - [CodeQL Query PR To Detect Similar Vulnerabilities](https://github.com/github/codeql/pull/4473)\n\n### Similar Vulnerabilities\n\nSimilar, but not the same.\n\n - JUnit 4 - https://github.com/junit-team/junit4/security/advisories/GHSA-269g-pwp5-87pp\n - Google Guava - https://github.com/google/guava/issues/4011\n - Apache Ant - https://nvd.nist.gov/vuln/detail/CVE-2020-1945\n - JetBrains Kotlin Compiler - https://nvd.nist.gov/vuln/detail/CVE-2020-15824\n\n### For more information\n\nThe original report of this vulnerability is below:\n\n> On Thu, 15 Oct 2020 at 21:14, Jonathan Leitschuh <jonathan.leitschuh@gmail.com> wrote:\n> Hi WebTide Security Team,\n>\n> I'm a security researcher writing some custom CodeQL queries to find Local Temporary Directory Hijacking Vulnerabilities. One of my queries flagged an issue in Jetty.\n>\n> https://lgtm.com/query/5615014766184643449/\n>\n> I've recently been looking into security vulnerabilities involving the temporary directory because on unix-like systems, the system temporary directory is shared between all users.\n> There exists a race condition between the deletion of the temporary file and the creation of the directory.\n>\n> ```java\n> // ensure file will always be unique by appending random digits\n> tmpDir = File.createTempFile(temp, \".dir\", parent); // Attacker knows the full path of the file that will be generated\n> // delete the file that was created\n> tmpDir.delete(); // Attacker sees file is deleted and begins a race to create their own directory before Jetty.\n> // and make a directory of the same name\n> // SECURITY VULNERABILITY: Race Condition! - Attacker beats Jetty and now owns this directory\n> tmpDir.mkdirs();\n> ```\n>\n> https://github.com/eclipse/jetty.project/blob/1b59672b7f668b8a421690154b98b4b2b03f254b/jetty-webapp/src/main/java/org/eclipse/jetty/webapp/WebInfConfiguration.java#L511-L518\n>\n> In several cases the `parent` parameter will not be the system temporary directory. However, there is one case where it will be, as the last fallback.\n>\n>\n> https://github.com/eclipse/jetty.project/blob/1b59672b7f668b8a421690154b98b4b2b03f254b/jetty-webapp/src/main/java/org/eclipse/jetty/webapp/WebInfConfiguration.java#L467-L468\n>\n> If any code is ever executed out of this temporary directory, this can lead to a local privilege\u00a0escalation vulnerability.\n>\n> Would your team be willing to open a GitHub security advisory to continue the discussion and disclosure there?\u00a0https://github.com/eclipse/jetty.project/security/advisories\n>\n> **This vulnerability disclosure follows Google's [90-day vulnerability disclosure policy](https://www.google.com/about/appsecurity/) (I'm not an employee of Google, I just like their policy). Full disclosure will occur either at the end of the 90-day deadline or whenever a patch is made widely available, whichever occurs first.**\n>\n> Cheers,\n> Jonathan Leitschuh\n\n\n",
+  "id": "GHSA-g3wg-6mcf-8jj6",
+  "modified": "2024-03-13T05:33:39.122153Z",
+  "published": "2020-11-04T17:50:24Z",
   "references": [
     {
       "type": "WEB",
@@ -611,451 +1047,15 @@
       "url": "https://lists.apache.org/thread.html/r66e99d973fd79ddbcb3fbdb24f4767fe9b911f5b0abb05d7b6f65801@%3Ccommits.zookeeper.apache.org%3E"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.4.33.v20201020"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "7.0.0.M0",
-        "7.0.0.M1",
-        "7.0.0.M2",
-        "7.0.0.M3",
-        "7.0.0.M4",
-        "7.0.0.RC0",
-        "7.0.0.RC1",
-        "7.0.0.RC2",
-        "7.0.0.RC3",
-        "7.0.0.RC4",
-        "7.0.0.RC5",
-        "7.0.0.RC6",
-        "7.0.0.v20091005",
-        "7.0.1.v20091125",
-        "7.0.2.RC0",
-        "7.0.2.v20100331",
-        "7.1.0.RC0",
-        "7.1.0.RC1",
-        "7.1.0.v20100505",
-        "7.1.1.v20100517",
-        "7.1.2.v20100523",
-        "7.1.3.v20100526",
-        "7.1.4.v20100610",
-        "7.1.5.v20100705",
-        "7.1.6.v20100715",
-        "7.2.0.RC0",
-        "7.2.0.v20101020",
-        "7.2.1.v20101111",
-        "7.2.2.v20101205",
-        "7.3.0.v20110203",
-        "7.3.1.v20110307",
-        "7.4.0.RC0",
-        "7.4.0.v20110414",
-        "7.4.1.v20110513",
-        "7.4.2.v20110526",
-        "7.4.3.v20110701",
-        "7.4.4.v20110707",
-        "7.4.5.v20110725",
-        "7.5.0.RC0",
-        "7.5.0.RC1",
-        "7.5.0.RC2",
-        "7.5.0.v20110901",
-        "7.5.1.v20110908",
-        "7.5.2.v20111006",
-        "7.5.3.v20111011",
-        "7.5.4.v20111024",
-        "7.6.0.RC0",
-        "7.6.0.RC1",
-        "7.6.0.RC2",
-        "7.6.0.RC3",
-        "7.6.0.RC4",
-        "7.6.0.RC5",
-        "7.6.0.v20120127",
-        "7.6.1.v20120215",
-        "7.6.10.v20130312",
-        "7.6.11.v20130520",
-        "7.6.12.v20130726",
-        "7.6.13.v20130916",
-        "7.6.14.v20131031",
-        "7.6.15.v20140411",
-        "7.6.16.v20140903",
-        "7.6.17.v20150415",
-        "7.6.18.v20150929",
-        "7.6.19.v20160209",
-        "7.6.2.v20120308",
-        "7.6.20.v20160902",
-        "7.6.21.v20160908",
-        "7.6.3.v20120416",
-        "7.6.4.v20120524",
-        "7.6.5.v20120716",
-        "7.6.6.v20120903",
-        "7.6.7.v20120910",
-        "7.6.8.v20121106",
-        "7.6.9.v20130131",
-        "8.0.0.M0",
-        "8.0.0.M1",
-        "8.0.0.M2",
-        "8.0.0.M3",
-        "8.0.0.RC0",
-        "8.0.0.v20110901",
-        "8.0.1.v20110908",
-        "8.0.2.v20111006",
-        "8.0.3.v20111011",
-        "8.0.4.v20111024",
-        "8.1.0.RC0",
-        "8.1.0.RC1",
-        "8.1.0.RC2",
-        "8.1.0.RC4",
-        "8.1.0.RC5",
-        "8.1.0.v20120127",
-        "8.1.1.v20120215",
-        "8.1.10.v20130312",
-        "8.1.11.v20130520",
-        "8.1.12.v20130726",
-        "8.1.13.v20130916",
-        "8.1.14.v20131031",
-        "8.1.15.v20140411",
-        "8.1.16.v20140903",
-        "8.1.17.v20150415",
-        "8.1.18.v20150929",
-        "8.1.19.v20160209",
-        "8.1.2.v20120308",
-        "8.1.20.v20160902",
-        "8.1.21.v20160908",
-        "8.1.22.v20160922",
-        "8.1.3.v20120416",
-        "8.1.4.v20120524",
-        "8.1.5.v20120716",
-        "8.1.6.v20120903",
-        "8.1.7.v20120910",
-        "8.1.8.v20121106",
-        "8.1.9.v20130131",
-        "8.2.0.v20160908",
-        "9.0.0.M0",
-        "9.0.0.M1",
-        "9.0.0.M2",
-        "9.0.0.M3",
-        "9.0.0.M4",
-        "9.0.0.M5",
-        "9.0.0.RC0",
-        "9.0.0.RC1",
-        "9.0.0.RC2",
-        "9.0.0.v20130308",
-        "9.0.1.v20130408",
-        "9.0.2.v20130417",
-        "9.0.3.v20130506",
-        "9.0.4.v20130625",
-        "9.0.5.v20130815",
-        "9.0.6.v20130930",
-        "9.0.7.v20131107",
-        "9.1.0.M0",
-        "9.1.0.RC0",
-        "9.1.0.RC1",
-        "9.1.0.RC2",
-        "9.1.0.v20131115",
-        "9.1.1.v20140108",
-        "9.1.2.v20140210",
-        "9.1.3.v20140225",
-        "9.1.4.v20140401",
-        "9.1.5.v20140505",
-        "9.1.6.v20160112",
-        "9.2.0.M0",
-        "9.2.0.M1",
-        "9.2.0.RC0",
-        "9.2.0.v20140526",
-        "9.2.1.v20140609",
-        "9.2.10.v20150310",
-        "9.2.11.M0",
-        "9.2.11.v20150529",
-        "9.2.12.M0",
-        "9.2.12.v20150709",
-        "9.2.13.v20150730",
-        "9.2.14.v20151106",
-        "9.2.15.v20160210",
-        "9.2.16.v20160414",
-        "9.2.17.v20160517",
-        "9.2.18.v20160721",
-        "9.2.19.v20160908",
-        "9.2.2.v20140723",
-        "9.2.20.v20161216",
-        "9.2.21.v20170120",
-        "9.2.22.v20170606",
-        "9.2.23.v20171218",
-        "9.2.24.v20180105",
-        "9.2.25.v20180606",
-        "9.2.26.v20180806",
-        "9.2.27.v20190403",
-        "9.2.28.v20190418",
-        "9.2.29.v20191105",
-        "9.2.3.v20140905",
-        "9.2.30.v20200428",
-        "9.2.4.v20141103",
-        "9.2.5.v20141112",
-        "9.2.6.v20141205",
-        "9.2.7.v20150116",
-        "9.2.8.v20150217",
-        "9.2.9.v20150224",
-        "9.3.0.M0",
-        "9.3.0.M1",
-        "9.3.0.M2",
-        "9.3.0.RC0",
-        "9.3.0.RC1",
-        "9.3.0.v20150612",
-        "9.3.1.v20150714",
-        "9.3.10.M0",
-        "9.3.10.v20160621",
-        "9.3.11.M0",
-        "9.3.11.v20160721",
-        "9.3.12.v20160915",
-        "9.3.13.M0",
-        "9.3.13.v20161014",
-        "9.3.14.v20161028",
-        "9.3.15.v20161220",
-        "9.3.16.v20170120",
-        "9.3.17.RC0",
-        "9.3.17.v20170317",
-        "9.3.18.v20170406",
-        "9.3.19.v20170502",
-        "9.3.2.v20150730",
-        "9.3.20.v20170531",
-        "9.3.21.M0",
-        "9.3.21.RC0",
-        "9.3.21.v20170918",
-        "9.3.22.v20171030",
-        "9.3.23.v20180228",
-        "9.3.24.v20180605",
-        "9.3.25.v20180904",
-        "9.3.26.v20190403",
-        "9.3.27.v20190418",
-        "9.3.28.v20191105",
-        "9.3.29.v20201019",
-        "9.3.3.v20150827",
-        "9.3.30.v20211001",
-        "9.3.4.RC0",
-        "9.3.4.RC1",
-        "9.3.4.v20151007",
-        "9.3.5.v20151012",
-        "9.3.6.v20151106",
-        "9.3.7.RC0",
-        "9.3.7.RC1",
-        "9.3.7.v20160115",
-        "9.3.8.RC0",
-        "9.3.8.v20160314",
-        "9.3.9.M0",
-        "9.3.9.M1",
-        "9.3.9.v20160517",
-        "9.4.0.M0",
-        "9.4.0.M1",
-        "9.4.0.RC0",
-        "9.4.0.RC1",
-        "9.4.0.RC2",
-        "9.4.0.RC3",
-        "9.4.0.v20161208",
-        "9.4.0.v20180619",
-        "9.4.1.v20170120",
-        "9.4.1.v20180619",
-        "9.4.10.RC0",
-        "9.4.10.RC1",
-        "9.4.10.v20180503",
-        "9.4.11.v20180605",
-        "9.4.12.RC0",
-        "9.4.12.RC1",
-        "9.4.12.RC2",
-        "9.4.12.v20180830",
-        "9.4.13.v20181111",
-        "9.4.14.v20181114",
-        "9.4.15.v20190215",
-        "9.4.16.v20190411",
-        "9.4.17.v20190418",
-        "9.4.18.v20190429",
-        "9.4.19.v20190610",
-        "9.4.2.v20170220",
-        "9.4.2.v20180619",
-        "9.4.20.v20190813",
-        "9.4.21.v20190926",
-        "9.4.22.v20191022",
-        "9.4.23.v20191118",
-        "9.4.24.v20191120",
-        "9.4.25.v20191220",
-        "9.4.26.v20200117",
-        "9.4.27.v20200227",
-        "9.4.28.v20200408",
-        "9.4.29.v20200521",
-        "9.4.3.v20170317",
-        "9.4.3.v20180619",
-        "9.4.30.v20200611",
-        "9.4.31.v20200723",
-        "9.4.32.v20200930",
-        "9.4.4.v20170414",
-        "9.4.4.v20180619",
-        "9.4.5.v20170502",
-        "9.4.5.v20180619",
-        "9.4.6.v20170531",
-        "9.4.6.v20180619",
-        "9.4.7.RC0",
-        "9.4.7.v20170914",
-        "9.4.7.v20180619",
-        "9.4.8.v20171121",
-        "9.4.8.v20180619",
-        "9.4.9.v20180320"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.mortbay.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.mortbay.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.4.33"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "7.0.0.pre4",
-        "7.0.0.pre5"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "10.0.0.beta1"
-            },
-            {
-              "fixed": "10.0.0.beta3"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "10.0.0.beta1",
-        "10.0.0.beta2"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 10.0.0.beta2",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.mortbay.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.mortbay.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "10.0.0.beta1"
-            },
-            {
-              "fixed": "10.0.0.beta3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 10.0.0.beta2",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "11.0.0.beta1"
-            },
-            {
-              "fixed": "11.0.0.beta3"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "11.0.0.beta1",
-        "11.0.0.beta2"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 11.0.0.beta2",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.mortbay.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.mortbay.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "11.0.0.beta1"
-            },
-            {
-              "fixed": "11.0.0.beta3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 11.0.0.beta2",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-g3wg-6mcf-8jj6/GHSA-g3wg-6mcf-8jj6.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2020-27216"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Local Temp Directory Hijacking Vulnerability"
 }

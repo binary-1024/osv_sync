@@ -1,23 +1,72 @@
 {
-  "id": "SUSE-SU-2025:0545-1",
-  "summary": "Security update for grafana",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2025:0545-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "grafana": "10.4.13-150200.3.59.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Module for Package Hub 15 SP6",
+        "name": "grafana",
+        "purl": "pkg:rpm/suse/grafana&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Package%20Hub%2015%20SP6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "10.4.13-150200.3.59.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2025:0545-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "grafana": "10.4.13-150200.3.59.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "openSUSE:Leap 15.6",
+        "name": "grafana",
+        "purl": "pkg:rpm/opensuse/grafana&distro=openSUSE%20Leap%2015.6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "10.4.13-150200.3.59.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for grafana fixes the following issues:\n\ngrafana was updated from version 9.5.18 to 10.4.13 (jsc#PED-11591,jsc#PED-11649):\n\n- Security issues fixed:\n  * CVE-2024-45337: Prevent possible misuse of ServerConfig.PublicKeyCallback by upgrading \n    golang.org/x/crypto (bsc#1234554)\n  * CVE-2023-3128: Fixed authentication bypass using Azure AD OAuth (bsc#1212641)\n  * CVE-2023-6152: Add email verification when updating user email (bsc#1219912)\n  * CVE-2024-6837: Fixed potential data source permission escalation (bsc#1236301)\n  * CVE-2024-8118: Fixed permission on external alerting rule write endpoint (bsc#1231024)\n\n- Potential breaking changes in version 10:\n  * In panels using the `extract fields` transformation, where one\n    of the extracted names collides with one of the already\n    existing ields, the extracted field will be renamed.\n  * For the existing backend mode users who have table\n    visualization might see some inconsistencies on their panels.\n    We have updated the table column naming. This will\n    potentially affect field transformations and/or field\n    overrides. To resolve this either: update transformation or\n    field override.\n  * For the existing backend mode users who have Transformations\n    with the `time` field, might see their transformations are\n    not working. Those panels that have broken transformations\n    will fail to render. This is because we changed the field\n    key. To resolve this either: Remove the affected panel and\n    re-create it; Select the `Time` field again; Edit the `time`\n    field as `Time` for transformation in `panel.json` or\n    `dashboard.json` \n  * The following data source permission endpoints have been removed:\n    `GET /datasources/:datasourceId/permissions`\n    `POST /api/datasources/:datasourceId/permissions`\n    `DELETE /datasources/:datasourceId/permissions`\n    `POST /datasources/:datasourceId/enable-permissions`\n    `POST /datasources/:datasourceId/disable-permissions`\n    + Please use the following endpoints instead:\n      `GET /api/access-control/datasources/:uid` for listing data\n       source permissions\n      `POST /api/access-control/datasources/:uid/users/:id`,\n      `POST /api/access-control/datasources/:uid/teams/:id` and\n      `POST /api/access-control/datasources/:uid/buildInRoles/:id` \n      for adding or removing data source permissions\n  * If you are using Terraform Grafana provider to manage data source permissions, you will need to upgrade your\n    provider.\n  * For the existing backend mode users who have table visualization might see some inconsistencies on their panels. \n    We have updated the table column naming. This will potentially affect field transformations and/or field overrides.\n  * The deprecated `/playlists/{uid}/dashboards` API endpoint has been removed. \n    Dashboard information can be retrieved from the `/dashboard/...` APIs.\n  * The `PUT /api/folders/:uid` endpoint no more supports modifying the folder's `UID`\n  * Removed all components for the old panel header design.\n  * Please review https://grafana.com/docs/grafana/next/breaking-changes/breaking-changes-v10-3/\n    for more details\n  * OAuth role mapping enforcement: This change impacts GitHub,\n    Gitlab, Okta, and Generic OAuth. To avoid overriding manually\n    set roles, enable the skip_org_role_sync option in the\n    Grafana configuration for your OAuth provider before\n    upgrading\n  * Angular has been deprecated\n  * Grafana legacy alerting has been deprecated\n  * API keys are migrating to service accounts\n  * The experimental &#8220;dashboard previews&#8221; feature is removed\n  * Usernames are now case-insensitive by default\n  * Grafana OAuth integrations do not work anymore with email lookups\n  * The &#8220;Alias&#8221; field in the CloudWatch data source is removed\n  * Athena data source plugin must be updated to version &gt;=2.9.3\n  * Redshift data source plugin must be updated to version &gt;=1.8.3\n  * DoiT International BigQuery plugin no longer supported\n  * Please review https://grafana.com/docs/grafana/next/breaking-changes/breaking-changes-v10-0\n    for more details\n\n- This update brings many new features, enhancements and fixes highlighted at:\n  * https://grafana.com/docs/grafana/next/whatsnew/whats-new-in-v10-4/\n  * https://grafana.com/docs/grafana/next/whatsnew/whats-new-in-v10-3/\n  * https://grafana.com/docs/grafana/next/whatsnew/whats-new-in-v10-2/\n  * https://grafana.com/docs/grafana/next/whatsnew/whats-new-in-v10-1/\n  * https://grafana.com/docs/grafana/next/whatsnew/whats-new-in-v10-0/\n",
+  "id": "SUSE-SU-2025:0545-1",
   "modified": "2025-05-02T04:34:56.969649Z",
   "published": "2025-02-14T07:24:15Z",
-  "related": [
-    "CVE-2023-3128",
-    "CVE-2023-6152",
-    "CVE-2024-45337",
-    "CVE-2024-6837",
-    "CVE-2024-8118"
-  ],
-  "upstream": [
-    "CVE-2023-3128",
-    "CVE-2023-6152",
-    "CVE-2024-45337",
-    "CVE-2024-6837",
-    "CVE-2024-8118"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -64,69 +113,20 @@
       "url": "https://www.suse.com/security/cve/CVE-2024-8118"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "grafana",
-        "ecosystem": "SUSE:Linux Enterprise Module for Package Hub 15 SP6",
-        "purl": "pkg:rpm/suse/grafana&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Package%20Hub%2015%20SP6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "10.4.13-150200.3.59.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "grafana": "10.4.13-150200.3.59.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2025:0545-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "grafana",
-        "ecosystem": "openSUSE:Leap 15.6",
-        "purl": "pkg:rpm/opensuse/grafana&distro=openSUSE%20Leap%2015.6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "10.4.13-150200.3.59.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "grafana": "10.4.13-150200.3.59.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2025:0545-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-3128",
+    "CVE-2023-6152",
+    "CVE-2024-45337",
+    "CVE-2024-6837",
+    "CVE-2024-8118"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for grafana",
+  "upstream": [
+    "CVE-2023-3128",
+    "CVE-2023-6152",
+    "CVE-2024-45337",
+    "CVE-2024-6837",
+    "CVE-2024-8118"
+  ]
 }

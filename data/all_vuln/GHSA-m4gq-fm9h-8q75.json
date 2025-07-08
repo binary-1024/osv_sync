@@ -1,26 +1,47 @@
 {
-  "id": "GHSA-m4gq-fm9h-8q75",
-  "summary": "buildx allows a possible credential leakage to telemetry endpoint",
-  "details": "### Impact\nSome cache backends allow configuring their credentials by setting secrets directly as attribute values in `cache-to/cache-from` configuration. If this was done by the user, these secure values could be captured together with OpenTelemetry trace as part of the arguments and flags for the traced CLI command. Passing tokens to Github cache backend via environment variables or using registry authentication is not affected.\n\nIf you passed a token value like this and use a custom OpenTelemetry collector for computing traces you should make sure that your traces are kept secure. OpenTelemetry traces are also saved in BuildKit daemon's history records.\n\n### Patches\nIssue has been fixed in Buildx v0.21.3 or newer.\n\n### Workarounds\nAvoid passing cache backend credentials with CLI arguments. Make sure access to traces and BuildKit history records is kept secure.",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 0.21.2",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-m4gq-fm9h-8q75/GHSA-m4gq-fm9h-8q75.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/docker/buildx",
+        "purl": "pkg:golang/github.com/docker/buildx"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.21.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-0495",
     "GO-2025-3527"
   ],
-  "modified": "2025-03-18T18:42:17.291743Z",
-  "published": "2025-03-17T21:27:43Z",
-  "related": [
-    "CGA-6v2x-x523-5635",
-    "CGA-gphq-4jvj-3m35"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-03-17T20:15:13Z",
     "cwe_ids": [
       "CWE-532"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-03-17T21:27:43Z"
+    "github_reviewed_at": "2025-03-17T21:27:43Z",
+    "nvd_published_at": "2025-03-17T20:15:13Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\nSome cache backends allow configuring their credentials by setting secrets directly as attribute values in `cache-to/cache-from` configuration. If this was done by the user, these secure values could be captured together with OpenTelemetry trace as part of the arguments and flags for the traced CLI command. Passing tokens to Github cache backend via environment variables or using registry authentication is not affected.\n\nIf you passed a token value like this and use a custom OpenTelemetry collector for computing traces you should make sure that your traces are kept secure. OpenTelemetry traces are also saved in BuildKit daemon's history records.\n\n### Patches\nIssue has been fixed in Buildx v0.21.3 or newer.\n\n### Workarounds\nAvoid passing cache backend credentials with CLI arguments. Make sure access to traces and BuildKit history records is kept secure.",
+  "id": "GHSA-m4gq-fm9h-8q75",
+  "modified": "2025-03-18T18:42:17.291743Z",
+  "published": "2025-03-17T21:27:43Z",
   "references": [
     {
       "type": "WEB",
@@ -39,37 +60,16 @@
       "url": "https://github.com/docker/buildx"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/docker/buildx",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/docker/buildx"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.21.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 0.21.2",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-m4gq-fm9h-8q75/GHSA-m4gq-fm9h-8q75.json"
-      }
-    }
+  "related": [
+    "CGA-6v2x-x523-5635",
+    "CGA-gphq-4jvj-3m35"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:P/VC:L/VI:N/VA:N/SC:H/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:P/VC:L/VI:N/VA:N/SC:H/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "buildx allows a possible credential leakage to telemetry endpoint"
 }

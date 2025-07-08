@@ -1,21 +1,48 @@
 {
-  "id": "GHSA-fqrr-rrwg-69pv",
-  "summary": "Local API Login Credentials Disclosure in paratrooper-pingdom",
-  "details": "The paratrooper-pingdom gem 1.0.0 for Ruby allows local users to obtain the App-Key, username, and password values by listing the curl process.\n\n### Vulnerable Code:\n\nFrom: `paratrooper-pingdom-1.0.0/lib/paratrooper-pingdom.rb`\n\n```ruby\ndef setup(options = {})\n  %x[curl https://api.pingdom.com/api/2.0/checks -X PUT -d \"paused=true\" -H \"App-Key: #{app_key}\" -u \"#{username}:#{password}\"]        \nend\n\ndef teardown(options = {})\n  %x[curl https://api.pingdom.com/api/2.0/checks -X PUT -d \"paused=false\" -H \"App-Key: #{app_key}\" -u \"#{username}:#{password}\"]        \nend\n```\n\nA malicious user could monitor the process tree to steal the API key, username and password for the API login.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2017/10/GHSA-fqrr-rrwg-69pv/GHSA-fqrr-rrwg-69pv.json"
+      },
+      "package": {
+        "ecosystem": "RubyGems",
+        "name": "paratrooper-pingdom",
+        "purl": "pkg:gem/paratrooper-pingdom"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "1.0.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2014-1233"
   ],
-  "modified": "2024-12-08T05:33:26.454261Z",
-  "published": "2017-10-24T18:33:36Z",
   "database_specific": {
-    "nvd_published_at": "2014-01-10T12:02:00Z",
     "cwe_ids": [
       "CWE-200"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-06-16T21:35:08Z"
+    "github_reviewed_at": "2020-06-16T21:35:08Z",
+    "nvd_published_at": "2014-01-10T12:02:00Z",
+    "severity": "LOW"
   },
+  "details": "The paratrooper-pingdom gem 1.0.0 for Ruby allows local users to obtain the App-Key, username, and password values by listing the curl process.\n\n### Vulnerable Code:\n\nFrom: `paratrooper-pingdom-1.0.0/lib/paratrooper-pingdom.rb`\n\n```ruby\ndef setup(options = {})\n  %x[curl https://api.pingdom.com/api/2.0/checks -X PUT -d \"paused=true\" -H \"App-Key: #{app_key}\" -u \"#{username}:#{password}\"]        \nend\n\ndef teardown(options = {})\n  %x[curl https://api.pingdom.com/api/2.0/checks -X PUT -d \"paused=false\" -H \"App-Key: #{app_key}\" -u \"#{username}:#{password}\"]        \nend\n```\n\nA malicious user could monitor the process tree to steal the API key, username and password for the API login.\n",
+  "id": "GHSA-fqrr-rrwg-69pv",
+  "modified": "2024-12-08T05:33:26.454261Z",
+  "published": "2017-10-24T18:33:36Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -38,33 +65,6 @@
       "url": "http://www.vapid.dhs.org/advisories/paratrooper-api-key-pingdom.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "paratrooper-pingdom",
-        "ecosystem": "RubyGems",
-        "purl": "pkg:gem/paratrooper-pingdom"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "1.0.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.0.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2017/10/GHSA-fqrr-rrwg-69pv/GHSA-fqrr-rrwg-69pv.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Local API Login Credentials Disclosure in paratrooper-pingdom"
 }

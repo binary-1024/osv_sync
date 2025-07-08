@@ -1,14 +1,46 @@
 {
-  "id": "MGASA-2021-0575",
-  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0575.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.10-1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-linus update is based on upstream 5.15.10 and fixes at least the\nfollowing security issues:\n\nA read-after-free memory flaw was found in the Linux kernel's garbage\ncollection for Unix domain socket file handlers in the way users call\nclose() and fget() simultaneously and can potentially trigger a race\ncondition. This flaw allows a local user to crash the system or escalate\ntheir privileges on the system (CVE-2021-4083).\n\nAn attacker can access kernel memory bypassing valid buffer boundaries by\nexploiting implementation of control request handlers in the following usb\ngadgets - rndis, hid, uac1, uac1_legacy and uac2. Processing of malicious\ncontrol transfer requests with unexpectedly large wLength lacks assurance\nthat this value does not exceed the buffer size. Due to this fact one is\ncapable of reading and/or writing (depending on particular case) up to 65k\nof kernel memory. Devices implementing affected usb device gadget classes\nmay be affected by buffer overflow vulnerabilities resulting in information\ndisclosure, denial of service or execution of arbitrary code in kernel\ncontext (CVE-2021-39685).\n\nIn the Linux kernel through 5.15.2, hw_atl_utils_fw_rpc_wait in drivers/net/\nethernet/aquantia/atlantic/hw_atl/hw_atl_utils.c allows an attacker (who can\nintroduce a crafted device) to trigger an out-of-bounds write via a crafted\nlength value (CVE-2021-43975).\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "id": "MGASA-2021-0575",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2021-12-21T23:27:37Z",
-  "related": [
-    "CVE-2021-39685",
-    "CVE-2021-4083",
-    "CVE-2021-43975"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -35,43 +67,11 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.10"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.15.10-1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0575.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-39685",
+    "CVE-2021-4083",
+    "CVE-2021-43975"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fix security vulnerabilities"
 }

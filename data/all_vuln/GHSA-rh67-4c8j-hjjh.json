@@ -1,61 +1,16 @@
 {
-  "id": "GHSA-rh67-4c8j-hjjh",
-  "summary": "Nautobot may allows uploaded media files to be accessible without authentication",
-  "details": "### Impact\n\nFiles uploaded by users to Nautobot's `MEDIA_ROOT` directory, including DeviceType image attachments as well as images attached to a Location, Device, or Rack, are served to users via a URL endpoint that was not enforcing user authentication. As a consequence, such files can be retrieved by anonymous users who know or can guess the correct URL for a given file.\n\nFor DeviceType image attachments, a mitigating factor is that no URL endpoint exists for listing the contents of the `devicetype-images/` subdirectory, and the file names are as specified by the uploading user, so any given DeviceType image attachment can only be retrieved by correctly guessing its file name.\n\nSimilarly, for all other image attachments, while the images *can* be listed by accessing the `/api/extras/image-attachments/` endpoint *as an authenticated user only*, absent that authenticated access, accessing the files would again require guessing file names correctly.\n\n### Patches\n\nNautobot v2.4.10 and v1.6.32 will address this issue by adding enforcement of Nautobot user authentication to this endpoint.\n\n### Workarounds\n\nNo workaround other than applying the patch given in https://github.com/nautobot/nautobot/pull/6672 (2.x) or https://github.com/nautobot/nautobot/pull/6703 (1.6)\n\n### References\n_Are there any links users can visit to find out more?_\n\n- https://github.com/nautobot/nautobot/commit/9c892dc300429948a4714f743c9c2879d8987340\n- https://github.com/nautobot/nautobot/commit/d99a53b065129cff3a0fa9abe7355a9ef1ad4c95",
-  "aliases": [
-    "CVE-2025-49143"
-  ],
-  "modified": "2025-06-10T20:57:42.415239Z",
-  "published": "2025-06-10T20:36:11Z",
-  "database_specific": {
-    "nvd_published_at": "2025-06-10T16:15:42Z",
-    "cwe_ids": [
-      "CWE-200"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-06-10T20:36:11Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/nautobot/nautobot/security/advisories/GHSA-rh67-4c8j-hjjh"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-49143"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/nautobot/nautobot/pull/6672"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/nautobot/nautobot/pull/6703"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/nautobot/nautobot/commit/9c892dc300429948a4714f743c9c2879d8987340"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/nautobot/nautobot/commit/d99a53b065129cff3a0fa9abe7355a9ef1ad4c95"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/nautobot/nautobot"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-rh67-4c8j-hjjh/GHSA-rh67-4c8j-hjjh.json"
+      },
       "package": {
-        "name": "nautobot",
         "ecosystem": "PyPI",
+        "name": "nautobot",
         "purl": "pkg:pypi/nautobot"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -63,7 +18,8 @@
             {
               "fixed": "1.6.32"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -174,20 +130,19 @@
         "1.6.7",
         "1.6.8",
         "1.6.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-rh67-4c8j-hjjh/GHSA-rh67-4c8j-hjjh.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-rh67-4c8j-hjjh/GHSA-rh67-4c8j-hjjh.json"
+      },
       "package": {
-        "name": "nautobot",
         "ecosystem": "PyPI",
+        "name": "nautobot",
         "purl": "pkg:pypi/nautobot"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.0.0"
@@ -195,7 +150,8 @@
             {
               "fixed": "2.4.10"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -258,17 +214,61 @@
         "2.4.7",
         "2.4.8",
         "2.4.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-rh67-4c8j-hjjh/GHSA-rh67-4c8j-hjjh.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-49143"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-200"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-10T20:36:11Z",
+    "nvd_published_at": "2025-06-10T16:15:42Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\n\nFiles uploaded by users to Nautobot's `MEDIA_ROOT` directory, including DeviceType image attachments as well as images attached to a Location, Device, or Rack, are served to users via a URL endpoint that was not enforcing user authentication. As a consequence, such files can be retrieved by anonymous users who know or can guess the correct URL for a given file.\n\nFor DeviceType image attachments, a mitigating factor is that no URL endpoint exists for listing the contents of the `devicetype-images/` subdirectory, and the file names are as specified by the uploading user, so any given DeviceType image attachment can only be retrieved by correctly guessing its file name.\n\nSimilarly, for all other image attachments, while the images *can* be listed by accessing the `/api/extras/image-attachments/` endpoint *as an authenticated user only*, absent that authenticated access, accessing the files would again require guessing file names correctly.\n\n### Patches\n\nNautobot v2.4.10 and v1.6.32 will address this issue by adding enforcement of Nautobot user authentication to this endpoint.\n\n### Workarounds\n\nNo workaround other than applying the patch given in https://github.com/nautobot/nautobot/pull/6672 (2.x) or https://github.com/nautobot/nautobot/pull/6703 (1.6)\n\n### References\n_Are there any links users can visit to find out more?_\n\n- https://github.com/nautobot/nautobot/commit/9c892dc300429948a4714f743c9c2879d8987340\n- https://github.com/nautobot/nautobot/commit/d99a53b065129cff3a0fa9abe7355a9ef1ad4c95",
+  "id": "GHSA-rh67-4c8j-hjjh",
+  "modified": "2025-06-10T20:57:42.415239Z",
+  "published": "2025-06-10T20:36:11Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/nautobot/nautobot/security/advisories/GHSA-rh67-4c8j-hjjh"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-49143"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nautobot/nautobot/pull/6672"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nautobot/nautobot/pull/6703"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nautobot/nautobot/commit/9c892dc300429948a4714f743c9c2879d8987340"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nautobot/nautobot/commit/d99a53b065129cff3a0fa9abe7355a9ef1ad4c95"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/nautobot/nautobot"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:L/VI:N/VA:N/SC:L/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:L/VI:N/VA:N/SC:L/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Nautobot may allows uploaded media files to be accessible without authentication"
 }

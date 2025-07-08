@@ -1,28 +1,70 @@
 {
-  "id": "GHSA-2qjp-425j-52j9",
-  "summary": "containerd CRI stream server vulnerable to host memory exhaustion via terminal",
-  "details": "### Impact\n\nA bug was found in containerd's CRI implementation where a user can exhaust memory on the host. In the CRI stream server, a goroutine is launched to handle terminal resize events if a TTY is requested. If the user's process fails to launch due to, for example, a faulty command, the goroutine will be stuck waiting to send without a receiver, resulting in a memory leak. Kubernetes and crictl can both be configured to use containerd's CRI implementation and the stream server is used for handling container IO.\n\n### Patches\n\nThis bug has been fixed in containerd 1.6.12 and 1.5.16.  Users should update to these versions to resolve the issue.\n\n### Workarounds\n\nEnsure that only trusted images and commands are used and that only trusted users have permissions to execute commands in running containers. \n\n### For more information\n\nIf you have any questions or comments about this advisory:\n\n* Open an issue in [containerd](https://github.com/containerd/containerd/issues/new/choose)\n* Email us at [security@containerd.io](mailto:security@containerd.io)\n\nTo report a security issue in containerd:\n* [Report a new vulnerability](https://github.com/containerd/containerd/security/advisories/new)\n* Email us at [security@containerd.io](mailto:security@containerd.io)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-2qjp-425j-52j9/GHSA-2qjp-425j-52j9.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/containerd/containerd",
+        "purl": "pkg:golang/github.com/containerd/containerd"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.5.16"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-2qjp-425j-52j9/GHSA-2qjp-425j-52j9.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/containerd/containerd",
+        "purl": "pkg:golang/github.com/containerd/containerd"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.6.0"
+            },
+            {
+              "fixed": "1.6.12"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-23471",
     "GO-2022-1147"
   ],
-  "modified": "2024-08-21T16:28:58.511860Z",
-  "published": "2022-12-07T23:23:43Z",
-  "related": [
-    "CGA-57rr-rppf-cc3f",
-    "CGA-hc4p-65g6-x5p4",
-    "CVE-2022-23471"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-12-07T23:15:00Z",
     "cwe_ids": [
       "CWE-400",
       "CWE-401"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-12-07T23:23:43Z"
+    "github_reviewed_at": "2022-12-07T23:23:43Z",
+    "nvd_published_at": "2022-12-07T23:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nA bug was found in containerd's CRI implementation where a user can exhaust memory on the host. In the CRI stream server, a goroutine is launched to handle terminal resize events if a TTY is requested. If the user's process fails to launch due to, for example, a faulty command, the goroutine will be stuck waiting to send without a receiver, resulting in a memory leak. Kubernetes and crictl can both be configured to use containerd's CRI implementation and the stream server is used for handling container IO.\n\n### Patches\n\nThis bug has been fixed in containerd 1.6.12 and 1.5.16.  Users should update to these versions to resolve the issue.\n\n### Workarounds\n\nEnsure that only trusted images and commands are used and that only trusted users have permissions to execute commands in running containers. \n\n### For more information\n\nIf you have any questions or comments about this advisory:\n\n* Open an issue in [containerd](https://github.com/containerd/containerd/issues/new/choose)\n* Email us at [security@containerd.io](mailto:security@containerd.io)\n\nTo report a security issue in containerd:\n* [Report a new vulnerability](https://github.com/containerd/containerd/security/advisories/new)\n* Email us at [security@containerd.io](mailto:security@containerd.io)",
+  "id": "GHSA-2qjp-425j-52j9",
+  "modified": "2024-08-21T16:28:58.511860Z",
+  "published": "2022-12-07T23:23:43Z",
   "references": [
     {
       "type": "WEB",
@@ -57,59 +99,17 @@
       "url": "https://security.gentoo.org/glsa/202401-31"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/containerd/containerd",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/containerd/containerd"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.5.16"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-2qjp-425j-52j9/GHSA-2qjp-425j-52j9.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/containerd/containerd",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/containerd/containerd"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.6.0"
-            },
-            {
-              "fixed": "1.6.12"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-2qjp-425j-52j9/GHSA-2qjp-425j-52j9.json"
-      }
-    }
+  "related": [
+    "CGA-57rr-rppf-cc3f",
+    "CGA-hc4p-65g6-x5p4",
+    "CVE-2022-23471"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "containerd CRI stream server vulnerable to host memory exhaustion via terminal"
 }

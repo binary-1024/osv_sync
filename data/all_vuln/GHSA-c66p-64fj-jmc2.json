@@ -1,21 +1,66 @@
 {
-  "id": "GHSA-c66p-64fj-jmc2",
-  "summary": "LibreNMS Misc Section Stored Cross-site Scripting vulnerability",
-  "details": "# StoredXSS-LibreNMS-MiscSection\n\n\n**Description:**\n\n\nStored XSS on the parameter: `ajax_form.php` -> param: state\n\nRequest:\n```http\nPOST /ajax_form.php HTTP/1.1\nHost: <your_host>\nX-Requested-With: XMLHttpRequest\nX-CSRF-TOKEN: <your_XSRF_token>\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\nCookie: <your_cookie>\n\ntype=override-config&device_id=1&attrib=override_icmp_disable&state=\"><img%20src%20onerror=\"alert(1)\"> \n```\n\n\nof Librenms version 24.10.1 ([https://github.com/librenms/librenms](https://github.com/librenms/librenms)) allows remote attackers to inject malicious scripts. When a user views or interacts with the page displaying the data, the malicious script executes immediately, leading to potential unauthorized actions or data exposure.\n\n\nThe vulnerability in the line:\n```php\n$attrib_val = get_dev_attrib($device, $name);\n```\nwithin the `dynamic_override_config` function arises because the value of `$attrib_val is` retrieved from untrusted data without any sanitization or encoding (at [Line 778](https://github.com/librenms/librenms/blob/master/includes/html/functions.inc.php#L778)). \n\nWhen `dynamic_override_config` is called, the unescaped `$attrib_val` is injected directly into the HTML (at [misc.inc.php](https://github.com/librenms/librenms/blob/master/includes/html/pages/device/edit/misc.inc.php)).\n\n\n**Proof of Concept:**\n1. Add a new device through the LibreNMS interface.\n2. Edit the newly created device and select the Misc section.\n3. In any of the following fields: \"Override default ssh port\", \"Override default telnet port\", \"Override default http port\" or \"Unix agent port\", enter the payload: `\"><img src onerror=\"alert(document.cookie)\">`.\n4. Save the changes.\n5. Observe that when the page loads, the XSS payload executes, triggering a popup that displays the current cookies.\n\n\n\n![image](https://github.com/user-attachments/assets/097d17cb-7a6c-4924-add8-f867df643025)\n![image](https://github.com/user-attachments/assets/8213d55a-d87a-4a6e-94bf-092877398da5)\n\n\n**Impact:**\n\nExecution of Malicious Code",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "< 24.10.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-c66p-64fj-jmc2/GHSA-c66p-64fj-jmc2.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "librenms/librenms",
+        "purl": "pkg:composer/librenms/librenms"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "23.9.0"
+            },
+            {
+              "fixed": "24.11.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "23.10.0",
+        "23.11.0",
+        "23.9.0",
+        "23.9.1",
+        "24.1.0",
+        "24.10.0",
+        "24.10.1",
+        "24.2.0",
+        "24.3.0",
+        "24.4.0",
+        "24.4.1",
+        "24.5.0",
+        "24.6.0",
+        "24.7.0",
+        "24.8.0",
+        "24.8.1",
+        "24.9.0",
+        "24.9.1"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-23200"
   ],
-  "modified": "2025-03-25T15:53:10.309075Z",
-  "published": "2025-01-16T17:32:55Z",
   "database_specific": {
-    "nvd_published_at": "2025-01-16T23:15:08Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-01-16T17:32:55Z"
+    "github_reviewed_at": "2025-01-16T17:32:55Z",
+    "nvd_published_at": "2025-01-16T23:15:08Z",
+    "severity": "MODERATE"
   },
+  "details": "# StoredXSS-LibreNMS-MiscSection\n\n\n**Description:**\n\n\nStored XSS on the parameter: `ajax_form.php` -> param: state\n\nRequest:\n```http\nPOST /ajax_form.php HTTP/1.1\nHost: <your_host>\nX-Requested-With: XMLHttpRequest\nX-CSRF-TOKEN: <your_XSRF_token>\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\nCookie: <your_cookie>\n\ntype=override-config&device_id=1&attrib=override_icmp_disable&state=\"><img%20src%20onerror=\"alert(1)\"> \n```\n\n\nof Librenms version 24.10.1 ([https://github.com/librenms/librenms](https://github.com/librenms/librenms)) allows remote attackers to inject malicious scripts. When a user views or interacts with the page displaying the data, the malicious script executes immediately, leading to potential unauthorized actions or data exposure.\n\n\nThe vulnerability in the line:\n```php\n$attrib_val = get_dev_attrib($device, $name);\n```\nwithin the `dynamic_override_config` function arises because the value of `$attrib_val is` retrieved from untrusted data without any sanitization or encoding (at [Line 778](https://github.com/librenms/librenms/blob/master/includes/html/functions.inc.php#L778)). \n\nWhen `dynamic_override_config` is called, the unescaped `$attrib_val` is injected directly into the HTML (at [misc.inc.php](https://github.com/librenms/librenms/blob/master/includes/html/pages/device/edit/misc.inc.php)).\n\n\n**Proof of Concept:**\n1. Add a new device through the LibreNMS interface.\n2. Edit the newly created device and select the Misc section.\n3. In any of the following fields: \"Override default ssh port\", \"Override default telnet port\", \"Override default http port\" or \"Unix agent port\", enter the payload: `\"><img src onerror=\"alert(document.cookie)\">`.\n4. Save the changes.\n5. Observe that when the page loads, the XSS payload executes, triggering a popup that displays the current cookies.\n\n\n\n![image](https://github.com/user-attachments/assets/097d17cb-7a6c-4924-add8-f867df643025)\n![image](https://github.com/user-attachments/assets/8213d55a-d87a-4a6e-94bf-092877398da5)\n\n\n**Impact:**\n\nExecution of Malicious Code",
+  "id": "GHSA-c66p-64fj-jmc2",
+  "modified": "2025-03-25T15:53:10.309075Z",
+  "published": "2025-01-16T17:32:55Z",
   "references": [
     {
       "type": "WEB",
@@ -38,57 +83,12 @@
       "url": "https://github.com/librenms/librenms"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "librenms/librenms",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/librenms/librenms"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "23.9.0"
-            },
-            {
-              "fixed": "24.11.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "23.10.0",
-        "23.11.0",
-        "23.9.0",
-        "23.9.1",
-        "24.1.0",
-        "24.10.0",
-        "24.10.1",
-        "24.2.0",
-        "24.3.0",
-        "24.4.0",
-        "24.4.1",
-        "24.5.0",
-        "24.6.0",
-        "24.7.0",
-        "24.8.0",
-        "24.8.1",
-        "24.9.0",
-        "24.9.1"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "< 24.10.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-c66p-64fj-jmc2/GHSA-c66p-64fj-jmc2.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "LibreNMS Misc Section Stored Cross-site Scripting vulnerability"
 }

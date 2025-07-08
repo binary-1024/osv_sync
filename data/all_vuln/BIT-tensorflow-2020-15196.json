@@ -1,7 +1,35 @@
 {
-  "id": "BIT-tensorflow-2020-15196",
-  "summary": "Heap buffer overflow in Tensorflow",
-  "details": "In Tensorflow version 2.3.0, the `SparseCountSparseOutput` and `RaggedCountSparseOutput` implementations don't validate that the `weights` tensor has the same shape as the data. The check exists for `DenseCountSparseOutput`, where both tensors are fully specified. In the sparse and ragged count weights are still accessed in parallel with the data. But, since there is no validation, a user passing fewer weights than the values for the tensors can generate a read from outside the bounds of the heap buffer allocated for the weights. The issue is patched in commit 3cbb917b4714766030b28eba9fb41bb97ce9ee02 and is released in TensorFlow version 2.3.1.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2020-15196.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "tensorflow",
+        "purl": "pkg:bitnami/tensorflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.3.0"
+            },
+            {
+              "fixed": "2.3.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-15196",
     "GHSA-pg59-2f92-5cph",
@@ -9,8 +37,6 @@
     "PYSEC-2020-276",
     "PYSEC-2020-311"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T11:20:44.959Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:google:tensorflow:2.3.0:*:*:*:-:*:*:*",
@@ -18,6 +44,10 @@
     ],
     "severity": "Critical"
   },
+  "details": "In Tensorflow version 2.3.0, the `SparseCountSparseOutput` and `RaggedCountSparseOutput` implementations don't validate that the `weights` tensor has the same shape as the data. The check exists for `DenseCountSparseOutput`, where both tensors are fully specified. In the sparse and ragged count weights are still accessed in parallel with the data. But, since there is no validation, a user passing fewer weights than the values for the tensors can generate a read from outside the bounds of the heap buffer allocated for the weights. The issue is patched in commit 3cbb917b4714766030b28eba9fb41bb97ce9ee02 and is released in TensorFlow version 2.3.1.",
+  "id": "BIT-tensorflow-2020-15196",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:20:44.959Z",
   "references": [
     {
       "type": "WEB",
@@ -36,36 +66,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15196"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tensorflow",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/tensorflow"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.3.0"
-            },
-            {
-              "fixed": "2.3.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2020-15196.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Heap buffer overflow in Tensorflow"
 }

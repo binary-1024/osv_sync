@@ -1,13 +1,46 @@
 {
-  "id": "MGASA-2022-0374",
-  "summary": "Updated dhcp packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2022-0374.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "dhcp",
+        "purl": "pkg:rpm/mageia/dhcp?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.2-10.2.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "In ISC DHCP 4.4.0 -> 4.4.3, ISC DHCP 4.1-ESV-R1 -> 4.1-ESV-R16-P1, when\nthe function option_code_hash_lookup() is called from add_option(), it\nincreases the option's refcount field. However, there is not a\ncorresponding call to option_dereference() to decrement the refcount\nfield. The function add_option() is only used in server responses to\nlease query packets. Each lease query response calls this function for\nseveral options, so eventually, the reference counters could overflow and\ncause the server to abort. (CVE-2022-2928)\n\nIn ISC DHCP 1.0 -> 4.4.3, ISC DHCP 4.1-ESV-R1 -> 4.1-ESV-R16-P1 a system\nwith access to a DHCP server, sending DHCP packets crafted to include fqdn\nlabels longer than 63 bytes, could eventually cause the server to run out\nof memory. (CVE-2022-2929)\n",
+  "id": "MGASA-2022-0374",
   "modified": "2022-10-18T22:12:53Z",
   "published": "2022-10-18T23:14:56Z",
-  "related": [
-    "CVE-2022-2928",
-    "CVE-2022-2929"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -34,43 +67,10 @@
       "url": "https://ubuntu.com/security/notices/USN-5658-1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "dhcp",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/dhcp?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.2-10.2.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2022-0374.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-2928",
+    "CVE-2022-2929"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated dhcp packages fix security vulnerability"
 }

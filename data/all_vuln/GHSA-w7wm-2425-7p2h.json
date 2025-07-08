@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-w7wm-2425-7p2h",
-  "summary": "MarbleRun unauthenticated recovery allows Coordinator impersonation",
-  "details": "### Impact\n\nDuring recovery, a Coordinator only verifies that a given recovery key decrypts the sealed state, not if this key was provided by a party with access to one of the recovery keys defined in the manifest.\nThis allows an attacker to manually craft a sealed state using their own recovery keys, and a manifest that does not match the rest of the state.\n\nIf network traffic is redirected from the legitimate coordinator to the attacker's Coordinator, a remote party is susceptible to impersonation if they verify the Coordinator without comparing the root certificate of the Coordinator against a trusted reference.\n\nUnder these circumstances, an attacker can trick a remote party into trusting the malicious Coordinator by presenting a manifest that does not match the actual state of the deployment.\n\nThis issue does **not** affect the following:\n\n* secrets and state of the legitimate Coordinator instances\n* integrity of workloads\n* certificates chaining back to the legitimate Coordinator root certificate\n\n### Patches\n\nThe issue has been patched in [`v1.7.0`](https://github.com/edgelesssys/marblerun/releases/tag/v1.7.0).\n\n### Workarounds\n\nConnections that purely authenticate based on a known Coordinator's root certificate, e.g. the one retrieved when using the `marblerun manifest set` CLI command, are not affected.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-w7wm-2425-7p2h/GHSA-w7wm-2425-7p2h.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/edgelesssys/marblerun",
+        "purl": "pkg:golang/github.com/edgelesssys/marblerun"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.7.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "GO-2025-3450"
   ],
-  "modified": "2025-02-06T18:04:37Z",
-  "published": "2025-02-04T21:23:48Z",
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-285"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-02-04T21:23:48Z"
+    "github_reviewed_at": "2025-02-04T21:23:48Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nDuring recovery, a Coordinator only verifies that a given recovery key decrypts the sealed state, not if this key was provided by a party with access to one of the recovery keys defined in the manifest.\nThis allows an attacker to manually craft a sealed state using their own recovery keys, and a manifest that does not match the rest of the state.\n\nIf network traffic is redirected from the legitimate coordinator to the attacker's Coordinator, a remote party is susceptible to impersonation if they verify the Coordinator without comparing the root certificate of the Coordinator against a trusted reference.\n\nUnder these circumstances, an attacker can trick a remote party into trusting the malicious Coordinator by presenting a manifest that does not match the actual state of the deployment.\n\nThis issue does **not** affect the following:\n\n* secrets and state of the legitimate Coordinator instances\n* integrity of workloads\n* certificates chaining back to the legitimate Coordinator root certificate\n\n### Patches\n\nThe issue has been patched in [`v1.7.0`](https://github.com/edgelesssys/marblerun/releases/tag/v1.7.0).\n\n### Workarounds\n\nConnections that purely authenticate based on a known Coordinator's root certificate, e.g. the one retrieved when using the `marblerun manifest set` CLI command, are not affected.",
+  "id": "GHSA-w7wm-2425-7p2h",
+  "modified": "2025-02-06T18:04:37Z",
+  "published": "2025-02-04T21:23:48Z",
   "references": [
     {
       "type": "WEB",
@@ -38,36 +62,12 @@
       "url": "https://pkg.go.dev/vuln/GO-2025-3450"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/edgelesssys/marblerun",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/edgelesssys/marblerun"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.7.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-w7wm-2425-7p2h/GHSA-w7wm-2425-7p2h.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "MarbleRun unauthenticated recovery allows Coordinator impersonation"
 }

@@ -1,7 +1,35 @@
 {
-  "id": "BIT-tensorflow-2020-15265",
-  "summary": "Segfault in Tensorflow",
-  "details": "In Tensorflow before version 2.4.0, an attacker can pass an invalid `axis` value to `tf.quantization.quantize_and_dequantize`. This results in accessing a dimension outside the rank of the input tensor in the C++ kernel implementation. However, dim_size only does a DCHECK to validate the argument and then uses it to access the corresponding element of an array. Since in normal builds, `DCHECK`-like macros are no-ops, this results in segfault and access out of bounds of the array. The issue is patched in eccb7ec454e6617738554a255d77f08e60ee0808 and TensorFlow 2.4.0 will be released containing the patch. TensorFlow nightly packages after this commit will also have the issue resolved.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2020-15265.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "tensorflow",
+        "purl": "pkg:bitnami/tensorflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-15265",
     "GHSA-rrfp-j2mp-hq9c",
@@ -9,14 +37,16 @@
     "PYSEC-2020-295",
     "PYSEC-2020-330"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T11:20:21.200Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:google:tensorflow:*:*:*:*:-:*:*:*"
     ],
     "severity": "High"
   },
+  "details": "In Tensorflow before version 2.4.0, an attacker can pass an invalid `axis` value to `tf.quantization.quantize_and_dequantize`. This results in accessing a dimension outside the rank of the input tensor in the C++ kernel implementation. However, dim_size only does a DCHECK to validate the argument and then uses it to access the corresponding element of an array. Since in normal builds, `DCHECK`-like macros are no-ops, this results in segfault and access out of bounds of the array. The issue is patched in eccb7ec454e6617738554a255d77f08e60ee0808 and TensorFlow 2.4.0 will be released containing the patch. TensorFlow nightly packages after this commit will also have the issue resolved.",
+  "id": "BIT-tensorflow-2020-15265",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:20:21.200Z",
   "references": [
     {
       "type": "WEB",
@@ -35,36 +65,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15265"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tensorflow",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/tensorflow"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.4.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2020-15265.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Segfault in Tensorflow"
 }

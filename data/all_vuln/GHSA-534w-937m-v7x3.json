@@ -1,54 +1,16 @@
 {
-  "id": "GHSA-534w-937m-v7x3",
-  "summary": "restforce vulnerable to Improper Input Validation",
-  "details": "A flaw in how restforce constructs URLs may allow an attacker to inject additional parameters into Salesforce API requests.   \n\nImpact\n------\nThis flaw is only exploitable in applications that pass user input directly to restforce's select, find, describe, update, upsert, and destroy methods. \n\nVulnerable code might look like:\n```ruby\n  client.select('SomeSalesForceObject', params[:some-id],\n     ...)\n```\n\nIn such an application, attackers could pass `0016000000MRatd/describe`  as a request parameter, causing the server to make a request to a different endpoint than the server is designed to handle. Since the Salesforce REST API supports overriding HTTP methods via a request parameter, an attacker could also cause the client's `select()` method to modify data, by passing `0016000000MRatd/?_HttpMethod=PATCH&other-query-params=...`.\n\nWorkarounds\n------\nIf possible, applications should track salesforce IDs internally, rather than passing user-supplied IDs to salesforce. Such practice mitigates this vulnerability, and in general is desirable for ensuring strong access control.",
-  "aliases": [
-    "CVE-2018-3777"
-  ],
-  "modified": "2024-02-16T08:08:58.530532Z",
-  "published": "2018-08-03T21:04:02Z",
-  "database_specific": {
-    "nvd_published_at": "2018-08-03T20:29:00Z",
-    "cwe_ids": [
-      "CWE-172",
-      "CWE-20"
-    ],
-    "severity": "CRITICAL",
-    "github_reviewed": true,
-    "github_reviewed_at": "2020-06-16T20:59:51Z"
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2018-3777"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/restforce/restforce/pull/392"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://github.com/advisories/GHSA-534w-937m-v7x3"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/restforce/restforce"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/restforce/CVE-2018-3777.yml"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2018/08/GHSA-534w-937m-v7x3/GHSA-534w-937m-v7x3.json"
+      },
       "package": {
-        "name": "restforce",
         "ecosystem": "RubyGems",
+        "name": "restforce",
         "purl": "pkg:gem/restforce"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -56,7 +18,8 @@
             {
               "fixed": "3.0.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -113,17 +76,54 @@
         "2.5.2",
         "2.5.3",
         "2.5.4"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2018/08/GHSA-534w-937m-v7x3/GHSA-534w-937m-v7x3.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2018-3777"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-172",
+      "CWE-20"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-06-16T20:59:51Z",
+    "nvd_published_at": "2018-08-03T20:29:00Z",
+    "severity": "CRITICAL"
+  },
+  "details": "A flaw in how restforce constructs URLs may allow an attacker to inject additional parameters into Salesforce API requests.   \n\nImpact\n------\nThis flaw is only exploitable in applications that pass user input directly to restforce's select, find, describe, update, upsert, and destroy methods. \n\nVulnerable code might look like:\n```ruby\n  client.select('SomeSalesForceObject', params[:some-id],\n     ...)\n```\n\nIn such an application, attackers could pass `0016000000MRatd/describe`  as a request parameter, causing the server to make a request to a different endpoint than the server is designed to handle. Since the Salesforce REST API supports overriding HTTP methods via a request parameter, an attacker could also cause the client's `select()` method to modify data, by passing `0016000000MRatd/?_HttpMethod=PATCH&other-query-params=...`.\n\nWorkarounds\n------\nIf possible, applications should track salesforce IDs internally, rather than passing user-supplied IDs to salesforce. Such practice mitigates this vulnerability, and in general is desirable for ensuring strong access control.",
+  "id": "GHSA-534w-937m-v7x3",
+  "modified": "2024-02-16T08:08:58.530532Z",
+  "published": "2018-08-03T21:04:02Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2018-3777"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/restforce/restforce/pull/392"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/advisories/GHSA-534w-937m-v7x3"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/restforce/restforce"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/restforce/CVE-2018-3777.yml"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "restforce vulnerable to Improper Input Validation"
 }

@@ -1,16 +1,46 @@
 {
-  "id": "MGASA-2023-0173",
-  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0173.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.110-1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-linus update is based on upstream 5.15.110 and fixes atleast\nthe following security issues:\n\nA slab-out-of-bound read problem was found in brcmf_get_assoc_ies in\ndrivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c.\nThis issue could occur when assoc_info->req_len data is bigger than the\nsize of the buffer, defined as WL_EXTRA_BUF_MAX, leading to a denial of\nservice (CVE-2023-1380).\n\nIt was discovered that a race condition existed in the Xen transport layer\nimplementation for the 9P file system protocol in the Linux kernel, leading\nto a use-after-free vulnerability. A local attacker could use this to cause\na denial of service or expose sensitive information (CVE-2023-1859).\n\nAn insufficient permission check has been found in the Bluetooth subsystem\nof the Linux kernel when handling ioctl system calls of HCI sockets.\nThis causes tasks without the proper CAP_NET_ADMIN capability can easily\nmark HCI sockets as _trusted_. Trusted sockets are intended to enable the\nsending and receiving of management commands and events, such as pairing\nor connecting with a new device.  As a result, unprivileged users can\nacquire a trusted socket, leading to unauthorized execution of management\ncommands (CVE-2023-2002).\n\nA heap out-of-bounds read/write vulnerability in the Linux Kernel traffic\ncontrol (QoS) subsystem can be exploited to achieve local privilege\nescalation. The qfq_change_class function does not properly limit the lmax\nvariable which can lead to out-of-bounds read/write. If the TCA_QFQ_LMAX\nvalue is not offered through nlattr, lmax is determined by the MTU value\nof the network device. The MTU of the loopback device can be set up to\n2^31-1 and as a result, it is possible to have an lmax value that exceeds\nQFQ_MIN_LMAX (CVE-2023-2248).\n\nqfq_change_class in net/sched/sch_qfq.c in the Linux kernel before 6.2.13\nallows an out-of-bounds write because lmax can exceed QFQ_MIN_LMAX\n(CVE-2023-31436).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2023-0173",
   "modified": "2023-05-19T05:49:26Z",
   "published": "2023-05-19T07:23:17Z",
-  "related": [
-    "CVE-2023-1380",
-    "CVE-2023-1859",
-    "CVE-2023-2002",
-    "CVE-2023-2248",
-    "CVE-2023-31436"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -37,43 +67,13 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.110"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.15.110-1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2023-0173.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-1380",
+    "CVE-2023-1859",
+    "CVE-2023-2002",
+    "CVE-2023-2248",
+    "CVE-2023-31436"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fix security vulnerabilities"
 }

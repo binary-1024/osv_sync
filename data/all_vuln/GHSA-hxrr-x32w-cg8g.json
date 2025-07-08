@@ -1,53 +1,16 @@
 {
-  "id": "GHSA-hxrr-x32w-cg8g",
-  "summary": "HAX CMS vulnerable to Local File Inclusion via saveOutline API Location Parameter",
-  "details": "### Summary\nAn authenticated Local File Inclusion (LFI) vulnerability in the HAXCMS saveOutline endpoint allows a low-privileged user to read arbitrary files on the server by manipulating the location field written into site.json. This enables attackers to exfiltrate sensitive system files such as /etc/passwd, application secrets, or configuration files accessible to the web server (www-data).\n\n### Details\nThe vulnerability stems from the way the HAXCMS backend handles the location field in the site's outline. When a user sends a POST request to /system/api/saveOutline, the backend stores the provided location value directly into the site.json file associated with the site, without validating or sanitizing the input.\n\nLater the location parameter is interpreted by the CMS like in[ HAXCMSSite.php line 1248](https://github.com/haxtheweb/haxcms-php/blob/b158d8ba1f9602af92ab084fd03b418f953079fd/system/backend/php/lib/HAXCMSSite.php#L1248) to resolve and load the content for a given node. If the location field contains a relative path like ../../../etc/passwd, the application will attempt to read and render that file.\n\n### PoC\n1. Authenticate to the CMS and retrieve the JWT and CSRF token.\n\n2. Issue a POST request to /system/api/saveOutline with the path traversal injection via the location parameter :\n\n<img width=\"839\" alt=\"LFI\" src=\"https://github.com/user-attachments/assets/91b1bb7f-9248-40d2-81fc-f839beb4d39c\" />\n\n3. Curl the website root to see the file contents.\n\n![passwd](https://github.com/user-attachments/assets/21adbb00-8e57-48f6-b1e9-f5b03ec65b55)\n\n\n### Impact\nThis is an authenticated Local File Inclusion (LFI) vulnerability, via the location parameter the attacker can read any file on the filesystem that is accessible by the www-data user.",
-  "aliases": [
-    "CVE-2025-49138"
-  ],
-  "modified": "2025-06-09T22:05:41.661599Z",
-  "published": "2025-06-09T17:47:06Z",
-  "related": [
-    "CVE-2025-49138"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2025-06-09T21:15:47Z",
-    "cwe_ids": [
-      "CWE-22",
-      "CWE-73"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-06-09T17:47:06Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/haxtheweb/issues/security/advisories/GHSA-hxrr-x32w-cg8g"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-49138"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/haxtheweb/haxcms-php/blob/b158d8ba1f9602af92ab084fd03b418f953079fd/system/backend/php/lib/HAXCMSSite.php#L1248"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/haxtheweb/issues"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-hxrr-x32w-cg8g/GHSA-hxrr-x32w-cg8g.json"
+      },
       "package": {
-        "name": "elmsln/haxcms",
         "ecosystem": "Packagist",
+        "name": "elmsln/haxcms",
         "purl": "pkg:composer/elmsln/haxcms"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -55,7 +18,8 @@
             {
               "fixed": "11.0.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -76,17 +40,53 @@
         "0.8.1",
         "0.8.2",
         "0.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-hxrr-x32w-cg8g/GHSA-hxrr-x32w-cg8g.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2025-49138"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-22",
+      "CWE-73"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-09T17:47:06Z",
+    "nvd_published_at": "2025-06-09T21:15:47Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\nAn authenticated Local File Inclusion (LFI) vulnerability in the HAXCMS saveOutline endpoint allows a low-privileged user to read arbitrary files on the server by manipulating the location field written into site.json. This enables attackers to exfiltrate sensitive system files such as /etc/passwd, application secrets, or configuration files accessible to the web server (www-data).\n\n### Details\nThe vulnerability stems from the way the HAXCMS backend handles the location field in the site's outline. When a user sends a POST request to /system/api/saveOutline, the backend stores the provided location value directly into the site.json file associated with the site, without validating or sanitizing the input.\n\nLater the location parameter is interpreted by the CMS like in[ HAXCMSSite.php line 1248](https://github.com/haxtheweb/haxcms-php/blob/b158d8ba1f9602af92ab084fd03b418f953079fd/system/backend/php/lib/HAXCMSSite.php#L1248) to resolve and load the content for a given node. If the location field contains a relative path like ../../../etc/passwd, the application will attempt to read and render that file.\n\n### PoC\n1. Authenticate to the CMS and retrieve the JWT and CSRF token.\n\n2. Issue a POST request to /system/api/saveOutline with the path traversal injection via the location parameter :\n\n<img width=\"839\" alt=\"LFI\" src=\"https://github.com/user-attachments/assets/91b1bb7f-9248-40d2-81fc-f839beb4d39c\" />\n\n3. Curl the website root to see the file contents.\n\n![passwd](https://github.com/user-attachments/assets/21adbb00-8e57-48f6-b1e9-f5b03ec65b55)\n\n\n### Impact\nThis is an authenticated Local File Inclusion (LFI) vulnerability, via the location parameter the attacker can read any file on the filesystem that is accessible by the www-data user.",
+  "id": "GHSA-hxrr-x32w-cg8g",
+  "modified": "2025-06-09T22:05:41.661599Z",
+  "published": "2025-06-09T17:47:06Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/haxtheweb/issues/security/advisories/GHSA-hxrr-x32w-cg8g"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-49138"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/haxtheweb/haxcms-php/blob/b158d8ba1f9602af92ab084fd03b418f953079fd/system/backend/php/lib/HAXCMSSite.php#L1248"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/haxtheweb/issues"
+    }
+  ],
+  "related": [
+    "CVE-2025-49138"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "HAX CMS vulnerable to Local File Inclusion via saveOutline API Location Parameter"
 }

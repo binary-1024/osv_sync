@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-jqfh-8hw5-fqjr",
-  "summary": "Improper Handling of Exceptional Conditions in detect-character-encoding",
-  "details": "### Impact\n\nIn detect-character-encoding v0.6.0 and earlier, data matching no charset causes the Node.js process to crash.\n\n### Patches\n\nThe problem has been patched in [detect-character-encoding v0.7.0](https://github.com/sonicdoe/detect-character-encoding/releases/tag/v0.7.0).\n\n### CVSS score\n\n[CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/RL:O/RC:C](https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/RL:O/RC:C)\n\nBase Score: 7.5 (High)\nTemporal Score: 7.2 (High)\n\nSince detect-character-encoding is a library, the scoring is based on the \u201c[reasonable worst-case implementation scenario](https://www.first.org/cvss/v3.1/user-guide#3-7-Scoring-Vulnerabilities-in-Software-Libraries-and-Similar)\u201d, namely, accepting data from untrusted sources over a network and passing it directly to detect-character-encoding. Depending on your specific implementation, the vulnerability\u2019s severity in your program may be different.\n\n### Proof of concept\n\n```js\nconst express = require(\"express\");\nconst bodyParser = require(\"body-parser\");\nconst detectCharacterEncoding = require(\"detect-character-encoding\");\n\nconst app = express();\n\napp.use(bodyParser.raw());\n\napp.post(\"/\", (req, res) => {\n  const charsetMatch = detectCharacterEncoding(req.body);\n\n  res.end(charsetMatch.encoding);\n});\n\napp.listen(3000);\n```\n\n`printf \"\\xAA\" | curl --request POST --header \"Content-Type: application/octet-stream\" --data-binary @- http://localhost:3000` crashes the server.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-jqfh-8hw5-fqjr/GHSA-jqfh-8hw5-fqjr.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "detect-character-encoding",
+        "purl": "pkg:npm/detect-character-encoding"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.7.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-39157"
   ],
-  "modified": "2023-11-08T04:06:31.525420Z",
-  "published": "2021-08-25T14:44:48Z",
-  "related": [
-    "CVE-2021-39157"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-08-24T19:15:00Z",
-    "github_reviewed_at": "2021-08-24T19:11:52Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-755"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-24T19:11:52Z",
+    "nvd_published_at": "2021-08-24T19:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nIn detect-character-encoding v0.6.0 and earlier, data matching no charset causes the Node.js process to crash.\n\n### Patches\n\nThe problem has been patched in [detect-character-encoding v0.7.0](https://github.com/sonicdoe/detect-character-encoding/releases/tag/v0.7.0).\n\n### CVSS score\n\n[CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/RL:O/RC:C](https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/RL:O/RC:C)\n\nBase Score: 7.5 (High)\nTemporal Score: 7.2 (High)\n\nSince detect-character-encoding is a library, the scoring is based on the \u201c[reasonable worst-case implementation scenario](https://www.first.org/cvss/v3.1/user-guide#3-7-Scoring-Vulnerabilities-in-Software-Libraries-and-Similar)\u201d, namely, accepting data from untrusted sources over a network and passing it directly to detect-character-encoding. Depending on your specific implementation, the vulnerability\u2019s severity in your program may be different.\n\n### Proof of concept\n\n```js\nconst express = require(\"express\");\nconst bodyParser = require(\"body-parser\");\nconst detectCharacterEncoding = require(\"detect-character-encoding\");\n\nconst app = express();\n\napp.use(bodyParser.raw());\n\napp.post(\"/\", (req, res) => {\n  const charsetMatch = detectCharacterEncoding(req.body);\n\n  res.end(charsetMatch.encoding);\n});\n\napp.listen(3000);\n```\n\n`printf \"\\xAA\" | curl --request POST --header \"Content-Type: application/octet-stream\" --data-binary @- http://localhost:3000` crashes the server.",
+  "id": "GHSA-jqfh-8hw5-fqjr",
+  "modified": "2023-11-08T04:06:31.525420Z",
+  "published": "2021-08-25T14:44:48Z",
   "references": [
     {
       "type": "WEB",
@@ -45,36 +66,15 @@
       "url": "https://github.com/sonicdoe/detect-character-encoding/releases/tag/v0.7.0"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "detect-character-encoding",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/detect-character-encoding"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.7.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-jqfh-8hw5-fqjr/GHSA-jqfh-8hw5-fqjr.json"
-      }
-    }
+  "related": [
+    "CVE-2021-39157"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Improper Handling of Exceptional Conditions in detect-character-encoding"
 }

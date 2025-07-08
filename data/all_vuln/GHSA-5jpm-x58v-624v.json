@@ -1,85 +1,16 @@
 {
-  "id": "GHSA-5jpm-x58v-624v",
-  "summary": "Netty's HttpPostRequestDecoder can OOM",
-  "details": "### Summary\nThe `HttpPostRequestDecoder` can be tricked to accumulate data. I have spotted currently two attack vectors \n\n### Details\n1. While the decoder can store items on the disk if configured so, there are no limits to the number of fields the form can have, an attacher can send a chunked post consisting of many small fields that will be accumulated in the `bodyListHttpData` list.\n2. The decoder cumulates bytes in the `undecodedChunk` buffer until it can decode a field, this field can cumulate data without limits\n\n### PoC\n\nHere is a Netty branch that provides a fix + tests : https://github.com/vietj/netty/tree/post-request-decoder\n\n\nHere is a reproducer with Vert.x (which uses this decoder) https://gist.github.com/vietj/f558b8ea81ec6505f1e9a6ca283c9ae3\n\n### Impact\nAny Netty based HTTP server that uses the `HttpPostRequestDecoder` to decode a form.",
-  "aliases": [
-    "CGA-4f97-xch2-fqp3",
-    "CGA-cvrj-h7rr-r975",
-    "CVE-2024-29025"
-  ],
-  "modified": "2024-10-22T05:29:03.483949Z",
-  "published": "2024-03-25T19:40:50Z",
-  "related": [
-    "CGA-6cwx-g7qh-f32h",
-    "CGA-7p98-j4rx-8p2r",
-    "CGA-8j3m-v98r-qphw",
-    "CGA-c95w-hpgw-m6fm",
-    "CGA-cx4c-8h3v-frh7",
-    "CGA-cx67-5fmv-3xqf",
-    "CGA-hc93-8f6j-gjx4",
-    "CGA-hfg5-99f4-gpwm",
-    "CGA-jx63-354g-58c6",
-    "CGA-mg88-xp72-r37f",
-    "CGA-mgv4-g226-vxr2",
-    "CGA-q576-4g28-x6p5",
-    "CGA-q64j-qccg-v8v2",
-    "CGA-r5f9-9h89-fvvx",
-    "CGA-vcc9-rm4p-6mgh",
-    "CGA-wgjc-48pj-2f8c",
-    "CGA-whmv-c3jv-fc9f",
-    "CGA-wqhj-xxjq-qrjf",
-    "CGA-x7wj-6xrg-5wpm",
-    "CVE-2024-29025"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2024-03-25T20:15:08Z",
-    "cwe_ids": [
-      "CWE-770"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-03-25T19:40:50Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/netty/netty/security/advisories/GHSA-5jpm-x58v-624v"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-29025"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/netty/netty/commit/0d0c6ed782d13d423586ad0c71737b2c7d02058c"
-    },
-    {
-      "type": "WEB",
-      "url": "https://gist.github.com/vietj/f558b8ea81ec6505f1e9a6ca283c9ae3"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/netty/netty"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/vietj/netty/tree/post-request-decoder"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.debian.org/debian-lts-announce/2024/06/msg00015.html"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-5jpm-x58v-624v/GHSA-5jpm-x58v-624v.json"
+      },
       "package": {
-        "name": "io.netty:netty-codec-http",
         "ecosystem": "Maven",
+        "name": "io.netty:netty-codec-http",
         "purl": "pkg:maven/io.netty/netty-codec-http"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -87,7 +18,8 @@
             {
               "fixed": "4.1.108.Final"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -292,17 +224,85 @@
         "4.1.97.Final",
         "4.1.98.Final",
         "4.1.99.Final"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-5jpm-x58v-624v/GHSA-5jpm-x58v-624v.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CGA-4f97-xch2-fqp3",
+    "CGA-cvrj-h7rr-r975",
+    "CVE-2024-29025"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-770"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-03-25T19:40:50Z",
+    "nvd_published_at": "2024-03-25T20:15:08Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\nThe `HttpPostRequestDecoder` can be tricked to accumulate data. I have spotted currently two attack vectors \n\n### Details\n1. While the decoder can store items on the disk if configured so, there are no limits to the number of fields the form can have, an attacher can send a chunked post consisting of many small fields that will be accumulated in the `bodyListHttpData` list.\n2. The decoder cumulates bytes in the `undecodedChunk` buffer until it can decode a field, this field can cumulate data without limits\n\n### PoC\n\nHere is a Netty branch that provides a fix + tests : https://github.com/vietj/netty/tree/post-request-decoder\n\n\nHere is a reproducer with Vert.x (which uses this decoder) https://gist.github.com/vietj/f558b8ea81ec6505f1e9a6ca283c9ae3\n\n### Impact\nAny Netty based HTTP server that uses the `HttpPostRequestDecoder` to decode a form.",
+  "id": "GHSA-5jpm-x58v-624v",
+  "modified": "2024-10-22T05:29:03.483949Z",
+  "published": "2024-03-25T19:40:50Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/netty/netty/security/advisories/GHSA-5jpm-x58v-624v"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-29025"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/netty/netty/commit/0d0c6ed782d13d423586ad0c71737b2c7d02058c"
+    },
+    {
+      "type": "WEB",
+      "url": "https://gist.github.com/vietj/f558b8ea81ec6505f1e9a6ca283c9ae3"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/netty/netty"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/vietj/netty/tree/post-request-decoder"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2024/06/msg00015.html"
+    }
+  ],
+  "related": [
+    "CGA-6cwx-g7qh-f32h",
+    "CGA-7p98-j4rx-8p2r",
+    "CGA-8j3m-v98r-qphw",
+    "CGA-c95w-hpgw-m6fm",
+    "CGA-cx4c-8h3v-frh7",
+    "CGA-cx67-5fmv-3xqf",
+    "CGA-hc93-8f6j-gjx4",
+    "CGA-hfg5-99f4-gpwm",
+    "CGA-jx63-354g-58c6",
+    "CGA-mg88-xp72-r37f",
+    "CGA-mgv4-g226-vxr2",
+    "CGA-q576-4g28-x6p5",
+    "CGA-q64j-qccg-v8v2",
+    "CGA-r5f9-9h89-fvvx",
+    "CGA-vcc9-rm4p-6mgh",
+    "CGA-wgjc-48pj-2f8c",
+    "CGA-whmv-c3jv-fc9f",
+    "CGA-wqhj-xxjq-qrjf",
+    "CGA-x7wj-6xrg-5wpm",
+    "CVE-2024-29025"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Netty's HttpPostRequestDecoder can OOM"
 }

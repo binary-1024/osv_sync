@@ -1,16 +1,152 @@
 {
-  "id": "GHSA-vfm6-r2gc-pwww",
-  "summary": "Symfony2 security issue when the trust proxy mode is enabled",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-vfm6-r2gc-pwww/GHSA-vfm6-r2gc-pwww.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "symfony/http-foundation",
+        "purl": "pkg:composer/symfony/http-foundation"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.0.19"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.0.4",
+        "2.0.5",
+        "2.0.6",
+        "2.0.7",
+        "v2.0.10",
+        "v2.0.12",
+        "v2.0.13",
+        "v2.0.14",
+        "v2.0.15",
+        "v2.0.16",
+        "v2.0.17",
+        "v2.0.18",
+        "v2.0.9"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-vfm6-r2gc-pwww/GHSA-vfm6-r2gc-pwww.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "symfony/http-foundation",
+        "purl": "pkg:composer/symfony/http-foundation"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.1.0"
+            },
+            {
+              "fixed": "2.1.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "v2.1.0",
+        "v2.1.1",
+        "v2.1.2",
+        "v2.1.3"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-vfm6-r2gc-pwww/GHSA-vfm6-r2gc-pwww.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "symfony/symfony",
+        "purl": "pkg:composer/symfony/symfony"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.0.19"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.0.4",
+        "2.0.5",
+        "2.0.6",
+        "2.0.7",
+        "v2.0.10",
+        "v2.0.11",
+        "v2.0.12",
+        "v2.0.13",
+        "v2.0.14",
+        "v2.0.15",
+        "v2.0.16",
+        "v2.0.17",
+        "v2.0.18",
+        "v2.0.9"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-vfm6-r2gc-pwww/GHSA-vfm6-r2gc-pwww.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "symfony/symfony",
+        "purl": "pkg:composer/symfony/symfony"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.1.0"
+            },
+            {
+              "fixed": "2.1.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "v2.1.0",
+        "v2.1.1",
+        "v2.1.2",
+        "v2.1.3"
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-05-30T00:34:48Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
   "details": "An application is vulnerable if it uses the client IP address as returned by the Request::getClientIp() method for sensitive decisions like IP based access control.\n\nTo fix this security issue, the following changes have been made to all versions of Symfony2:\n\nA new Request::setTrustedProxies() method has been introduced and should be used intead of Request::trustProxyData() to enable the trust proxy mode. It takes an array of trusted proxy IP addresses as its argument:\n```\n// before (probably in your front controller script)\nRequest::trustProxyData();\n\n// after\nRequest::setTrustedProxies(array('1.1.1.1'));\n// 1.1.1.1 being the IP address of a trusted reverse proxy\n```\nThe Request::trustProxyData() method has been deprecated (when used, it automatically trusts the latest proxy in the chain -- which is the current remote address):\n```\nRequest::trustProxyData();\n\n// is equivalent to\nRequest::setTrustedProxies(array($request->server->get('REMOTE_ADDR')));\n```\nWe encourage all Symfony2 users to upgrade as soon as possible. It you don't want to upgrade to the latest version yet, you can also apply the following patches:\n\n- [Patch](https://github.com/symfony/symfony/compare/fc89d6b...9ce892c.patch) for Symfony 2.0.19\n- [Patch](https://github.com/symfony/symfony/compare/922c201...e5536f0.patch) for Symfony 2.1.4",
+  "id": "GHSA-vfm6-r2gc-pwww",
   "modified": "2024-12-04T05:41:25.742334Z",
   "published": "2024-05-30T00:34:48Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-05-30T00:34:48Z"
-  },
   "references": [
     {
       "type": "WEB",
@@ -37,142 +173,6 @@
       "url": "https://symfony.com/blog/security-release-symfony-2-0-19-and-2-1-4"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "symfony/http-foundation",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/symfony/http-foundation"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.0.0"
-            },
-            {
-              "fixed": "2.0.19"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.0.4",
-        "2.0.5",
-        "2.0.6",
-        "2.0.7",
-        "v2.0.10",
-        "v2.0.12",
-        "v2.0.13",
-        "v2.0.14",
-        "v2.0.15",
-        "v2.0.16",
-        "v2.0.17",
-        "v2.0.18",
-        "v2.0.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-vfm6-r2gc-pwww/GHSA-vfm6-r2gc-pwww.json"
-      }
-    },
-    {
-      "package": {
-        "name": "symfony/http-foundation",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/symfony/http-foundation"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.1.0"
-            },
-            {
-              "fixed": "2.1.4"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "v2.1.0",
-        "v2.1.1",
-        "v2.1.2",
-        "v2.1.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-vfm6-r2gc-pwww/GHSA-vfm6-r2gc-pwww.json"
-      }
-    },
-    {
-      "package": {
-        "name": "symfony/symfony",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/symfony/symfony"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.0.0"
-            },
-            {
-              "fixed": "2.0.19"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.0.4",
-        "2.0.5",
-        "2.0.6",
-        "2.0.7",
-        "v2.0.10",
-        "v2.0.11",
-        "v2.0.12",
-        "v2.0.13",
-        "v2.0.14",
-        "v2.0.15",
-        "v2.0.16",
-        "v2.0.17",
-        "v2.0.18",
-        "v2.0.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-vfm6-r2gc-pwww/GHSA-vfm6-r2gc-pwww.json"
-      }
-    },
-    {
-      "package": {
-        "name": "symfony/symfony",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/symfony/symfony"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.1.0"
-            },
-            {
-              "fixed": "2.1.4"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "v2.1.0",
-        "v2.1.1",
-        "v2.1.2",
-        "v2.1.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-vfm6-r2gc-pwww/GHSA-vfm6-r2gc-pwww.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Symfony2 security issue when the trust proxy mode is enabled"
 }

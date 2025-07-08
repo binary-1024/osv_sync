@@ -1,17 +1,54 @@
 {
-  "id": "GO-2022-0635",
-  "summary": "In-band key negotiation issue in AWS S3 Crypto SDK for golang in github.com/aws/aws-sdk-go",
-  "details": "A vulnerability in the in-band key negotiation exists in the AWS S3 Crypto SDK for GoLang versions prior to V2. An attacker with write access to the targeted bucket can change the encryption algorithm of an object in the bucket, which can then allow them to change AES-GCM to AES-CTR. Using this in combination with a decryption oracle can reveal the authentication key used by AES-GCM as decrypting the GMAC tag leaves the authentication key recoverable as an algebraic equation. It is recommended to update your SDK to V2 or later, and re-encrypt your files.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2022-0635.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "github.com/aws/aws-sdk-go/service/s3/s3crypto",
+            "symbols": [
+              "NewDecryptionClient",
+              "NewEncryptionClient"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/aws/aws-sdk-go",
+        "purl": "pkg:golang/github.com/aws/aws-sdk-go"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-8912",
     "GHSA-7f33-f4f5-xwgw"
   ],
-  "modified": "2024-12-13T16:27:23.663528Z",
-  "published": "2024-12-12T22:00:07Z",
+  "credits": [
+    {
+      "name": "Sophie Schmieg from the Google ISE team"
+    }
+  ],
   "database_specific": {
     "review_status": "REVIEWED",
     "url": "https://pkg.go.dev/vuln/GO-2022-0635"
   },
+  "details": "A vulnerability in the in-band key negotiation exists in the AWS S3 Crypto SDK for GoLang versions prior to V2. An attacker with write access to the targeted bucket can change the encryption algorithm of an object in the bucket, which can then allow them to change AES-GCM to AES-CTR. Using this in combination with a decryption oracle can reveal the authentication key used by AES-GCM as decrypting the GMAC tag leaves the authentication key recoverable as an algebraic equation. It is recommended to update your SDK to V2 or later, and re-encrypt your files.",
+  "id": "GO-2022-0635",
+  "modified": "2024-12-13T16:27:23.663528Z",
+  "published": "2024-12-12T22:00:07Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -42,43 +79,6 @@
       "url": "https://github.com/sophieschmieg/exploits/tree/master/aws_s3_crypto_poc"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/aws/aws-sdk-go",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/aws/aws-sdk-go"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "github.com/aws/aws-sdk-go/service/s3/s3crypto",
-            "symbols": [
-              "NewDecryptionClient",
-              "NewEncryptionClient"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2022-0635.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Sophie Schmieg from the Google ISE team"
-    }
-  ]
+  "summary": "In-band key negotiation issue in AWS S3 Crypto SDK for golang in github.com/aws/aws-sdk-go"
 }

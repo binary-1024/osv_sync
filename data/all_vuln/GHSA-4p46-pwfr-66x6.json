@@ -1,9 +1,64 @@
 {
-  "id": "GHSA-4p46-pwfr-66x6",
-  "summary": "Some AES functions may panic when overflow checking is enabled in ring",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-4p46-pwfr-66x6/GHSA-4p46-pwfr-66x6.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "ring",
+        "purl": "pkg:cargo/ring"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.17.12"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-770"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-03-07T16:23:50Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
   "details": "`ring::aead::quic::HeaderProtectionKey::new_mask()` may panic when overflow checking is enabled. In the QUIC protocol, an attacker can induce this panic by sending a specially-crafted packet. Even unintentionally it is likely to occur in 1 out of every 2**32 packets sent and/or received.\n\nOn 64-bit targets operations using `ring::aead::{AES_128_GCM, AES_256_GCM}` may panic when overflow checking is enabled, when encrypting/decrypting approximately 68,719,476,700 bytes (about 64 gigabytes) of data in a single chunk. Protocols like TLS and SSH are not affected by this because those protocols break large amounts of data into small chunks. Similarly, most applications will not attempt to encrypt/decrypt 64GB of data in one chunk.\n\nOverflow checking is not enabled in release mode by default, but `RUSTFLAGS=\"-C overflow-checks\"` or `overflow-checks = true` in the Cargo.toml profile can override this. Overflow checking is usually enabled by default in debug mode.",
+  "id": "GHSA-4p46-pwfr-66x6",
   "modified": "2025-03-07T16:23:50Z",
   "published": "2025-03-07T16:23:50Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/briansmith/ring/pull/2447"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/briansmith/ring/commit/ec2d3cf1d91f148c84e4806b4f0b3c98f6df3b38"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/briansmith/ring"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/briansmith/ring/blob/main/RELEASES.md#version-01712-2025-03-05"
+    },
+    {
+      "type": "WEB",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2025-0009.html"
+    }
+  ],
   "related": [
     "CGA-2ghq-vwg6-p2gr",
     "CGA-2hpr-374j-w484",
@@ -37,67 +92,12 @@
     "CGA-xc88-5jwg-v32r",
     "CGA-xhw2-37v3-58vp"
   ],
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-770"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-03-07T16:23:50Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/briansmith/ring/pull/2447"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/briansmith/ring/commit/ec2d3cf1d91f148c84e4806b4f0b3c98f6df3b38"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/briansmith/ring"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/briansmith/ring/blob/main/RELEASES.md#version-01712-2025-03-05"
-    },
-    {
-      "type": "WEB",
-      "url": "https://rustsec.org/advisories/RUSTSEC-2025-0009.html"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "ring",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/ring"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.17.12"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-4p46-pwfr-66x6/GHSA-4p46-pwfr-66x6.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:U"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:U",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Some AES functions may panic when overflow checking is enabled in ring"
 }

@@ -1,25 +1,45 @@
 {
-  "id": "GHSA-mc52-jpm2-cqh6",
-  "summary": "Deno is vulnerable to race condition via interactive permission prompt spoofing",
-  "details": "### Impact\n\nMulti-threaded programs were able to spoof interactive permission prompt by rewriting the prompt to suggest that program is waiting on user confirmation to unrelated action. \n\nA malicious program could clear the terminal screen after permission prompt was shown and write a generic message like so:\n```\n// Expected prompt\n\u26a0\ufe0f  \u250c Deno requests read access to \"./log.txt\".\n   \u251c Requested by `Deno.open()` API\n   \u251c Run again with --allow-read to bypass this prompt.\n   \u2514 Allow? [y/n] (y = yes, allow; n = no, deny) >\n\n// Prompt that users would see\nDo you want to continue?\n```\n\nThis situation impacts users who use Web Worker API and relied on interactive permission prompt. The reproduction is very timing sensitive and can\u2019t be reliably reproduced on every try.\n\nThis problem can not be exploited on systems that do not attach an interactive prompt (for example headless servers). \n\n### Patches\n\nThe problem has been fixed in Deno v1.29.3; it is recommended all users update to this version.\n\n### Workarounds\n\nRun with `--no-prompt` flag to disable interactive permission prompts.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-mc52-jpm2-cqh6/GHSA-mc52-jpm2-cqh6.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "deno",
+        "purl": "pkg:cargo/deno"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.9.0"
+            },
+            {
+              "fixed": "1.29.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-22499"
   ],
-  "modified": "2023-11-08T04:11:36.786593Z",
-  "published": "2023-01-20T16:56:40Z",
-  "related": [
-    "CGA-pq8g-535m-6422",
-    "CVE-2023-22499"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-01-17T21:15:00Z",
-    "github_reviewed_at": "2023-01-20T16:56:40Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-362"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-01-20T16:56:40Z",
+    "nvd_published_at": "2023-01-17T21:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nMulti-threaded programs were able to spoof interactive permission prompt by rewriting the prompt to suggest that program is waiting on user confirmation to unrelated action. \n\nA malicious program could clear the terminal screen after permission prompt was shown and write a generic message like so:\n```\n// Expected prompt\n\u26a0\ufe0f  \u250c Deno requests read access to \"./log.txt\".\n   \u251c Requested by `Deno.open()` API\n   \u251c Run again with --allow-read to bypass this prompt.\n   \u2514 Allow? [y/n] (y = yes, allow; n = no, deny) >\n\n// Prompt that users would see\nDo you want to continue?\n```\n\nThis situation impacts users who use Web Worker API and relied on interactive permission prompt. The reproduction is very timing sensitive and can\u2019t be reliably reproduced on every try.\n\nThis problem can not be exploited on systems that do not attach an interactive prompt (for example headless servers). \n\n### Patches\n\nThe problem has been fixed in Deno v1.29.3; it is recommended all users update to this version.\n\n### Workarounds\n\nRun with `--no-prompt` flag to disable interactive permission prompts.\n",
+  "id": "GHSA-mc52-jpm2-cqh6",
+  "modified": "2023-11-08T04:11:36.786593Z",
+  "published": "2023-01-20T16:56:40Z",
   "references": [
     {
       "type": "WEB",
@@ -38,36 +58,16 @@
       "url": "https://github.com/denoland/deno"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "deno",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/deno"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.9.0"
-            },
-            {
-              "fixed": "1.29.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-mc52-jpm2-cqh6/GHSA-mc52-jpm2-cqh6.json"
-      }
-    }
+  "related": [
+    "CGA-pq8g-535m-6422",
+    "CVE-2023-22499"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Deno is vulnerable to race condition via interactive permission prompt spoofing"
 }

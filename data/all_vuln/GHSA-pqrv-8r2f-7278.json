@@ -1,67 +1,16 @@
 {
-  "id": "GHSA-pqrv-8r2f-7278",
-  "summary": "Crash due to erroneous `StatusOr` in TensorFlow",
-  "details": "### Impact\nA `GraphDef` from a TensorFlow `SavedModel` can be maliciously altered to cause a TensorFlow process to crash due to encountering [a `StatusOr` value that is an error and forcibly extracting the value from it](https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/core/graph/graph.cc#L560-L567):\n\n```cc\n  if (op_reg_data->type_ctor != nullptr) {\n    VLOG(3) << \"AddNode: found type constructor for \" << node_def.name();\n    const auto ctor_type =\n        full_type::SpecializeType(AttrSlice(node_def), op_reg_data->op_def);\n    const FullTypeDef ctor_typedef = ctor_type.ValueOrDie();\n    if (ctor_typedef.type_id() != TFT_UNSET) {\n      *(node_def.mutable_experimental_type()) = ctor_typedef;\n    }\n  }\n```   \n      \nIf `ctor_type` is an error status, `ValueOrDie` results in a crash.\n        \n### Patches\nWe have patched the issue in GitHub commit [955059813cc325dc1db5e2daa6221271406d4439](https://github.com/tensorflow/tensorflow/commit/955059813cc325dc1db5e2daa6221271406d4439).\n  \nWe have patched the issue in multiple GitHub commits and these will be included in TensorFlow 2.8.0 and TensorFlow 2.7.1, as both are affected.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
-  "aliases": [
-    "BIT-tensorflow-2022-23590",
-    "CVE-2022-23590",
-    "PYSEC-2022-154",
-    "PYSEC-2022-99"
-  ],
-  "modified": "2024-11-07T22:45:48.327256Z",
-  "published": "2022-02-09T23:29:38Z",
-  "related": [
-    "CVE-2022-23590"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-02-04T23:15:00Z",
-    "cwe_ids": [
-      "CWE-754"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2022-02-04T18:27:28Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-pqrv-8r2f-7278"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-23590"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/955059813cc325dc1db5e2daa6221271406d4439"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/tensorflow-cpu/PYSEC-2022-99.yaml"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/tensorflow-gpu/PYSEC-2022-154.yaml"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/core/graph/graph.cc#L560-L567"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-pqrv-8r2f-7278/GHSA-pqrv-8r2f-7278.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -69,7 +18,8 @@
             {
               "fixed": "2.7.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -144,20 +94,19 @@
         "2.7.0",
         "2.7.0rc0",
         "2.7.0rc1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-pqrv-8r2f-7278/GHSA-pqrv-8r2f-7278.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-pqrv-8r2f-7278/GHSA-pqrv-8r2f-7278.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -165,7 +114,8 @@
             {
               "fixed": "2.7.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -200,20 +150,19 @@
         "2.6.4",
         "2.6.5",
         "2.7.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-pqrv-8r2f-7278/GHSA-pqrv-8r2f-7278.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-pqrv-8r2f-7278/GHSA-pqrv-8r2f-7278.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -221,7 +170,8 @@
             {
               "fixed": "2.7.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -293,17 +243,67 @@
         "2.7.0",
         "2.7.0rc0",
         "2.7.0rc1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-pqrv-8r2f-7278/GHSA-pqrv-8r2f-7278.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-23590",
+    "CVE-2022-23590",
+    "PYSEC-2022-154",
+    "PYSEC-2022-99"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-754"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-02-04T18:27:28Z",
+    "nvd_published_at": "2022-02-04T23:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nA `GraphDef` from a TensorFlow `SavedModel` can be maliciously altered to cause a TensorFlow process to crash due to encountering [a `StatusOr` value that is an error and forcibly extracting the value from it](https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/core/graph/graph.cc#L560-L567):\n\n```cc\n  if (op_reg_data->type_ctor != nullptr) {\n    VLOG(3) << \"AddNode: found type constructor for \" << node_def.name();\n    const auto ctor_type =\n        full_type::SpecializeType(AttrSlice(node_def), op_reg_data->op_def);\n    const FullTypeDef ctor_typedef = ctor_type.ValueOrDie();\n    if (ctor_typedef.type_id() != TFT_UNSET) {\n      *(node_def.mutable_experimental_type()) = ctor_typedef;\n    }\n  }\n```   \n      \nIf `ctor_type` is an error status, `ValueOrDie` results in a crash.\n        \n### Patches\nWe have patched the issue in GitHub commit [955059813cc325dc1db5e2daa6221271406d4439](https://github.com/tensorflow/tensorflow/commit/955059813cc325dc1db5e2daa6221271406d4439).\n  \nWe have patched the issue in multiple GitHub commits and these will be included in TensorFlow 2.8.0 and TensorFlow 2.7.1, as both are affected.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
+  "id": "GHSA-pqrv-8r2f-7278",
+  "modified": "2024-11-07T22:45:48.327256Z",
+  "published": "2022-02-09T23:29:38Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-pqrv-8r2f-7278"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-23590"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/955059813cc325dc1db5e2daa6221271406d4439"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/tensorflow-cpu/PYSEC-2022-99.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/tensorflow-gpu/PYSEC-2022-154.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/core/graph/graph.cc#L560-L567"
+    }
+  ],
+  "related": [
+    "CVE-2022-23590"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Crash due to erroneous `StatusOr` in TensorFlow"
 }

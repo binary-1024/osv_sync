@@ -1,24 +1,94 @@
 {
-  "id": "GHSA-52vf-hvv3-98h7",
-  "summary": "xwiki vulnerable to Improper Handling of Exceptional Conditions",
-  "details": "### Impact\nUsers with write rights can insert well-formed content that is not handled well by the parser. For instance, with `xwiki/2.1`, inserting a deeply nested group blocks (`((( ((( ((( ((( .... ))) ))) ))) )))` (see the generator below to produce a large payload) can lead to the parser throwing a `StackOverflowError`.\nAs a consequence, some pages becomes unusable, including:\n- the user index (if the page containing the faulty content is a user page)\n- the page index\n\nNote that on the page, the normal UI is completely missing and it is not possible to open the editor directly to revert the change as the stack overflow is already triggered while getting the title of the document. This means that it is quite difficult to remove this content once inserted.\n\n### Patches\nThis has been patched on XWiki 13.10.10, 14.4.6, and 14.9-rc-1.\n\n### Workarounds\nA temporary solution to avoid Stack Overflow errors is to increase the memory allocated to the stack by using the `-Xss` JVM parameter (e.g., `-Xss32m`). This should allow the parser to pass and to fix the faulty content.\nNote that we did not evaluated the consequence on other aspects of the system (e.g., performances), and should be only be used as a temporary solution.\nAlso, this does not prevent the issue to occur again with another content.\nConsequently, it is strongly advised to upgrade to a version where the issue has been patched.\n\n### References\n- https://jira.xwiki.org/browse/XWIKI-19838\n\n### For more information\nIf you have any questions or comments about this advisory:\n- Open an issue in [Jira](http://jira.xwiki.org/)\n- Email us at [Security ML](mailto:security@xwiki.org)\n\n### Payload Generator\n\nThe Javascript code below produces 32768 nested group blocks, around the `Hello` text.\n\n```javascript\nlet result = \"(((\\nHello\\n)))\";\nfor (let i = 0; i < 15; ++i) {\n  result = result.replace(\"Hello\", result);\n}\nconsole.log(result);\n```\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-52vf-hvv3-98h7/GHSA-52vf-hvv3-98h7.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-rendering-parser",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-rendering-parser"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "6.0"
+            },
+            {
+              "fixed": "13.10.10"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-52vf-hvv3-98h7/GHSA-52vf-hvv3-98h7.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-rendering-parser",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-rendering-parser"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.0"
+            },
+            {
+              "fixed": "14.4.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-52vf-hvv3-98h7/GHSA-52vf-hvv3-98h7.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-rendering-parser",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-rendering-parser"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.5"
+            },
+            {
+              "fixed": "14.9-rc-1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-26479"
   ],
-  "modified": "2023-11-08T04:12:01.839401Z",
-  "published": "2023-03-03T22:53:35Z",
-  "related": [
-    "CVE-2023-26479"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-03-02T18:15:00Z",
-    "github_reviewed_at": "2023-03-03T22:53:35Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-755"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-03-03T22:53:35Z",
+    "nvd_published_at": "2023-03-02T18:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\nUsers with write rights can insert well-formed content that is not handled well by the parser. For instance, with `xwiki/2.1`, inserting a deeply nested group blocks (`((( ((( ((( ((( .... ))) ))) ))) )))` (see the generator below to produce a large payload) can lead to the parser throwing a `StackOverflowError`.\nAs a consequence, some pages becomes unusable, including:\n- the user index (if the page containing the faulty content is a user page)\n- the page index\n\nNote that on the page, the normal UI is completely missing and it is not possible to open the editor directly to revert the change as the stack overflow is already triggered while getting the title of the document. This means that it is quite difficult to remove this content once inserted.\n\n### Patches\nThis has been patched on XWiki 13.10.10, 14.4.6, and 14.9-rc-1.\n\n### Workarounds\nA temporary solution to avoid Stack Overflow errors is to increase the memory allocated to the stack by using the `-Xss` JVM parameter (e.g., `-Xss32m`). This should allow the parser to pass and to fix the faulty content.\nNote that we did not evaluated the consequence on other aspects of the system (e.g., performances), and should be only be used as a temporary solution.\nAlso, this does not prevent the issue to occur again with another content.\nConsequently, it is strongly advised to upgrade to a version where the issue has been patched.\n\n### References\n- https://jira.xwiki.org/browse/XWIKI-19838\n\n### For more information\nIf you have any questions or comments about this advisory:\n- Open an issue in [Jira](http://jira.xwiki.org/)\n- Email us at [Security ML](mailto:security@xwiki.org)\n\n### Payload Generator\n\nThe Javascript code below produces 32768 nested group blocks, around the `Hello` text.\n\n```javascript\nlet result = \"(((\\nHello\\n)))\";\nfor (let i = 0; i < 15; ++i) {\n  result = result.replace(\"Hello\", result);\n}\nconsole.log(result);\n```\n",
+  "id": "GHSA-52vf-hvv3-98h7",
+  "modified": "2023-11-08T04:12:01.839401Z",
+  "published": "2023-03-03T22:53:35Z",
   "references": [
     {
       "type": "WEB",
@@ -41,85 +111,15 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-19838"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-rendering-parser",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-rendering-parser"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "6.0"
-            },
-            {
-              "fixed": "13.10.10"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-52vf-hvv3-98h7/GHSA-52vf-hvv3-98h7.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-rendering-parser",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-rendering-parser"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.0"
-            },
-            {
-              "fixed": "14.4.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-52vf-hvv3-98h7/GHSA-52vf-hvv3-98h7.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-rendering-parser",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-rendering-parser"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.5"
-            },
-            {
-              "fixed": "14.9-rc-1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-52vf-hvv3-98h7/GHSA-52vf-hvv3-98h7.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-26479"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "xwiki vulnerable to Improper Handling of Exceptional Conditions"
 }

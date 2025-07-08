@@ -1,49 +1,16 @@
 {
-  "id": "GHSA-3527-qv2q-pfvx",
-  "summary": "league/commonmark contains a XSS vulnerability in Attributes extension",
-  "details": "### Summary\nCross-site scripting (XSS) vulnerability in the [Attributes extension](https://commonmark.thephpleague.com/extensions/attributes/) of the league/commonmark library (versions 1.5.0 through 2.6.x) allows remote attackers to insert malicious JavaScript calls into HTML.\n\n### Details\n\nThe league/commonmark library provides configuration options such as `html_input: 'strip'` and `allow_unsafe_links: false` to mitigate cross-site scripting (XSS) attacks by stripping raw HTML and disallowing unsafe links. However, when the Attributes Extension is enabled, it introduces a way for users to inject arbitrary HTML attributes into elements via Markdown syntax using curly braces.\n\nAs a result, even with the secure configuration shown above, an attacker can inject dangerous attributes into applications using this extension via a payload such as:\n\n```md\n![](){onerror=alert(1)}\n```\n\nWhich results in the following HTML:\n\n```html\n<p><img onerror=\"alert(1)\" src=\"\" alt=\"\" /></p>\n```\n\nWhich causes the JS to execute immediately on page load.\n\n### Patches\n\nVersion 2.7.0 contains three changes to prevent this XSS attack vector:\n\n- All attributes starting with `on` are considered unsafe and blocked by default\n- [Support for an explicit allowlist of allowed HTML attributes](https://commonmark.thephpleague.com/2.7/extensions/attributes/#configuration)\n- Manually-added `href` and `src` attributes now respect the existing `allow_unsafe_links` configuration option\n\n### Workarounds\n\nIf upgrading is not feasible, please consider:\n\n- Disabling the `AttributesExtension` for untrusted users\n- [Filtering the rendered HTML through a library like HTMLPurifier](https://commonmark.thephpleague.com/security/#additional-filtering)",
-  "aliases": [
-    "CVE-2025-46734"
-  ],
-  "modified": "2025-05-05T22:40:08.406878Z",
-  "published": "2025-05-05T20:40:36Z",
-  "database_specific": {
-    "nvd_published_at": "2025-05-05T20:15:21Z",
-    "cwe_ids": [
-      "CWE-79"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-05-05T20:40:36Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/thephpleague/commonmark/security/advisories/GHSA-3527-qv2q-pfvx"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46734"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/thephpleague/commonmark/commit/f0d626cf05ad3e99e6db26ebcb9091b6cd1cd89b"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/thephpleague/commonmark"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-3527-qv2q-pfvx/GHSA-3527-qv2q-pfvx.json"
+      },
       "package": {
-        "name": "league/commonmark",
         "ecosystem": "Packagist",
+        "name": "league/commonmark",
         "purl": "pkg:composer/league/commonmark"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -51,7 +18,8 @@
             {
               "fixed": "2.7.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -189,17 +157,49 @@
         "2.6.0",
         "2.6.1",
         "2.6.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-3527-qv2q-pfvx/GHSA-3527-qv2q-pfvx.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-46734"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-05T20:40:36Z",
+    "nvd_published_at": "2025-05-05T20:15:21Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\nCross-site scripting (XSS) vulnerability in the [Attributes extension](https://commonmark.thephpleague.com/extensions/attributes/) of the league/commonmark library (versions 1.5.0 through 2.6.x) allows remote attackers to insert malicious JavaScript calls into HTML.\n\n### Details\n\nThe league/commonmark library provides configuration options such as `html_input: 'strip'` and `allow_unsafe_links: false` to mitigate cross-site scripting (XSS) attacks by stripping raw HTML and disallowing unsafe links. However, when the Attributes Extension is enabled, it introduces a way for users to inject arbitrary HTML attributes into elements via Markdown syntax using curly braces.\n\nAs a result, even with the secure configuration shown above, an attacker can inject dangerous attributes into applications using this extension via a payload such as:\n\n```md\n![](){onerror=alert(1)}\n```\n\nWhich results in the following HTML:\n\n```html\n<p><img onerror=\"alert(1)\" src=\"\" alt=\"\" /></p>\n```\n\nWhich causes the JS to execute immediately on page load.\n\n### Patches\n\nVersion 2.7.0 contains three changes to prevent this XSS attack vector:\n\n- All attributes starting with `on` are considered unsafe and blocked by default\n- [Support for an explicit allowlist of allowed HTML attributes](https://commonmark.thephpleague.com/2.7/extensions/attributes/#configuration)\n- Manually-added `href` and `src` attributes now respect the existing `allow_unsafe_links` configuration option\n\n### Workarounds\n\nIf upgrading is not feasible, please consider:\n\n- Disabling the `AttributesExtension` for untrusted users\n- [Filtering the rendered HTML through a library like HTMLPurifier](https://commonmark.thephpleague.com/security/#additional-filtering)",
+  "id": "GHSA-3527-qv2q-pfvx",
+  "modified": "2025-05-05T22:40:08.406878Z",
+  "published": "2025-05-05T20:40:36Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/thephpleague/commonmark/security/advisories/GHSA-3527-qv2q-pfvx"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46734"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/thephpleague/commonmark/commit/f0d626cf05ad3e99e6db26ebcb9091b6cd1cd89b"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/thephpleague/commonmark"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "league/commonmark contains a XSS vulnerability in Attributes extension"
 }

@@ -1,17 +1,46 @@
 {
-  "id": "MGASA-2016-0039",
-  "summary": "Updated ntp packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0039.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "ntp",
+        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.6p5-24.4.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "In ntpd before 4.2.8p6, when used with symmetric key encryption, the\nclient would accept packets encrypted with keys for any configured server,\nallowing a server to impersonate other servers to clients, thus performing\na man-in-the-middle attack. A server can be attacked by a client in a\nsimilar manner (CVE-2015-7974).\n\nA NULL pointer dereference flaw was found in the way ntpd processed 'ntpdc\nreslist' commands that queried restriction lists with a large amount of\nentries. A remote attacker could use this flaw to crash the ntpd process\n(CVE-2015-7977).\n\nA stack-based buffer overflow was found in the way ntpd processed 'ntpdc\nreslist' commands that queried restriction lists with a large amount of\nentries. A remote attacker could use this flaw to crash the ntpd process\n(CVE-2015-7978).\n\nIt was found that when NTP is configured in broadcast mode, an off-path\nattacker could broadcast packets with bad authentication (wrong key,\nmismatched key, incorrect MAC, etc) to all clients. The clients, upon\nreceiving the malformed packets, would break the association with the\nbroadcast server. This could cause the time on affected clients to become\nout of sync over a longer period of time (CVE-2015-7979).\n\nA faulty protection against spoofing and replay attacks allows an attacker\nto disrupt synchronization with kiss-of-death packets, take full control\nof the clock, or cause ntpd to crash (CVE-2015-8138).\n\nA flaw was found in the way the ntpq client certain processed incoming\npackets in a loop in the getresponse() function. A remote attacker could\npotentially use this flaw to crash an ntpq client instance\n(CVE-2015-8158).\n\nThe ntp package has been patched to fix these issues and a few other bugs.\n\nNote that there are still some unfixed issues.  Two of those issues,\nCVE-2015-8139 and CVE-2015-8140, are vulnerabilities to spoofing and\nreplay attacks that can be mitigated by either adding the noquery option\nto all restrict entries in ntp.conf, configuring ntpd to get time from\nmultiple sources, or using a restriction list to limit who is allowed to\nissue ntpq and ntpdc queries.\n\nAdditionally, the other unfixed issues can also be mitigated.\nCVE-2015-7973, a replay attack issue, can be mitigated by not using\nbroadcast mode, and CVE-2015-7976, a bug that can cause globbing issues\non the server, can be mitigated by restricting use of the \"saveconfig\"\ncommand with the \"restrict nomodify\" directive.\n",
+  "id": "MGASA-2016-0039",
   "modified": "2016-01-29T10:53:54Z",
   "published": "2016-01-29T11:02:50Z",
-  "related": [
-    "CVE-2015-7974",
-    "CVE-2015-7977",
-    "CVE-2015-7978",
-    "CVE-2015-7979",
-    "CVE-2015-8138",
-    "CVE-2015-8158"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -78,43 +107,14 @@
       "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1300273"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ntp",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.2.6p5-24.4.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2016-0039.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2015-7974",
+    "CVE-2015-7977",
+    "CVE-2015-7978",
+    "CVE-2015-7979",
+    "CVE-2015-8138",
+    "CVE-2015-8158"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated ntp packages fix security vulnerability"
 }

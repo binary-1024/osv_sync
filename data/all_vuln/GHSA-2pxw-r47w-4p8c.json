@@ -1,26 +1,46 @@
 {
-  "id": "GHSA-2pxw-r47w-4p8c",
-  "summary": "Privilege Escalation on Linux/MacOS",
-  "details": "### Impact\nAn attacker can use crafted requests to bypass metadata bucket name checking and put an object into any bucket while processing `PostPolicyBucket`. To carry out this attack, the attacker requires credentials with `arn:aws:s3:::*` permission, as well as enabled Console API access.\n\n### Patches\n```\ncommit 67f4ba154a27a1b06e48bfabda38355a010dfca5\nAuthor: Aditya Manthramurthy <donatello@users.noreply.github.com>\nDate:   Sun Mar 19 21:15:20 2023 -0700\n\n    fix: post policy request security bypass (#16849)\n```\n\n### Workarounds\nBrowser API access must be enabled turning off `MINIO_BROWSER=off` allows for this workaround.\n\n### References\nThe vulnerable code:\n```go\n// minio/cmd/generic-handlers.go\nfunc setRequestValidityHandler(h http.Handler) http.Handler {\n  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n    // ...\n    // For all other requests reject access to reserved buckets\n    bucketName, _ := request2BucketObjectName(r)\n    if isMinioReservedBucket(bucketName) || isMinioMetaBucket(bucketName) {\n      if !guessIsRPCReq(r) && !guessIsBrowserReq(r) && !guessIsHealthCheckReq(r) && !guessIsMetricsReq(r) && !isAdminReq(r) && !isKMSReq(r) {\n        if ok {\n          tc.FuncName = \"handler.ValidRequest\"\n          tc.ResponseRecorder.LogErrBody = true\n        }\n        writeErrorResponse(r.Context(), w, errorCodes.ToAPIErr(ErrAllAccessDisabled), r.URL)\n        return\n      }\n    }\n    // ...\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-2pxw-r47w-4p8c/GHSA-2pxw-r47w-4p8c.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/minio/minio",
+        "purl": "pkg:golang/github.com/minio/minio"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.0.0-202303200415"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-minio-2023-28434",
     "CVE-2023-28434"
   ],
-  "modified": "2023-12-06T01:02:58.121125Z",
-  "published": "2023-09-05T15:45:10Z",
-  "related": [
-    "CGA-28m3-fgwh-2q2w",
-    "CVE-2023-28434"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-03-22T21:15:00Z",
     "cwe_ids": [
       "CWE-269"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-09-05T15:45:10Z"
+    "github_reviewed_at": "2023-09-05T15:45:10Z",
+    "nvd_published_at": "2023-03-22T21:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nAn attacker can use crafted requests to bypass metadata bucket name checking and put an object into any bucket while processing `PostPolicyBucket`. To carry out this attack, the attacker requires credentials with `arn:aws:s3:::*` permission, as well as enabled Console API access.\n\n### Patches\n```\ncommit 67f4ba154a27a1b06e48bfabda38355a010dfca5\nAuthor: Aditya Manthramurthy <donatello@users.noreply.github.com>\nDate:   Sun Mar 19 21:15:20 2023 -0700\n\n    fix: post policy request security bypass (#16849)\n```\n\n### Workarounds\nBrowser API access must be enabled turning off `MINIO_BROWSER=off` allows for this workaround.\n\n### References\nThe vulnerable code:\n```go\n// minio/cmd/generic-handlers.go\nfunc setRequestValidityHandler(h http.Handler) http.Handler {\n  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n    // ...\n    // For all other requests reject access to reserved buckets\n    bucketName, _ := request2BucketObjectName(r)\n    if isMinioReservedBucket(bucketName) || isMinioMetaBucket(bucketName) {\n      if !guessIsRPCReq(r) && !guessIsBrowserReq(r) && !guessIsHealthCheckReq(r) && !guessIsMetricsReq(r) && !isAdminReq(r) && !isKMSReq(r) {\n        if ok {\n          tc.FuncName = \"handler.ValidRequest\"\n          tc.ResponseRecorder.LogErrBody = true\n        }\n        writeErrorResponse(r.Context(), w, errorCodes.ToAPIErr(ErrAllAccessDisabled), r.URL)\n        return\n      }\n    }\n    // ...\n```",
+  "id": "GHSA-2pxw-r47w-4p8c",
+  "modified": "2023-12-06T01:02:58.121125Z",
+  "published": "2023-09-05T15:45:10Z",
   "references": [
     {
       "type": "WEB",
@@ -43,36 +63,16 @@
       "url": "https://github.com/minio/minio"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/minio/minio",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/minio/minio"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.0.0-202303200415"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-2pxw-r47w-4p8c/GHSA-2pxw-r47w-4p8c.json"
-      }
-    }
+  "related": [
+    "CGA-28m3-fgwh-2q2w",
+    "CVE-2023-28434"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Privilege Escalation on Linux/MacOS"
 }

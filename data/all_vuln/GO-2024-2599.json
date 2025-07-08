@@ -1,7 +1,54 @@
 {
-  "id": "GO-2024-2599",
-  "summary": "Memory exhaustion in multipart form parsing in net/textproto and net/http",
-  "details": "When parsing a multipart form (either explicitly with Request.ParseMultipartForm or implicitly with Request.FormValue, Request.PostFormValue, or Request.FormFile), limits on the total size of the parsed form were not applied to the memory consumed while reading a single form line. This permits a maliciously crafted input containing very long lines to cause allocation of arbitrarily large amounts of memory, potentially leading to memory exhaustion.\n\nWith fix, the ParseMultipartForm function now correctly limits the maximum size of form lines.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2024-2599.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "net/textproto",
+            "symbols": [
+              "Reader.ReadCodeLine",
+              "Reader.ReadContinuedLine",
+              "Reader.ReadContinuedLineBytes",
+              "Reader.ReadDotLines",
+              "Reader.ReadLine",
+              "Reader.ReadLineBytes",
+              "Reader.ReadMIMEHeader",
+              "Reader.ReadResponse",
+              "Reader.readContinuedLineSlice",
+              "Reader.readLineSlice"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "stdlib",
+        "purl": "pkg:golang/stdlib"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.21.8"
+            },
+            {
+              "introduced": "1.22.0-0"
+            },
+            {
+              "fixed": "1.22.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-golang-2023-45290",
     "CGA-63g6-wrgr-m47w",
@@ -10,8 +57,33 @@
     "CVE-2023-45290",
     "GHSA-rr6r-cfgf-gc6h"
   ],
+  "credits": [
+    {
+      "name": "Bartek Nowotarski"
+    }
+  ],
+  "database_specific": {
+    "review_status": "REVIEWED",
+    "url": "https://pkg.go.dev/vuln/GO-2024-2599"
+  },
+  "details": "When parsing a multipart form (either explicitly with Request.ParseMultipartForm or implicitly with Request.FormValue, Request.PostFormValue, or Request.FormFile), limits on the total size of the parsed form were not applied to the memory consumed while reading a single form line. This permits a maliciously crafted input containing very long lines to cause allocation of arbitrarily large amounts of memory, potentially leading to memory exhaustion.\n\nWith fix, the ParseMultipartForm function now correctly limits the maximum size of form lines.",
+  "id": "GO-2024-2599",
   "modified": "2024-10-22T05:29:04.026559Z",
   "published": "2024-03-05T22:15:00Z",
+  "references": [
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/65383"
+    },
+    {
+      "type": "FIX",
+      "url": "https://go.dev/cl/569341"
+    },
+    {
+      "type": "WEB",
+      "url": "https://groups.google.com/g/golang-announce/c/5pwGVUPoMbg"
+    }
+  ],
   "related": [
     "RHSA-2024:0045",
     "RHSA-2024:2562",
@@ -37,78 +109,6 @@
     "RHSA-2024:8038",
     "RHSA-2024:9135"
   ],
-  "database_specific": {
-    "review_status": "REVIEWED",
-    "url": "https://pkg.go.dev/vuln/GO-2024-2599"
-  },
-  "references": [
-    {
-      "type": "REPORT",
-      "url": "https://go.dev/issue/65383"
-    },
-    {
-      "type": "FIX",
-      "url": "https://go.dev/cl/569341"
-    },
-    {
-      "type": "WEB",
-      "url": "https://groups.google.com/g/golang-announce/c/5pwGVUPoMbg"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "stdlib",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/stdlib"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.21.8"
-            },
-            {
-              "introduced": "1.22.0-0"
-            },
-            {
-              "fixed": "1.22.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "net/textproto",
-            "symbols": [
-              "Reader.ReadCodeLine",
-              "Reader.ReadContinuedLine",
-              "Reader.ReadContinuedLineBytes",
-              "Reader.ReadDotLines",
-              "Reader.ReadLine",
-              "Reader.ReadLineBytes",
-              "Reader.ReadMIMEHeader",
-              "Reader.ReadResponse",
-              "Reader.readContinuedLineSlice",
-              "Reader.readLineSlice"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2024-2599.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Bartek Nowotarski"
-    }
-  ]
+  "summary": "Memory exhaustion in multipart form parsing in net/textproto and net/http"
 }

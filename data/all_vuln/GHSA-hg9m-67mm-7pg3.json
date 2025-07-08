@@ -1,22 +1,47 @@
 {
-  "id": "GHSA-hg9m-67mm-7pg3",
-  "summary": "Keystone has an unintended `isFilterable` bypass that can be used as an oracle to match hidden fields",
-  "details": "# Summary  \n`{field}.isFilterable` access control can be bypassed in `update` and `delete` mutations by adding additional unique filters. These filters can be used as an oracle to probe the existence or value of otherwise unreadable fields.\n\nSpecifically, when a mutation includes a `where` clause with multiple unique filters (e.g. `id` and `email`), Keystone will attempt to match records even if filtering by the latter fields would normally be rejected by `field.isFilterable` or `list.defaultIsFilterable`. This can allow malicious actors to infer the presence of a particular field value when a filter is successful in returning a result.\n\n# Impact  \nThis affects any project relying on the default or dynamic `isFilterable` behaviour (at the list or field level) to prevent external users from using the filtering of fields as a discovery mechanism. While this access control is respected during `findMany` operations, it was not completely enforced during `update` and `delete` mutations when accepting more than one unique `where` values in filters.\n\nThis has no impact on projects using `isFilterable: false` or `defaultIsFilterable: false` for sensitive fields, or if you have otherwise omitted filtering by these fields from your GraphQL schema. (See workarounds)\n\n# Patches  \nThis issue has been patched in `@keystone-6/core` version 6.5.0.\n\n# Workarounds  \nTo mitigate this issue in older versions where patching is not a viable pathway.\n\n- Set `isFilterable: false` statically for relevant fields to prevent filtering by them earlier in the access control pipeline (that is, don't use functions)\n- Set `{field}.graphql.omit.read: true` for relevant fields, which implicitly removes filtering by these fields your GraphQL schema\n- Deny `update` and `delete` operations for the relevant **lists** completely (e.g `list({ access: { operation: { update: false, delete: false } }, ... })`)",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 6.4.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-hg9m-67mm-7pg3/GHSA-hg9m-67mm-7pg3.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@keystone-6/core",
+        "purl": "pkg:npm/%40keystone-6/core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.5.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-46720"
   ],
-  "modified": "2025-05-05T22:06:50Z",
-  "published": "2025-05-05T18:51:34Z",
   "database_specific": {
-    "nvd_published_at": "2025-05-05T19:15:57Z",
     "cwe_ids": [
       "CWE-200",
       "CWE-203"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-05-05T18:51:34Z"
+    "github_reviewed_at": "2025-05-05T18:51:34Z",
+    "nvd_published_at": "2025-05-05T19:15:57Z",
+    "severity": "LOW"
   },
+  "details": "# Summary  \n`{field}.isFilterable` access control can be bypassed in `update` and `delete` mutations by adding additional unique filters. These filters can be used as an oracle to probe the existence or value of otherwise unreadable fields.\n\nSpecifically, when a mutation includes a `where` clause with multiple unique filters (e.g. `id` and `email`), Keystone will attempt to match records even if filtering by the latter fields would normally be rejected by `field.isFilterable` or `list.defaultIsFilterable`. This can allow malicious actors to infer the presence of a particular field value when a filter is successful in returning a result.\n\n# Impact  \nThis affects any project relying on the default or dynamic `isFilterable` behaviour (at the list or field level) to prevent external users from using the filtering of fields as a discovery mechanism. While this access control is respected during `findMany` operations, it was not completely enforced during `update` and `delete` mutations when accepting more than one unique `where` values in filters.\n\nThis has no impact on projects using `isFilterable: false` or `defaultIsFilterable: false` for sensitive fields, or if you have otherwise omitted filtering by these fields from your GraphQL schema. (See workarounds)\n\n# Patches  \nThis issue has been patched in `@keystone-6/core` version 6.5.0.\n\n# Workarounds  \nTo mitigate this issue in older versions where patching is not a viable pathway.\n\n- Set `isFilterable: false` statically for relevant fields to prevent filtering by them earlier in the access control pipeline (that is, don't use functions)\n- Set `{field}.graphql.omit.read: true` for relevant fields, which implicitly removes filtering by these fields your GraphQL schema\n- Deny `update` and `delete` operations for the relevant **lists** completely (e.g `list({ access: { operation: { update: false, delete: false } }, ... })`)",
+  "id": "GHSA-hg9m-67mm-7pg3",
+  "modified": "2025-05-05T22:06:50Z",
+  "published": "2025-05-05T18:51:34Z",
   "references": [
     {
       "type": "WEB",
@@ -31,37 +56,12 @@
       "url": "https://github.com/keystonejs/keystone"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@keystone-6/core",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40keystone-6/core"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "6.5.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 6.4.0",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-hg9m-67mm-7pg3/GHSA-hg9m-67mm-7pg3.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Keystone has an unintended `isFilterable` bypass that can be used as an oracle to match hidden fields"
 }

@@ -1,16 +1,46 @@
 {
-  "id": "GHSA-72fp-w44g-625q",
-  "summary": "Signing DynamoDB Sets when using the AWS Database Encryption SDK.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-72fp-w44g-625q/GHSA-72fp-w44g-625q.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "software.amazon.cryptography:aws-database-encryption-sdk-dynamodb",
+        "purl": "pkg:maven/software.amazon.cryptography/aws-database-encryption-sdk-dynamodb"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.0.0"
+            },
+            {
+              "fixed": "3.1.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "3.0.0",
+        "3.0.0-preview-1",
+        "3.0.0-preview-2",
+        "3.1.0"
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-11-09T16:02:51Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
+  },
   "details": "### Impact\nThis advisory addresses an issue when a DynamoDB Set attribute is marked as SIGN_ONLY in the AWS Database Encryption SDK (DB-ESDK) for DynamoDB. This also includes when a Set is part of a List or a Map.\n\nDB-ESDK for DynamoDB supports `SIGN_ONLY` and `ENCRYPT_AND_SIGN` attribute actions. In version 3.1.0 and below, when a Set type is assigned a `SIGN_ONLY` attribute action, there is a chance that signature validation of the record containing a Set will fail on read, even if the Set attributes contain the same values. The probability of a failure depends on the order of the elements in the Set combined with how DynamoDB returns this data, which is undefined.\n\nThis update addresses the issue by ensuring that any Set values are canonicalized in the same order while written to DynamoDB as when read back from DynamoDB.\n\n### Patches\nFixed in version 3.1.1 \nWe recommend all users upgrade as soon as possible.\n\n### Workarounds\nNone\n\n### References\nFor more information on how to address records with Sets marked as `SIGN_ONLY` written by versions 3.1.0 and below of DB-ESDK, see [AWS Database Encryption SDK Decrypt with Permute](https://github.com/aws/aws-database-encryption-sdk-dynamodb-java/tree/v3.1.1/DecryptWithPermute)",
+  "id": "GHSA-72fp-w44g-625q",
   "modified": "2024-11-30T05:49:18.569581Z",
   "published": "2023-11-09T16:02:51Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [],
-    "severity": "LOW",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-11-09T16:02:51Z"
-  },
   "references": [
     {
       "type": "WEB",
@@ -29,36 +59,6 @@
       "url": "https://github.com/aws/aws-database-encryption-sdk-dynamodb-java/releases/tag/v3.1.1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "software.amazon.cryptography:aws-database-encryption-sdk-dynamodb",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/software.amazon.cryptography/aws-database-encryption-sdk-dynamodb"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.0.0"
-            },
-            {
-              "fixed": "3.1.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "3.0.0",
-        "3.0.0-preview-1",
-        "3.0.0-preview-2",
-        "3.1.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-72fp-w44g-625q/GHSA-72fp-w44g-625q.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Signing DynamoDB Sets when using the AWS Database Encryption SDK."
 }

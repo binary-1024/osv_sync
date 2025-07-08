@@ -1,51 +1,72 @@
 {
-  "id": "SUSE-SU-2020:3424-1",
-  "summary": "Security update for wpa_supplicant",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3424-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "wpa_supplicant": "2.9-23.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
+        "name": "wpa_supplicant",
+        "purl": "pkg:rpm/suse/wpa_supplicant&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.9-23.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3424-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "wpa_supplicant": "2.9-23.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
+        "name": "wpa_supplicant",
+        "purl": "pkg:rpm/suse/wpa_supplicant&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.9-23.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for wpa_supplicant fixes the following issues:\n\nwpa_supplicant was updated to 2.9 release:\n\n   * SAE changes\n     - disable use of groups using Brainpool curves\n     - improved protection against side channel attacks\n     [https://w1.fi/security/2019-6/]\n   * EAP-pwd changes\n     - disable use of groups using Brainpool curves\n     - allow the set of groups to be configured (eap_pwd_groups)\n     - improved protection against side channel attacks\n     [https://w1.fi/security/2019-6/]\n   * fixed FT-EAP initial mobility domain association using PMKSA caching\n     (disabled by default for backwards compatibility; can be enabled\n     with ft_eap_pmksa_caching=1)\n   * fixed a regression in OpenSSL 1.1+ engine loading\n   * added validation of RSNE in (Re)Association Response frames\n   * fixed DPP bootstrapping URI parser of channel list\n   * extended EAP-SIM/AKA fast re-authentication to allow use with FILS\n   * extended ca_cert_blob to support PEM format\n   * improved robustness of P2P Action frame scheduling\n   * added support for EAP-SIM/AKA using anonymous@realm identity\n   * fixed Hotspot 2.0 credential selection based on roaming consortium\n     to ignore credentials without a specific EAP method\n   * added experimental support for EAP-TEAP peer (RFC 7170)\n   * added experimental support for EAP-TLS peer with TLS v1.3\n   * fixed a regression in WMM parameter configuration for a TDLS peer\n   * fixed a regression in operation with drivers that offload 802.1X\n     4-way handshake\n   * fixed an ECDH operation corner case with OpenSSL\n   * SAE changes\n     - added support for SAE Password Identifier\n     - changed default configuration to enable only groups 19, 20, 21\n       (i.e., disable groups 25 and 26) and disable all unsuitable groups\n       completely based on REVmd changes\n     - do not regenerate PWE unnecessarily when the AP uses the\n       anti-clogging token mechanisms\n     - fixed some association cases where both SAE and FT-SAE were enabled\n       on both the station and the selected AP\n     - started to prefer FT-SAE over SAE AKM if both are enabled\n     - started to prefer FT-SAE over FT-PSK if both are enabled\n     - fixed FT-SAE when SAE PMKSA caching is used\n     - reject use of unsuitable groups based on new implementation guidance\n       in REVmd (allow only FFC groups with prime >= 3072 bits and ECC\n       groups with prime >= 256)\n     - minimize timing and memory use differences in PWE derivation\n       [https://w1.fi/security/2019-1/] (CVE-2019-9494, bsc#1131868)\n   * EAP-pwd changes\n     - minimize timing and memory use differences in PWE derivation\n       [https://w1.fi/security/2019-2/] (CVE-2019-9495, bsc#1131870)\n     - verify server scalar/element\n       [https://w1.fi/security/2019-4/] (CVE-2019-9497, CVE-2019-9498,\n       CVE-2019-9499, bsc#1131874, bsc#1131872, bsc#1131871, bsc#1131644)\n     - fix message reassembly issue with unexpected fragment\n       [https://w1.fi/security/2019-5/] (CVE-2019-11555, bsc#1133640)\n     - enforce rand,mask generation rules more strictly\n     - fix a memory leak in PWE derivation\n     - disallow ECC groups with a prime under 256 bits (groups 25, 26, and\n       27)\n     - SAE/EAP-pwd side-channel attack update\n       [https://w1.fi/security/2019-6/] (CVE-2019-13377, bsc#1144443)\n   * fixed CONFIG_IEEE80211R=y (FT) build without CONFIG_FILS=y\n   * Hotspot 2.0 changes\n     - do not indicate release number that is higher than the one\n       AP supports\n     - added support for release number 3\n     - enable PMF automatically for network profiles created from\n       credentials\n   * fixed OWE network profile saving\n   * fixed DPP network profile saving\n   * added support for RSN operating channel validation\n     (CONFIG_OCV=y and network profile parameter ocv=1)\n   * added Multi-AP backhaul STA support\n   * fixed build with LibreSSL\n   * number of MKA/MACsec fixes and extensions\n   * extended domain_match and domain_suffix_match to allow list of values\n   * fixed dNSName matching in domain_match and domain_suffix_match when\n     using wolfSSL\n   * started to prefer FT-EAP-SHA384 over WPA-EAP-SUITE-B-192 AKM if both\n     are enabled\n   * extended nl80211 Connect and external authentication to support\n     SAE, FT-SAE, FT-EAP-SHA384\n   * fixed KEK2 derivation for FILS+FT\n   * extended client_cert file to allow loading of a chain of PEM\n     encoded certificates\n   * extended beacon reporting functionality\n   * extended D-Bus interface with number of new properties\n   * fixed a regression in FT-over-DS with mac80211-based drivers\n   * OpenSSL: allow systemwide policies to be overridden\n   * extended driver flags indication for separate 802.1X and PSK\n     4-way handshake offload capability\n   * added support for random P2P Device/Interface Address use\n   * extended PEAP to derive EMSK to enable use with ERP/FILS\n   * extended WPS to allow SAE configuration to be added automatically\n     for PSK (wps_cred_add_sae=1)\n   * removed support for the old D-Bus interface (CONFIG_CTRL_IFACE_DBUS)\n   * extended domain_match and domain_suffix_match to allow list of values\n   * added a RSN workaround for misbehaving PMF APs that advertise\n     IGTK/BIP KeyID using incorrect byte order\n   * fixed PTK rekeying with FILS and FT\n   * fixed WPA packet number reuse with replayed messages and key\n     reinstallation\n     [https://w1.fi/security/2017-1/] (CVE-2017-13077, CVE-2017-13078,\n     CVE-2017-13079, CVE-2017-13080, CVE-2017-13081, CVE-2017-13082,\n     CVE-2017-13086, CVE-2017-13087, CVE-2017-13088)\n   * fixed unauthenticated EAPOL-Key decryption in wpa_supplicant\n     [https://w1.fi/security/2018-1/] (CVE-2018-14526)\n   * added support for FILS (IEEE 802.11ai) shared key authentication\n   * added support for OWE (Opportunistic Wireless Encryption, RFC 8110;\n     and transition mode defined by WFA)\n   * added support for DPP (Wi-Fi Device Provisioning Protocol)\n   * added support for RSA 3k key case with Suite B 192-bit level\n   * fixed Suite B PMKSA caching not to update PMKID during each 4-way\n     handshake\n   * fixed EAP-pwd pre-processing with PasswordHashHash\n   * added EAP-pwd client support for salted passwords\n   * fixed a regression in TDLS prohibited bit validation\n   * started to use estimated throughput to avoid undesired signal\n     strength based roaming decision\n   * MACsec/MKA:\n     - new macsec_linux driver interface support for the Linux\n       kernel macsec module\n     - number of fixes and extensions\n   * added support for external persistent storage of PMKSA cache\n     (PMKSA_GET/PMKSA_ADD control interface commands; and\n      MESH_PMKSA_GET/MESH_PMKSA_SET for the mesh case)\n   * fixed mesh channel configuration pri/sec switch case\n   * added support for beacon report\n   * large number of other fixes, cleanup, and extensions\n   * added support for randomizing local address for GAS queries\n     (gas_rand_mac_addr parameter)\n   * fixed EAP-SIM/AKA/AKA' ext auth cases within TLS tunnel\n   * added option for using random WPS UUID (auto_uuid=1)\n   * added SHA256-hash support for OCSP certificate matching\n   * fixed EAP-AKA' to add AT_KDF into Synchronization-Failure\n   * fixed a regression in RSN pre-authentication candidate selection\n   * added option to configure allowed group management cipher suites\n     (group_mgmt network profile parameter)\n   * removed all PeerKey functionality\n   * fixed nl80211 AP and mesh mode configuration regression with\n     Linux 4.15 and newer\n   * added ap_isolate configuration option for AP mode\n   * added support for nl80211 to offload 4-way handshake into the driver\n   * added support for using wolfSSL cryptographic library\n   * SAE\n     - added support for configuring SAE password separately of the\n       WPA2 PSK/passphrase\n     - fixed PTK and EAPOL-Key integrity and key-wrap algorithm selection\n       for SAE;\n       note: this is not backwards compatible, i.e., both the AP and\n       station side implementations will need to be update at the same\n       time to maintain interoperability\n     - added support for Password Identifier\n     - fixed FT-SAE PMKID matching\n   * Hotspot 2.0\n     - added support for fetching of Operator Icon Metadata ANQP-element\n     - added support for Roaming Consortium Selection element\n     - added support for Terms and Conditions\n     - added support for OSEN connection in a shared RSN BSS\n     - added support for fetching Venue URL information\n   * added support for using OpenSSL 1.1.1\n   * FT\n     - disabled PMKSA caching with FT since it is not fully functional\n     - added support for SHA384 based AKM\n     - added support for BIP ciphers BIP-CMAC-256, BIP-GMAC-128,\n       BIP-GMAC-256 in addition to previously supported BIP-CMAC-128\n     - fixed additional IE inclusion in Reassociation Request frame when\n       using FT protocol\n\n- Limit P2P_DEVICE name to appropriate ifname size.\n- Enable SAE support(jsc#SLE-14992).\n- CVE-2019-16275: AP mode PMF disconnection protection bypass (bsc#1150934)\n- Fix wicked wlan (bsc#1156920)\n- Still include fi.epitest.hostap.WPASupplicant.service (bsc#1167331)\n- Change wpa_supplicant.service to ensure wpa_supplicant gets started before\n  network. Fix WLAN config on boot with wicked. (bsc#1166933)\n- Adjust the service to start after network.target wrt bsc#1165266\n\n- Using O_WRONLY flag [http://w1.fi/security/2015-5/] (CVE-2015-8041)\n",
+  "id": "SUSE-SU-2020:3424-1",
   "modified": "2025-05-02T04:29:39.305642Z",
   "published": "2020-11-19T15:11:57Z",
-  "related": [
-    "CVE-2015-8041",
-    "CVE-2017-13077",
-    "CVE-2017-13078",
-    "CVE-2017-13079",
-    "CVE-2017-13080",
-    "CVE-2017-13081",
-    "CVE-2017-13082",
-    "CVE-2017-13086",
-    "CVE-2017-13087",
-    "CVE-2017-13088",
-    "CVE-2018-14526",
-    "CVE-2019-11555",
-    "CVE-2019-13377",
-    "CVE-2019-16275",
-    "CVE-2019-9494",
-    "CVE-2019-9495",
-    "CVE-2019-9497",
-    "CVE-2019-9498",
-    "CVE-2019-9499"
-  ],
-  "upstream": [
-    "CVE-2015-8041",
-    "CVE-2017-13077",
-    "CVE-2017-13078",
-    "CVE-2017-13079",
-    "CVE-2017-13080",
-    "CVE-2017-13081",
-    "CVE-2017-13082",
-    "CVE-2017-13086",
-    "CVE-2017-13087",
-    "CVE-2017-13088",
-    "CVE-2018-14526",
-    "CVE-2019-11555",
-    "CVE-2019-13377",
-    "CVE-2019-16275",
-    "CVE-2019-9494",
-    "CVE-2019-9495",
-    "CVE-2019-9497",
-    "CVE-2019-9498",
-    "CVE-2019-9499"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -180,69 +201,48 @@
       "url": "https://www.suse.com/security/cve/CVE-2019-9499"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "wpa_supplicant",
-        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
-        "purl": "pkg:rpm/suse/wpa_supplicant&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.9-23.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "wpa_supplicant": "2.9-23.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3424-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "wpa_supplicant",
-        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
-        "purl": "pkg:rpm/suse/wpa_supplicant&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.9-23.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "wpa_supplicant": "2.9-23.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3424-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2015-8041",
+    "CVE-2017-13077",
+    "CVE-2017-13078",
+    "CVE-2017-13079",
+    "CVE-2017-13080",
+    "CVE-2017-13081",
+    "CVE-2017-13082",
+    "CVE-2017-13086",
+    "CVE-2017-13087",
+    "CVE-2017-13088",
+    "CVE-2018-14526",
+    "CVE-2019-11555",
+    "CVE-2019-13377",
+    "CVE-2019-16275",
+    "CVE-2019-9494",
+    "CVE-2019-9495",
+    "CVE-2019-9497",
+    "CVE-2019-9498",
+    "CVE-2019-9499"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for wpa_supplicant",
+  "upstream": [
+    "CVE-2015-8041",
+    "CVE-2017-13077",
+    "CVE-2017-13078",
+    "CVE-2017-13079",
+    "CVE-2017-13080",
+    "CVE-2017-13081",
+    "CVE-2017-13082",
+    "CVE-2017-13086",
+    "CVE-2017-13087",
+    "CVE-2017-13088",
+    "CVE-2018-14526",
+    "CVE-2019-11555",
+    "CVE-2019-13377",
+    "CVE-2019-16275",
+    "CVE-2019-9494",
+    "CVE-2019-9495",
+    "CVE-2019-9497",
+    "CVE-2019-9498",
+    "CVE-2019-9499"
+  ]
 }

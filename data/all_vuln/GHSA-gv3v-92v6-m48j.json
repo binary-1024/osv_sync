@@ -1,52 +1,16 @@
 {
-  "id": "GHSA-gv3v-92v6-m48j",
-  "summary": "Improper Neutralization of CRLF Sequences in HTTP Headers in Jooby ('HTTP Response Splitting)",
-  "details": "### Impact\n\n - Cross Site Scripting\n - Cache Poisoning\n - Page Hijacking\n\n### Patches\n\nThis was fixed in version `2.2.1`.\n\n### Workarounds\n\nIf you are unable to update, ensure that user supplied data isn't able to flow to HTTP headers. If it does, pre-sanitize for CRLF characters.\n\n### References\n\n##### [CWE-113: Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting')](https://cwe.mitre.org/data/definitions/113.html)\n\nI've been poking at libraries to see if they are vulnerable to HTTP Response Splitting and Jooby is my third case of finding this vulnerability.\n\n### Root Cause\n\nThis roots cause back to this line in the Jooby codebase:\n\nhttps://github.com/jooby-project/jooby/blob/93cfc80aa20c188f71a442ea7a1827da380e1c27/modules/jooby-netty/src/main/java/io/jooby/internal/netty/NettyContext.java#L102\n\nThe `DefaultHttpHeaders` takes a parameter `validate` which, when `true` (as it is for the no-arg constructor) validates that the header isn't being abused to do HTTP Response Splitting.\n\n### Reported By\n\nThis vulnerability was reported by @JLLeitschuh ([Twitter](https://twitter.com/JLLeitschuh))\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [jooby-project/jooby](https://github.com/jooby-project/jooby/issues)",
-  "aliases": [
-    "CVE-2020-7622"
-  ],
-  "modified": "2025-01-14T08:56:54.316654Z",
-  "published": "2020-04-03T15:23:30Z",
-  "related": [
-    "CVE-2020-7622"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2020-04-06T15:15:00Z",
-    "github_reviewed_at": "2020-04-02T23:59:56Z",
-    "severity": "CRITICAL",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-444"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/jooby-project/jooby/security/advisories/GHSA-gv3v-92v6-m48j"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-7622"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jooby-project/jooby/commit/b66e3342cf95205324023cfdf2cb5811e8a6dcf4"
-    },
-    {
-      "type": "WEB",
-      "url": "https://snyk.io/vuln/SNYK-JAVA-IOJOOBY-564249"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/04/GHSA-gv3v-92v6-m48j/GHSA-gv3v-92v6-m48j.json"
+      },
       "package": {
-        "name": "io.jooby:jooby-netty",
         "ecosystem": "Maven",
+        "name": "io.jooby:jooby-netty",
         "purl": "pkg:maven/io.jooby/jooby-netty"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -54,7 +18,8 @@
             {
               "fixed": "2.2.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -73,17 +38,52 @@
         "2.0.6",
         "2.1.0",
         "2.2.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/04/GHSA-gv3v-92v6-m48j/GHSA-gv3v-92v6-m48j.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2020-7622"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-444"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-04-02T23:59:56Z",
+    "nvd_published_at": "2020-04-06T15:15:00Z",
+    "severity": "CRITICAL"
+  },
+  "details": "### Impact\n\n - Cross Site Scripting\n - Cache Poisoning\n - Page Hijacking\n\n### Patches\n\nThis was fixed in version `2.2.1`.\n\n### Workarounds\n\nIf you are unable to update, ensure that user supplied data isn't able to flow to HTTP headers. If it does, pre-sanitize for CRLF characters.\n\n### References\n\n##### [CWE-113: Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting')](https://cwe.mitre.org/data/definitions/113.html)\n\nI've been poking at libraries to see if they are vulnerable to HTTP Response Splitting and Jooby is my third case of finding this vulnerability.\n\n### Root Cause\n\nThis roots cause back to this line in the Jooby codebase:\n\nhttps://github.com/jooby-project/jooby/blob/93cfc80aa20c188f71a442ea7a1827da380e1c27/modules/jooby-netty/src/main/java/io/jooby/internal/netty/NettyContext.java#L102\n\nThe `DefaultHttpHeaders` takes a parameter `validate` which, when `true` (as it is for the no-arg constructor) validates that the header isn't being abused to do HTTP Response Splitting.\n\n### Reported By\n\nThis vulnerability was reported by @JLLeitschuh ([Twitter](https://twitter.com/JLLeitschuh))\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [jooby-project/jooby](https://github.com/jooby-project/jooby/issues)",
+  "id": "GHSA-gv3v-92v6-m48j",
+  "modified": "2025-01-14T08:56:54.316654Z",
+  "published": "2020-04-03T15:23:30Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/jooby-project/jooby/security/advisories/GHSA-gv3v-92v6-m48j"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-7622"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jooby-project/jooby/commit/b66e3342cf95205324023cfdf2cb5811e8a6dcf4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://snyk.io/vuln/SNYK-JAVA-IOJOOBY-564249"
+    }
+  ],
+  "related": [
+    "CVE-2020-7622"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Improper Neutralization of CRLF Sequences in HTTP Headers in Jooby ('HTTP Response Splitting)"
 }

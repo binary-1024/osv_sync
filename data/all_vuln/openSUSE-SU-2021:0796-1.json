@@ -1,17 +1,41 @@
 {
-  "id": "openSUSE-SU-2021:0796-1",
-  "summary": "Security update for python-httplib2",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2021:0796-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python2-httplib2": "0.19.0-bp152.3.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Package Hub 15 SP2",
+        "name": "python-httplib2",
+        "purl": "pkg:rpm/suse/python-httplib2&distro=SUSE%20Package%20Hub%2015%20SP2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.19.0-bp152.3.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for python-httplib2 contains the following fixes:\n\nSecurity fixes included in this update:\n- CVE-2021-21240: Fixed a regular expression denial of service via malicious header (bsc#1182053).\n- CVE-2020-11078: Fixed an issue where an attacker could change request headers and body (bsc#1171998).\n\nNon security fixes included in this update:\n- Update in SLE to 0.19.0 (bsc#1182053, CVE-2021-21240)\n\n- update to 0.19.0:\n  * auth: parse headers using pyparsing instead of regexp\n  * auth: WSSE token needs to be string not bytes\n\n- update to 0.18.1: (bsc#1171998, CVE-2020-11078)\n  * explicit build-backend workaround for pip build isolation bug\n  * IMPORTANT security vulnerability CWE-93 CRLF injection\n  Force %xx quote of space, CR, LF characters in uri.\n  * Ship test suite in source dist\n\n- Update to 0.17.1\n  * python3: no_proxy was not checked with https\n  * feature: Http().redirect_codes set, works after follow(_all)_redirects check\n    This allows one line workaround for old gcloud library that uses 308\n    response without redirect semantics.\n  * IMPORTANT cache invalidation change, fix 307 keep method, add 308 Redirects\n  * proxy: username/password as str compatible with pysocks\n  * python2: regression in connect() error handling\n  * add support for password protected certificate files\n  * feature: Http.close() to clean persistent connections and sensitive data\n\n- Update to 0.14.0:\n  * Python3: PROXY_TYPE_SOCKS5 with str user/pass raised TypeError\n\n- version update to 0.13.1\n  0.13.1\n   * Python3: Use no_proxy\n     https://github.com/httplib2/httplib2/pull/140\n  0.13.0\n    * Allow setting TLS max/min versions\n      https://github.com/httplib2/httplib2/pull/138\n  0.12.3\n    * No changes to library. Distribute py3 wheels.\n  0.12.1\n    * Catch socket timeouts and clear dead connection\n      https://github.com/httplib2/httplib2/issues/18\n      https://github.com/httplib2/httplib2/pull/111\n    * Officially support Python 3.7 (package metadata)\n      https://github.com/httplib2/httplib2/issues/123\n  0.12.0\n    * Drop support for Python 3.3\n    * ca_certs from environment HTTPLIB2_CA_CERTS or certifi\n      https://github.com/httplib2/httplib2/pull/117\n    * PROXY_TYPE_HTTP with non-empty user/pass raised TypeError: bytes required\n      https://github.com/httplib2/httplib2/pull/115\n    * Revert http:443->https workaround\n      https://github.com/httplib2/httplib2/issues/112\n    * eliminate connection pool read race\n      https://github.com/httplib2/httplib2/pull/110\n    * cache: stronger safename\n      https://github.com/httplib2/httplib2/pull/101\n  0.11.3\n    * No changes, just reupload of 0.11.2 after fixing automatic release conditions in Travis.\n  0.11.2\n    * proxy: py3 NameError basestring\n      https://github.com/httplib2/httplib2/pull/100\n  0.11.1\n    * Fix HTTP(S)ConnectionWithTimeout AttributeError proxy_info\n      https://github.com/httplib2/httplib2/pull/97\n  0.11.0\n    * Add DigiCert Global Root G2 serial 033af1e6a711a9a0bb2864b11d09fae5\n      https://github.com/httplib2/httplib2/pull/91\n    * python3 proxy support\n      https://github.com/httplib2/httplib2/pull/90\n    * If no_proxy environment value ends with comma then proxy is not used\n      https://github.com/httplib2/httplib2/issues/11\n    * fix UnicodeDecodeError using socks5 proxy\n      https://github.com/httplib2/httplib2/pull/64\n    * Respect NO_PROXY env var in proxy_info_from_url\n      https://github.com/httplib2/httplib2/pull/58\n    * NO_PROXY=bar was matching foobar (suffix without dot delimiter)\n      New behavior matches curl/wget:\n      - no_proxy=foo.bar will only skip proxy for exact hostname match\n      - no_proxy=.wild.card will skip proxy for any.subdomains.wild.card\n      https://github.com/httplib2/httplib2/issues/94\n    * Bugfix for Content-Encoding: deflate\n      https://stackoverflow.com/a/22311297\n- deleted patches\n  - Removing certifi patch:\n    httplib2 started to use certifi and this is already bent to\n    use system certificate bundle by another patch\n\nThis update was imported from the SUSE:SLE-15:Update update project.\nThis update was imported from the openSUSE:Leap:15.2:Update update project.",
+  "id": "openSUSE-SU-2021:0796-1",
   "modified": "2025-05-07T18:11:18.757511Z",
   "published": "2021-05-26T12:05:23Z",
-  "related": [
-    "CVE-2020-11078",
-    "CVE-2021-21240"
-  ],
-  "upstream": [
-    "CVE-2020-11078",
-    "CVE-2021-21240"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -34,38 +58,14 @@
       "url": "https://www.suse.com/security/cve/CVE-2021-21240"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "python-httplib2",
-        "ecosystem": "SUSE:Package Hub 15 SP2",
-        "purl": "pkg:rpm/suse/python-httplib2&distro=SUSE%20Package%20Hub%2015%20SP2"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.19.0-bp152.3.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "python2-httplib2": "0.19.0-bp152.3.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2021:0796-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2020-11078",
+    "CVE-2021-21240"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for python-httplib2",
+  "upstream": [
+    "CVE-2020-11078",
+    "CVE-2021-21240"
+  ]
 }

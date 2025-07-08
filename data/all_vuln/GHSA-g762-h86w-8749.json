@@ -1,25 +1,56 @@
 {
-  "id": "GHSA-g762-h86w-8749",
-  "summary": "BoringSSLAEADContext in Netty Repeats Nonces",
-  "details": "### Summary\nBoringSSLAEADContext keeps track of how many OHTTP responses have been sent and uses this sequence number to calculate the appropriate nonce to use with the encryption algorithm. \nUnfortunately, two separate errors combine which would allow an attacker to cause the sequence number to overflow and thus the nonce to repeat.\n\n### Details\n1. There is no overflow detection or enforcement of the maximum sequence value. (This is a missed requirement from the draft Chunked Oblivious OHTTP RFC and so should be inherited from the HPKE RFC 9180, Section 5.2).\n2. The sequence number (seq) is stored as 32-bit int which is relatively easy to overflow.\n\nhttps://github.com/netty/netty-incubator-codec-ohttp/blob/1ddadb6473cd3be5491d114431ed4c1a9f316001/codec-ohttp-hpke-classes-boringssl/src/main/java/io/netty/incubator/codec/hpke/boringssl/BoringSSLAEADContext.java#L112-L114\n\n### Impact\nIf the BoringSSLAEADContext is used to encrypt more than 2^32 messages then the AES-GCM nonce will repeat.\nRepeating a nonce with AES-GCM results in both confidentiality and integrity compromise of data encrypted with the associated key.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-g762-h86w-8749/GHSA-g762-h86w-8749.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "io.netty.incubator:netty-incubator-codec-ohttp",
+        "purl": "pkg:maven/io.netty.incubator/netty-incubator-codec-ohttp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.3.Final"
+            },
+            {
+              "fixed": "0.0.11.Final"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "0.0.10.Final",
+        "0.0.3.Final",
+        "0.0.4.Final",
+        "0.0.5.Final",
+        "0.0.6.Final",
+        "0.0.7.Final",
+        "0.0.8.Final",
+        "0.0.9.Final"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-36121"
   ],
-  "modified": "2024-06-05T17:13:21.017513Z",
-  "published": "2024-06-05T16:53:49Z",
-  "related": [
-    "CVE-2024-36121"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-06-04T22:15:10Z",
     "cwe_ids": [
       "CWE-190",
       "CWE-200"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-06-05T16:53:49Z"
+    "github_reviewed_at": "2024-06-05T16:53:49Z",
+    "nvd_published_at": "2024-06-04T22:15:10Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nBoringSSLAEADContext keeps track of how many OHTTP responses have been sent and uses this sequence number to calculate the appropriate nonce to use with the encryption algorithm. \nUnfortunately, two separate errors combine which would allow an attacker to cause the sequence number to overflow and thus the nonce to repeat.\n\n### Details\n1. There is no overflow detection or enforcement of the maximum sequence value. (This is a missed requirement from the draft Chunked Oblivious OHTTP RFC and so should be inherited from the HPKE RFC 9180, Section 5.2).\n2. The sequence number (seq) is stored as 32-bit int which is relatively easy to overflow.\n\nhttps://github.com/netty/netty-incubator-codec-ohttp/blob/1ddadb6473cd3be5491d114431ed4c1a9f316001/codec-ohttp-hpke-classes-boringssl/src/main/java/io/netty/incubator/codec/hpke/boringssl/BoringSSLAEADContext.java#L112-L114\n\n### Impact\nIf the BoringSSLAEADContext is used to encrypt more than 2^32 messages then the AES-GCM nonce will repeat.\nRepeating a nonce with AES-GCM results in both confidentiality and integrity compromise of data encrypted with the associated key.\n",
+  "id": "GHSA-g762-h86w-8749",
+  "modified": "2024-06-05T17:13:21.017513Z",
+  "published": "2024-06-05T16:53:49Z",
   "references": [
     {
       "type": "WEB",
@@ -38,46 +69,15 @@
       "url": "https://github.com/netty/netty-incubator-codec-ohttp/blob/1ddadb6473cd3be5491d114431ed4c1a9f316001/codec-ohttp-hpke-classes-boringssl/src/main/java/io/netty/incubator/codec/hpke/boringssl/BoringSSLAEADContext.java#L112-L114"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "io.netty.incubator:netty-incubator-codec-ohttp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/io.netty.incubator/netty-incubator-codec-ohttp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0.0.3.Final"
-            },
-            {
-              "fixed": "0.0.11.Final"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "0.0.10.Final",
-        "0.0.3.Final",
-        "0.0.4.Final",
-        "0.0.5.Final",
-        "0.0.6.Final",
-        "0.0.7.Final",
-        "0.0.8.Final",
-        "0.0.9.Final"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-g762-h86w-8749/GHSA-g762-h86w-8749.json"
-      }
-    }
+  "related": [
+    "CVE-2024-36121"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "BoringSSLAEADContext in Netty Repeats Nonces"
 }

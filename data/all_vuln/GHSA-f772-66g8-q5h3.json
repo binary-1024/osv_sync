@@ -1,25 +1,47 @@
 {
-  "id": "GHSA-f772-66g8-q5h3",
-  "summary": "Nodejs \u2018undici\u2019 vulnerable to CRLF Injection via Content-Type",
-  "details": "### Impact\n\n`=< undici@5.8.0` users are vulnerable to _CRLF Injection_ on headers when using unsanitized input as request headers, more specifically, inside the `content-type` header.\n\nExample:\n\n```\nimport { request } from 'undici'\n\nconst unsanitizedContentTypeInput =  'application/json\\r\\n\\r\\nGET /foo2 HTTP/1.1'\n\nawait request('http://localhost:3000, {\n    method: 'GET',\n    headers: {\n      'content-type': unsanitizedContentTypeInput\n    },\n})\n```\n\nThe above snippet will perform two requests in a single `request` API call:\n\n1) `http://localhost:3000/`\n2) `http://localhost:3000/foo2`\n\n### Patches\n\nThis issue was patched in Undici v5.8.1\n\n### Workarounds\n\nSanitize input when sending content-type headers using user input.\n\n## For more information\nIf you have any questions or comments about this advisory:\n\n- Open an issue in [undici repository](https://github.com/nodejs/undici/issues)\n- To make a report, follow the [SECURITY](https://github.com/nodejs/node/blob/HEAD/SECURITY.md) document",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 5.8.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/08/GHSA-f772-66g8-q5h3/GHSA-f772-66g8-q5h3.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "undici",
+        "purl": "pkg:npm/undici"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.8.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-35948"
   ],
-  "modified": "2023-11-08T04:09:53.836338Z",
-  "published": "2022-08-18T19:02:56Z",
-  "related": [
-    "CVE-2022-35948"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-08-15T11:21:00Z",
-    "github_reviewed_at": "2022-08-18T19:02:56Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-74",
       "CWE-93"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-08-18T19:02:56Z",
+    "nvd_published_at": "2022-08-15T11:21:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\n`=< undici@5.8.0` users are vulnerable to _CRLF Injection_ on headers when using unsanitized input as request headers, more specifically, inside the `content-type` header.\n\nExample:\n\n```\nimport { request } from 'undici'\n\nconst unsanitizedContentTypeInput =  'application/json\\r\\n\\r\\nGET /foo2 HTTP/1.1'\n\nawait request('http://localhost:3000, {\n    method: 'GET',\n    headers: {\n      'content-type': unsanitizedContentTypeInput\n    },\n})\n```\n\nThe above snippet will perform two requests in a single `request` API call:\n\n1) `http://localhost:3000/`\n2) `http://localhost:3000/foo2`\n\n### Patches\n\nThis issue was patched in Undici v5.8.1\n\n### Workarounds\n\nSanitize input when sending content-type headers using user input.\n\n## For more information\nIf you have any questions or comments about this advisory:\n\n- Open an issue in [undici repository](https://github.com/nodejs/undici/issues)\n- To make a report, follow the [SECURITY](https://github.com/nodejs/node/blob/HEAD/SECURITY.md) document",
+  "id": "GHSA-f772-66g8-q5h3",
+  "modified": "2023-11-08T04:09:53.836338Z",
+  "published": "2022-08-18T19:02:56Z",
   "references": [
     {
       "type": "WEB",
@@ -42,37 +64,15 @@
       "url": "https://github.com/nodejs/undici/releases/tag/v5.8.2"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "undici",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/undici"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.8.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 5.8.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/08/GHSA-f772-66g8-q5h3/GHSA-f772-66g8-q5h3.json"
-      }
-    }
+  "related": [
+    "CVE-2022-35948"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Nodejs \u2018undici\u2019 vulnerable to CRLF Injection via Content-Type"
 }

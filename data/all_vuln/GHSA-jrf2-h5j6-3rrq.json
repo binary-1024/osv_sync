@@ -1,24 +1,51 @@
 {
-  "id": "GHSA-jrf2-h5j6-3rrq",
-  "summary": "Bunkum tokens cached in the AuthenticationService are susceptible to a use-after-free",
-  "details": "### Impact\nFirst, a little bit of background. So, in the beginning, Bunkum's `AuthenticationService` only supported injecting `IUser`s. However, as Refresh and SoundShapesServer implemented permissions systems support for injecting `IToken`s into endpoints was added. All was well until 4.0.\n\nBunkum 4.0 then changed to enforce relations between `IToken`s and `IUser`s. This wasn't implemented in a very good way in the `AuthenticationService`, and ended up breaking caching in such a way that cached tokens would persist after the lifetime of the request - since we tried to cache both tokens and users. From that point until now, from what I understand, Bunkum was attempting to use that cached token at the start of the next request once cached.\n\nNaturally, when that token expired, downstream projects like Refresh would remove the object from Realm - and cause the object in the cache to be in a detached state, causing an exception from invalid use of `IToken.User`. So in other words, a use-after-free since Realm can't manage the lifetime of the cached token.\n\nSecurity-wise, the scope is fairly limited, can only be pulled off on a couple endpoints given a few conditions, and you can't guarantee which token you're going to get. Also, the token *would* get invalidated properly if the endpoint had either a `IToken` usage or a `IUser` usage. User interaction is required as authenticated requests must be performed.\n\n### Patches\nThe fix is to just wipe the token cache after the request was handled, which is now in `4.2.1`. I'd recommend that you update. Unfortunately, there are no real workarounds for other versions in the 4.X.X range.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-jrf2-h5j6-3rrq/GHSA-jrf2-h5j6-3rrq.json"
+      },
+      "package": {
+        "ecosystem": "NuGet",
+        "name": "Bunkum",
+        "purl": "pkg:nuget/Bunkum"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.2.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.0.0",
+        "4.0.1",
+        "4.1.0",
+        "4.2.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-45814"
   ],
-  "modified": "2024-02-16T08:15:19.572841Z",
-  "published": "2023-10-19T16:11:59Z",
-  "related": [
-    "CVE-2023-45814"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-10-18T22:15:09Z",
     "cwe_ids": [
       "CWE-772"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-10-19T16:11:59Z"
+    "github_reviewed_at": "2023-10-19T16:11:59Z",
+    "nvd_published_at": "2023-10-18T22:15:09Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\nFirst, a little bit of background. So, in the beginning, Bunkum's `AuthenticationService` only supported injecting `IUser`s. However, as Refresh and SoundShapesServer implemented permissions systems support for injecting `IToken`s into endpoints was added. All was well until 4.0.\n\nBunkum 4.0 then changed to enforce relations between `IToken`s and `IUser`s. This wasn't implemented in a very good way in the `AuthenticationService`, and ended up breaking caching in such a way that cached tokens would persist after the lifetime of the request - since we tried to cache both tokens and users. From that point until now, from what I understand, Bunkum was attempting to use that cached token at the start of the next request once cached.\n\nNaturally, when that token expired, downstream projects like Refresh would remove the object from Realm - and cause the object in the cache to be in a detached state, causing an exception from invalid use of `IToken.User`. So in other words, a use-after-free since Realm can't manage the lifetime of the cached token.\n\nSecurity-wise, the scope is fairly limited, can only be pulled off on a couple endpoints given a few conditions, and you can't guarantee which token you're going to get. Also, the token *would* get invalidated properly if the endpoint had either a `IToken` usage or a `IUser` usage. User interaction is required as authenticated requests must be performed.\n\n### Patches\nThe fix is to just wipe the token cache after the request was handled, which is now in `4.2.1`. I'd recommend that you update. Unfortunately, there are no real workarounds for other versions in the 4.X.X range.",
+  "id": "GHSA-jrf2-h5j6-3rrq",
+  "modified": "2024-02-16T08:15:19.572841Z",
+  "published": "2023-10-19T16:11:59Z",
   "references": [
     {
       "type": "WEB",
@@ -37,42 +64,15 @@
       "url": "https://github.com/LittleBigRefresh/Bunkum"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "Bunkum",
-        "ecosystem": "NuGet",
-        "purl": "pkg:nuget/Bunkum"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "4.0.0"
-            },
-            {
-              "fixed": "4.2.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "4.0.0",
-        "4.0.1",
-        "4.1.0",
-        "4.2.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-jrf2-h5j6-3rrq/GHSA-jrf2-h5j6-3rrq.json"
-      }
-    }
+  "related": [
+    "CVE-2023-45814"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Bunkum tokens cached in the AuthenticationService are susceptible to a use-after-free"
 }

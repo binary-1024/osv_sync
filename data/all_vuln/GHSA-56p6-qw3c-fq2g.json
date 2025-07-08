@@ -1,24 +1,91 @@
 {
-  "id": "GHSA-56p6-qw3c-fq2g",
-  "summary": "Suspended Directus user can continue to use session token to access API",
-  "details": "### Summary\nSince the user status is not checked when verifying a session token a suspended user can use the token generated in session auth mode to access the API despite their status.\n\n### Details\nThere is a check missing in `verifySessionJWT` to verify that a user is actually still active and allowed to access the API. Right now one can extract the session token obtained by, e.g. login in to the app while still active and then, after the user has been suspended continue to use that token until it expires.\n\n### PoC\n* Create an active user\n* Log in with that user and note the session cookie\n* Suspend the user (and don't trigger an `/auth/refresh` call, as that invalidates the session\n* Access the API with `Authorization: Bearer <token>`\n\n### Impact\nThis weakens the security of suspending users.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-56p6-qw3c-fq2g/GHSA-56p6-qw3c-fq2g.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "directus",
+        "purl": "pkg:npm/directus"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.10.0"
+            },
+            {
+              "fixed": "11.5.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-56p6-qw3c-fq2g/GHSA-56p6-qw3c-fq2g.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@directus/api",
+        "purl": "pkg:npm/%40directus/api"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "18.0.0"
+            },
+            {
+              "fixed": "24.0.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-56p6-qw3c-fq2g/GHSA-56p6-qw3c-fq2g.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@directus/types",
+        "purl": "pkg:npm/%40directus/types"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.7"
+            },
+            {
+              "fixed": "13.0.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-30351"
   ],
-  "modified": "2025-06-09T18:12:09Z",
-  "published": "2025-03-26T18:30:43Z",
-  "related": [
-    "CVE-2025-30351"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-03-26T18:15:26Z",
     "cwe_ids": [
       "CWE-672"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-03-26T18:30:43Z"
+    "github_reviewed_at": "2025-03-26T18:30:43Z",
+    "nvd_published_at": "2025-03-26T18:15:26Z",
+    "severity": "LOW"
   },
+  "details": "### Summary\nSince the user status is not checked when verifying a session token a suspended user can use the token generated in session auth mode to access the API despite their status.\n\n### Details\nThere is a check missing in `verifySessionJWT` to verify that a user is actually still active and allowed to access the API. Right now one can extract the session token obtained by, e.g. login in to the app while still active and then, after the user has been suspended continue to use that token until it expires.\n\n### PoC\n* Create an active user\n* Log in with that user and note the session cookie\n* Suspend the user (and don't trigger an `/auth/refresh` call, as that invalidates the session\n* Access the API with `Authorization: Bearer <token>`\n\n### Impact\nThis weakens the security of suspending users.",
+  "id": "GHSA-56p6-qw3c-fq2g",
+  "modified": "2025-06-09T18:12:09Z",
+  "published": "2025-03-26T18:30:43Z",
   "references": [
     {
       "type": "WEB",
@@ -37,82 +104,15 @@
       "url": "https://github.com/directus/directus"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "directus",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/directus"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "10.10.0"
-            },
-            {
-              "fixed": "11.5.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-56p6-qw3c-fq2g/GHSA-56p6-qw3c-fq2g.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@directus/api",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40directus/api"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "18.0.0"
-            },
-            {
-              "fixed": "24.0.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-56p6-qw3c-fq2g/GHSA-56p6-qw3c-fq2g.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@directus/types",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40directus/types"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "11.0.7"
-            },
-            {
-              "fixed": "13.0.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-56p6-qw3c-fq2g/GHSA-56p6-qw3c-fq2g.json"
-      }
-    }
+  "related": [
+    "CVE-2025-30351"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Suspended Directus user can continue to use session token to access API"
 }

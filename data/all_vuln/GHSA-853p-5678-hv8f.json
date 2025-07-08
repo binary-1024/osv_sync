@@ -1,25 +1,69 @@
 {
-  "id": "GHSA-853p-5678-hv8f",
-  "summary": "ink! vulnerable to incorrect decoding of storage value when using `DelegateCall`",
-  "details": "### Summary\nThe return value when using delegate call mechanics, either through [`CallBuilder::delegate`](https://docs.rs/ink_env/4.2.0/ink_env/call/struct.CallBuilder.html#method.delegate) or [`ink_env::invoke_contract_delegate`](https://docs.rs/ink_env/4.2.0/ink_env/fn.invoke_contract_delegate.html), is being decoded incorrectly.\n\n### Description\nConsider this minimal example:\n\n```rust\n// First contract, this will be performing a delegate call to the `Callee`.\n#[ink(storage)]\npub struct Caller {\n    value: u128,\n}\n\n#[ink(message)]\npub fn get_value(&self, callee_code_hash: Hash) -> u128 {\n    let result = build_call::<DefaultEnvironment>()\n        .delegate(callee_code_hash)\n        .exec_input(ExecutionInput::new(Selector::new(ink::selector_bytes!(\n            \"get_value\"\n        ))))\n        .returns::<u128>()\n        .invoke();\n\n    result\n}\n\n// Different contract, using this code hash for the delegate call.\n#[ink(storage)]\npub struct Callee {\n    value: u128,\n}\n\n#[ink(message)]\npub fn get_value(&self) -> u128 {\n    self.value\n}\n```\n\nIn this example we are executing the `Callee` code in the context of the `Caller` contract. This means we'll be using the storage values of the `Caller` contract.\n\nRunning this code we expect the delegate call to return `value` as it was stored in the `Caller` contract. However, due to the reported bug a different value is returned (for the case of `uint`s it is `256` times the expected value).\n\n### Impact\nAfter conducting an analysis of the on-chain deployments of ink! contracts on Astar, Shiden, Aleph Zero, Amplitude and Pendulum, we have found that no contracts on those chains have been affected by the issue.\n\nThis bug was related to the mechanics around decoding a call's return buffer, which was changed as part of https://github.com/paritytech/ink/pull/1450. Since this feature was only released in ink! 4.0.0 no previous versions are affected.\n\n### Mitigations\nIf you have an ink! 4.x series contract, please update it to the [4.2.1](https://github.com/paritytech/ink/releases/tag/v4.2.1) patch release that we just published. \n\n### Credits\nThank you Facundo Lerena from [CoinFabrik](https://www.coinfabrik.com) for reporting this problem in a well-structured and responsible way.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-853p-5678-hv8f/GHSA-853p-5678-hv8f.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "ink",
+        "purl": "pkg:cargo/ink"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.2.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-853p-5678-hv8f/GHSA-853p-5678-hv8f.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "ink_env",
+        "purl": "pkg:cargo/ink_env"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.2.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-34449"
   ],
-  "modified": "2023-11-08T04:12:46.757025Z",
-  "published": "2023-06-14T20:11:38Z",
-  "related": [
-    "CVE-2023-34449"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-06-14T21:15:09Z",
     "cwe_ids": [
       "CWE-253",
       "CWE-754"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-06-14T20:11:38Z"
+    "github_reviewed_at": "2023-06-14T20:11:38Z",
+    "nvd_published_at": "2023-06-14T21:15:09Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nThe return value when using delegate call mechanics, either through [`CallBuilder::delegate`](https://docs.rs/ink_env/4.2.0/ink_env/call/struct.CallBuilder.html#method.delegate) or [`ink_env::invoke_contract_delegate`](https://docs.rs/ink_env/4.2.0/ink_env/fn.invoke_contract_delegate.html), is being decoded incorrectly.\n\n### Description\nConsider this minimal example:\n\n```rust\n// First contract, this will be performing a delegate call to the `Callee`.\n#[ink(storage)]\npub struct Caller {\n    value: u128,\n}\n\n#[ink(message)]\npub fn get_value(&self, callee_code_hash: Hash) -> u128 {\n    let result = build_call::<DefaultEnvironment>()\n        .delegate(callee_code_hash)\n        .exec_input(ExecutionInput::new(Selector::new(ink::selector_bytes!(\n            \"get_value\"\n        ))))\n        .returns::<u128>()\n        .invoke();\n\n    result\n}\n\n// Different contract, using this code hash for the delegate call.\n#[ink(storage)]\npub struct Callee {\n    value: u128,\n}\n\n#[ink(message)]\npub fn get_value(&self) -> u128 {\n    self.value\n}\n```\n\nIn this example we are executing the `Callee` code in the context of the `Caller` contract. This means we'll be using the storage values of the `Caller` contract.\n\nRunning this code we expect the delegate call to return `value` as it was stored in the `Caller` contract. However, due to the reported bug a different value is returned (for the case of `uint`s it is `256` times the expected value).\n\n### Impact\nAfter conducting an analysis of the on-chain deployments of ink! contracts on Astar, Shiden, Aleph Zero, Amplitude and Pendulum, we have found that no contracts on those chains have been affected by the issue.\n\nThis bug was related to the mechanics around decoding a call's return buffer, which was changed as part of https://github.com/paritytech/ink/pull/1450. Since this feature was only released in ink! 4.0.0 no previous versions are affected.\n\n### Mitigations\nIf you have an ink! 4.x series contract, please update it to the [4.2.1](https://github.com/paritytech/ink/releases/tag/v4.2.1) patch release that we just published. \n\n### Credits\nThank you Facundo Lerena from [CoinFabrik](https://www.coinfabrik.com) for reporting this problem in a well-structured and responsible way.",
+  "id": "GHSA-853p-5678-hv8f",
+  "modified": "2023-11-08T04:12:46.757025Z",
+  "published": "2023-06-14T20:11:38Z",
   "references": [
     {
       "type": "WEB",
@@ -50,59 +94,15 @@
       "url": "https://github.com/paritytech/ink"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ink",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/ink"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "4.0.0"
-            },
-            {
-              "fixed": "4.2.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-853p-5678-hv8f/GHSA-853p-5678-hv8f.json"
-      }
-    },
-    {
-      "package": {
-        "name": "ink_env",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/ink_env"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "4.0.0"
-            },
-            {
-              "fixed": "4.2.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-853p-5678-hv8f/GHSA-853p-5678-hv8f.json"
-      }
-    }
+  "related": [
+    "CVE-2023-34449"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "ink! vulnerable to incorrect decoding of storage value when using `DelegateCall`"
 }

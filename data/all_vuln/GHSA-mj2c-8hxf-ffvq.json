@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-mj2c-8hxf-ffvq",
-  "summary": "Cocotais Bot has builtin .echo command injection",
-  "details": "### Summary\n\ufeff\nA command echoing feature in the framework allows users to indirectly trigger privileged behavior by injecting special platform tags. Specifically, an unauthorized user can use the `/echo <qqbot-at-everyone />` command to cause the bot to send a message that mentions all members in the chat, bypassing any permission controls. This can lead to spam, disruption, or abuse of notification systems.\n\ufeff\n### Details\n\ufeff\nThe framework provides a command `/echo` that causes the bot to repeat any user-provided message verbatim in the group chat. However, the bot fails to sanitize or filter platform-specific control elements such as `<qqbot-at-everyone />`, which, when included in a message, mentions everyone (i.e., @\u5168\u4f53\u6210\u5458). While normal users are forbidden from using this tag in normal chats, the bot, which has higher privileges, is allowed to do so.\n\ufeff\nSince the `/echo` command blindly echoes any content, a user can exploit this by sending:\n\ufeff\n```\n/echo <qqbot-at-everyone />\n```\n\ufeff\nThe bot will then send a message containing `<qqbot-at-everyone />`, causing the platform to interpret it as an @\u5168\u4f53\u6210\u5458 command, effectively allowing an unauthorized user to @everyone via the bot.\n\ufeff\n### PoC\n\ufeff\n1. Set up a chatbot using the affected framework.\n2. Join the chat that includes the bot as a regular user with **no permission to use @\u5168\u4f53\u6210\u5458**.\n3. Send the following message in the chat:\n\ufeff\n```\n/echo <qqbot-at-everyone />\n```\n4. The bot will respond by repeating the message, and the platform will interpret `<qqbot-at-everyone />` as an @\u5168\u4f53\u6210\u5458 mention.\n5. All the chat members receive a notification, despite the user lacking that permission.\n\ufeff\n\ufeff",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-mj2c-8hxf-ffvq/GHSA-mj2c-8hxf-ffvq.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "cocotais-bot",
+        "purl": "pkg:npm/cocotais-bot"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.5.0-test2-hotfix"
+            },
+            {
+              "fixed": "1.6.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-47948"
   ],
-  "modified": "2025-05-19T17:27:11.468015Z",
-  "published": "2025-05-19T16:25:05Z",
-  "related": [
-    "CVE-2025-47948"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-05-17T19:15:46Z",
     "cwe_ids": [
       "CWE-74"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-05-19T16:25:05Z"
+    "github_reviewed_at": "2025-05-19T16:25:05Z",
+    "nvd_published_at": "2025-05-17T19:15:46Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\n\ufeff\nA command echoing feature in the framework allows users to indirectly trigger privileged behavior by injecting special platform tags. Specifically, an unauthorized user can use the `/echo <qqbot-at-everyone />` command to cause the bot to send a message that mentions all members in the chat, bypassing any permission controls. This can lead to spam, disruption, or abuse of notification systems.\n\ufeff\n### Details\n\ufeff\nThe framework provides a command `/echo` that causes the bot to repeat any user-provided message verbatim in the group chat. However, the bot fails to sanitize or filter platform-specific control elements such as `<qqbot-at-everyone />`, which, when included in a message, mentions everyone (i.e., @\u5168\u4f53\u6210\u5458). While normal users are forbidden from using this tag in normal chats, the bot, which has higher privileges, is allowed to do so.\n\ufeff\nSince the `/echo` command blindly echoes any content, a user can exploit this by sending:\n\ufeff\n```\n/echo <qqbot-at-everyone />\n```\n\ufeff\nThe bot will then send a message containing `<qqbot-at-everyone />`, causing the platform to interpret it as an @\u5168\u4f53\u6210\u5458 command, effectively allowing an unauthorized user to @everyone via the bot.\n\ufeff\n### PoC\n\ufeff\n1. Set up a chatbot using the affected framework.\n2. Join the chat that includes the bot as a regular user with **no permission to use @\u5168\u4f53\u6210\u5458**.\n3. Send the following message in the chat:\n\ufeff\n```\n/echo <qqbot-at-everyone />\n```\n4. The bot will respond by repeating the message, and the platform will interpret `<qqbot-at-everyone />` as an @\u5168\u4f53\u6210\u5458 mention.\n5. All the chat members receive a notification, despite the user lacking that permission.\n\ufeff\n\ufeff",
+  "id": "GHSA-mj2c-8hxf-ffvq",
+  "modified": "2025-05-19T17:27:11.468015Z",
+  "published": "2025-05-19T16:25:05Z",
   "references": [
     {
       "type": "WEB",
@@ -37,36 +58,15 @@
       "url": "https://github.com/cocotais/cocotais-bot"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "cocotais-bot",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/cocotais-bot"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.5.0-test2-hotfix"
-            },
-            {
-              "fixed": "1.6.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-mj2c-8hxf-ffvq/GHSA-mj2c-8hxf-ffvq.json"
-      }
-    }
+  "related": [
+    "CVE-2025-47948"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Cocotais Bot has builtin .echo command injection"
 }

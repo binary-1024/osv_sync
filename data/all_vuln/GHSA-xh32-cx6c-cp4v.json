@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-xh32-cx6c-cp4v",
-  "summary": "Gogs XSS allowed by stored call in PDF renderer",
-  "details": "### Summary\n\nA stored XSS is present in Gogs which allows client-side Javascript code execution.\n\n### Details\n\nGogs Version:\n```\ndocker images\nREPOSITORY   TAG       IMAGE ID       CREATED        SIZE\ngogs/gogs    latest    fe92583bc4fe   10 hours ago   99.3MB\n```\n\nApplication version: `0.14.0+dev`\n\nLocal setup using:\n```bash\n# Pull image from Docker Hub.\ndocker pull gogs/gogs\n\n# Create local directory for volume.\nsudo mkdir -p /var/gogs\n\n# Use `docker run` for the first time.\ndocker run --name=gogs -p 10022:22 -p 10880:3000 -v /var/gogs:/data gogs/gogs\n```\n\nThe vulnerability is caused by the usage of a vulnerable and outdated component: `pdfjs-1.4.20` under public/plugins/.  \nRead more about this vulnerability at [codeanlabs - CVE-2024-4367](https://codeanlabs.com/blog/research/cve-2024-4367-arbitrary-js-execution-in-pdf-js/).\n\n### PoC\n\n1. Upload the Proof of Concept file hosted at https://codeanlabs.com/wp-content/uploads/2024/05/poc_generalized_CVE-2024-4367.pdf in a repository.\n2. Click on the file to be previewed.\n\n![poc](https://github.com/user-attachments/assets/5af1303e-8751-49c8-af2e-d0631dd18957)\n\n\n### Credits\n\nEdoardo Ottavianelli",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-xh32-cx6c-cp4v/GHSA-xh32-cx6c-cp4v.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/gogs/gogs",
+        "purl": "pkg:golang/github.com/gogs/gogs"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.13.3-0.20250608224432-110117b2e5e5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-47943"
   ],
-  "modified": "2025-06-26T17:42:18.325018Z",
-  "published": "2025-06-26T16:54:01Z",
-  "related": [
-    "CVE-2025-47943"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-06-24T04:15:46Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-06-26T16:54:01Z"
+    "github_reviewed_at": "2025-06-26T16:54:01Z",
+    "nvd_published_at": "2025-06-24T04:15:46Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\n\nA stored XSS is present in Gogs which allows client-side Javascript code execution.\n\n### Details\n\nGogs Version:\n```\ndocker images\nREPOSITORY   TAG       IMAGE ID       CREATED        SIZE\ngogs/gogs    latest    fe92583bc4fe   10 hours ago   99.3MB\n```\n\nApplication version: `0.14.0+dev`\n\nLocal setup using:\n```bash\n# Pull image from Docker Hub.\ndocker pull gogs/gogs\n\n# Create local directory for volume.\nsudo mkdir -p /var/gogs\n\n# Use `docker run` for the first time.\ndocker run --name=gogs -p 10022:22 -p 10880:3000 -v /var/gogs:/data gogs/gogs\n```\n\nThe vulnerability is caused by the usage of a vulnerable and outdated component: `pdfjs-1.4.20` under public/plugins/.  \nRead more about this vulnerability at [codeanlabs - CVE-2024-4367](https://codeanlabs.com/blog/research/cve-2024-4367-arbitrary-js-execution-in-pdf-js/).\n\n### PoC\n\n1. Upload the Proof of Concept file hosted at https://codeanlabs.com/wp-content/uploads/2024/05/poc_generalized_CVE-2024-4367.pdf in a repository.\n2. Click on the file to be previewed.\n\n![poc](https://github.com/user-attachments/assets/5af1303e-8751-49c8-af2e-d0631dd18957)\n\n\n### Credits\n\nEdoardo Ottavianelli",
+  "id": "GHSA-xh32-cx6c-cp4v",
+  "modified": "2025-06-26T17:42:18.325018Z",
+  "published": "2025-06-26T16:54:01Z",
   "references": [
     {
       "type": "WEB",
@@ -41,36 +62,15 @@
       "url": "https://github.com/gogs/gogs/releases/tag/v0.13.3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/gogs/gogs",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/gogs/gogs"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.13.3-0.20250608224432-110117b2e5e5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-xh32-cx6c-cp4v/GHSA-xh32-cx6c-cp4v.json"
-      }
-    }
+  "related": [
+    "CVE-2025-47943"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Gogs XSS allowed by stored call in PDF renderer"
 }

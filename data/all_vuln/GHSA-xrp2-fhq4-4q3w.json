@@ -1,81 +1,16 @@
 {
-  "id": "GHSA-xrp2-fhq4-4q3w",
-  "summary": "Segfault if `tf.histogram_fixed_width` is called with NaN values in TensorFlow",
-  "details": "### Impact\nThe implementation of [`tf.histogram_fixed_width`](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/histogram_op.cc) is vulnerable to a crash when the values array contain `NaN` elements:\n\n```python\nimport tensorflow as tf\nimport numpy as np\n\ntf.histogram_fixed_width(values=np.nan, value_range=[1,2])\n```\n\nThe [implementation](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/histogram_op.cc#L35-L74) assumes that all floating point operations are defined and then converts a floating point result to an integer index:\n\n```cc\nindex_to_bin.device(d) =\n    ((values.cwiseMax(value_range(0)) - values.constant(value_range(0)))\n         .template cast<double>() /\n     step)\n        .cwiseMin(nbins_minus_1)\n        .template cast<int32>();\n```\n\nIf `values` contains `NaN` then the result of the division is still `NaN` and the cast to `int32` would result in a crash.\n\nThis only occurs on the CPU implementation.\n\n### Patches\nWe have patched the issue in GitHub commit [e57fd691c7b0fd00ea3bfe43444f30c1969748b5](https://github.com/tensorflow/tensorflow/commit/e57fd691c7b0fd00ea3bfe43444f30c1969748b5).\n\nThe fix will be included in TensorFlow 2.9.0. We will also cherrypick this commit on TensorFlow 2.8.1, TensorFlow 2.7.2, and TensorFlow 2.6.4, as these are also affected and still in supported range.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported externally via a [GitHub issue](https://github.com/tensorflow/tensorflow/issues/45770).",
-  "aliases": [
-    "BIT-tensorflow-2022-29211",
-    "CVE-2022-29211"
-  ],
-  "modified": "2023-12-06T01:02:14.438804Z",
-  "published": "2022-05-24T22:15:45Z",
-  "related": [
-    "CVE-2022-29211"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-05-21T00:15:00Z",
-    "github_reviewed_at": "2022-05-24T22:15:45Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-20"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-xrp2-fhq4-4q3w"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29211"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/issues/45770"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/e57fd691c7b0fd00ea3bfe43444f30c1969748b5"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/histogram_op.cc"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/histogram_op.cc#L35-L74"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.6.4"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.7.2"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.8.1"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.9.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -83,7 +18,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -153,20 +89,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -174,26 +109,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -201,25 +136,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -227,7 +162,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -259,20 +195,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -280,26 +215,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -307,25 +242,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -333,7 +268,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -400,20 +336,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -421,26 +356,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -448,22 +383,87 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-xrp2-fhq4-4q3w/GHSA-xrp2-fhq4-4q3w.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-29211",
+    "CVE-2022-29211"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-20"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-05-24T22:15:45Z",
+    "nvd_published_at": "2022-05-21T00:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nThe implementation of [`tf.histogram_fixed_width`](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/histogram_op.cc) is vulnerable to a crash when the values array contain `NaN` elements:\n\n```python\nimport tensorflow as tf\nimport numpy as np\n\ntf.histogram_fixed_width(values=np.nan, value_range=[1,2])\n```\n\nThe [implementation](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/histogram_op.cc#L35-L74) assumes that all floating point operations are defined and then converts a floating point result to an integer index:\n\n```cc\nindex_to_bin.device(d) =\n    ((values.cwiseMax(value_range(0)) - values.constant(value_range(0)))\n         .template cast<double>() /\n     step)\n        .cwiseMin(nbins_minus_1)\n        .template cast<int32>();\n```\n\nIf `values` contains `NaN` then the result of the division is still `NaN` and the cast to `int32` would result in a crash.\n\nThis only occurs on the CPU implementation.\n\n### Patches\nWe have patched the issue in GitHub commit [e57fd691c7b0fd00ea3bfe43444f30c1969748b5](https://github.com/tensorflow/tensorflow/commit/e57fd691c7b0fd00ea3bfe43444f30c1969748b5).\n\nThe fix will be included in TensorFlow 2.9.0. We will also cherrypick this commit on TensorFlow 2.8.1, TensorFlow 2.7.2, and TensorFlow 2.6.4, as these are also affected and still in supported range.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported externally via a [GitHub issue](https://github.com/tensorflow/tensorflow/issues/45770).",
+  "id": "GHSA-xrp2-fhq4-4q3w",
+  "modified": "2023-12-06T01:02:14.438804Z",
+  "published": "2022-05-24T22:15:45Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-xrp2-fhq4-4q3w"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29211"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/issues/45770"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/e57fd691c7b0fd00ea3bfe43444f30c1969748b5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/histogram_op.cc"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/histogram_op.cc#L35-L74"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.6.4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.7.2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.8.1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.9.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-29211"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Segfault if `tf.histogram_fixed_width` is called with NaN values in TensorFlow"
 }

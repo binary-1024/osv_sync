@@ -1,92 +1,16 @@
 {
-  "id": "GHSA-v845-jxx5-vc9f",
-  "summary": "`Cookie` HTTP header isn't stripped on cross-origin redirects",
-  "details": "urllib3 doesn't treat the `Cookie` HTTP header special or provide any helpers for managing cookies over HTTP, that is the responsibility of the user. However, it is possible for a user to specify a `Cookie` header and unknowingly leak information via HTTP redirects to a different origin if that user doesn't disable redirects explicitly.\n\nUsers **must** handle redirects themselves instead of relying on urllib3's automatic redirects to achieve safe processing of the `Cookie` header, thus we decided to strip the header by default in order to further protect users who aren't using the correct approach.\n\n## Affected usages\n\nWe believe the number of usages affected by this advisory is low. It requires all of the following to be true to be exploited:\n\n* Using an affected version of urllib3 (patched in v1.26.17 and v2.0.6)\n* Using the `Cookie` header on requests, which is mostly typical for impersonating a browser.\n* Not disabling HTTP redirects\n* Either not using HTTPS or for the origin server to redirect to a malicious origin.\n\n## Remediation\n\n* Upgrading to at least urllib3 v1.26.17 or v2.0.6\n* Disabling HTTP redirects using `redirects=False` when sending requests.\n* Not using the `Cookie` header.",
-  "aliases": [
-    "CVE-2023-43804",
-    "PYSEC-2023-192"
-  ],
-  "modified": "2024-12-13T16:37:46.297254Z",
-  "published": "2023-10-02T23:27:05Z",
-  "related": [
-    "CGA-56g7-689g-xp6r",
-    "CGA-7c9w-c64m-rwq2",
-    "CGA-f5jj-vcxx-v8m8",
-    "CGA-h89x-4j9m-pw85",
-    "CGA-hwhv-g3qw-gfgp",
-    "CGA-jj8v-vhq7-m6wh",
-    "CGA-mqx7-jxgh-vrfr",
-    "CVE-2023-43804"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2023-10-04T17:15:10Z",
-    "cwe_ids": [
-      "CWE-200"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-10-02T23:27:05Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/urllib3/urllib3/security/advisories/GHSA-v845-jxx5-vc9f"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-43804"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/urllib3/urllib3/commit/01220354d389cd05474713f8c982d05c9b17aafb"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/urllib3/urllib3/commit/644124ecd0b6e417c527191f866daa05a5a2056d"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/urllib3/PYSEC-2023-192.yaml"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/urllib3/urllib3"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.debian.org/debian-lts-announce/2023/10/msg00012.html"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/5F5CUBAN5XMEBVBZPHFITBLMJV5FIJJ5"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/I3PR7C6RJ6JUBQKIJ644DMIJSUP36VDY"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/NDAGZXYJ7H2G3SB47M453VQVNAWKAEJJ"
-    },
-    {
-      "type": "WEB",
-      "url": "https://security.netapp.com/advisory/ntap-20241213-0007"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.vicarius.io/vsociety/posts/cve-2023-43804-urllib3-vulnerability-3"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v845-jxx5-vc9f/GHSA-v845-jxx5-vc9f.json"
+      },
       "package": {
-        "name": "urllib3",
         "ecosystem": "PyPI",
+        "name": "urllib3",
         "purl": "pkg:pypi/urllib3"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.0.0"
@@ -94,7 +18,8 @@
             {
               "fixed": "2.0.6"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -104,20 +29,19 @@
         "2.0.3",
         "2.0.4",
         "2.0.5"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v845-jxx5-vc9f/GHSA-v845-jxx5-vc9f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v845-jxx5-vc9f/GHSA-v845-jxx5-vc9f.json"
+      },
       "package": {
-        "name": "urllib3",
         "ecosystem": "PyPI",
+        "name": "urllib3",
         "purl": "pkg:pypi/urllib3"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -125,7 +49,8 @@
             {
               "fixed": "1.26.17"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -208,21 +133,96 @@
         "1.8.3",
         "1.9",
         "1.9.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-v845-jxx5-vc9f/GHSA-v845-jxx5-vc9f.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2023-43804",
+    "PYSEC-2023-192"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-200"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-10-02T23:27:05Z",
+    "nvd_published_at": "2023-10-04T17:15:10Z",
+    "severity": "HIGH"
+  },
+  "details": "urllib3 doesn't treat the `Cookie` HTTP header special or provide any helpers for managing cookies over HTTP, that is the responsibility of the user. However, it is possible for a user to specify a `Cookie` header and unknowingly leak information via HTTP redirects to a different origin if that user doesn't disable redirects explicitly.\n\nUsers **must** handle redirects themselves instead of relying on urllib3's automatic redirects to achieve safe processing of the `Cookie` header, thus we decided to strip the header by default in order to further protect users who aren't using the correct approach.\n\n## Affected usages\n\nWe believe the number of usages affected by this advisory is low. It requires all of the following to be true to be exploited:\n\n* Using an affected version of urllib3 (patched in v1.26.17 and v2.0.6)\n* Using the `Cookie` header on requests, which is mostly typical for impersonating a browser.\n* Not disabling HTTP redirects\n* Either not using HTTPS or for the origin server to redirect to a malicious origin.\n\n## Remediation\n\n* Upgrading to at least urllib3 v1.26.17 or v2.0.6\n* Disabling HTTP redirects using `redirects=False` when sending requests.\n* Not using the `Cookie` header.",
+  "id": "GHSA-v845-jxx5-vc9f",
+  "modified": "2024-12-13T16:37:46.297254Z",
+  "published": "2023-10-02T23:27:05Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/urllib3/urllib3/security/advisories/GHSA-v845-jxx5-vc9f"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-43804"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/urllib3/urllib3/commit/01220354d389cd05474713f8c982d05c9b17aafb"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/urllib3/urllib3/commit/644124ecd0b6e417c527191f866daa05a5a2056d"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/urllib3/PYSEC-2023-192.yaml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/urllib3/urllib3"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2023/10/msg00012.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/5F5CUBAN5XMEBVBZPHFITBLMJV5FIJJ5"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/I3PR7C6RJ6JUBQKIJ644DMIJSUP36VDY"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/NDAGZXYJ7H2G3SB47M453VQVNAWKAEJJ"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20241213-0007"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.vicarius.io/vsociety/posts/cve-2023-43804-urllib3-vulnerability-3"
+    }
+  ],
+  "related": [
+    "CGA-56g7-689g-xp6r",
+    "CGA-7c9w-c64m-rwq2",
+    "CGA-f5jj-vcxx-v8m8",
+    "CGA-h89x-4j9m-pw85",
+    "CGA-hwhv-g3qw-gfgp",
+    "CGA-jj8v-vhq7-m6wh",
+    "CGA-mqx7-jxgh-vrfr",
+    "CVE-2023-43804"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:H/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:H/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "`Cookie` HTTP header isn't stripped on cross-origin redirects"
 }

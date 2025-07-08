@@ -1,7 +1,41 @@
 {
-  "id": "BIT-tensorflow-2020-15193",
-  "summary": "Memory corruption in Tensorflow",
-  "details": "In Tensorflow before versions 2.2.1 and 2.3.1, the implementation of `dlpack.to_dlpack` can be made to use uninitialized memory resulting in further memory corruption. This is because the pybind11 glue code assumes that the argument is a tensor. However, there is nothing stopping users from passing in a Python object instead of a tensor. The uninitialized memory address is due to a `reinterpret_cast` Since the `PyObject` is a Python object, not a TensorFlow Tensor, the cast to `EagerTensor` fails. The issue is patched in commit 22e07fb204386768e5bcbea563641ea11f96ceb8 and is released in TensorFlow versions 2.2.1, or 2.3.1.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2020-15193.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "tensorflow",
+        "purl": "pkg:bitnami/tensorflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.2.0"
+            },
+            {
+              "fixed": "2.2.1"
+            },
+            {
+              "introduced": "2.3.0"
+            },
+            {
+              "fixed": "2.3.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:L",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-15193",
     "GHSA-rjjg-hgv6-h69v",
@@ -9,8 +43,6 @@
     "PYSEC-2020-273",
     "PYSEC-2020-308"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T11:20:48.722Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:google:tensorflow:2.2.0:*:*:*:-:*:*:*",
@@ -19,6 +51,10 @@
     ],
     "severity": "High"
   },
+  "details": "In Tensorflow before versions 2.2.1 and 2.3.1, the implementation of `dlpack.to_dlpack` can be made to use uninitialized memory resulting in further memory corruption. This is because the pybind11 glue code assumes that the argument is a tensor. However, there is nothing stopping users from passing in a Python object instead of a tensor. The uninitialized memory address is due to a `reinterpret_cast` Since the `PyObject` is a Python object, not a TensorFlow Tensor, the cast to `EagerTensor` fails. The issue is patched in commit 22e07fb204386768e5bcbea563641ea11f96ceb8 and is released in TensorFlow versions 2.2.1, or 2.3.1.",
+  "id": "BIT-tensorflow-2020-15193",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:20:48.722Z",
   "references": [
     {
       "type": "WEB",
@@ -41,42 +77,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15193"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tensorflow",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/tensorflow"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.2.0"
-            },
-            {
-              "fixed": "2.2.1"
-            },
-            {
-              "introduced": "2.3.0"
-            },
-            {
-              "fixed": "2.3.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2020-15193.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:L"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Memory corruption in Tensorflow"
 }

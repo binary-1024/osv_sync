@@ -1,74 +1,16 @@
 {
-  "id": "GHSA-h856-ffvv-xvr4",
-  "summary": "Jenkins Remoting library arbitrary file read vulnerability",
-  "details": "Jenkins uses the Remoting library (typically `agent.jar` or `remoting.jar`) for the communication between controller and agents. This library allows agents to load classes and classloader resources from the controller, so that Java objects sent from the controller (build steps, etc.) can be executed on agents.\n\nIn addition to individual class and resource files, Remoting also allows Jenkins plugins to transmit entire jar files to agents using the `Channel#preloadJar` API. As of publication of this advisory, this feature is used by the following plugins distributed by the Jenkins project: bouncycastle API, Groovy, Ivy, TeamConcert\n\nIn Remoting 3256.v88a_f6e922152 and earlier, except 3206.3208.v409508a_675ff and 3248.3250.v3277a_8e88c9b_, included in Jenkins 2.470 and earlier, LTS 2.452.3 and earlier, calls to `Channel#preloadJar` result in the retrieval of files from the controller by the agent using `ClassLoaderProxy#fetchJar`. Additionally, the implementation of `ClassLoaderProxy#fetchJar` invoked on the controller does not restrict paths that agents could request to read from the controller file system.\n\nThis allows agent processes, code running on agents, and attackers with Agent/Connect permission to read arbitrary files from the Jenkins controller file system.\n\nThe Remoting library in Jenkins 2.471, LTS 2.452.4, LTS 2.462.1 now sends jar file contents with `Channel#preloadJar` requests, the only use case of `ClassLoaderProxy#fetchJar` in agents, so that agents do not need to request jar file contents from controllers anymore.\n\nTo retain compatibility with older versions of Remoting in combination with the plugins listed above, `ClassLoaderProxy#fetchJar` is retained and otherwise unused, just deprecated. Its implementation in Jenkins 2.471, LTS 2.452.4, LTS 2.462.1 was changed so that it is now limited to retrieving jar files referenced in the core classloader or any plugin classloader.",
-  "aliases": [
-    "BIT-jenkins-2024-43044",
-    "CVE-2024-43044"
-  ],
-  "modified": "2024-11-26T05:37:26.241468Z",
-  "published": "2024-08-07T15:30:42Z",
-  "related": [
-    "CGA-4828-r7m8-fq87"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2024-08-07T14:15:33Z",
-    "cwe_ids": [
-      "CWE-22",
-      "CWE-754"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-08-07T18:12:59Z"
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-43044"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/jenkins/commit/3f54c41b40db9e4ae7afa4209bc1ea91bb9175c0"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/jenkins/commit/5d26b53ad3a5cd8c4a060eef4f56d75e65ca17a5"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/jenkins/commit/cec49ce5d58048f66ac3fa88409a0d38dec09bf0"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/remoting/commit/3277a8e88c9b807b9a989bd7e9176d2ec9834e47"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/remoting/commit/409508a675ffc4ed9681e30bb46c8d9cb375b78c"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/remoting/commit/858f3c9af69d4d216b26551ea51dde6e67479bb3"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/jenkinsci/remoting"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.jenkins.io/security/advisory/2024-08-07/#SECURITY-3430"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:remoting",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:remoting",
         "purl": "pkg:maven/org.jenkins-ci.main/remoting"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -76,7 +18,8 @@
             {
               "fixed": "3206.3208"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -289,20 +232,19 @@
         "4.7",
         "4.8",
         "4.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:remoting",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:remoting",
         "purl": "pkg:maven/org.jenkins-ci.main/remoting"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "3248"
@@ -310,25 +252,25 @@
             {
               "fixed": "3248.3250"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "3248.v65ecb_254c298"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:remoting",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:remoting",
         "purl": "pkg:maven/org.jenkins-ci.main/remoting"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "3256"
@@ -336,25 +278,25 @@
             {
               "fixed": "3256.3258"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "3256.v88a_f6e922152"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:jenkins-core",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:jenkins-core",
         "purl": "pkg:maven/org.jenkins-ci.main/jenkins-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -362,7 +304,8 @@
             {
               "fixed": "2.452.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -1255,20 +1198,19 @@
         "2.97",
         "2.98",
         "2.99"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:jenkins-core",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:jenkins-core",
         "purl": "pkg:maven/org.jenkins-ci.main/jenkins-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.460"
@@ -1276,27 +1218,27 @@
             {
               "fixed": "2.462.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.460",
         "2.461",
         "2.462"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:jenkins-core",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:jenkins-core",
         "purl": "pkg:maven/org.jenkins-ci.main/jenkins-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.470"
@@ -1304,26 +1246,84 @@
             {
               "fixed": "2.471"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.470"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-h856-ffvv-xvr4/GHSA-h856-ffvv-xvr4.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-jenkins-2024-43044",
+    "CVE-2024-43044"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-22",
+      "CWE-754"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-08-07T18:12:59Z",
+    "nvd_published_at": "2024-08-07T14:15:33Z",
+    "severity": "HIGH"
+  },
+  "details": "Jenkins uses the Remoting library (typically `agent.jar` or `remoting.jar`) for the communication between controller and agents. This library allows agents to load classes and classloader resources from the controller, so that Java objects sent from the controller (build steps, etc.) can be executed on agents.\n\nIn addition to individual class and resource files, Remoting also allows Jenkins plugins to transmit entire jar files to agents using the `Channel#preloadJar` API. As of publication of this advisory, this feature is used by the following plugins distributed by the Jenkins project: bouncycastle API, Groovy, Ivy, TeamConcert\n\nIn Remoting 3256.v88a_f6e922152 and earlier, except 3206.3208.v409508a_675ff and 3248.3250.v3277a_8e88c9b_, included in Jenkins 2.470 and earlier, LTS 2.452.3 and earlier, calls to `Channel#preloadJar` result in the retrieval of files from the controller by the agent using `ClassLoaderProxy#fetchJar`. Additionally, the implementation of `ClassLoaderProxy#fetchJar` invoked on the controller does not restrict paths that agents could request to read from the controller file system.\n\nThis allows agent processes, code running on agents, and attackers with Agent/Connect permission to read arbitrary files from the Jenkins controller file system.\n\nThe Remoting library in Jenkins 2.471, LTS 2.452.4, LTS 2.462.1 now sends jar file contents with `Channel#preloadJar` requests, the only use case of `ClassLoaderProxy#fetchJar` in agents, so that agents do not need to request jar file contents from controllers anymore.\n\nTo retain compatibility with older versions of Remoting in combination with the plugins listed above, `ClassLoaderProxy#fetchJar` is retained and otherwise unused, just deprecated. Its implementation in Jenkins 2.471, LTS 2.452.4, LTS 2.462.1 was changed so that it is now limited to retrieving jar files referenced in the core classloader or any plugin classloader.",
+  "id": "GHSA-h856-ffvv-xvr4",
+  "modified": "2024-11-26T05:37:26.241468Z",
+  "published": "2024-08-07T15:30:42Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-43044"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/jenkins/commit/3f54c41b40db9e4ae7afa4209bc1ea91bb9175c0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/jenkins/commit/5d26b53ad3a5cd8c4a060eef4f56d75e65ca17a5"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/jenkins/commit/cec49ce5d58048f66ac3fa88409a0d38dec09bf0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/remoting/commit/3277a8e88c9b807b9a989bd7e9176d2ec9834e47"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/remoting/commit/409508a675ffc4ed9681e30bb46c8d9cb375b78c"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/remoting/commit/858f3c9af69d4d216b26551ea51dde6e67479bb3"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jenkinsci/remoting"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.jenkins.io/security/advisory/2024-08-07/#SECURITY-3430"
+    }
+  ],
+  "related": [
+    "CGA-4828-r7m8-fq87"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:N/SC:H/SI:H/SA:H"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:N/SC:H/SI:H/SA:H",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Jenkins Remoting library arbitrary file read vulnerability"
 }

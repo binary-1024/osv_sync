@@ -1,22 +1,46 @@
 {
-  "id": "GHSA-wp34-mqw5-jj85",
-  "summary": "Use after free in nano_arena",
-  "details": "Affected versions of this crate assumed that Borrow<Idx> was guaranteed to return the same value on .borrow(). The borrowed index value was used to retrieve a mutable reference to a value.\n\nIf the Borrow<Idx> implementation returned a different index, the split arena would allow retrieving the index as a mutable reference creating two mutable references to the same element. This violates Rust's aliasing rules and allows for memory safety issues such as writing out of bounds and use-after-frees.\n\nThe flaw was corrected in commit `6b83f9d` by storing the .borrow() value in a temporary variable.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-wp34-mqw5-jj85/GHSA-wp34-mqw5-jj85.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "nano_arena",
+        "purl": "pkg:cargo/nano_arena"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.5.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-28032",
     "RUSTSEC-2021-0031"
   ],
-  "modified": "2023-11-08T04:05:27.788398Z",
-  "published": "2021-08-25T20:52:00Z",
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-416"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-08-19T17:23:52Z"
+    "github_reviewed_at": "2021-08-19T17:23:52Z",
+    "nvd_published_at": null,
+    "severity": "CRITICAL"
   },
+  "details": "Affected versions of this crate assumed that Borrow<Idx> was guaranteed to return the same value on .borrow(). The borrowed index value was used to retrieve a mutable reference to a value.\n\nIf the Borrow<Idx> implementation returned a different index, the split arena would allow retrieving the index as a mutable reference creating two mutable references to the same element. This violates Rust's aliasing rules and allows for memory safety issues such as writing out of bounds and use-after-frees.\n\nThe flaw was corrected in commit `6b83f9d` by storing the .borrow() value in a temporary variable.",
+  "id": "GHSA-wp34-mqw5-jj85",
+  "modified": "2023-11-08T04:05:27.788398Z",
+  "published": "2021-08-25T20:52:00Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -39,36 +63,12 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2021-0031.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "nano_arena",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/nano_arena"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.5.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-wp34-mqw5-jj85/GHSA-wp34-mqw5-jj85.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Use after free in nano_arena"
 }

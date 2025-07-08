@@ -1,18 +1,52 @@
 {
-  "id": "GHSA-7vw7-qx38-37vr",
-  "summary": "Propel2 SQL injection possible with limit() on MySQL",
-  "details": "The limit() query method is susceptible to catastrophic SQL injection with MySQL.\n\nFor example, given a model User for a table users:\n```\nUserQuery::create()->limit('1;DROP TABLE users')->find();\n```\nThis will drop the users table!\n\nThe cause appears to be a lack of integer casting of the limit input in either Propel\\Runtime\\ActiveQuery\\Criteria::setLimit() or in Propel\\Runtime\\Adapter\\Pdo\\MysqlAdapter::applyLimit(). The code comments there seem to imply that casting was avoided due to overflow issues with 32-bit integers.\n\nThis is surprising behavior since one of the primary purposes of an ORM is to prevent basic SQL injection.\n\nThis affects all versions of Propel: 1.x, 2.x, and 3.",
-  "modified": "2024-12-05T05:32:18.600809Z",
-  "published": "2024-05-20T17:34:33Z",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.0.0-alpha7",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-7vw7-qx38-37vr/GHSA-7vw7-qx38-37vr.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "propel/propel",
+        "purl": "pkg:composer/propel/propel"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0-alpha1"
+            },
+            {
+              "fixed": "2.0.0-alpha8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.0.0-alpha1",
+        "2.0.0-alpha2",
+        "2.0.0-alpha3",
+        "2.0.0-alpha4",
+        "2.0.0-alpha5",
+        "2.0.0-alpha6",
+        "2.0.0-alpha7"
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-89"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-05-20T17:34:33Z"
+    "github_reviewed_at": "2024-05-20T17:34:33Z",
+    "nvd_published_at": null,
+    "severity": "CRITICAL"
   },
+  "details": "The limit() query method is susceptible to catastrophic SQL injection with MySQL.\n\nFor example, given a model User for a table users:\n```\nUserQuery::create()->limit('1;DROP TABLE users')->find();\n```\nThis will drop the users table!\n\nThe cause appears to be a lack of integer casting of the limit input in either Propel\\Runtime\\ActiveQuery\\Criteria::setLimit() or in Propel\\Runtime\\Adapter\\Pdo\\MysqlAdapter::applyLimit(). The code comments there seem to imply that casting was avoided due to overflow issues with 32-bit integers.\n\nThis is surprising behavior since one of the primary purposes of an ORM is to prevent basic SQL injection.\n\nThis affects all versions of Propel: 1.x, 2.x, and 3.",
+  "id": "GHSA-7vw7-qx38-37vr",
+  "modified": "2024-12-05T05:32:18.600809Z",
+  "published": "2024-05-20T17:34:33Z",
   "references": [
     {
       "type": "WEB",
@@ -35,46 +69,12 @@
       "url": "https://github.com/propelorm/Propel2"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "propel/propel",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/propel/propel"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.0.0-alpha1"
-            },
-            {
-              "fixed": "2.0.0-alpha8"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.0.0-alpha1",
-        "2.0.0-alpha2",
-        "2.0.0-alpha3",
-        "2.0.0-alpha4",
-        "2.0.0-alpha5",
-        "2.0.0-alpha6",
-        "2.0.0-alpha7"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.0.0-alpha7",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-7vw7-qx38-37vr/GHSA-7vw7-qx38-37vr.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Propel2 SQL injection possible with limit() on MySQL"
 }

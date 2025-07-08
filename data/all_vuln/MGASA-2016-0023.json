@@ -1,9 +1,56 @@
 {
-  "id": "MGASA-2016-0023",
-  "summary": "Updated qemu packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0023.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "qemu",
+        "purl": "pkg:rpm/mageia/qemu?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.3-2.11.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "A heap-based buffer overflow flaw was discovered in the way QEMU's AMD\nPC-Net II Ethernet Controller emulation received certain packets in\nloopback mode. A privileged user (with the CAP_SYS_RAWIO capability)\ninside a guest could use this flaw to crash the host QEMU process\n(resulting in denial of service) or, potentially, execute arbitrary code\nwith privileges of the host QEMU process (CVE-2015-7504)\n\nA buffer overflow flaw was found in the way QEMU's AMD PC-Net II emulation\nvalidated certain received packets from a remote host in non-loopback mode.\nA remote, unprivileged attacker could potentially use this flaw to execute\narbitrary code on the host with the privileges of the QEMU process. Note\nthat to exploit this flaw, the guest network interface must have a large\nMTU limit (CVE-2015-7512)\n\nA NULL pointer dereference vulnerability was found in the QEMU emulator\nbuilt with PCI MSI-X support. Because MSI-X MMIO support did not define\nthe .write method, when the controller tried to write to the pending bit\narray(PBA) memory region, a segmentation fault occurred. A privileged\nattacker inside the guest could use this flaw to crash the QEMU process\nresulting in denial of service (CVE-2015-7549)\n\nAn infinite-loop flaw was discovered in the QEMU emulator built with i8255x\n(PRO100) emulation support. When processing a chain of commands located in\nthe Command Block List(CBL), each Command Block(CB) points to the next\ncommand in the list. If the link to the next CB pointed to the same block\nor if there was a closed loop in the chain, an infinite loop would execute\nthe same command over and over again. A privileged user inside the guest\ncould use this flaw to crash the QEMU instance, resulting in denial of\nservice (CVE-2015-8345).\n\nAn arithmetic-exception flaw was found in the QEMU emulator built with VNC\ndisplay-driver support. The VNC server incorrectly handled 'SetPixelFormat'\nmessages sent from clients. A privileged remote client could use this flaw\nto crash the guest resulting in denial of service (CVE-2015-8504).\n\nAn infinite-loop issue was found in the QEMU emulator built with USB EHCI\nemulation support. The flaw occurred during communication between the host\ncontroller interface(EHCI) and a respective device driver. These two\ncommunicate using an isochronous transfer descriptor list(iTD). an infinite\nloop unfolded if there was a closed loop in the list. A privileged user\ninside a guest could use this flaw to consume excessive resources and cause\ndenial of service (CVE-2015-8558).\n\nA memory-leak flaw was found in the QEMU emulator built with VMWARE VMXNET3\nparavirtual NIC emulator support. The flaw occurred when a guest repeatedly\ntried to activate the VMXNET3 device. A privileged guest attacker could use\nthis flaw to leak host memory, resulting in denial of service on the host.\n(CVE-2015-8567, CVE-2015-8568)\n\nA stack buffer-overflow vulnerability has been discovered in the QEMU\nemulator built with SCSI MegaRAID SAS HBA emulation support. The flaw occurs\nwhen processing the SCSI controller's CTRL_GET_INFO command. A privileged\nguest user could exploit this flaw to crash the QEMU process instance\n(denial of service). (CVE-2015-8613)\n\nAn out-of-bounds write vulnerability has been found in the QEMU emulator\nbuilt with Human Monitor Interface(HMP) support. The issue occurs when the\n'sendkey' command (in hmp_sendkey) is processed with a 'keyname_len' that is\ngreater than the 'keyname_buf' array size. A user or process could exploit\nthis flaw to crash the QEMU process instance (denial of service).\n(CVE-2015-8619)\n\nQemu emulator built with the Q35 chipset based pc system emulator is\nvulnerable to a heap based buffer overflow. It occurs during VM guest\nmigration, as more(8 bytes) data is moved than allocated memory area. A\nprivileged guest user could use this issue to corrupt the VM guest image,\npotentially leading to a DoS. This issue affects q35 machine types.\n(CVE-2015-8666)\n\nAn out-of-bounds read-write access flaw was found in the QEMU emulator built\nwith NE2000-device emulation support. The flaw occurred while performing\n'ioport' read-write operations. A privileged (CAP_SYS_RAWIO) user or process\ncould exploit the flaw to leak or corrupt QEMU memory bytes (CVE-2015-8743)\n\nA reachable-assertion flaw was found in the QEMU emulator built with VMWARE\nVMXNET3 paravirtualized NIC emulator support. The flaw occurs if a guest\nsends a Layer-2 packet that was smaller than 22 bytes. A privileged\n(CAP_SYS_RAWIO) guest user could exploit this flaw to crash the QEMU\nprocess instance, resulting in denial of service (CVE-2015-8744)\n\nA reachable-assertion flaw was found in the QEMU emulator built with VMWARE\nVMXNET3 paravirtualized NIC emulator support. The flaw could occur while\nreading Interrupt Mask Registers (IMR). A privileged (CAP_SYS_RAWIO) guest\nuser could exploit this flaw to crash the QEMU process instance, resulting\nin denial of service (CVE-2015-8745)\n\nA user-after-free vulnerability was discovered in the QEMU emulator built\nwith IDE AHCI emulation support. The flaw could occur after processing AHCI\nNative Command Queuing(NCQ) AIO commands. A privileged user inside the guest\ncould use this flaw to crash the QEMU process instance (denial of service)\nor potentially execute arbitrary code on the host with QEMU-process\nprivileges (CVE-2016-1568).\n\nAn out-of-bounds read/write flaw was discovered in the QEMU emulator built\nwith Firmware Configuration device emulation support. The flaw could occur\nwhile processing firmware configurations if the current configuration entry\nvalue was set to be invalid. A privileged(CAP_SYS_RAWIO) user or process\ninside the guest could exploit this flaw to crash the QEMU process instance\n(denial of service), or potentially execute arbitrary code on the host with\nQEMU-process privileges (CVE-2016-1714).\n",
+  "id": "MGASA-2016-0023",
   "modified": "2016-01-17T00:20:04Z",
   "published": "2016-01-17T00:26:26Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://advisories.mageia.org/MGASA-2016-0023.html"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.mageia.org/show_bug.cgi?id=17260"
+    }
+  ],
   "related": [
     "CVE-2015-7504",
     "CVE-2015-7512",
@@ -22,53 +69,6 @@
     "CVE-2016-1568",
     "CVE-2016-1714"
   ],
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://advisories.mageia.org/MGASA-2016-0023.html"
-    },
-    {
-      "type": "REPORT",
-      "url": "https://bugs.mageia.org/show_bug.cgi?id=17260"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "qemu",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/qemu?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.1.3-2.11.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2016-0023.json"
-      },
-      "versions": []
-    }
-  ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated qemu packages fix security vulnerabilities"
 }

@@ -1,42 +1,16 @@
 {
-  "id": "GHSA-44pg-c29v-hp6r",
-  "summary": "Laravel Guard bypass in Eloquent models",
-  "details": "In laravel releases before 6.18.34 and 7.23.2. It was possible to mass assign Eloquent attributes that included the model's table name:\n```\n$model->fill(['users.name' => 'Taylor']);\n```\nWhen doing so, Eloquent would remove the table name from the attribute for you. This was a \"convenience\" feature of Eloquent and was not documented.\n\nHowever, when paired with validation, this can lead to unexpected and unvalidated values being saved to the database. For this reason, we have removed the automatic stripping of table names from mass-asignment operations so that the attributes go through the typical \"fillable\" / \"guarded\" logic. Any attributes containing table names that are not explicitly declared as fillable will be discarded.\n\nThis security release will be a breaking change for applications that were relying on the undocumented table name stripping during mass assignment. Since this feature was relatively unknown and undocumented, we expect the vast majority of Laravel applications to be able to upgrade without issues.",
-  "modified": "2024-11-29T05:40:49.412708Z",
-  "published": "2024-05-15T22:18:33Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-20"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-05-15T22:18:33Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://blog.laravel.com/security-release-laravel-61834-7232"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/laravel/framework/2020-08-06-1.yaml"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/laravel/framework"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-44pg-c29v-hp6r/GHSA-44pg-c29v-hp6r.json"
+      },
       "package": {
-        "name": "laravel/framework",
         "ecosystem": "Packagist",
+        "name": "laravel/framework",
         "purl": "pkg:composer/laravel/framework"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "5.5.0"
@@ -44,7 +18,8 @@
             {
               "last_affected": "5.5.49"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -98,20 +73,19 @@
         "v5.5.7",
         "v5.5.8",
         "v5.5.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-44pg-c29v-hp6r/GHSA-44pg-c29v-hp6r.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-44pg-c29v-hp6r/GHSA-44pg-c29v-hp6r.json"
+      },
       "package": {
-        "name": "laravel/framework",
         "ecosystem": "Packagist",
+        "name": "laravel/framework",
         "purl": "pkg:composer/laravel/framework"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "6.0.0"
@@ -119,7 +93,8 @@
             {
               "fixed": "6.18.34"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -188,20 +163,19 @@
         "v6.7.0",
         "v6.8.0",
         "v6.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-44pg-c29v-hp6r/GHSA-44pg-c29v-hp6r.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-44pg-c29v-hp6r/GHSA-44pg-c29v-hp6r.json"
+      },
       "package": {
-        "name": "laravel/framework",
         "ecosystem": "Packagist",
+        "name": "laravel/framework",
         "purl": "pkg:composer/laravel/framework"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "7.0.0"
@@ -209,7 +183,8 @@
             {
               "fixed": "7.23.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -271,11 +246,36 @@
         "v7.9.0",
         "v7.9.1",
         "v7.9.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/05/GHSA-44pg-c29v-hp6r/GHSA-44pg-c29v-hp6r.json"
-      }
+      ]
     }
   ],
-  "schema_version": "1.6.0"
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-20"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-05-15T22:18:33Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "In laravel releases before 6.18.34 and 7.23.2. It was possible to mass assign Eloquent attributes that included the model's table name:\n```\n$model->fill(['users.name' => 'Taylor']);\n```\nWhen doing so, Eloquent would remove the table name from the attribute for you. This was a \"convenience\" feature of Eloquent and was not documented.\n\nHowever, when paired with validation, this can lead to unexpected and unvalidated values being saved to the database. For this reason, we have removed the automatic stripping of table names from mass-asignment operations so that the attributes go through the typical \"fillable\" / \"guarded\" logic. Any attributes containing table names that are not explicitly declared as fillable will be discarded.\n\nThis security release will be a breaking change for applications that were relying on the undocumented table name stripping during mass assignment. Since this feature was relatively unknown and undocumented, we expect the vast majority of Laravel applications to be able to upgrade without issues.",
+  "id": "GHSA-44pg-c29v-hp6r",
+  "modified": "2024-11-29T05:40:49.412708Z",
+  "published": "2024-05-15T22:18:33Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://blog.laravel.com/security-release-laravel-61834-7232"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/laravel/framework/2020-08-06-1.yaml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/laravel/framework"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "summary": "Laravel Guard bypass in Eloquent models"
 }

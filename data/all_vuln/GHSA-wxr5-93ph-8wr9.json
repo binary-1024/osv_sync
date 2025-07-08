@@ -1,68 +1,17 @@
 {
-  "id": "GHSA-wxr5-93ph-8wr9",
-  "summary": "Apache Commons Improper Access Control vulnerability",
-  "details": "Improper Access Control vulnerability in Apache Commons.\n\n\n\nA special BeanIntrospector class was added in version 1.9.2. This can be used to stop attackers from using the declared class property of Java enum objects to get access to the classloader. However this protection was not enabled by default. PropertyUtilsBean (and consequently BeanUtilsBean) now disallows declared class level property access by default.\n\n\n\n\n\nReleases 1.11.0 and 2.0.0-M2 address a potential security issue when accessing enum properties in an uncontrolled way. If an application using Commons BeanUtils passes property paths from an external source directly to the getProperty() method of PropertyUtilsBean, an attacker can access the enum\u2019s class loader via the \u201cdeclaredClass\u201d property available on all Java \u201cenum\u201d objects. Accessing the enum\u2019s \u201cdeclaredClass\u201d allows remote attackers to access the ClassLoader and execute arbitrary code. The same issue exists with PropertyUtilsBean.getNestedProperty().\nStarting in versions 1.11.0 and 2.0.0-M2 a special BeanIntrospector suppresses the \u201cdeclaredClass\u201d property. Note that this new BeanIntrospector is enabled by default, but you can disable it to regain the old behavior; see section 2.5 of the user's guide and the unit tests.\n\nThis issue affects Apache Commons BeanUtils 1.x before 1.11.0, and 2.x before 2.0.0-M2.Users of the artifact commons-beanutils:commons-beanutils\n\n 1.x are recommended to upgrade to version 1.11.0, which fixes the issue.\n\n\nUsers of the artifact org.apache.commons:commons-beanutils2\n\n 2.x are recommended to upgrade to version 2.0.0-M2, which fixes the issue.",
-  "aliases": [
-    "CVE-2025-48734"
-  ],
-  "modified": "2025-05-28T20:35:23.610829Z",
-  "published": "2025-05-28T15:34:34Z",
-  "related": [
-    "CGA-4m3v-9fm7-3827",
-    "CGA-4vxj-ffhj-xx7v",
-    "CGA-6294-j3wv-p997",
-    "CGA-65c9-4g2c-373p",
-    "CGA-833r-vwc8-62f8",
-    "CGA-h6g7-pxcx-m22q",
-    "CGA-h73m-gfrj-3j4v",
-    "CGA-hg4r-wggg-wv2r",
-    "CGA-jqx3-wwgp-2r3g",
-    "CGA-mh8p-6rr9-xrhf",
-    "CGA-q9p5-pgm4-hw27",
-    "CGA-wrw4-qfp6-7h6x",
-    "CGA-xrg4-fgj3-f9vq"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2025-05-28T14:15:34Z",
-    "cwe_ids": [
-      "CWE-284"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-05-28T17:37:18Z"
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-48734"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/apache/commons-beanutils/commit/bd20740da25b69552ddef8523beec0837297eaf9"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/apache/commons-beanutils"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.apache.org/thread/s0hb3jkfj5f3ryx6c57zqtfohb0of1g9"
-    },
-    {
-      "type": "WEB",
-      "url": "http://www.openwall.com/lists/oss-security/2025/05/28/6"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.10.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-wxr5-93ph-8wr9/GHSA-wxr5-93ph-8wr9.json"
+      },
       "package": {
-        "name": "commons-beanutils:commons-beanutils",
         "ecosystem": "Maven",
+        "name": "commons-beanutils:commons-beanutils",
         "purl": "pkg:maven/commons-beanutils/commons-beanutils"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "1.0"
@@ -70,7 +19,8 @@
             {
               "fixed": "1.11.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -95,21 +45,19 @@
         "1.9.2",
         "1.9.3",
         "1.9.4"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 1.10.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-wxr5-93ph-8wr9/GHSA-wxr5-93ph-8wr9.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-wxr5-93ph-8wr9/GHSA-wxr5-93ph-8wr9.json"
+      },
       "package": {
-        "name": "org.apache.commons:commons-beanutils2",
         "ecosystem": "Maven",
+        "name": "org.apache.commons:commons-beanutils2",
         "purl": "pkg:maven/org.apache.commons/commons-beanutils2"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.0.0-M1"
@@ -117,22 +65,74 @@
             {
               "fixed": "2.0.0-M2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.0.0-M1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-wxr5-93ph-8wr9/GHSA-wxr5-93ph-8wr9.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2025-48734"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-284"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-28T17:37:18Z",
+    "nvd_published_at": "2025-05-28T14:15:34Z",
+    "severity": "HIGH"
+  },
+  "details": "Improper Access Control vulnerability in Apache Commons.\n\n\n\nA special BeanIntrospector class was added in version 1.9.2. This can be used to stop attackers from using the declared class property of Java enum objects to get access to the classloader. However this protection was not enabled by default. PropertyUtilsBean (and consequently BeanUtilsBean) now disallows declared class level property access by default.\n\n\n\n\n\nReleases 1.11.0 and 2.0.0-M2 address a potential security issue when accessing enum properties in an uncontrolled way. If an application using Commons BeanUtils passes property paths from an external source directly to the getProperty() method of PropertyUtilsBean, an attacker can access the enum\u2019s class loader via the \u201cdeclaredClass\u201d property available on all Java \u201cenum\u201d objects. Accessing the enum\u2019s \u201cdeclaredClass\u201d allows remote attackers to access the ClassLoader and execute arbitrary code. The same issue exists with PropertyUtilsBean.getNestedProperty().\nStarting in versions 1.11.0 and 2.0.0-M2 a special BeanIntrospector suppresses the \u201cdeclaredClass\u201d property. Note that this new BeanIntrospector is enabled by default, but you can disable it to regain the old behavior; see section 2.5 of the user's guide and the unit tests.\n\nThis issue affects Apache Commons BeanUtils 1.x before 1.11.0, and 2.x before 2.0.0-M2.Users of the artifact commons-beanutils:commons-beanutils\n\n 1.x are recommended to upgrade to version 1.11.0, which fixes the issue.\n\n\nUsers of the artifact org.apache.commons:commons-beanutils2\n\n 2.x are recommended to upgrade to version 2.0.0-M2, which fixes the issue.",
+  "id": "GHSA-wxr5-93ph-8wr9",
+  "modified": "2025-05-28T20:35:23.610829Z",
+  "published": "2025-05-28T15:34:34Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-48734"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/apache/commons-beanutils/commit/bd20740da25b69552ddef8523beec0837297eaf9"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/apache/commons-beanutils"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.apache.org/thread/s0hb3jkfj5f3ryx6c57zqtfohb0of1g9"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2025/05/28/6"
+    }
+  ],
+  "related": [
+    "CGA-4m3v-9fm7-3827",
+    "CGA-4vxj-ffhj-xx7v",
+    "CGA-6294-j3wv-p997",
+    "CGA-65c9-4g2c-373p",
+    "CGA-833r-vwc8-62f8",
+    "CGA-h6g7-pxcx-m22q",
+    "CGA-h73m-gfrj-3j4v",
+    "CGA-hg4r-wggg-wv2r",
+    "CGA-jqx3-wwgp-2r3g",
+    "CGA-mh8p-6rr9-xrhf",
+    "CGA-q9p5-pgm4-hw27",
+    "CGA-wrw4-qfp6-7h6x",
+    "CGA-xrg4-fgj3-f9vq"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Apache Commons Improper Access Control vulnerability"
 }

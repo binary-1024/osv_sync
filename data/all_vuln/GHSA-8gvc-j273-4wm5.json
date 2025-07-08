@@ -1,21 +1,68 @@
 {
-  "id": "GHSA-8gvc-j273-4wm5",
-  "summary": "Vitest browser mode serves arbitrary files",
-  "details": "### Summary\n`__screenshot-error` handler on the browser mode HTTP server that responds any file on the file system. Especially if the server is exposed on the network by [`browser.api.host: true`](https://vitest.dev/guide/browser/config.html#browser-api), an attacker can send a request to that handler from remote to get the content of arbitrary files.\n\n### Details\nThis `__screenshot-error` handler on the browser mode HTTP server responds any file on the file system.\nhttps://github.com/vitest-dev/vitest/blob/f17918a79969d27a415f70431e08a9445b051e45/packages/browser/src/node/plugin.ts#L88-L130\n\nThis code was added by https://github.com/vitest-dev/vitest/commit/2d62051f13b4b0939b2f7e94e88006d830dc4d1f.\n\n### PoC\n1. Create a directory and change the current directory to that directory\n1. Run `npx vitest init browser`\n1. Run `npm run test:browser`\n2. Run `curl http://localhost:63315/__screenshot-error?file=/path/to/any/file`\n\n### Impact\nUsers explicitly exposing the browser mode server to the network by [`browser.api.host: true`](https://vitest.dev/guide/browser/config.html#browser-api) may get any files exposed.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-8gvc-j273-4wm5/GHSA-8gvc-j273-4wm5.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vitest/browser",
+        "purl": "pkg:npm/%40vitest/browser"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.4"
+            },
+            {
+              "fixed": "2.1.9"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-8gvc-j273-4wm5/GHSA-8gvc-j273-4wm5.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vitest/browser",
+        "purl": "pkg:npm/%40vitest/browser"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.0.0"
+            },
+            {
+              "fixed": "3.0.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-24963"
   ],
-  "modified": "2025-02-04T22:03:47Z",
-  "published": "2025-02-04T16:51:08Z",
   "database_specific": {
-    "nvd_published_at": "2025-02-04T20:15:50Z",
     "cwe_ids": [
       "CWE-22"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-02-04T16:51:08Z"
+    "github_reviewed_at": "2025-02-04T16:51:08Z",
+    "nvd_published_at": "2025-02-04T20:15:50Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\n`__screenshot-error` handler on the browser mode HTTP server that responds any file on the file system. Especially if the server is exposed on the network by [`browser.api.host: true`](https://vitest.dev/guide/browser/config.html#browser-api), an attacker can send a request to that handler from remote to get the content of arbitrary files.\n\n### Details\nThis `__screenshot-error` handler on the browser mode HTTP server responds any file on the file system.\nhttps://github.com/vitest-dev/vitest/blob/f17918a79969d27a415f70431e08a9445b051e45/packages/browser/src/node/plugin.ts#L88-L130\n\nThis code was added by https://github.com/vitest-dev/vitest/commit/2d62051f13b4b0939b2f7e94e88006d830dc4d1f.\n\n### PoC\n1. Create a directory and change the current directory to that directory\n1. Run `npx vitest init browser`\n1. Run `npm run test:browser`\n2. Run `curl http://localhost:63315/__screenshot-error?file=/path/to/any/file`\n\n### Impact\nUsers explicitly exposing the browser mode server to the network by [`browser.api.host: true`](https://vitest.dev/guide/browser/config.html#browser-api) may get any files exposed.",
+  "id": "GHSA-8gvc-j273-4wm5",
+  "modified": "2025-02-04T22:03:47Z",
+  "published": "2025-02-04T16:51:08Z",
   "references": [
     {
       "type": "WEB",
@@ -46,59 +93,12 @@
       "url": "https://vitest.dev/guide/browser/config.html#browser-api"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@vitest/browser",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40vitest/browser"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.0.4"
-            },
-            {
-              "fixed": "2.1.9"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-8gvc-j273-4wm5/GHSA-8gvc-j273-4wm5.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@vitest/browser",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40vitest/browser"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "3.0.0"
-            },
-            {
-              "fixed": "3.0.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-8gvc-j273-4wm5/GHSA-8gvc-j273-4wm5.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Vitest browser mode serves arbitrary files"
 }

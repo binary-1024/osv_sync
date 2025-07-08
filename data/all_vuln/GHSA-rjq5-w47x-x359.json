@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-rjq5-w47x-x359",
-  "summary": "@hono/node-server cannot handle \"double dots\" in URL",
-  "details": "### Impact\n\nSince v1.3.0, we use our own Request object. This is great, but the `url` behavior is unexpected.\n\nIn the standard API, if the URL contains `..`, here called \"double dots\", the URL string returned by Request will be in the resolved path.\n\n```ts\nconst req = new Request('http://localhost/static/../foo.txt') // Web-standards\nconsole.log(req.url) // http://localhost/foo.txt\n```\n\nHowever, the `url` in our Request does not resolve double dots, so `http://localhost/static/.. /foo.txt` is returned.\n\n```ts\nconst req = new Request('http://localhost/static/../foo.txt')\nconsole.log(req.url) // http://localhost/static/../foo.txt\n```\n\nIt will pass unresolved paths to the web application. This causes vulnerabilities like #123 when using `serveStatic`.\n\nNote: Modern web browsers and a latest `curl` command resolve double dots on the client side, so it does not affect you if the user uses them. However, problems may occur if accessed by a client that does not resolve them.\n\n### Patches\n\n\"v1.4.1\" includes the change to fix this issue.\n\n### Workarounds\n\nDon't use `serveStatic`.\n\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-rjq5-w47x-x359/GHSA-rjq5-w47x-x359.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hono/node-server",
+        "purl": "pkg:npm/%40hono/node-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.3.0"
+            },
+            {
+              "fixed": "1.4.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-23340"
   ],
-  "modified": "2024-01-23T14:56:36.796118Z",
-  "published": "2024-01-23T14:42:51Z",
-  "related": [
-    "CVE-2024-23340"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-01-22T23:15:08Z",
     "cwe_ids": [
       "CWE-22"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-01-23T14:42:51Z"
+    "github_reviewed_at": "2024-01-23T14:42:51Z",
+    "nvd_published_at": "2024-01-22T23:15:08Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nSince v1.3.0, we use our own Request object. This is great, but the `url` behavior is unexpected.\n\nIn the standard API, if the URL contains `..`, here called \"double dots\", the URL string returned by Request will be in the resolved path.\n\n```ts\nconst req = new Request('http://localhost/static/../foo.txt') // Web-standards\nconsole.log(req.url) // http://localhost/foo.txt\n```\n\nHowever, the `url` in our Request does not resolve double dots, so `http://localhost/static/.. /foo.txt` is returned.\n\n```ts\nconst req = new Request('http://localhost/static/../foo.txt')\nconsole.log(req.url) // http://localhost/static/../foo.txt\n```\n\nIt will pass unresolved paths to the web application. This causes vulnerabilities like #123 when using `serveStatic`.\n\nNote: Modern web browsers and a latest `curl` command resolve double dots on the client side, so it does not affect you if the user uses them. However, problems may occur if accessed by a client that does not resolve them.\n\n### Patches\n\n\"v1.4.1\" includes the change to fix this issue.\n\n### Workarounds\n\nDon't use `serveStatic`.\n\n",
+  "id": "GHSA-rjq5-w47x-x359",
+  "modified": "2024-01-23T14:56:36.796118Z",
+  "published": "2024-01-23T14:42:51Z",
   "references": [
     {
       "type": "WEB",
@@ -41,36 +62,15 @@
       "url": "https://github.com/honojs/node-server/blob/8cea466fd05e6d2e99c28011fc0e2c2d3f3397c9/src/request.ts#L43-L45"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@hono/node-server",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40hono/node-server"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.3.0"
-            },
-            {
-              "fixed": "1.4.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-rjq5-w47x-x359/GHSA-rjq5-w47x-x359.json"
-      }
-    }
+  "related": [
+    "CVE-2024-23340"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "@hono/node-server cannot handle \"double dots\" in URL"
 }

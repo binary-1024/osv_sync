@@ -1,24 +1,68 @@
 {
-  "id": "GHSA-93hq-5wgc-jc82",
-  "summary": "GovernorCompatibilityBravo may trim proposal calldata",
-  "details": "### Impact\n\nThe proposal creation entrypoint (`propose`) in `GovernorCompatibilityBravo` allows the creation of proposals with a `signatures` array shorter than the `calldatas` array. This causes the additional elements of the latter to be ignored, and if the proposal succeeds the corresponding actions would eventually execute without any calldata. The `ProposalCreated` event correctly represents what will eventually execute, but the proposal parameters as queried through `getActions` appear to respect the original intended calldata.\n\n### Patches\n\nThis issue has been patched in v4.8.3.\n\n### Workarounds\n\nEnsure that all proposals that pass through governance have equal length `signatures` and `calldatas` parameters.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-93hq-5wgc-jc82/GHSA-93hq-5wgc-jc82.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin/contracts",
+        "purl": "pkg:npm/%40openzeppelin/contracts"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.3.0"
+            },
+            {
+              "fixed": "4.8.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-93hq-5wgc-jc82/GHSA-93hq-5wgc-jc82.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin/contracts-upgradeable",
+        "purl": "pkg:npm/%40openzeppelin/contracts-upgradeable"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.3.0"
+            },
+            {
+              "fixed": "4.8.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-30542"
   ],
-  "modified": "2023-11-08T04:12:24.945774Z",
-  "published": "2023-04-20T14:11:03Z",
-  "related": [
-    "CVE-2023-30542"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-04-16T08:15:00Z",
-    "github_reviewed_at": "2023-04-20T14:11:03Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-20"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-04-20T14:11:03Z",
+    "nvd_published_at": "2023-04-16T08:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nThe proposal creation entrypoint (`propose`) in `GovernorCompatibilityBravo` allows the creation of proposals with a `signatures` array shorter than the `calldatas` array. This causes the additional elements of the latter to be ignored, and if the proposal succeeds the corresponding actions would eventually execute without any calldata. The `ProposalCreated` event correctly represents what will eventually execute, but the proposal parameters as queried through `getActions` appear to respect the original intended calldata.\n\n### Patches\n\nThis issue has been patched in v4.8.3.\n\n### Workarounds\n\nEnsure that all proposals that pass through governance have equal length `signatures` and `calldatas` parameters.\n",
+  "id": "GHSA-93hq-5wgc-jc82",
+  "modified": "2023-11-08T04:12:24.945774Z",
+  "published": "2023-04-20T14:11:03Z",
   "references": [
     {
       "type": "WEB",
@@ -41,59 +85,15 @@
       "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v4.8.3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@openzeppelin/contracts",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40openzeppelin/contracts"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "4.3.0"
-            },
-            {
-              "fixed": "4.8.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-93hq-5wgc-jc82/GHSA-93hq-5wgc-jc82.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@openzeppelin/contracts-upgradeable",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40openzeppelin/contracts-upgradeable"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "4.3.0"
-            },
-            {
-              "fixed": "4.8.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-93hq-5wgc-jc82/GHSA-93hq-5wgc-jc82.json"
-      }
-    }
+  "related": [
+    "CVE-2023-30542"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "GovernorCompatibilityBravo may trim proposal calldata"
 }

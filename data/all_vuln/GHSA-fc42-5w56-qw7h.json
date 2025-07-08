@@ -1,24 +1,46 @@
 {
-  "id": "GHSA-fc42-5w56-qw7h",
-  "summary": "XWiki Platform vulnerable to code injection from account through XWiki.SchedulerJobSheet",
-  "details": "### Impact\n\nIt's possible to execute anything with the right of the Scheduler Application sheet page.\n\nTo reproduce:\n1. As a user without script or programming rights, edit your user profile with the object editor and add a new object of type XWiki.SchedulerJobClass (search for \"Scheduler\")\n1. In \"Job Script\", add the following\n  ```{{/code}} {{async async=\"true\" cached=\"false\" context=\"doc.reference\"}}{{groovy}}println(\"Hello \" + \"from groovy!\"){{/groovy} {{/async}}```\n1. Click \"Save & View\"\n1. If the job information isn't already displayed (you should see \"Job Name\", \"Job Description\", etc.), append ?sheet=XWiki.SchedulerJobSheet to the URL.\n\n### Patches\n\nThis has been patched in XWiki 14.10.3 and 15.0 RC1.\n\n### Workarounds\n\nWhile the fix in the scheduler itself is easy, it relies on the code macro `source` parameter, which was introduced in 14.10.2 so you have to upgrade to benefit from it.\n\n### References\n\nhttps://jira.xwiki.org/browse/XWIKI-20295\nhttps://jira.xwiki.org/browse/XWIKI-20462\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-fc42-5w56-qw7h/GHSA-fc42-5w56-qw7h.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-scheduler-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-scheduler-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.1"
+            },
+            {
+              "fixed": "14.10.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-29524"
   ],
-  "modified": "2023-11-08T04:12:20.385898Z",
-  "published": "2023-04-20T22:17:16Z",
-  "related": [
-    "CVE-2023-29524"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-04-19T00:15:09Z",
     "cwe_ids": [
       "CWE-74"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-04-20T22:17:16Z"
+    "github_reviewed_at": "2023-04-20T22:17:16Z",
+    "nvd_published_at": "2023-04-19T00:15:09Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\n\nIt's possible to execute anything with the right of the Scheduler Application sheet page.\n\nTo reproduce:\n1. As a user without script or programming rights, edit your user profile with the object editor and add a new object of type XWiki.SchedulerJobClass (search for \"Scheduler\")\n1. In \"Job Script\", add the following\n  ```{{/code}} {{async async=\"true\" cached=\"false\" context=\"doc.reference\"}}{{groovy}}println(\"Hello \" + \"from groovy!\"){{/groovy} {{/async}}```\n1. Click \"Save & View\"\n1. If the job information isn't already displayed (you should see \"Job Name\", \"Job Description\", etc.), append ?sheet=XWiki.SchedulerJobSheet to the URL.\n\n### Patches\n\nThis has been patched in XWiki 14.10.3 and 15.0 RC1.\n\n### Workarounds\n\nWhile the fix in the scheduler itself is easy, it relies on the code macro `source` parameter, which was introduced in 14.10.2 so you have to upgrade to benefit from it.\n\n### References\n\nhttps://jira.xwiki.org/browse/XWIKI-20295\nhttps://jira.xwiki.org/browse/XWIKI-20462\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "id": "GHSA-fc42-5w56-qw7h",
+  "modified": "2023-11-08T04:12:20.385898Z",
+  "published": "2023-04-20T22:17:16Z",
   "references": [
     {
       "type": "WEB",
@@ -41,37 +63,15 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-20462"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-scheduler-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-scheduler-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.0.1"
-            },
-            {
-              "fixed": "14.10.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-fc42-5w56-qw7h/GHSA-fc42-5w56-qw7h.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-29524"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "XWiki Platform vulnerable to code injection from account through XWiki.SchedulerJobSheet"
 }

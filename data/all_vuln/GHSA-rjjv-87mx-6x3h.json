@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-rjjv-87mx-6x3h",
-  "summary": "@sveltejs/kit vulnerable to XSS on dev mode 404 page",
-  "details": "### Summary\n\n\"Unsanitized input from *the request URL* flows into `end`, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).\"\n\n### Details\n\nSource of potentially tainted data is in `packages/kit/src/exports/vite/dev/index.js`, line 437. This potentially tainted data is passed through a number of steps (which I could detail if you'd like) all the way down to line 91 in `packages/kit/src/exports/vite/utils.js`, which performs an operation that Snyk believes an attacker shouldn't be allowed to manipulate.\n\nAnother source of potentially tainted data (according to Snyk) comes from `\u200epackages/kit/src/exports/vite/utils.js`, line 30, col 30 (i.e., the `url` property of `req`). This potentially tainted data is passed through a number of steps (which I could detail if you'd like) all the way down line 91 in `packages/kit/src/exports/vite/utils.js`, which performs an operation that Snyk believes an attacker shouldn't be allowed to manipulate.\n\n### PoC\n\nNot provided\n\n### Impact\n\nLittle to none. The Vite development is not exposed to the network by default. And even if someone were able to trick a developer into executing an XSS against themselves, a development database should not have any sensitive data.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-rjjv-87mx-6x3h/GHSA-rjjv-87mx-6x3h.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sveltejs/kit",
+        "purl": "pkg:npm/%40sveltejs/kit"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-53261"
   ],
-  "modified": "2025-01-22T20:54:21Z",
-  "published": "2024-11-25T15:33:19Z",
   "database_specific": {
-    "nvd_published_at": "2024-11-25T20:15:10Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-11-25T15:33:19Z"
+    "github_reviewed_at": "2024-11-25T15:33:19Z",
+    "nvd_published_at": "2024-11-25T20:15:10Z",
+    "severity": "LOW"
   },
+  "details": "### Summary\n\n\"Unsanitized input from *the request URL* flows into `end`, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).\"\n\n### Details\n\nSource of potentially tainted data is in `packages/kit/src/exports/vite/dev/index.js`, line 437. This potentially tainted data is passed through a number of steps (which I could detail if you'd like) all the way down to line 91 in `packages/kit/src/exports/vite/utils.js`, which performs an operation that Snyk believes an attacker shouldn't be allowed to manipulate.\n\nAnother source of potentially tainted data (according to Snyk) comes from `\u200epackages/kit/src/exports/vite/utils.js`, line 30, col 30 (i.e., the `url` property of `req`). This potentially tainted data is passed through a number of steps (which I could detail if you'd like) all the way down line 91 in `packages/kit/src/exports/vite/utils.js`, which performs an operation that Snyk believes an attacker shouldn't be allowed to manipulate.\n\n### PoC\n\nNot provided\n\n### Impact\n\nLittle to none. The Vite development is not exposed to the network by default. And even if someone were able to trick a developer into executing an XSS against themselves, a development database should not have any sensitive data.",
+  "id": "GHSA-rjjv-87mx-6x3h",
+  "modified": "2025-01-22T20:54:21Z",
+  "published": "2024-11-25T15:33:19Z",
   "references": [
     {
       "type": "WEB",
@@ -42,36 +66,12 @@
       "url": "https://github.com/sveltejs/kit/releases/tag/%40sveltejs%2Fkit%402.8.3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@sveltejs/kit",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40sveltejs/kit"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.8.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-rjjv-87mx-6x3h/GHSA-rjjv-87mx-6x3h.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:A/AC:L/PR:N/UI:R/S:C/C:N/I:N/A:N"
+      "score": "CVSS:3.1/AV:A/AC:L/PR:N/UI:R/S:C/C:N/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "@sveltejs/kit vulnerable to XSS on dev mode 404 page"
 }

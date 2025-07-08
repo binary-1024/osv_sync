@@ -1,7 +1,39 @@
 {
-  "id": "RUSTSEC-2021-0052",
-  "summary": "Multiple functions can cause double-frees",
-  "details": "The following functions in the crate are affected:\n\n## `IdMap::clone_from`\n\nThe `clone_from` implementation for `IdMap` drops the values present in the\nmap and then begins cloning values from the other map. If a `.clone()` call\npancics, then the afformentioned dropped elements can be freed again.\n\n## `get_or_insert`\n\n`get_or_insert` reserves space for a value, before calling the user provided\ninsertion function `f`. If the function `f` panics then uninitialized or\npreviously freed memory can be dropped.\n\n## `remove_set`\n\nWhen removing a set of elements, `ptr::drop_in_place` is called on each of the\nelement to be removed. If the `Drop` impl of one of these elements panics then\nthe previously dropped elements can be dropped again.",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [
+          "memory-corruption"
+        ],
+        "cvss": null,
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2021-0052.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "id-map",
+        "purl": "pkg:cargo/id-map"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-30455",
     "CVE-2021-30456",
@@ -10,11 +42,13 @@
     "GHSA-rccq-j2m7-8fwr",
     "GHSA-vfqx-hv88-f9cv"
   ],
-  "modified": "2024-03-15T00:05:24.656544Z",
-  "published": "2021-02-26T12:00:00Z",
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "The following functions in the crate are affected:\n\n## `IdMap::clone_from`\n\nThe `clone_from` implementation for `IdMap` drops the values present in the\nmap and then begins cloning values from the other map. If a `.clone()` call\npancics, then the afformentioned dropped elements can be freed again.\n\n## `get_or_insert`\n\n`get_or_insert` reserves space for a value, before calling the user provided\ninsertion function `f`. If the function `f` panics then uninitialized or\npreviously freed memory can be dropped.\n\n## `remove_set`\n\nWhen removing a set of elements, `ptr::drop_in_place` is called on each of the\nelement to be removed. If the `Drop` impl of one of these elements panics then\nthe previously dropped elements can be dropped again.",
+  "id": "RUSTSEC-2021-0052",
+  "modified": "2024-03-15T00:05:24.656544Z",
+  "published": "2021-02-26T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -29,40 +63,6 @@
       "url": "https://github.com/andrewhickman/id-map/issues/3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "id-map",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/id-map"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": null,
-        "informational": null,
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2021-0052.json",
-        "categories": [
-          "memory-corruption"
-        ]
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Multiple functions can cause double-frees"
 }

@@ -1,17 +1,73 @@
 {
-  "id": "MGASA-2021-0175",
-  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0175.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.27-1.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0175.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.27-1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-linus update is based on upstream 5.10.27 and fixes at least\nthe following security issues:\n\nThe fix for XSA-365 includes initialization of pointers such that\nsubsequent cleanup code wouldn't use uninitialized or stale values.\nThis initialization went too far and may under certain conditions also\noverwrite pointers which are in need of cleaning up. The lack of\ncleanup would result in leaking persistent grants. The leak in turn\nwould prevent fully cleaning up after a respective guest has died,\nleaving around zombie domains. A malicious or buggy frontend driver\nmay be able to cause resource leaks from the corresponding backend\ndriver. This can result in a host-wide Denial of Sevice (DoS).\n(CVE-2021-28688 / XSA-371).\n\nAn issue was discovered in fs/io_uring.c in the Linux kernel through\n5.11.8. It allows attackers to cause a denial of service (deadlock)\nbecause exit may be waiting to park a SQPOLL thread, but concurrently\nthat SQPOLL thread is waiting for a signal to start (CVE-2021-28951).\n\nA race condition was discovered in get_old_root in fs/btrfs/ctree.c in\nthe Linux kernel through 5.11.8. It allows attackers to cause a denial\nof service (BUG) because of a lack of locking on an extent buffer \nbefore a cloning operation (CVE-2021-28964).\n\nIn intel_pmu_drain_pebs_nhm in arch/x86/events/intel/ds.c in the Linux\nkernel through 5.11.8 on some Haswell CPUs, userspace applications (such\nas perf-fuzzer) can cause a system crash because the PEBS status in a\nPEBS record is mishandled (CVE-2021-28971).\n\nIn drivers/pci/hotplug/rpadlpar_sysfs.c in the Linux kernel through 5.11.8,\nthe RPA PCI Hotplug driver has a user-tolerable buffer overflow when\nwriting a new device name to the driver from userspace, allowing userspace\nto write data to the kernel stack frame directly. This occurs because\nadd_slot_store and remove_slot_store mishandle drc_name '\\0' termination\n(CVE-2021-28972).\n\nAn issue was discovered in the Linux kernel before 5.11.9. drivers/vhost/\nvdpa.c has a use-after-free because v->config_ctx has an invalid value\nupon re-opening a character device (CVE-2021-29266).\n\nIt also adds the following fixes:\n- arm: enable OF_OVERLAY (mga#28596)\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "id": "MGASA-2021-0175",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2021-04-03T13:16:06Z",
-  "related": [
-    "CVE-2021-28688",
-    "CVE-2021-28951",
-    "CVE-2021-28964",
-    "CVE-2021-28971",
-    "CVE-2021-28972",
-    "CVE-2021-29266"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -38,70 +94,14 @@
       "url": "https://xenbits.xen.org/xsa/advisory-371.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.10.27-1.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0175.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.10.27-1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0175.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-28688",
+    "CVE-2021-28951",
+    "CVE-2021-28964",
+    "CVE-2021-28971",
+    "CVE-2021-28972",
+    "CVE-2021-29266"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fix security vulnerabilities"
 }

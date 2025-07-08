@@ -1,18 +1,46 @@
 {
-  "id": "MGASA-2019-0340",
-  "summary": "Updated libreoffice packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0340.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "libreoffice",
+        "purl": "pkg:rpm/mageia/libreoffice?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.2.8.2-1.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Updated libreoffice packages fix security vulnerabilities:\n\nLibreOffice has a feature where documents can specify that pre-installed\nscripts can be executed on various document events such as mouse-over, etc.\nLibreOffice is typically also bundled with LibreLogo, a programmable turtle\nvector graphics script, which can be manipulated into executing arbitrary\npython commands. By using the document event feature to trigger LibreLogo\nto execute python contained within a document a malicious document could be\nconstructed which would execute arbitrary python commands silently without\nwarning. In the fixed versions, LibreLogo cannot be called from a document\nevent handler (CVE-2019-9848).\n\nLibreOffice has a 'stealth mode' in which only documents from locations\ndeemed 'trusted' are allowed to retrieve remote resources. This mode is\nnot the default mode, but can be enabled by users who want to disable\nLibreOffice's ability to include remote resources within a document.\nA flaw existed where bullet graphics were omitted from this protection\n(CVE-2019-9849).\n\nLibreOffice is typically bundled with LibreLogo, a programmable turtle\nvector graphics script, which can execute arbitrary python commands\ncontained with  the document it is launched from. LibreOffice also has a\nfeature where documents can specify that pre-installed scripts can be\nexecuted on various document script events such as mouse-over, etc.\nProtection was added, to address CVE-2019-9848, to block calling LibreLogo\nfrom script event handers. However an insufficient url validation\nvulnerability in LibreOffice allowed malicious to bypass that protection\nand again trigger calling LibreLogo from script event handlers\n(CVE-2019-9850).\n\nLibreOffice is typically bundled with LibreLogo, a programmable turtle\nvector graphics script, which can execute arbitrary python commands\ncontained with the document it is launched from. Protection was added, to\naddress CVE-2019-9848, to block calling LibreLogo from document event\nscript handers, e.g. mouse over. However LibreOffice also has a separate\nfeature where documents can specify that pre-installed scripts can be\nexecuted on various global script events such as document-open, etc. In\nthe fixed versions, global script event handlers are validated equivalently\nto document script event handlers (CVE-2019-9851).\n\nLibreOffice has a feature where documents can specify that pre-installed\nmacros can be executed on various script events such as mouse-over,\ndocument-open etc. Access is intended to be restricted to scripts under the\nshare/Scripts/python, user/Scripts/python sub-directories of the LibreOffice\ninstall. Protection was added, to address CVE-2018-16858, to avoid a\ndirectory traversal attack where scripts in arbitrary locations on the file\nsystem could be executed. However this new protection could be bypassed by\na URL encoding attack. In the fixed versions, the parsed url describing the\nscript location is correctly encoded before further processing\n(CVE-2019-9852).\n\nLibreOffice documents can contain macros. The execution of those macros is\ncontrolled by the document security settings, typically execution of macros\nare blocked by default. A URL decoding flaw existed in how the urls to the\nmacros within the document were processed and categorized, resulting in the\npossibility to construct a document where macro execution bypassed the\nsecurity settings. The documents were correctly detected as containing\nmacros, and prompted the user to their existence within the documents, but\nmacros within the document were subsequently not controlled by the security\nsettings allowing arbitrary macro execution (CVE-2019-9853).\n\nLibreOffice has a feature where documents can specify that pre-installed\nmacros can be executed on various script events such as mouse-over,\ndocument-open etc. Access is intended to be restricted to scripts under the\nshare/Scripts/python, user/Scripts/python sub-directories of the LibreOffice\ninstall. Protection was added, to address CVE-2019-9852, to avoid a directory\ntraversal attack where scripts in arbitrary locations on the file system\ncould be executed by employing a URL encoding attack to defeat the path\nverification step. However this protection could be bypassed by taking\nadvantage of a flaw in how LibreOffice assembled the final script URL\nlocation directly from components of the passed in path as opposed to solely\nfrom the sanitized output of the path verification step (CVE-2019-9854).\n",
+  "id": "MGASA-2019-0340",
   "modified": "2019-11-30T12:34:45Z",
   "published": "2019-11-30T13:06:06Z",
-  "related": [
-    "CVE-2019-9848",
-    "CVE-2019-9849",
-    "CVE-2019-9850",
-    "CVE-2019-9851",
-    "CVE-2019-9852",
-    "CVE-2019-9853",
-    "CVE-2019-9854"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -51,43 +79,15 @@
       "url": "https://www.libreoffice.org/about-us/security/advisories/CVE-2019-9854/"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "libreoffice",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/libreoffice?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "6.2.8.2-1.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0340.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2019-9848",
+    "CVE-2019-9849",
+    "CVE-2019-9850",
+    "CVE-2019-9851",
+    "CVE-2019-9852",
+    "CVE-2019-9853",
+    "CVE-2019-9854"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated libreoffice packages fix security vulnerabilities"
 }

@@ -1,25 +1,69 @@
 {
-  "id": "GHSA-2m6g-crv8-p3c6",
-  "summary": "Parse Server vulnerable to brute force guessing of user sensitive data via search patterns",
-  "details": "### Impact\n\nInternal fields (keys used internally by Parse Server, prefixed by `_`) and protected fields (user defined) can be used as query constraints. Internal and protected fields are removed by Parse Server from query results and are only returned to the client using a valid master key. However, using query constraints, these fields can be guessed by enumerating until Parse Server returns a response object.\n\n### Patches\n\nThe patch requires the master key to use internal and protected fields as query constraints.\n\n### Workarounds\n\nImplement a Parse Cloud Trigger `beforeFind` and manually remove the query constraints, such as:\n\n```js\nParse.Cloud.beforeFind('TestObject', ({ query }) => {\n  for (const key in query._where || []) {\n    // Repeat logic for protected fields\n    if (key.charAt(0) === '_') {\n      delete query._where[key];\n    }\n  }\n});\n```\n\n### References\n\n- https://github.com/parse-community/parse-server/security/advisories/GHSA-2m6g-crv8-p3c6",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-2m6g-crv8-p3c6/GHSA-2m6g-crv8-p3c6.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "parse-server",
+        "purl": "pkg:npm/parse-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.10.14"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-2m6g-crv8-p3c6/GHSA-2m6g-crv8-p3c6.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "parse-server",
+        "purl": "pkg:npm/parse-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.0.0"
+            },
+            {
+              "fixed": "5.2.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-parse-2022-36079",
     "CVE-2022-36079"
   ],
-  "modified": "2023-12-06T01:02:29.656355Z",
-  "published": "2022-09-16T21:17:44Z",
-  "related": [
-    "CVE-2022-36079"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-09-07T21:15:00Z",
-    "github_reviewed_at": "2022-09-16T21:17:44Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-200"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T21:17:44Z",
+    "nvd_published_at": "2022-09-07T21:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nInternal fields (keys used internally by Parse Server, prefixed by `_`) and protected fields (user defined) can be used as query constraints. Internal and protected fields are removed by Parse Server from query results and are only returned to the client using a valid master key. However, using query constraints, these fields can be guessed by enumerating until Parse Server returns a response object.\n\n### Patches\n\nThe patch requires the master key to use internal and protected fields as query constraints.\n\n### Workarounds\n\nImplement a Parse Cloud Trigger `beforeFind` and manually remove the query constraints, such as:\n\n```js\nParse.Cloud.beforeFind('TestObject', ({ query }) => {\n  for (const key in query._where || []) {\n    // Repeat logic for protected fields\n    if (key.charAt(0) === '_') {\n      delete query._where[key];\n    }\n  }\n});\n```\n\n### References\n\n- https://github.com/parse-community/parse-server/security/advisories/GHSA-2m6g-crv8-p3c6",
+  "id": "GHSA-2m6g-crv8-p3c6",
+  "modified": "2023-12-06T01:02:29.656355Z",
+  "published": "2022-09-16T21:17:44Z",
   "references": [
     {
       "type": "WEB",
@@ -58,59 +102,15 @@
       "url": "https://github.com/parse-community/parse-server/releases/tag/5.2.5"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "parse-server",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/parse-server"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.10.14"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-2m6g-crv8-p3c6/GHSA-2m6g-crv8-p3c6.json"
-      }
-    },
-    {
-      "package": {
-        "name": "parse-server",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/parse-server"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "5.0.0"
-            },
-            {
-              "fixed": "5.2.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-2m6g-crv8-p3c6/GHSA-2m6g-crv8-p3c6.json"
-      }
-    }
+  "related": [
+    "CVE-2022-36079"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Parse Server vulnerable to brute force guessing of user sensitive data via search patterns"
 }

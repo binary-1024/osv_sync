@@ -1,16 +1,46 @@
 {
-  "id": "MGASA-2020-0228",
-  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0228.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.6.14-1.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This update is based on the upstream 5.6.14 kernel and fixes at least\nthe following security issues:\n\nA NULL pointer dereference flaw was found in the Linux kernel's SELinux\nsubsystem in versions before 5.7. This flaw occurs while importing the\nCommercial IP Security Option (CIPSO) protocol's category bitmap into\nthe SELinux extensible bitmap via the' ebitmap_netlbl_import' routine.\nWhile processing the CIPSO restricted bitmap tag in the\n'cipso_v4_parsetag_rbm' routine, it sets the security attribute to\nindicate that the category bitmap is present, even if it has not been\nallocated. This issue leads to a NULL pointer dereference issue while\nimporting the same category bitmap into SELinux. This flaw allows a\nremote network user to crash the system kernel, resulting in a denial\nof service (CVE-2020-10711).\n\nusb_sg_cancel in drivers/usb/core/message.c in the Linux kernel before\n5.6.8 has a use-after-free because a transfer occurs without a\nreference(CVE-2020-12464).\n\nAn issue was discovered in the Linux kernel before 5.6.7. xdp_umem_reg\nin net/xdp/xdp_umem.c has an out-of-bounds write (by a user with the\nCAP_NET_ADMIN capability) because of a lack of headroom validation\n(CVE-2020-12659).\n\nAn issue was discovered in the Linux kernel through 5.6.11. sg_write\nlacks an sg_remove_request call in a certain failure case\n(CVE-2020-12770).\n\ngadget_dev_desc_UDC_store in drivers/usb/gadget/configfs.c in the Linux\nkernel through 5.6.13 relies on kstrdup without considering the\npossibility of an internal '\\0' value, which allows attackers to trigger\nan out-of-bounds read (CVE-2020-13143).\n\nFor other fixes and changes in this update, see the refenced changelogs.\n",
+  "id": "MGASA-2020-0228",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2020-05-24T18:04:47Z",
-  "related": [
-    "CVE-2020-10711",
-    "CVE-2020-12464",
-    "CVE-2020-12659",
-    "CVE-2020-12770",
-    "CVE-2020-13143"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -53,43 +83,13 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.6.14"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.6.14-1.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2020-0228.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2020-10711",
+    "CVE-2020-12464",
+    "CVE-2020-12659",
+    "CVE-2020-12770",
+    "CVE-2020-13143"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fix security vulnerabilities"
 }

@@ -1,69 +1,16 @@
 {
-  "id": "GHSA-hf43-47q4-fhq5",
-  "summary": "XWiki Commons missing escaping of `{` in Velocity escapetool allows remote code execution",
-  "details": "### Impact\nThe HTML escaping of escaping tool that is used in XWiki doesn't escape `{`, which, when used in certain places, allows XWiki syntax injection and thereby remote code execution.\n\nTo reproduce in an XWiki installation, open `<xwiki-host>/xwiki/bin/view/Panels/PanelLayoutUpdate?place=%7B%7B%2Fhtml%7D%7D%7B%7Basync%20async%3Dfalse%7D%7D%7B%7Bvelocity%7D%7D%23evaluate(%24request.eval)%7B%7B%2Fvelocity%7D%7D%7B%7B%2Fasync%7D%7D&eval=Hello%20from%20URL%20Parameter!%20I%20got%20programming%3A%20%24services.security.authorization.hasAccess(%27programming%27)` where `<xwiki-host>` is the URL of your XWiki installation. If this displays `You are not admin on this place Hello from URL Parameter! I got programming: true`, the installation is vulnerable.\n\n### Patches\nThe vulnerability has been fixed on XWiki 14.10.19, 15.5.5, and 15.9 RC1.\n\n### Workarounds\nApart from upgrading, there is no generic workaround. However, replacing `$escapetool.html` by `$escapetool.xml` in XWiki documents fixes the vulnerability. In a standard XWiki installation, we're only aware of the document `Panels.PanelLayoutUpdate` that exposes this vulnerability, patching this document is thus a workaround. Any extension could expose this vulnerability and might thus require patching, too.\n\n### References\n- https://github.com/xwiki/xwiki-commons/commit/b94142e2a66ec32e89eacab67c3da8d91f5ef93a\n- https://jira.xwiki.org/browse/XCOMMONS-2828\n- https://jira.xwiki.org/browse/XWIKI-21438",
-  "aliases": [
-    "CVE-2024-31996"
-  ],
-  "modified": "2025-01-09T22:24:22.282433Z",
-  "published": "2024-04-10T17:16:37Z",
-  "related": [
-    "CVE-2024-31996"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2024-04-10T21:15:07Z",
-    "cwe_ids": [
-      "CWE-94",
-      "CWE-95"
-    ],
-    "severity": "CRITICAL",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-04-10T17:16:37Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/xwiki/xwiki-commons/security/advisories/GHSA-hf43-47q4-fhq5"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-31996"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/xwiki/xwiki-commons/commit/b0805160ec7b01ee12417e79cb384e60ae4817aa"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/xwiki/xwiki-commons/commit/b94142e2a66ec32e89eacab67c3da8d91f5ef93a"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/xwiki/xwiki-commons/commit/ed7ff515a2436a1c6dcbd0c6ca0c41e434d58915"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/xwiki/xwiki-commons"
-    },
-    {
-      "type": "WEB",
-      "url": "https://jira.xwiki.org/browse/XCOMMONS-2828"
-    },
-    {
-      "type": "WEB",
-      "url": "https://jira.xwiki.org/browse/XWIKI-21438"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-hf43-47q4-fhq5/GHSA-hf43-47q4-fhq5.json"
+      },
       "package": {
-        "name": "org.xwiki.commons:xwiki-commons-velocity",
         "ecosystem": "Maven",
+        "name": "org.xwiki.commons:xwiki-commons-velocity",
         "purl": "pkg:maven/org.xwiki.commons/xwiki-commons-velocity"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "3.0.1"
@@ -71,7 +18,8 @@
             {
               "fixed": "14.10.19"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -495,20 +443,19 @@
         "9.9",
         "9.9-rc-1",
         "9.9-rc-2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-hf43-47q4-fhq5/GHSA-hf43-47q4-fhq5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-hf43-47q4-fhq5/GHSA-hf43-47q4-fhq5.json"
+      },
       "package": {
-        "name": "org.xwiki.commons:xwiki-commons-velocity",
         "ecosystem": "Maven",
+        "name": "org.xwiki.commons:xwiki-commons-velocity",
         "purl": "pkg:maven/org.xwiki.commons/xwiki-commons-velocity"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "15.0-rc-1"
@@ -516,7 +463,8 @@
             {
               "fixed": "15.5.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -535,20 +483,19 @@
         "15.5.1",
         "15.5.2",
         "15.5.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-hf43-47q4-fhq5/GHSA-hf43-47q4-fhq5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-hf43-47q4-fhq5/GHSA-hf43-47q4-fhq5.json"
+      },
       "package": {
-        "name": "org.xwiki.commons:xwiki-commons-velocity",
         "ecosystem": "Maven",
+        "name": "org.xwiki.commons:xwiki-commons-velocity",
         "purl": "pkg:maven/org.xwiki.commons/xwiki-commons-velocity"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "15.6-rc-1"
@@ -556,7 +503,8 @@
             {
               "fixed": "15.9-rc-1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -566,17 +514,69 @@
         "15.7-rc-1",
         "15.8",
         "15.8-rc-1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-hf43-47q4-fhq5/GHSA-hf43-47q4-fhq5.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2024-31996"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-94",
+      "CWE-95"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-04-10T17:16:37Z",
+    "nvd_published_at": "2024-04-10T21:15:07Z",
+    "severity": "CRITICAL"
+  },
+  "details": "### Impact\nThe HTML escaping of escaping tool that is used in XWiki doesn't escape `{`, which, when used in certain places, allows XWiki syntax injection and thereby remote code execution.\n\nTo reproduce in an XWiki installation, open `<xwiki-host>/xwiki/bin/view/Panels/PanelLayoutUpdate?place=%7B%7B%2Fhtml%7D%7D%7B%7Basync%20async%3Dfalse%7D%7D%7B%7Bvelocity%7D%7D%23evaluate(%24request.eval)%7B%7B%2Fvelocity%7D%7D%7B%7B%2Fasync%7D%7D&eval=Hello%20from%20URL%20Parameter!%20I%20got%20programming%3A%20%24services.security.authorization.hasAccess(%27programming%27)` where `<xwiki-host>` is the URL of your XWiki installation. If this displays `You are not admin on this place Hello from URL Parameter! I got programming: true`, the installation is vulnerable.\n\n### Patches\nThe vulnerability has been fixed on XWiki 14.10.19, 15.5.5, and 15.9 RC1.\n\n### Workarounds\nApart from upgrading, there is no generic workaround. However, replacing `$escapetool.html` by `$escapetool.xml` in XWiki documents fixes the vulnerability. In a standard XWiki installation, we're only aware of the document `Panels.PanelLayoutUpdate` that exposes this vulnerability, patching this document is thus a workaround. Any extension could expose this vulnerability and might thus require patching, too.\n\n### References\n- https://github.com/xwiki/xwiki-commons/commit/b94142e2a66ec32e89eacab67c3da8d91f5ef93a\n- https://jira.xwiki.org/browse/XCOMMONS-2828\n- https://jira.xwiki.org/browse/XWIKI-21438",
+  "id": "GHSA-hf43-47q4-fhq5",
+  "modified": "2025-01-09T22:24:22.282433Z",
+  "published": "2024-04-10T17:16:37Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki/xwiki-commons/security/advisories/GHSA-hf43-47q4-fhq5"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-31996"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki/xwiki-commons/commit/b0805160ec7b01ee12417e79cb384e60ae4817aa"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki/xwiki-commons/commit/b94142e2a66ec32e89eacab67c3da8d91f5ef93a"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xwiki/xwiki-commons/commit/ed7ff515a2436a1c6dcbd0c6ca0c41e434d58915"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/xwiki/xwiki-commons"
+    },
+    {
+      "type": "WEB",
+      "url": "https://jira.xwiki.org/browse/XCOMMONS-2828"
+    },
+    {
+      "type": "WEB",
+      "url": "https://jira.xwiki.org/browse/XWIKI-21438"
+    }
+  ],
+  "related": [
+    "CVE-2024-31996"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "XWiki Commons missing escaping of `{` in Velocity escapetool allows remote code execution"
 }

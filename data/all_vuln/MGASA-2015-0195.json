@@ -1,14 +1,46 @@
 {
-  "id": "MGASA-2015-0195",
-  "summary": "Updated glibc packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0195.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:4",
+        "name": "glibc",
+        "purl": "pkg:rpm/mageia/glibc?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.18-9.11.mga4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Updated glibc package fixes security vulnerabilities:\n\nIt was discovered that, under certain circumstances, glibc's getaddrinfo()\nfunction would send DNS queries to random file descriptors. An attacker\ncould potentially use this flaw to send DNS queries to unintended\nrecipients, resulting in information disclosure or data loss due to the\napplication encountering corrupted data. (CVE-2013-7423)\n\nIt was found that the files back end of Name Service Switch (NSS) did not\nisolate iteration over an entire database from key-based look-up API calls.\nAn application performing look-ups on a database while iterating over it\ncould enter an infinite loop, leading to a denial of service.\n(CVE-2014-8121)\n\nA buffer overflow flaw was found in the way glibc's gethostbyname_r() and\nother related functions computed the size of a buffer when passed a\nmisaligned buffer as input. An attacker able to make an application call\nany of these functions with a misaligned buffer could use this flaw to\ncrash the application or, potentially, execute arbitrary code with the\npermissions of the user running the application. (CVE-2015-1781)\n\nJoseph Myers discovered strxfrm is vulnerable to integer overflows\nwhen computing memory allocation sizes (similar to CVE-2012-4412)\n[BZ #16009] (CVE pending)\n\nShaun Colley discovered strxfrm falls back to an unbounded alloca if\nmalloc fails making it vulnerable to stack-based buffer overflows\n(similar to CVE-2012-4424) [BZ #16009] (CVE pending)\n\nA buffer overflow flaw was found in libio/wstrops.c:_IO_wstr_overflow \nwich allows for overflow in calculating the new size in wide characters,\nbut not for overflow in the multiplication to compute the size in bytes,\nwhich could thus overflow and result in a buffer overrun copying data\ninto the new buffer. [BZ #17269] (CVE pending)\n\nWhen processing certain malformed patterns, fnmatch can skip over the\nNUL byte terminating the pattern.  This can potentially result in an\napplication crash if fnmatch hits an unmapped page before encountering a\nNUL byte. [BZ #18032] (CVE pending)\n\nOther fixes in this update:\nnscd package was missing the /var/db/nscd directory wich prevented\nit to work properly (mga#15545).\n",
+  "id": "MGASA-2015-0195",
   "modified": "2016-09-20T10:11:53Z",
   "published": "2015-05-06T15:16:01Z",
-  "related": [
-    "CVE-2013-7423",
-    "CVE-2014-8121",
-    "CVE-2015-1781"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -43,43 +75,11 @@
       "url": "https://rhn.redhat.com/errata/RHSA-2015-0863.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "glibc",
-        "ecosystem": "Mageia:4",
-        "purl": "pkg:rpm/mageia/glibc?arch=source&distro=mageia-4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.18-9.11.mga4"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2015-0195.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2013-7423",
+    "CVE-2014-8121",
+    "CVE-2015-1781"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated glibc packages fix security vulnerabilities"
 }

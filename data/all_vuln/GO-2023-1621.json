@@ -1,21 +1,64 @@
 {
-  "id": "GO-2023-1621",
-  "summary": "Incorrect calculation on P256 curves in crypto/internal/nistec",
-  "details": "The ScalarMult and ScalarBaseMult methods of the P256 Curve may return an incorrect result if called with some specific unreduced scalars (a scalar larger than the order of the curve).\n\nThis does not impact usages of crypto/ecdsa or crypto/ecdh.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2023-1621.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "crypto/internal/nistec",
+            "symbols": [
+              "P256OrdInverse",
+              "P256Point.ScalarBaseMult",
+              "P256Point.ScalarMult"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "stdlib",
+        "purl": "pkg:golang/stdlib"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.19.7"
+            },
+            {
+              "introduced": "1.20.0-0"
+            },
+            {
+              "fixed": "1.20.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-golang-2023-24532",
     "CVE-2023-24532"
   ],
-  "modified": "2024-05-20T16:03:47Z",
-  "published": "2023-03-08T19:30:53Z",
-  "related": [
-    "RHSA-2023:3318",
-    "RHSA-2023:3319"
+  "credits": [
+    {
+      "name": "Guido Vranken, via the Ethereum Foundation bug bounty program"
+    }
   ],
   "database_specific": {
     "review_status": "REVIEWED",
     "url": "https://pkg.go.dev/vuln/GO-2023-1621"
   },
+  "details": "The ScalarMult and ScalarBaseMult methods of the P256 Curve may return an incorrect result if called with some specific unreduced scalars (a scalar larger than the order of the curve).\n\nThis does not impact usages of crypto/ecdsa or crypto/ecdh.",
+  "id": "GO-2023-1621",
+  "modified": "2024-05-20T16:03:47Z",
+  "published": "2023-03-08T19:30:53Z",
   "references": [
     {
       "type": "REPORT",
@@ -30,53 +73,10 @@
       "url": "https://groups.google.com/g/golang-announce/c/3-TpUx48iQY"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "stdlib",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/stdlib"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.19.7"
-            },
-            {
-              "introduced": "1.20.0-0"
-            },
-            {
-              "fixed": "1.20.2"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "crypto/internal/nistec",
-            "symbols": [
-              "P256OrdInverse",
-              "P256Point.ScalarBaseMult",
-              "P256Point.ScalarMult"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2023-1621.json"
-      }
-    }
+  "related": [
+    "RHSA-2023:3318",
+    "RHSA-2023:3319"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Guido Vranken, via the Ethereum Foundation bug bounty program"
-    }
-  ]
+  "summary": "Incorrect calculation on P256 curves in crypto/internal/nistec"
 }

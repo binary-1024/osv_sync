@@ -1,57 +1,16 @@
 {
-  "id": "GHSA-7c6p-848j-wh5h",
-  "summary": "Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php",
-  "details": "### Impact\n\nSeveral files within the local working directory are included during the invocation of Composer and in the context of the executing user.\n\nAs such,  under certain conditions arbitrary code execution may lead to local privilege escalation, provide lateral user movement or malicious code execution when Composer is invoked within a directory with tampered files.\n\nAll Composer CLI commands are affected, including composer.phar's self-update.\n\nThe following are of high risk:\n\n- Composer being run with sudo.\n- Pipelines which may execute Composer on untrusted projects.\n- Shared environments with developers who run Composer individually on the same project.\n\n### Patches\n\n2.7.0, 2.2.23\n\n### Workarounds\n\n- It is advised that the patched versions are applied at the earliest convenience.\n\nWhere not possible, the following should be addressed:\n- Remove all sudo composer privileges for all users to mitigate root privilege escalation.  \n- Avoid running Composer within an untrusted directory, or if needed, verify that the contents of `vendor/composer/InstalledVersions.php` and `vendor/composer/installed.php` do not include untrusted code. \n\nA reset can also be done on these files by the following:\n\n```sh\nrm vendor/composer/installed.php vendor/composer/InstalledVersions.php\ncomposer install --no-scripts --no-plugins\n```",
-  "aliases": [
-    "BIT-composer-2024-24821",
-    "CVE-2024-24821"
-  ],
-  "modified": "2024-02-17T08:11:36.783544Z",
-  "published": "2024-02-08T15:06:38Z",
-  "related": [
-    "CVE-2024-24821"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2024-02-09T00:15:08Z",
-    "cwe_ids": [
-      "CWE-829"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-02-08T15:06:38Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/composer/composer/security/advisories/GHSA-7c6p-848j-wh5h"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24821"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/composer/composer/commit/64e4eb356b159a30c766cd1ea83450a38dc23bf5"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/composer/composer/commit/77e3982918bc1d886843dc3d5e575e7e871b27b7"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/composer/composer"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-7c6p-848j-wh5h/GHSA-7c6p-848j-wh5h.json"
+      },
       "package": {
-        "name": "composer/composer",
         "ecosystem": "Packagist",
+        "name": "composer/composer",
         "purl": "pkg:composer/composer/composer"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.0.0-alpha1"
@@ -59,7 +18,8 @@
             {
               "fixed": "2.2.23"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -122,20 +82,19 @@
         "2.2.7",
         "2.2.8",
         "2.2.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-7c6p-848j-wh5h/GHSA-7c6p-848j-wh5h.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-7c6p-848j-wh5h/GHSA-7c6p-848j-wh5h.json"
+      },
       "package": {
-        "name": "composer/composer",
         "ecosystem": "Packagist",
+        "name": "composer/composer",
         "purl": "pkg:composer/composer/composer"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.3.0-rc1"
@@ -143,7 +102,8 @@
             {
               "fixed": "2.7.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -182,17 +142,57 @@
         "2.6.4",
         "2.6.5",
         "2.6.6"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-7c6p-848j-wh5h/GHSA-7c6p-848j-wh5h.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-composer-2024-24821",
+    "CVE-2024-24821"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-829"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-08T15:06:38Z",
+    "nvd_published_at": "2024-02-09T00:15:08Z",
+    "severity": "HIGH"
+  },
+  "details": "### Impact\n\nSeveral files within the local working directory are included during the invocation of Composer and in the context of the executing user.\n\nAs such,  under certain conditions arbitrary code execution may lead to local privilege escalation, provide lateral user movement or malicious code execution when Composer is invoked within a directory with tampered files.\n\nAll Composer CLI commands are affected, including composer.phar's self-update.\n\nThe following are of high risk:\n\n- Composer being run with sudo.\n- Pipelines which may execute Composer on untrusted projects.\n- Shared environments with developers who run Composer individually on the same project.\n\n### Patches\n\n2.7.0, 2.2.23\n\n### Workarounds\n\n- It is advised that the patched versions are applied at the earliest convenience.\n\nWhere not possible, the following should be addressed:\n- Remove all sudo composer privileges for all users to mitigate root privilege escalation.  \n- Avoid running Composer within an untrusted directory, or if needed, verify that the contents of `vendor/composer/InstalledVersions.php` and `vendor/composer/installed.php` do not include untrusted code. \n\nA reset can also be done on these files by the following:\n\n```sh\nrm vendor/composer/installed.php vendor/composer/InstalledVersions.php\ncomposer install --no-scripts --no-plugins\n```",
+  "id": "GHSA-7c6p-848j-wh5h",
+  "modified": "2024-02-17T08:11:36.783544Z",
+  "published": "2024-02-08T15:06:38Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/composer/composer/security/advisories/GHSA-7c6p-848j-wh5h"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24821"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/composer/composer/commit/64e4eb356b159a30c766cd1ea83450a38dc23bf5"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/composer/composer/commit/77e3982918bc1d886843dc3d5e575e7e871b27b7"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/composer/composer"
+    }
+  ],
+  "related": [
+    "CVE-2024-24821"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php"
 }

@@ -1,10 +1,102 @@
 {
-  "id": "ASB-A-173552790",
-  "details": "In ClearPullerCacheIfNecessary and ForceClearPullerCache of StatsPullerManager.cpp, there is a possible use-after-free due to a race condition. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://storage.googleapis.com/android-osv/ASB-A-173552790.json"
+      },
+      "ecosystem_specific": {
+        "fixes": [
+          "https://android.googlesource.com/platform/frameworks/base/+/c7f94ac6347aaa77f890d1b382177968d2581894"
+        ],
+        "severity": "High",
+        "spl": "2021-04-01",
+        "types": [
+          "EoP"
+        ],
+        "vanir_signatures": [
+          {
+            "deprecated": false,
+            "digest": {
+              "line_hashes": [
+                "276421558175509511554573386608974515553",
+                "89344226562673292616585529776115421582",
+                "335376642036065395401989861899840725083",
+                "22243518718314057884693290828616978389",
+                "307824126936387981057255436007154658163",
+                "337111659555491520642886002911102643275",
+                "145432192477951541460162843433924264187",
+                "245617917729764275220540778554821687797"
+              ],
+              "threshold": 0.9
+            },
+            "id": "ASB-A-173552790-0a935553",
+            "signature_type": "Line",
+            "signature_version": "v1",
+            "source": "https://android.googlesource.com/platform/frameworks/base/+/c7f94ac6347aaa77f890d1b382177968d2581894",
+            "target": {
+              "file": "cmds/statsd/src/external/StatsPullerManager.cpp"
+            }
+          },
+          {
+            "deprecated": false,
+            "digest": {
+              "function_hash": "80816721327590360138923004711054520411",
+              "length": 223.0
+            },
+            "id": "ASB-A-173552790-5dbfce0f",
+            "signature_type": "Function",
+            "signature_version": "v1",
+            "source": "https://android.googlesource.com/platform/frameworks/base/+/c7f94ac6347aaa77f890d1b382177968d2581894",
+            "target": {
+              "file": "cmds/statsd/src/external/StatsPullerManager.cpp",
+              "function": "StatsPullerManager::ClearPullerCacheIfNecessary"
+            }
+          },
+          {
+            "deprecated": false,
+            "digest": {
+              "function_hash": "272798042972821718683930904450590500692",
+              "length": 193.0
+            },
+            "id": "ASB-A-173552790-b6e24d8e",
+            "signature_type": "Function",
+            "signature_version": "v1",
+            "source": "https://android.googlesource.com/platform/frameworks/base/+/c7f94ac6347aaa77f890d1b382177968d2581894",
+            "target": {
+              "file": "cmds/statsd/src/external/StatsPullerManager.cpp",
+              "function": "StatsPullerManager::ForceClearPullerCache"
+            }
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Android",
+        "name": "platform/frameworks/base"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11:0"
+            },
+            {
+              "fixed": "11:2021-04-01"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "11"
+      ]
+    }
+  ],
   "aliases": [
     "A-173552790",
     "CVE-2021-0432"
   ],
+  "details": "In ClearPullerCacheIfNecessary and ForceClearPullerCache of StatsPullerManager.cpp, there is a possible use-after-free due to a race condition. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation.",
+  "id": "ASB-A-173552790",
   "modified": "2025-07-07T15:00:46.712952Z",
   "published": "2021-04-01T00:00:00Z",
   "references": [
@@ -15,98 +107,6 @@
     {
       "type": "FIX",
       "url": "https://android.googlesource.com/platform/frameworks/base/+/70a5fd9979ee7ff2a4071db0335813c0c5a72399"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "platform/frameworks/base",
-        "ecosystem": "Android"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "11:0"
-            },
-            {
-              "fixed": "11:2021-04-01"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "11"
-      ],
-      "ecosystem_specific": {
-        "vanir_signatures": [
-          {
-            "digest": {
-              "threshold": 0.9,
-              "line_hashes": [
-                "276421558175509511554573386608974515553",
-                "89344226562673292616585529776115421582",
-                "335376642036065395401989861899840725083",
-                "22243518718314057884693290828616978389",
-                "307824126936387981057255436007154658163",
-                "337111659555491520642886002911102643275",
-                "145432192477951541460162843433924264187",
-                "245617917729764275220540778554821687797"
-              ]
-            },
-            "id": "ASB-A-173552790-0a935553",
-            "source": "https://android.googlesource.com/platform/frameworks/base/+/c7f94ac6347aaa77f890d1b382177968d2581894",
-            "deprecated": false,
-            "signature_version": "v1",
-            "target": {
-              "file": "cmds/statsd/src/external/StatsPullerManager.cpp"
-            },
-            "signature_type": "Line"
-          },
-          {
-            "digest": {
-              "length": 223.0,
-              "function_hash": "80816721327590360138923004711054520411"
-            },
-            "id": "ASB-A-173552790-5dbfce0f",
-            "source": "https://android.googlesource.com/platform/frameworks/base/+/c7f94ac6347aaa77f890d1b382177968d2581894",
-            "deprecated": false,
-            "signature_version": "v1",
-            "target": {
-              "file": "cmds/statsd/src/external/StatsPullerManager.cpp",
-              "function": "StatsPullerManager::ClearPullerCacheIfNecessary"
-            },
-            "signature_type": "Function"
-          },
-          {
-            "digest": {
-              "length": 193.0,
-              "function_hash": "272798042972821718683930904450590500692"
-            },
-            "id": "ASB-A-173552790-b6e24d8e",
-            "source": "https://android.googlesource.com/platform/frameworks/base/+/c7f94ac6347aaa77f890d1b382177968d2581894",
-            "deprecated": false,
-            "signature_version": "v1",
-            "target": {
-              "file": "cmds/statsd/src/external/StatsPullerManager.cpp",
-              "function": "StatsPullerManager::ForceClearPullerCache"
-            },
-            "signature_type": "Function"
-          }
-        ],
-        "fixes": [
-          "https://android.googlesource.com/platform/frameworks/base/+/c7f94ac6347aaa77f890d1b382177968d2581894"
-        ],
-        "spl": "2021-04-01",
-        "severity": "High",
-        "types": [
-          "EoP"
-        ]
-      },
-      "database_specific": {
-        "source": "https://storage.googleapis.com/android-osv/ASB-A-173552790.json"
-      }
     }
   ],
   "schema_version": "1.6.0"

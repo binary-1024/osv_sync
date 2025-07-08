@@ -1,25 +1,91 @@
 {
-  "id": "GHSA-6pqf-c99p-758v",
-  "summary": "org.xwiki.commons:xwiki-commons-xml's HTML sanitizer allows form elements in restricted",
-  "details": "### Impact\n\nThe HTML sanitizer that is included in XWiki since version 14.6RC1 allowed form and input HTML tags. In the context of XWiki, this allows an attacker without script right to either create forms that can be used for phishing attacks or also in the context of a sheet, the attacker could add an input like `{{html}}<input type=\"hidden\" name=\"content\" value=\"{{groovy}}println(&quot;Hello from Groovy!&quot;)\" />{{/html}}` that would allow remote code execution when it is submitted by an admin (the sheet is rendered as part of the edit form). The attacker would need to ensure that the edit form looks plausible, though, which can be non-trivial as without script right the attacker cannot display the regular content of the document.\n\n### Patches\nThis has been patched in XWiki 14.10.6 and 15.2RC1 by removing the central form-related tags from the list of allowed tags.\n\n### Workarounds\nAn admin can manually disallow the tags by adding `form, input, select, textarea, button` to the configuration option `xml.htmlElementSanitizer.forbidTags` in the `xwiki.properties` configuration file.\n\n### References\n* https://jira.xwiki.org/browse/XCOMMONS-2634\n* https://github.com/xwiki/xwiki-commons/commit/99484d48e899a68a1b6e33d457825b776c6fe8c3\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-6pqf-c99p-758v/GHSA-6pqf-c99p-758v.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.commons:xwiki-commons-xml",
+        "purl": "pkg:maven/org.xwiki.commons/xwiki-commons-xml"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.6-rc-1"
+            },
+            {
+              "fixed": "14.10.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "14.10",
+        "14.10.1",
+        "14.10.2",
+        "14.10.3",
+        "14.10.4",
+        "14.10.5",
+        "14.6",
+        "14.6-rc-1",
+        "14.7",
+        "14.7-rc-1",
+        "14.8",
+        "14.8-rc-1",
+        "14.9",
+        "14.9-rc-1"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-6pqf-c99p-758v/GHSA-6pqf-c99p-758v.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.commons:xwiki-commons-xml",
+        "purl": "pkg:maven/org.xwiki.commons/xwiki-commons-xml"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "15.0-rc-1"
+            },
+            {
+              "fixed": "15.2-rc-1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "15.0",
+        "15.0-rc-1",
+        "15.1",
+        "15.1-rc-1"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-36471"
   ],
-  "modified": "2024-02-16T08:13:52.100143Z",
-  "published": "2023-06-30T20:41:50Z",
-  "related": [
-    "CVE-2023-36471"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-06-29T20:15:10Z",
     "cwe_ids": [
       "CWE-74",
       "CWE-79"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-06-30T20:41:50Z"
+    "github_reviewed_at": "2023-06-30T20:41:50Z",
+    "nvd_published_at": "2023-06-29T20:15:10Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\n\nThe HTML sanitizer that is included in XWiki since version 14.6RC1 allowed form and input HTML tags. In the context of XWiki, this allows an attacker without script right to either create forms that can be used for phishing attacks or also in the context of a sheet, the attacker could add an input like `{{html}}<input type=\"hidden\" name=\"content\" value=\"{{groovy}}println(&quot;Hello from Groovy!&quot;)\" />{{/html}}` that would allow remote code execution when it is submitted by an admin (the sheet is rendered as part of the edit form). The attacker would need to ensure that the edit form looks plausible, though, which can be non-trivial as without script right the attacker cannot display the regular content of the document.\n\n### Patches\nThis has been patched in XWiki 14.10.6 and 15.2RC1 by removing the central form-related tags from the list of allowed tags.\n\n### Workarounds\nAn admin can manually disallow the tags by adding `form, input, select, textarea, button` to the configuration option `xml.htmlElementSanitizer.forbidTags` in the `xwiki.properties` configuration file.\n\n### References\n* https://jira.xwiki.org/browse/XCOMMONS-2634\n* https://github.com/xwiki/xwiki-commons/commit/99484d48e899a68a1b6e33d457825b776c6fe8c3\n",
+  "id": "GHSA-6pqf-c99p-758v",
+  "modified": "2024-02-16T08:13:52.100143Z",
+  "published": "2023-06-30T20:41:50Z",
   "references": [
     {
       "type": "WEB",
@@ -42,81 +108,15 @@
       "url": "https://jira.xwiki.org/browse/XCOMMONS-2634"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.commons:xwiki-commons-xml",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.commons/xwiki-commons-xml"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.6-rc-1"
-            },
-            {
-              "fixed": "14.10.6"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "14.10",
-        "14.10.1",
-        "14.10.2",
-        "14.10.3",
-        "14.10.4",
-        "14.10.5",
-        "14.6",
-        "14.6-rc-1",
-        "14.7",
-        "14.7-rc-1",
-        "14.8",
-        "14.8-rc-1",
-        "14.9",
-        "14.9-rc-1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-6pqf-c99p-758v/GHSA-6pqf-c99p-758v.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.xwiki.commons:xwiki-commons-xml",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.commons/xwiki-commons-xml"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "15.0-rc-1"
-            },
-            {
-              "fixed": "15.2-rc-1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "15.0",
-        "15.0-rc-1",
-        "15.1",
-        "15.1-rc-1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-6pqf-c99p-758v/GHSA-6pqf-c99p-758v.json"
-      }
-    }
+  "related": [
+    "CVE-2023-36471"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "org.xwiki.commons:xwiki-commons-xml's HTML sanitizer allows form elements in restricted"
 }

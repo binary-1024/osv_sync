@@ -1,67 +1,17 @@
 {
-  "id": "GHSA-pwh8-58vv-vw48",
-  "summary": "Jetty's OpenId Revoked authentication allows one request",
-  "details": "If a Jetty `OpenIdAuthenticator` uses the optional nested `LoginService`, and that `LoginService` decides to revoke an already authenticated user, then the current request will still treat the user as authenticated. The authentication is then cleared from the session and subsequent requests will not be treated as authenticated. \n\nSo a request on a previously authenticated session could be allowed to bypass authentication after it had been rejected by the `LoginService`.\n\n### Impact\nThis impacts usages of the jetty-openid which have configured a nested `LoginService` and where that `LoginService` will is capable of rejecting previously authenticated users.\n\n### Original Report\n> working on a custom OpenIdAuthenticator, I discovered the following:\n> \n> https://github.com/eclipse/jetty.project/blob/jetty-10.0.14/jetty-openid/src/main/java/org/eclipse/jetty/security/openid/OpenIdAuthenticator.java#L505\n> \n> In the case where the LoginService does return that the authentication has been revoked (from the validate() call on line 463), the OpenIdAuthenticator removes the authentication from the session; however the current request still proceeds as if authenticated, since it falls through to \"return authentication\" on line 505.\n> \n> This is fixed by moving the line 505 (and associated debug log) inside the else block that ends on line 502, instead of outside it. Then the revocation case will run through to line 517 and will trigger a new OpenId authentication which I think is correct.\n> \n> I think this revocation can only occur if you do attach a separate LoginService to the OpenIdLoginService, but in that case the revoked authentication will still let the next request through (and possibly more than one if they are very close to simultaneous).\n> \n> Technically I think this is a security vulnerability, if a very minor one, so I'm sending this off-list.\n\n### Patched Versions\n\nFixed in Jetty Versions:\n* 9.4.52 - fixed in PR https://github.com/eclipse/jetty.project/pull/9660\n* 10.0.16 - fixed in PR https://github.com/eclipse/jetty.project/pull/9528\n* 11.0.16 - fixed in PR https://github.com/eclipse/jetty.project/pull/9528\n* 12.0.0 - not impacted (already has fix)\n\n### Workaround\nUpgrade your version of Jetty.\n\n### References\n* https://github.com/eclipse/jetty.project/pull/9528\n* https://github.com/eclipse/jetty.project/pull/9660",
-  "aliases": [
-    "CVE-2023-41900"
-  ],
-  "modified": "2024-09-10T17:34:58.301419Z",
-  "published": "2023-09-15T13:36:10Z",
-  "related": [
-    "CGA-gxjq-vrjj-q4mq",
-    "CGA-jr8f-cgg2-w3rc",
-    "CVE-2023-41900"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2023-09-15T21:15:11Z",
-    "cwe_ids": [
-      "CWE-1390",
-      "CWE-287"
-    ],
-    "severity": "LOW",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-09-15T13:36:10Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/eclipse/jetty.project/security/advisories/GHSA-pwh8-58vv-vw48"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-41900"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/eclipse/jetty.project/pull/9528"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/eclipse/jetty.project/pull/9660"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/eclipse/jetty.project"
-    },
-    {
-      "type": "WEB",
-      "url": "https://security.netapp.com/advisory/ntap-20231110-0004"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.debian.org/security/2023/dsa-5507"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 9.4.51",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-pwh8-58vv-vw48/GHSA-pwh8-58vv-vw48.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty:jetty-openid",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-openid",
         "purl": "pkg:maven/org.eclipse.jetty/jetty-openid"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "9.4.21"
@@ -69,7 +19,8 @@
             {
               "fixed": "9.4.52.v20230823"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -104,21 +55,20 @@
         "9.4.49.v20220914",
         "9.4.50.v20221201",
         "9.4.51.v20230217"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 9.4.51",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-pwh8-58vv-vw48/GHSA-pwh8-58vv-vw48.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 10.0.15",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-pwh8-58vv-vw48/GHSA-pwh8-58vv-vw48.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty:jetty-openid",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-openid",
         "purl": "pkg:maven/org.eclipse.jetty/jetty-openid"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "10.0.0"
@@ -126,7 +76,8 @@
             {
               "fixed": "10.0.16"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -146,21 +97,20 @@
         "10.0.7",
         "10.0.8",
         "10.0.9"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 10.0.15",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-pwh8-58vv-vw48/GHSA-pwh8-58vv-vw48.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 11.0.15",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-pwh8-58vv-vw48/GHSA-pwh8-58vv-vw48.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty:jetty-openid",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-openid",
         "purl": "pkg:maven/org.eclipse.jetty/jetty-openid"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "11.0.0"
@@ -168,7 +118,8 @@
             {
               "fixed": "11.0.16"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -188,18 +139,67 @@
         "11.0.7",
         "11.0.8",
         "11.0.9"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 11.0.15",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-pwh8-58vv-vw48/GHSA-pwh8-58vv-vw48.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2023-41900"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-1390",
+      "CWE-287"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-09-15T13:36:10Z",
+    "nvd_published_at": "2023-09-15T21:15:11Z",
+    "severity": "LOW"
+  },
+  "details": "If a Jetty `OpenIdAuthenticator` uses the optional nested `LoginService`, and that `LoginService` decides to revoke an already authenticated user, then the current request will still treat the user as authenticated. The authentication is then cleared from the session and subsequent requests will not be treated as authenticated. \n\nSo a request on a previously authenticated session could be allowed to bypass authentication after it had been rejected by the `LoginService`.\n\n### Impact\nThis impacts usages of the jetty-openid which have configured a nested `LoginService` and where that `LoginService` will is capable of rejecting previously authenticated users.\n\n### Original Report\n> working on a custom OpenIdAuthenticator, I discovered the following:\n> \n> https://github.com/eclipse/jetty.project/blob/jetty-10.0.14/jetty-openid/src/main/java/org/eclipse/jetty/security/openid/OpenIdAuthenticator.java#L505\n> \n> In the case where the LoginService does return that the authentication has been revoked (from the validate() call on line 463), the OpenIdAuthenticator removes the authentication from the session; however the current request still proceeds as if authenticated, since it falls through to \"return authentication\" on line 505.\n> \n> This is fixed by moving the line 505 (and associated debug log) inside the else block that ends on line 502, instead of outside it. Then the revocation case will run through to line 517 and will trigger a new OpenId authentication which I think is correct.\n> \n> I think this revocation can only occur if you do attach a separate LoginService to the OpenIdLoginService, but in that case the revoked authentication will still let the next request through (and possibly more than one if they are very close to simultaneous).\n> \n> Technically I think this is a security vulnerability, if a very minor one, so I'm sending this off-list.\n\n### Patched Versions\n\nFixed in Jetty Versions:\n* 9.4.52 - fixed in PR https://github.com/eclipse/jetty.project/pull/9660\n* 10.0.16 - fixed in PR https://github.com/eclipse/jetty.project/pull/9528\n* 11.0.16 - fixed in PR https://github.com/eclipse/jetty.project/pull/9528\n* 12.0.0 - not impacted (already has fix)\n\n### Workaround\nUpgrade your version of Jetty.\n\n### References\n* https://github.com/eclipse/jetty.project/pull/9528\n* https://github.com/eclipse/jetty.project/pull/9660",
+  "id": "GHSA-pwh8-58vv-vw48",
+  "modified": "2024-09-10T17:34:58.301419Z",
+  "published": "2023-09-15T13:36:10Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse/jetty.project/security/advisories/GHSA-pwh8-58vv-vw48"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-41900"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse/jetty.project/pull/9528"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse/jetty.project/pull/9660"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/eclipse/jetty.project"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20231110-0004"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.debian.org/security/2023/dsa-5507"
+    }
+  ],
+  "related": [
+    "CGA-gxjq-vrjj-q4mq",
+    "CGA-jr8f-cgg2-w3rc",
+    "CVE-2023-41900"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Jetty's OpenId Revoked authentication allows one request"
 }

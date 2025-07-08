@@ -1,27 +1,46 @@
 {
-  "id": "MGASA-2016-0232",
-  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0232.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.13-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-linus update provides an upgrade to the upstream 4.4 longterm\nkernel series, currently based on 4.4.13 and resolves at least the following\nsecurity issues:\n\nThe Linux kernel before 4.4.1 allows local users to bypass file-descriptor\nlimits and cause a denial of service (memory consumption) by sending each\ndescriptor over a UNIX socket before closing it, related to \nnet/unix/af_unix.c and net/unix/garbage.c (CVE-2013-4312).\n\ndrivers/usb/serial/whiteheat.c in the Linux kernel before 4.2.4 allows\nphysically proximate attackers to cause a denial of service (NULL pointer\ndereference and OOPS) or possibly have unspecified other impact via a\ncrafted USB device (CVE-2015-5257).\n\nThe KVM subsystem in the Linux kernel through 4.2.6, and Xen 4.3.x through\n4.6.x, allows guest OS users to cause a denial of service (host OS panic or\nhang) by triggering many #AC (aka Alignment Check) exceptions, related to\nsvm.c and vmx.c (CVE-2015-5307).\n\nAn out-of-bounds memory read was found, affecting kernels from 4.3-rc1\nonwards. This vulnerability was caused by incorrect X.509 time validation\nin x509_decode_time() function in x509_cert_parser.c (CVE-2015-5327).\n\nThe __rds_conn_create function in net/rds/connection.c in the Linux kernel\nthrough 4.2.3 allows local users to cause a denial of service (NULL pointer\ndereference and system crash) or possibly have unspecified other impact by\nusing a socket that was not properly bound (CVE-2015-6937).\n\nThe keyctl_read_key function in security/keys/keyctl.c in the Linux kernel\nbefore 4.3.4 does not properly use a semaphore, which allows local users\nto cause a denial of service (NULL pointer dereference and system crash)\nor possibly have unspecified other impact via a crafted application that\nleverages a race condition between keyctl_revoke and keyctl_read calls\n(CVE-2015-7550).\n\nThe slhc_init function in drivers/net/slip/slhc.c in the Linux kernel\nthrough 4.2.3 does not ensure that certain slot numbers are valid, which\nallows local users to cause a denial of service (NULL pointer dereference\nand system crash) via a crafted PPPIOCSMAXCID ioctl call (CVE-2015-7799).\n\nThe KVM subsystem in the Linux kernel through 4.2.6, and Xen 4.3.x through\n4.6.x, allows guest OS users to cause a denial of service (host OS panic\nor hang) by triggering many #DB (aka Debug) exceptions, related to svm.c\n(CVE-2015-8104).\n\nThe networking implementation in the Linux kernel through 4.3.3, as used\nin Android and other products, does not validate protocol identifiers for\ncertain protocol families, which allows local users to cause a denial of\nservice (NULL function pointer dereference and system crash) or possibly\ngain privileges by leveraging CLONE_NEWUSER support to execute a crafted\nSOCK_RAW application (CVE-2015-8543).\n\nThe evm_verify_hmac function in security/integrity/evm/evm_main.c in the\nLinux kernel before 4.5 does not properly copy data, which makes it easier\nfor local users to forge MAC values via a timing side-channel attack\n(CVE-2016-2085).\n\nThe atl2_probe function in drivers/net/ethernet/atheros/atlx/atl2.c in the\nLinux kernel through 4.5.2 incorrectly enables scatter/gather I/O, which\nallows remote attackers to obtain sensitive information from kernel memory\nby reading packet data (CVE-2016-2117).\n\nThe mct_u232_msr_to_state function in drivers/usb/serial/mct_u232.c in the\nLinux kernel before 4.5.1 allows physically proximate attackers to cause a\ndenial of service (NULL pointer dereference and system crash) via a crafted\nUSB device without two interrupt-in endpoint descriptors (CVE-2016-3136).\n\ndrivers/usb/serial/cypress_m8.c in the Linux kernel before 4.5.1 allows\nphysically proximate attackers to cause a denial of service (NULL pointer\ndereference and system crash) via a USB device without both an interrupt-in\nand an interrupt-out endpoint descriptor, related to the\ncypress_generic_port_probe and cypress_open functions (CVE-2016-3137).\n\nLinux kernel built with the Kernel-based Virtual Machine(CONFIG_KVM) with\nvariable Memory Type Range Registers(MTRR) support is vulnerable to an\nout-of-bounds r/w access issue. It could occur while accessing processors\nMTRRs via ioctl(2) calls. A privileged user inside guest could use this\nflaw to manipulate host kernels memory bytes leading to information\ndisclosure OR potentially crashing the kernel resulting in DoS\n(CVE-2016-3713).\n\nXen and the Linux kernel through 4.5.x do not properly suppress hugetlbfs\nsupport in x86 PV guests, which allows local PV guest users to cause a\ndenial of service (guest OS crash) by attempting to access a hugetlbfs\nmapped area (CVE-2016-3961).\n\nThis update also provides better support for various newer hardware.\n\nFor other changes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2016-0232",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2016-06-22T19:08:04Z",
-  "related": [
-    "CVE-2013-4312",
-    "CVE-2015-5257",
-    "CVE-2015-5307",
-    "CVE-2015-5327",
-    "CVE-2015-6937",
-    "CVE-2015-7550",
-    "CVE-2015-7799",
-    "CVE-2015-8104",
-    "CVE-2015-8543",
-    "CVE-2016-2085",
-    "CVE-2016-2117",
-    "CVE-2016-2143",
-    "CVE-2016-3136",
-    "CVE-2016-3137",
-    "CVE-2016-3713",
-    "CVE-2016-3961"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -96,43 +115,24 @@
       "url": "https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.13"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.13-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2016-0232.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2013-4312",
+    "CVE-2015-5257",
+    "CVE-2015-5307",
+    "CVE-2015-5327",
+    "CVE-2015-6937",
+    "CVE-2015-7550",
+    "CVE-2015-7799",
+    "CVE-2015-8104",
+    "CVE-2015-8543",
+    "CVE-2016-2085",
+    "CVE-2016-2117",
+    "CVE-2016-2143",
+    "CVE-2016-3136",
+    "CVE-2016-3137",
+    "CVE-2016-3713",
+    "CVE-2016-3961"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fix security vulnerabilities"
 }

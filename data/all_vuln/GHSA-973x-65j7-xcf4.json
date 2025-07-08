@@ -1,28 +1,72 @@
 {
-  "id": "GHSA-973x-65j7-xcf4",
-  "summary": "Decompressors can crash the JVM and leak memory content in Aircompressor",
-  "details": "### Summary\nAll decompressor implementations of Aircompressor (LZ4, LZO, Snappy, Zstandard) can crash the JVM for certain input, and in some cases also leak the content of other memory of the Java process (which could contain sensitive information).\n\n### Details\nWhen decompressing certain data, the decompressors try to access memory outside the bounds of the given byte arrays or byte buffers. Because Aircompressor uses the JDK class `sun.misc.Unsafe` to speed up memory access, no additional bounds checks are performed and this has similar security consequences as out-of-bounds access in C or C++, namely it can lead to non-deterministic behavior or crash the JVM.\n\nUsers should update to Aircompressor 0.27 or newer where these issues have been fixed.\n\n### Impact\nWhen decompressing data from untrusted users, this can be exploited for a denial-of-service attack by crashing the JVM, or to leak other sensitive information from the Java process.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-973x-65j7-xcf4/GHSA-973x-65j7-xcf4.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "io.airlift:aircompressor",
+        "purl": "pkg:maven/io.airlift/aircompressor"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.27"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "0.10",
+        "0.11",
+        "0.12",
+        "0.13",
+        "0.14",
+        "0.15",
+        "0.16",
+        "0.17",
+        "0.18",
+        "0.19",
+        "0.20",
+        "0.21",
+        "0.22",
+        "0.23",
+        "0.24",
+        "0.25",
+        "0.26",
+        "0.3",
+        "0.4",
+        "0.5",
+        "0.6",
+        "0.7",
+        "0.8",
+        "0.9"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-36114"
   ],
-  "modified": "2024-07-15T22:12:28.049997Z",
-  "published": "2024-06-02T22:30:02Z",
-  "related": [
-    "CGA-j9vp-fhqv-x9mf",
-    "CGA-x3wj-35rr-5p3w",
-    "CGA-xvvg-7x64-v7fj",
-    "CVE-2024-36114"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-05-29T21:15:49Z",
     "cwe_ids": [
       "CWE-125",
       "CWE-787"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-06-02T22:30:02Z"
+    "github_reviewed_at": "2024-06-02T22:30:02Z",
+    "nvd_published_at": "2024-05-29T21:15:49Z",
+    "severity": "HIGH"
   },
+  "details": "### Summary\nAll decompressor implementations of Aircompressor (LZ4, LZO, Snappy, Zstandard) can crash the JVM for certain input, and in some cases also leak the content of other memory of the Java process (which could contain sensitive information).\n\n### Details\nWhen decompressing certain data, the decompressors try to access memory outside the bounds of the given byte arrays or byte buffers. Because Aircompressor uses the JDK class `sun.misc.Unsafe` to speed up memory access, no additional bounds checks are performed and this has similar security consequences as out-of-bounds access in C or C++, namely it can lead to non-deterministic behavior or crash the JVM.\n\nUsers should update to Aircompressor 0.27 or newer where these issues have been fixed.\n\n### Impact\nWhen decompressing data from untrusted users, this can be exploited for a denial-of-service attack by crashing the JVM, or to leak other sensitive information from the Java process.",
+  "id": "GHSA-973x-65j7-xcf4",
+  "modified": "2024-07-15T22:12:28.049997Z",
+  "published": "2024-06-02T22:30:02Z",
   "references": [
     {
       "type": "WEB",
@@ -53,62 +97,18 @@
       "url": "https://github.com/airlift/aircompressor"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "io.airlift:aircompressor",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/io.airlift/aircompressor"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.27"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "0.10",
-        "0.11",
-        "0.12",
-        "0.13",
-        "0.14",
-        "0.15",
-        "0.16",
-        "0.17",
-        "0.18",
-        "0.19",
-        "0.20",
-        "0.21",
-        "0.22",
-        "0.23",
-        "0.24",
-        "0.25",
-        "0.26",
-        "0.3",
-        "0.4",
-        "0.5",
-        "0.6",
-        "0.7",
-        "0.8",
-        "0.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-973x-65j7-xcf4/GHSA-973x-65j7-xcf4.json"
-      }
-    }
+  "related": [
+    "CGA-j9vp-fhqv-x9mf",
+    "CGA-x3wj-35rr-5p3w",
+    "CGA-xvvg-7x64-v7fj",
+    "CVE-2024-36114"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Decompressors can crash the JVM and leak memory content in Aircompressor"
 }

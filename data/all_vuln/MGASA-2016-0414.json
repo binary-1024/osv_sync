@@ -1,15 +1,46 @@
 {
-  "id": "MGASA-2016-0414",
-  "summary": "Updated ntp packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0414.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "ntp",
+        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.2.6p5-24.7.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "When ntpd is configured with rate limiting for all associations (restrict\ndefault limited in ntp.conf), the limits are applied also to responses\nreceived from its configured sources. An attacker who knows the sources\n(e.g., from an IPv4 refid in server response) and knows the system is\n(mis)configured in this way can periodically send packets with spoofed\nsource address to keep the rate limiting activated and prevent ntpd from\naccepting valid responses from its sources (CVE-2016-7426).\n\nWhen ntpd receives a server response on a socket that corresponds to a\ndifferent interface than was used for the request, the peer structure is\nupdated to use the interface for new requests. If ntpd is running on a\nhost with multiple interfaces in separate networks and the operating\nsystem doesn't check source address in received packets (e.g. rp_filter\non Linux is set to 0), an attacker that knows the address of the source\ncan send a packet with spoofed source address which will cause ntpd to\nselect wrong interface for the source and prevent it from sending new\nrequests until the list of interfaces is refreshed, which happens on\nrouting changes or every 5 minutes by default. If the attack is repeated\noften enough (once per second), ntpd will not be able to synchronize\nwith the source (CVE-2016-7429).\n\nAn exploitable configuration modification vulnerability exists in the\ncontrol mode (mode 6) functionality of ntpd. If, against long-standing\nBCP recommendations, \"restrict default noquery ...\" is not specified,\na specially crafted control mode packet can set ntpd traps, providing\ninformation disclosure and DDoS amplification, and unset ntpd traps,\ndisabling legitimate monitoring. A remote, unauthenticated, network\nattacker can trigger this vulnerability (CVE-2016-9310).\n\nIf trap service, disabled by default, has been explicitly enabled, an\nattacker can send a specially crafted packet to cause a null pointer\ndereference that will crash ntpd, resulting in a denial of service\n(CVE-2016-9311).\n",
+  "id": "MGASA-2016-0414",
   "modified": "2016-12-08T07:21:51Z",
   "published": "2016-12-08T07:33:24Z",
-  "related": [
-    "CVE-2016-7426",
-    "CVE-2016-7429",
-    "CVE-2016-9310",
-    "CVE-2016-9311"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -40,43 +71,12 @@
       "url": "http://support.ntp.org/bin/view/Main/SecurityNotice#November_2016_ntp_4_2_8p9_NTP_Se"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ntp",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/ntp?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.2.6p5-24.7.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2016-0414.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-7426",
+    "CVE-2016-7429",
+    "CVE-2016-9310",
+    "CVE-2016-9311"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated ntp packages fix security vulnerabilities"
 }

@@ -1,18 +1,58 @@
 {
-  "id": "GO-2023-1548",
-  "summary": "Repository access credential leak in github.com/argoproj/argo-cd/v2",
-  "details": "Argo CD has an output sanitization bug which leaks repository access credentials in error messages.\n\nThese error messages are visible to the user, and they are logged. The error message is visible when a user attempts to create or update an Application via the Argo CD API (and therefor the UI or CLI).\n\nThe user must have \"applications, create\" or \"applications, update\" RBAC access to reach the code which may produce the error. The user is not guaranteed to be able to trigger the error message. They may attempt to spam the API with requests to trigger a rate limit error from the upstream repository.\n\nIf the user has \"repositories, update\" access, they may edit an existing repository to introduce a URL typo or otherwise force an error message.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2023-1548.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "github.com/argoproj/argo-cd/v2/util/argo",
+            "symbols": [
+              "ValidateRepo",
+              "validateRepo"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/argoproj/argo-cd/v2",
+        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.6.0-rc1"
+            },
+            {
+              "fixed": "2.6.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-argo-cd-2023-25163",
     "CVE-2023-25163",
     "GHSA-mv6w-j4xc-qpfw"
   ],
-  "modified": "2024-05-20T16:03:47Z",
-  "published": "2023-02-15T16:43:39Z",
+  "credits": [
+    {
+      "name": "James Callahan"
+    }
+  ],
   "database_specific": {
     "review_status": "REVIEWED",
     "url": "https://pkg.go.dev/vuln/GO-2023-1548"
   },
+  "details": "Argo CD has an output sanitization bug which leaks repository access credentials in error messages.\n\nThese error messages are visible to the user, and they are logged. The error message is visible when a user attempts to create or update an Application via the Argo CD API (and therefor the UI or CLI).\n\nThe user must have \"applications, create\" or \"applications, update\" RBAC access to reach the code which may produce the error. The user is not guaranteed to be able to trigger the error message. They may attempt to spam the API with requests to trigger a rate limit error from the upstream repository.\n\nIf the user has \"repositories, update\" access, they may edit an existing repository to introduce a URL typo or otherwise force an error message.",
+  "id": "GO-2023-1548",
+  "modified": "2024-05-20T16:03:47Z",
+  "published": "2023-02-15T16:43:39Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -27,46 +67,6 @@
       "url": "https://github.com/argoproj/argo-cd/pull/12320"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/argoproj/argo-cd/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.6.0-rc1"
-            },
-            {
-              "fixed": "2.6.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "github.com/argoproj/argo-cd/v2/util/argo",
-            "symbols": [
-              "ValidateRepo",
-              "validateRepo"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2023-1548.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "James Callahan"
-    }
-  ]
+  "summary": "Repository access credential leak in github.com/argoproj/argo-cd/v2"
 }

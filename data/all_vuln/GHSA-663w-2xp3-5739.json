@@ -1,26 +1,61 @@
 {
-  "id": "GHSA-663w-2xp3-5739",
-  "summary": "org.xwiki.rendering:xwiki-rendering-xml Improper Neutralization of Invalid Characters in Identifiers in Web Pages vulnerability",
-  "details": "### Impact\nThe cleaning of attributes during XHTML rendering, introduced in version 14.6-rc-1, allowed the injection of arbitrary HTML code and thus cross-site scripting via invalid attribute names. This can be exploited, e.g., via the link syntax in any content that supports XWiki syntax like comments in XWiki: \n\n```\n[[Link1>>https://XWiki.example.com||/onmouseover=\"alert('XSS1')\"]]\n```\n\nWhen a user moves the mouse over this link, the malicious JavaScript code is executed in the context of the user session. When this user is a privileged user who has programming rights, this allows server-side code execution with programming rights, impacting the confidentiality, integrity and availability of the XWiki instance.\n\nWhile this attribute was correctly recognized as not allowed, the attribute was still printed with a prefix `data-xwiki-translated-attribute-` without further cleaning or validation.\n\nNote that while versions below 14.6 are not vulnerable to this particular vulnerability, they are still vulnerable to XSS through attributes in XWiki syntax, see [the corresponding advisory](https://github.com/xwiki/xwiki-rendering/security/advisories/GHSA-6gf5-c898-7rxp).\n\n### Patches\nThis problem has been patched in XWiki 14.10.4 and 15.0 RC1 by removing characters not allowed in data attributes and then validating the cleaned attribute again.\n\n### Workarounds\nThere are no known workarounds apart from upgrading to a version including the fix.\n\n### References\n* https://jira.xwiki.org/browse/XRENDERING-697\n* https://github.com/xwiki/xwiki-rendering/commit/f4d5acac451dccaf276e69f0b49b72221eef5d2f\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki](https://jira.xwiki.org/)\n* Email us at [XWiki Security mailing-list](mailto:security@xwiki.org)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-663w-2xp3-5739/GHSA-663w-2xp3-5739.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.rendering:xwiki-rendering-xml",
+        "purl": "pkg:maven/org.xwiki.rendering/xwiki-rendering-xml"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.6-rc-1"
+            },
+            {
+              "fixed": "14.10.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "14.10",
+        "14.10.1",
+        "14.10.2",
+        "14.10.3",
+        "14.6",
+        "14.6-rc-1",
+        "14.7",
+        "14.7-rc-1",
+        "14.8",
+        "14.8-rc-1",
+        "14.9",
+        "14.9-rc-1"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-37908"
   ],
-  "modified": "2025-01-14T11:57:27.033087Z",
-  "published": "2023-10-25T21:02:49Z",
-  "related": [
-    "CVE-2023-37908"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-10-25T18:17:28Z",
     "cwe_ids": [
       "CWE-79",
       "CWE-83",
       "CWE-86"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-10-25T21:02:49Z"
+    "github_reviewed_at": "2023-10-25T21:02:49Z",
+    "nvd_published_at": "2023-10-25T18:17:28Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\nThe cleaning of attributes during XHTML rendering, introduced in version 14.6-rc-1, allowed the injection of arbitrary HTML code and thus cross-site scripting via invalid attribute names. This can be exploited, e.g., via the link syntax in any content that supports XWiki syntax like comments in XWiki: \n\n```\n[[Link1>>https://XWiki.example.com||/onmouseover=\"alert('XSS1')\"]]\n```\n\nWhen a user moves the mouse over this link, the malicious JavaScript code is executed in the context of the user session. When this user is a privileged user who has programming rights, this allows server-side code execution with programming rights, impacting the confidentiality, integrity and availability of the XWiki instance.\n\nWhile this attribute was correctly recognized as not allowed, the attribute was still printed with a prefix `data-xwiki-translated-attribute-` without further cleaning or validation.\n\nNote that while versions below 14.6 are not vulnerable to this particular vulnerability, they are still vulnerable to XSS through attributes in XWiki syntax, see [the corresponding advisory](https://github.com/xwiki/xwiki-rendering/security/advisories/GHSA-6gf5-c898-7rxp).\n\n### Patches\nThis problem has been patched in XWiki 14.10.4 and 15.0 RC1 by removing characters not allowed in data attributes and then validating the cleaned attribute again.\n\n### Workarounds\nThere are no known workarounds apart from upgrading to a version including the fix.\n\n### References\n* https://jira.xwiki.org/browse/XRENDERING-697\n* https://github.com/xwiki/xwiki-rendering/commit/f4d5acac451dccaf276e69f0b49b72221eef5d2f\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki](https://jira.xwiki.org/)\n* Email us at [XWiki Security mailing-list](mailto:security@xwiki.org)\n",
+  "id": "GHSA-663w-2xp3-5739",
+  "modified": "2025-01-14T11:57:27.033087Z",
+  "published": "2023-10-25T21:02:49Z",
   "references": [
     {
       "type": "WEB",
@@ -47,50 +82,15 @@
       "url": "https://jira.xwiki.org/browse/XRENDERING-697"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.rendering:xwiki-rendering-xml",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.rendering/xwiki-rendering-xml"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.6-rc-1"
-            },
-            {
-              "fixed": "14.10.4"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "14.10",
-        "14.10.1",
-        "14.10.2",
-        "14.10.3",
-        "14.6",
-        "14.6-rc-1",
-        "14.7",
-        "14.7-rc-1",
-        "14.8",
-        "14.8-rc-1",
-        "14.9",
-        "14.9-rc-1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-663w-2xp3-5739/GHSA-663w-2xp3-5739.json"
-      }
-    }
+  "related": [
+    "CVE-2023-37908"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "org.xwiki.rendering:xwiki-rendering-xml Improper Neutralization of Invalid Characters in Identifiers in Web Pages vulnerability"
 }

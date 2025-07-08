@@ -1,21 +1,60 @@
 {
-  "id": "GHSA-vph5-2q33-7r9h",
-  "summary": "Arbitrary file read vulnerability in Git server Plugin can lead to RCE",
-  "details": "Jenkins Git server Plugin uses the [args4j](https://github.com/kohsuke/args4j) library to parse command arguments and options on the Jenkins controller when processing Git commands received via SSH. This command parser has a feature that replaces an @ character followed by a file path in an argument with the file\u2019s contents (`expandAtFiles`). This feature is enabled by default and Git server Plugin 99.va_0826a_b_cdfa_d and earlier does not disable it.\n\nThis allows attackers with Overall/Read permission to read the first two lines of arbitrary files on the Jenkins controller file system using the default character encoding of the Jenkins controller process.\n\nSee [SECURITY-3314](https://www.jenkins.io/security/advisory/2024-01-24/#SECURITY-3314) for further information about the potential impact of being able to read files on the Jenkins controller, as well as the [limitations for reading binary files](https://www.jenkins.io/security/advisory/2024-01-24/#binary-files-note). Note that for this issue, unlike SECURITY-3314, attackers need Overall/Read permission.\n\n## Fix Description\nGit server Plugin 99.101.v720e86326c09 disables the command parser feature that replaces an @ character followed by a file path in an argument with the file\u2019s contents for CLI commands.\n\n## Workaround\nNavigate to Manage Jenkins \u00bb Security and ensure that the SSHD Port setting in the SSH Server section is set to Disable. This disables access to Git repositories hosted by Jenkins (and the Jenkins CLI) via SSH.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-vph5-2q33-7r9h/GHSA-vph5-2q33-7r9h.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.jenkins-ci.plugins:git-server",
+        "purl": "pkg:maven/org.jenkins-ci.plugins/git-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "99.101.v720e86326c09"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.0",
+        "1.1",
+        "1.10",
+        "1.11",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+        "1.8",
+        "1.9",
+        "99.va_0826a_b_cdfa_d"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-23899"
   ],
-  "modified": "2025-06-04T23:04:58.532276Z",
-  "published": "2024-01-24T18:31:02Z",
   "database_specific": {
-    "nvd_published_at": "2024-01-24T18:15:09Z",
     "cwe_ids": [
       "CWE-22"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-01-24T21:45:58Z"
+    "github_reviewed_at": "2024-01-24T21:45:58Z",
+    "nvd_published_at": "2024-01-24T18:15:09Z",
+    "severity": "HIGH"
   },
+  "details": "Jenkins Git server Plugin uses the [args4j](https://github.com/kohsuke/args4j) library to parse command arguments and options on the Jenkins controller when processing Git commands received via SSH. This command parser has a feature that replaces an @ character followed by a file path in an argument with the file\u2019s contents (`expandAtFiles`). This feature is enabled by default and Git server Plugin 99.va_0826a_b_cdfa_d and earlier does not disable it.\n\nThis allows attackers with Overall/Read permission to read the first two lines of arbitrary files on the Jenkins controller file system using the default character encoding of the Jenkins controller process.\n\nSee [SECURITY-3314](https://www.jenkins.io/security/advisory/2024-01-24/#SECURITY-3314) for further information about the potential impact of being able to read files on the Jenkins controller, as well as the [limitations for reading binary files](https://www.jenkins.io/security/advisory/2024-01-24/#binary-files-note). Note that for this issue, unlike SECURITY-3314, attackers need Overall/Read permission.\n\n## Fix Description\nGit server Plugin 99.101.v720e86326c09 disables the command parser feature that replaces an @ character followed by a file path in an argument with the file\u2019s contents for CLI commands.\n\n## Workaround\nNavigate to Manage Jenkins \u00bb Security and ensure that the SSHD Port setting in the SSH Server section is set to Disable. This disables access to Git repositories hosted by Jenkins (and the Jenkins CLI) via SSH.",
+  "id": "GHSA-vph5-2q33-7r9h",
+  "modified": "2025-06-04T23:04:58.532276Z",
+  "published": "2024-01-24T18:31:02Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -38,51 +77,12 @@
       "url": "http://www.openwall.com/lists/oss-security/2024/01/24/6"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.jenkins-ci.plugins:git-server",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.jenkins-ci.plugins/git-server"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "99.101.v720e86326c09"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.0",
-        "1.1",
-        "1.10",
-        "1.11",
-        "1.2",
-        "1.3",
-        "1.4",
-        "1.5",
-        "1.6",
-        "1.7",
-        "1.8",
-        "1.9",
-        "99.va_0826a_b_cdfa_d"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-vph5-2q33-7r9h/GHSA-vph5-2q33-7r9h.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Arbitrary file read vulnerability in Git server Plugin can lead to RCE"
 }

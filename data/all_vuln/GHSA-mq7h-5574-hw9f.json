@@ -1,24 +1,70 @@
 {
-  "id": "GHSA-mq7h-5574-hw9f",
-  "summary": "Cross-Site Request Forgery (CSRF) allowing to delete or rename tags",
-  "details": "### Impact\n\nIt's possible with a simple request to perform deletion or renaming of tags without needing any confirmation, by using a CSRF attack. \n\n### Patches\n\nThe problem has been patched in XWiki 13.10.7, 14.4.1 and 14.5RC1. \n\n### Workarounds\n\nIt's possible to patch existing instances directly by editing the page Main.Tags and add this kind of check, in the code for renaming and for deleting:\n```\n#if (!$services.csrf.isTokenValid($request.get('form_token')))\n    #set ($discard = $response.sendError(401, \"Wrong CSRF token\"))\n#end\n```\n\nSee the commit with the fix for more information about patching the page: https://github.com/xwiki/xwiki-platform/commit/7fd4cda0590180c4d34f557597e9e10e263def9e\n\n### References\n\n  * https://jira.xwiki.org/browse/XWIKI-19748\n  * https://github.com/xwiki/xwiki-platform/commit/7fd4cda0590180c4d34f557597e9e10e263def9e\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [JIRA](https://jira.xwiki.org)\n* Email us at [security ML](mailto:security@xwiki.org)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-mq7h-5574-hw9f/GHSA-mq7h-5574-hw9f.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-tag-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-tag-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.2-milestone-2"
+            },
+            {
+              "fixed": "13.10.7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-mq7h-5574-hw9f/GHSA-mq7h-5574-hw9f.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-tag-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-tag-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.0.0"
+            },
+            {
+              "fixed": "14.4.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2022-41927"
   ],
-  "modified": "2023-11-08T04:10:35.997468Z",
-  "published": "2022-11-21T22:34:35Z",
-  "related": [
-    "CVE-2022-41927"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-11-23T19:15:00Z",
-    "github_reviewed_at": "2022-11-21T22:34:35Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-352"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-11-21T22:34:35Z",
+    "nvd_published_at": "2022-11-23T19:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nIt's possible with a simple request to perform deletion or renaming of tags without needing any confirmation, by using a CSRF attack. \n\n### Patches\n\nThe problem has been patched in XWiki 13.10.7, 14.4.1 and 14.5RC1. \n\n### Workarounds\n\nIt's possible to patch existing instances directly by editing the page Main.Tags and add this kind of check, in the code for renaming and for deleting:\n```\n#if (!$services.csrf.isTokenValid($request.get('form_token')))\n    #set ($discard = $response.sendError(401, \"Wrong CSRF token\"))\n#end\n```\n\nSee the commit with the fix for more information about patching the page: https://github.com/xwiki/xwiki-platform/commit/7fd4cda0590180c4d34f557597e9e10e263def9e\n\n### References\n\n  * https://jira.xwiki.org/browse/XWIKI-19748\n  * https://github.com/xwiki/xwiki-platform/commit/7fd4cda0590180c4d34f557597e9e10e263def9e\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [JIRA](https://jira.xwiki.org)\n* Email us at [security ML](mailto:security@xwiki.org)\n",
+  "id": "GHSA-mq7h-5574-hw9f",
+  "modified": "2023-11-08T04:10:35.997468Z",
+  "published": "2022-11-21T22:34:35Z",
   "references": [
     {
       "type": "WEB",
@@ -37,61 +83,15 @@
       "url": "https://github.com/xwiki/xwiki-platform"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-tag-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-tag-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.2-milestone-2"
-            },
-            {
-              "fixed": "13.10.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-mq7h-5574-hw9f/GHSA-mq7h-5574-hw9f.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-tag-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-tag-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.0.0"
-            },
-            {
-              "fixed": "14.4.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-mq7h-5574-hw9f/GHSA-mq7h-5574-hw9f.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-41927"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:N/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:N/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Cross-Site Request Forgery (CSRF) allowing to delete or rename tags"
 }

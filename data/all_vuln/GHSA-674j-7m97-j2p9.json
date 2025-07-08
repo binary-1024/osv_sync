@@ -1,22 +1,48 @@
 {
-  "id": "GHSA-674j-7m97-j2p9",
-  "summary": "curl FTP path confusion leads to NIL byte out of bounds write",
-  "details": "curl can be coerced into writing a zero byte out of bounds.\n\nThis bug can trigger when curl is told to work on an FTP URL, with the setting to only issue a single CWD command (--ftp-method singlecwd or the libcurl alternative [CURLOPT_FTP_FILEMETHOD](https://curl.se/libcurl/c/CURLOPT_FTP_FILEMETHOD.html)).\n\ncurl then URL-decodes the given path, calls strlen() on the result and deducts the length of the file name part to find the end of the directory within the buffer. It then writes a zero byte on that index, in a buffer allocated on the heap.\n\nIf the directory part of the URL contains a `%00` sequence, the directory length might end up shorter than the file name path, making the calculation `size_t index = directory_len - filepart_len` end up with a huge index variable for where the zero byte gets stored: `heap_buffer[index] = 0`. On several architectures that huge index will wrap and work as a negative value, thus overwriting memory before the intended heap buffer.\n\nBy using different file part lengths and putting the string `%00` in different places in the URL, an attacker that can control what paths a curl-using application uses can write that zero byte on different indexes.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "< 7.59.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-674j-7m97-j2p9/GHSA-674j-7m97-j2p9.json"
+      },
+      "package": {
+        "ecosystem": "NuGet",
+        "name": "curl",
+        "purl": "pkg:nuget/curl"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "7.12.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "7.30.0.1",
+        "7.30.0.2"
+      ]
+    }
+  ],
   "aliases": [
     "CURL-CVE-2018-1000120",
     "CVE-2018-1000120"
   ],
-  "modified": "2024-03-12T05:17:27.525518Z",
-  "published": "2022-05-14T00:58:02Z",
   "database_specific": {
-    "nvd_published_at": "2018-03-14T18:29:00Z",
     "cwe_ids": [
       "CWE-787"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-03-01T22:23:11Z"
+    "github_reviewed_at": "2023-03-01T22:23:11Z",
+    "nvd_published_at": "2018-03-14T18:29:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "curl can be coerced into writing a zero byte out of bounds.\n\nThis bug can trigger when curl is told to work on an FTP URL, with the setting to only issue a single CWD command (--ftp-method singlecwd or the libcurl alternative [CURLOPT_FTP_FILEMETHOD](https://curl.se/libcurl/c/CURLOPT_FTP_FILEMETHOD.html)).\n\ncurl then URL-decodes the given path, calls strlen() on the result and deducts the length of the file name part to find the end of the directory within the buffer. It then writes a zero byte on that index, in a buffer allocated on the heap.\n\nIf the directory part of the URL contains a `%00` sequence, the directory length might end up shorter than the file name path, making the calculation `size_t index = directory_len - filepart_len` end up with a huge index variable for where the zero byte gets stored: `heap_buffer[index] = 0`. On several architectures that huge index will wrap and work as a negative value, thus overwriting memory before the intended heap buffer.\n\nBy using different file part lengths and putting the string `%00` in different places in the URL, an attacker that can control what paths a curl-using application uses can write that zero byte on different indexes.\n",
+  "id": "GHSA-674j-7m97-j2p9",
+  "modified": "2024-03-12T05:17:27.525518Z",
+  "published": "2022-05-14T00:58:02Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -103,38 +129,12 @@
       "url": "http://www.oracle.com/technetwork/security-advisory/cpuoct2018-4428296.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "curl",
-        "ecosystem": "NuGet",
-        "purl": "pkg:nuget/curl"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "7.12.3"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "7.30.0.1",
-        "7.30.0.2"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "< 7.59.0",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-674j-7m97-j2p9/GHSA-674j-7m97-j2p9.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "curl FTP path confusion leads to NIL byte out of bounds write"
 }

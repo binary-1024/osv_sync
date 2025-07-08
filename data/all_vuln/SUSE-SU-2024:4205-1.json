@@ -1,15 +1,74 @@
 {
-  "id": "SUSE-SU-2024:4205-1",
-  "summary": "Security update for docker-stable",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:4205-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "docker-stable": "24.0.9_ce-1.5.1",
+            "docker-stable-bash-completion": "24.0.9_ce-1.5.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5-LTSS",
+        "name": "docker-stable",
+        "purl": "pkg:rpm/suse/docker-stable&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5-LTSS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "24.0.9_ce-1.5.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:4205-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "docker-stable": "24.0.9_ce-1.5.1",
+            "docker-stable-bash-completion": "24.0.9_ce-1.5.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server LTSS Extended Security 12 SP5",
+        "name": "docker-stable",
+        "purl": "pkg:rpm/suse/docker-stable&distro=SUSE%20Linux%20Enterprise%20Server%20LTSS%20Extended%20Security%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "24.0.9_ce-1.5.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for docker-stable fixes the following issues:\n\n- Remove DOCKER_NETWORK_OPTS from docker.service. This was removed from\n  sysconfig a long time ago, and apparently this causes issues with systemd in\n  some cases.\n- Update --add-runtime to point to correct binary path.\n\n- Further merge docker and docker-stable specfiles to minimise the differences.\n  The main thing is that we now include both halves of the\n  Conflicts/Provides/Obsoletes dance in both specfiles.\n\n- Update to docker-buildx v0.17.1 to match standalone docker-buildx package we\n  are replacing. See upstream changelog online at\n  <https://github.com/docker/buildx/releases/tag/v0.17.1>\n\n- Allow users to disable SUSE secrets support by setting\n  DOCKER_SUSE_SECRETS_ENABLE=0 in /etc/sysconfig/docker. bsc#1231348\n\n- Import specfile changes for docker-buildx as well as the changes to help\n  reduce specfile differences between docker-stable and docker. bsc#1230331\n  bsc#1230333\n\n- Backport patch for CVE-2024-41110. bsc#1228324\n\n- Initial docker-stable release, forked from Docker 24.0.6-ce release\n  (packaged on 2023-10-11).\n\n- Update to Docker 24.0.9-ce, which is the latest version of the 24.0.x branch.\n  It seems likely this will be the last upstream version of the 24.0.x branch\n  (it seems Mirantis is going to do LTS for 23.0.x, not 24.0.x).\n  <https://docs.docker.com/engine/release-notes/24.0/#2409>\n- Fix BuildKit's symlink resolution logic to correctly handle non-lexical\n  symlinks. Backport of <https://github.com/moby/buildkit/pull/4896> and\n  <https://github.com/moby/buildkit/pull/5060>. bsc#1221916\n- Write volume options atomically so sudden system crashes won't result in\n  future Docker starts failing due to empty files. Backport of\n  <https://github.com/moby/moby/pull/48034>. bsc#1214855\n",
+  "id": "SUSE-SU-2024:4205-1",
   "modified": "2025-05-02T04:36:58.871190Z",
   "published": "2024-12-05T14:58:02Z",
-  "related": [
-    "CVE-2024-41110"
-  ],
-  "upstream": [
-    "CVE-2024-41110"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -44,71 +103,12 @@
       "url": "https://www.suse.com/security/cve/CVE-2024-41110"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "docker-stable",
-        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5-LTSS",
-        "purl": "pkg:rpm/suse/docker-stable&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5-LTSS"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "24.0.9_ce-1.5.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "docker-stable": "24.0.9_ce-1.5.1",
-            "docker-stable-bash-completion": "24.0.9_ce-1.5.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:4205-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "docker-stable",
-        "ecosystem": "SUSE:Linux Enterprise Server LTSS Extended Security 12 SP5",
-        "purl": "pkg:rpm/suse/docker-stable&distro=SUSE%20Linux%20Enterprise%20Server%20LTSS%20Extended%20Security%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "24.0.9_ce-1.5.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "docker-stable": "24.0.9_ce-1.5.1",
-            "docker-stable-bash-completion": "24.0.9_ce-1.5.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:4205-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2024-41110"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for docker-stable",
+  "upstream": [
+    "CVE-2024-41110"
+  ]
 }

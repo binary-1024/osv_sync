@@ -1,19 +1,43 @@
 {
-  "id": "GHSA-753p-wrj5-g8fj",
-  "summary": "PQClean has a correctness error in HQC decapsulation",
-  "details": "### Impact\n\nA correctness error has been identified in the reference implementation of the HQC key encapsulation mechanism. Due to an indexing error, part of the secret key is incorrectly treated as non-secret data. This results in an incorrect shared secret value being returned when the decapsulation function is called with a malformed ciphertext.\n\nNo concrete attack exploiting the error has been identified at this point. However, the error involves mishandling of the secret key, and in principle this presents a security vulnerability.\n\n### Patches\n\nPQClean does not have a release process, as it is a collection of implementations. If you obtained a HQC implementation from PQClean, please update to a version that includes the fixes proposed in https://github.com/PQClean/PQClean/pull/578. \n\nPlease also [refer to our security policy](https://github.com/PQClean/PQClean/blob/master/SECURITY.md).\n\n### Workarounds\n\nManually patching is always possible\n\n### Further details\n\nIn the 2023/04/30 version of the HQC specification and reference implementation, an extra field (sigma) was added to the secret key structure to enable implicit rejection of malformed ciphertexts. The logic to retrieve the public key from the secret key in the decapsulation function was not updated accordingly. As a result, sigma is treated as part of the public key. Later in the decapsulation call, a incorrectly constructed comparison check allows this error to go through undetected. Due to how these two bugs interfere with each other, the decapsulation function never uses sigma to perform implicit rejection; instead, it accepts malformed ciphertexts and returns shared secrets based on their decryptions.\n\n### References\n\nThis issue was first reported in OQS https://github.com/open-quantum-safe/liboqs/security/advisories/GHSA-gpf4-vrrw-r8v7. The vulnerability was identified by C\u00e9lian Gl\u00e9naz and Dahmun Goudarzi (Quarkslab).\n",
-  "modified": "2024-12-11T21:48:32Z",
-  "published": "2024-12-11T21:47:37Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-753p-wrj5-g8fj/GHSA-753p-wrj5-g8fj.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "pqcrypto-hqc",
+        "purl": "pkg:cargo/pqcrypto-hqc"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.2.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-1240",
       "CWE-200"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-12-11T21:47:37Z"
+    "github_reviewed_at": "2024-12-11T21:47:37Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nA correctness error has been identified in the reference implementation of the HQC key encapsulation mechanism. Due to an indexing error, part of the secret key is incorrectly treated as non-secret data. This results in an incorrect shared secret value being returned when the decapsulation function is called with a malformed ciphertext.\n\nNo concrete attack exploiting the error has been identified at this point. However, the error involves mishandling of the secret key, and in principle this presents a security vulnerability.\n\n### Patches\n\nPQClean does not have a release process, as it is a collection of implementations. If you obtained a HQC implementation from PQClean, please update to a version that includes the fixes proposed in https://github.com/PQClean/PQClean/pull/578. \n\nPlease also [refer to our security policy](https://github.com/PQClean/PQClean/blob/master/SECURITY.md).\n\n### Workarounds\n\nManually patching is always possible\n\n### Further details\n\nIn the 2023/04/30 version of the HQC specification and reference implementation, an extra field (sigma) was added to the secret key structure to enable implicit rejection of malformed ciphertexts. The logic to retrieve the public key from the secret key in the decapsulation function was not updated accordingly. As a result, sigma is treated as part of the public key. Later in the decapsulation call, a incorrectly constructed comparison check allows this error to go through undetected. Due to how these two bugs interfere with each other, the decapsulation function never uses sigma to perform implicit rejection; instead, it accepts malformed ciphertexts and returns shared secrets based on their decryptions.\n\n### References\n\nThis issue was first reported in OQS https://github.com/open-quantum-safe/liboqs/security/advisories/GHSA-gpf4-vrrw-r8v7. The vulnerability was identified by C\u00e9lian Gl\u00e9naz and Dahmun Goudarzi (Quarkslab).\n",
+  "id": "GHSA-753p-wrj5-g8fj",
+  "modified": "2024-12-11T21:48:32Z",
+  "published": "2024-12-11T21:47:37Z",
   "references": [
     {
       "type": "WEB",
@@ -36,30 +60,6 @@
       "url": "https://github.com/PQClean/PQClean"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "pqcrypto-hqc",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/pqcrypto-hqc"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.2.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-753p-wrj5-g8fj/GHSA-753p-wrj5-g8fj.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "PQClean has a correctness error in HQC decapsulation"
 }

@@ -1,13 +1,118 @@
 {
-  "id": "GHSA-mh63-6h87-95cp",
-  "summary": "jwt-go allows excessive memory allocation during header parsing",
-  "details": "### Summary\n\nFunction [`parse.ParseUnverified`](https://github.com/golang-jwt/jwt/blob/c035977d9e11c351f4c05dfeae193923cbab49ee/parser.go#L138-L139) currently splits (via a call to [strings.Split](https://pkg.go.dev/strings#Split)) its argument (which is untrusted data) on periods.\n\nAs a result, in the face of a malicious request whose _Authorization_ header consists of `Bearer ` followed by many period characters, a call to that function incurs allocations to the tune of O(n) bytes (where n stands for the length of the function's argument), with a constant factor of about 16. Relevant weakness: [CWE-405: Asymmetric Resource Consumption (Amplification)](https://cwe.mitre.org/data/definitions/405.html)\n\n### Details\n\nSee [`parse.ParseUnverified`](https://github.com/golang-jwt/jwt/blob/c035977d9e11c351f4c05dfeae193923cbab49ee/parser.go#L138-L139) \n\n### Impact\n\nExcessive memory allocation",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-mh63-6h87-95cp/GHSA-mh63-6h87-95cp.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/golang-jwt/jwt/v5",
+        "purl": "pkg:golang/github.com/golang-jwt/jwt/v5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.0.0-rc.1"
+            },
+            {
+              "fixed": "5.2.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-mh63-6h87-95cp/GHSA-mh63-6h87-95cp.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/golang-jwt/jwt/v4",
+        "purl": "pkg:golang/github.com/golang-jwt/jwt/v4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.5.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-mh63-6h87-95cp/GHSA-mh63-6h87-95cp.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/golang-jwt/jwt",
+        "purl": "pkg:golang/github.com/golang-jwt/jwt"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.2.0"
+            },
+            {
+              "last_affected": "3.2.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-30204",
     "GO-2025-3553"
   ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-405"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-03-21T22:04:00Z",
+    "nvd_published_at": "2025-03-21T22:15:26Z",
+    "severity": "HIGH"
+  },
+  "details": "### Summary\n\nFunction [`parse.ParseUnverified`](https://github.com/golang-jwt/jwt/blob/c035977d9e11c351f4c05dfeae193923cbab49ee/parser.go#L138-L139) currently splits (via a call to [strings.Split](https://pkg.go.dev/strings#Split)) its argument (which is untrusted data) on periods.\n\nAs a result, in the face of a malicious request whose _Authorization_ header consists of `Bearer ` followed by many period characters, a call to that function incurs allocations to the tune of O(n) bytes (where n stands for the length of the function's argument), with a constant factor of about 16. Relevant weakness: [CWE-405: Asymmetric Resource Consumption (Amplification)](https://cwe.mitre.org/data/definitions/405.html)\n\n### Details\n\nSee [`parse.ParseUnverified`](https://github.com/golang-jwt/jwt/blob/c035977d9e11c351f4c05dfeae193923cbab49ee/parser.go#L138-L139) \n\n### Impact\n\nExcessive memory allocation",
+  "id": "GHSA-mh63-6h87-95cp",
   "modified": "2025-04-10T13:02:34Z",
   "published": "2025-03-21T22:04:00Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/golang-jwt/jwt/security/advisories/GHSA-mh63-6h87-95cp"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-30204"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/golang-jwt/jwt/commit/0951d184286dece21f73c85673fd308786ffe9c3"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/golang-jwt/jwt/commit/bf316c48137a1212f8d0af9288cc9ce8e59f1afb"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/golang-jwt/jwt"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20250404-0002"
+    }
+  ],
   "related": [
     "CGA-24mq-344h-c7qx",
     "CGA-2536-qhmw-qf4r",
@@ -443,121 +548,16 @@
     "CGA-xx66-j6f6-5m29",
     "CGA-xxgh-vcx7-34gh"
   ],
-  "database_specific": {
-    "nvd_published_at": "2025-03-21T22:15:26Z",
-    "cwe_ids": [
-      "CWE-405"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-03-21T22:04:00Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/golang-jwt/jwt/security/advisories/GHSA-mh63-6h87-95cp"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-30204"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/golang-jwt/jwt/commit/0951d184286dece21f73c85673fd308786ffe9c3"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/golang-jwt/jwt/commit/bf316c48137a1212f8d0af9288cc9ce8e59f1afb"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/golang-jwt/jwt"
-    },
-    {
-      "type": "WEB",
-      "url": "https://security.netapp.com/advisory/ntap-20250404-0002"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/golang-jwt/jwt/v5",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/golang-jwt/jwt/v5"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "5.0.0-rc.1"
-            },
-            {
-              "fixed": "5.2.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-mh63-6h87-95cp/GHSA-mh63-6h87-95cp.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/golang-jwt/jwt/v4",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/golang-jwt/jwt/v4"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.5.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-mh63-6h87-95cp/GHSA-mh63-6h87-95cp.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/golang-jwt/jwt",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/golang-jwt/jwt"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "3.2.0"
-            },
-            {
-              "last_affected": "3.2.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-mh63-6h87-95cp/GHSA-mh63-6h87-95cp.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "jwt-go allows excessive memory allocation during header parsing"
 }

@@ -1,24 +1,118 @@
 {
-  "id": "GHSA-jhqx-5v5g-mpf3",
-  "summary": "Classpath resource disclosure in GWC Web Resource API on Windows / Tomcat",
-  "details": "### Impact\n\nIf GeoServer is deployed in the Windows operating system using an Apache Tomcat web application server, it is possible to bypass existing input validation in the GeoWebCache ByteStreamController class and read arbitrary classpath resources with specific file name extensions.\n\nIf GeoServer is also deployed as a web archive using the data directory embedded in the geoserver.war file (rather than an external data directory), it will likely be possible to read specific resources to gain administrator privileges.  However, it is very unlikely that production environments will be using the embedded data directory since, depending on how GeoServer is deployed, it will be erased and re-installed (which would also reset to the default password) either every time the server restarts or every time a new GeoServer WAR is installed and is therefore difficult to maintain. An external data directory will always be used if GeoServer is running in standalone mode (via an installer or a binary).\n\n### Patches\n\nhttps://github.com/GeoWebCache/geowebcache/pull/1211\n\n### Workarounds\n\nChange environment:\n\n* Change from Windows operating system. This vulnerability depends on Windows file paths so Linux and Mac OS are not vulnerable.\n* Change from Apache Tomcat application server. Jetty and WildFly are confirmed to not be vulnerable. Other application servers have not been tested and may be vulnerable.\n\nDisable anonymous access to the embeded GeoWebCache administration and status pages:\n\n1. Navigate to **Security > Authentication** Page\n2. Locate **Filter Chains** heading\n3. Select the ``web`` filter filter chain (ant pattern ``/web/**,/gwc/rest/web/**,/``)\n4. Remove ``,/gwc/rest/web/**`` from the pattern (so that ``/web/**,/`` is left).\n5. Save the changes\n\n### References\n\n* CVE-Pending\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jhqx-5v5g-mpf3/GHSA-jhqx-5v5g-mpf3.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.geoserver.web:gs-web-app",
+        "purl": "pkg:maven/org.geoserver.web/gs-web-app"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.23.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jhqx-5v5g-mpf3/GHSA-jhqx-5v5g-mpf3.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.geoserver.web:gs-web-app",
+        "purl": "pkg:maven/org.geoserver.web/gs-web-app"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.24.0"
+            },
+            {
+              "fixed": "2.24.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jhqx-5v5g-mpf3/GHSA-jhqx-5v5g-mpf3.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.geoserver:gs-gwc",
+        "purl": "pkg:maven/org.geoserver/gs-gwc"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.23.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jhqx-5v5g-mpf3/GHSA-jhqx-5v5g-mpf3.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.geoserver:gs-gwc",
+        "purl": "pkg:maven/org.geoserver/gs-gwc"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.24.0"
+            },
+            {
+              "fixed": "2.24.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2024-24749"
   ],
-  "modified": "2024-07-01T19:42:51.779560Z",
-  "published": "2024-07-01T19:24:04Z",
-  "related": [
-    "CVE-2024-24749"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-07-01T14:15:05Z",
     "cwe_ids": [
       "CWE-22"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-07-01T19:24:04Z"
+    "github_reviewed_at": "2024-07-01T19:24:04Z",
+    "nvd_published_at": "2024-07-01T14:15:05Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nIf GeoServer is deployed in the Windows operating system using an Apache Tomcat web application server, it is possible to bypass existing input validation in the GeoWebCache ByteStreamController class and read arbitrary classpath resources with specific file name extensions.\n\nIf GeoServer is also deployed as a web archive using the data directory embedded in the geoserver.war file (rather than an external data directory), it will likely be possible to read specific resources to gain administrator privileges.  However, it is very unlikely that production environments will be using the embedded data directory since, depending on how GeoServer is deployed, it will be erased and re-installed (which would also reset to the default password) either every time the server restarts or every time a new GeoServer WAR is installed and is therefore difficult to maintain. An external data directory will always be used if GeoServer is running in standalone mode (via an installer or a binary).\n\n### Patches\n\nhttps://github.com/GeoWebCache/geowebcache/pull/1211\n\n### Workarounds\n\nChange environment:\n\n* Change from Windows operating system. This vulnerability depends on Windows file paths so Linux and Mac OS are not vulnerable.\n* Change from Apache Tomcat application server. Jetty and WildFly are confirmed to not be vulnerable. Other application servers have not been tested and may be vulnerable.\n\nDisable anonymous access to the embeded GeoWebCache administration and status pages:\n\n1. Navigate to **Security > Authentication** Page\n2. Locate **Filter Chains** heading\n3. Select the ``web`` filter filter chain (ant pattern ``/web/**,/gwc/rest/web/**,/``)\n4. Remove ``,/gwc/rest/web/**`` from the pattern (so that ``/web/**,/`` is left).\n5. Save the changes\n\n### References\n\n* CVE-Pending\n",
+  "id": "GHSA-jhqx-5v5g-mpf3",
+  "modified": "2024-07-01T19:42:51.779560Z",
+  "published": "2024-07-01T19:24:04Z",
   "references": [
     {
       "type": "WEB",
@@ -41,109 +135,15 @@
       "url": "https://github.com/geoserver/geoserver"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.geoserver.web:gs-web-app",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.geoserver.web/gs-web-app"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.23.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jhqx-5v5g-mpf3/GHSA-jhqx-5v5g-mpf3.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.geoserver.web:gs-web-app",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.geoserver.web/gs-web-app"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.24.0"
-            },
-            {
-              "fixed": "2.24.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jhqx-5v5g-mpf3/GHSA-jhqx-5v5g-mpf3.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.geoserver:gs-gwc",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.geoserver/gs-gwc"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.23.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jhqx-5v5g-mpf3/GHSA-jhqx-5v5g-mpf3.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.geoserver:gs-gwc",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.geoserver/gs-gwc"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.24.0"
-            },
-            {
-              "fixed": "2.24.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jhqx-5v5g-mpf3/GHSA-jhqx-5v5g-mpf3.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2024-24749"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Classpath resource disclosure in GWC Web Resource API on Windows / Tomcat"
 }

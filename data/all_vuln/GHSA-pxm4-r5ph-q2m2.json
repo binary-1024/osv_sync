@@ -1,49 +1,16 @@
 {
-  "id": "GHSA-pxm4-r5ph-q2m2",
-  "summary": "SimpleSAMLphp SAML2 has an XXE in parsing SAML messages",
-  "details": "Summary\n\nWhen loading an (untrusted) XML document, for example the SAMLResponse, it's possible to induce an XXE.\n\n$options is defined as: https://github.com/simplesamlphp/saml2/blob/717c0adc4877ebd58428637e5626345e59fa0109/src/SAML2/DOMDocumentFactory.php#L41\nincluding the DTDLoad option, which allows an attacker to read file contents from local file system OR internal network.\n\nWhile there is the NONET option, an attacker can simply bypass if by using PHP filters:\nphp://filter/convert.base64-encode/resource=http://URL OR FILE\n\nFrom there an attacker can induce network connections and steal the targeted file OOB (haven't fully tested this).\n\nRCE may be possible with the php://expect or php://phar wrappers, but this hasn't been tested.\n\nNote:\nThe mitigation here:\nhttps://github.com/simplesamlphp/saml2/blob/717c0adc4877ebd58428637e5626345e59fa0109/src/SAML2/DOMDocumentFactory.php#L63-L69\nComes too late, as the XML has already been loaded into a document.\nMitigation:\n\nRemove the LIBXML_DTDLOAD | LIBXML_DTDATTR options.\nAdditionally, as a defense in depth measure, check if there is the string: <!DOCTYPE inside the XML before parsing it. (This is not a complete fix because someone may be able to exploit some parser differentials, to load a DOCTYPE, maybe through spacing like: <! DOCTYPE)",
-  "aliases": [
-    "CVE-2024-52806"
-  ],
-  "modified": "2024-12-13T20:51:55.673390Z",
-  "published": "2024-12-02T17:25:43Z",
-  "database_specific": {
-    "nvd_published_at": "2024-12-02T17:15:12Z",
-    "cwe_ids": [
-      "CWE-611"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-12-02T17:25:43Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/simplesamlphp/saml2/security/advisories/GHSA-pxm4-r5ph-q2m2"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-52806"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/simplesamlphp/saml2/commit/5fd4ce4596656fb0c1278f15b8305825412e89f7"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/simplesamlphp/saml2"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-pxm4-r5ph-q2m2/GHSA-pxm4-r5ph-q2m2.json"
+      },
       "package": {
-        "name": "simplesamlphp/saml2",
         "ecosystem": "Packagist",
+        "name": "simplesamlphp/saml2",
         "purl": "pkg:composer/simplesamlphp/saml2"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -51,7 +18,8 @@
             {
               "fixed": "4.6.14"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -197,20 +165,19 @@
         "v4.6.6",
         "v4.6.7",
         "v4.6.8"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-pxm4-r5ph-q2m2/GHSA-pxm4-r5ph-q2m2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-pxm4-r5ph-q2m2/GHSA-pxm4-r5ph-q2m2.json"
+      },
       "package": {
-        "name": "simplesamlphp/saml2-legacy",
         "ecosystem": "Packagist",
+        "name": "simplesamlphp/saml2-legacy",
         "purl": "pkg:composer/simplesamlphp/saml2-legacy"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -218,7 +185,8 @@
             {
               "fixed": "4.6.14"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -362,21 +330,53 @@
         "v4.6.6",
         "v4.6.7",
         "v4.6.8"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-pxm4-r5ph-q2m2/GHSA-pxm4-r5ph-q2m2.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2024-52806"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-611"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-12-02T17:25:43Z",
+    "nvd_published_at": "2024-12-02T17:15:12Z",
+    "severity": "MODERATE"
+  },
+  "details": "Summary\n\nWhen loading an (untrusted) XML document, for example the SAMLResponse, it's possible to induce an XXE.\n\n$options is defined as: https://github.com/simplesamlphp/saml2/blob/717c0adc4877ebd58428637e5626345e59fa0109/src/SAML2/DOMDocumentFactory.php#L41\nincluding the DTDLoad option, which allows an attacker to read file contents from local file system OR internal network.\n\nWhile there is the NONET option, an attacker can simply bypass if by using PHP filters:\nphp://filter/convert.base64-encode/resource=http://URL OR FILE\n\nFrom there an attacker can induce network connections and steal the targeted file OOB (haven't fully tested this).\n\nRCE may be possible with the php://expect or php://phar wrappers, but this hasn't been tested.\n\nNote:\nThe mitigation here:\nhttps://github.com/simplesamlphp/saml2/blob/717c0adc4877ebd58428637e5626345e59fa0109/src/SAML2/DOMDocumentFactory.php#L63-L69\nComes too late, as the XML has already been loaded into a document.\nMitigation:\n\nRemove the LIBXML_DTDLOAD | LIBXML_DTDATTR options.\nAdditionally, as a defense in depth measure, check if there is the string: <!DOCTYPE inside the XML before parsing it. (This is not a complete fix because someone may be able to exploit some parser differentials, to load a DOCTYPE, maybe through spacing like: <! DOCTYPE)",
+  "id": "GHSA-pxm4-r5ph-q2m2",
+  "modified": "2024-12-13T20:51:55.673390Z",
+  "published": "2024-12-02T17:25:43Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/simplesamlphp/saml2/security/advisories/GHSA-pxm4-r5ph-q2m2"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-52806"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/simplesamlphp/saml2/commit/5fd4ce4596656fb0c1278f15b8305825412e89f7"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/simplesamlphp/saml2"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:L/SI:L/SA:L"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:L/SI:L/SA:L",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "SimpleSAMLphp SAML2 has an XXE in parsing SAML messages"
 }

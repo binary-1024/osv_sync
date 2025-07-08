@@ -1,29 +1,46 @@
 {
-  "id": "MGASA-2018-0053",
-  "summary": "Updated curl packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0053.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "curl",
+        "purl": "pkg:rpm/mageia/curl?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.40.0-3.14.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "If cookie state is written into a cookie jar file that is later read back and\nused for subsequent requests, a malicious HTTP server can inject new cookies\nfor arbitrary domains into said cookie jar. The issue pertains to the function\nthat loads cookies into memory, which reads the specified file into a\nfixed-size buffer in a line-by-line manner using the fgets() function. If an\ninvocation of fgets() cannot read the whole line into the destination buffer\ndue to it being too small, it truncates the output. This way, a very long\ncookie (name + value) sent by a malicious server would be stored in the file\nand subsequently that cookie could be read partially and crafted correctly, it\ncould be treated as a different cookie for another server (CVE-2016-8615).\n\nWhen re-using a connection, curl was doing case insensitive comparisons of\nuser name and password with the existing connections. This means that if an\nunused connection with proper credentials exists for a protocol that has\nconnection-scoped credentials, an attacker can cause that connection to be\nreused if s/he knows the case-insensitive version of the correct password\n(CVE-2016-8616).\n\nIn libcurl's base64 encode function, the output buffer is allocated without\nany checks on a variable used to determine its size. On systems with 32-bit\naddresses in userspace, the multiplication in the expression wraps around if\nthe size is too large. If this happens, an undersized output buffer will be\nallocated, but the full result will be written, thus causing the memory behind\nthe output buffer to be overwritten. If a username is set directly via\nCURLOPT_USERNAME (or curl's -u, --user option), this vulnerability can be\ntriggered. The name has to be at least 512MB big in a 32bit system. Systems\nwith 64 bit versions of the size_t type are not affected by this issue\n(CVE-2016-8617).\n\nThe libcurl API function called curl_maprintf() can be tricked into doing a\ndouble-free due to an unsafe size_t multiplication, on systems using 32 bit\nsize_t variables. The function is also used internallty in numerous\nsituations. The function doubles an allocated memory area with realloc() and\nallows the size to wrap and become zero and when doing so realloc() returns\nNULL and frees the memory - in contrary to normal realloc() fails where it\nonly returns NULL - causing libcurl to free the memory again in the error\npath. Systems with 64 bit versions of the size_t type are not affected by this\nissue. This behavior is triggable using the publicly exposed function\n(CVE-2016-8618).\n\nIn curl's implementation of the Kerberos authentication mechanism, the\nfunction read_data() in security.c is used to fill the necessary krb5\nstructures. When reading one of the length fields from the socket, it fails to\nensure that the length parameter passed to realloc() is not set to 0. This\nwould lead to realloc() getting called with a zero size and when doing so\nrealloc() returns NULL and frees the memory - in contrary to normal realloc()\nfails where it only returns NULL - causing libcurl to free the memory again in\nthe error path. This flaw could be triggered by a malicious or just otherwise\nill-behaving server (CVE-2016-8619).\n\nThe curl tool's \"globbing\" feature allows a user to specify a numerical range\nthrough which curl will iterate. The curl code for parsing the second unsigned\nnumber did not check for a leading minus character, which allowed a user to\nspecify [1--1] with no complaints and have the latter -1 number get turned\ninto the largest unsigned long value the system can handle. This would\nultimately cause curl to write outside the dedicated malloced buffer after no\nless than 100,000 iterations, since it would have room for 5 digits but not 6.\nWhen the range is specified with letters, and the ending letter is left out\n[L-], the code would still advance its read pointer 5 bytes even if the string\nwas just 4 bytes and end up reading outside the given buffer. This flaw exists\nonly in the curl tool, not in the libcurl library (CVE-2016-8620).\n\nThe curl_getdate date parser function would parse either a string with HH:MM\nor HH:MM:SS. If instead the piece of time that was sent in had the final digit\ncut off, thus ending with a single-digit, the date parser code would advance\nits read pointer one byte too much and end up reading out of bounds\n(CVE-2016-8621).\n\nThe URL percent-encoding decode function in libcurl is called\ncurl_easy_unescape. Internally, even if this function would be made to\nallocate a unscape destination buffer larger than 2GB, it would return that\nnew length in a signed 32 bit integer variable, thus the length would get\neither just truncated or both truncated and turned negative. That could then\nlead to libcurl writing outside of its heap based buffer. This can be\ntriggered by a user on a 64bit system if the user can send in a custom (very\nlarge) URL to a libcurl using program (CVE-2016-8622).\n\nlibcurl explicitly allows users to share cookies between multiple easy handles\nthat are concurrently employed by different threads. When cookies to be sent\nto a server are collected, the matching function collects all cookies to send\nand the cookie lock is released immediately afterwards. That funcion however\nonly returns a list with references back to the original strings for name,\nvalue, path and so on. Therefore, if another thread quickly takes the lock and\nfrees one of the original cookie structs together with its strings, a\nuse-after-free can occur and lead to information disclosure. Another thread\ncan also replace the contents of the cookies from separate HTTP responses or\nAPI calls (CVE-2016-8623).\n\ncurl doesn't parse the authority component of the URL correctly when the host\nname part ends with a '#' character, and could instead be tricked into\nconnecting to a different host. This may have security implications if you for\nexample use a URL parser that follows the RFC to check for allowed domains\nbefore using curl to request them (CVE-2016-8624).\n\nlibcurl's implementation of the printf() functions triggers a buffer overflow\nwhen doing a large floating point output. The bug occurs when the conversion\noutputs more than 255 bytes. The flaw happens because the floating point\nconversion is using system functions without the correct boundary checks\n(CVE-2016-9586).\n\nThere were two bugs in curl's parser for the command line option --write-out\n(or -w for short) that would skip the end of string zero byte if the string\nended in a % (percent) or \\ (backslash), and it would read beyond that buffer\nin the heap memory and it could then potentially output pieces of that memory\nto the terminal or the target file etc (CVE-2017-7407).\n\nWhen doing a TFTP transfer and curl/libcurl is given a URL that contains a very\nlong file name (longer than about 515 bytes), the file name is truncated to fit\nwithin the buffer boundaries, but the buffer size is still wrongly updated to\nuse the untruncated length. This too large value is then used in the sendto()\ncall, making curl attempt to send more data than what is actually put into the\nbuffer. The sendto() function will then read beyond the end of the heap based\nbuffer. A malicious HTTP(S) server could redirect a vulnerable libcurl-using\nclient to a crafted TFTP URL (if the client hasn't restricted which protocols\nit allows redirects to) and trick it to send private memory contents to a\nremote server over UDP. Limit curl's redirect protocols with --proto-redir and\nlibcurl's with CURLOPT_REDIR_PROTOCOLS (CVE-2017-1000100).\n\ncurl supports \"globbing\" of URLs, in which a user can pass a numerical range to\nhave the tool iterate over those numbers to do a sequence of transfers. In the\nglobbing function that parses the numerical range, there was an omission that\nmade curl read a byte beyond the end of the URL if given a carefully crafted,\nor just wrongly written, URL. The URL is stored in a heap based buffer, so it\ncould then be made to wrongly read something else instead of crashing\n(CVE-2017-1000101).\n\nlibcurl contains a buffer overrun flaw in the NTLM authentication code\n(CVE-2017-8816).\n\nlibcurl contains a read out of bounds flaw in the FTP wildcard function\n(CVE-2017-8817).\n\nlibcurl may read outside of a heap allocated buffer when doing FTP\n(CVE-2017-1000254).\n\nlibcurl contains a buffer overrun flaw in the IMAP handler\n(CVE-2017-1000257).\n",
+  "id": "MGASA-2018-0053",
   "modified": "2018-01-03T16:16:13Z",
   "published": "2018-01-03T16:40:26Z",
-  "related": [
-    "CVE-2016-8615",
-    "CVE-2016-8616",
-    "CVE-2016-8617",
-    "CVE-2016-8618",
-    "CVE-2016-8619",
-    "CVE-2016-8620",
-    "CVE-2016-8621",
-    "CVE-2016-8622",
-    "CVE-2016-8623",
-    "CVE-2016-8624",
-    "CVE-2016-9586",
-    "CVE-2017-1000100",
-    "CVE-2017-1000101",
-    "CVE-2017-1000254",
-    "CVE-2017-1000257",
-    "CVE-2017-7407",
-    "CVE-2017-8816",
-    "CVE-2017-8817"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -106,43 +123,26 @@
       "url": "https://curl.haxx.se/docs/adv_2017-ae72.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "curl",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/curl?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "7.40.0-3.14.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0053.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-8615",
+    "CVE-2016-8616",
+    "CVE-2016-8617",
+    "CVE-2016-8618",
+    "CVE-2016-8619",
+    "CVE-2016-8620",
+    "CVE-2016-8621",
+    "CVE-2016-8622",
+    "CVE-2016-8623",
+    "CVE-2016-8624",
+    "CVE-2016-9586",
+    "CVE-2017-1000100",
+    "CVE-2017-1000101",
+    "CVE-2017-1000254",
+    "CVE-2017-1000257",
+    "CVE-2017-7407",
+    "CVE-2017-8816",
+    "CVE-2017-8817"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated curl packages fix security vulnerability"
 }

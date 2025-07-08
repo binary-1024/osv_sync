@@ -1,24 +1,94 @@
 {
-  "id": "GHSA-r5vh-gc3r-r24w",
-  "summary": "XWiki Platform CSRF remote code execution through the realtime HTML Converter API",
-  "details": "### Impact\nWhen the realtime editor is installed in XWiki, it allows arbitrary remote code execution with the interaction of an admin user with programming right. More precisely, by getting an admin user to either visit a crafted URL or to view an image with this URL that could be in a comment, the attacker can get the admin to execute arbitrary XWiki syntax including scripting macros with Groovy or Python code. This compromises the confidentiality, integrity and availability of the whole XWiki installation.\n\nTo reproduce on an XWiki installation, as an admin, click on `<xwiki-host>/xwiki/bin/get/RTFrontend/ConvertHTML?wiki=xwiki&space=Main&page=WebHome&text=%7B%7Bvelocity%7D%7D%24logtool.error%28%22Hello%20from%20Velocity%20%21%22%29%7B%7B%2Fvelocity%7D%7D`. If the error \"Hello from Velocity!\" gets logged then the installation is vulnerable.\n\n### Patches\nThis vulnerability has been patched in XWiki 14.10.19, 15.5.4 and 15.9.\n\n### Workarounds\nUpdate `RTFrontend.ConvertHTML` following this [patch](https://github.com/xwiki/xwiki-platform/commit/4896712ee6483da623f131be2e618f1f2b79cb8d#diff-32a2a63950724b24e63587570cd95a41cf689111b8ba61c48dabee9effec6d61).\nThis will, however, break some synchronization processes in the realtime editor, so upgrading should be the preferred way on installations where this editor is used.\n\n### References\n* https://jira.xwiki.org/browse/XWIKI-21424\n* https://github.com/xwiki/xwiki-platform/commit/4896712ee6483da623f131be2e618f1f2b79cb8d\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-r5vh-gc3r-r24w/GHSA-r5vh-gc3r-r24w.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-realtime-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-realtime-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "13.9-rc-1"
+            },
+            {
+              "fixed": "14.10.19"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-r5vh-gc3r-r24w/GHSA-r5vh-gc3r-r24w.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-realtime-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-realtime-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "15.0-rc-1"
+            },
+            {
+              "fixed": "15.5.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-r5vh-gc3r-r24w/GHSA-r5vh-gc3r-r24w.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-realtime-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-realtime-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "15.6-rc-1"
+            },
+            {
+              "fixed": "15.9"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2024-31988"
   ],
-  "modified": "2024-04-10T22:01:48Z",
-  "published": "2024-04-10T17:14:59Z",
-  "related": [
-    "CVE-2024-31988"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-04-10T21:15:07Z",
     "cwe_ids": [
       "CWE-352"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-04-10T17:14:59Z"
+    "github_reviewed_at": "2024-04-10T17:14:59Z",
+    "nvd_published_at": "2024-04-10T21:15:07Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\nWhen the realtime editor is installed in XWiki, it allows arbitrary remote code execution with the interaction of an admin user with programming right. More precisely, by getting an admin user to either visit a crafted URL or to view an image with this URL that could be in a comment, the attacker can get the admin to execute arbitrary XWiki syntax including scripting macros with Groovy or Python code. This compromises the confidentiality, integrity and availability of the whole XWiki installation.\n\nTo reproduce on an XWiki installation, as an admin, click on `<xwiki-host>/xwiki/bin/get/RTFrontend/ConvertHTML?wiki=xwiki&space=Main&page=WebHome&text=%7B%7Bvelocity%7D%7D%24logtool.error%28%22Hello%20from%20Velocity%20%21%22%29%7B%7B%2Fvelocity%7D%7D`. If the error \"Hello from Velocity!\" gets logged then the installation is vulnerable.\n\n### Patches\nThis vulnerability has been patched in XWiki 14.10.19, 15.5.4 and 15.9.\n\n### Workarounds\nUpdate `RTFrontend.ConvertHTML` following this [patch](https://github.com/xwiki/xwiki-platform/commit/4896712ee6483da623f131be2e618f1f2b79cb8d#diff-32a2a63950724b24e63587570cd95a41cf689111b8ba61c48dabee9effec6d61).\nThis will, however, break some synchronization processes in the realtime editor, so upgrading should be the preferred way on installations where this editor is used.\n\n### References\n* https://jira.xwiki.org/browse/XWIKI-21424\n* https://github.com/xwiki/xwiki-platform/commit/4896712ee6483da623f131be2e618f1f2b79cb8d\n",
+  "id": "GHSA-r5vh-gc3r-r24w",
+  "modified": "2024-04-10T22:01:48Z",
+  "published": "2024-04-10T17:14:59Z",
   "references": [
     {
       "type": "WEB",
@@ -53,85 +123,15 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-21424"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-realtime-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-realtime-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "13.9-rc-1"
-            },
-            {
-              "fixed": "14.10.19"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-r5vh-gc3r-r24w/GHSA-r5vh-gc3r-r24w.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-realtime-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-realtime-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "15.0-rc-1"
-            },
-            {
-              "fixed": "15.5.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-r5vh-gc3r-r24w/GHSA-r5vh-gc3r-r24w.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-realtime-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-realtime-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "15.6-rc-1"
-            },
-            {
-              "fixed": "15.9"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-r5vh-gc3r-r24w/GHSA-r5vh-gc3r-r24w.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2024-31988"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "XWiki Platform CSRF remote code execution through the realtime HTML Converter API"
 }

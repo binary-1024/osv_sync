@@ -1,25 +1,71 @@
 {
-  "id": "GHSA-mrx3-gxjx-hjqj",
-  "summary": "Authentik vulnerable to PKCE downgrade attack",
-  "details": "## Summary\n\nPKCE is a very important countermeasure in OAuth2 , both for public and confidential clients. It protects against CSRF attacks and code injection attacks. Because of this bug, an attacker can circumvent the protection PKCE offers.\n\n## Patches\n\nauthentik 2023.8.7 and 2023.10.7 fix this issue.\n\n## Details\n\nThere is a bug in our implementation of PKCE that allows an attacker to circumvent the protection that PKCE offers. PKCE adds the `code_challenge\u2019 parameter to the authorization request and adds the `code_verifier\u2019 parameter to the token request. We recently fixed a downgrade attack (in v2023.8.5 and 2023.10.4) where if the attacker removed the `code_verifier\u2019 parameter in the token request, authentik would allow the request to pass, thus circumventing PKCE\u2019s protection. However, in the latest version of the software, another downgrade scenario is still possible: if the attacker removes the `code_challenge\u2019 parameter from the authorization request, authentik will also not do the PKCE check.\n\nNote that this type of downgrade enables an attacker to perform a code injection attack, even if the OAuth client is using PKCE (which is supposed to protect against code injection attacks). To start the attack, the attacker must initiate the authorization process without that `code_challenge\u2019 parameter in the authorization request. But this is easy to do (just use a phishing site or email to trick the user into clicking on a link that the attacker controls \u2013 the authorization link without that `code_challenge\u2019 parameter).\n\nThe OAuth BCP (https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics) explicitly mentions this particular attack in section 2.1.1: \u201cAuthorization servers MUST mitigate PKCE Downgrade Attacks by ensuring that a token request containing a code_verifier parameter is accepted only if a code_challenge parameter was present in the authorization request, see Section 4.8.2 for details.\u201d\n\n## For more information\n\nIf you have any questions or comments about this advisory:\n\n-   Email us at [security@goauthentik.io](mailto:security@goauthentik.io)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2023.10.6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-mrx3-gxjx-hjqj/GHSA-mrx3-gxjx-hjqj.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "goauthentik.io",
+        "purl": "pkg:golang/goauthentik.io"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2023.10.0"
+            },
+            {
+              "fixed": "2023.10.7"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2023.8.6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-mrx3-gxjx-hjqj/GHSA-mrx3-gxjx-hjqj.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "goauthentik.io",
+        "purl": "pkg:golang/goauthentik.io"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2023.8.7"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-23647",
     "GO-2024-2479"
   ],
-  "modified": "2024-11-18T16:26:35Z",
-  "published": "2024-01-29T22:30:54Z",
-  "related": [
-    "CVE-2024-23647"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-01-30T17:15:10Z",
     "cwe_ids": [
       "CWE-287"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-01-29T22:30:54Z"
+    "github_reviewed_at": "2024-01-29T22:30:54Z",
+    "nvd_published_at": "2024-01-30T17:15:10Z",
+    "severity": "HIGH"
   },
+  "details": "## Summary\n\nPKCE is a very important countermeasure in OAuth2 , both for public and confidential clients. It protects against CSRF attacks and code injection attacks. Because of this bug, an attacker can circumvent the protection PKCE offers.\n\n## Patches\n\nauthentik 2023.8.7 and 2023.10.7 fix this issue.\n\n## Details\n\nThere is a bug in our implementation of PKCE that allows an attacker to circumvent the protection that PKCE offers. PKCE adds the `code_challenge\u2019 parameter to the authorization request and adds the `code_verifier\u2019 parameter to the token request. We recently fixed a downgrade attack (in v2023.8.5 and 2023.10.4) where if the attacker removed the `code_verifier\u2019 parameter in the token request, authentik would allow the request to pass, thus circumventing PKCE\u2019s protection. However, in the latest version of the software, another downgrade scenario is still possible: if the attacker removes the `code_challenge\u2019 parameter from the authorization request, authentik will also not do the PKCE check.\n\nNote that this type of downgrade enables an attacker to perform a code injection attack, even if the OAuth client is using PKCE (which is supposed to protect against code injection attacks). To start the attack, the attacker must initiate the authorization process without that `code_challenge\u2019 parameter in the authorization request. But this is easy to do (just use a phishing site or email to trick the user into clicking on a link that the attacker controls \u2013 the authorization link without that `code_challenge\u2019 parameter).\n\nThe OAuth BCP (https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics) explicitly mentions this particular attack in section 2.1.1: \u201cAuthorization servers MUST mitigate PKCE Downgrade Attacks by ensuring that a token request containing a code_verifier parameter is accepted only if a code_challenge parameter was present in the authorization request, see Section 4.8.2 for details.\u201d\n\n## For more information\n\nIf you have any questions or comments about this advisory:\n\n-   Email us at [security@goauthentik.io](mailto:security@goauthentik.io)\n",
+  "id": "GHSA-mrx3-gxjx-hjqj",
+  "modified": "2024-11-18T16:26:35Z",
+  "published": "2024-01-29T22:30:54Z",
   "references": [
     {
       "type": "WEB",
@@ -38,65 +84,19 @@
       "url": "https://github.com/goauthentik/authentik"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "goauthentik.io",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/goauthentik.io"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2023.10.0"
-            },
-            {
-              "fixed": "2023.10.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2023.10.6",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-mrx3-gxjx-hjqj/GHSA-mrx3-gxjx-hjqj.json"
-      }
-    },
-    {
-      "package": {
-        "name": "goauthentik.io",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/goauthentik.io"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2023.8.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2023.8.6",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-mrx3-gxjx-hjqj/GHSA-mrx3-gxjx-hjqj.json"
-      }
-    }
+  "related": [
+    "CVE-2024-23647"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Authentik vulnerable to PKCE downgrade attack"
 }

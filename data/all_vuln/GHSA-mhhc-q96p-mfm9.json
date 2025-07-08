@@ -1,7 +1,81 @@
 {
-  "id": "GHSA-mhhc-q96p-mfm9",
-  "summary": "Infinite loop in TFLite",
-  "details": "### Impact\nThe strided slice implementation in TFLite has a logic bug which can allow an attacker to trigger an infinite loop. This arises from newly introduced support for [ellipsis in axis definition](https://github.com/tensorflow/tensorflow/blob/149562d49faa709ea80df1d99fc41d005b81082a/tensorflow/lite/kernels/strided_slice.cc#L103-L122):\n\n```cc\n  for (int i = 0; i < effective_dims;) {\n    if ((1 << i) & op_context->params->ellipsis_mask) {\n      // ...\n      int ellipsis_end_idx =\n          std::min(i + 1 + num_add_axis + op_context->input_dims - begin_count,\n                   effective_dims);\n      // ...\n      for (; i < ellipsis_end_idx; ++i) {\n        // ...\n      }\n      continue;\n    }\n    // ...\n    ++i;\n  }\n```\n\nAn attacker can craft a model such that `ellipsis_end_idx` is smaller than `i` (e.g., always negative). In this case, the inner loop does not increase `i` and the `continue` statement causes execution to skip over the preincrement at the end of the outer loop.\n\n### Patches\nWe have patched the issue in GitHub commit [dfa22b348b70bb89d6d6ec0ff53973bacb4f4695](https://github.com/tensorflow/tensorflow/commit/dfa22b348b70bb89d6d6ec0ff53973bacb4f4695).\n\nThe fix will be included in TensorFlow 2.6.0. This is the only affected version.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported by members of the Aivul Team from Qihoo 360.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-mhhc-q96p-mfm9/GHSA-mhhc-q96p-mfm9.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow",
+        "purl": "pkg:pypi/tensorflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.6.0rc0"
+            },
+            {
+              "fixed": "2.6.0rc2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.6.0rc0",
+        "2.6.0rc1"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-mhhc-q96p-mfm9/GHSA-mhhc-q96p-mfm9.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
+        "purl": "pkg:pypi/tensorflow-cpu"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.6.0rc0"
+            },
+            {
+              "fixed": "2.6.0rc2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-mhhc-q96p-mfm9/GHSA-mhhc-q96p-mfm9.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
+        "purl": "pkg:pypi/tensorflow-gpu"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.6.0rc0"
+            },
+            {
+              "fixed": "2.6.0rc2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "BIT-tensorflow-2021-37686",
     "CVE-2021-37686",
@@ -9,20 +83,19 @@
     "PYSEC-2021-599",
     "PYSEC-2021-797"
   ],
-  "modified": "2024-11-13T22:11:01.723806Z",
-  "published": "2021-08-25T14:39:58Z",
-  "related": [
-    "CVE-2021-37686"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-08-12T22:15:00Z",
     "cwe_ids": [
       "CWE-835"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-08-24T17:54:33Z"
+    "github_reviewed_at": "2021-08-24T17:54:33Z",
+    "nvd_published_at": "2021-08-12T22:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\nThe strided slice implementation in TFLite has a logic bug which can allow an attacker to trigger an infinite loop. This arises from newly introduced support for [ellipsis in axis definition](https://github.com/tensorflow/tensorflow/blob/149562d49faa709ea80df1d99fc41d005b81082a/tensorflow/lite/kernels/strided_slice.cc#L103-L122):\n\n```cc\n  for (int i = 0; i < effective_dims;) {\n    if ((1 << i) & op_context->params->ellipsis_mask) {\n      // ...\n      int ellipsis_end_idx =\n          std::min(i + 1 + num_add_axis + op_context->input_dims - begin_count,\n                   effective_dims);\n      // ...\n      for (; i < ellipsis_end_idx; ++i) {\n        // ...\n      }\n      continue;\n    }\n    // ...\n    ++i;\n  }\n```\n\nAn attacker can craft a model such that `ellipsis_end_idx` is smaller than `i` (e.g., always negative). In this case, the inner loop does not increase `i` and the `continue` statement causes execution to skip over the preincrement at the end of the outer loop.\n\n### Patches\nWe have patched the issue in GitHub commit [dfa22b348b70bb89d6d6ec0ff53973bacb4f4695](https://github.com/tensorflow/tensorflow/commit/dfa22b348b70bb89d6d6ec0ff53973bacb4f4695).\n\nThe fix will be included in TensorFlow 2.6.0. This is the only affected version.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported by members of the Aivul Team from Qihoo 360.",
+  "id": "GHSA-mhhc-q96p-mfm9",
+  "modified": "2024-11-13T22:11:01.723806Z",
+  "published": "2021-08-25T14:39:58Z",
   "references": [
     {
       "type": "WEB",
@@ -69,92 +142,19 @@
       "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.6.0"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tensorflow",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.6.0rc0"
-            },
-            {
-              "fixed": "2.6.0rc2"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.6.0rc0",
-        "2.6.0rc1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-mhhc-q96p-mfm9/GHSA-mhhc-q96p-mfm9.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tensorflow-cpu",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow-cpu"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.6.0rc0"
-            },
-            {
-              "fixed": "2.6.0rc2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-mhhc-q96p-mfm9/GHSA-mhhc-q96p-mfm9.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "tensorflow-gpu",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow-gpu"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.6.0rc0"
-            },
-            {
-              "fixed": "2.6.0rc2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-mhhc-q96p-mfm9/GHSA-mhhc-q96p-mfm9.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-37686"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Infinite loop in TFLite"
 }

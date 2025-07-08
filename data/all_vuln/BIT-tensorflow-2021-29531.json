@@ -1,46 +1,16 @@
 {
-  "id": "BIT-tensorflow-2021-29531",
-  "summary": "CHECK-fail in tf.raw_ops.EncodePng",
-  "details": "TensorFlow is an end-to-end open source platform for machine learning. An attacker can trigger a `CHECK` fail in PNG encoding by providing an empty input tensor as the pixel data. This is because the implementation(https://github.com/tensorflow/tensorflow/blob/e312e0791ce486a80c9d23110841525c6f7c3289/tensorflow/core/kernels/image/encode_png_op.cc#L57-L60) only validates that the total number of pixels in the image does not overflow. Thus, an attacker can send an empty matrix for encoding. However, if the tensor is empty, then the associated buffer is `nullptr`. Hence, when calling `png::WriteImageToBuffer`(https://github.com/tensorflow/tensorflow/blob/e312e0791ce486a80c9d23110841525c6f7c3289/tensorflow/core/kernels/image/encode_png_op.cc#L79-L93), the first argument (i.e., `image.flat<T>().data()`) is `NULL`. This then triggers the `CHECK_NOTNULL` in the first line of `png::WriteImageToBuffer`(https://github.com/tensorflow/tensorflow/blob/e312e0791ce486a80c9d23110841525c6f7c3289/tensorflow/core/lib/png/png_io.cc#L345-L349). Since `image` is null, this results in `abort` being called after printing the stacktrace. Effectively, this allows an attacker to mount a denial of service attack. The fix will be included in TensorFlow 2.5.0. We will also cherrypick this commit on TensorFlow 2.4.2, TensorFlow 2.3.3, TensorFlow 2.2.3 and TensorFlow 2.1.4, as these are also affected and still in supported range.",
-  "aliases": [
-    "CVE-2021-29531",
-    "GHSA-3qxp-qjq7-w4hf",
-    "PYSEC-2021-168",
-    "PYSEC-2021-459",
-    "PYSEC-2021-657"
-  ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T11:19:46.208Z",
-  "database_specific": {
-    "cpes": [
-      "cpe:2.3:a:google:tensorflow:*:*:*:*:*:*:*:*"
-    ],
-    "severity": "Medium"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/26eb323554ffccd173e8a79a8c05c15b685ae4d1"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-3qxp-qjq7-w4hf"
-    },
-    {
-      "type": "WEB",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29531"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2021-29531.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "Bitnami",
+        "name": "tensorflow",
         "purl": "pkg:bitnami/tensorflow"
       },
       "ranges": [
         {
-          "type": "SEMVER",
           "events": [
             {
               "introduced": "0"
@@ -66,19 +36,49 @@
             {
               "fixed": "2.4.2"
             }
-          ]
+          ],
+          "type": "SEMVER"
         }
       ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2021-29531.json"
-      },
       "severity": [
         {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+          "type": "CVSS_V3"
         }
       ]
     }
   ],
-  "schema_version": "1.6.0"
+  "aliases": [
+    "CVE-2021-29531",
+    "GHSA-3qxp-qjq7-w4hf",
+    "PYSEC-2021-168",
+    "PYSEC-2021-459",
+    "PYSEC-2021-657"
+  ],
+  "database_specific": {
+    "cpes": [
+      "cpe:2.3:a:google:tensorflow:*:*:*:*:*:*:*:*"
+    ],
+    "severity": "Medium"
+  },
+  "details": "TensorFlow is an end-to-end open source platform for machine learning. An attacker can trigger a `CHECK` fail in PNG encoding by providing an empty input tensor as the pixel data. This is because the implementation(https://github.com/tensorflow/tensorflow/blob/e312e0791ce486a80c9d23110841525c6f7c3289/tensorflow/core/kernels/image/encode_png_op.cc#L57-L60) only validates that the total number of pixels in the image does not overflow. Thus, an attacker can send an empty matrix for encoding. However, if the tensor is empty, then the associated buffer is `nullptr`. Hence, when calling `png::WriteImageToBuffer`(https://github.com/tensorflow/tensorflow/blob/e312e0791ce486a80c9d23110841525c6f7c3289/tensorflow/core/kernels/image/encode_png_op.cc#L79-L93), the first argument (i.e., `image.flat<T>().data()`) is `NULL`. This then triggers the `CHECK_NOTNULL` in the first line of `png::WriteImageToBuffer`(https://github.com/tensorflow/tensorflow/blob/e312e0791ce486a80c9d23110841525c6f7c3289/tensorflow/core/lib/png/png_io.cc#L345-L349). Since `image` is null, this results in `abort` being called after printing the stacktrace. Effectively, this allows an attacker to mount a denial of service attack. The fix will be included in TensorFlow 2.5.0. We will also cherrypick this commit on TensorFlow 2.4.2, TensorFlow 2.3.3, TensorFlow 2.2.3 and TensorFlow 2.1.4, as these are also affected and still in supported range.",
+  "id": "BIT-tensorflow-2021-29531",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:19:46.208Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/26eb323554ffccd173e8a79a8c05c15b685ae4d1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-3qxp-qjq7-w4hf"
+    },
+    {
+      "type": "WEB",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29531"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "summary": "CHECK-fail in tf.raw_ops.EncodePng"
 }

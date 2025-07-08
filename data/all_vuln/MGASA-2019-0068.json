@@ -1,12 +1,46 @@
 {
-  "id": "MGASA-2019-0068",
-  "summary": "Updated opencontainers-runc packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0068.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "opencontainers-runc",
+        "purl": "pkg:rpm/mageia/opencontainers-runc?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.0rc5-3.2.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Not using pivot_root(2) leaves the host /proc around in the mount namespace\nso that it is possible to mount another /proc without any other submount,\neven if /proc in the container is not fully visible. This flaw allows an\nattacker to read and modify some parts of the Linux kernel memory\n(rhbz#1663068).\n\nrunc through 1.0-rc6 allows attackers to overwrite the host runc binary\n(and consequently obtain host root access) by leveraging the ability to\nexecute a command as root within one of these types of containers: a new\ncontainer with an attacker-controlled image, or an existing container, to\nwhich the attacker previously had write access, that can be attached with\ndocker exec. This occurs because of file-descriptor mishandling, related\nto /proc/self/exe (CVE-2019-5736).\n",
+  "id": "MGASA-2019-0068",
   "modified": "2019-02-13T10:37:14Z",
   "published": "2019-02-13T11:08:25Z",
-  "related": [
-    "CVE-2019-5736"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -25,43 +59,9 @@
       "url": "https://www.openwall.com/lists/oss-security/2019/02/11/2"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "opencontainers-runc",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/opencontainers-runc?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.0.0rc5-3.2.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0068.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2019-5736"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated opencontainers-runc packages fix security vulnerability"
 }

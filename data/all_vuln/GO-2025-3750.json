@@ -1,69 +1,24 @@
 {
-  "id": "GO-2025-3750",
-  "summary": "Inconsistent handling of O_CREATE|O_EXCL on Unix and Windows in os in syscall",
-  "details": "os.OpenFile(path, os.O_CREATE|O_EXCL) behaved differently on Unix and Windows systems when the target path was a dangling symlink. On Unix systems, OpenFile with O_CREATE and O_EXCL flags never follows symlinks. On Windows, when the target path was a symlink to a nonexistent location, OpenFile would create a file in that location. OpenFile now always returns an error when the O_CREATE and O_EXCL flags are both set and the target path is a symlink.",
-  "aliases": [
-    "BIT-golang-2025-0913",
-    "CVE-2025-0913"
-  ],
-  "modified": "2025-06-14T06:28:19.438040Z",
-  "published": "2025-06-11T16:59:06Z",
-  "database_specific": {
-    "review_status": "REVIEWED",
-    "url": "https://pkg.go.dev/vuln/GO-2025-3750"
-  },
-  "references": [
-    {
-      "type": "FIX",
-      "url": "https://go.dev/cl/672396"
-    },
-    {
-      "type": "REPORT",
-      "url": "https://go.dev/issue/73702"
-    },
-    {
-      "type": "WEB",
-      "url": "https://groups.google.com/g/golang-announce/c/ufZ8WpEsA3A"
-    }
-  ],
   "affected": [
     {
-      "package": {
-        "name": "stdlib",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/stdlib"
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2025-3750.json"
       },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.23.10"
-            },
-            {
-              "introduced": "1.24.0-0"
-            },
-            {
-              "fixed": "1.24.4"
-            }
-          ]
-        }
-      ],
       "ecosystem_specific": {
         "imports": [
           {
+            "goos": [
+              "windows"
+            ],
             "path": "syscall",
             "symbols": [
               "Open"
-            ],
-            "goos": [
-              "windows"
             ]
           },
           {
+            "goos": [
+              "windows"
+            ],
             "path": "os",
             "symbols": [
               "Chdir",
@@ -115,22 +70,67 @@
               "rootFS.ReadFile",
               "rootFS.Stat",
               "unixDirent.Info"
-            ],
-            "goos": [
-              "windows"
             ]
           }
         ]
       },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2025-3750.json"
-      }
+      "package": {
+        "ecosystem": "Go",
+        "name": "stdlib",
+        "purl": "pkg:golang/stdlib"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.23.10"
+            },
+            {
+              "introduced": "1.24.0-0"
+            },
+            {
+              "fixed": "1.24.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
     }
   ],
-  "schema_version": "1.6.0",
+  "aliases": [
+    "BIT-golang-2025-0913",
+    "CVE-2025-0913"
+  ],
   "credits": [
     {
       "name": "Junyoung Park and Dong-uk Kim of KAIST Hacking Lab"
     }
-  ]
+  ],
+  "database_specific": {
+    "review_status": "REVIEWED",
+    "url": "https://pkg.go.dev/vuln/GO-2025-3750"
+  },
+  "details": "os.OpenFile(path, os.O_CREATE|O_EXCL) behaved differently on Unix and Windows systems when the target path was a dangling symlink. On Unix systems, OpenFile with O_CREATE and O_EXCL flags never follows symlinks. On Windows, when the target path was a symlink to a nonexistent location, OpenFile would create a file in that location. OpenFile now always returns an error when the O_CREATE and O_EXCL flags are both set and the target path is a symlink.",
+  "id": "GO-2025-3750",
+  "modified": "2025-06-14T06:28:19.438040Z",
+  "published": "2025-06-11T16:59:06Z",
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://go.dev/cl/672396"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/73702"
+    },
+    {
+      "type": "WEB",
+      "url": "https://groups.google.com/g/golang-announce/c/ufZ8WpEsA3A"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "summary": "Inconsistent handling of O_CREATE|O_EXCL on Unix and Windows in os in syscall"
 }

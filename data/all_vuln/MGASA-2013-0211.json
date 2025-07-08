@@ -1,17 +1,46 @@
 {
-  "id": "MGASA-2013-0211",
-  "summary": "Updated kernel-rt package fixes security issues",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2013-0211.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:2",
+        "name": "kernel-rt",
+        "purl": "pkg:rpm/mageia/kernel-rt?arch=source&distro=mageia-2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.4.52-0.rt67.2.mga2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-rt update provides the upstream 3.4.52 kernel and fixes\nthe follwing security issues:\n\nThe pciback_enable_msi function in the PCI backend driver \n(drivers/xen/pciback/conf_space_capability_msi.c) in Xen for the Linux\nkernel 2.6.18 and 3.8 allows guest OS users with PCI device access to\ncause a denial of service via a large number of kernel log messages.\n(CVE-2013-0231 / XSA-43)\n\nipv6: ip6_sk_dst_check() must not assume ipv6 dst\nIt's possible to use AF_INET6 sockets and to connect to an IPv4\ndestination. After this, socket dst cache is a pointer to a rtable,\nnot rt6_info. This bug can be exploited by local non-root users\nto trigger various corruptions/crashes (CVE-2013-2232)\n\naf_key: fix info leaks in notify messages\nkey_notify_sa_flush() and key_notify_policy_flush() miss to\ninitialize the sadb_msg_reserved member of the broadcasted message\nand thereby leak 2 bytes of heap memory to listeners (CVE-2013-2234)\n\naf_key: initialize satype in key_notify_policy_flush()\nkey_notify_policy_flush() miss to nitialize the sadb_msg_satype member\nof the broadcasted message and thereby leak heap memory to listeners\n(CVE-2013-2237)\n\nHeap-based buffer overflow in the iscsi_add_notunderstood_response function\nin drivers/target/iscsi/iscsi_target_parameters.c in the iSCSI target\nsubsystem in the Linux kernel through 3.9.4 allows remote attackers to\ncause a denial of service (memory corruption and OOPS) or possibly execute\narbitrary code via a long key that is not properly handled during\nconstruction of an error-response packet.\nA reproduction case requires patching open-iscsi to send overly large\nkeys. Performing discovery in a loop will Oops the remote server.\n(CVE-2013-2850)\n\nFormat string vulnerability in the b43_request_firmware function in\ndrivers/net/wireless/b43/main.c in the Broadcom B43 wireless driver in\nthe Linux kernel through 3.9.4 allows local users to gain privileges by\nleveraging root access and including format string specifiers in an\nfwpostfix modprobe parameter, leading to improper construction of an\nerror message. (CVE-2013-2852)\n\nOther fixes:\nFix up alx AR8161 breakage (mga #10079)\nrt patch has been updated to -rt67\n\nFor other -stable fixes, read the referenced changelogs\n",
+  "id": "MGASA-2013-0211",
   "modified": "2013-07-16T07:50:32Z",
   "published": "2013-07-16T07:33:23Z",
-  "related": [
-    "CVE-2013-0231",
-    "CVE-2013-2232",
-    "CVE-2013-2234",
-    "CVE-2013-2237",
-    "CVE-2013-2850",
-    "CVE-2013-2852"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -50,43 +79,14 @@
       "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.4.52"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-rt",
-        "ecosystem": "Mageia:2",
-        "purl": "pkg:rpm/mageia/kernel-rt?arch=source&distro=mageia-2"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.4.52-0.rt67.2.mga2"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2013-0211.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2013-0231",
+    "CVE-2013-2232",
+    "CVE-2013-2234",
+    "CVE-2013-2237",
+    "CVE-2013-2850",
+    "CVE-2013-2852"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-rt package fixes security issues"
 }

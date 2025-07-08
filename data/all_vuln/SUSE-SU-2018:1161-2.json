@@ -1,27 +1,46 @@
 {
-  "id": "SUSE-SU-2018:1161-2",
-  "summary": "Security update for apache2",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1161-2.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "apache2": "2.4.23-29.18.2",
+            "apache2-doc": "2.4.23-29.18.2",
+            "apache2-example-pages": "2.4.23-29.18.2",
+            "apache2-prefork": "2.4.23-29.18.2",
+            "apache2-utils": "2.4.23-29.18.2",
+            "apache2-worker": "2.4.23-29.18.2"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
+        "name": "apache2",
+        "purl": "pkg:rpm/suse/apache2&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.23-29.18.2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for apache2 fixes the following issues:\n\n  * CVE-2018-1283:  when mod_session is configured to forward its session data to CGI applications \n                    (SessionEnv on, not the default), a remote user may influence their content by \n                    using a \\'Session\\' header leading to unexpected behavior [bsc#1086814].\n\n  * CVE-2018-1301: due to an out of bound access after a size limit being reached by reading the HTTP header, \n                   a specially crafted request could lead to remote denial of service. [bsc#1086817]\n  \n  * CVE-2018-1303: a specially crafted HTTP request header could lead to crash due to an out of bound read \n                   while preparing data to be cached in shared memory.[bsc#1086813]\n  \n  * CVE-2017-15715: a regular expression could match '$' to a newline character in a malicious filename, \n                    rather than matching only the end of the filename. leading to corruption of uploaded files.[bsc#1086774]\n  \n  * CVE-2018-1312: when generating an HTTP Digest authentication challenge, the nonce sent to prevent \n                   reply attacks was not correctly generated using a pseudo-random seed. \n                   In a cluster of servers using a common Digest authentication configuration, \n                   HTTP requests could be replayed across servers by an attacker without detection. [bsc#1086775]\n  \n  * CVE-2017-15710: mod_authnz_ldap, if configured with AuthLDAPCharsetConfig, \n                    uses the Accept-Language header value to lookup the right charset encoding when verifying the \n                    user's credentials. If the header value is not present in the charset conversion table, \n                    a fallback mechanism is used to truncate it to a two characters value to allow a quick retry \n                    (for example, 'en-US' is truncated to 'en'). \n                    A header value of less than two characters forces an out of bound write of one NUL byte to a \n                   memory location that is not part of the string. In the worst case, quite unlikely, the process \n                   would crash which could be used as a Denial of Service attack. In the more likely case, this memory \n                   is already reserved for future use and the issue has no effect at all. [bsc#1086820]\n  \n  * CVE-2018-1302: when an HTTP/2 stream was destroyed after being handled, it \n                   could have written a NULL pointer potentially to an already freed memory. \n                   The memory pools maintained by the server make this vulnerability hard to trigger in usual configurations, \n                   the reporter and the team could not reproduce it outside debug builds, so it is classified as low risk. \n                   [bsc#1086820]\n",
+  "id": "SUSE-SU-2018:1161-2",
   "modified": "2025-05-02T04:06:31.107532Z",
   "published": "2018-10-18T12:42:54Z",
-  "related": [
-    "CVE-2017-15710",
-    "CVE-2017-15715",
-    "CVE-2018-1283",
-    "CVE-2018-1301",
-    "CVE-2018-1302",
-    "CVE-2018-1303",
-    "CVE-2018-1312"
-  ],
-  "upstream": [
-    "CVE-2017-15710",
-    "CVE-2017-15715",
-    "CVE-2018-1283",
-    "CVE-2018-1301",
-    "CVE-2018-1302",
-    "CVE-2018-1303",
-    "CVE-2018-1312"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -80,43 +99,24 @@
       "url": "https://www.suse.com/security/cve/CVE-2018-1312"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "apache2",
-        "ecosystem": "SUSE:Linux Enterprise Server 12 SP2-BCL",
-        "purl": "pkg:rpm/suse/apache2&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP2-BCL"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.4.23-29.18.2"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "apache2-example-pages": "2.4.23-29.18.2",
-            "apache2-doc": "2.4.23-29.18.2",
-            "apache2-worker": "2.4.23-29.18.2",
-            "apache2-prefork": "2.4.23-29.18.2",
-            "apache2": "2.4.23-29.18.2",
-            "apache2-utils": "2.4.23-29.18.2"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1161-2.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2017-15710",
+    "CVE-2017-15715",
+    "CVE-2018-1283",
+    "CVE-2018-1301",
+    "CVE-2018-1302",
+    "CVE-2018-1303",
+    "CVE-2018-1312"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for apache2",
+  "upstream": [
+    "CVE-2017-15710",
+    "CVE-2017-15715",
+    "CVE-2018-1283",
+    "CVE-2018-1301",
+    "CVE-2018-1302",
+    "CVE-2018-1303",
+    "CVE-2018-1312"
+  ]
 }

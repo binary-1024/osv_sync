@@ -1,41 +1,385 @@
 {
-  "id": "USN-4185-3",
-  "summary": "linux, linux-hwe, linux-oem vulnerability and regression",
-  "details": "USN-4185-1 fixed vulnerabilities in the Linux kernel. It was discovered\nthat the kernel fix for CVE-2019-0155 (i915 missing Blitter Command\nStreamer check) was incomplete on 64-bit Intel x86 systems. Also, the\nupdate introduced a regression that broke KVM guests where extended\npage tables (EPT) are disabled or not supported. This update addresses\nboth issues.\n\nWe apologize for the inconvenience.\n\nOriginal advisory details:\n\n Stephan van Schaik, Alyssa Milburn, Sebastian \u00d6sterlund, Pietro Frigo,\n Kaveh Razavi, Herbert Bos, Cristiano Giuffrida, Giorgi Maisuradze, Moritz\n Lipp, Michael Schwarz, Daniel Gruss, and Jo Van Bulck discovered that Intel\n processors using Transactional Synchronization Extensions (TSX) could\n expose memory contents previously stored in microarchitectural buffers to a\n malicious process that is executing on the same CPU core. A local attacker\n could use this to expose sensitive information. (CVE-2019-11135)\n\n It was discovered that the Intel i915 graphics chipsets allowed userspace\n to modify page table entries via writes to MMIO from the Blitter Command\n Streamer and expose kernel memory information. A local attacker could use\n this to expose sensitive information or possibly elevate privileges.\n (CVE-2019-0155)\n\n Deepak Gupta discovered that on certain Intel processors, the Linux kernel\n did not properly perform invalidation on page table updates by virtual\n guest operating systems. A local attacker in a guest VM could use this to\n cause a denial of service (host system crash). (CVE-2018-12207)\n\n It was discovered that the Intel i915 graphics chipsets could cause a\n system hang when userspace performed a read from GT memory mapped input\n output (MMIO) when the product is in certain low power states. A local\n attacker could use this to cause a denial of service. (CVE-2019-0154)\n\n Hui Peng discovered that the Atheros AR6004 USB Wi-Fi device driver for the\n Linux kernel did not properly validate endpoint descriptors returned by the\n device. A physically proximate attacker could use this to cause a denial of\n service (system crash). (CVE-2019-15098)\n\n Ori Nimron discovered that the AX25 network protocol implementation in the\n Linux kernel did not properly perform permissions checks. A local attacker\n could use this to create a raw socket. (CVE-2019-17052)\n\n Ori Nimron discovered that the IEEE 802.15.4 Low-Rate Wireless network\n protocol implementation in the Linux kernel did not properly perform\n permissions checks. A local attacker could use this to create a raw socket.\n (CVE-2019-17053)\n\n Ori Nimron discovered that the Appletalk network protocol implementation in\n the Linux kernel did not properly perform permissions checks. A local\n attacker could use this to create a raw socket. (CVE-2019-17054)\n\n Ori Nimron discovered that the modular ISDN network protocol implementation\n in the Linux kernel did not properly perform permissions checks. A local\n attacker could use this to create a raw socket. (CVE-2019-17055)\n\n Ori Nimron discovered that the Near field Communication (NFC) network\n protocol implementation in the Linux kernel did not properly perform\n permissions checks. A local attacker could use this to create a raw socket.\n (CVE-2019-17056)\n\n Nico Waisman discovered that a buffer overflow existed in the Realtek Wi-Fi\n driver for the Linux kernel when handling Notice of Absence frames. A\n physically proximate attacker could use this to cause a denial of service\n (system crash) or possibly execute arbitrary code. (CVE-2019-17666)\n",
-  "modified": "2019-11-13T19:08:56.202652Z",
-  "published": "2019-11-13T19:08:56.202652Z",
-  "related": [
-    "CVE-2019-0155",
-    "UBUNTU-CVE-2019-0155"
-  ],
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://ubuntu.com/security/notices/USN-4185-3"
-    },
-    {
-      "type": "REPORT",
-      "url": "https://ubuntu.com/security/CVE-2019-0155"
-    },
-    {
-      "type": "REPORT",
-      "url": "https://bugs.launchpad.net/bugs/1851709"
-    },
-    {
-      "type": "REPORT",
-      "url": "https://bugs.launchpad.net/bugs/1852141"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/canonical/ubuntu-security-notices/blob/main/osv/usn/USN-4185-3.json"
+      },
+      "ecosystem_specific": {
+        "availability": "No subscription required",
+        "binaries": [
+          {
+            "binary_name": "block-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "block-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "crypto-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "crypto-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "dasd-extra-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "dasd-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "fat-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "fat-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "fb-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "firewire-core-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "floppy-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "fs-core-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "fs-core-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "fs-secondary-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "fs-secondary-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "input-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "input-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "ipmi-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "ipmi-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "irda-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "irda-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "kernel-image-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "kernel-image-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-buildinfo-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-buildinfo-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-buildinfo-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-cloud-tools-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-cloud-tools-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-headers-4.15.0-70",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-headers-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-headers-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-headers-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-hwe-cloud-tools-4.15.0-70",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-hwe-tools-4.15.0-70",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-hwe-udebs-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-hwe-udebs-generic-lpae",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-4.15.0-70-generic-dbgsym",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-4.15.0-70-generic-lpae-dbgsym",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-4.15.0-70-lowlatency-dbgsym",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-unsigned-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-unsigned-4.15.0-70-generic-dbgsym",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-unsigned-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-image-unsigned-4.15.0-70-lowlatency-dbgsym",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-modules-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-modules-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-modules-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-modules-extra-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-source-4.15.0",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-tools-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-tools-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "linux-tools-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "md-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "md-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "message-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "mouse-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "mouse-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "multipath-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "multipath-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nfs-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nfs-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nic-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nic-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nic-pcmcia-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nic-shared-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nic-shared-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nic-usb-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "nic-usb-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "parport-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "parport-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "pata-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "pcmcia-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "pcmcia-storage-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "plip-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "plip-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "ppp-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "ppp-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "sata-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "sata-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "scsi-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "scsi-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "serial-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "storage-core-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "storage-core-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "usb-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "usb-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "virtio-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "vlan-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          },
+          {
+            "binary_name": "vlan-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79~16.04.1"
+          }
+        ]
+      },
       "package": {
-        "name": "linux-hwe",
         "ecosystem": "Ubuntu:16.04:LTS",
+        "name": "linux-hwe",
         "purl": "pkg:deb/ubuntu/linux-hwe@4.15.0-70.79~16.04.1?arch=source&distro=xenial"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -43,7 +387,8 @@
             {
               "fixed": "4.15.0-70.79~16.04.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -108,389 +453,408 @@
         "4.15.0-65.74~16.04.1",
         "4.15.0-66.75~16.04.1",
         "4.15.0-69.78~16.04.1"
-      ],
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/canonical/ubuntu-security-notices/blob/main/osv/usn/USN-4185-3.json"
+      },
       "ecosystem_specific": {
         "availability": "No subscription required",
         "binaries": [
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "block-modules-4.15.0-70-generic-di"
+            "binary_name": "block-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "block-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "block-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "crypto-modules-4.15.0-70-generic-di"
+            "binary_name": "crypto-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "crypto-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "crypto-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "dasd-extra-modules-4.15.0-70-generic-di"
+            "binary_name": "dasd-extra-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "dasd-modules-4.15.0-70-generic-di"
+            "binary_name": "dasd-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "fat-modules-4.15.0-70-generic-di"
+            "binary_name": "fat-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "fat-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "fat-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "fb-modules-4.15.0-70-generic-di"
+            "binary_name": "fb-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "firewire-core-modules-4.15.0-70-generic-di"
+            "binary_name": "firewire-core-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "floppy-modules-4.15.0-70-generic-di"
+            "binary_name": "floppy-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "fs-core-modules-4.15.0-70-generic-di"
+            "binary_name": "fs-core-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "fs-core-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "fs-core-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "fs-secondary-modules-4.15.0-70-generic-di"
+            "binary_name": "fs-secondary-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "fs-secondary-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "fs-secondary-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "input-modules-4.15.0-70-generic-di"
+            "binary_name": "input-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "input-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "input-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "ipmi-modules-4.15.0-70-generic-di"
+            "binary_name": "ipmi-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "ipmi-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "ipmi-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "irda-modules-4.15.0-70-generic-di"
+            "binary_name": "irda-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "irda-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "irda-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "kernel-image-4.15.0-70-generic-di"
+            "binary_name": "kernel-image-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "kernel-image-4.15.0-70-generic-lpae-di"
+            "binary_name": "kernel-image-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-buildinfo-4.15.0-70-generic"
+            "binary_name": "linux-buildinfo-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-buildinfo-4.15.0-70-generic-lpae"
+            "binary_name": "linux-buildinfo-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-buildinfo-4.15.0-70-lowlatency"
+            "binary_name": "linux-buildinfo-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-cloud-tools-4.15.0-70-generic"
+            "binary_name": "linux-cloud-tools-4.15.0-70",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-cloud-tools-4.15.0-70-lowlatency"
+            "binary_name": "linux-cloud-tools-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-headers-4.15.0-70"
+            "binary_name": "linux-cloud-tools-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-headers-4.15.0-70-generic"
+            "binary_name": "linux-cloud-tools-common",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-headers-4.15.0-70-generic-lpae"
+            "binary_name": "linux-doc",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-headers-4.15.0-70-lowlatency"
+            "binary_name": "linux-headers-4.15.0-70",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-hwe-cloud-tools-4.15.0-70"
+            "binary_name": "linux-headers-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-hwe-tools-4.15.0-70"
+            "binary_name": "linux-headers-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-hwe-udebs-generic"
+            "binary_name": "linux-headers-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-hwe-udebs-generic-lpae"
+            "binary_name": "linux-image-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-4.15.0-70-generic"
+            "binary_name": "linux-image-4.15.0-70-generic-dbgsym",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-4.15.0-70-generic-dbgsym"
+            "binary_name": "linux-image-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-4.15.0-70-generic-lpae"
+            "binary_name": "linux-image-4.15.0-70-generic-lpae-dbgsym",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-4.15.0-70-generic-lpae-dbgsym"
+            "binary_name": "linux-image-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-4.15.0-70-lowlatency"
+            "binary_name": "linux-image-4.15.0-70-lowlatency-dbgsym",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-4.15.0-70-lowlatency-dbgsym"
+            "binary_name": "linux-image-unsigned-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-unsigned-4.15.0-70-generic"
+            "binary_name": "linux-image-unsigned-4.15.0-70-generic-dbgsym",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-unsigned-4.15.0-70-generic-dbgsym"
+            "binary_name": "linux-image-unsigned-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-unsigned-4.15.0-70-lowlatency"
+            "binary_name": "linux-image-unsigned-4.15.0-70-lowlatency-dbgsym",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-image-unsigned-4.15.0-70-lowlatency-dbgsym"
+            "binary_name": "linux-libc-dev",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-modules-4.15.0-70-generic"
+            "binary_name": "linux-modules-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-modules-4.15.0-70-generic-lpae"
+            "binary_name": "linux-modules-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-modules-4.15.0-70-lowlatency"
+            "binary_name": "linux-modules-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-modules-extra-4.15.0-70-generic"
+            "binary_name": "linux-modules-extra-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-source-4.15.0"
+            "binary_name": "linux-source-4.15.0",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-tools-4.15.0-70-generic"
+            "binary_name": "linux-tools-4.15.0-70",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-tools-4.15.0-70-generic-lpae"
+            "binary_name": "linux-tools-4.15.0-70-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "linux-tools-4.15.0-70-lowlatency"
+            "binary_name": "linux-tools-4.15.0-70-generic-lpae",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "md-modules-4.15.0-70-generic-di"
+            "binary_name": "linux-tools-4.15.0-70-lowlatency",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "md-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "linux-tools-common",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "message-modules-4.15.0-70-generic-di"
+            "binary_name": "linux-tools-host",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "mouse-modules-4.15.0-70-generic-di"
+            "binary_name": "linux-udebs-generic",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "mouse-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "linux-udebs-generic-lpae",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "multipath-modules-4.15.0-70-generic-di"
+            "binary_name": "md-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "multipath-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "md-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nfs-modules-4.15.0-70-generic-di"
+            "binary_name": "message-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nfs-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "mouse-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nic-modules-4.15.0-70-generic-di"
+            "binary_name": "mouse-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nic-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "multipath-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nic-pcmcia-modules-4.15.0-70-generic-di"
+            "binary_name": "multipath-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nic-shared-modules-4.15.0-70-generic-di"
+            "binary_name": "nfs-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nic-shared-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "nfs-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nic-usb-modules-4.15.0-70-generic-di"
+            "binary_name": "nic-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "nic-usb-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "nic-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "parport-modules-4.15.0-70-generic-di"
+            "binary_name": "nic-pcmcia-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "parport-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "nic-shared-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "pata-modules-4.15.0-70-generic-di"
+            "binary_name": "nic-shared-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "pcmcia-modules-4.15.0-70-generic-di"
+            "binary_name": "nic-usb-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "pcmcia-storage-modules-4.15.0-70-generic-di"
+            "binary_name": "nic-usb-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "plip-modules-4.15.0-70-generic-di"
+            "binary_name": "parport-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "plip-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "parport-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "ppp-modules-4.15.0-70-generic-di"
+            "binary_name": "pata-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "ppp-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "pcmcia-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "sata-modules-4.15.0-70-generic-di"
+            "binary_name": "pcmcia-storage-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "sata-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "plip-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "scsi-modules-4.15.0-70-generic-di"
+            "binary_name": "plip-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "scsi-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "ppp-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "serial-modules-4.15.0-70-generic-di"
+            "binary_name": "ppp-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "storage-core-modules-4.15.0-70-generic-di"
+            "binary_name": "sata-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "storage-core-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "sata-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "usb-modules-4.15.0-70-generic-di"
+            "binary_name": "scsi-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "usb-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "scsi-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "virtio-modules-4.15.0-70-generic-di"
+            "binary_name": "serial-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "vlan-modules-4.15.0-70-generic-di"
+            "binary_name": "storage-core-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
           },
           {
-            "binary_version": "4.15.0-70.79~16.04.1",
-            "binary_name": "vlan-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "storage-core-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
+          },
+          {
+            "binary_name": "usb-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
+          },
+          {
+            "binary_name": "usb-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
+          },
+          {
+            "binary_name": "virtio-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
+          },
+          {
+            "binary_name": "vlan-modules-4.15.0-70-generic-di",
+            "binary_version": "4.15.0-70.79"
+          },
+          {
+            "binary_name": "vlan-modules-4.15.0-70-generic-lpae-di",
+            "binary_version": "4.15.0-70.79"
           }
         ]
       },
-      "database_specific": {
-        "source": "https://github.com/canonical/ubuntu-security-notices/blob/main/osv/usn/USN-4185-3.json"
-      }
-    },
-    {
       "package": {
-        "name": "linux",
         "ecosystem": "Ubuntu:18.04:LTS",
+        "name": "linux",
         "purl": "pkg:deb/ubuntu/linux@4.15.0-70.79?arch=source&distro=bionic"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -498,7 +862,8 @@
             {
               "fixed": "4.15.0-70.79"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -542,409 +907,196 @@
         "4.15.0-65.74",
         "4.15.0-66.75",
         "4.15.0-69.78"
-      ],
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/canonical/ubuntu-security-notices/blob/main/osv/usn/USN-4185-3.json"
+      },
       "ecosystem_specific": {
         "availability": "No subscription required",
         "binaries": [
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "block-modules-4.15.0-70-generic-di"
+            "binary_name": "block-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "block-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "crypto-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "crypto-modules-4.15.0-70-generic-di"
+            "binary_name": "fat-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "crypto-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "fb-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "dasd-extra-modules-4.15.0-70-generic-di"
+            "binary_name": "firewire-core-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "dasd-modules-4.15.0-70-generic-di"
+            "binary_name": "floppy-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "fat-modules-4.15.0-70-generic-di"
+            "binary_name": "fs-core-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "fat-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "fs-secondary-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "fb-modules-4.15.0-70-generic-di"
+            "binary_name": "input-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "firewire-core-modules-4.15.0-70-generic-di"
+            "binary_name": "ipmi-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "floppy-modules-4.15.0-70-generic-di"
+            "binary_name": "irda-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "fs-core-modules-4.15.0-70-generic-di"
+            "binary_name": "kernel-image-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "fs-core-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "linux-buildinfo-4.15.0-1064-oem",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "fs-secondary-modules-4.15.0-70-generic-di"
+            "binary_name": "linux-headers-4.15.0-1064-oem",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "fs-secondary-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "linux-image-unsigned-4.15.0-1064-oem",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "input-modules-4.15.0-70-generic-di"
+            "binary_name": "linux-image-unsigned-4.15.0-1064-oem-dbgsym",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "input-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "linux-modules-4.15.0-1064-oem",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "ipmi-modules-4.15.0-70-generic-di"
+            "binary_name": "linux-oem-headers-4.15.0-1064",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "ipmi-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "linux-oem-tools-4.15.0-1064",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "irda-modules-4.15.0-70-generic-di"
+            "binary_name": "linux-tools-4.15.0-1064-oem",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "irda-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "linux-udebs-oem",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "kernel-image-4.15.0-70-generic-di"
+            "binary_name": "md-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "kernel-image-4.15.0-70-generic-lpae-di"
+            "binary_name": "message-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-buildinfo-4.15.0-70-generic"
+            "binary_name": "mouse-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-buildinfo-4.15.0-70-generic-lpae"
+            "binary_name": "multipath-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-buildinfo-4.15.0-70-lowlatency"
+            "binary_name": "nfs-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-cloud-tools-4.15.0-70"
+            "binary_name": "nic-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-cloud-tools-4.15.0-70-generic"
+            "binary_name": "nic-pcmcia-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-cloud-tools-4.15.0-70-lowlatency"
+            "binary_name": "nic-shared-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-cloud-tools-common"
+            "binary_name": "nic-usb-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-doc"
+            "binary_name": "parport-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-headers-4.15.0-70"
+            "binary_name": "pata-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-headers-4.15.0-70-generic"
+            "binary_name": "pcmcia-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-headers-4.15.0-70-generic-lpae"
+            "binary_name": "pcmcia-storage-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-headers-4.15.0-70-lowlatency"
+            "binary_name": "plip-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-4.15.0-70-generic"
+            "binary_name": "ppp-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-4.15.0-70-generic-dbgsym"
+            "binary_name": "sata-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-4.15.0-70-generic-lpae"
+            "binary_name": "scsi-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-4.15.0-70-generic-lpae-dbgsym"
+            "binary_name": "serial-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-4.15.0-70-lowlatency"
+            "binary_name": "storage-core-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-4.15.0-70-lowlatency-dbgsym"
+            "binary_name": "usb-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-unsigned-4.15.0-70-generic"
+            "binary_name": "virtio-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           },
           {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-unsigned-4.15.0-70-generic-dbgsym"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-unsigned-4.15.0-70-lowlatency"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-image-unsigned-4.15.0-70-lowlatency-dbgsym"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-libc-dev"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-modules-4.15.0-70-generic"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-modules-4.15.0-70-generic-lpae"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-modules-4.15.0-70-lowlatency"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-modules-extra-4.15.0-70-generic"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-source-4.15.0"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-tools-4.15.0-70"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-tools-4.15.0-70-generic"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-tools-4.15.0-70-generic-lpae"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-tools-4.15.0-70-lowlatency"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-tools-common"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-tools-host"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-udebs-generic"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "linux-udebs-generic-lpae"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "md-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "md-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "message-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "mouse-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "mouse-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "multipath-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "multipath-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nfs-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nfs-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nic-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nic-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nic-pcmcia-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nic-shared-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nic-shared-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nic-usb-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "nic-usb-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "parport-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "parport-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "pata-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "pcmcia-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "pcmcia-storage-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "plip-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "plip-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "ppp-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "ppp-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "sata-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "sata-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "scsi-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "scsi-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "serial-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "storage-core-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "storage-core-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "usb-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "usb-modules-4.15.0-70-generic-lpae-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "virtio-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "vlan-modules-4.15.0-70-generic-di"
-          },
-          {
-            "binary_version": "4.15.0-70.79",
-            "binary_name": "vlan-modules-4.15.0-70-generic-lpae-di"
+            "binary_name": "vlan-modules-4.15.0-1064-oem-di",
+            "binary_version": "4.15.0-1064.73"
           }
         ]
       },
-      "database_specific": {
-        "source": "https://github.com/canonical/ubuntu-security-notices/blob/main/osv/usn/USN-4185-3.json"
-      }
-    },
-    {
       "package": {
-        "name": "linux-oem",
         "ecosystem": "Ubuntu:18.04:LTS",
+        "name": "linux-oem",
         "purl": "pkg:deb/ubuntu/linux-oem@4.15.0-1064.73?arch=source&distro=bionic"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -952,7 +1104,8 @@
             {
               "fixed": "4.15.0-1064.73"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -984,188 +1137,35 @@
         "4.15.0-1057.66",
         "4.15.0-1059.68",
         "4.15.0-1063.72"
-      ],
-      "ecosystem_specific": {
-        "availability": "No subscription required",
-        "binaries": [
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "block-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "crypto-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "fat-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "fb-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "firewire-core-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "floppy-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "fs-core-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "fs-secondary-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "input-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "ipmi-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "irda-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "kernel-image-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-buildinfo-4.15.0-1064-oem"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-headers-4.15.0-1064-oem"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-image-unsigned-4.15.0-1064-oem"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-image-unsigned-4.15.0-1064-oem-dbgsym"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-modules-4.15.0-1064-oem"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-oem-headers-4.15.0-1064"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-oem-tools-4.15.0-1064"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-tools-4.15.0-1064-oem"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "linux-udebs-oem"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "md-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "message-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "mouse-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "multipath-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "nfs-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "nic-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "nic-pcmcia-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "nic-shared-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "nic-usb-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "parport-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "pata-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "pcmcia-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "pcmcia-storage-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "plip-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "ppp-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "sata-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "scsi-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "serial-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "storage-core-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "usb-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "virtio-modules-4.15.0-1064-oem-di"
-          },
-          {
-            "binary_version": "4.15.0-1064.73",
-            "binary_name": "vlan-modules-4.15.0-1064-oem-di"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://github.com/canonical/ubuntu-security-notices/blob/main/osv/usn/USN-4185-3.json"
-      }
+      ]
     }
   ],
-  "schema_version": "1.6.0"
+  "details": "USN-4185-1 fixed vulnerabilities in the Linux kernel. It was discovered\nthat the kernel fix for CVE-2019-0155 (i915 missing Blitter Command\nStreamer check) was incomplete on 64-bit Intel x86 systems. Also, the\nupdate introduced a regression that broke KVM guests where extended\npage tables (EPT) are disabled or not supported. This update addresses\nboth issues.\n\nWe apologize for the inconvenience.\n\nOriginal advisory details:\n\n Stephan van Schaik, Alyssa Milburn, Sebastian \u00d6sterlund, Pietro Frigo,\n Kaveh Razavi, Herbert Bos, Cristiano Giuffrida, Giorgi Maisuradze, Moritz\n Lipp, Michael Schwarz, Daniel Gruss, and Jo Van Bulck discovered that Intel\n processors using Transactional Synchronization Extensions (TSX) could\n expose memory contents previously stored in microarchitectural buffers to a\n malicious process that is executing on the same CPU core. A local attacker\n could use this to expose sensitive information. (CVE-2019-11135)\n\n It was discovered that the Intel i915 graphics chipsets allowed userspace\n to modify page table entries via writes to MMIO from the Blitter Command\n Streamer and expose kernel memory information. A local attacker could use\n this to expose sensitive information or possibly elevate privileges.\n (CVE-2019-0155)\n\n Deepak Gupta discovered that on certain Intel processors, the Linux kernel\n did not properly perform invalidation on page table updates by virtual\n guest operating systems. A local attacker in a guest VM could use this to\n cause a denial of service (host system crash). (CVE-2018-12207)\n\n It was discovered that the Intel i915 graphics chipsets could cause a\n system hang when userspace performed a read from GT memory mapped input\n output (MMIO) when the product is in certain low power states. A local\n attacker could use this to cause a denial of service. (CVE-2019-0154)\n\n Hui Peng discovered that the Atheros AR6004 USB Wi-Fi device driver for the\n Linux kernel did not properly validate endpoint descriptors returned by the\n device. A physically proximate attacker could use this to cause a denial of\n service (system crash). (CVE-2019-15098)\n\n Ori Nimron discovered that the AX25 network protocol implementation in the\n Linux kernel did not properly perform permissions checks. A local attacker\n could use this to create a raw socket. (CVE-2019-17052)\n\n Ori Nimron discovered that the IEEE 802.15.4 Low-Rate Wireless network\n protocol implementation in the Linux kernel did not properly perform\n permissions checks. A local attacker could use this to create a raw socket.\n (CVE-2019-17053)\n\n Ori Nimron discovered that the Appletalk network protocol implementation in\n the Linux kernel did not properly perform permissions checks. A local\n attacker could use this to create a raw socket. (CVE-2019-17054)\n\n Ori Nimron discovered that the modular ISDN network protocol implementation\n in the Linux kernel did not properly perform permissions checks. A local\n attacker could use this to create a raw socket. (CVE-2019-17055)\n\n Ori Nimron discovered that the Near field Communication (NFC) network\n protocol implementation in the Linux kernel did not properly perform\n permissions checks. A local attacker could use this to create a raw socket.\n (CVE-2019-17056)\n\n Nico Waisman discovered that a buffer overflow existed in the Realtek Wi-Fi\n driver for the Linux kernel when handling Notice of Absence frames. A\n physically proximate attacker could use this to cause a denial of service\n (system crash) or possibly execute arbitrary code. (CVE-2019-17666)\n",
+  "id": "USN-4185-3",
+  "modified": "2019-11-13T19:08:56.202652Z",
+  "published": "2019-11-13T19:08:56.202652Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://ubuntu.com/security/notices/USN-4185-3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://ubuntu.com/security/CVE-2019-0155"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.launchpad.net/bugs/1851709"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://bugs.launchpad.net/bugs/1852141"
+    }
+  ],
+  "related": [
+    "CVE-2019-0155",
+    "UBUNTU-CVE-2019-0155"
+  ],
+  "schema_version": "1.6.0",
+  "summary": "linux, linux-hwe, linux-oem vulnerability and regression"
 }

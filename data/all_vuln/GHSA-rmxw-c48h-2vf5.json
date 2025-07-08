@@ -1,24 +1,70 @@
 {
-  "id": "GHSA-rmxw-c48h-2vf5",
-  "summary": "XWiki Platform privilege escalation from script right to programming right through title displayer",
-  "details": "### Impact\n\nIn XWiki Platform, it's possible for a user to write a script in which any velocity content is executed with the right of any other document content author.\n\nTo reproduce:\n\nAs a user with script but not programming right, create a document with the following content:\n\n```\n{{velocity}}\n#set($main = $xwiki.getDocument('AppWithinMinutes.DynamicMessageTool'))\n$main.setTitle('$doc.getDocument().getContentAuthor()')\n$main.getPlainTitle()\n{{/velocity}}\n```\n\nSince this API require programming right and the user does not have it, the expected result is `$doc.document.authors.contentAuthor` (not executed script), unfortunately with the security vulnerability we get `XWiki.superadmin` which shows that the title was executed with the right of the unmodified document.\n\n### Patches\n\nThis has been patched in XWiki 14.10.7 and 15.2-RC-1.\n\n### Workarounds\n\nThere are no known workarounds for it.\n\n### References\n\n* https://jira.xwiki.org/browse/XWIKI-20624\n* https://github.com/xwiki/xwiki-platform/commit/11a9170dfe63e59f4066db67f84dbfce4ed619c6\n* https://jira.xwiki.org/browse/XWIKI-20625\n* https://github.com/xwiki/xwiki-platform/commit/41d7dca2d30084966ca6a7ee537f39ee8354a7e3\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-rmxw-c48h-2vf5/GHSA-rmxw-c48h-2vf5.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-display-api",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-display-api"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.2-milestone-3"
+            },
+            {
+              "fixed": "14.10.7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-rmxw-c48h-2vf5/GHSA-rmxw-c48h-2vf5.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-display-api",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-display-api"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "15.0"
+            },
+            {
+              "fixed": "15.2-rc-1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-46244"
   ],
-  "modified": "2023-11-08T04:13:41.799517Z",
-  "published": "2023-11-07T23:03:57Z",
-  "related": [
-    "CVE-2023-46244"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-11-07T19:15:10Z",
     "cwe_ids": [
       "CWE-863"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-11-07T23:03:57Z"
+    "github_reviewed_at": "2023-11-07T23:03:57Z",
+    "nvd_published_at": "2023-11-07T19:15:10Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\n\nIn XWiki Platform, it's possible for a user to write a script in which any velocity content is executed with the right of any other document content author.\n\nTo reproduce:\n\nAs a user with script but not programming right, create a document with the following content:\n\n```\n{{velocity}}\n#set($main = $xwiki.getDocument('AppWithinMinutes.DynamicMessageTool'))\n$main.setTitle('$doc.getDocument().getContentAuthor()')\n$main.getPlainTitle()\n{{/velocity}}\n```\n\nSince this API require programming right and the user does not have it, the expected result is `$doc.document.authors.contentAuthor` (not executed script), unfortunately with the security vulnerability we get `XWiki.superadmin` which shows that the title was executed with the right of the unmodified document.\n\n### Patches\n\nThis has been patched in XWiki 14.10.7 and 15.2-RC-1.\n\n### Workarounds\n\nThere are no known workarounds for it.\n\n### References\n\n* https://jira.xwiki.org/browse/XWIKI-20624\n* https://github.com/xwiki/xwiki-platform/commit/11a9170dfe63e59f4066db67f84dbfce4ed619c6\n* https://jira.xwiki.org/browse/XWIKI-20625\n* https://github.com/xwiki/xwiki-platform/commit/41d7dca2d30084966ca6a7ee537f39ee8354a7e3\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "id": "GHSA-rmxw-c48h-2vf5",
+  "modified": "2023-11-08T04:13:41.799517Z",
+  "published": "2023-11-07T23:03:57Z",
   "references": [
     {
       "type": "WEB",
@@ -49,61 +95,15 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-20625"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-display-api",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-display-api"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.2-milestone-3"
-            },
-            {
-              "fixed": "14.10.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-rmxw-c48h-2vf5/GHSA-rmxw-c48h-2vf5.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-display-api",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-display-api"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "15.0"
-            },
-            {
-              "fixed": "15.2-rc-1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-rmxw-c48h-2vf5/GHSA-rmxw-c48h-2vf5.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-46244"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "XWiki Platform privilege escalation from script right to programming right through title displayer"
 }

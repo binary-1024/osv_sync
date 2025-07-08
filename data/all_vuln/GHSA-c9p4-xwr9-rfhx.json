@@ -1,25 +1,47 @@
 {
-  "id": "GHSA-c9p4-xwr9-rfhx",
-  "summary": "Zot IdP group membership revocation ignored",
-  "details": "### Summary\nThe group data stored for users in the boltdb database (meta.db) is an append-list so group revocations/removals are ignored in the API.\n\n### Details\n[SetUserGroups](https://github.com/project-zot/zot/blob/5e30fec65c49e3139907e2819ccb39b2e3bd784e/pkg/meta/boltdb/boltdb.go#L1665) is alled on login, but instead of replacing the group memberships, they are appended. This may be due to some conflict with the group definitions in the config file, but that wasn't obvious to me if it were the case.\n\n### PoC\nLogin with group claims, logout, remove the user from a group from at IdP and log in again, the API still grants access and the new list of groups is appended creating meaningless duplicate entries and no longer mathing the expected groups from the IdP. The behavior can be verified by seeing the API or UI still presenting images it should not or by viewing the data directly:  `bbolt get meta.db UserData <user>`, eg:\n\n![image](https://github.com/user-attachments/assets/3491cbd2-c7d9-414d-bc33-3efc35ed0582)\n\nNote this example also has duplicates due to group hierarchy changes that were left in the database.\n\n### Impact\nAny Zot configuration that relies on group-based authorization will not respect group remove/revocation by an IdP.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.1.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-c9p4-xwr9-rfhx/GHSA-c9p4-xwr9-rfhx.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "zotregistry.dev/zot",
+        "purl": "pkg:golang/zotregistry.dev/zot"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-23208",
     "GO-2025-3409"
   ],
-  "modified": "2025-01-28T15:41:48.395996Z",
-  "published": "2025-01-17T22:02:26Z",
-  "related": [
-    "CGA-7837-45c9-h489"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-01-17T23:15:13Z",
     "cwe_ids": [
       "CWE-269"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-01-17T22:02:26Z"
+    "github_reviewed_at": "2025-01-17T22:02:26Z",
+    "nvd_published_at": "2025-01-17T23:15:13Z",
+    "severity": "HIGH"
   },
+  "details": "### Summary\nThe group data stored for users in the boltdb database (meta.db) is an append-list so group revocations/removals are ignored in the API.\n\n### Details\n[SetUserGroups](https://github.com/project-zot/zot/blob/5e30fec65c49e3139907e2819ccb39b2e3bd784e/pkg/meta/boltdb/boltdb.go#L1665) is alled on login, but instead of replacing the group memberships, they are appended. This may be due to some conflict with the group definitions in the config file, but that wasn't obvious to me if it were the case.\n\n### PoC\nLogin with group claims, logout, remove the user from a group from at IdP and log in again, the API still grants access and the new list of groups is appended creating meaningless duplicate entries and no longer mathing the expected groups from the IdP. The behavior can be verified by seeing the API or UI still presenting images it should not or by viewing the data directly:  `bbolt get meta.db UserData <user>`, eg:\n\n![image](https://github.com/user-attachments/assets/3491cbd2-c7d9-414d-bc33-3efc35ed0582)\n\nNote this example also has duplicates due to group hierarchy changes that were left in the database.\n\n### Impact\nAny Zot configuration that relies on group-based authorization will not respect group remove/revocation by an IdP.\n",
+  "id": "GHSA-c9p4-xwr9-rfhx",
+  "modified": "2025-01-28T15:41:48.395996Z",
+  "published": "2025-01-17T22:02:26Z",
   "references": [
     {
       "type": "WEB",
@@ -42,37 +64,15 @@
       "url": "https://github.com/project-zot/zot/blob/5e30fec65c49e3139907e2819ccb39b2e3bd784e/pkg/meta/boltdb/boltdb.go#L1665"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "zotregistry.dev/zot",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/zotregistry.dev/zot"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.1.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.1.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-c9p4-xwr9-rfhx/GHSA-c9p4-xwr9-rfhx.json"
-      }
-    }
+  "related": [
+    "CGA-7837-45c9-h489"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Zot IdP group membership revocation ignored"
 }

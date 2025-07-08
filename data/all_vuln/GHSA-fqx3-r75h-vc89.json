@@ -1,44 +1,16 @@
 {
-  "id": "GHSA-fqx3-r75h-vc89",
-  "summary": "Improperly checked IDs on itemstacks received from the client leading to server crash in PocketMine-MP",
-  "details": "### Impact\nDue to a workaround for unmapped network items implemented in 4.0.0-BETA5 (8ac16345a3bc099b62c1f5cfbf3b736e621c3f76), arbitrary item IDs are able to be written into an item's NBT. The intended purpose of this is to make said unmapped network items able to be moved around the inventory without issues.\n\nThis led to an exploit due to internal limits on the range that item IDs can occupy (-32768 - 32767), while the tag type used to represent the replacement IDs for unknown items is a `TAG_Int`, allowing a range from -(2^31) - 2^31 - 1. This leads to an uncaught exception which crashes the server.\n\n### Patches\n5fd685e07d61ef670584ed11a52fd5f4b99a81a7\n\n### Workarounds\nIn theory this can be checked by plugins using a custom `TypeConverter`, but this is likely to be very cumbersome.\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Email us at [team@pmmp.io](mailto:team@pmmp.io)\n",
-  "modified": "2024-12-07T05:34:16.568531Z",
-  "published": "2022-06-07T21:07:31Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2022-06-07T21:07:31Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/pmmp/PocketMine-MP/security/advisories/GHSA-fqx3-r75h-vc89"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pmmp/PocketMine-MP/commit/5fd685e07d61ef670584ed11a52fd5f4b99a81a7"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pmmp/PocketMine-MP/commit/8ac16345a3bc099b62c1f5cfbf3b736e621c3f76"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/pmmp/PocketMine-MP"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/06/GHSA-fqx3-r75h-vc89/GHSA-fqx3-r75h-vc89.json"
+      },
       "package": {
-        "name": "pocketmine/pocketmine-mp",
         "ecosystem": "Packagist",
+        "name": "pocketmine/pocketmine-mp",
         "purl": "pkg:composer/pocketmine/pocketmine-mp"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "4.0.0-BETA5"
@@ -46,7 +18,8 @@
             {
               "fixed": "4.4.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -93,17 +66,44 @@
         "4.4.0",
         "4.4.0-BETA1",
         "4.4.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/06/GHSA-fqx3-r75h-vc89/GHSA-fqx3-r75h-vc89.json"
-      }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-06-07T21:07:31Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "### Impact\nDue to a workaround for unmapped network items implemented in 4.0.0-BETA5 (8ac16345a3bc099b62c1f5cfbf3b736e621c3f76), arbitrary item IDs are able to be written into an item's NBT. The intended purpose of this is to make said unmapped network items able to be moved around the inventory without issues.\n\nThis led to an exploit due to internal limits on the range that item IDs can occupy (-32768 - 32767), while the tag type used to represent the replacement IDs for unknown items is a `TAG_Int`, allowing a range from -(2^31) - 2^31 - 1. This leads to an uncaught exception which crashes the server.\n\n### Patches\n5fd685e07d61ef670584ed11a52fd5f4b99a81a7\n\n### Workarounds\nIn theory this can be checked by plugins using a custom `TypeConverter`, but this is likely to be very cumbersome.\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Email us at [team@pmmp.io](mailto:team@pmmp.io)\n",
+  "id": "GHSA-fqx3-r75h-vc89",
+  "modified": "2024-12-07T05:34:16.568531Z",
+  "published": "2022-06-07T21:07:31Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/pmmp/PocketMine-MP/security/advisories/GHSA-fqx3-r75h-vc89"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pmmp/PocketMine-MP/commit/5fd685e07d61ef670584ed11a52fd5f4b99a81a7"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pmmp/PocketMine-MP/commit/8ac16345a3bc099b62c1f5cfbf3b736e621c3f76"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/pmmp/PocketMine-MP"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Improperly checked IDs on itemstacks received from the client leading to server crash in PocketMine-MP"
 }

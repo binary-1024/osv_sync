@@ -1,16 +1,46 @@
 {
-  "id": "MGASA-2016-0093",
-  "summary": "Updated openssl packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0093.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "openssl",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.2g-1.1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Update openssl packages fix security vulnerabilities:\n\nYuval Yarom from the University of Adelaide and NICTA, Daniel Genkin from\nTechnion and Tel Aviv University, and Nadia Heninger from the University of\nPennsylvania discovered a side-channel attack which makes use of cache-bank\nconflicts on the Intel Sandy-Bridge microarchitecture. This could allow local\nattackers to recover RSA private keys (CVE-2016-0702).\n\nAdam Langley from Google discovered a double free bug when parsing malformed\nDSA private keys. This could allow remote attackers to cause a denial of\nservice or memory corruption in applications parsing DSA private keys\nreceived from untrusted sources (CVE-2016-0705).\n\nGuido Vranken discovered an integer overflow in the BN_hex2bn and BN_dec2bn\nfunctions that can lead to a NULL pointer dereference and heap corruption.\nThis could allow remote attackers to cause a denial of service or memory\ncorruption in applications processing hex or dec data received from untrusted\nsources (CVE-2016-0797).\n\nEmilia K\u00e4sper of the OpenSSL development team discovered a memory leak in the\nSRP database lookup code. To mitigate the memory leak, the seed handling in\nSRP_VBASE_get_by_user is now disabled even if the user has configured a seed.\nApplications are advised to migrate to the SRP_VBASE_get1_by_user function\n(CVE-2016-0798).\n\nGuido Vranken discovered an integer overflow in the BIO_*printf functions\nthat could lead to an OOB read when printing very long strings. Additionally\nthe internal doapr_outch function can attempt to write to an arbitrary memory\nlocation in the event of a memory allocation failure. These issues will only\noccur on platforms where sizeof(size_t) > sizeof(int) like many 64 bit\nsystems. This could allow remote attackers to cause a denial of service or\nmemory corruption in applications that pass large amounts of untrusted data\nto the BIO_*printf functions (CVE-2016-0799).\n\nNote that Mageia is not vulnerable to the DROWN issue, also known as\nCVE-2016-0800, in its default configuration, as SSLv2 was disabled by\ndefault in Mageia 5.  However, upstream mitigations for DROWN have also been\nincorporated into this update, protecting systems that may have enabled it.\n",
+  "id": "MGASA-2016-0093",
   "modified": "2016-03-02T18:20:50Z",
   "published": "2016-03-02T18:28:46Z",
-  "related": [
-    "CVE-2016-0702",
-    "CVE-2016-0705",
-    "CVE-2016-0797",
-    "CVE-2016-0798",
-    "CVE-2016-0799"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -29,43 +59,13 @@
       "url": "https://www.debian.org/security/2016/dsa-3500"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "openssl",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.0.2g-1.1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2016-0093.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-0702",
+    "CVE-2016-0705",
+    "CVE-2016-0797",
+    "CVE-2016-0798",
+    "CVE-2016-0799"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated openssl packages fix security vulnerabilities"
 }

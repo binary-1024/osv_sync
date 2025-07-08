@@ -1,9 +1,102 @@
 {
-  "id": "GHSA-rr8g-9fpq-6wmg",
-  "summary": "Tokio broadcast channel calls clone in parallel, but does not require `Sync`",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-rr8g-9fpq-6wmg/GHSA-rr8g-9fpq-6wmg.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "tokio",
+        "purl": "pkg:cargo/tokio"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.44.0"
+            },
+            {
+              "fixed": "1.44.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-rr8g-9fpq-6wmg/GHSA-rr8g-9fpq-6wmg.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "tokio",
+        "purl": "pkg:cargo/tokio"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.2.5"
+            },
+            {
+              "fixed": "1.38.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-rr8g-9fpq-6wmg/GHSA-rr8g-9fpq-6wmg.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "tokio",
+        "purl": "pkg:cargo/tokio"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.39.0"
+            },
+            {
+              "fixed": "1.43.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-664"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-07T21:12:50Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
+  },
   "details": "The broadcast channel internally calls `clone` on the stored value when receiving it, and only requires `T:Send`. This means that using the broadcast channel with values that are `Send` but not `Sync` can trigger unsoundness if the `clone` implementation makes use of the value being `!Sync`.\n\nThank you to Austin Bonander for finding and reporting this issue.",
+  "id": "GHSA-rr8g-9fpq-6wmg",
   "modified": "2025-04-07T21:12:50Z",
   "published": "2025-04-07T21:12:50Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tokio-rs/tokio/pull/7232"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tokio-rs/tokio"
+    },
+    {
+      "type": "WEB",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2025-0023.html"
+    }
+  ],
   "related": [
     "CGA-74v5-7j58-7qvr",
     "CGA-7c85-4m6q-cpmq",
@@ -22,105 +115,12 @@
     "CGA-wjj8-6rhm-w2mq",
     "CGA-x8mx-8v67-25w5"
   ],
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-664"
-    ],
-    "severity": "LOW",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-04-07T21:12:50Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tokio-rs/tokio/pull/7232"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tokio-rs/tokio"
-    },
-    {
-      "type": "WEB",
-      "url": "https://rustsec.org/advisories/RUSTSEC-2025-0023.html"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "tokio",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/tokio"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.44.0"
-            },
-            {
-              "fixed": "1.44.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-rr8g-9fpq-6wmg/GHSA-rr8g-9fpq-6wmg.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tokio",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/tokio"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.2.5"
-            },
-            {
-              "fixed": "1.38.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-rr8g-9fpq-6wmg/GHSA-rr8g-9fpq-6wmg.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tokio",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/tokio"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.39.0"
-            },
-            {
-              "fixed": "1.43.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-rr8g-9fpq-6wmg/GHSA-rr8g-9fpq-6wmg.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:U"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:U",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Tokio broadcast channel calls clone in parallel, but does not require `Sync`"
 }

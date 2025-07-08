@@ -1,21 +1,42 @@
 {
-  "id": "GHSA-pph8-gcv7-4qj5",
-  "summary": "PyO3 Risk of buffer overflow in `PyString::from_object`",
-  "details": "`PyString::from_object` took `&str` arguments and forwarded them directly to the Python C API without checking for terminating nul bytes. This could lead the Python interpreter to read beyond the end of the `&str` data and potentially leak contents of the out-of-bounds read (by raising a Python exception containing a copy of the data including the overflow).\n\nIn PyO3 0.24.1 this function will now allocate a `CString` to guarantee a terminating nul bytes. PyO3 0.25 will likely offer an alternative API which takes `&CStr` arguments.",
-  "modified": "2025-04-02T13:19:19Z",
-  "published": "2025-04-02T13:19:19Z",
-  "related": [
-    "CGA-j3h6-m585-9g87"
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-pph8-gcv7-4qj5/GHSA-pph8-gcv7-4qj5.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "pyo3",
+        "purl": "pkg:cargo/pyo3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.1.0"
+            },
+            {
+              "fixed": "0.24.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
   ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-125"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-02T13:19:19Z"
+    "github_reviewed_at": "2025-04-02T13:19:19Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
   },
+  "details": "`PyString::from_object` took `&str` arguments and forwarded them directly to the Python C API without checking for terminating nul bytes. This could lead the Python interpreter to read beyond the end of the `&str` data and potentially leak contents of the out-of-bounds read (by raising a Python exception containing a copy of the data including the overflow).\n\nIn PyO3 0.24.1 this function will now allocate a `CString` to guarantee a terminating nul bytes. PyO3 0.25 will likely offer an alternative API which takes `&CStr` arguments.",
+  "id": "GHSA-pph8-gcv7-4qj5",
+  "modified": "2025-04-02T13:19:19Z",
+  "published": "2025-04-02T13:19:19Z",
   "references": [
     {
       "type": "WEB",
@@ -34,36 +55,15 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2025-0020.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "pyo3",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/pyo3"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.1.0"
-            },
-            {
-              "fixed": "0.24.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-pph8-gcv7-4qj5/GHSA-pph8-gcv7-4qj5.json"
-      }
-    }
+  "related": [
+    "CGA-j3h6-m585-9g87"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:P"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "PyO3 Risk of buffer overflow in `PyString::from_object`"
 }

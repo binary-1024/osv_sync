@@ -1,13 +1,45 @@
 {
-  "id": "BIT-drupal-2022-31042",
-  "summary": "Failure to strip the Cookie header on change in host or HTTP downgrade in Guzzle",
-  "details": "Guzzle is an open source PHP HTTP client. In affected versions the `Cookie` headers on requests are sensitive information. On making a request using the `https` scheme to a server which responds with a redirect to a URI with the `http` scheme, or on making a request to a server which responds with a redirect to a a URI to a different host, we should not forward the `Cookie` header on. Prior to this fix, only cookies that were managed by our cookie middleware would be safely removed, and any `Cookie` header manually added to the initial request would not be stripped. We now always strip it, and allow the cookie middleware to re-add any cookies that it deems should be there. Affected Guzzle 7 users should upgrade to Guzzle 7.4.4 as soon as possible. Affected users using any earlier series of Guzzle should upgrade to Guzzle 6.5.7 or 7.4.4. Users unable to upgrade may consider an alternative approach to use your own redirect middleware, rather than ours. If you do not require or expect redirects to be followed, one should simply disable redirects all together.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/drupal/BIT-drupal-2022-31042.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "drupal",
+        "purl": "pkg:bitnami/drupal"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.2.0"
+            },
+            {
+              "fixed": "9.2.21"
+            },
+            {
+              "introduced": "9.3.0"
+            },
+            {
+              "fixed": "9.3.16"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-31042",
     "GHSA-f2wf-25xc-69c9"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T10:52:15.080Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:drupal:drupal:*:*:*:*:*:*:*:*",
@@ -17,6 +49,10 @@
     ],
     "severity": "High"
   },
+  "details": "Guzzle is an open source PHP HTTP client. In affected versions the `Cookie` headers on requests are sensitive information. On making a request using the `https` scheme to a server which responds with a redirect to a URI with the `http` scheme, or on making a request to a server which responds with a redirect to a a URI to a different host, we should not forward the `Cookie` header on. Prior to this fix, only cookies that were managed by our cookie middleware would be safely removed, and any `Cookie` header manually added to the initial request would not be stripped. We now always strip it, and allow the cookie middleware to re-add any cookies that it deems should be there. Affected Guzzle 7 users should upgrade to Guzzle 7.4.4 as soon as possible. Affected users using any earlier series of Guzzle should upgrade to Guzzle 6.5.7 or 7.4.4. Users unable to upgrade may consider an alternative approach to use your own redirect middleware, rather than ours. If you do not require or expect redirects to be followed, one should simply disable redirects all together.",
+  "id": "BIT-drupal-2022-31042",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T10:52:15.080Z",
   "references": [
     {
       "type": "WEB",
@@ -43,42 +79,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-31042"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "drupal",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/drupal"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.2.0"
-            },
-            {
-              "fixed": "9.2.21"
-            },
-            {
-              "introduced": "9.3.0"
-            },
-            {
-              "fixed": "9.3.16"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/drupal/BIT-drupal-2022-31042.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Failure to strip the Cookie header on change in host or HTTP downgrade in Guzzle"
 }

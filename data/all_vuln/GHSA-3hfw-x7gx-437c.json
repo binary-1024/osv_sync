@@ -1,69 +1,16 @@
 {
-  "id": "GHSA-3hfw-x7gx-437c",
-  "summary": "Path traversal in Matrix Synapse",
-  "details": "### Impact\n\nSynapse instances with the media repository enabled can be tricked into downloading a file from a remote server into an arbitrary directory, potentially outside the media store directory.\n\nThe last two directories and file name of the path are chosen randomly by Synapse and cannot be controlled by an attacker, which limits the impact.\n\nHomeservers with the media repository disabled are unaffected. Homeservers configured with a federation whitelist are also unaffected.\n\n### Patches\nServer administrators should upgrade to 1.47.1 or later.\n\n### Workarounds\nServer administrators using a reverse proxy could, at the expense of losing media functionality, block the following endpoints:\n\n* `/_matrix/media/r0/download/{serverName}/{mediaId}`\n* `/_matrix/media/r0/download/{serverName}/{mediaId}/{fileName}`\n* `/_matrix/media/r0/thumbnail/{serverName}/{mediaId}`\n\nAlternatively, non-containerized deployments can be adapted to use the hardened systemd config, located at `contrib/systemd/override-hardened.conf`.\n\n### References\nn/a\n\n### For more information\n\nIf you have any questions or comments about this advisory, e-mail us at security@matrix.org.\n",
-  "aliases": [
-    "CVE-2021-41281",
-    "PYSEC-2021-436"
-  ],
-  "modified": "2024-09-24T16:44:33.279248Z",
-  "published": "2021-11-23T21:58:56Z",
-  "related": [
-    "CVE-2021-41281"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2021-11-23T20:15:00Z",
-    "cwe_ids": [
-      "CWE-22"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2021-11-23T18:44:39Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/matrix-org/synapse/security/advisories/GHSA-3hfw-x7gx-437c"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-41281"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/matrix-org/synapse/commit/91f2bd090"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/matrix-org/synapse"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/matrix-org/synapse/releases/tag/v1.47.1"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/matrix-synapse/PYSEC-2021-436.yaml"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/EU7QRE55U4IUEDLKT5IYPWL3UXMELFAS"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/N3WY56LCEZ4ZECLWV5KMAXF2PSMUB4F2"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/11/GHSA-3hfw-x7gx-437c/GHSA-3hfw-x7gx-437c.json"
+      },
       "package": {
-        "name": "matrix-synapse",
         "ecosystem": "PyPI",
+        "name": "matrix-synapse",
         "purl": "pkg:pypi/matrix-synapse"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -71,7 +18,8 @@
             {
               "fixed": "1.47.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -293,21 +241,73 @@
         "1.9.0.dev2",
         "1.9.0rc1",
         "1.9.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/11/GHSA-3hfw-x7gx-437c/GHSA-3hfw-x7gx-437c.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2021-41281",
+    "PYSEC-2021-436"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-22"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-11-23T18:44:39Z",
+    "nvd_published_at": "2021-11-23T20:15:00Z",
+    "severity": "HIGH"
+  },
+  "details": "### Impact\n\nSynapse instances with the media repository enabled can be tricked into downloading a file from a remote server into an arbitrary directory, potentially outside the media store directory.\n\nThe last two directories and file name of the path are chosen randomly by Synapse and cannot be controlled by an attacker, which limits the impact.\n\nHomeservers with the media repository disabled are unaffected. Homeservers configured with a federation whitelist are also unaffected.\n\n### Patches\nServer administrators should upgrade to 1.47.1 or later.\n\n### Workarounds\nServer administrators using a reverse proxy could, at the expense of losing media functionality, block the following endpoints:\n\n* `/_matrix/media/r0/download/{serverName}/{mediaId}`\n* `/_matrix/media/r0/download/{serverName}/{mediaId}/{fileName}`\n* `/_matrix/media/r0/thumbnail/{serverName}/{mediaId}`\n\nAlternatively, non-containerized deployments can be adapted to use the hardened systemd config, located at `contrib/systemd/override-hardened.conf`.\n\n### References\nn/a\n\n### For more information\n\nIf you have any questions or comments about this advisory, e-mail us at security@matrix.org.\n",
+  "id": "GHSA-3hfw-x7gx-437c",
+  "modified": "2024-09-24T16:44:33.279248Z",
+  "published": "2021-11-23T21:58:56Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/matrix-org/synapse/security/advisories/GHSA-3hfw-x7gx-437c"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-41281"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/matrix-org/synapse/commit/91f2bd090"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/matrix-org/synapse"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/matrix-org/synapse/releases/tag/v1.47.1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/matrix-synapse/PYSEC-2021-436.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/EU7QRE55U4IUEDLKT5IYPWL3UXMELFAS"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/N3WY56LCEZ4ZECLWV5KMAXF2PSMUB4F2"
+    }
+  ],
+  "related": [
+    "CVE-2021-41281"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Path traversal in Matrix Synapse"
 }

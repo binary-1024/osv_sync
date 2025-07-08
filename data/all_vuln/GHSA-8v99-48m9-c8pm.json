@@ -1,25 +1,46 @@
 {
-  "id": "GHSA-8v99-48m9-c8pm",
-  "summary": "Incorrect Authorization in imgcrypt",
-  "details": "Imgcrypt implements a function `CheckAuthorization()` that is supposed to check whether a user is authorized to access an encrypted image given the keys that the user has provided on the command line that would enable decryption of the image. The check is to prevent that a user can start a container from an image that has previously been decrypted by another user on the same system and therefore a decrypted version of the image layers may be already available in the cache locally.\n\nThe failure occurs when an image with a ManifestList is used and the architecture of the local host is not the first one in the ManifestList. In the version prior to the fix, only the first architecture in the list was tested, which may not have its layers available locally (were not pulled) since it cannot be run on the host architecture. Therefore, the verdict on unavailable layers was that the image could be run anticipating that image run failure would occur later due to the layers not being available. However, this verdict to allow the image to run lead to other architectures in the ManifestList be able to run an image without providing keys if that image had previously been decrypted. The fixed version now skips over irrelevant architectures and tests the Manifest of the local architecture, if available.\n\nKnown projects that use the `CheckAuthorization()` of imgcrypt is for example the ctr-enc client tool provided by imgcrypt. In this implementation, the call to `CheckAuthorization()` is used on the client side and could therefore also be easily circumvented by a modified client tool not calling this function.\n\nIn relation to the vulnerability in ctr-enc, affected environments would have to allow different users to invoke ctr-enc indirectly using some sort of management stack that gives user indirect access to ctr-enc.\n\nThe patch has been applied to imgcrypt v1.1.4. Workarounds may include usage of different namespaces for each remote user.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/03/GHSA-8v99-48m9-c8pm/GHSA-8v99-48m9-c8pm.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/containerd/imgcrypt",
+        "purl": "pkg:golang/github.com/containerd/imgcrypt"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-24778",
     "GO-2021-0412"
   ],
-  "modified": "2024-05-20T20:48:13Z",
-  "published": "2022-03-28T19:33:44Z",
-  "related": [
-    "CVE-2022-24778"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-03-25T18:15:00Z",
     "cwe_ids": [
       "CWE-863"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-03-28T19:33:44Z"
+    "github_reviewed_at": "2022-03-28T19:33:44Z",
+    "nvd_published_at": "2022-03-25T18:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "Imgcrypt implements a function `CheckAuthorization()` that is supposed to check whether a user is authorized to access an encrypted image given the keys that the user has provided on the command line that would enable decryption of the image. The check is to prevent that a user can start a container from an image that has previously been decrypted by another user on the same system and therefore a decrypted version of the image layers may be already available in the cache locally.\n\nThe failure occurs when an image with a ManifestList is used and the architecture of the local host is not the first one in the ManifestList. In the version prior to the fix, only the first architecture in the list was tested, which may not have its layers available locally (were not pulled) since it cannot be run on the host architecture. Therefore, the verdict on unavailable layers was that the image could be run anticipating that image run failure would occur later due to the layers not being available. However, this verdict to allow the image to run lead to other architectures in the ManifestList be able to run an image without providing keys if that image had previously been decrypted. The fixed version now skips over irrelevant architectures and tests the Manifest of the local architecture, if available.\n\nKnown projects that use the `CheckAuthorization()` of imgcrypt is for example the ctr-enc client tool provided by imgcrypt. In this implementation, the call to `CheckAuthorization()` is used on the client side and could therefore also be easily circumvented by a modified client tool not calling this function.\n\nIn relation to the vulnerability in ctr-enc, affected environments would have to allow different users to invoke ctr-enc indirectly using some sort of management stack that gives user indirect access to ctr-enc.\n\nThe patch has been applied to imgcrypt v1.1.4. Workarounds may include usage of different namespaces for each remote user.",
+  "id": "GHSA-8v99-48m9-c8pm",
+  "modified": "2024-05-20T20:48:13Z",
+  "published": "2022-03-28T19:33:44Z",
   "references": [
     {
       "type": "WEB",
@@ -62,36 +83,15 @@
       "url": "https://pkg.go.dev/vuln/GO-2021-0412"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/containerd/imgcrypt",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/containerd/imgcrypt"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.1.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/03/GHSA-8v99-48m9-c8pm/GHSA-8v99-48m9-c8pm.json"
-      }
-    }
+  "related": [
+    "CVE-2022-24778"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Incorrect Authorization in imgcrypt"
 }

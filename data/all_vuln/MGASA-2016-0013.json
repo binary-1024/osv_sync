@@ -1,12 +1,46 @@
 {
-  "id": "MGASA-2016-0013",
-  "summary": "Updated mono packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0013.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "mono",
+        "purl": "pkg:rpm/mageia/mono?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.12.1-1.2.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "It was found that float-parsing code used in Mono before 4.2 is derived\nfrom code vulnerable to CVE-2009-0689. The issue concerns the 'freelist'\narray, which is a global array of 16 pointers to 'Bigint'. This array is\npart of a memory allocation and reuse system which attempts to reduce the\nnumber of 'malloc' and 'free' calls. The system allocates blocks in\npower-of-two sizes, from 2^0 through 2^15, and stores freed blocks of each\nsize in a linked list rooted at the corresponding cell of 'freelist'. The\n'Balloc' and 'Bfree' functions which operate this system fail to check if\nthe size parameter 'k' is within the allocated 0..15 range. As a result, a\nsufficiently large allocation will have k=16 and treat the word\nimmediately after 'freelist' as a pointer to a previously-allocated chunk.\nThe specific results may vary significantly based on the version,\nplatform, and compiler, since they depend on the layout of variables in\nmemory. An attacker who can cause a carefully-chosen string to be\nconverted to a floating-point number can cause a crash and potentially\ninduce arbitrary code execution.\n",
+  "id": "MGASA-2016-0013",
   "modified": "2016-01-14T01:33:43Z",
   "published": "2016-01-14T01:44:39Z",
-  "related": [
-    "CVE-2009-0689"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -25,43 +59,9 @@
       "url": "https://lists.fedoraproject.org/pipermail/package-announce/2015-December/174612.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "mono",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/mono?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.12.1-1.2.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2016-0013.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2009-0689"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated mono packages fix security vulnerability"
 }

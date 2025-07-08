@@ -1,24 +1,91 @@
 {
-  "id": "GHSA-jw37-5gqr-cf9j",
-  "summary": "Server-Side Request Forgery in ftp-srv",
-  "details": "### Background\n\nThe FTP protocol creates two connections, one for commands and one for transferring data.\nThis second data connection can be created in two ways, on the server by sending the PASV command, or on the client by sending the PORT command.\n\nThe PORT command sends the IP and port for the server to connect to the client with.\n\n### Issue\nSince the client can send an arbitrary IP with the PORT command, this can be used to cause the server to make a connection elsewhere.\n\n### Patches\n\n* _fix: disallow PORT connections to alternate hosts_: e449e75219d918c400dec65b4b0759f60476abca\n\nDeprecation notices have been published for older versions.\n\n### Workarounds\n\nBlacklisting the FTP Command `PORT` will prevent the server from exposing this behaviour through active connections until a fix is applied.\n```js\nconst ftp = new FtpSrv({\n  blacklist: ['PORT']\n});\n```\n\n### References\nhttps://www.npmjs.com/advisories/1445\n\n### Credits\n\nThank you to;\n@trs for fixing it\n@andreeleuterio for reporting it to us for an anonymous user (Vincent) through the NPM platform\n@quiquelhappy for bringing it to our attention after it slipped through the cracks during Christmas\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue at [https://github.com/autovance/ftp-srv](https://github.com/autovance/ftp-srv)\n* Email us directly; security@autovance.com",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-jw37-5gqr-cf9j/GHSA-jw37-5gqr-cf9j.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ftp-srv",
+        "purl": "pkg:npm/ftp-srv"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.0.0"
+            },
+            {
+              "fixed": "2.19.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-jw37-5gqr-cf9j/GHSA-jw37-5gqr-cf9j.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ftp-srv",
+        "purl": "pkg:npm/ftp-srv"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.0.0"
+            },
+            {
+              "fixed": "3.1.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-jw37-5gqr-cf9j/GHSA-jw37-5gqr-cf9j.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ftp-srv",
+        "purl": "pkg:npm/ftp-srv"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.3.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-15152"
   ],
-  "modified": "2023-11-08T04:02:31.434106Z",
-  "published": "2020-08-17T21:44:54Z",
-  "related": [
-    "CVE-2020-15152"
-  ],
   "database_specific": {
-    "nvd_published_at": "2020-08-17T22:15:00Z",
-    "github_reviewed_at": "2020-08-17T21:42:37Z",
-    "severity": "CRITICAL",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-918"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-08-17T21:42:37Z",
+    "nvd_published_at": "2020-08-17T22:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Background\n\nThe FTP protocol creates two connections, one for commands and one for transferring data.\nThis second data connection can be created in two ways, on the server by sending the PASV command, or on the client by sending the PORT command.\n\nThe PORT command sends the IP and port for the server to connect to the client with.\n\n### Issue\nSince the client can send an arbitrary IP with the PORT command, this can be used to cause the server to make a connection elsewhere.\n\n### Patches\n\n* _fix: disallow PORT connections to alternate hosts_: e449e75219d918c400dec65b4b0759f60476abca\n\nDeprecation notices have been published for older versions.\n\n### Workarounds\n\nBlacklisting the FTP Command `PORT` will prevent the server from exposing this behaviour through active connections until a fix is applied.\n```js\nconst ftp = new FtpSrv({\n  blacklist: ['PORT']\n});\n```\n\n### References\nhttps://www.npmjs.com/advisories/1445\n\n### Credits\n\nThank you to;\n@trs for fixing it\n@andreeleuterio for reporting it to us for an anonymous user (Vincent) through the NPM platform\n@quiquelhappy for bringing it to our attention after it slipped through the cracks during Christmas\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue at [https://github.com/autovance/ftp-srv](https://github.com/autovance/ftp-srv)\n* Email us directly; security@autovance.com",
+  "id": "GHSA-jw37-5gqr-cf9j",
+  "modified": "2023-11-08T04:02:31.434106Z",
+  "published": "2020-08-17T21:44:54Z",
   "references": [
     {
       "type": "WEB",
@@ -49,82 +116,15 @@
       "url": "https://www.npmjs.com/package/ftp-srv"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ftp-srv",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/ftp-srv"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.0.0"
-            },
-            {
-              "fixed": "2.19.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-jw37-5gqr-cf9j/GHSA-jw37-5gqr-cf9j.json"
-      }
-    },
-    {
-      "package": {
-        "name": "ftp-srv",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/ftp-srv"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "3.0.0"
-            },
-            {
-              "fixed": "3.1.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-jw37-5gqr-cf9j/GHSA-jw37-5gqr-cf9j.json"
-      }
-    },
-    {
-      "package": {
-        "name": "ftp-srv",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/ftp-srv"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "4.0.0"
-            },
-            {
-              "fixed": "4.3.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-jw37-5gqr-cf9j/GHSA-jw37-5gqr-cf9j.json"
-      }
-    }
+  "related": [
+    "CVE-2020-15152"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Server-Side Request Forgery in ftp-srv"
 }

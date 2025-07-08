@@ -1,18 +1,81 @@
 {
-  "id": "GHSA-x2f4-8wxf-w3vf",
-  "summary": "ZendFramework SQL injection due to execution of platform-specific SQL containing interpolations",
-  "details": "The `Zend\\Db` component in Zend Framework 2 provides platform abstraction, which is used in particular for SQL abstraction. Two methods defined in the platform interface, `quoteValue()` and `quoteValueList()`, allow users to manually quote values for creating SQL statements; these are in turn consumed by aspects of the SQL abstraction platform, including `Zend\\Db\\Sql\\Sql::getSqlStringForSqlObject()`, and the `getSqlString()` method provided in a number of classes in the Zend\\Db\\Sql namespace.\n\nWhile these methods are primarily intended for debugging and logging purposes, developers can use them to produce SQL that is then passed to the driver to execute. Due to a flaw in how the `quoteValue()` and `quoteValueList()` methods were written, this can lead to potential SQL injection.\n\nThe offending code is located in any of the `Zend\\Db\\Adapter\\Platform*` objects, particularly the quoteValue() and `quoteValueList()` methods. These methods did not take into account most of the possible escapable characters that would need to be escaped when attempting to create a quoted value for interpolation into a SQL string. Moreover, these methods did value quoting without extension level coordination which, when available, takes character-sets into account when quoting.",
-  "modified": "2024-12-04T05:35:16.874623Z",
-  "published": "2024-06-07T20:35:15Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-x2f4-8wxf-w3vf/GHSA-x2f4-8wxf-w3vf.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "zendframework/zendframework",
+        "purl": "pkg:composer/zendframework/zendframework"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.0.8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.0.4",
+        "2.0.5",
+        "2.0.6",
+        "2.0.7"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-x2f4-8wxf-w3vf/GHSA-x2f4-8wxf-w3vf.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "zendframework/zendframework",
+        "purl": "pkg:composer/zendframework/zendframework"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.1.0"
+            },
+            {
+              "fixed": "2.1.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.1.0",
+        "2.1.1",
+        "2.1.2",
+        "2.1.3"
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-89"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-06-07T20:35:15Z"
+    "github_reviewed_at": "2024-06-07T20:35:15Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "The `Zend\\Db` component in Zend Framework 2 provides platform abstraction, which is used in particular for SQL abstraction. Two methods defined in the platform interface, `quoteValue()` and `quoteValueList()`, allow users to manually quote values for creating SQL statements; these are in turn consumed by aspects of the SQL abstraction platform, including `Zend\\Db\\Sql\\Sql::getSqlStringForSqlObject()`, and the `getSqlString()` method provided in a number of classes in the Zend\\Db\\Sql namespace.\n\nWhile these methods are primarily intended for debugging and logging purposes, developers can use them to produce SQL that is then passed to the driver to execute. Due to a flaw in how the `quoteValue()` and `quoteValueList()` methods were written, this can lead to potential SQL injection.\n\nThe offending code is located in any of the `Zend\\Db\\Adapter\\Platform*` objects, particularly the quoteValue() and `quoteValueList()` methods. These methods did not take into account most of the possible escapable characters that would need to be escaped when attempting to create a quoted value for interpolation into a SQL string. Moreover, these methods did value quoting without extension level coordination which, when available, takes character-sets into account when quoting.",
+  "id": "GHSA-x2f4-8wxf-w3vf",
+  "modified": "2024-12-04T05:35:16.874623Z",
+  "published": "2024-06-07T20:35:15Z",
   "references": [
     {
       "type": "WEB",
@@ -51,75 +114,12 @@
       "url": "https://github.com/zendframework/zendframework"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "zendframework/zendframework",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/zendframework/zendframework"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.0.0"
-            },
-            {
-              "fixed": "2.0.8"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.0.0",
-        "2.0.1",
-        "2.0.2",
-        "2.0.3",
-        "2.0.4",
-        "2.0.5",
-        "2.0.6",
-        "2.0.7"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-x2f4-8wxf-w3vf/GHSA-x2f4-8wxf-w3vf.json"
-      }
-    },
-    {
-      "package": {
-        "name": "zendframework/zendframework",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/zendframework/zendframework"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.1.0"
-            },
-            {
-              "fixed": "2.1.4"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.1.0",
-        "2.1.1",
-        "2.1.2",
-        "2.1.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-x2f4-8wxf-w3vf/GHSA-x2f4-8wxf-w3vf.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "ZendFramework SQL injection due to execution of platform-specific SQL containing interpolations"
 }

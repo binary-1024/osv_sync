@@ -1,43 +1,16 @@
 {
-  "id": "GHSA-785h-76cm-cpmf",
-  "summary": "Django TomSelect incomplete escaping of dangerous characters in widget attributes",
-  "details": "### Summary\nUser supplied values passed through to certain attributes in form widgets are not fully escaped for potentially dangerous tokens, and in some cases are rendered in browser as valid html tags.\n\n### Details\nAttributes passed to the widget (such as `label_field`) containing `<`, `>`, and similar tokens are not fully escaped. This results in some raw values reaching the widget, and rendering in part or fully.\n\nFor example, a label of: `\"Test User <script>I can pass this to the label_field and it gets rendered</script>\"` is rendered in the choices's label visually as `\"Test User \"` with the trailing space, and what appears as an un-executed script tag following it (which is visible when viewing source).\n\nThe actual output rendered in the browser for this example is: `<div role=\"option\" data-value=\"63f205b6\" class=\"item\" data-ts-item=\"\">Test User <script>I can pass this to the label_field and it gets rendered</script></div>`\n\nThe script tags appears to be valid in Chrome dev tools, but doesn't appear execute code.\n\n### Impact\nAlthough the risk may be mediated since the content within the rendered `<script></script>` tags does not seem to actually/immediately run, potential may exist for other ways of increasing the risk (e.g.: code injection).  In addition, the widget does not display correctly for valid strings containing `<` or `>`. Valid use-cases for printing these characters include widget label fields displaying email addresses (e.g.: `\"User Jane <user.jane@example.com>\"`\n\nBecause of the relatively small number of users at this moment, our plan to yank affected releases on PyPI and GitHub, and because raw text is rendered but does not seem to be executable, I am marking the Severity **Low**.\n\nUpdate to version **5.3.3**. The only difference from 5.3.2 is the code and documentation changes to resolve this vulnerability, so the update process should not be problematic.",
-  "modified": "2025-04-06T05:50:54.756672Z",
-  "published": "2025-03-26T20:34:02Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-116",
-      "CWE-79"
-    ],
-    "severity": "LOW",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-03-26T20:34:02Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/OmenApps/django-tomselect/security/advisories/GHSA-785h-76cm-cpmf"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/OmenApps/django-tomselect/commit/0990ed36c8874f9d42fa9deff7734bf8dcd46d40"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/OmenApps/django-tomselect"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-785h-76cm-cpmf/GHSA-785h-76cm-cpmf.json"
+      },
       "package": {
-        "name": "django-tomselect",
         "ecosystem": "PyPI",
+        "name": "django-tomselect",
         "purl": "pkg:pypi/django-tomselect"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -45,7 +18,8 @@
             {
               "fixed": "2025.3.3"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -80,17 +54,43 @@
         "2025.2.3",
         "2025.3.1",
         "2025.3.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-785h-76cm-cpmf/GHSA-785h-76cm-cpmf.json"
-      }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-116",
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-03-26T20:34:02Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
+  },
+  "details": "### Summary\nUser supplied values passed through to certain attributes in form widgets are not fully escaped for potentially dangerous tokens, and in some cases are rendered in browser as valid html tags.\n\n### Details\nAttributes passed to the widget (such as `label_field`) containing `<`, `>`, and similar tokens are not fully escaped. This results in some raw values reaching the widget, and rendering in part or fully.\n\nFor example, a label of: `\"Test User <script>I can pass this to the label_field and it gets rendered</script>\"` is rendered in the choices's label visually as `\"Test User \"` with the trailing space, and what appears as an un-executed script tag following it (which is visible when viewing source).\n\nThe actual output rendered in the browser for this example is: `<div role=\"option\" data-value=\"63f205b6\" class=\"item\" data-ts-item=\"\">Test User <script>I can pass this to the label_field and it gets rendered</script></div>`\n\nThe script tags appears to be valid in Chrome dev tools, but doesn't appear execute code.\n\n### Impact\nAlthough the risk may be mediated since the content within the rendered `<script></script>` tags does not seem to actually/immediately run, potential may exist for other ways of increasing the risk (e.g.: code injection).  In addition, the widget does not display correctly for valid strings containing `<` or `>`. Valid use-cases for printing these characters include widget label fields displaying email addresses (e.g.: `\"User Jane <user.jane@example.com>\"`\n\nBecause of the relatively small number of users at this moment, our plan to yank affected releases on PyPI and GitHub, and because raw text is rendered but does not seem to be executable, I am marking the Severity **Low**.\n\nUpdate to version **5.3.3**. The only difference from 5.3.2 is the code and documentation changes to resolve this vulnerability, so the update process should not be problematic.",
+  "id": "GHSA-785h-76cm-cpmf",
+  "modified": "2025-04-06T05:50:54.756672Z",
+  "published": "2025-03-26T20:34:02Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/OmenApps/django-tomselect/security/advisories/GHSA-785h-76cm-cpmf"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/OmenApps/django-tomselect/commit/0990ed36c8874f9d42fa9deff7734bf8dcd46d40"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/OmenApps/django-tomselect"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:N/SI:L/SA:N/E:U"
+      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:N/SI:L/SA:N/E:U",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Django TomSelect incomplete escaping of dangerous characters in widget attributes"
 }

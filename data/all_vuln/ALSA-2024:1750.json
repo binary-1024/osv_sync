@@ -1,12 +1,102 @@
 {
-  "id": "ALSA-2024:1750",
-  "summary": "Important: unbound security update",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/AlmaLinux/osv-database/blob/master/advisories/almalinux9/ALSA-2024:1750.json"
+      },
+      "package": {
+        "ecosystem": "AlmaLinux:9",
+        "name": "python3-unbound"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.16.2-3.el9_3.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/AlmaLinux/osv-database/blob/master/advisories/almalinux9/ALSA-2024:1750.json"
+      },
+      "package": {
+        "ecosystem": "AlmaLinux:9",
+        "name": "unbound"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.16.2-3.el9_3.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/AlmaLinux/osv-database/blob/master/advisories/almalinux9/ALSA-2024:1750.json"
+      },
+      "package": {
+        "ecosystem": "AlmaLinux:9",
+        "name": "unbound-devel"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.16.2-3.el9_3.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/AlmaLinux/osv-database/blob/master/advisories/almalinux9/ALSA-2024:1750.json"
+      },
+      "package": {
+        "ecosystem": "AlmaLinux:9",
+        "name": "unbound-libs"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.16.2-3.el9_3.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "The unbound packages provide a validating, recursive, and caching DNS or DNSSEC resolver.\n\nSecurity Fix(es):\n\n* A vulnerability was found in Unbound due to incorrect default permissions,\nallowing any process outside the unbound group to modify the unbound runtime\nconfiguration. The default combination of the \"control-use-cert: no\" option with\neither explicit or implicit use of an IP address in the \"control-interface\"\noption could allow improper access. If a process can connect over localhost to\nport 8953, it can alter the configuration of unbound.service. This flaw allows\nan unprivileged local process to manipulate a running instance, potentially\naltering forwarders, allowing them to track all queries forwarded by the local\nresolver, and, in some cases, disrupting resolving altogether.\n\nTo mitigate the vulnerability, a new file\n\"/etc/unbound/conf.d/remote-control.conf\" has been added and included in the\nmain unbound configuration file, \"unbound.conf\". The file contains two\ndirectives that should limit access to unbound.conf:\n\n    control-interface: \"/run/unbound/control\"\n    control-use-cert: \"yes\"\n\nFor details about these directives, run \"man unbound.conf\".\n\nUpdating to the version of unbound provided by this advisory should, in most\ncases, address the vulnerability. To verify that your configuration is not\nvulnerable, use the \"unbound-control status | grep control\" command. If the\noutput contains \"control(ssl)\" or \"control(namedpipe)\", your configuration is\nnot vulnerable. If the command output returns only \"control\", the configuration\nis vulnerable because it does not enforce access only to the unbound group\nmembers. To fix your configuration, add the line \"include:\n/etc/unbound/conf.d/remote-control.conf\" to the end of the file\n\"/etc/unbound/unbound.conf\". If you use a custom\n\"/etc/unbound/conf.d/remote-control.conf\" file, add the new directives to this\nfile. (CVE-2024-1488)\n\nFor more details about the security issue(s), including the impact, a CVSS\nscore, acknowledgments, and other related information, refer to the CVE page(s)\nlisted in the References section.",
+  "id": "ALSA-2024:1750",
   "modified": "2024-04-12T11:51:36Z",
   "published": "2024-04-10T00:00:00Z",
-  "related": [
-    "CVE-2024-1488"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -25,99 +115,9 @@
       "url": "https://errata.almalinux.org/9/ALSA-2024-1750.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "python3-unbound",
-        "ecosystem": "AlmaLinux:9"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.16.2-3.el9_3.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/AlmaLinux/osv-database/blob/master/advisories/almalinux9/ALSA-2024:1750.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "unbound",
-        "ecosystem": "AlmaLinux:9"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.16.2-3.el9_3.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/AlmaLinux/osv-database/blob/master/advisories/almalinux9/ALSA-2024:1750.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "unbound-devel",
-        "ecosystem": "AlmaLinux:9"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.16.2-3.el9_3.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/AlmaLinux/osv-database/blob/master/advisories/almalinux9/ALSA-2024:1750.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "unbound-libs",
-        "ecosystem": "AlmaLinux:9"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.16.2-3.el9_3.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/AlmaLinux/osv-database/blob/master/advisories/almalinux9/ALSA-2024:1750.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2024-1488"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Important: unbound security update"
 }

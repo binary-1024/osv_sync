@@ -1,24 +1,48 @@
 {
-  "id": "GHSA-vp6r-mrq9-8f4h",
-  "summary": "Data race in syncpool",
-  "details": "Affected versions of this crate unconditionally implements Send for Bucket2. This allows sending non-Send types to other threads. This can lead to data races when non Send types like Cell<T> or Rc<T> are contained inside Bucket2 and sent across thread boundaries. The data races can potentially lead to memory corruption (as demonstrated in the PoC from the original report issue). The flaw was corrected in commit `15b2828` by adding a T: Send bound to the Send impl of Bucket2<T>.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-vp6r-mrq9-8f4h/GHSA-vp6r-mrq9-8f4h.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "syncpool",
+        "purl": "pkg:cargo/syncpool"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.1.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-36462",
     "GHSA-r88h-6987-g79f",
     "RUSTSEC-2020-0142"
   ],
-  "modified": "2023-11-08T04:03:46.319786Z",
-  "published": "2021-08-25T20:58:11Z",
   "database_specific": {
-    "nvd_published_at": "2021-08-08T06:15:00Z",
     "cwe_ids": [
       "CWE-362",
       "CWE-77"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-08-18T20:18:30Z"
+    "github_reviewed_at": "2021-08-18T20:18:30Z",
+    "nvd_published_at": "2021-08-08T06:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "Affected versions of this crate unconditionally implements Send for Bucket2. This allows sending non-Send types to other threads. This can lead to data races when non Send types like Cell<T> or Rc<T> are contained inside Bucket2 and sent across thread boundaries. The data races can potentially lead to memory corruption (as demonstrated in the PoC from the original report issue). The flaw was corrected in commit `15b2828` by adding a T: Send bound to the Send impl of Bucket2<T>.",
+  "id": "GHSA-vp6r-mrq9-8f4h",
+  "modified": "2023-11-08T04:03:46.319786Z",
+  "published": "2021-08-25T20:58:11Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -45,36 +69,12 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2020-0142.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "syncpool",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/syncpool"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.1.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-vp6r-mrq9-8f4h/GHSA-vp6r-mrq9-8f4h.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Data race in syncpool"
 }

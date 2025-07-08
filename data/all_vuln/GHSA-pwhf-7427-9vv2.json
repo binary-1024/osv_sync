@@ -1,7 +1,29 @@
 {
-  "id": "GHSA-pwhf-7427-9vv2",
-  "summary": "Non-atomic writes in cgc",
-  "details": "# Multiple soundness issues in `Ptr` in cgc\n\nAffected versions of this crate have the following issues:\n\n1. `Ptr` implements `Send` and `Sync` for all types, this can lead to data\n   races by sending non-thread safe types across threads.\n\n2. `Ptr::get` violates mutable alias rules by returning multiple mutable\n   references to the same object.\n\n3. `Ptr::write` uses non-atomic writes to the underlying pointer. This means\n   that when used across threads it can lead to data races.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-pwhf-7427-9vv2/GHSA-pwhf-7427-9vv2.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "cgc",
+        "purl": "pkg:cargo/cgc"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "0.4.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-36466",
     "CVE-2020-36467",
@@ -10,17 +32,19 @@
     "GHSA-f9xr-3m55-5q2v",
     "RUSTSEC-2020-0148"
   ],
-  "modified": "2024-03-15T00:05:22.909466Z",
-  "published": "2021-08-25T20:56:57Z",
   "database_specific": {
-    "nvd_published_at": "2021-08-08T06:15:00Z",
     "cwe_ids": [
       "CWE-657"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-08-18T20:39:03Z"
+    "github_reviewed_at": "2021-08-18T20:39:03Z",
+    "nvd_published_at": "2021-08-08T06:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "# Multiple soundness issues in `Ptr` in cgc\n\nAffected versions of this crate have the following issues:\n\n1. `Ptr` implements `Send` and `Sync` for all types, this can lead to data\n   races by sending non-thread safe types across threads.\n\n2. `Ptr::get` violates mutable alias rules by returning multiple mutable\n   references to the same object.\n\n3. `Ptr::write` uses non-atomic writes to the underlying pointer. This means\n   that when used across threads it can lead to data races.",
+  "id": "GHSA-pwhf-7427-9vv2",
+  "modified": "2024-03-15T00:05:22.909466Z",
+  "published": "2021-08-25T20:56:57Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -43,36 +67,12 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2020-0148.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "cgc",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/cgc"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "0.4.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-pwhf-7427-9vv2/GHSA-pwhf-7427-9vv2.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Non-atomic writes in cgc"
 }

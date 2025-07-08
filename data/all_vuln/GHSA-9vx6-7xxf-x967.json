@@ -1,24 +1,114 @@
 {
-  "id": "GHSA-9vx6-7xxf-x967",
-  "summary": "OpenZeppelin Contracts base64 encoding may read from potentially dirty memory",
-  "details": "### Impact\n\nThe `Base64.encode` function encodes a `bytes` input by iterating over it in chunks of 3 bytes. When this input is not a multiple of 3, the last iteration may read parts of the memory that are beyond the input buffer.\n\nAlthough the `encode` function pads the output for these cases, up to 4 bits of data are kept between the encoding and padding, corrupting the output if these bits were dirty (i.e. memory after the input is not 0). These conditions are more frequent in the following scenarios:\n\n- A `bytes memory` struct is allocated just after the input and the first bytes of it are non-zero.\n- The memory pointer is set to a non-empty memory location before allocating the input.\n\nDevelopers should evaluate whether the extra bits can be maliciously manipulated by an attacker.\n\n### Patches\n\nUpgrade to 5.0.2 or 4.9.6.\n\n### References\n\nThis issue was reported by the Independent Security Researcher Riley Holterhus through Immunefi (@rileyholterhus on X)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-9vx6-7xxf-x967/GHSA-9vx6-7xxf-x967.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin/contracts",
+        "purl": "pkg:npm/%40openzeppelin/contracts"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.5.0"
+            },
+            {
+              "fixed": "4.9.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-9vx6-7xxf-x967/GHSA-9vx6-7xxf-x967.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin/contracts-upgradeable",
+        "purl": "pkg:npm/%40openzeppelin/contracts-upgradeable"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.0.0-rc.0"
+            },
+            {
+              "fixed": "5.0.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-9vx6-7xxf-x967/GHSA-9vx6-7xxf-x967.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin/contracts",
+        "purl": "pkg:npm/%40openzeppelin/contracts"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.0.0-rc.0"
+            },
+            {
+              "fixed": "5.0.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-9vx6-7xxf-x967/GHSA-9vx6-7xxf-x967.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin/contracts-upgradeable",
+        "purl": "pkg:npm/%40openzeppelin/contracts-upgradeable"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.5.0"
+            },
+            {
+              "fixed": "4.9.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-27094"
   ],
-  "modified": "2024-02-29T20:28:32.031690Z",
-  "published": "2024-02-29T20:09:53Z",
-  "related": [
-    "CVE-2024-27094"
-  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-125"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-02-29T20:09:53Z"
+    "github_reviewed_at": "2024-02-29T20:09:53Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
   },
+  "details": "### Impact\n\nThe `Base64.encode` function encodes a `bytes` input by iterating over it in chunks of 3 bytes. When this input is not a multiple of 3, the last iteration may read parts of the memory that are beyond the input buffer.\n\nAlthough the `encode` function pads the output for these cases, up to 4 bits of data are kept between the encoding and padding, corrupting the output if these bits were dirty (i.e. memory after the input is not 0). These conditions are more frequent in the following scenarios:\n\n- A `bytes memory` struct is allocated just after the input and the first bytes of it are non-zero.\n- The memory pointer is set to a non-empty memory location before allocating the input.\n\nDevelopers should evaluate whether the extra bits can be maliciously manipulated by an attacker.\n\n### Patches\n\nUpgrade to 5.0.2 or 4.9.6.\n\n### References\n\nThis issue was reported by the Independent Security Researcher Riley Holterhus through Immunefi (@rileyholterhus on X)",
+  "id": "GHSA-9vx6-7xxf-x967",
+  "modified": "2024-02-29T20:28:32.031690Z",
+  "published": "2024-02-29T20:09:53Z",
   "references": [
     {
       "type": "WEB",
@@ -45,99 +135,9 @@
       "url": "https://github.com/OpenZeppelin/openzeppelin-contracts"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@openzeppelin/contracts",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40openzeppelin/contracts"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "4.5.0"
-            },
-            {
-              "fixed": "4.9.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-9vx6-7xxf-x967/GHSA-9vx6-7xxf-x967.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@openzeppelin/contracts-upgradeable",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40openzeppelin/contracts-upgradeable"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "5.0.0-rc.0"
-            },
-            {
-              "fixed": "5.0.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-9vx6-7xxf-x967/GHSA-9vx6-7xxf-x967.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@openzeppelin/contracts",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40openzeppelin/contracts"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "5.0.0-rc.0"
-            },
-            {
-              "fixed": "5.0.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-9vx6-7xxf-x967/GHSA-9vx6-7xxf-x967.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@openzeppelin/contracts-upgradeable",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40openzeppelin/contracts-upgradeable"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "4.5.0"
-            },
-            {
-              "fixed": "4.9.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-9vx6-7xxf-x967/GHSA-9vx6-7xxf-x967.json"
-      }
-    }
+  "related": [
+    "CVE-2024-27094"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "OpenZeppelin Contracts base64 encoding may read from potentially dirty memory"
 }

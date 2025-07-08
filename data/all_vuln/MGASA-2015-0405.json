@@ -1,7 +1,44 @@
 {
-  "id": "MGASA-2015-0405",
-  "summary": "Updated dbus packages fixes security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0405.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "dbus",
+        "purl": "pkg:rpm/mageia/dbus?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.8.20-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Updated dbus packages provides security hardening and fixes some bugs\n\nSecurity hardening:\n\nOn Unix platforms, change the default configuration for the session bus\nto only allow EXTERNAL authentication (secure kernel-mediated\ncredentials-passing), as was already done for the system bus.\n\nThis avoids falling back to DBUS_COOKIE_SHA1, which relies on strongly\nunpredictable pseudo-random numbers; under certain circumstances\n(/dev/urandom unreadable or malloc() returns NULL), dbus could\nfall back to using rand(), which does not have the desired\nunpredictability. The fallback to rand() has not been changed in this\nstable-branch since the necessary code changes for correct error-handling\nare rather intrusive.\n\nIf you are using D-Bus over the (unencrypted!) tcp: or nonce-tcp:\ntransport, in conjunction with DBUS_COOKIE_SHA1 and a shared home\ndirectory using NFS or similar, you will need to reconfigure the session\nbus to accept DBUS_COOKIE_SHA1 by commenting out the <auth> element. This\nconfiguration is not recommended.\n\nOther fixes:\n\nFix a memory leak when GetConnectionCredentials() succeeds\n(fd.o #91008, Jacek Bukarewicz)\n\nEnsure that dbus-monitor does not reply to messages intended for others\n(fd.o #90952, Simon McVittie)\n\nAdd locking to DBusCounter's reference count and notify function\n(fd.o #89297, Adrian Szyndela)\n\nEnsure that DBusTransport's reference count is protected by the\ncorresponding DBusConnection's lock (fd.o #90312, Adrian Szyndela)\n\nCorrectly release DBusServer mutex before early-return if we run out\nof memory while copying authentication mechanisms (fd.o #90021,\nRalf Habacker)\n\nCorrectly initialize all fields of DBusTypeReader (fd.o #90021;\nRalf Habacker, Simon McVittie)\n\nClean up some memory leaks in test code (fd.o #90021, Ralf Habacker)\n",
+  "id": "MGASA-2015-0405",
   "modified": "2015-10-25T14:33:18Z",
   "published": "2015-10-25T14:38:05Z",
   "references": [
@@ -42,43 +79,6 @@
       "url": "https://bugs.freedesktop.org/show_bug.cgi?id=91008"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "dbus",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/dbus?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.8.20-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2015-0405.json"
-      },
-      "versions": []
-    }
-  ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated dbus packages fixes security vulnerability"
 }

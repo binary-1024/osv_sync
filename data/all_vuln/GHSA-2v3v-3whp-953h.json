@@ -1,21 +1,48 @@
 {
-  "id": "GHSA-2v3v-3whp-953h",
-  "summary": "starcitizentools/citizen-skin allows stored XSS in user registration date message",
-  "details": "### Summary\nVarious date messages returned by `Language::userDate` are inserted into raw HTML, allowing anybody who can edit those messages to insert arbitrary HTML into the DOM.\n\n### Details\nThe result of `$this->lang->userDate( $timestamp, $this->user )` returns unescaped values, but is inserted as raw HTML by Citizen:\nhttps://github.com/StarCitizenTools/mediawiki-skins-Citizen/blob/072e4365e9084e4b153eac62d3666566c06f5a49/includes/Components/CitizenComponentUserInfo.php#L55-L60\n\n### PoC\n1. Go to any page using citizen with the uselang parameter set to x-xss and while being logged in\nDepending on the registration date of the account you're logged in with, various messages can be shown. In my case, it's `november`:\n![image](https://github.com/user-attachments/assets/252a3453-99c8-4ce1-b6d6-a8485b7a9a43)\n\n\n### Impact\nThis impacts wikis where a group has the `editinterface` but not the `editsitejs` user right.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-2v3v-3whp-953h/GHSA-2v3v-3whp-953h.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "starcitizentools/citizen-skin",
+        "purl": "pkg:composer/starcitizentools/citizen-skin"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.3.0"
+            },
+            {
+              "fixed": "3.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "v3.3.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-49578"
   ],
-  "modified": "2025-06-13T14:29:35.716971Z",
-  "published": "2025-06-13T14:09:00Z",
   "database_specific": {
-    "nvd_published_at": "2025-06-12T19:15:20Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-06-13T14:09:00Z"
+    "github_reviewed_at": "2025-06-13T14:09:00Z",
+    "nvd_published_at": "2025-06-12T19:15:20Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nVarious date messages returned by `Language::userDate` are inserted into raw HTML, allowing anybody who can edit those messages to insert arbitrary HTML into the DOM.\n\n### Details\nThe result of `$this->lang->userDate( $timestamp, $this->user )` returns unescaped values, but is inserted as raw HTML by Citizen:\nhttps://github.com/StarCitizenTools/mediawiki-skins-Citizen/blob/072e4365e9084e4b153eac62d3666566c06f5a49/includes/Components/CitizenComponentUserInfo.php#L55-L60\n\n### PoC\n1. Go to any page using citizen with the uselang parameter set to x-xss and while being logged in\nDepending on the registration date of the account you're logged in with, various messages can be shown. In my case, it's `november`:\n![image](https://github.com/user-attachments/assets/252a3453-99c8-4ce1-b6d6-a8485b7a9a43)\n\n\n### Impact\nThis impacts wikis where a group has the `editinterface` but not the `editsitejs` user right.",
+  "id": "GHSA-2v3v-3whp-953h",
+  "modified": "2025-06-13T14:29:35.716971Z",
+  "published": "2025-06-13T14:09:00Z",
   "references": [
     {
       "type": "WEB",
@@ -38,39 +65,12 @@
       "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "starcitizentools/citizen-skin",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/starcitizentools/citizen-skin"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.3.0"
-            },
-            {
-              "fixed": "3.3.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "v3.3.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-2v3v-3whp-953h/GHSA-2v3v-3whp-953h.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "starcitizentools/citizen-skin allows stored XSS in user registration date message"
 }

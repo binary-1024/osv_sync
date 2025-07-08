@@ -1,16 +1,100 @@
 {
-  "id": "MGASA-2021-0099",
-  "summary": "Updated kernel packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0099.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "kernel",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.19-1.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0099.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "kmod-virtualbox",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.1.18-7.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0099.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "kmod-xtables-addons",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.13-13.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel update is based on upstream 5.10.19 and fixes at least the\nfollowing security issues:\n\nThere is a vulnerability in the linux kernel versions higher than 5.2 (if\nkernel compiled with config params CONFIG_BPF_SYSCALL=y, CONFIG_BPF=y,\nCONFIG_CGROUPS=y, CONFIG_CGROUP_BPF=y, CONFIG_HARDENED_USERCOPY not set,\nand BPF hook to getsockopt is registered). As result of BPF execution,\nthe local user can trigger bug in __cgroup_bpf_run_filter_getsockopt()\nfunction that can lead to heap overflow (because of non-hardened\nusercopy). The impact of attack could be deny of service or possibly\nprivileges escalation. NOTE! Mageia kernel configs have HARDENED_USERCOPY\nenabled by default, making this an non-issue when using prebuilt kernels\n(CVE-2021-20194).\n\nAn information disclosure vulnerability exists in the ARM SIGPAGE\nfunctionality of Linux Kernel. A userland application can read the\ncontents of the sigpage, which can leak kernel memory contents. An\nattacker can read a process\u2019s memory at a specific offset to trigger\nthis vulnerability (CVE-2021-21781).\n\nAn issue was discovered in the Linux kernel 3.11 through 5.10.16, as used\nby Xen. To service requests to the PV backend, the driver maps grant\nreferences provided by the frontend. In this process, errors may be\nencountered. In one case, an error encountered earlier might be\ndiscarded by later processing, resulting in the caller assuming\nsuccessful mapping, and hence subsequent operations trying to access\nspace that wasn't mapped. In another case, internal state would be\ninsufficiently updated, preventing safe recovery from the error\n(CVE-2021-26930).\n\nAn issue was discovered in the Linux kernel 2.6.39 through 5.10.16, as\nused in Xen. Block, net, and SCSI backends consider certain errors a\nplain bug, deliberately causing a kernel crash. For errors potentially\nbeing at least under the influence of guests (such as out of memory\nconditions), it isn't correct to assume a plain bug. Memory allocations\npotentially causing such crashes occur only when Linux is running in\nPV mode, though (CVE-2021-26931).\n\nAn issue was discovered in the Linux kernel 3.2 through 5.10.16, as used\nby Xen. Grant mapping operations often occur in batch hypercalls, where\na number of operations are done in a single hypercall, the success or\nfailure of each one is reported to the backend driver, and the backend\ndriver then loops over the results, performing follow-up actions based\non the success or failure of each operation. Unfortunately, when running\nin PV mode, the Linux backend drivers mishandle this: Some errors are\nignored, effectively implying their success from the success of related\nbatch elements. In other cases, errors resulting from one batch element\nlead to further batch elements not being inspected, and hence successful\nones to not be possible to properly unmap upon error recovery. Only\nsystems with Linux backends running in PV mode are vulnerable. Linux\nbackends run in HVM / PVH modes are not vulnerable (CVE-2021-26932).\n\nIt also adds the following fixes:\n- enable ACPI_EC_DEBUGFS (mga#28415)\n- ALSA: hda: Add another CometLake-H PCI ID\n- Revert 'drm/amd/display: Update NV1x SR latency values'\n- drm/nouveau/kms: handle mDP connectors\n- drm/i915/gt: One more flush for Baytrail clear residuals\n- drm/i915/gt: Flush before changing register state\n- drm/i915/gt: Correct surface base address for renderclear\n- rtw88: 8821c: add RFE type 2 support\n- update rtw89 patchset to v3\n- tracing: Check length before giving out the filter buffer\n- drop \"revert 'Bluetooth: btusb: Add Qualcomm Bluetooth SoC WCN6855\n  support' (mga#27910)\"\n- Bluetooth: btusb: fix for Qualcomm Bluetooth adapters that stopped working\n  due to not finding (unneeded) ROME firmware (real fix for mga#27910)\n- media: uvcvideo: Allow entities with no pads\n- mm/vmscan: restore zone_reclaim_mode ABI\n- nvme: Add quirks for Lexar 256GB SSD (pterjan, mga#28417)\n- nvme: add 48-bit DMA address quirk for Amazon NVMe controllers\n- nvme-pci: add the DISABLE_WRITE_ZEROES quirk for a SPCC device\n- staging/rtl8723bs: sync with 5.12-rc1 (mga#28429)\n- x86: fix seq_file iteration for pat/memtype.c\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "id": "MGASA-2021-0099",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2021-03-04T12:26:19Z",
-  "related": [
-    "CVE-2021-20194",
-    "CVE-2021-21781",
-    "CVE-2021-26930",
-    "CVE-2021-26931",
-    "CVE-2021-26932"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -61,97 +145,13 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.19"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.10.19-1.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0099.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-virtualbox",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "6.1.18-7.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0099.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-xtables-addons",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.13-13.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0099.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-20194",
+    "CVE-2021-21781",
+    "CVE-2021-26930",
+    "CVE-2021-26931",
+    "CVE-2021-26932"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel packages fix security vulnerabilities"
 }

@@ -1,22 +1,55 @@
 {
-  "id": "GHSA-7mxx-3cgm-xxv3",
-  "summary": "API Platform Core does not call GraphQl securityAfterResolver",
-  "details": "### Summary\nA security check that gets called after GraphQl resolvers is always replaced by another one as there's no break in this clause: https://github.com/api-platform/core/pull/6444/files#diff-09e3c2cfe12a2ce65bd6c983c7ca6bfcf783f852b8d0554bb938e8ebf5e5fa65R56\n\nhttps://github.com/soyuka/core/blob/7e2e8f9ff322ac5f6eb5f65baf432bffdca0fd51/src/Symfony/Security/State/AccessCheckerProvider.php#L49-L57 \n\n### PoC\n\nCreate a graphql endpoint with a security after resolver.\n\n### Impact\n\nAs this fallsback to `security`, the impact is there only when there's only a security after resolver and none inside security. The test at https://github.com/api-platform/core/pull/6444 is probably broken.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-7mxx-3cgm-xxv3/GHSA-7mxx-3cgm-xxv3.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "api-platform/core",
+        "purl": "pkg:composer/api-platform/core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.3.8"
+            },
+            {
+              "fixed": "3.3.15"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "v3.3.10",
+        "v3.3.11",
+        "v3.3.12",
+        "v3.3.13",
+        "v3.3.14",
+        "v3.3.8",
+        "v3.3.9"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-23204"
   ],
-  "modified": "2025-03-24T18:56:56.970231Z",
-  "published": "2025-03-24T16:31:08Z",
   "database_specific": {
-    "nvd_published_at": "2025-03-24T16:15:56Z",
     "cwe_ids": [
       "CWE-20",
       "CWE-484"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-03-24T16:31:08Z"
+    "github_reviewed_at": "2025-03-24T16:31:08Z",
+    "nvd_published_at": "2025-03-24T16:15:56Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nA security check that gets called after GraphQl resolvers is always replaced by another one as there's no break in this clause: https://github.com/api-platform/core/pull/6444/files#diff-09e3c2cfe12a2ce65bd6c983c7ca6bfcf783f852b8d0554bb938e8ebf5e5fa65R56\n\nhttps://github.com/soyuka/core/blob/7e2e8f9ff322ac5f6eb5f65baf432bffdca0fd51/src/Symfony/Security/State/AccessCheckerProvider.php#L49-L57 \n\n### PoC\n\nCreate a graphql endpoint with a security after resolver.\n\n### Impact\n\nAs this fallsback to `security`, the impact is there only when there's only a security after resolver and none inside security. The test at https://github.com/api-platform/core/pull/6444 is probably broken.",
+  "id": "GHSA-7mxx-3cgm-xxv3",
+  "modified": "2025-03-24T18:56:56.970231Z",
+  "published": "2025-03-24T16:31:08Z",
   "references": [
     {
       "type": "WEB",
@@ -47,45 +80,12 @@
       "url": "https://github.com/soyuka/core/blob/7e2e8f9ff322ac5f6eb5f65baf432bffdca0fd51/src/Symfony/Security/State/AccessCheckerProvider.php#L49-L57"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "api-platform/core",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/api-platform/core"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.3.8"
-            },
-            {
-              "fixed": "3.3.15"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "v3.3.10",
-        "v3.3.11",
-        "v3.3.12",
-        "v3.3.13",
-        "v3.3.14",
-        "v3.3.8",
-        "v3.3.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-7mxx-3cgm-xxv3/GHSA-7mxx-3cgm-xxv3.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:C/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:C/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "API Platform Core does not call GraphQl securityAfterResolver"
 }

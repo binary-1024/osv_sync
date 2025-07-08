@@ -1,21 +1,68 @@
 {
-  "id": "GHSA-mp7w-mhcv-673j",
-  "summary": "Vega allows Cross-site Scripting via the vlSelectionTuples function",
-  "details": "### Summary\nThe `vlSelectionTuples` function can be used to call JavaScript functions, leading to XSS.\n\n### Details\n[`vlSelectionTuples`](https://github.com/vega/vega/blob/b45cf431cd6c0d0c0e1567f087f9b3b55bc236fa/packages/vega-selections/src/selectionTuples.js#L14) calls multiple functions that can be controlled by an attacker, including one call with an attacker-controlled argument.\n\nExample call: `vlSelectionTuples([{datum:<argument>}], {fields:[{getter:<function>}]})`\n\nThis can be used to call `Function()` with arbitrary JavaScript and the resulting function can be called with `vlSelectionTuples` or using a type coercion to call `toString` or `valueOf`.\n\n### PoC\n```\n{\"$schema\":\"https://vega.github.io/schema/vega/v5.json\",\"signals\":[{\"name\":\"a\",\"init\":\"+{valueOf:vlSelectionTuples([{datum:'alert(1)'}],{fields:[{getter:[].at.constructor}]})[0].values[0]}\"}]}\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-mp7w-mhcv-673j/GHSA-mp7w-mhcv-673j.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vega",
+        "purl": "pkg:npm/vega"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.26.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-mp7w-mhcv-673j/GHSA-mp7w-mhcv-673j.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vega-selections",
+        "purl": "pkg:npm/vega-selections"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.4.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-25304"
   ],
-  "modified": "2025-02-14T22:17:54Z",
-  "published": "2025-02-14T17:33:58Z",
   "database_specific": {
-    "nvd_published_at": "2025-02-14T20:15:36Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-02-14T17:33:58Z"
+    "github_reviewed_at": "2025-02-14T17:33:58Z",
+    "nvd_published_at": "2025-02-14T20:15:36Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nThe `vlSelectionTuples` function can be used to call JavaScript functions, leading to XSS.\n\n### Details\n[`vlSelectionTuples`](https://github.com/vega/vega/blob/b45cf431cd6c0d0c0e1567f087f9b3b55bc236fa/packages/vega-selections/src/selectionTuples.js#L14) calls multiple functions that can be controlled by an attacker, including one call with an attacker-controlled argument.\n\nExample call: `vlSelectionTuples([{datum:<argument>}], {fields:[{getter:<function>}]})`\n\nThis can be used to call `Function()` with arbitrary JavaScript and the resulting function can be called with `vlSelectionTuples` or using a type coercion to call `toString` or `valueOf`.\n\n### PoC\n```\n{\"$schema\":\"https://vega.github.io/schema/vega/v5.json\",\"signals\":[{\"name\":\"a\",\"init\":\"+{valueOf:vlSelectionTuples([{datum:'alert(1)'}],{fields:[{getter:[].at.constructor}]})[0].values[0]}\"}]}\n```",
+  "id": "GHSA-mp7w-mhcv-673j",
+  "modified": "2025-02-14T22:17:54Z",
+  "published": "2025-02-14T17:33:58Z",
   "references": [
     {
       "type": "WEB",
@@ -38,59 +85,12 @@
       "url": "https://github.com/vega/vega/blob/b45cf431cd6c0d0c0e1567f087f9b3b55bc236fa/packages/vega-selections/src/selectionTuples.js#L14"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "vega",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vega"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.26.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-mp7w-mhcv-673j/GHSA-mp7w-mhcv-673j.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vega-selections",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vega-selections"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.4.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-mp7w-mhcv-673j/GHSA-mp7w-mhcv-673j.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Vega allows Cross-site Scripting via the vlSelectionTuples function"
 }

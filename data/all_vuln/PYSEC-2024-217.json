@@ -1,28 +1,16 @@
 {
-  "id": "PYSEC-2024-217",
-  "details": "Gradio is an open-source Python package designed for quick prototyping. This is a **data validation vulnerability** affecting several Gradio components, which allows arbitrary file leaks through the post-processing step. Attackers can exploit these components by crafting requests that bypass expected input constraints. This issue could lead to sensitive files being exposed to unauthorized users, especially when combined with other vulnerabilities, such as issue TOB-GRADIO-15. The components most at risk are those that return or handle file data. Vulnerable Components: 1. **String to FileData:** DownloadButton, Audio, ImageEditor, Video, Model3D, File, UploadButton. 2. **Complex data to FileData:** Chatbot, MultimodalTextbox. 3. **Direct file read in preprocess:** Code. 4. **Dictionary converted to FileData:** ParamViewer, Dataset. Exploit Scenarios: 1. A developer creates a Dropdown list that passes values to a DownloadButton. An attacker bypasses the allowed inputs, sends an arbitrary file path (like `/etc/passwd`), and downloads sensitive files. 2. An attacker crafts a malicious payload in a ParamViewer component, leaking sensitive files from a server through the arbitrary file leak. This issue has been resolved in `gradio>5.0`. Upgrading to the latest version will mitigate this vulnerability. There are no known workarounds for this vulnerability.",
-  "aliases": [
-    "CVE-2024-47868",
-    "GHSA-4q3c-cj7g-jcwf"
-  ],
-  "modified": "2025-01-19T22:56:53.294838Z",
-  "published": "2024-10-10T23:15:02Z",
-  "references": [
-    {
-      "type": "EVIDENCE",
-      "url": "https://github.com/gradio-app/gradio/security/advisories/GHSA-4q3c-cj7g-jcwf"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/pypa/advisory-database/blob/main/vulns/gradio/PYSEC-2024-217.yaml"
+      },
       "package": {
-        "name": "gradio",
         "ecosystem": "PyPI",
+        "name": "gradio",
         "purl": "pkg:pypi/gradio"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -30,7 +18,8 @@
             {
               "fixed": "5.0.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -588,17 +577,28 @@
         "5.0.0b7",
         "5.0.0b8",
         "5.0.0b9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/pypa/advisory-database/blob/main/vulns/gradio/PYSEC-2024-217.yaml"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2024-47868",
+    "GHSA-4q3c-cj7g-jcwf"
+  ],
+  "details": "Gradio is an open-source Python package designed for quick prototyping. This is a **data validation vulnerability** affecting several Gradio components, which allows arbitrary file leaks through the post-processing step. Attackers can exploit these components by crafting requests that bypass expected input constraints. This issue could lead to sensitive files being exposed to unauthorized users, especially when combined with other vulnerabilities, such as issue TOB-GRADIO-15. The components most at risk are those that return or handle file data. Vulnerable Components: 1. **String to FileData:** DownloadButton, Audio, ImageEditor, Video, Model3D, File, UploadButton. 2. **Complex data to FileData:** Chatbot, MultimodalTextbox. 3. **Direct file read in preprocess:** Code. 4. **Dictionary converted to FileData:** ParamViewer, Dataset. Exploit Scenarios: 1. A developer creates a Dropdown list that passes values to a DownloadButton. An attacker bypasses the allowed inputs, sends an arbitrary file path (like `/etc/passwd`), and downloads sensitive files. 2. An attacker crafts a malicious payload in a ParamViewer component, leaking sensitive files from a server through the arbitrary file leak. This issue has been resolved in `gradio>5.0`. Upgrading to the latest version will mitigate this vulnerability. There are no known workarounds for this vulnerability.",
+  "id": "PYSEC-2024-217",
+  "modified": "2025-01-19T22:56:53.294838Z",
+  "published": "2024-10-10T23:15:02Z",
+  "references": [
+    {
+      "type": "EVIDENCE",
+      "url": "https://github.com/gradio-app/gradio/security/advisories/GHSA-4q3c-cj7g-jcwf"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
   ]
 }

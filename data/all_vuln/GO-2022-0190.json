@@ -1,16 +1,61 @@
 {
-  "id": "GO-2022-0190",
-  "summary": "Directory traversal via \"go get\" command in cmd/go",
-  "details": "The \"go get\" command is vulnerable to directory traversal when executed with the import path of a malicious Go package which contains curly brace (both '{' and '}' characters).\n\nSpecifically, it is only vulnerable in GOPATH mode, but not in module mode (the distinction is documented at https://golang.org/cmd/go/#hdr-Module_aware_go_get). The attacker can cause an arbitrary filesystem write, which can lead to code execution.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2022-0190.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "cmd/go/internal/get",
+            "symbols": [
+              "downloadPackage"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "toolchain",
+        "purl": "pkg:golang/toolchain"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.10.6"
+            },
+            {
+              "introduced": "1.11.0-0"
+            },
+            {
+              "fixed": "1.11.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2018-16874"
   ],
-  "modified": "2024-05-20T16:03:47Z",
-  "published": "2022-08-02T15:44:23Z",
+  "credits": [
+    {
+      "name": "ztz of Tencent Security Platform"
+    }
+  ],
   "database_specific": {
     "review_status": "REVIEWED",
     "url": "https://pkg.go.dev/vuln/GO-2022-0190"
   },
+  "details": "The \"go get\" command is vulnerable to directory traversal when executed with the import path of a malicious Go package which contains curly brace (both '{' and '}' characters).\n\nSpecifically, it is only vulnerable in GOPATH mode, but not in module mode (the distinction is documented at https://golang.org/cmd/go/#hdr-Module_aware_go_get). The attacker can cause an arbitrary filesystem write, which can lead to code execution.",
+  "id": "GO-2022-0190",
+  "modified": "2024-05-20T16:03:47Z",
+  "published": "2022-08-02T15:44:23Z",
   "references": [
     {
       "type": "FIX",
@@ -29,51 +74,6 @@
       "url": "https://groups.google.com/g/golang-announce/c/Kw31K8G7Fi0"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "toolchain",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/toolchain"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.10.6"
-            },
-            {
-              "introduced": "1.11.0-0"
-            },
-            {
-              "fixed": "1.11.3"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "cmd/go/internal/get",
-            "symbols": [
-              "downloadPackage"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2022-0190.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "ztz of Tencent Security Platform"
-    }
-  ]
+  "summary": "Directory traversal via \"go get\" command in cmd/go"
 }

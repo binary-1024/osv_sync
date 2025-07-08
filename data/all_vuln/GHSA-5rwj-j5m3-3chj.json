@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-5rwj-j5m3-3chj",
-  "summary": "Missing Release of Memory after Effective Lifetime in detect-character-encoding",
-  "details": "### Impact\n\nIn detect-character-encoding v0.3.0 and earlier, allocated memory is not released.\n\n### Patches\n\nThe problem has been patched in [detect-character-encoding v0.3.1](https://github.com/sonicdoe/detect-character-encoding/releases/tag/v0.3.1).\n\n### CVSS score\n\n[CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/RL:O/RC:C](https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/RL:O/RC:C)\n\nBase Score: 7.5 (High)\nTemporal Score: 7.2 (High)\n\nSince detect-character-encoding is a library, the scoring is based on the \u201c[reasonable worst-case implementation scenario](https://www.first.org/cvss/v3.1/user-guide#3-7-Scoring-Vulnerabilities-in-Software-Libraries-and-Similar)\u201d, namely, using detect-character-encoding in a program accessible over the internet which becomes unavailable when running out of memory. Depending on your specific implementation, the vulnerability\u2019s severity in your program may be different.\n\n### Proof of concept\n\n```js\nconst express = require(\"express\");\nconst detectCharacterEncoding = require(\"detect-character-encoding\");\n\nconst app = express();\n\napp.get(\"/\", (req, res) => {\n  detectCharacterEncoding(Buffer.from(\"foo\"));\n\n  res.end();\n});\n\napp.listen(3000);\n```\n\n`hey -n 1000000 http://localhost:3000` ([`hey`](https://github.com/rakyll/hey)) causes the Node.js process to consume more and more memory.\n\n### References\n\n- https://github.com/sonicdoe/detect-character-encoding/commit/d44356927b92e3b13e178071bf6d7c671766f588\n- https://github.com/sonicdoe/detect-character-encoding/pull/6",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-5rwj-j5m3-3chj/GHSA-5rwj-j5m3-3chj.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "detect-character-encoding",
+        "purl": "pkg:npm/detect-character-encoding"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.3.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-39176"
   ],
-  "modified": "2023-11-08T04:06:32.587554Z",
-  "published": "2021-09-01T18:25:16Z",
-  "related": [
-    "CVE-2021-39176"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-08-31T18:15:00Z",
-    "github_reviewed_at": "2021-08-31T19:58:46Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-401"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-31T19:58:46Z",
+    "nvd_published_at": "2021-08-31T18:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nIn detect-character-encoding v0.3.0 and earlier, allocated memory is not released.\n\n### Patches\n\nThe problem has been patched in [detect-character-encoding v0.3.1](https://github.com/sonicdoe/detect-character-encoding/releases/tag/v0.3.1).\n\n### CVSS score\n\n[CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/RL:O/RC:C](https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/RL:O/RC:C)\n\nBase Score: 7.5 (High)\nTemporal Score: 7.2 (High)\n\nSince detect-character-encoding is a library, the scoring is based on the \u201c[reasonable worst-case implementation scenario](https://www.first.org/cvss/v3.1/user-guide#3-7-Scoring-Vulnerabilities-in-Software-Libraries-and-Similar)\u201d, namely, using detect-character-encoding in a program accessible over the internet which becomes unavailable when running out of memory. Depending on your specific implementation, the vulnerability\u2019s severity in your program may be different.\n\n### Proof of concept\n\n```js\nconst express = require(\"express\");\nconst detectCharacterEncoding = require(\"detect-character-encoding\");\n\nconst app = express();\n\napp.get(\"/\", (req, res) => {\n  detectCharacterEncoding(Buffer.from(\"foo\"));\n\n  res.end();\n});\n\napp.listen(3000);\n```\n\n`hey -n 1000000 http://localhost:3000` ([`hey`](https://github.com/rakyll/hey)) causes the Node.js process to consume more and more memory.\n\n### References\n\n- https://github.com/sonicdoe/detect-character-encoding/commit/d44356927b92e3b13e178071bf6d7c671766f588\n- https://github.com/sonicdoe/detect-character-encoding/pull/6",
+  "id": "GHSA-5rwj-j5m3-3chj",
+  "modified": "2023-11-08T04:06:32.587554Z",
+  "published": "2021-09-01T18:25:16Z",
   "references": [
     {
       "type": "WEB",
@@ -45,36 +66,15 @@
       "url": "https://github.com/sonicdoe/detect-character-encoding/releases/tag/v0.3.1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "detect-character-encoding",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/detect-character-encoding"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.3.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-5rwj-j5m3-3chj/GHSA-5rwj-j5m3-3chj.json"
-      }
-    }
+  "related": [
+    "CVE-2021-39176"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Missing Release of Memory after Effective Lifetime in detect-character-encoding"
 }

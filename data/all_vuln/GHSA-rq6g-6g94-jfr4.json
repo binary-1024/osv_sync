@@ -1,53 +1,16 @@
 {
-  "id": "GHSA-rq6g-6g94-jfr4",
-  "summary": "starcitizentools/citizen-skin is vulnerable to Stored XSS attack in the legacy search bar through page descriptions",
-  "details": "### Summary\nPage descriptions are inserted into raw HTML without proper sanitization by the Citizen skin when using the old search bar.\n\n### Details\n\nThe descriptions, which are unsanitized, are inserted as raw HTML:\nhttps://github.com/StarCitizenTools/mediawiki-skins-Citizen/blob/d4dfc3697a82948b3b9c4d44e9a273c79bc86b87/resources/skins.citizen.search/templates/TypeaheadListItem.mustache#L18\n\n### PoC\n\n\nAll of the reproduction methods require the command palette to be disabled via `$wgCitizenEnableCommandPalette = false;`.\nAdditionally, the action API must be used as the Search Gateway via  `$wgCitizenSearchGateway = 'mwActionApi';`.\n\n\n#### TextExtracts as the description source\n\n* Enable the TextExtracts extension\n* Add `$wgCitizenSearchDescriptionSource = 'textextracts';` to your LocalSettings.php\n* Create a page called `CitizenXSSTextExtracts` and insert `<img src=\"\" onerror=\"alert('citizen search xss')\">` into it\n* Open the search modal and search for `CitizenXSSTextExtracts`\n\n![image](https://github.com/user-attachments/assets/fbc88458-c429-4f08-9376-584b7db93f58)\n\n\n#### Description2 as the description source\n\n* Enable the Description2 extension\n* Add `$wgEnableMetaDescriptionFunctions = true;` to your LocalSettings.php to enable the `{{#description2:}}` parser function\n* Add `$wgCitizenSearchDescriptionSource = 'pagedescription';` to your LocalSettings.php\n* Create a page called `CitizenXSSDescription2` and insert `{{#description2:<img src=\"\" onerror=\"alert('citizen search xss 2')\">}}` into it\n* Open the search modal and search for `CitizenXSSDescription2`\n\n![image](https://github.com/user-attachments/assets/24513eba-dbec-4bc6-ac06-6276d509fcab)\n\n\n#### Wikibase as the description source\n\nNote that this method is currently untested due to issues I experienced when setting up Wikibase.\n\n* Enable Wikibase client + repo in your wiki\n* Add `$wgCitizenSearchDescriptionSource = 'wikidata';` to your LocalSettings.php\n* Have an item with a description like `<img src=\"\" onerror=\"alert('citizen search xss 3')\">`\n* Open the search modal and search for the page linked to the item\n\n\n#### ShortDescription as the description source\n\n* Enable the ShortDescription extension\n* Add `$wgCitizenSearchDescriptionSource = 'wikidata';` to your LocalSettings.php\n* Create a page called `CitizenXSSDescription4` and insert `{{SHORTDESC:<img src=\"\" onerror=\"alert('citizen search xss 4')\">}}` into it\n* Open the search modal and search for `CitizenXSSDescription4`\n\n### Impact\n\nOn all wikis that use the aforementioned settings (command palette disabled or using an old release where the old search bar is still used; using the action API as the search gateway), anybody who can edit pages is able to insert XSS payloads into the DOM for other users who are searching for specific pages.",
-  "aliases": [
-    "CVE-2025-53368"
-  ],
-  "modified": "2025-07-03T22:19:53.807674Z",
-  "published": "2025-07-03T20:29:08Z",
-  "database_specific": {
-    "nvd_published_at": "2025-07-03T20:15:23Z",
-    "cwe_ids": [
-      "CWE-79"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-07-03T20:29:08Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/security/advisories/GHSA-rq6g-6g94-jfr4"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-53368"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/aedbceb3380bb48db6b59e272fc187529c71c8ca"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/releases/tag/v3.4.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-rq6g-6g94-jfr4/GHSA-rq6g-6g94-jfr4.json"
+      },
       "package": {
-        "name": "starcitizentools/citizen-skin",
         "ecosystem": "Packagist",
+        "name": "starcitizentools/citizen-skin",
         "purl": "pkg:composer/starcitizentools/citizen-skin"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "1.9.4"
@@ -55,7 +18,8 @@
             {
               "fixed": "3.4.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -192,17 +156,53 @@
         "v3.3.0",
         "v3.3.1",
         "v3.3.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-rq6g-6g94-jfr4/GHSA-rq6g-6g94-jfr4.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-53368"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-03T20:29:08Z",
+    "nvd_published_at": "2025-07-03T20:15:23Z",
+    "severity": "HIGH"
+  },
+  "details": "### Summary\nPage descriptions are inserted into raw HTML without proper sanitization by the Citizen skin when using the old search bar.\n\n### Details\n\nThe descriptions, which are unsanitized, are inserted as raw HTML:\nhttps://github.com/StarCitizenTools/mediawiki-skins-Citizen/blob/d4dfc3697a82948b3b9c4d44e9a273c79bc86b87/resources/skins.citizen.search/templates/TypeaheadListItem.mustache#L18\n\n### PoC\n\n\nAll of the reproduction methods require the command palette to be disabled via `$wgCitizenEnableCommandPalette = false;`.\nAdditionally, the action API must be used as the Search Gateway via  `$wgCitizenSearchGateway = 'mwActionApi';`.\n\n\n#### TextExtracts as the description source\n\n* Enable the TextExtracts extension\n* Add `$wgCitizenSearchDescriptionSource = 'textextracts';` to your LocalSettings.php\n* Create a page called `CitizenXSSTextExtracts` and insert `<img src=\"\" onerror=\"alert('citizen search xss')\">` into it\n* Open the search modal and search for `CitizenXSSTextExtracts`\n\n![image](https://github.com/user-attachments/assets/fbc88458-c429-4f08-9376-584b7db93f58)\n\n\n#### Description2 as the description source\n\n* Enable the Description2 extension\n* Add `$wgEnableMetaDescriptionFunctions = true;` to your LocalSettings.php to enable the `{{#description2:}}` parser function\n* Add `$wgCitizenSearchDescriptionSource = 'pagedescription';` to your LocalSettings.php\n* Create a page called `CitizenXSSDescription2` and insert `{{#description2:<img src=\"\" onerror=\"alert('citizen search xss 2')\">}}` into it\n* Open the search modal and search for `CitizenXSSDescription2`\n\n![image](https://github.com/user-attachments/assets/24513eba-dbec-4bc6-ac06-6276d509fcab)\n\n\n#### Wikibase as the description source\n\nNote that this method is currently untested due to issues I experienced when setting up Wikibase.\n\n* Enable Wikibase client + repo in your wiki\n* Add `$wgCitizenSearchDescriptionSource = 'wikidata';` to your LocalSettings.php\n* Have an item with a description like `<img src=\"\" onerror=\"alert('citizen search xss 3')\">`\n* Open the search modal and search for the page linked to the item\n\n\n#### ShortDescription as the description source\n\n* Enable the ShortDescription extension\n* Add `$wgCitizenSearchDescriptionSource = 'wikidata';` to your LocalSettings.php\n* Create a page called `CitizenXSSDescription4` and insert `{{SHORTDESC:<img src=\"\" onerror=\"alert('citizen search xss 4')\">}}` into it\n* Open the search modal and search for `CitizenXSSDescription4`\n\n### Impact\n\nOn all wikis that use the aforementioned settings (command palette disabled or using an old release where the old search bar is still used; using the action API as the search gateway), anybody who can edit pages is able to insert XSS payloads into the DOM for other users who are searching for specific pages.",
+  "id": "GHSA-rq6g-6g94-jfr4",
+  "modified": "2025-07-03T22:19:53.807674Z",
+  "published": "2025-07-03T20:29:08Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/security/advisories/GHSA-rq6g-6g94-jfr4"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-53368"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/aedbceb3380bb48db6b59e272fc187529c71c8ca"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenTools/mediawiki-skins-Citizen/releases/tag/v3.4.0"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "starcitizentools/citizen-skin is vulnerable to Stored XSS attack in the legacy search bar through page descriptions"
 }

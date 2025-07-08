@@ -1,24 +1,48 @@
 {
-  "id": "GHSA-7899-w6c4-vqc4",
-  "summary": "@misskey-dev/summaly Redirect Filter Bypass",
-  "details": "### Summary\nA logic error in the main `summaly` function causes the `allowRedirects` option to never be passed to any plugins, and as a result, isn't enforced.\n\n### Details\nIn the main `summaly` function, a new `scrapingOptions` object is created and passed to either the matched plugin, if any, or the default summarize function. The issue here is that the new `scrapingOptions` object is not provided the `allowRedirects` property of `opts`.\n\n### PoC\n- Publish a post containing a link to any URL that redirects on Misskey.\n- A preview will be generated for the target of the redirect, despite Misskey passing `allowRedirects: false`.\n\n### Impact\nMisskey will follow redirects, despite explicitly requesting not to.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-7899-w6c4-vqc4/GHSA-7899-w6c4-vqc4.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@misskey-dev/summaly",
+        "purl": "pkg:npm/%40misskey-dev/summaly"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.0.1"
+            },
+            {
+              "fixed": "5.2.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-46553"
   ],
-  "modified": "2025-05-05T22:06:39Z",
-  "published": "2025-05-05T17:03:20Z",
   "database_specific": {
-    "nvd_published_at": "2025-05-05T19:15:56Z",
     "cwe_ids": [
       "CWE-601",
       "CWE-665",
       "CWE-669",
       "CWE-693"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-05-05T17:03:20Z"
+    "github_reviewed_at": "2025-05-05T17:03:20Z",
+    "nvd_published_at": "2025-05-05T19:15:56Z",
+    "severity": "LOW"
   },
+  "details": "### Summary\nA logic error in the main `summaly` function causes the `allowRedirects` option to never be passed to any plugins, and as a result, isn't enforced.\n\n### Details\nIn the main `summaly` function, a new `scrapingOptions` object is created and passed to either the matched plugin, if any, or the default summarize function. The issue here is that the new `scrapingOptions` object is not provided the `allowRedirects` property of `opts`.\n\n### PoC\n- Publish a post containing a link to any URL that redirects on Misskey.\n- A preview will be generated for the target of the redirect, despite Misskey passing `allowRedirects: false`.\n\n### Impact\nMisskey will follow redirects, despite explicitly requesting not to.",
+  "id": "GHSA-7899-w6c4-vqc4",
+  "modified": "2025-05-05T22:06:39Z",
+  "published": "2025-05-05T17:03:20Z",
   "references": [
     {
       "type": "WEB",
@@ -37,36 +61,12 @@
       "url": "https://github.com/misskey-dev/summaly"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@misskey-dev/summaly",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40misskey-dev/summaly"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "3.0.1"
-            },
-            {
-              "fixed": "5.2.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-7899-w6c4-vqc4/GHSA-7899-w6c4-vqc4.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:N/SA:N/E:P"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "@misskey-dev/summaly Redirect Filter Bypass"
 }

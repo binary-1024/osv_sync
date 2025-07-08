@@ -1,24 +1,122 @@
 {
-  "id": "GHSA-6h7w-fc84-x7p6",
-  "summary": "StaticFile.fromUrl can leak presence of a directory",
-  "details": "### Impact\n\n`StaticFile.fromUrl` can leak the presence of a directory on a server when the `URL` scheme is not `file://`, and the URL points to a fetchable resource under its scheme and authority.  The function returns `F[None]`, indicating no resource, if `url.getFile` is a directory, without first checking the scheme or authority of the URL.  If a URL connection to the scheme and URL would return a stream, and the path in the URL exists as a directory on the server, the presence of the directory on the server could be inferred from the 404 response.  The contents and other metadata about the directory are not exposed.\n\nThis affects http4s versions:\n* 0.21.7 through 0.21.23\n* 0.22.0-M1 through 0.22.0-M8\n* 0.23.0-M1\n* 1.0.0-M1 through 1.0.0-M22\n\n### Patches\n\nThe [patch](https://github.com/http4s/http4s/commit/52e1890665410b4385e37b96bc49c5e3c708e4e9) is available in the following versions:\n\n* v0.21.24\n* v0.22.0-RC1\n* v0.23.0-RC1\n* v1.0.0-M23\n\nNote: a previous version of this advisory incorrectly referred to 0.22.0-M9 and 0.23.0-M2.\n\n### Workarounds\n\nDon't call `StaticFile.fromUrl` with non-file URLs.\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [the http4s repository](https://github.com/http4s/http4s)\n* Disclose further vulnerabilities according to the [http4s security policy](https://github.com/http4s/http4s/blob/main/SECURITY.md)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-6h7w-fc84-x7p6/GHSA-6h7w-fc84-x7p6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.http4s:http4s-core",
+        "purl": "pkg:maven/org.http4s/http4s-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.21.7"
+            },
+            {
+              "fixed": "0.21.24"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 0.22.0-M8",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-6h7w-fc84-x7p6/GHSA-6h7w-fc84-x7p6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.http4s:http4s-core",
+        "purl": "pkg:maven/org.http4s/http4s-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.22.0-M1"
+            },
+            {
+              "fixed": "0.22.0-RC1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-6h7w-fc84-x7p6/GHSA-6h7w-fc84-x7p6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.http4s:http4s-core",
+        "purl": "pkg:maven/org.http4s/http4s-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.23.0-M1"
+            },
+            {
+              "fixed": "0.23.0-RC1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "0.23.0-M1"
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.0.0-M22",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-6h7w-fc84-x7p6/GHSA-6h7w-fc84-x7p6.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.http4s:http4s-core",
+        "purl": "pkg:maven/org.http4s/http4s-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.0.0-M1"
+            },
+            {
+              "fixed": "1.0.0-M23"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2021-32643"
   ],
-  "modified": "2023-11-08T04:05:55.488560Z",
-  "published": "2021-05-28T15:54:39Z",
-  "related": [
-    "CVE-2021-32643"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-05-27T18:15:00Z",
-    "github_reviewed_at": "2021-05-27T21:17:06Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-22"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-05-27T21:17:06Z",
+    "nvd_published_at": "2021-05-27T18:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\n`StaticFile.fromUrl` can leak the presence of a directory on a server when the `URL` scheme is not `file://`, and the URL points to a fetchable resource under its scheme and authority.  The function returns `F[None]`, indicating no resource, if `url.getFile` is a directory, without first checking the scheme or authority of the URL.  If a URL connection to the scheme and URL would return a stream, and the path in the URL exists as a directory on the server, the presence of the directory on the server could be inferred from the 404 response.  The contents and other metadata about the directory are not exposed.\n\nThis affects http4s versions:\n* 0.21.7 through 0.21.23\n* 0.22.0-M1 through 0.22.0-M8\n* 0.23.0-M1\n* 1.0.0-M1 through 1.0.0-M22\n\n### Patches\n\nThe [patch](https://github.com/http4s/http4s/commit/52e1890665410b4385e37b96bc49c5e3c708e4e9) is available in the following versions:\n\n* v0.21.24\n* v0.22.0-RC1\n* v0.23.0-RC1\n* v1.0.0-M23\n\nNote: a previous version of this advisory incorrectly referred to 0.22.0-M9 and 0.23.0-M2.\n\n### Workarounds\n\nDon't call `StaticFile.fromUrl` with non-file URLs.\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [the http4s repository](https://github.com/http4s/http4s)\n* Disclose further vulnerabilities according to the [http4s security policy](https://github.com/http4s/http4s/blob/main/SECURITY.md)\n",
+  "id": "GHSA-6h7w-fc84-x7p6",
+  "modified": "2023-11-08T04:05:55.488560Z",
+  "published": "2021-05-28T15:54:39Z",
   "references": [
     {
       "type": "WEB",
@@ -37,113 +135,15 @@
       "url": "https://mvnrepository.com/artifact/org.http4s/http4s-core"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.http4s:http4s-core",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.http4s/http4s-core"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0.21.7"
-            },
-            {
-              "fixed": "0.21.24"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-6h7w-fc84-x7p6/GHSA-6h7w-fc84-x7p6.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.http4s:http4s-core",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.http4s/http4s-core"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0.22.0-M1"
-            },
-            {
-              "fixed": "0.22.0-RC1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 0.22.0-M8",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-6h7w-fc84-x7p6/GHSA-6h7w-fc84-x7p6.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.http4s:http4s-core",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.http4s/http4s-core"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0.23.0-M1"
-            },
-            {
-              "fixed": "0.23.0-RC1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "0.23.0-M1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-6h7w-fc84-x7p6/GHSA-6h7w-fc84-x7p6.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.http4s:http4s-core",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.http4s/http4s-core"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "1.0.0-M1"
-            },
-            {
-              "fixed": "1.0.0-M23"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 1.0.0-M22",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-6h7w-fc84-x7p6/GHSA-6h7w-fc84-x7p6.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-32643"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "StaticFile.fromUrl can leak presence of a directory"
 }

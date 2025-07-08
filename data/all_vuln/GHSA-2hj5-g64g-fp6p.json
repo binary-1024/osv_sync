@@ -1,26 +1,116 @@
 {
-  "id": "GHSA-2hj5-g64g-fp6p",
-  "summary": "Argo CD allows cross-site scripting on repositories page",
-  "details": "### Impact\nThis vulnerability allows an attacker to perform arbitrary actions on behalf of the victim via the API, such as creating, modifying, and deleting Kubernetes resources. Due to the improper filtering of URL protocols in the repository page, an attacker can achieve cross-site scripting with permission to edit the repository.\n\nIn `ui/src/app/shared/components/urls.ts`, the following code exists to parse the repository URL.\n\nhttps://github.com/argoproj/argo-cd/blob/0ae5882d5ae9fe88efc51f65ca8543fb8c3a0aa1/ui/src/app/shared/components/urls.ts#L14-L26\n\nSince this code doesn't validate the protocol of repository URLs, it's possible to inject `javascript:` URLs here.\n\nhttps://github.com/argoproj/argo-cd/blob/0ae5882d5ae9fe88efc51f65ca8543fb8c3a0aa1/ui/src/app/shared/components/repo.tsx#L5-L7\n\nAs the return value of this function is used in the `href` attribute of the `a` tag, it's possible to achieve cross-site scripting by using `javascript:` URLs.\n\nBrowsers may return the proper hostname for `javascript:` URLs, allowing exploitation of this vulnerability.\n\n### Patches\nA patch for this vulnerability has been released in the following Argo CD versions:\n- v3.0.4\n- v2.14.13\n- v2.13.8\n\n\nThe patch incorporates a way to validate the URL being passed in. Returning `null` if the validation fails.\n\n### Workarounds\nThere are no workarounds other than depending on the browser to filter the URL. \n\n### Credits\nDisclosed by @Ry0taK [RyotaK](https://ryotak.net). \n\n### For more information\nOpen an issue in [the Argo CD issue tracker](https://github.com/argoproj/argo-cd/issues) or [discussions](https://github.com/argoproj/argo-cd/discussions)\nJoin us on [Slack](https://argoproj.github.io/community/join-slack) in channel #argo-cd",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2hj5-g64g-fp6p/GHSA-2hj5-g64g-fp6p.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/argoproj/argo-cd",
+        "purl": "pkg:golang/github.com/argoproj/argo-cd"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.2.0-rc1"
+            },
+            {
+              "last_affected": "1.8.7"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2hj5-g64g-fp6p/GHSA-2hj5-g64g-fp6p.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/argoproj/argo-cd/v2",
+        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0-rc3"
+            },
+            {
+              "fixed": "2.13.8"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2hj5-g64g-fp6p/GHSA-2hj5-g64g-fp6p.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/argoproj/argo-cd/v2",
+        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.14.0-rc1"
+            },
+            {
+              "fixed": "2.14.13"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2hj5-g64g-fp6p/GHSA-2hj5-g64g-fp6p.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/argoproj/argo-cd/v3",
+        "purl": "pkg:golang/github.com/argoproj/argo-cd/v3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-argo-cd-2025-47933",
     "CVE-2025-47933",
     "GO-2025-3720"
   ],
-  "modified": "2025-05-31T06:27:09.890132Z",
-  "published": "2025-05-28T17:36:32Z",
-  "related": [
-    "CGA-3wcq-h426-66g8"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-05-29T20:15:27Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-05-28T17:36:32Z"
+    "github_reviewed_at": "2025-05-28T17:36:32Z",
+    "nvd_published_at": "2025-05-29T20:15:27Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\nThis vulnerability allows an attacker to perform arbitrary actions on behalf of the victim via the API, such as creating, modifying, and deleting Kubernetes resources. Due to the improper filtering of URL protocols in the repository page, an attacker can achieve cross-site scripting with permission to edit the repository.\n\nIn `ui/src/app/shared/components/urls.ts`, the following code exists to parse the repository URL.\n\nhttps://github.com/argoproj/argo-cd/blob/0ae5882d5ae9fe88efc51f65ca8543fb8c3a0aa1/ui/src/app/shared/components/urls.ts#L14-L26\n\nSince this code doesn't validate the protocol of repository URLs, it's possible to inject `javascript:` URLs here.\n\nhttps://github.com/argoproj/argo-cd/blob/0ae5882d5ae9fe88efc51f65ca8543fb8c3a0aa1/ui/src/app/shared/components/repo.tsx#L5-L7\n\nAs the return value of this function is used in the `href` attribute of the `a` tag, it's possible to achieve cross-site scripting by using `javascript:` URLs.\n\nBrowsers may return the proper hostname for `javascript:` URLs, allowing exploitation of this vulnerability.\n\n### Patches\nA patch for this vulnerability has been released in the following Argo CD versions:\n- v3.0.4\n- v2.14.13\n- v2.13.8\n\n\nThe patch incorporates a way to validate the URL being passed in. Returning `null` if the validation fails.\n\n### Workarounds\nThere are no workarounds other than depending on the browser to filter the URL. \n\n### Credits\nDisclosed by @Ry0taK [RyotaK](https://ryotak.net). \n\n### For more information\nOpen an issue in [the Argo CD issue tracker](https://github.com/argoproj/argo-cd/issues) or [discussions](https://github.com/argoproj/argo-cd/discussions)\nJoin us on [Slack](https://argoproj.github.io/community/join-slack) in channel #argo-cd",
+  "id": "GHSA-2hj5-g64g-fp6p",
+  "modified": "2025-05-31T06:27:09.890132Z",
+  "published": "2025-05-28T17:36:32Z",
   "references": [
     {
       "type": "WEB",
@@ -39,105 +129,15 @@
       "url": "https://github.com/argoproj/argo-cd"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/argoproj/argo-cd",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/argoproj/argo-cd"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.2.0-rc1"
-            },
-            {
-              "last_affected": "1.8.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2hj5-g64g-fp6p/GHSA-2hj5-g64g-fp6p.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/argoproj/argo-cd/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.0.0-rc3"
-            },
-            {
-              "fixed": "2.13.8"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2hj5-g64g-fp6p/GHSA-2hj5-g64g-fp6p.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/argoproj/argo-cd/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.14.0-rc1"
-            },
-            {
-              "fixed": "2.14.13"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2hj5-g64g-fp6p/GHSA-2hj5-g64g-fp6p.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/argoproj/argo-cd/v3",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/argoproj/argo-cd/v3"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.0.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-2hj5-g64g-fp6p/GHSA-2hj5-g64g-fp6p.json"
-      }
-    }
+  "related": [
+    "CGA-3wcq-h426-66g8"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Argo CD allows cross-site scripting on repositories page"
 }

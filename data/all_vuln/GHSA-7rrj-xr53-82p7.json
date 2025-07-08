@@ -1,26 +1,92 @@
 {
-  "id": "GHSA-7rrj-xr53-82p7",
-  "summary": "Tokio reject_remote_clients configuration may get dropped when creating a Windows named pipe",
-  "details": "### Impact\n\nWhen configuring a Windows named pipe server, setting `pipe_mode` will reset `reject_remote_clients` to `false`. If the application has previously configured `reject_remote_clients` to `true`, this effectively undoes the configuration. This also applies if `reject_remote_clients` is not explicitly set as this is the default configuration and is cleared by calling `pipe_mode`.\n\nRemote clients may only access the named pipe if the named pipe's associated path is accessible via a publically shared folder (SMB).\n\n### Patches\n\nThe following versions have been patched:\n* 1.23.1\n* 1.20.3\n* 1.18.4\n\nThe fix will also be present in all releases starting from version 1.24.0.\n\nNamed pipes were introduced to Tokio in version 1.7.0, so releases older than 1.7.0 are not affected.\n\n### Workarounds\n\nEnsure that `pipe_mode` is set **first** after initializing a `ServerOptions`. For example:\n\n```rust\nlet mut opts = ServerOptions::new();\nopts.pipe_mode(PipeMode::Message);\nopts.reject_remote_clients(true);\n```\n\n### References\n\nhttps://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea#pipe_reject_remote_clients\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-7rrj-xr53-82p7/GHSA-7rrj-xr53-82p7.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "tokio",
+        "purl": "pkg:cargo/tokio"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.7.0"
+            },
+            {
+              "fixed": "1.18.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-7rrj-xr53-82p7/GHSA-7rrj-xr53-82p7.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "tokio",
+        "purl": "pkg:cargo/tokio"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.19.0"
+            },
+            {
+              "fixed": "1.20.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-7rrj-xr53-82p7/GHSA-7rrj-xr53-82p7.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "tokio",
+        "purl": "pkg:cargo/tokio"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.21.0"
+            },
+            {
+              "fixed": "1.23.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-22466",
     "RUSTSEC-2023-0001"
   ],
-  "modified": "2023-11-08T04:11:35.862060Z",
-  "published": "2023-01-06T21:40:58Z",
-  "related": [
-    "CGA-96vq-3673-8rvq",
-    "CVE-2023-22466"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-01-04T22:15:00Z",
-    "github_reviewed_at": "2023-01-06T21:40:58Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-665"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-01-06T21:40:58Z",
+    "nvd_published_at": "2023-01-04T22:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nWhen configuring a Windows named pipe server, setting `pipe_mode` will reset `reject_remote_clients` to `false`. If the application has previously configured `reject_remote_clients` to `true`, this effectively undoes the configuration. This also applies if `reject_remote_clients` is not explicitly set as this is the default configuration and is cleared by calling `pipe_mode`.\n\nRemote clients may only access the named pipe if the named pipe's associated path is accessible via a publically shared folder (SMB).\n\n### Patches\n\nThe following versions have been patched:\n* 1.23.1\n* 1.20.3\n* 1.18.4\n\nThe fix will also be present in all releases starting from version 1.24.0.\n\nNamed pipes were introduced to Tokio in version 1.7.0, so releases older than 1.7.0 are not affected.\n\n### Workarounds\n\nEnsure that `pipe_mode` is set **first** after initializing a `ServerOptions`. For example:\n\n```rust\nlet mut opts = ServerOptions::new();\nopts.pipe_mode(PipeMode::Message);\nopts.reject_remote_clients(true);\n```\n\n### References\n\nhttps://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea#pipe_reject_remote_clients\n",
+  "id": "GHSA-7rrj-xr53-82p7",
+  "modified": "2023-11-08T04:11:35.862060Z",
+  "published": "2023-01-06T21:40:58Z",
   "references": [
     {
       "type": "WEB",
@@ -51,82 +117,16 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2023-0001.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tokio",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/tokio"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.7.0"
-            },
-            {
-              "fixed": "1.18.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-7rrj-xr53-82p7/GHSA-7rrj-xr53-82p7.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tokio",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/tokio"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.19.0"
-            },
-            {
-              "fixed": "1.20.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-7rrj-xr53-82p7/GHSA-7rrj-xr53-82p7.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tokio",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/tokio"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.21.0"
-            },
-            {
-              "fixed": "1.23.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-7rrj-xr53-82p7/GHSA-7rrj-xr53-82p7.json"
-      }
-    }
+  "related": [
+    "CGA-96vq-3673-8rvq",
+    "CVE-2023-22466"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Tokio reject_remote_clients configuration may get dropped when creating a Windows named pipe"
 }

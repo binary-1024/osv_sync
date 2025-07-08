@@ -1,59 +1,72 @@
 {
-  "id": "SUSE-SU-2017:2963-1",
-  "summary": "Security update for kvm",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2963-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kvm": "1.4.2-60.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
+        "name": "kvm",
+        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.2-60.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2963-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kvm": "1.4.2-60.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
+        "name": "kvm",
+        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.2-60.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for kvm fixes several issues.\n\nThese security issues were fixed:\n\n- CVE-2016-9602: The VirtFS host directory sharing via Plan 9 File System(9pfs) support was vulnerable to an improper link following issue which allowed a privileged user inside guest to access host file system beyond the shared folder and potentially escalating their privileges on a host (bsc#1020427)\n- CVE-2016-9603: A privileged user within the guest VM could have caused a heap overflow in the device model process, potentially escalating their privileges to that of the device model process (bsc#1028656)\n- CVE-2017-10664: qemu-nbd did not ignore SIGPIPE, which allowed remote attackers to cause a denial of service (daemon crash) by disconnecting during a server-to-client reply attempt (bsc#1046636)\n- CVE-2017-10806: Stack-based buffer overflow allowed local guest OS users to cause a denial of service (QEMU process crash) via vectors related to logging debug messages (bsc#1047674).\n- CVE-2017-11334: The address_space_write_continue function allowed local guest OS privileged users to cause a denial of service (out-of-bounds access and guest instance crash) by leveraging use of qemu_map_ram_ptr to access guest ram block area (bsc#1048902).\n- CVE-2017-11434: The dhcp_decode function in slirp/bootp.c allowed local guest OS users to cause a denial of service (out-of-bounds read) via a crafted DHCP options string (bsc#1049381)\n- CVE-2017-13672: The VGA display emulator support allowed local guest OS privileged users to cause a denial of service (out-of-bounds read and QEMU process crash) via vectors involving display update (bsc#1056334).\n- CVE-2017-14167: Integer overflow in the load_multiboot function allowed local guest OS users to execute arbitrary code on the host via crafted multiboot header address values, which trigger an out-of-bounds write (bsc#1057585).\n- CVE-2017-15038: Race condition in the v9fs_xattrwalk function local guest OS users to obtain sensitive information from host heap memory via vectors related to reading extended attributes (bsc#1062069).\n- CVE-2017-15289: The mode4and5 write functions allowed local OS guest privileged users to cause a denial of service (out-of-bounds write access and Qemu process crash) via vectors related to dst calculation (bsc#1063122).\n- CVE-2017-5579: The 16550A UART serial device emulation support was vulnerable to a memory leakage issue allowing a privileged user to cause a DoS and/or potentially crash the Qemu process on the host (bsc#1021741)\n- CVE-2017-5973: A infinite loop while doing control transfer in xhci_kick_epctx allowed privileged user inside the guest to crash the host process resulting in DoS (bsc#1025109)\n- CVE-2017-6505: The ohci_service_ed_list function allowed local guest OS users to cause a denial of service (infinite loop) via vectors involving the number of link endpoint list descriptors (bsc#1028184)\n- CVE-2017-7471: The VirtFS host directory sharing via Plan 9 File System(9pfs) support was vulnerable to an improper access control issue which allowed a privileged user inside guest to access host file system beyond the shared folder and potentially escalating their privileges on a host (bsc#1034866)\n- CVE-2017-7493: The VirtFS, host directory sharing via Plan 9 File System(9pfs) support, was vulnerable to an improper access control issue. It could occur while accessing virtfs metadata files in mapped-file security mode. A guest user could have used this flaw to escalate their privileges inside guest (bsc#1039495)\n- CVE-2017-7718: hw/display/cirrus_vga_rop.h allowed local guest OS privileged users to cause a denial of service (out-of-bounds read and QEMU process crash) via vectors related to copying VGA data via the cirrus_bitblt_rop_fwd_transp_ and cirrus_bitblt_rop_fwd_ functions (bsc#1034908)\n- CVE-2017-7980: An out-of-bounds r/w access issues in the Cirrus CLGD 54xx VGA Emulator support allowed privileged user inside guest to use this flaw to crash the Qemu process resulting in DoS or potentially execute arbitrary code on a host with privileges of Qemu process on the host (bsc#1035406)\n- CVE-2017-8086: A memory leak in the v9fs_list_xattr function in hw/9pfs/9p-xattr.c allowed local guest OS privileged users to cause a denial of service (memory consumption) via vectors involving the orig_value variable (bsc#1035950)\n- CVE-2017-8309: Memory leak in the audio/audio.c allowed remote attackers to cause a denial of service (memory consumption) by repeatedly starting and stopping audio capture (bsc#1037242)\n- CVE-2017-9330: USB OHCI Emulation in qemu allowed local guest OS users to cause a denial of service (infinite loop) by leveraging an incorrect return value (bsc#1042159)\n- CVE-2017-9373: The IDE AHCI Emulation support was vulnerable to a host memory leakage issue, which allowed a privileged user inside guest to leak host memory resulting in DoS (bsc#1042801)\n- CVE-2017-9375: The USB xHCI controller emulator support was vulnerable to an infinite recursive call loop issue, which allowed a privileged user inside guest to crash the Qemu process resulting in DoS (bsc#1042800)\n- CVE-2017-9503: The MegaRAID SAS 8708EM2 Host Bus Adapter emulation support was vulnerable to a null pointer dereference issue which allowed a privileged user inside guest to crash the Qemu process on the host resulting in DoS (bsc#1043296)\n- Privilege escalation in TCG mode (bsc#1030624)\n\nThese non-security issues were fixed:\n\n- bsc#1038396: Fixed 12 tempest tests\n- bsc#1045035: Fixed regression introduced by previous virtfs security fixes\n- bsc#1034044: Prevent KVM guests stuck when waiting for sg_io() completion\n- bsc#1031051: Prevent I/O errors when using pvmove with disk device=lun\n- bsc#1049785: Make virsh dump output readable by crash \n",
+  "id": "SUSE-SU-2017:2963-1",
   "modified": "2025-05-02T04:05:41.681197Z",
   "published": "2017-11-09T15:17:11Z",
-  "related": [
-    "CVE-2016-9602",
-    "CVE-2016-9603",
-    "CVE-2017-10664",
-    "CVE-2017-10806",
-    "CVE-2017-11334",
-    "CVE-2017-11434",
-    "CVE-2017-13672",
-    "CVE-2017-14167",
-    "CVE-2017-15038",
-    "CVE-2017-15289",
-    "CVE-2017-5579",
-    "CVE-2017-5973",
-    "CVE-2017-6505",
-    "CVE-2017-7471",
-    "CVE-2017-7493",
-    "CVE-2017-7718",
-    "CVE-2017-7980",
-    "CVE-2017-8086",
-    "CVE-2017-8309",
-    "CVE-2017-9330",
-    "CVE-2017-9373",
-    "CVE-2017-9375",
-    "CVE-2017-9503"
-  ],
-  "upstream": [
-    "CVE-2016-9602",
-    "CVE-2016-9603",
-    "CVE-2017-10664",
-    "CVE-2017-10806",
-    "CVE-2017-11334",
-    "CVE-2017-11434",
-    "CVE-2017-13672",
-    "CVE-2017-14167",
-    "CVE-2017-15038",
-    "CVE-2017-15289",
-    "CVE-2017-5579",
-    "CVE-2017-5973",
-    "CVE-2017-6505",
-    "CVE-2017-7471",
-    "CVE-2017-7493",
-    "CVE-2017-7718",
-    "CVE-2017-7980",
-    "CVE-2017-8086",
-    "CVE-2017-8309",
-    "CVE-2017-9330",
-    "CVE-2017-9373",
-    "CVE-2017-9375",
-    "CVE-2017-9503"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -268,69 +281,56 @@
       "url": "https://www.suse.com/security/cve/CVE-2017-9503"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kvm",
-        "ecosystem": "SUSE:Linux Enterprise Server 11 SP4",
-        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.4.2-60.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "kvm": "1.4.2-60.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2963-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kvm",
-        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 11 SP4",
-        "purl": "pkg:rpm/suse/kvm&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2011%20SP4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.4.2-60.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "kvm": "1.4.2-60.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2017:2963-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-9602",
+    "CVE-2016-9603",
+    "CVE-2017-10664",
+    "CVE-2017-10806",
+    "CVE-2017-11334",
+    "CVE-2017-11434",
+    "CVE-2017-13672",
+    "CVE-2017-14167",
+    "CVE-2017-15038",
+    "CVE-2017-15289",
+    "CVE-2017-5579",
+    "CVE-2017-5973",
+    "CVE-2017-6505",
+    "CVE-2017-7471",
+    "CVE-2017-7493",
+    "CVE-2017-7718",
+    "CVE-2017-7980",
+    "CVE-2017-8086",
+    "CVE-2017-8309",
+    "CVE-2017-9330",
+    "CVE-2017-9373",
+    "CVE-2017-9375",
+    "CVE-2017-9503"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for kvm",
+  "upstream": [
+    "CVE-2016-9602",
+    "CVE-2016-9603",
+    "CVE-2017-10664",
+    "CVE-2017-10806",
+    "CVE-2017-11334",
+    "CVE-2017-11434",
+    "CVE-2017-13672",
+    "CVE-2017-14167",
+    "CVE-2017-15038",
+    "CVE-2017-15289",
+    "CVE-2017-5579",
+    "CVE-2017-5973",
+    "CVE-2017-6505",
+    "CVE-2017-7471",
+    "CVE-2017-7493",
+    "CVE-2017-7718",
+    "CVE-2017-7980",
+    "CVE-2017-8086",
+    "CVE-2017-8309",
+    "CVE-2017-9330",
+    "CVE-2017-9373",
+    "CVE-2017-9375",
+    "CVE-2017-9503"
+  ]
 }

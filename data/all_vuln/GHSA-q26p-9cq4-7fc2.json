@@ -1,23 +1,47 @@
 {
-  "id": "GHSA-q26p-9cq4-7fc2",
-  "summary": "Go Ethereum vulnerable to DoS via malicious p2p message",
-  "details": "### Impact\n\nA vulnerable node can be forced to shutdown/crash using a specially crafted message.\n\nDuring the peer-to-peer connection handshake, a shared secret key is computed. The implementation\ndid not verify whether the EC public key provided by the remote party is a valid point on the secp256k1 curve.\nBy simply sending an all-zero public key, a crash could be induced due to unexpected results from the handshake.\n\nThe issue was fixed by adding a curve point validity check in https://github.com/ethereum/go-ethereum/commit/159fb1a1db551c544978dc16a5568a4730b4abf3\n\n### Patches\n\nA fix has been included in geth version 1.14.13 and onwards.\n\n### Workarounds\n\nUnfortunately, no workaround is available.\n\n### Credits\n\nThis issue was originally reported to Polygon Security by David Matosse (@iam-ned).",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-q26p-9cq4-7fc2/GHSA-q26p-9cq4-7fc2.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/ethereum/go-ethereum",
+        "purl": "pkg:golang/github.com/ethereum/go-ethereum"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.14.0"
+            },
+            {
+              "fixed": "1.14.13"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-24883",
     "GO-2025-3436"
   ],
-  "modified": "2025-03-17T20:25:21Z",
-  "published": "2025-01-30T17:51:57Z",
   "database_specific": {
-    "nvd_published_at": "2025-01-30T16:15:31Z",
     "cwe_ids": [
       "CWE-20",
       "CWE-248"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-01-30T17:51:57Z"
+    "github_reviewed_at": "2025-01-30T17:51:57Z",
+    "nvd_published_at": "2025-01-30T16:15:31Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nA vulnerable node can be forced to shutdown/crash using a specially crafted message.\n\nDuring the peer-to-peer connection handshake, a shared secret key is computed. The implementation\ndid not verify whether the EC public key provided by the remote party is a valid point on the secp256k1 curve.\nBy simply sending an all-zero public key, a crash could be induced due to unexpected results from the handshake.\n\nThe issue was fixed by adding a curve point validity check in https://github.com/ethereum/go-ethereum/commit/159fb1a1db551c544978dc16a5568a4730b4abf3\n\n### Patches\n\nA fix has been included in geth version 1.14.13 and onwards.\n\n### Workarounds\n\nUnfortunately, no workaround is available.\n\n### Credits\n\nThis issue was originally reported to Polygon Security by David Matosse (@iam-ned).",
+  "id": "GHSA-q26p-9cq4-7fc2",
+  "modified": "2025-03-17T20:25:21Z",
+  "published": "2025-01-30T17:51:57Z",
   "references": [
     {
       "type": "WEB",
@@ -44,36 +68,12 @@
       "url": "https://pkg.go.dev/vuln/GO-2025-3436"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/ethereum/go-ethereum",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/ethereum/go-ethereum"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.14.0"
-            },
-            {
-              "fixed": "1.14.13"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-q26p-9cq4-7fc2/GHSA-q26p-9cq4-7fc2.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:U"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:U",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Go Ethereum vulnerable to DoS via malicious p2p message"
 }

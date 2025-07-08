@@ -1,21 +1,48 @@
 {
-  "id": "BIT-keydb-2025-21605",
-  "summary": "Redis DoS Vulnerability due to unlimited growth of output buffers abused by unauthenticated client",
-  "details": "Redis is an open source, in-memory database that persists on disk. In versions starting at 2.6 and prior to 7.4.3, An unauthenticated client can cause unlimited growth of output buffers, until the server runs out of memory or is killed. By default, the Redis configuration does not limit the output buffer of normal clients (see client-output-buffer-limit). Therefore, the output buffer can grow unlimitedly over time. As a result, the service is exhausted and the memory is unavailable. When password authentication is enabled on the Redis server, but no password is provided, the client can still cause the output buffer to grow from \"NOAUTH\" responses until the system will run out of memory. This issue has been patched in version 7.4.3. An additional workaround to mitigate this problem without patching the redis-server executable is to block access to prevent unauthenticated users from connecting to Redis. This can be done in different ways. Either using network access control tools like firewalls, iptables, security groups, etc, or enabling TLS and requiring users to authenticate using client side certificates.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/keydb/BIT-keydb-2025-21605.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "keydb",
+        "purl": "pkg:bitnami/keydb"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.6.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-redis-2025-21605",
     "BIT-valkey-2025-21605",
     "CVE-2025-21605",
     "GHSA-r67f-p999-2gff"
   ],
-  "modified": "2025-06-03T15:16:07.023Z",
-  "published": "2025-04-25T07:14:30.296Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*"
     ],
     "severity": "High"
   },
+  "details": "Redis is an open source, in-memory database that persists on disk. In versions starting at 2.6 and prior to 7.4.3, An unauthenticated client can cause unlimited growth of output buffers, until the server runs out of memory or is killed. By default, the Redis configuration does not limit the output buffer of normal clients (see client-output-buffer-limit). Therefore, the output buffer can grow unlimitedly over time. As a result, the service is exhausted and the memory is unavailable. When password authentication is enabled on the Redis server, but no password is provided, the client can still cause the output buffer to grow from \"NOAUTH\" responses until the system will run out of memory. This issue has been patched in version 7.4.3. An additional workaround to mitigate this problem without patching the redis-server executable is to block access to prevent unauthenticated users from connecting to Redis. This can be done in different ways. Either using network access control tools like firewalls, iptables, security groups, etc, or enabling TLS and requiring users to authenticate using client side certificates.",
+  "id": "BIT-keydb-2025-21605",
+  "modified": "2025-06-03T15:16:07.023Z",
+  "published": "2025-04-25T07:14:30.296Z",
   "references": [
     {
       "type": "WEB",
@@ -38,33 +65,6 @@
       "url": "https://github.com/valkey-io/valkey/releases/tag/8.1.1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "keydb",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/keydb"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.6.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/keydb/BIT-keydb-2025-21605.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Redis DoS Vulnerability due to unlimited growth of output buffers abused by unauthenticated client"
 }

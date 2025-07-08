@@ -1,12 +1,71 @@
 {
-  "id": "GHSA-48p4-8xcf-vxj5",
-  "summary": "urllib3 does not control redirects in browsers and Node.js",
-  "details": "urllib3 [supports](https://urllib3.readthedocs.io/en/2.4.0/reference/contrib/emscripten.html) being used in a Pyodide runtime utilizing the [JavaScript Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) or falling back on [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest). This means you can use Python libraries to make HTTP requests from your browser or Node.js. Additionally, urllib3 provides [a mechanism](https://urllib3.readthedocs.io/en/2.4.0/user-guide.html#retrying-requests) to control redirects.\n\nHowever, the `retries` and `redirect` parameters are ignored with Pyodide; the runtime itself determines redirect behavior.\n\n\n## Affected usages\n\nAny code which relies on urllib3 to control the number of redirects for an HTTP request in a Pyodide runtime.\n\n\n## Impact\n\nRedirects are often used to exploit SSRF vulnerabilities. An application attempting to mitigate SSRF or open redirect vulnerabilities by disabling redirects may remain vulnerable if a Pyodide runtime redirect mechanism is unsuitable.\n\n\n## Remediation\n\nIf you use urllib3 in Node.js, upgrade to a patched version of urllib3.\n\nUnfortunately, browsers provide no suitable way which urllib3 can use: `XMLHttpRequest` provides no control over redirects, the Fetch API returns `opaqueredirect` responses lacking data when redirects are controlled manually. Expect default browser behavior for redirects.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-48p4-8xcf-vxj5/GHSA-48p4-8xcf-vxj5.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "urllib3",
+        "purl": "pkg:pypi/urllib3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.2.0"
+            },
+            {
+              "fixed": "2.5.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.2.0",
+        "2.2.1",
+        "2.2.2",
+        "2.2.3",
+        "2.3.0",
+        "2.4.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-50182"
   ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-601"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-18T17:50:11Z",
+    "nvd_published_at": "2025-06-19T02:15:17Z",
+    "severity": "MODERATE"
+  },
+  "details": "urllib3 [supports](https://urllib3.readthedocs.io/en/2.4.0/reference/contrib/emscripten.html) being used in a Pyodide runtime utilizing the [JavaScript Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) or falling back on [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest). This means you can use Python libraries to make HTTP requests from your browser or Node.js. Additionally, urllib3 provides [a mechanism](https://urllib3.readthedocs.io/en/2.4.0/user-guide.html#retrying-requests) to control redirects.\n\nHowever, the `retries` and `redirect` parameters are ignored with Pyodide; the runtime itself determines redirect behavior.\n\n\n## Affected usages\n\nAny code which relies on urllib3 to control the number of redirects for an HTTP request in a Pyodide runtime.\n\n\n## Impact\n\nRedirects are often used to exploit SSRF vulnerabilities. An application attempting to mitigate SSRF or open redirect vulnerabilities by disabling redirects may remain vulnerable if a Pyodide runtime redirect mechanism is unsuitable.\n\n\n## Remediation\n\nIf you use urllib3 in Node.js, upgrade to a patched version of urllib3.\n\nUnfortunately, browsers provide no suitable way which urllib3 can use: `XMLHttpRequest` provides no control over redirects, the Fetch API returns `opaqueredirect` responses lacking data when redirects are controlled manually. Expect default browser behavior for redirects.",
+  "id": "GHSA-48p4-8xcf-vxj5",
   "modified": "2025-06-30T19:08:09.127199Z",
   "published": "2025-06-18T17:50:11Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/urllib3/urllib3/security/advisories/GHSA-48p4-8xcf-vxj5"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-50182"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/urllib3/urllib3/commit/7eb4a2aafe49a279c29b6d1f0ed0f42e9736194f"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/urllib3/urllib3"
+    }
+  ],
   "related": [
     "CGA-448f-w8gj-5f48",
     "CGA-48wj-wv79-cx2q",
@@ -29,71 +88,12 @@
     "CGA-w6g4-5w3r-hvgw",
     "CGA-wcgv-g3j4-xmpf"
   ],
-  "database_specific": {
-    "nvd_published_at": "2025-06-19T02:15:17Z",
-    "cwe_ids": [
-      "CWE-601"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-06-18T17:50:11Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/urllib3/urllib3/security/advisories/GHSA-48p4-8xcf-vxj5"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-50182"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/urllib3/urllib3/commit/7eb4a2aafe49a279c29b6d1f0ed0f42e9736194f"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/urllib3/urllib3"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "urllib3",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/urllib3"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.2.0"
-            },
-            {
-              "fixed": "2.5.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.2.0",
-        "2.2.1",
-        "2.2.2",
-        "2.2.3",
-        "2.3.0",
-        "2.4.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-48p4-8xcf-vxj5/GHSA-48p4-8xcf-vxj5.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "urllib3 does not control redirects in browsers and Node.js"
 }

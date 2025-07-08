@@ -1,61 +1,16 @@
 {
-  "id": "GHSA-mgmh-g2v6-mqw5",
-  "summary": "TensorFlow vulnerable to `CHECK` failure in `AvgPoolOp`",
-  "details": "### Impact\nThe [`AvgPoolOp`](https://github.com/tensorflow/tensorflow/blob/8d72537c6abf5a44103b57b9c2e22c14f5f49698/tensorflow/core/kernels/avgpooling_op.cc#L56-L98) function takes an argument `ksize` that must be positive but is not checked. A negative `ksize` can trigger a `CHECK` failure and crash the program.\n```python\nimport tensorflow as tf\nimport numpy as np\n\nvalue = np.ones([1, 1, 1, 1])\nksize = [1, 1e20, 1, 1]\nstrides = [1, 1, 1, 1]\npadding = 'SAME'\ndata_format = 'NHWC'\n\ntf.raw_ops.AvgPool(value=value, ksize=ksize, strides=strides, padding=padding, data_format=data_format)\n```\n\n### Patches\nWe have patched the issue in GitHub commit [3a6ac52664c6c095aa2b114e742b0aa17fdce78f](https://github.com/tensorflow/tensorflow/commit/3a6ac52664c6c095aa2b114e742b0aa17fdce78f).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Jingyi Shi.\n",
-  "aliases": [
-    "BIT-tensorflow-2022-35941",
-    "CVE-2022-35941"
-  ],
-  "modified": "2023-12-06T01:02:25.762569Z",
-  "published": "2022-09-16T21:18:42Z",
-  "related": [
-    "CVE-2022-35941"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-09-16T20:15:00Z",
-    "github_reviewed_at": "2022-09-16T21:18:42Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-617"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-mgmh-g2v6-mqw5"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35941"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/3a6ac52664c6c095aa2b114e742b0aa17fdce78f"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/8d72537c6abf5a44103b57b9c2e22c14f5f49698/tensorflow/core/kernels/avgpooling_op.cc#L56-L98"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -63,7 +18,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -139,20 +95,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -160,25 +115,26 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.9.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -186,27 +142,26 @@
             {
               "fixed": "2.9.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0",
         "2.9.1"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "< 2.9.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -214,7 +169,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -250,20 +206,19 @@
         "2.6.5",
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -271,25 +226,26 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.9.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -297,27 +253,26 @@
             {
               "fixed": "2.9.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0",
         "2.9.1"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "< 2.9.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -325,7 +280,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -398,20 +354,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -419,25 +374,26 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "< 2.9.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -445,24 +401,68 @@
             {
               "fixed": "2.9.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0",
         "2.9.1"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "< 2.9.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-mgmh-g2v6-mqw5/GHSA-mgmh-g2v6-mqw5.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-35941",
+    "CVE-2022-35941"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-617"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T21:18:42Z",
+    "nvd_published_at": "2022-09-16T20:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nThe [`AvgPoolOp`](https://github.com/tensorflow/tensorflow/blob/8d72537c6abf5a44103b57b9c2e22c14f5f49698/tensorflow/core/kernels/avgpooling_op.cc#L56-L98) function takes an argument `ksize` that must be positive but is not checked. A negative `ksize` can trigger a `CHECK` failure and crash the program.\n```python\nimport tensorflow as tf\nimport numpy as np\n\nvalue = np.ones([1, 1, 1, 1])\nksize = [1, 1e20, 1, 1]\nstrides = [1, 1, 1, 1]\npadding = 'SAME'\ndata_format = 'NHWC'\n\ntf.raw_ops.AvgPool(value=value, ksize=ksize, strides=strides, padding=padding, data_format=data_format)\n```\n\n### Patches\nWe have patched the issue in GitHub commit [3a6ac52664c6c095aa2b114e742b0aa17fdce78f](https://github.com/tensorflow/tensorflow/commit/3a6ac52664c6c095aa2b114e742b0aa17fdce78f).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Jingyi Shi.\n",
+  "id": "GHSA-mgmh-g2v6-mqw5",
+  "modified": "2023-12-06T01:02:25.762569Z",
+  "published": "2022-09-16T21:18:42Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-mgmh-g2v6-mqw5"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35941"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/3a6ac52664c6c095aa2b114e742b0aa17fdce78f"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/8d72537c6abf5a44103b57b9c2e22c14f5f49698/tensorflow/core/kernels/avgpooling_op.cc#L56-L98"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-35941"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to `CHECK` failure in `AvgPoolOp`"
 }

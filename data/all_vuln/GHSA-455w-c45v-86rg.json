@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-455w-c45v-86rg",
-  "summary": "fastify vulnerable to denial of service via malicious Content-Type",
-  "details": "### Impact\nAn attacker can send an invalid `Content-Type` header that can cause the application to crash, leading to a possible Denial of Service attack. Only the v4.x line is affected.\n\n(This was updated: upon a close inspection, v3.x is not affected after all).\n\n### Patches\nYes, update to `> v4.8.0`.\n\n### Workarounds\nYou can reject the malicious content types before the body parser enters in action.\n```js\n  const badNames = Object.getOwnPropertyNames({}.__proto__)\n  fastify.addHook('onRequest', async (req, reply) => {\n    for (const badName of badNames) {\n      if (req.headers['content-type'].indexOf(badName) > -1) {\n        reply.code(415)\n        throw new Error('Content type not supported')\n      }\n    }\n  })\n```\n\n### References\n\nSee the HackerOne report [#1715536](https://hackerone.com/bugs?report_id=1715536&subject=fastify)\n\n### For more information\n[Fastify security policy](https://github.com/fastify/fastify/security/policy)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-455w-c45v-86rg/GHSA-455w-c45v-86rg.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "fastify",
+        "purl": "pkg:npm/fastify"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.8.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-39288"
   ],
-  "modified": "2023-11-08T04:10:17.835364Z",
-  "published": "2022-10-11T13:45:14Z",
-  "related": [
-    "CVE-2022-39288"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-10-10T21:15:00Z",
-    "github_reviewed_at": "2022-10-11T13:45:14Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-754"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-10-11T13:45:14Z",
+    "nvd_published_at": "2022-10-10T21:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nAn attacker can send an invalid `Content-Type` header that can cause the application to crash, leading to a possible Denial of Service attack. Only the v4.x line is affected.\n\n(This was updated: upon a close inspection, v3.x is not affected after all).\n\n### Patches\nYes, update to `> v4.8.0`.\n\n### Workarounds\nYou can reject the malicious content types before the body parser enters in action.\n```js\n  const badNames = Object.getOwnPropertyNames({}.__proto__)\n  fastify.addHook('onRequest', async (req, reply) => {\n    for (const badName of badNames) {\n      if (req.headers['content-type'].indexOf(badName) > -1) {\n        reply.code(415)\n        throw new Error('Content type not supported')\n      }\n    }\n  })\n```\n\n### References\n\nSee the HackerOne report [#1715536](https://hackerone.com/bugs?report_id=1715536&subject=fastify)\n\n### For more information\n[Fastify security policy](https://github.com/fastify/fastify/security/policy)\n",
+  "id": "GHSA-455w-c45v-86rg",
+  "modified": "2023-11-08T04:10:17.835364Z",
+  "published": "2022-10-11T13:45:14Z",
   "references": [
     {
       "type": "WEB",
@@ -45,36 +66,15 @@
       "url": "https://hackerone.com/bugs?report_id=1715536&subject=fastify"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "fastify",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/fastify"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "4.0.0"
-            },
-            {
-              "fixed": "4.8.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-455w-c45v-86rg/GHSA-455w-c45v-86rg.json"
-      }
-    }
+  "related": [
+    "CVE-2022-39288"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "fastify vulnerable to denial of service via malicious Content-Type"
 }

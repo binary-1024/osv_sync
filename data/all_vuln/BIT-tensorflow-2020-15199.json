@@ -1,7 +1,35 @@
 {
-  "id": "BIT-tensorflow-2020-15199",
-  "summary": "Denial of Service in Tensorflow",
-  "details": "In Tensorflow before version 2.3.1, the `RaggedCountSparseOutput` does not validate that the input arguments form a valid ragged tensor. In particular, there is no validation that the `splits` tensor has the minimum required number of elements. Code uses this quantity to initialize a different data structure. Since `BatchedMap` is equivalent to a vector, it needs to have at least one element to not be `nullptr`. If user passes a `splits` tensor that is empty or has exactly one element, we get a `SIGABRT` signal raised by the operating system. The issue is patched in commit 3cbb917b4714766030b28eba9fb41bb97ce9ee02 and is released in TensorFlow version 2.3.1.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2020-15199.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "tensorflow",
+        "purl": "pkg:bitnami/tensorflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.3.0"
+            },
+            {
+              "fixed": "2.3.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-15199",
     "GHSA-x5cp-9pcf-pp3h",
@@ -9,8 +37,6 @@
     "PYSEC-2020-279",
     "PYSEC-2020-314"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T11:20:41.128Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:google:tensorflow:2.3.0:*:*:*:-:*:*:*",
@@ -18,6 +44,10 @@
     ],
     "severity": "Medium"
   },
+  "details": "In Tensorflow before version 2.3.1, the `RaggedCountSparseOutput` does not validate that the input arguments form a valid ragged tensor. In particular, there is no validation that the `splits` tensor has the minimum required number of elements. Code uses this quantity to initialize a different data structure. Since `BatchedMap` is equivalent to a vector, it needs to have at least one element to not be `nullptr`. If user passes a `splits` tensor that is empty or has exactly one element, we get a `SIGABRT` signal raised by the operating system. The issue is patched in commit 3cbb917b4714766030b28eba9fb41bb97ce9ee02 and is released in TensorFlow version 2.3.1.",
+  "id": "BIT-tensorflow-2020-15199",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:20:41.128Z",
   "references": [
     {
       "type": "WEB",
@@ -36,36 +66,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15199"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tensorflow",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/tensorflow"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.3.0"
-            },
-            {
-              "fixed": "2.3.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2020-15199.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Denial of Service in Tensorflow"
 }

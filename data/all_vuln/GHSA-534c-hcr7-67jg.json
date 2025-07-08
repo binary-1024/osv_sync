@@ -1,47 +1,17 @@
 {
-  "id": "GHSA-534c-hcr7-67jg",
-  "summary": "Kimai has an XXE Leading to Local File Read",
-  "details": "### Summary\nKimai uses [PHPSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet) for importing and exporting invoices. Recently, a [CVE](https://github.com/PHPOffice/PhpSpreadsheet/security/advisories/GHSA-ghg6-32f9-2jp7) was identified in PHPSpreadsheet, which could lead to an XXE vulnerability.\n\n\n### Details\n\nExploitation requires an Administrator account, allowing the upload of an `XLSX` template containing the payload. The vulnerability is triggered by the following code snippet:\n\n```php\n// https://github.com/kimai/kimai/blob/b1903ba18359be16dd32ea9c40377c486498f082/src/Invoice/Renderer/AbstractSpreadsheetRenderer.php#L41\npublic function render(InvoiceDocument $document, InvoiceModel $model): Response\n{\n    $spreadsheet = IOFactory::load($document->getFilename());\n    $worksheet = $spreadsheet->getActiveSheet();\n    $entries = $model->getCalculator()->getEntries();\n    $sheetReplacer = $model->toArray();\n    $invoiceItemCount = \\count($entries);\n    if ($invoiceItemCount > 1) {\n        $this->addTemplateRows($worksheet, $invoiceItemCount);\n    }\n}\n```\n\nThe `IOFactory::load` function utilizes `simplexml_load_string`, which has previously been demonstrated to be vulnerable to XXE attacks.\n\nWhile this is not directly an XXE in Kimai, it does however impact the latest stable version.\n\n \n### PoC\n\nBy uploading a malicious `XLSX` template, the payload will be triggered every time an invoice is generated.\n\n```xml\n<?xml version=\"1.0\" encoding='UTF-7' standalone=\"yes\"?>\n+ADw-!DOCTYPE foo [ <!ENTITY % xxe SYSTEM \"php://filter/.......\" > %xxe;]>.....\n```\n\nFor a better a visibility, I will upload both a:\n- Malicious template sample for testing \n- An exported invoice, showing the contents of target file during the export. \n\n### Impact\nLocal File Read / RCE in edge cases where `phar://` can be utilized with [gadget chains](https://github.com/ambionics/phpggc) . \n\n\n[export.xlsx](https://github.com/user-attachments/files/16803913/export.xlsx)\n[sample_template.xlsx](https://github.com/user-attachments/files/16803916/sample_template.xlsx)\n",
-  "modified": "2024-12-05T05:27:02.542414Z",
-  "published": "2024-09-17T18:36:50Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-1395",
-      "CWE-611"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-09-17T18:36:50Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/PHPOffice/PhpSpreadsheet/security/advisories/GHSA-ghg6-32f9-2jp7"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/kimai/kimai/security/advisories/GHSA-534c-hcr7-67jg"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/kimai/kimai/commit/3204dcb03e1003dba90178667a4667ce3edb87b5"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/kimai/kimai"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.20.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-534c-hcr7-67jg/GHSA-534c-hcr7-67jg.json"
+      },
       "package": {
-        "name": "kimai/kimai",
         "ecosystem": "Packagist",
+        "name": "kimai/kimai",
         "purl": "pkg:composer/kimai/kimai"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -49,7 +19,8 @@
             {
               "fixed": "2.21.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -217,22 +188,51 @@
         "2.7.0",
         "2.8.0",
         "2.9.0"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.20.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-534c-hcr7-67jg/GHSA-534c-hcr7-67jg.json"
-      }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-1395",
+      "CWE-611"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-09-17T18:36:50Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "### Summary\nKimai uses [PHPSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet) for importing and exporting invoices. Recently, a [CVE](https://github.com/PHPOffice/PhpSpreadsheet/security/advisories/GHSA-ghg6-32f9-2jp7) was identified in PHPSpreadsheet, which could lead to an XXE vulnerability.\n\n\n### Details\n\nExploitation requires an Administrator account, allowing the upload of an `XLSX` template containing the payload. The vulnerability is triggered by the following code snippet:\n\n```php\n// https://github.com/kimai/kimai/blob/b1903ba18359be16dd32ea9c40377c486498f082/src/Invoice/Renderer/AbstractSpreadsheetRenderer.php#L41\npublic function render(InvoiceDocument $document, InvoiceModel $model): Response\n{\n    $spreadsheet = IOFactory::load($document->getFilename());\n    $worksheet = $spreadsheet->getActiveSheet();\n    $entries = $model->getCalculator()->getEntries();\n    $sheetReplacer = $model->toArray();\n    $invoiceItemCount = \\count($entries);\n    if ($invoiceItemCount > 1) {\n        $this->addTemplateRows($worksheet, $invoiceItemCount);\n    }\n}\n```\n\nThe `IOFactory::load` function utilizes `simplexml_load_string`, which has previously been demonstrated to be vulnerable to XXE attacks.\n\nWhile this is not directly an XXE in Kimai, it does however impact the latest stable version.\n\n \n### PoC\n\nBy uploading a malicious `XLSX` template, the payload will be triggered every time an invoice is generated.\n\n```xml\n<?xml version=\"1.0\" encoding='UTF-7' standalone=\"yes\"?>\n+ADw-!DOCTYPE foo [ <!ENTITY % xxe SYSTEM \"php://filter/.......\" > %xxe;]>.....\n```\n\nFor a better a visibility, I will upload both a:\n- Malicious template sample for testing \n- An exported invoice, showing the contents of target file during the export. \n\n### Impact\nLocal File Read / RCE in edge cases where `phar://` can be utilized with [gadget chains](https://github.com/ambionics/phpggc) . \n\n\n[export.xlsx](https://github.com/user-attachments/files/16803913/export.xlsx)\n[sample_template.xlsx](https://github.com/user-attachments/files/16803916/sample_template.xlsx)\n",
+  "id": "GHSA-534c-hcr7-67jg",
+  "modified": "2024-12-05T05:27:02.542414Z",
+  "published": "2024-09-17T18:36:50Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/PHPOffice/PhpSpreadsheet/security/advisories/GHSA-ghg6-32f9-2jp7"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/kimai/kimai/security/advisories/GHSA-534c-hcr7-67jg"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/kimai/kimai/commit/3204dcb03e1003dba90178667a4667ce3edb87b5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/kimai/kimai"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Kimai has an XXE Leading to Local File Read"
 }

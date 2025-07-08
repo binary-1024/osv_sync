@@ -1,57 +1,9 @@
 {
-  "id": "GO-2022-1008",
-  "summary": "Unauthorized file access in github.com/containers/buildah",
-  "details": "SGID programs executed in a container can access files that have negative group permissions for the user's primary group.\n\nConsider a file which is owned by user u1 and group g1, permits user and other read access, and does NOT permit group read access. This file is readable by u1 and all other users except for ones in group g1.\n\nA program with the set-group-ID (SGID) bit set assumes the primary group of the program's group when it executes.\n\nA user with the primary group g1 who executes an SGID program owned by group g2 should not be able to access the file described above. While the program executes with the primary group g2, the group g1 should remain in its supplementary groups, blocking access to the file.\n\nBuildah does not correctly add g1 to the supplementary groups in this scenario, permitting unauthorized access.",
-  "aliases": [
-    "CVE-2022-2990",
-    "GHSA-fjm8-m7m6-2fjp"
-  ],
-  "modified": "2025-01-14T11:42:25.535113Z",
-  "published": "2022-09-21T15:06:10Z",
-  "related": [
-    "CVE-2022-2989",
-    "CVE-2022-2995",
-    "CVE-2022-36109",
-    "CVE-2023-25173",
-    "GHSA-4wjj-jwc9-2x96",
-    "GHSA-hmfx-3pcx-653p",
-    "GHSA-phjr-8j92-w5v7",
-    "GHSA-rc4r-wh2q-q6c4"
-  ],
-  "database_specific": {
-    "review_status": "REVIEWED",
-    "url": "https://pkg.go.dev/vuln/GO-2022-1008"
-  },
-  "references": [
-    {
-      "type": "ARTICLE",
-      "url": "https://www.benthamsgaze.org/2022/08/22/vulnerability-in-linux-containers-investigation-and-mitigation/"
-    },
-    {
-      "type": "FIX",
-      "url": "https://github.com/containers/buildah/commit/4a8bf740e862f2438279c6feee2ea59ddf0cda0b"
-    }
-  ],
   "affected": [
     {
-      "package": {
-        "name": "github.com/containers/buildah",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/containers/buildah"
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2022-1008.json"
       },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.27.1"
-            }
-          ]
-        }
-      ],
       "ecosystem_specific": {
         "imports": [
           {
@@ -63,10 +15,58 @@
           }
         ]
       },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2022-1008.json"
-      }
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/containers/buildah",
+        "purl": "pkg:golang/github.com/containers/buildah"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.27.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
     }
   ],
-  "schema_version": "1.6.0"
+  "aliases": [
+    "CVE-2022-2990",
+    "GHSA-fjm8-m7m6-2fjp"
+  ],
+  "database_specific": {
+    "review_status": "REVIEWED",
+    "url": "https://pkg.go.dev/vuln/GO-2022-1008"
+  },
+  "details": "SGID programs executed in a container can access files that have negative group permissions for the user's primary group.\n\nConsider a file which is owned by user u1 and group g1, permits user and other read access, and does NOT permit group read access. This file is readable by u1 and all other users except for ones in group g1.\n\nA program with the set-group-ID (SGID) bit set assumes the primary group of the program's group when it executes.\n\nA user with the primary group g1 who executes an SGID program owned by group g2 should not be able to access the file described above. While the program executes with the primary group g2, the group g1 should remain in its supplementary groups, blocking access to the file.\n\nBuildah does not correctly add g1 to the supplementary groups in this scenario, permitting unauthorized access.",
+  "id": "GO-2022-1008",
+  "modified": "2025-01-14T11:42:25.535113Z",
+  "published": "2022-09-21T15:06:10Z",
+  "references": [
+    {
+      "type": "ARTICLE",
+      "url": "https://www.benthamsgaze.org/2022/08/22/vulnerability-in-linux-containers-investigation-and-mitigation/"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/containers/buildah/commit/4a8bf740e862f2438279c6feee2ea59ddf0cda0b"
+    }
+  ],
+  "related": [
+    "CVE-2022-2989",
+    "CVE-2022-2995",
+    "CVE-2022-36109",
+    "CVE-2023-25173",
+    "GHSA-4wjj-jwc9-2x96",
+    "GHSA-hmfx-3pcx-653p",
+    "GHSA-phjr-8j92-w5v7",
+    "GHSA-rc4r-wh2q-q6c4"
+  ],
+  "schema_version": "1.6.0",
+  "summary": "Unauthorized file access in github.com/containers/buildah"
 }

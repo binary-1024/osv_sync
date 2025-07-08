@@ -1,21 +1,68 @@
 {
-  "id": "GHSA-2h87-4q2w-v4hf",
-  "summary": "Strapi plugins vulnerable to Server-Side Template Injection and Remote Code Execution in the Users-Permissions Plugin",
-  "details": "### Summary\n\nStrapi through 4.5.5 allows authenticated Server-Side Template Injection (SSTI) that can be exploited to execute arbitrary code on the server.\n\n### Details\n\nStrapi through 4.5.5 allows authenticated Server-Side Template Injection (SSTI) that can be exploited to execute arbitrary code on the server. A remote attacker with access to the Strapi admin panel can inject a crafted payload that executes code on the server into an email template that bypasses the validation checks that should prevent code execution.\n\n### IoC\n\nUsing just the request log files, the only IoC to search for is a `PUT` request to URL path `/users-permissions/email-templates`. This IoC only indicates that a Strapi email template was modified on your server and by itself does not indicate if your Strapi server has been compromised. If this IoC is detected, you will need to manually review your email templates on your Strapi server and backups of your database to see if any of the templates contain a `lodash` template delimiter (eg. `<%STUFF HERE%>`) that contains suspicious JavaScript code. Generally speaking these templates should look like the following, you may have minor adjustments but any unrecognized code should be considered suspicious.\n\nReset Password Template:\n\n```html\n<p>We heard that you lost your password. Sorry about that!</p>\n\n<p>But don\u2019t worry! You can use the following link to reset your password:</p>\n<p><%= URL %>?code=<%= TOKEN %></p>\n\n<p>Thanks.</p>\n```\n\nEmail Confirmation Template:\n\n```html\n<p>Thank you for registering!</p>\n\n<p>You have to confirm your email address. Please click on the link below.</p>\n\n<p><%= URL %>?confirmation=<%= CODE %></p>\n\n<p>Thanks.</p>\n```\n\nSpecifically you should look for odd code contained within the `<%STUFF HERE%>` blocks as this is what is used to bypass the lodash templating system. If you find any code that is not a variable name, or a variable name that is not defined in the template you are most likely impacted and should take immediate steps to confirm there are no malicious applications running on your servers.\n\n### Impact\n\nAll users on Strapi below 4.5.6 with access to the admin panel and the ability to modify the email templates\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-2h87-4q2w-v4hf/GHSA-2h87-4q2w-v4hf.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@strapi/plugin-users-permissions",
+        "purl": "pkg:npm/%40strapi/plugin-users-permissions"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.5.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-2h87-4q2w-v4hf/GHSA-2h87-4q2w-v4hf.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@strapi/plugin-email",
+        "purl": "pkg:npm/%40strapi/plugin-email"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.5.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-22621"
   ],
-  "modified": "2023-11-08T04:11:37.220714Z",
-  "published": "2023-04-19T21:41:30Z",
   "database_specific": {
-    "nvd_published_at": "2023-04-19T16:15:07Z",
     "cwe_ids": [
       "CWE-74"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-04-19T21:41:30Z"
+    "github_reviewed_at": "2023-04-19T21:41:30Z",
+    "nvd_published_at": "2023-04-19T16:15:07Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Summary\n\nStrapi through 4.5.5 allows authenticated Server-Side Template Injection (SSTI) that can be exploited to execute arbitrary code on the server.\n\n### Details\n\nStrapi through 4.5.5 allows authenticated Server-Side Template Injection (SSTI) that can be exploited to execute arbitrary code on the server. A remote attacker with access to the Strapi admin panel can inject a crafted payload that executes code on the server into an email template that bypasses the validation checks that should prevent code execution.\n\n### IoC\n\nUsing just the request log files, the only IoC to search for is a `PUT` request to URL path `/users-permissions/email-templates`. This IoC only indicates that a Strapi email template was modified on your server and by itself does not indicate if your Strapi server has been compromised. If this IoC is detected, you will need to manually review your email templates on your Strapi server and backups of your database to see if any of the templates contain a `lodash` template delimiter (eg. `<%STUFF HERE%>`) that contains suspicious JavaScript code. Generally speaking these templates should look like the following, you may have minor adjustments but any unrecognized code should be considered suspicious.\n\nReset Password Template:\n\n```html\n<p>We heard that you lost your password. Sorry about that!</p>\n\n<p>But don\u2019t worry! You can use the following link to reset your password:</p>\n<p><%= URL %>?code=<%= TOKEN %></p>\n\n<p>Thanks.</p>\n```\n\nEmail Confirmation Template:\n\n```html\n<p>Thank you for registering!</p>\n\n<p>You have to confirm your email address. Please click on the link below.</p>\n\n<p><%= URL %>?confirmation=<%= CODE %></p>\n\n<p>Thanks.</p>\n```\n\nSpecifically you should look for odd code contained within the `<%STUFF HERE%>` blocks as this is what is used to bypass the lodash templating system. If you find any code that is not a variable name, or a variable name that is not defined in the template you are most likely impacted and should take immediate steps to confirm there are no malicious applications running on your servers.\n\n### Impact\n\nAll users on Strapi below 4.5.6 with access to the admin panel and the ability to modify the email templates\n",
+  "id": "GHSA-2h87-4q2w-v4hf",
+  "modified": "2023-11-08T04:11:37.220714Z",
+  "published": "2023-04-19T21:41:30Z",
   "references": [
     {
       "type": "WEB",
@@ -54,59 +101,12 @@
       "url": "https://www.ghostccamm.com/blog/multi_strapi_vulns"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@strapi/plugin-users-permissions",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40strapi/plugin-users-permissions"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.5.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-2h87-4q2w-v4hf/GHSA-2h87-4q2w-v4hf.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@strapi/plugin-email",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40strapi/plugin-email"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.5.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-2h87-4q2w-v4hf/GHSA-2h87-4q2w-v4hf.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Strapi plugins vulnerable to Server-Side Template Injection and Remote Code Execution in the Users-Permissions Plugin"
 }

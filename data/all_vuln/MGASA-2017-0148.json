@@ -1,26 +1,46 @@
 {
-  "id": "MGASA-2017-0148",
-  "summary": "Updated kernel-linus packages fixes security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0148.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.68-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-linus update is based on upstream 4.4.68 and fixes at least\nthe following security issues:\n\nfs/namespace.c in the Linux kernel before 4.9 does not restrict how many\nmounts may exist in a mount namespace, which allows local users to cause\na denial of service (memory consumption and deadlock) via MS_BIND mount\nsystem calls, as demonstrated by a loop that triggers exponential growth\nin the number of mounts (CVE-2016-6213).\n\nThe xc2028_set_config function in drivers/media/tuners/tuner-xc2028.c in\nthe Linux kernel before 4.6 allows local users to gain privileges or cause\na denial of service (use-after-free) via vectors involving omission of the\nfirmware name from a certain data structure (CVE-2016-7913).\n\nThe nfnetlink_rcv_batch function in net/netfilter/nfnetlink.c in the Linux\nkernel before 4.5 does not check whether a batch message's length field is\nlarge enough, which allows local users to obtain sensitive information from\nkernel memory or cause a denial of service (infinite loop or out-of-bounds\nread) by leveraging the CAP_NET_ADMIN capability (CVE-2016-7917).\n\nThe tipc_msg_build function in net/tipc/msg.c in the Linux kernel through\n4.8.11 does not validate the relationship between the minimum fragment\nlength and the maximum packet size, which allows local users to gain\nprivileges or cause a denial of service (heap-based buffer overflow) by\nleveraging the CAP_NET_ADMIN capability (CVE-2016-8632).\n\ndrivers/vfio/pci/vfio_pci.c in the Linux kernel through 4.8.11 allows local\nusers to bypass integer overflow checks, and cause a denial of service\n(memory corruption) or have unspecified other impact, by leveraging access\nto a vfio PCI device file for a VFIO_DEVICE_SET_IRQS ioctl call, aka a\n\"state machine confusion bug\" (CVE-2016-9083).\n\ndrivers/vfio/pci/vfio_pci_intrs.c in the Linux kernel through 4.8.11\nmisuses the kzalloc function, which allows local users to cause a denial\nof service (integer overflow) or have unspecified other impact by\nleveraging access to a vfio PCI device file (CVE-2016-9084).\n\nIt was discovered that root can gain direct access to an internal keyring,\nsuch as '.builtin_trusted_keys' upstream, by joining it as its session\nkeyring. This allows root to bypass module signature verification by adding\na new public key of its own devising to the keyring (CVE-2016-9604).\n\nThe ping_unhash function in net/ipv4/ping.c in the Linux kernel through\n4.10.8 is too late in obtaining a certain lock and consequently cannot\nensure that disconnect function calls are safe, which allows local users\nto cause a denial of service (panic) by leveraging access to the protocol\nvalue of IPPROTO_ICMP in a socket system call (CVE-2017-2671).\n\nRace condition in kernel/events/core.c in the Linux kernel before 4.9.7\nallows local users to gain privileges via a crafted application that makes\nconcurrent perf_event_open system calls for moving a software group into a\nhardware context. NOTE: this vulnerability exists because of an incomplete\nfix for CVE-2016-6786 (CVE-2017-6001).\n\nThe keyring_search_aux function in security/keys/keyring.c in the Linux\nkernel through 3.14.79 allows local users to cause a denial of service\n(NULL pointer dereference and OOPS) via a request_key system call for the\n\"dead\" type (CVE-2017-6951).\n\nThe packet_set_ring function in net/packet/af_packet.c in the Linux kernel\nthrough 4.10.6 does not properly validate certain block-size data, which\nallows local users to cause a denial of service (overflow) or possibly have\nunspecified other impact via crafted system calls (CVE-2017-7308).\n\nA vulnerability was found in the Linux kernel. It was found that\nkeyctl_set_reqkey_keyring() function leaks thread keyring which allows\nunprivileged local user to exhaust kernel memory (CVE-2017-7472).\n\nThe NFSv2/NFSv3 server in the nfsd subsystem in the Linux kernel through\n4.10.11 allows remote attackers to cause a denial of service (system crash)\nvia a long RPC reply, related to net/sunrpc/svc.c, fs/nfsd/nfs3xdr.c, and\nfs/nfsd/nfsxdr.c (CVE-2017-7645).\n\nThe NFSv2 and NFSv3 server implementations in the Linux kernel through\n4.10.13 lack certain checks for the end of a buffer, which allows remote\nattackers to trigger pointer-arithmetic errors or possibly have unspecified\nother impact via crafted requests, related to fs/nfsd/nfs3xdr.c and\nfs/nfsd/nfsxdr.c (CVE-2017-7895).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2017-0148",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2017-05-26T06:54:58Z",
-  "related": [
-    "CVE-2016-6213",
-    "CVE-2016-7913",
-    "CVE-2016-7917",
-    "CVE-2016-8632",
-    "CVE-2016-9083",
-    "CVE-2016-9084",
-    "CVE-2016-9120",
-    "CVE-2016-9604",
-    "CVE-2017-2671",
-    "CVE-2017-6001",
-    "CVE-2017-6951",
-    "CVE-2017-7308",
-    "CVE-2017-7472",
-    "CVE-2017-7645",
-    "CVE-2017-7895"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -67,43 +87,23 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.68"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.68-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2017-0148.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-6213",
+    "CVE-2016-7913",
+    "CVE-2016-7917",
+    "CVE-2016-8632",
+    "CVE-2016-9083",
+    "CVE-2016-9084",
+    "CVE-2016-9120",
+    "CVE-2016-9604",
+    "CVE-2017-2671",
+    "CVE-2017-6001",
+    "CVE-2017-6951",
+    "CVE-2017-7308",
+    "CVE-2017-7472",
+    "CVE-2017-7645",
+    "CVE-2017-7895"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fixes security vulnerabilities"
 }

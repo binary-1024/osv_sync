@@ -1,60 +1,16 @@
 {
-  "id": "GHSA-jp7f-grcv-6mjf",
-  "summary": "Partial path traversal in sharpcompress",
-  "details": "SharpCompress recreates a hierarchy of directories under destinationDirectory if ExtractFullPath is set to true in options. In order to prevent extraction outside the destination directory the destinationFileName path is verified to begin with fullDestinationDirectoryPath. However it is not enforced that fullDestinationDirectoryPath ends with slash:\n\n```csharp\npublic static void WriteEntryToDirectory(IEntry entry,\n                                         string destinationDirectory,\n                                         ExtractionOptions? options,\n                                         Action<string, ExtractionOptions?> write)\n{\n    string destinationFileName;\n    string file = Path.GetFileName(entry.Key);\n    string fullDestinationDirectoryPath = Path.GetFullPath(destinationDirectory);\n...\n        throw new ExtractionException(\"Entry is trying to write a file outside of the destination directory.\");\n}\n```\n\nIf the destinationDirectory is not slash terminated like /home/user/dir it is possible to create a file with a name thats begins as the destination directory one level up from the directory, i.e. /home/user/dir.sh.\n\n#### Impact\nBecause of the file name and destination directory constraints the arbitrary file creation impact is limited and depends on the use case.",
-  "aliases": [
-    "CVE-2021-39208"
-  ],
-  "modified": "2025-02-17T05:35:37.761379Z",
-  "published": "2021-09-20T19:53:42Z",
-  "related": [
-    "CVE-2021-39208"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2021-09-16T15:15:00Z",
-    "cwe_ids": [
-      "CWE-22"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2021-09-17T18:37:10Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/adamhathcock/sharpcompress/security/advisories/GHSA-jp7f-grcv-6mjf"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-39208"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/adamhathcock/sharpcompress/pull/614"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/adamhathcock/sharpcompress/commit/ea5c8dc06314c7a5068e7901c51a625224d2b288"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/adamhathcock/sharpcompress"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/adamhathcock/sharpcompress/releases/tag/0.29.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-jp7f-grcv-6mjf/GHSA-jp7f-grcv-6mjf.json"
+      },
       "package": {
-        "name": "SharpCompress",
         "ecosystem": "NuGet",
+        "name": "SharpCompress",
         "purl": "pkg:nuget/SharpCompress"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -62,7 +18,8 @@
             {
               "fixed": "0.29"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -127,21 +84,64 @@
         "0.8.1",
         "0.8.2",
         "0.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-jp7f-grcv-6mjf/GHSA-jp7f-grcv-6mjf.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2021-39208"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-22"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-09-17T18:37:10Z",
+    "nvd_published_at": "2021-09-16T15:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "SharpCompress recreates a hierarchy of directories under destinationDirectory if ExtractFullPath is set to true in options. In order to prevent extraction outside the destination directory the destinationFileName path is verified to begin with fullDestinationDirectoryPath. However it is not enforced that fullDestinationDirectoryPath ends with slash:\n\n```csharp\npublic static void WriteEntryToDirectory(IEntry entry,\n                                         string destinationDirectory,\n                                         ExtractionOptions? options,\n                                         Action<string, ExtractionOptions?> write)\n{\n    string destinationFileName;\n    string file = Path.GetFileName(entry.Key);\n    string fullDestinationDirectoryPath = Path.GetFullPath(destinationDirectory);\n...\n        throw new ExtractionException(\"Entry is trying to write a file outside of the destination directory.\");\n}\n```\n\nIf the destinationDirectory is not slash terminated like /home/user/dir it is possible to create a file with a name thats begins as the destination directory one level up from the directory, i.e. /home/user/dir.sh.\n\n#### Impact\nBecause of the file name and destination directory constraints the arbitrary file creation impact is limited and depends on the use case.",
+  "id": "GHSA-jp7f-grcv-6mjf",
+  "modified": "2025-02-17T05:35:37.761379Z",
+  "published": "2021-09-20T19:53:42Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/adamhathcock/sharpcompress/security/advisories/GHSA-jp7f-grcv-6mjf"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-39208"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/adamhathcock/sharpcompress/pull/614"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/adamhathcock/sharpcompress/commit/ea5c8dc06314c7a5068e7901c51a625224d2b288"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/adamhathcock/sharpcompress"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/adamhathcock/sharpcompress/releases/tag/0.29.0"
+    }
+  ],
+  "related": [
+    "CVE-2021-39208"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Partial path traversal in sharpcompress"
 }

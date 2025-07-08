@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-8f5r-8cmq-7fmq",
-  "summary": "OpenBao Inserts Sensitive Information into Log File when processing malformed data",
-  "details": "### Impact\n\nOpenBao before v2.3.0 and HashiCorp Vault as of the current v1.19.5 may leak sensitive information in logs when processing malformed data. This is separate from the earlier HCSEC-2025-09 / CVE-2025-4166. \n\n### Patches\n\nThis issue has been fixed in OpenBao v2.3.0 and later.\n\n### Workarounds\n\nLike with HCSEC-2025-09, there is no known workaround except to ensure properly formatted requests from all clients.\n\n### Remediation\n\nUsers with the capability to search through server and audit logs for any possible exposed secrets can refer to the following snippets to aid in searching:\n\nAudit Log\n\n```\n... \"error\":\"error converting input for field \\\"password\\\": expected type 'string', got unconvertible type 'map[string]interface {}', value: '<sensitive data>'\" ...\n```\n\nServer Log\n\n```\nerror converting input for field \"password\": expected type 'string', got unconvertible type 'map[string]interface {}', value: '<sensitive data>'\n```\n\nIf any matches are found, rotating the affected secret is advised.\n\n### References\n\nSee also: https://discuss.hashicorp.com/t/hcsec-2025-09-vault-may-expose-sensitive-information-in-error-logs-when-processing-malformed-data-with-the-kv-v2-plugin/74717\n\nSee also: https://github.com/go-viper/mapstructure/releases/tag/v2.3.0\n\nSee also: https://github.com/go-viper/mapstructure/pull/105 -> https://github.com/go-viper/mapstructure/commit/ed3f92181528ff776a0324107b8b55026e93766a",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-8f5r-8cmq-7fmq/GHSA-8f5r-8cmq-7fmq.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/openbao/openbao/sdk/v2/framework",
+        "purl": "pkg:golang/github.com/openbao/openbao/sdk/v2/framework"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.3.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-52893"
   ],
-  "modified": "2025-06-30T12:50:41Z",
-  "published": "2025-06-26T21:25:00Z",
   "database_specific": {
-    "nvd_published_at": "2025-06-25T17:15:39Z",
     "cwe_ids": [
       "CWE-532"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-06-26T21:25:00Z"
+    "github_reviewed_at": "2025-06-26T21:25:00Z",
+    "nvd_published_at": "2025-06-25T17:15:39Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nOpenBao before v2.3.0 and HashiCorp Vault as of the current v1.19.5 may leak sensitive information in logs when processing malformed data. This is separate from the earlier HCSEC-2025-09 / CVE-2025-4166. \n\n### Patches\n\nThis issue has been fixed in OpenBao v2.3.0 and later.\n\n### Workarounds\n\nLike with HCSEC-2025-09, there is no known workaround except to ensure properly formatted requests from all clients.\n\n### Remediation\n\nUsers with the capability to search through server and audit logs for any possible exposed secrets can refer to the following snippets to aid in searching:\n\nAudit Log\n\n```\n... \"error\":\"error converting input for field \\\"password\\\": expected type 'string', got unconvertible type 'map[string]interface {}', value: '<sensitive data>'\" ...\n```\n\nServer Log\n\n```\nerror converting input for field \"password\": expected type 'string', got unconvertible type 'map[string]interface {}', value: '<sensitive data>'\n```\n\nIf any matches are found, rotating the affected secret is advised.\n\n### References\n\nSee also: https://discuss.hashicorp.com/t/hcsec-2025-09-vault-may-expose-sensitive-information-in-error-logs-when-processing-malformed-data-with-the-kv-v2-plugin/74717\n\nSee also: https://github.com/go-viper/mapstructure/releases/tag/v2.3.0\n\nSee also: https://github.com/go-viper/mapstructure/pull/105 -> https://github.com/go-viper/mapstructure/commit/ed3f92181528ff776a0324107b8b55026e93766a",
+  "id": "GHSA-8f5r-8cmq-7fmq",
+  "modified": "2025-06-30T12:50:41Z",
+  "published": "2025-06-26T21:25:00Z",
   "references": [
     {
       "type": "WEB",
@@ -50,36 +74,12 @@
       "url": "github.com/openbao/openbao/sdk/v2/framework"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/openbao/openbao/sdk/v2/framework",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/openbao/openbao/sdk/v2/framework"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.3.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-8f5r-8cmq-7fmq/GHSA-8f5r-8cmq-7fmq.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "OpenBao Inserts Sensitive Information into Log File when processing malformed data"
 }

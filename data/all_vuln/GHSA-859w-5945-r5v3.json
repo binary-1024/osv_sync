@@ -1,27 +1,142 @@
 {
-  "id": "GHSA-859w-5945-r5v3",
-  "summary": "Vite's server.fs.deny bypassed with /. for files under project root",
-  "details": "### Summary\nThe contents of files in [the project `root`](https://vite.dev/config/shared-options.html#root) that are denied by a file matching pattern can be returned to the browser.\n\n### Impact\n\nOnly apps explicitly exposing the Vite dev server to the network (using --host or [server.host config option](https://vitejs.dev/config/server-options.html#server-host)) are affected.\nOnly files that are under [project `root`](https://vite.dev/config/shared-options.html#root) and are denied by a file matching pattern can be bypassed.\n\n- Examples of file matching patterns: `.env`, `.env.*`, `*.{crt,pem}`, `**/.env`\n- Examples of other patterns: `**/.git/**`, `.git/**`, `.git/**/*`\n\n### Details\n[`server.fs.deny`](https://vite.dev/config/server-options.html#server-fs-deny) can contain patterns matching against files (by default it includes `.env`, `.env.*`, `*.{crt,pem}` as such patterns).\nThese patterns were able to bypass for files under `root` by using a combination of slash and dot (`/.`).\n\n### PoC\n```\nnpm create vite@latest\ncd vite-project/\ncat \"secret\" > .env\nnpm install\nnpm run dev\ncurl --request-target /.env/. http://localhost:5173\n```\n\n![image](https://github.com/user-attachments/assets/822f4416-aa42-461f-8c95-a88d155e674b)\n![image](https://github.com/user-attachments/assets/42902144-863a-4afb-ac5b-fc16effa37cc)",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 6.3.3",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite",
+        "purl": "pkg:npm/vite"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "6.3.0"
+            },
+            {
+              "fixed": "6.3.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 6.2.6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite",
+        "purl": "pkg:npm/vite"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "6.2.0"
+            },
+            {
+              "fixed": "6.2.7"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 6.1.5",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite",
+        "purl": "pkg:npm/vite"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "6.0.0"
+            },
+            {
+              "fixed": "6.1.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 5.4.18",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite",
+        "purl": "pkg:npm/vite"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.0.0"
+            },
+            {
+              "fixed": "5.4.19"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 4.5.13",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite",
+        "purl": "pkg:npm/vite"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.5.14"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-46565"
   ],
-  "modified": "2025-05-02T15:33:47Z",
-  "published": "2025-04-30T17:40:27Z",
-  "related": [
-    "CGA-9vv3-xw5c-7pp9",
-    "CGA-p2j3-8rch-x3qm",
-    "CGA-v43x-7rrm-xq74",
-    "CVE-2025-46565"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-05-01T18:15:57Z",
     "cwe_ids": [
       "CWE-22"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-30T17:40:27Z"
+    "github_reviewed_at": "2025-04-30T17:40:27Z",
+    "nvd_published_at": "2025-05-01T18:15:57Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nThe contents of files in [the project `root`](https://vite.dev/config/shared-options.html#root) that are denied by a file matching pattern can be returned to the browser.\n\n### Impact\n\nOnly apps explicitly exposing the Vite dev server to the network (using --host or [server.host config option](https://vitejs.dev/config/server-options.html#server-host)) are affected.\nOnly files that are under [project `root`](https://vite.dev/config/shared-options.html#root) and are denied by a file matching pattern can be bypassed.\n\n- Examples of file matching patterns: `.env`, `.env.*`, `*.{crt,pem}`, `**/.env`\n- Examples of other patterns: `**/.git/**`, `.git/**`, `.git/**/*`\n\n### Details\n[`server.fs.deny`](https://vite.dev/config/server-options.html#server-fs-deny) can contain patterns matching against files (by default it includes `.env`, `.env.*`, `*.{crt,pem}` as such patterns).\nThese patterns were able to bypass for files under `root` by using a combination of slash and dot (`/.`).\n\n### PoC\n```\nnpm create vite@latest\ncd vite-project/\ncat \"secret\" > .env\nnpm install\nnpm run dev\ncurl --request-target /.env/. http://localhost:5173\n```\n\n![image](https://github.com/user-attachments/assets/822f4416-aa42-461f-8c95-a88d155e674b)\n![image](https://github.com/user-attachments/assets/42902144-863a-4afb-ac5b-fc16effa37cc)",
+  "id": "GHSA-859w-5945-r5v3",
+  "modified": "2025-05-02T15:33:47Z",
+  "published": "2025-04-30T17:40:27Z",
   "references": [
     {
       "type": "WEB",
@@ -40,133 +155,18 @@
       "url": "https://github.com/vitejs/vite"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "vite",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vite"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "6.3.0"
-            },
-            {
-              "fixed": "6.3.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 6.3.3",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vite",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vite"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "6.2.0"
-            },
-            {
-              "fixed": "6.2.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 6.2.6",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vite",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vite"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "6.0.0"
-            },
-            {
-              "fixed": "6.1.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 6.1.5",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vite",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vite"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "5.0.0"
-            },
-            {
-              "fixed": "5.4.19"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 5.4.18",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vite",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vite"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.5.14"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 4.5.13",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-859w-5945-r5v3/GHSA-859w-5945-r5v3.json"
-      }
-    }
+  "related": [
+    "CGA-9vv3-xw5c-7pp9",
+    "CGA-p2j3-8rch-x3qm",
+    "CGA-v43x-7rrm-xq74",
+    "CVE-2025-46565"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Vite's server.fs.deny bypassed with /. for files under project root"
 }

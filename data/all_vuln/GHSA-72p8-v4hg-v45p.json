@@ -1,25 +1,72 @@
 {
-  "id": "GHSA-72p8-v4hg-v45p",
-  "summary": "Weak private key generation in SSH.NET",
-  "details": "During an **X25519** key exchange, the client\u2019s private is generated with [**System.Random**](https://docs.microsoft.com/en-us/dotnet/api/system.random):\n\n```cs\nvar rnd = new Random();\n_privateKey = new byte[MontgomeryCurve25519.PrivateKeySizeInBytes];\nrnd.NextBytes(_privateKey);\n```\n\nSource: [KeyExchangeECCurve25519.cs](https://github.com/sshnet/SSH.NET/blob/bc99ada7da3f05f50d9379f2644941d91d5bf05a/src/Renci.SshNet/Security/KeyExchangeECCurve25519.cs#L51)  \nSource commit: https://github.com/sshnet/SSH.NET/commit/b58a11c0da55da1f5bad46faad2e9b71b7cb35b3\n\n[**System.Random**](https://docs.microsoft.com/en-us/dotnet/api/system.random) is not a cryptographically secure random number generator, it must therefore not be used for cryptographic purposes.\n\n### Impact\nWhen establishing an SSH connection to a remote host, during the X25519 key exchange, the private key is generated with\na weak random number generator whose seed can be bruteforced. This allows an attacker able to eavesdrop the\ncommunications to decrypt them.\n\n### Workarounds\nTo ensure you're not affected by this vulnerability, you can disable support for `curve25519-sha256` and `curve25519-sha256@libssh.org` key exchange algorithms by invoking the following method before a connection is established:\n```cs\nprivate static void RemoveUnsecureKEX(BaseClient client)\n{\n    client.ConnectionInfo.KeyExchangeAlgorithms.Remove(\"curve25519-sha256\");\n    client.ConnectionInfo.KeyExchangeAlgorithms.Remove(\"curve25519-sha256@libssh.org\");\n}\n```\n\n### Thanks\n\nThis issue was initially reported by **Siemens AG, Digital Industries**, shortly followed by @yaumn-synacktiv.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/06/GHSA-72p8-v4hg-v45p/GHSA-72p8-v4hg-v45p.json"
+      },
+      "package": {
+        "ecosystem": "NuGet",
+        "name": "SSH.NET",
+        "purl": "pkg:nuget/SSH.NET"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2020.0.2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2011.12.7",
+        "2011.7.29",
+        "2011.9.28",
+        "2012.12.3",
+        "2012.20.12",
+        "2012.21.12",
+        "2012.3.9",
+        "2013.1.27",
+        "2013.1.8",
+        "2013.4.7",
+        "2014.4.6-beta1",
+        "2014.4.6-beta2",
+        "2016.0.0",
+        "2016.0.0-beta1",
+        "2016.0.0-beta2",
+        "2016.0.0-beta3",
+        "2016.1.0",
+        "2016.1.0-beta1",
+        "2016.1.0-beta2",
+        "2016.1.0-beta3",
+        "2016.1.0-beta4",
+        "2020.0.0",
+        "2020.0.0-beta1",
+        "2020.0.1"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-29245"
   ],
-  "modified": "2023-11-08T04:09:12.044025Z",
-  "published": "2022-06-01T19:50:15Z",
-  "related": [
-    "CVE-2022-29245"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-05-31T17:15:00Z",
-    "github_reviewed_at": "2022-06-01T19:50:15Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-330",
       "CWE-338"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-06-01T19:50:15Z",
+    "nvd_published_at": "2022-05-31T17:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "During an **X25519** key exchange, the client\u2019s private is generated with [**System.Random**](https://docs.microsoft.com/en-us/dotnet/api/system.random):\n\n```cs\nvar rnd = new Random();\n_privateKey = new byte[MontgomeryCurve25519.PrivateKeySizeInBytes];\nrnd.NextBytes(_privateKey);\n```\n\nSource: [KeyExchangeECCurve25519.cs](https://github.com/sshnet/SSH.NET/blob/bc99ada7da3f05f50d9379f2644941d91d5bf05a/src/Renci.SshNet/Security/KeyExchangeECCurve25519.cs#L51)  \nSource commit: https://github.com/sshnet/SSH.NET/commit/b58a11c0da55da1f5bad46faad2e9b71b7cb35b3\n\n[**System.Random**](https://docs.microsoft.com/en-us/dotnet/api/system.random) is not a cryptographically secure random number generator, it must therefore not be used for cryptographic purposes.\n\n### Impact\nWhen establishing an SSH connection to a remote host, during the X25519 key exchange, the private key is generated with\na weak random number generator whose seed can be bruteforced. This allows an attacker able to eavesdrop the\ncommunications to decrypt them.\n\n### Workarounds\nTo ensure you're not affected by this vulnerability, you can disable support for `curve25519-sha256` and `curve25519-sha256@libssh.org` key exchange algorithms by invoking the following method before a connection is established:\n```cs\nprivate static void RemoveUnsecureKEX(BaseClient client)\n{\n    client.ConnectionInfo.KeyExchangeAlgorithms.Remove(\"curve25519-sha256\");\n    client.ConnectionInfo.KeyExchangeAlgorithms.Remove(\"curve25519-sha256@libssh.org\");\n}\n```\n\n### Thanks\n\nThis issue was initially reported by **Siemens AG, Digital Industries**, shortly followed by @yaumn-synacktiv.",
+  "id": "GHSA-72p8-v4hg-v45p",
+  "modified": "2023-11-08T04:09:12.044025Z",
+  "published": "2022-06-01T19:50:15Z",
   "references": [
     {
       "type": "WEB",
@@ -50,62 +97,15 @@
       "url": "https://github.com/sshnet/SSH.NET/releases/tag/2020.0.2"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "SSH.NET",
-        "ecosystem": "NuGet",
-        "purl": "pkg:nuget/SSH.NET"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2020.0.2"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2011.12.7",
-        "2011.7.29",
-        "2011.9.28",
-        "2012.12.3",
-        "2012.20.12",
-        "2012.21.12",
-        "2012.3.9",
-        "2013.1.27",
-        "2013.1.8",
-        "2013.4.7",
-        "2014.4.6-beta1",
-        "2014.4.6-beta2",
-        "2016.0.0",
-        "2016.0.0-beta1",
-        "2016.0.0-beta2",
-        "2016.0.0-beta3",
-        "2016.1.0",
-        "2016.1.0-beta1",
-        "2016.1.0-beta2",
-        "2016.1.0-beta3",
-        "2016.1.0-beta4",
-        "2020.0.0",
-        "2020.0.0-beta1",
-        "2020.0.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/06/GHSA-72p8-v4hg-v45p/GHSA-72p8-v4hg-v45p.json"
-      }
-    }
+  "related": [
+    "CVE-2022-29245"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Weak private key generation in SSH.NET"
 }

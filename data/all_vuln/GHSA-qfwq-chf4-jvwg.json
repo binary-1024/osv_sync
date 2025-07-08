@@ -1,61 +1,16 @@
 {
-  "id": "GHSA-qfwq-chf4-jvwg",
-  "summary": "karo Metacharacter Handling Remote Command Execution",
-  "details": "The karo gem through 2.5.2 for Ruby allows Remote command injection via the host field.\n\nA flaw in `db.rb` is triggered when handling metacharacters. This may allow a remote attacker to execute arbitrary commands.\n\nIn particular lines 76 and 95 (as of `2014-06-01`) pass unsanitized user supplied input to the command line. \n\n```\n73-      host = \"{@configuration[\"user\"]}@{@configuration[\"host\"]}\"\n74-      cmd  = \"ssh #{host} cat {server_db_config_file}\"\n75-\n76:      server_db_config_output = `{cmd}`\n79-\n--\n89- def drop_and_create_local_database(local_db_config)\n90-      command = case local_db_config[\"adapter\"]\n91-      when \"mysql2\"\n93-      when \"postgresql\"\n95-          dropdb -h #{local_db_config[\"host\"]} -U #{local_db_config[\"username\"]} --if-exists #{local_db_config[\"database\"]}\n```\n\nIf this gem is used in the context of a rails application malicious input could lead to remote command injection. As of version 2.5.2 the affected code lines have not changed.",
-  "aliases": [
-    "CVE-2014-10075"
-  ],
-  "modified": "2023-11-08T03:57:33.837325Z",
-  "published": "2022-05-14T01:49:44Z",
-  "database_specific": {
-    "nvd_published_at": "2018-10-05T06:29:00Z",
-    "github_reviewed_at": "2023-03-29T20:26:16Z",
-    "severity": "CRITICAL",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-77"
-    ]
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2014-10075"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/rahult/karo"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/rahult/karo/blob/master/lib/karo/db.rb#L76"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/rahult/karo/blob/master/lib/karo/db.rb#L95"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/karo/CVE-2014-10075.yml"
-    },
-    {
-      "type": "WEB",
-      "url": "http://www.vapid.dhs.org/advisories/karo-2.3.8.html"
-    },
-    {
-      "type": "WEB",
-      "url": "http://www.vapidlabs.com/advisory.php?v=63"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-qfwq-chf4-jvwg/GHSA-qfwq-chf4-jvwg.json"
+      },
       "package": {
-        "name": "karo",
         "ecosystem": "RubyGems",
+        "name": "karo",
         "purl": "pkg:gem/karo"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -63,7 +18,8 @@
             {
               "last_affected": "2.5.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -95,17 +51,61 @@
         "2.5.0",
         "2.5.1",
         "2.5.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-qfwq-chf4-jvwg/GHSA-qfwq-chf4-jvwg.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2014-10075"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-77"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-03-29T20:26:16Z",
+    "nvd_published_at": "2018-10-05T06:29:00Z",
+    "severity": "CRITICAL"
+  },
+  "details": "The karo gem through 2.5.2 for Ruby allows Remote command injection via the host field.\n\nA flaw in `db.rb` is triggered when handling metacharacters. This may allow a remote attacker to execute arbitrary commands.\n\nIn particular lines 76 and 95 (as of `2014-06-01`) pass unsanitized user supplied input to the command line. \n\n```\n73-      host = \"{@configuration[\"user\"]}@{@configuration[\"host\"]}\"\n74-      cmd  = \"ssh #{host} cat {server_db_config_file}\"\n75-\n76:      server_db_config_output = `{cmd}`\n79-\n--\n89- def drop_and_create_local_database(local_db_config)\n90-      command = case local_db_config[\"adapter\"]\n91-      when \"mysql2\"\n93-      when \"postgresql\"\n95-          dropdb -h #{local_db_config[\"host\"]} -U #{local_db_config[\"username\"]} --if-exists #{local_db_config[\"database\"]}\n```\n\nIf this gem is used in the context of a rails application malicious input could lead to remote command injection. As of version 2.5.2 the affected code lines have not changed.",
+  "id": "GHSA-qfwq-chf4-jvwg",
+  "modified": "2023-11-08T03:57:33.837325Z",
+  "published": "2022-05-14T01:49:44Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2014-10075"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/rahult/karo"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rahult/karo/blob/master/lib/karo/db.rb#L76"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rahult/karo/blob/master/lib/karo/db.rb#L95"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/karo/CVE-2014-10075.yml"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.vapid.dhs.org/advisories/karo-2.3.8.html"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.vapidlabs.com/advisory.php?v=63"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "karo Metacharacter Handling Remote Command Execution"
 }

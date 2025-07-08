@@ -1,27 +1,46 @@
 {
-  "id": "MGASA-2015-0280",
-  "summary": "Updated java-1.8.0-openjdk package fixes security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0280.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "java-1.8.0-openjdk",
+        "purl": "pkg:rpm/mageia/java-1.8.0-openjdk?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.8.0.51-1.b16.1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Multiple flaws were discovered in the 2D, CORBA, JMX, Libraries and RMI\ncomponents in OpenJDK. An untrusted Java application or applet could use\nthese flaws to bypass Java sandbox restrictions (CVE-2015-4760,\nCVE-2015-2628, CVE-2015-4731, CVE-2015-2590, CVE-2015-4732,\nCVE-2015-4733).\n\nA flaw was found in the way the Libraries component of OpenJDK verified\nOnline Certificate Status Protocol (OCSP) responses. An OCSP response with\nno nextUpdate date specified was incorrectly handled as having unlimited\nvalidity, possibly causing a revoked X.509 certificate to be interpreted\nas valid (CVE-2015-4748).\n\nIt was discovered that the JCE component in OpenJDK failed to use constant\ntime comparisons in multiple cases. An attacker could possibly use these\nflaws to disclose sensitive information by measuring the time used to\nperform operations using these non-constant time comparisons\n(CVE-2015-2601).\n\nIt was discovered that the GCM (Galois Counter Mode) implementation in\nthe Security component of OpenJDK failed to properly perform a null check.\nThis could cause the Java Virtual Machine to crash when an application\nperformed encryption using a block cipher in the GCM mode (CVE-2015-2659).\n\nA flaw was found in the RC4 encryption algorithm. When using certain keys\nfor RC4 encryption, an attacker could obtain portions of the plain text\nfrom the cipher text without the knowledge of the encryption key\n(CVE-2015-2808).\n\nNote: With this update, OpenJDK now disables RC4 TLS/SSL cipher suites by\ndefault to address the CVE-2015-2808 issue. Refer to Red Hat Bugzilla bug\n1207101, linked to in the References section, for additional details about\nthis change.\n\nA flaw was found in the way the TLS protocol composed the Diffie-Hellman\n(DH) key exchange. A man-in-the-middle attacker could use this flaw to\nforce the use of weak 512 bit export-grade keys during the key exchange,\nallowing them do decrypt all traffic (CVE-2015-4000).\n\nNote: This update forces the TLS/SSL client implementation in OpenJDK to\nreject DH key sizes below 768 bits, which prevents sessions to be\ndowngraded to export-grade keys. Refer to Red Hat Bugzilla bug 1223211,\nlinked to in the References section, for additional details about this\nchange.\n\nIt was discovered that the JNDI component in OpenJDK did not handle DNS\nresolutions correctly. An attacker able to trigger such DNS errors could\ncause a Java application using JNDI to consume memory and CPU time, and\npossibly block further DNS resolution (CVE-2015-4749).\n\nMultiple information leak flaws were found in the JMX and 2D components in\nOpenJDK. An untrusted Java application or applet could use this flaw to\nbypass certain Java sandbox restrictions (CVE-2015-2621, CVE-2015-2632).\n\nA flaw was found in the way the JSSE component in OpenJDK performed X.509\ncertificate identity verification when establishing a TLS/SSL connection\nto a host identified by an IP address. In certain cases, the certificate\nwas accepted as valid if it was issued for a host name to which the IP\naddress  resolves rather than for the IP address (CVE-2015-2625).\n\nMultiple insecure temporary file use issues were found in the way the\nHotspot component in OpenJDK created performance statistics and error log\nfiles. A local attacker could possibly make a victim using OpenJDK\noverwrite arbitrary files using a symlink attack. Note: This issue was\noriginally fixed as CVE-2015-0383, but the fix was regressed in a later\nupdate (CVE-2015-3149).\n",
+  "id": "MGASA-2015-0280",
   "modified": "2015-07-27T09:40:54Z",
   "published": "2015-07-27T09:53:07Z",
-  "related": [
-    "CVE-2015-2590",
-    "CVE-2015-2601",
-    "CVE-2015-2621",
-    "CVE-2015-2625",
-    "CVE-2015-2628",
-    "CVE-2015-2632",
-    "CVE-2015-2659",
-    "CVE-2015-2808",
-    "CVE-2015-3149",
-    "CVE-2015-4000",
-    "CVE-2015-4731",
-    "CVE-2015-4732",
-    "CVE-2015-4733",
-    "CVE-2015-4748",
-    "CVE-2015-4749",
-    "CVE-2015-4760"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -48,43 +67,24 @@
       "url": "https://rhn.redhat.com/errata/RHSA-2015-1228.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "java-1.8.0-openjdk",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/java-1.8.0-openjdk?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.8.0.51-1.b16.1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2015-0280.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2015-2590",
+    "CVE-2015-2601",
+    "CVE-2015-2621",
+    "CVE-2015-2625",
+    "CVE-2015-2628",
+    "CVE-2015-2632",
+    "CVE-2015-2659",
+    "CVE-2015-2808",
+    "CVE-2015-3149",
+    "CVE-2015-4000",
+    "CVE-2015-4731",
+    "CVE-2015-4732",
+    "CVE-2015-4733",
+    "CVE-2015-4748",
+    "CVE-2015-4749",
+    "CVE-2015-4760"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated java-1.8.0-openjdk package fixes security vulnerabilities"
 }

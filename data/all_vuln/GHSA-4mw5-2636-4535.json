@@ -1,16 +1,40 @@
 {
-  "id": "GHSA-4mw5-2636-4535",
-  "summary": "op_panic in the base runtime can force a panic in the runtime's containing thread",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-4mw5-2636-4535/GHSA-4mw5-2636-4535.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "js-sandbox",
+        "purl": "pkg:cargo/js-sandbox"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "0.1.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-12-04T18:36:38Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
   "details": "Affected versions use deno_core releases that expose `Deno.core.ops.op_panic` to the JS runtime in the base core\n\nThis function when called triggers a manual panic in the thread containing the runtime, breaking sandboxing\n\nIt can be fixed by stubbing out the exposed op:\n```javascript\nDeno.core.ops.op_panic = (msg) => { throw new Error(msg) };\n```",
+  "id": "GHSA-4mw5-2636-4535",
   "modified": "2024-12-04T18:36:38Z",
   "published": "2024-12-04T18:36:38Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-12-04T18:36:38Z"
-  },
   "references": [
     {
       "type": "WEB",
@@ -25,30 +49,6 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2024-0403.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "js-sandbox",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/js-sandbox"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "0.1.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-4mw5-2636-4535/GHSA-4mw5-2636-4535.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "op_panic in the base runtime can force a panic in the runtime's containing thread"
 }

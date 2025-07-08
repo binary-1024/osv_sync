@@ -1,41 +1,51 @@
 {
-  "id": "SUSE-SU-2016:3044-1",
-  "summary": "Security update for xen",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:3044-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "xen": "4.1.6_08-32.1",
+            "xen-devel": "4.1.6_08-32.1",
+            "xen-doc-html": "4.1.6_08-32.1",
+            "xen-doc-pdf": "4.1.6_08-32.1",
+            "xen-kmp-default": "4.1.6_08_3.0.101_0.7.44-32.1",
+            "xen-kmp-pae": "4.1.6_08_3.0.101_0.7.44-32.1",
+            "xen-kmp-trace": "4.1.6_08_3.0.101_0.7.44-32.1",
+            "xen-libs": "4.1.6_08-32.1",
+            "xen-libs-32bit": "4.1.6_08-32.1",
+            "xen-tools": "4.1.6_08-32.1",
+            "xen-tools-domU": "4.1.6_08-32.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
+        "name": "xen",
+        "purl": "pkg:rpm/suse/xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.1.6_08-32.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "\nxen was updated to fix several security issues.\n\nThese security issues were fixed:\n\n- CVE-2016-9637: ioport array overflow allowing a malicious guest administrator can escalate their privilege to that of the host (bsc#1011652).\n- CVE-2016-9386: x86 null segments were not always treated as unusable allowing an unprivileged guest user program to elevate its privilege to that of the guest operating system. Exploit of this vulnerability is easy on Intel and more complicated on AMD (bsc#1009100)\n- CVE-2016-9382: x86 task switch to VM86 mode was mis-handled, allowing a unprivileged guest process to escalate its privilege to that of the guest operating system on AMD hardware. On Intel hardware a malicious unprivileged guest process can crash the guest (bsc#1009103)\n- CVE-2016-9383: The x86 64-bit bit test instruction emulation was broken, allowing a guest to modify arbitrary memory leading to arbitray code execution (bsc#1009107)\n- CVE-2016-9381: Improper processing of shared rings allowing guest administrators take over the qemu process, elevating their privilege to that of the qemu process (bsc#1009109)\n- CVE-2016-9380: Delimiter injection vulnerabilities in pygrub allowed  guest administrators to obtain the contents of sensitive host files or delete the files (bsc#1009111)\n- CVE-2016-9379: Delimiter injection vulnerabilities in pygrub allowed guest administrators to obtain the contents of sensitive host files or delete the files (bsc#1009111)\n- CVE-2016-7777: Xen did not properly honor CR0.TS and CR0.EM, which allowed local x86 HVM guest OS users to read or modify FPU, MMX, or XMM register state information belonging to arbitrary tasks on the guest by modifying an instruction while the hypervisor is preparing to emulate it (bsc#1000106)\n- CVE-2016-8910: The rtl8139_cplus_transmit function in hw/net/rtl8139.c allowed local guest OS administrators to cause a denial of service (infinite loop and CPU consumption) by leveraging failure to limit the ring descriptor count (bsc#1007157)\n- CVE-2016-8667: The rc4030_write function in hw/dma/rc4030.c in allowed local guest OS administrators to cause a denial of service (divide-by-zero error and QEMU process crash) via a large interval timer reload value (bsc#1005004)\n- CVE-2016-8669: The serial_update_parameters function in hw/char/serial.c allowed local guest OS administrators to cause a denial of service (divide-by-zero error and QEMU process crash) via vectors involving a value of divider greater than baud base (bsc#1005005)\n- CVE-2016-7908: The mcf_fec_do_tx function in hw/net/mcf_fec.c did not properly limit the buffer descriptor count when transmitting packets, which allowed local guest OS administrators to cause a denial of service (infinite loop and QEMU process crash) via vectors involving a buffer descriptor with a length of 0 and crafted values in bd.flags (bsc#1003030)\n- CVE-2016-7909: The pcnet_rdra_addr function in hw/net/pcnet.c allowed local guest OS administrators to cause a denial of service (infinite loop and QEMU process crash) by setting the (1) receive or (2) transmit descriptor ring length to 0 (bsc#1003032)\n- CVE-2016-6351: The esp_do_dma function in hw/scsi/esp.c, when built with ESP/NCR53C9x controller emulation support, allowed local guest OS administrators to cause a denial of service (out-of-bounds write and QEMU process crash) or execute arbitrary code on the host via vectors involving DMA read into ESP command buffer (bsc#990843)\n\nThis non-security issue was fixed:\n\n- bsc#1000893: virsh setmem didn't allow to set current guest memory to max limit\n",
+  "id": "SUSE-SU-2016:3044-1",
   "modified": "2025-05-02T04:05:28.224331Z",
   "published": "2016-12-07T15:44:40Z",
-  "related": [
-    "CVE-2016-6351",
-    "CVE-2016-7777",
-    "CVE-2016-7908",
-    "CVE-2016-7909",
-    "CVE-2016-8667",
-    "CVE-2016-8669",
-    "CVE-2016-8910",
-    "CVE-2016-9379",
-    "CVE-2016-9380",
-    "CVE-2016-9381",
-    "CVE-2016-9382",
-    "CVE-2016-9383",
-    "CVE-2016-9386",
-    "CVE-2016-9637"
-  ],
-  "upstream": [
-    "CVE-2016-6351",
-    "CVE-2016-7777",
-    "CVE-2016-7908",
-    "CVE-2016-7909",
-    "CVE-2016-8667",
-    "CVE-2016-8669",
-    "CVE-2016-8910",
-    "CVE-2016-9379",
-    "CVE-2016-9380",
-    "CVE-2016-9381",
-    "CVE-2016-9382",
-    "CVE-2016-9383",
-    "CVE-2016-9386",
-    "CVE-2016-9637"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -154,48 +164,38 @@
       "url": "https://www.suse.com/security/cve/CVE-2016-9637"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "xen",
-        "ecosystem": "SUSE:Linux Enterprise Server 11 SP2-LTSS",
-        "purl": "pkg:rpm/suse/xen&distro=SUSE%20Linux%20Enterprise%20Server%2011%20SP2-LTSS"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.1.6_08-32.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "xen-kmp-pae": "4.1.6_08_3.0.101_0.7.44-32.1",
-            "xen-doc-pdf": "4.1.6_08-32.1",
-            "xen-kmp-default": "4.1.6_08_3.0.101_0.7.44-32.1",
-            "xen-kmp-trace": "4.1.6_08_3.0.101_0.7.44-32.1",
-            "xen-doc-html": "4.1.6_08-32.1",
-            "xen-libs-32bit": "4.1.6_08-32.1",
-            "xen-libs": "4.1.6_08-32.1",
-            "xen-tools": "4.1.6_08-32.1",
-            "xen-tools-domU": "4.1.6_08-32.1",
-            "xen-devel": "4.1.6_08-32.1",
-            "xen": "4.1.6_08-32.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2016:3044-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-6351",
+    "CVE-2016-7777",
+    "CVE-2016-7908",
+    "CVE-2016-7909",
+    "CVE-2016-8667",
+    "CVE-2016-8669",
+    "CVE-2016-8910",
+    "CVE-2016-9379",
+    "CVE-2016-9380",
+    "CVE-2016-9381",
+    "CVE-2016-9382",
+    "CVE-2016-9383",
+    "CVE-2016-9386",
+    "CVE-2016-9637"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for xen",
+  "upstream": [
+    "CVE-2016-6351",
+    "CVE-2016-7777",
+    "CVE-2016-7908",
+    "CVE-2016-7909",
+    "CVE-2016-8667",
+    "CVE-2016-8669",
+    "CVE-2016-8910",
+    "CVE-2016-9379",
+    "CVE-2016-9380",
+    "CVE-2016-9381",
+    "CVE-2016-9382",
+    "CVE-2016-9383",
+    "CVE-2016-9386",
+    "CVE-2016-9637"
+  ]
 }

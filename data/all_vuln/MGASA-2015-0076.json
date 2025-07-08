@@ -1,32 +1,46 @@
 {
-  "id": "MGASA-2015-0076",
-  "summary": "Updated kernel-tmb packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0076.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:4",
+        "name": "kernel-tmb",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.14.32-1.mga4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-tmb update is based on upstream -longterm 3.14.32 and fixes the \nfollowing security issues:\n\nThe microcode on AMD 16h 00h through 0Fh processors does not properly handle\nthe interaction between locked instructions and write-combined memory types,\nwhich allows local users to cause a denial of service (system hang) via a\ncrafted application, aka the errata 793 issue (CVE-2013-6885)\n\nThe kvm_iommu_map_pages function in virt/kvm/iommu.c in the Linux kernel\nthrough 3.16.1 miscalculates the number of pages during the handling of\na mapping failure, which allows guest OS users to (1) cause a denial of\nservice (host OS memory corruption) or possibly have unspecified other\nimpact by triggering a large gfn value or (2) cause a denial of service\n(host OS memory consumption) by triggering a small gfn value that leads\nto permanently pinned pages (CVE-2014-3601).\n\nThe WRMSR processing functionality in the KVM subsystem in the Linux\nkernel through 3.17.2 does not properly handle the writing of a non-\ncanonical address to a model-specific register, which allows guest OS\nusers to cause a denial of service (host OS crash) by leveraging guest\nOS privileges, related to the wrmsr_interception function in\narch/x86/kvm/svm.c and the handle_wrmsr function in arch/x86/kvm/vmx.c\n(CVE-2014-3610).\n\nRace condition in the __kvm_migrate_pit_timer function in\narch/x86/kvm/i8254.c in the KVM subsystem in the Linux kernel through\n3.17.2 allows guest OS users to cause a denial of service (host OS crash)\nby leveraging incorrect PIT emulation (CVE-2014-3611).\n\narch/x86/kvm/vmx.c in the KVM subsystem in the Linux kernel through 3.17.2\ndoes not have an exit handler for the INVVPID instruction, which allows\nguest OS users to cause a denial of service (guest OS crash) via a crafted\napplication (CVE-2014-3646).\n\narch/x86/kvm/emulate.c in the KVM subsystem in the Linux kernel through\n3.17.2 does not properly perform RIP changes, which allows guest OS users\nto cause a denial of service (guest OS crash) via a crafted application\n(CVE-2014-3647).\n\nThe pivot_root implementation in fs/namespace.c in the Linux kernel through\n3.17 does not properly interact with certain locations of a chroot directory,\nwhich allows local users to cause a denial of service (mount-tree loop) via\n. (dot) values in both arguments to the pivot_root system call\n(CVE-2014-7970).\n\narch/x86/kernel/tls.c in the Thread Local Storage (TLS) implementation in\nthe Linux kernel through 3.18.1 allows local users to bypass the espfix\nprotection mechanism, and consequently makes it easier for local users to\nbypass the ASLR protection mechanism, via a crafted application that makes\na set_thread_area system call and later reads a 16-bit value (CVE-2014-8133).\n\nThe paravirt_ops_setup function in arch/x86/kernel/kvm.c in the Linux kernel\nthrough 3.18 uses an improper paravirt_enabled setting for KVM guest kernels,\nwhich makes it easier for guest OS users to bypass the ASLR protection\nmechanism via a crafted application that reads a 16-bit value (CVE-2014-8134).\n\nThe Linux kernel through 3.17.4 does not properly restrict dropping of\nsupplemental group memberships in certain namespace scenarios, which allows\nlocal users to bypass intended file permissions by leveraging a POSIX ACL\ncontaining an entry for the group category that is more restrictive than\nthe entry for the other category, aka a \"negative groups\" issue, related to\nkernel/groups.c, kernel/uid16.c, and kernel/user_namespace.c (CVE-2014-8989).\n\narch/x86/kernel/entry_64.S in the Linux kernel before 3.17.5 does not properly\nhandle faults associated with the Stack Segment (SS) segment register, which\n allows local users to gain privileges by triggering an IRET instruction that\nleads to access to a GS Base address from the wrong space (CVE-2014-9322).\n\nOn x86_64 Linux kernels a malicious user program can do a partial ASLR\nbypass through TLS base addresses leak when attacking other programs\n(CVE-2014-9419).\n\nLinux kernel built with the iso9660 file system (CONFIG_ISO9660_FS) support\nis vulnerable to an infinite recursion loop flaw, which could lead to a\ncrash or render a system unresponsive/unusable after a while. This occurs\nwhile mounting an iso9660 image. An unprivileged user/process could use\nthis flaw to crash the system resulting in DoS (CVE-2014-9420).\n\nThe batadv_frag_merge_packets function in net/batman-adv/fragmentation.c in\nthe B.A.T.M.A.N. implementation in the Linux kernel through 3.18.1 uses an\nincorrect length field during a calculation of an amount of memory, which\nallows remote attackers to cause a denial of service (mesh-node system crash)\nvia fragmented packets (CVE-2014-9428).\n\nRace condition in the key_gc_unused_keys function in security/keys/gc.c\nin the Linux kernel through 3.18.2 allows local users to cause a denial\nof service (memory corruption or panic) or possibly have unspecified other\nimpact via keyctl commands that trigger access to a key structure member\nduring garbage collection of a key (CVE-2014-9529).\n\nThe parse_rock_ridge_inode_internal function in fs/isofs/rock.c in the Linux\nkernel before 3.18.2 does not validate a length value in the Extensions\nReference (ER) System Use Field, which allows local users to obtain sensitive\ninformation from kernel memory via a crafted iso9660 image (CVE-2014-9584).\n\nThe vdso_addr function in arch/x86/vdso/vma.c in the Linux kernel through\n3.18.2 does not properly choose memory locations for the vDSO area, which\nmakes it easier for local users to bypass the ASLR protection mechanism by\nguessing a location at the end of a PMD (CVE-2014-9585).\n\nLinux Kernel 2.6.38 through 3.18 are affected by a flaw in the Crypto API\nthat allows any local user to load any installed kernel module on systems\nwhere CONFIG_CRYPTO_USER_API=y by abusing the request_module() call\n(CVE-2013-7421, CVE-2014-9644).\n\nWhen hitting an sctp INIT collision case during the 4WHS with AUTH enabled,\nit can create a local denial of service by triggering a panic on server side\n(CVE-2015-1421).\n\nIt was found that routing packets to too many different dsts/too fast can\nlead to a excessive resource consumption. A remote attacker can use this\nflaw to crash the system (CVE-2015-1465).\n\nFor other fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2015-0076",
   "modified": "2015-02-19T14:33:30Z",
   "published": "2015-02-19T14:43:07Z",
-  "related": [
-    "CVE-2013-6885",
-    "CVE-2013-7421",
-    "CVE-2014-3601",
-    "CVE-2014-3610",
-    "CVE-2014-3611",
-    "CVE-2014-3646",
-    "CVE-2014-3647",
-    "CVE-2014-7970",
-    "CVE-2014-8133",
-    "CVE-2014-8134",
-    "CVE-2014-8989",
-    "CVE-2014-9322",
-    "CVE-2014-9419",
-    "CVE-2014-9420",
-    "CVE-2014-9428",
-    "CVE-2014-9529",
-    "CVE-2014-9584",
-    "CVE-2014-9585",
-    "CVE-2014-9644",
-    "CVE-2015-1421",
-    "CVE-2015-1465"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -73,43 +87,29 @@
       "url": "https://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.14.32"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-tmb",
-        "ecosystem": "Mageia:4",
-        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.14.32-1.mga4"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2015-0076.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2013-6885",
+    "CVE-2013-7421",
+    "CVE-2014-3601",
+    "CVE-2014-3610",
+    "CVE-2014-3611",
+    "CVE-2014-3646",
+    "CVE-2014-3647",
+    "CVE-2014-7970",
+    "CVE-2014-8133",
+    "CVE-2014-8134",
+    "CVE-2014-8989",
+    "CVE-2014-9322",
+    "CVE-2014-9419",
+    "CVE-2014-9420",
+    "CVE-2014-9428",
+    "CVE-2014-9529",
+    "CVE-2014-9584",
+    "CVE-2014-9585",
+    "CVE-2014-9644",
+    "CVE-2015-1421",
+    "CVE-2015-1465"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-tmb packages fix security vulnerabilities"
 }

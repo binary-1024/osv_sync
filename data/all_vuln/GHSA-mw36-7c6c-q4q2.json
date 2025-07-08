@@ -1,25 +1,87 @@
 {
-  "id": "GHSA-mw36-7c6c-q4q2",
-  "summary": "XStream can be used for Remote Code Execution",
-  "details": "### Impact\nThe vulnerability may allow a remote attacker to run arbitrary shell commands only by manipulating the processed input stream.\n\n### Patches\nIf you rely on XStream's default blacklist of the [Security Framework](https://x-stream.github.io/security.html#framework), you will have to use at least version 1.4.14.\n\n### Workarounds\nNo user is affected, who followed the recommendation to setup XStream's Security Framework with a whitelist! Anyone relying on XStream's default blacklist can immediately switch to a whilelist for the allowed types to avoid the vulnerability.\n\nUsers of XStream 1.4.13 or below who still want to use XStream default blacklist can use a workaround depending on their version in use.\n\nUsers of XStream 1.4.13 can simply add two lines to XStream's setup code:\n```Java\nxstream.denyTypes(new String[]{ \"javax.imageio.ImageIO$ContainsFilter\" });\nxstream.denyTypes(new Class[]{ java.lang.ProcessBuilder.class });\n```\nUsers of XStream 1.4.12 to 1.4.7 who want to use XStream with a black list will have to setup such a list from scratch and deny at least the following types: _javax.imageio.ImageIO$ContainsFilter_, _java.beans.EventHandler_, _java.lang.ProcessBuilder_, _java.lang.Void_ and _void_.\n```Java\nxstream.denyTypes(new String[]{ \"javax.imageio.ImageIO$ContainsFilter\" });\nxstream.denyTypes(new Class[]{ java.lang.ProcessBuilder.class, java.beans.EventHandler.class, java.lang.ProcessBuilder.class, java.lang.Void.class, void.class });\n```\nUsers of XStream 1.4.6 or below can register an own converter to prevent the unmarshalling of the currently know critical types of the Java runtime. It is in fact an updated version of the workaround for CVE-2013-7285:\n```Java\nxstream.registerConverter(new Converter() {\n  public boolean canConvert(Class type) {\n    return type != null && (type == java.beans.EventHandler.class || type == java.lang.ProcessBuilder.class || type == java.lang.Void.class || void.class || type.getName().equals(\"javax.imageio.ImageIO$ContainsFilter\") || Proxy.isProxy(type));\n  }\n\n  public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {\n    throw new ConversionException(\"Unsupported type due to security reasons.\");\n  }\n\n  public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {\n    throw new ConversionException(\"Unsupported type due to security reasons.\");\n  }\n}, XStream.PRIORITY_LOW);\n```\n\n### Credits\nChen L found and reported the issue to XStream and provided the required information to reproduce it.  He was supported by Zhihong Tian and Hui Lu, both from Guangzhou University.\n\n### References\nSee full information about the nature of the vulnerability and the steps to reproduce it in XStream's documentation for [CVE-2020-26217](https://x-stream.github.io/CVE-2020-26217.html).\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [XStream](https://github.com/x-stream/xstream/issues)\n* Contact us at [XStream Google Group](https://groups.google.com/group/xstream-user)",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.4.13",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-mw36-7c6c-q4q2/GHSA-mw36-7c6c-q4q2.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "com.thoughtworks.xstream:xstream",
+        "purl": "pkg:maven/com.thoughtworks.xstream/xstream"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.14-jdk7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "0.1",
+        "0.2",
+        "0.3",
+        "0.5",
+        "0.6",
+        "1.0",
+        "1.0.1",
+        "1.0.2",
+        "1.1",
+        "1.1.1",
+        "1.1.2",
+        "1.1.3",
+        "1.2",
+        "1.2.1",
+        "1.2.2",
+        "1.3",
+        "1.3.1",
+        "1.4",
+        "1.4.1",
+        "1.4.10",
+        "1.4.10-java7",
+        "1.4.11",
+        "1.4.11-java7",
+        "1.4.11.1",
+        "1.4.12",
+        "1.4.12-java7",
+        "1.4.13",
+        "1.4.13-java7",
+        "1.4.14",
+        "1.4.14-java7",
+        "1.4.2",
+        "1.4.3",
+        "1.4.4",
+        "1.4.5",
+        "1.4.6",
+        "1.4.7",
+        "1.4.8",
+        "1.4.9"
+      ]
+    }
+  ],
   "aliases": [
     "BIT-activemq-2020-26217",
     "CVE-2020-26217"
   ],
-  "modified": "2024-03-15T05:20:35.215393Z",
-  "published": "2020-11-16T20:07:59Z",
-  "related": [
-    "CVE-2020-26217"
-  ],
   "database_specific": {
-    "nvd_published_at": "2020-11-16T21:15:00Z",
     "cwe_ids": [
       "CWE-78"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-11-16T20:06:06Z"
+    "github_reviewed_at": "2020-11-16T20:06:06Z",
+    "nvd_published_at": "2020-11-16T21:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nThe vulnerability may allow a remote attacker to run arbitrary shell commands only by manipulating the processed input stream.\n\n### Patches\nIf you rely on XStream's default blacklist of the [Security Framework](https://x-stream.github.io/security.html#framework), you will have to use at least version 1.4.14.\n\n### Workarounds\nNo user is affected, who followed the recommendation to setup XStream's Security Framework with a whitelist! Anyone relying on XStream's default blacklist can immediately switch to a whilelist for the allowed types to avoid the vulnerability.\n\nUsers of XStream 1.4.13 or below who still want to use XStream default blacklist can use a workaround depending on their version in use.\n\nUsers of XStream 1.4.13 can simply add two lines to XStream's setup code:\n```Java\nxstream.denyTypes(new String[]{ \"javax.imageio.ImageIO$ContainsFilter\" });\nxstream.denyTypes(new Class[]{ java.lang.ProcessBuilder.class });\n```\nUsers of XStream 1.4.12 to 1.4.7 who want to use XStream with a black list will have to setup such a list from scratch and deny at least the following types: _javax.imageio.ImageIO$ContainsFilter_, _java.beans.EventHandler_, _java.lang.ProcessBuilder_, _java.lang.Void_ and _void_.\n```Java\nxstream.denyTypes(new String[]{ \"javax.imageio.ImageIO$ContainsFilter\" });\nxstream.denyTypes(new Class[]{ java.lang.ProcessBuilder.class, java.beans.EventHandler.class, java.lang.ProcessBuilder.class, java.lang.Void.class, void.class });\n```\nUsers of XStream 1.4.6 or below can register an own converter to prevent the unmarshalling of the currently know critical types of the Java runtime. It is in fact an updated version of the workaround for CVE-2013-7285:\n```Java\nxstream.registerConverter(new Converter() {\n  public boolean canConvert(Class type) {\n    return type != null && (type == java.beans.EventHandler.class || type == java.lang.ProcessBuilder.class || type == java.lang.Void.class || void.class || type.getName().equals(\"javax.imageio.ImageIO$ContainsFilter\") || Proxy.isProxy(type));\n  }\n\n  public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {\n    throw new ConversionException(\"Unsupported type due to security reasons.\");\n  }\n\n  public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {\n    throw new ConversionException(\"Unsupported type due to security reasons.\");\n  }\n}, XStream.PRIORITY_LOW);\n```\n\n### Credits\nChen L found and reported the issue to XStream and provided the required information to reproduce it.  He was supported by Zhihong Tian and Hui Lu, both from Guangzhou University.\n\n### References\nSee full information about the nature of the vulnerability and the steps to reproduce it in XStream's documentation for [CVE-2020-26217](https://x-stream.github.io/CVE-2020-26217.html).\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [XStream](https://github.com/x-stream/xstream/issues)\n* Contact us at [XStream Google Group](https://groups.google.com/group/xstream-user)",
+  "id": "GHSA-mw36-7c6c-q4q2",
+  "modified": "2024-03-15T05:20:35.215393Z",
+  "published": "2020-11-16T20:07:59Z",
   "references": [
     {
       "type": "WEB",
@@ -90,77 +152,15 @@
       "url": "https://github.com/x-stream/xstream"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "com.thoughtworks.xstream:xstream",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/com.thoughtworks.xstream/xstream"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.4.14-jdk7"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "0.1",
-        "0.2",
-        "0.3",
-        "0.5",
-        "0.6",
-        "1.0",
-        "1.0.1",
-        "1.0.2",
-        "1.1",
-        "1.1.1",
-        "1.1.2",
-        "1.1.3",
-        "1.2",
-        "1.2.1",
-        "1.2.2",
-        "1.3",
-        "1.3.1",
-        "1.4",
-        "1.4.1",
-        "1.4.10",
-        "1.4.10-java7",
-        "1.4.11",
-        "1.4.11-java7",
-        "1.4.11.1",
-        "1.4.12",
-        "1.4.12-java7",
-        "1.4.13",
-        "1.4.13-java7",
-        "1.4.14",
-        "1.4.14-java7",
-        "1.4.2",
-        "1.4.3",
-        "1.4.4",
-        "1.4.5",
-        "1.4.6",
-        "1.4.7",
-        "1.4.8",
-        "1.4.9"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 1.4.13",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-mw36-7c6c-q4q2/GHSA-mw36-7c6c-q4q2.json"
-      }
-    }
+  "related": [
+    "CVE-2020-26217"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "XStream can be used for Remote Code Execution"
 }

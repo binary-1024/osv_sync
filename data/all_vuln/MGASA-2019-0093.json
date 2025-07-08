@@ -1,22 +1,46 @@
 {
-  "id": "MGASA-2019-0093",
-  "summary": "Updated zziplib packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0093.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "zziplib",
+        "purl": "pkg:rpm/mageia/zziplib?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.13.69-1.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "In ZZIPlib 0.13.67, there is a segmentation fault caused by invalid memory\naccess in the zzip_disk_fread function (zzip/mmapped.c) because the size\nvariable is not validated against the amount of file->stored data\n(CVE-2018-6381).\n\nAn unaligned memory access bug was found in the way ZZIPlib handled ZIP files.\nThis flaw could potentially be used to crash the application using ZZIPlib by\ntricking the application into processing specially crafted ZIP files\n(CVE-2018-6484).\n\nIn ZZIPlib 0.13.67, there is a bus error caused by loading of a misaligned\naddress in the zzip_disk_findfirst function of zzip/mmapped.c. Remote\nattackers could leverage this vulnerability to cause a denial of service via a\ncrafted zip file (CVE-2018-6540).\n\nA flaw was found in ZZIPlib 0.13.67, there is a bus error caused by loading of\na misaligned address (when handling disk64_trailer local entries) in\n__zzip_fetch_disk_trailer (zzip/zip.c). Remote attackers could leverage this\nvulnerability to cause a denial of service via a crafted zip file\n(CVE-2018-6541).\n\nIn ZZIPlib 0.13.67, there is a bus error (when handling a disk64_trailer seek\nvalue) caused by loading of a misaligned address in the zzip_disk_findfirst\nfunction of zzip/mmapped.c (CVE-2018-6542).\n\nAn uncontrolled memory allocation was found in ZZIPlib that could lead to a\ncrash in the __zzip_parse_root_directory function of zzip/zip.c if the package\nis compiled with Address Sanitizer. Remote attackers could leverage this\nvulnerability to cause a denial of service via a crafted zip file\n(CVE-2018-6869).\n\nAn out of bounds read was found in function zzip_disk_fread of ZZIPlib, up to\n0.13.68, when ZZIPlib mem_disk functionality is used. Remote attackers could\nleverage this vulnerability to cause a denial of service via a crafted zip\nfile (CVE-2018-7725).\n\nAn improper input validation was found in function __zzip_fetch_disk_trailer\nof ZZIPlib, up to 0.13.68, that could lead to a crash in\n__zzip_parse_root_directory function of zzip/zip.c. Remote attackers could\nleverage this vulnerability to cause a denial of service via a crafted zip\nfile (CVE-2018-7726).\n\nA memory leak was found in unzip-mem.c and unzzip-mem.c of ZZIPlib, up to\nv0.13.68, that could lead to resource exhaustion. Local attackers could\nleverage this vulnerability to cause a denial of service via a crafted zip\nfile (CVE-2018-7727).\n\nAn issue was discovered in ZZIPlib through 0.13.69. There is a memory leak\ntriggered in the function __zzip_parse_root_directory in zip.c, which could\nlead to a denial of service attack (CVE-2018-16548).\n\nA flaw was found in ZZIPlib 0.13.69. A directory traversal vulnerability\nallows attackers to overwrite arbitrary files via a .. (dot dot) in a zip\nfile, because of the function unzzip_cat in the bins/unzzipcat-mem.c file\n(CVE-2018-17828).\n",
+  "id": "MGASA-2019-0093",
   "modified": "2019-02-20T21:23:23Z",
   "published": "2019-02-20T22:18:01Z",
-  "related": [
-    "CVE-2018-16548",
-    "CVE-2018-17828",
-    "CVE-2018-6381",
-    "CVE-2018-6484",
-    "CVE-2018-6540",
-    "CVE-2018-6541",
-    "CVE-2018-6542",
-    "CVE-2018-6869",
-    "CVE-2018-7725",
-    "CVE-2018-7726",
-    "CVE-2018-7727"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -59,43 +83,19 @@
       "url": "https://lists.opensuse.org/opensuse-updates/2018-10/msg00130.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "zziplib",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/zziplib?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.13.69-1.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0093.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2018-16548",
+    "CVE-2018-17828",
+    "CVE-2018-6381",
+    "CVE-2018-6484",
+    "CVE-2018-6540",
+    "CVE-2018-6541",
+    "CVE-2018-6542",
+    "CVE-2018-6869",
+    "CVE-2018-7725",
+    "CVE-2018-7726",
+    "CVE-2018-7727"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated zziplib packages fix security vulnerability"
 }

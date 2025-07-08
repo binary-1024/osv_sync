@@ -1,13 +1,68 @@
 {
-  "id": "GHSA-93mq-9ffx-83m2",
-  "summary": "Memory Exhaustion in Expr Parser with Unrestricted Input",
-  "details": "### Impact\nIf the Expr expression parser is given an **unbounded input string**, it will attempt to compile the *entire* string and generate an Abstract Syntax Tree (AST) node for each part of the expression. In scenarios where input size isn\u2019t limited, a malicious or inadvertent extremely large expression can consume excessive memory as the parser builds a huge AST. This can ultimately lead to **excessive memory usage** and an **Out-Of-Memory (OOM) crash** of the process. This issue is relatively uncommon and will only manifest when there are **no restrictions on the input size**, i.e. the expression length is allowed to grow arbitrarily large. In typical use cases where inputs are bounded or validated, this problem would not occur.\n\n### Patches\n\nThe problem has been **patched** in the latest versions of the Expr library. The fix introduces compile-time limits on the number of AST nodes and memory usage during parsing, preventing any single expression from exhausting resources. Users should upgrade to **Expr version 1.17.0 or later**, as this release includes the new node budget and memory limit safeguards. Upgrading to v1.17.0 ensures that extremely deep or large expressions are detected and safely aborted during compilation, avoiding the OOM condition.\n\n### Workarounds\n\nFor users who cannot immediately upgrade, the recommended workaround is to **impose an input size restriction before parsing**. In practice, this means validating or limiting the length of expression strings that your application will accept. For example, set a maximum allowable number of characters (or nodes) for any expression and reject or truncate inputs that exceed this limit. By ensuring no unbounded-length expression is ever fed into the parser, you can prevent the parser from constructing a pathologically large AST and avoid potential memory exhaustion. In short, **pre-validate and cap input size** as a safeguard in the absence of the patch.\n\n### References\n\n- #762",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-93mq-9ffx-83m2/GHSA-93mq-9ffx-83m2.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/expr-lang/expr",
+        "purl": "pkg:golang/github.com/expr-lang/expr"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.17.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-29786",
     "GO-2025-3525"
   ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-770"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-03-17T21:26:22Z",
+    "nvd_published_at": "2025-03-17T14:15:22Z",
+    "severity": "HIGH"
+  },
+  "details": "### Impact\nIf the Expr expression parser is given an **unbounded input string**, it will attempt to compile the *entire* string and generate an Abstract Syntax Tree (AST) node for each part of the expression. In scenarios where input size isn\u2019t limited, a malicious or inadvertent extremely large expression can consume excessive memory as the parser builds a huge AST. This can ultimately lead to **excessive memory usage** and an **Out-Of-Memory (OOM) crash** of the process. This issue is relatively uncommon and will only manifest when there are **no restrictions on the input size**, i.e. the expression length is allowed to grow arbitrarily large. In typical use cases where inputs are bounded or validated, this problem would not occur.\n\n### Patches\n\nThe problem has been **patched** in the latest versions of the Expr library. The fix introduces compile-time limits on the number of AST nodes and memory usage during parsing, preventing any single expression from exhausting resources. Users should upgrade to **Expr version 1.17.0 or later**, as this release includes the new node budget and memory limit safeguards. Upgrading to v1.17.0 ensures that extremely deep or large expressions are detected and safely aborted during compilation, avoiding the OOM condition.\n\n### Workarounds\n\nFor users who cannot immediately upgrade, the recommended workaround is to **impose an input size restriction before parsing**. In practice, this means validating or limiting the length of expression strings that your application will accept. For example, set a maximum allowable number of characters (or nodes) for any expression and reject or truncate inputs that exceed this limit. By ensuring no unbounded-length expression is ever fed into the parser, you can prevent the parser from constructing a pathologically large AST and avoid potential memory exhaustion. In short, **pre-validate and cap input size** as a safeguard in the absence of the patch.\n\n### References\n\n- #762",
+  "id": "GHSA-93mq-9ffx-83m2",
   "modified": "2025-03-18T17:12:14.836395Z",
   "published": "2025-03-17T21:26:22Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/expr-lang/expr/security/advisories/GHSA-93mq-9ffx-83m2"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-29786"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/expr-lang/expr/pull/762"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/expr-lang/expr/commit/0d19441454426d2f58edb22c31f3ba5f99c7a26e"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/expr-lang/expr"
+    }
+  ],
   "related": [
     "CGA-2hv6-p793-xhvw",
     "CGA-2m4x-ggmr-gr65",
@@ -49,67 +104,12 @@
     "CGA-xrvv-x8hr-w5vf",
     "CGA-xw9q-6mxh-f593"
   ],
-  "database_specific": {
-    "nvd_published_at": "2025-03-17T14:15:22Z",
-    "cwe_ids": [
-      "CWE-770"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-03-17T21:26:22Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/expr-lang/expr/security/advisories/GHSA-93mq-9ffx-83m2"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-29786"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/expr-lang/expr/pull/762"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/expr-lang/expr/commit/0d19441454426d2f58edb22c31f3ba5f99c7a26e"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/expr-lang/expr"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/expr-lang/expr",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/expr-lang/expr"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.17.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-93mq-9ffx-83m2/GHSA-93mq-9ffx-83m2.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Memory Exhaustion in Expr Parser with Unrestricted Input"
 }

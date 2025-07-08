@@ -1,21 +1,60 @@
 {
-  "id": "GHSA-qxj7-2x7w-3mpp",
-  "summary": "Duende.AccessTokenManagement race condition when concurrently retrieving customized Client Credentials Access Tokens",
-  "details": "### Summary\nDuende.AccessTokenManagement contains a race condition when requesting access tokens using the client credentials flow. Concurrent requests to obtain an access token using differing protocol parameters can return access tokens obtained with the wrong scope, resource indicator, or other protocol parameters. Such usage is somewhat atypical, and only a small percentage of users are likely to be affected.\n\n### Details\nDuende.AccessTokenManagement can request access tokens using the client credentials flow in several ways. In basic usage, the client credentials flow is configured once and the parameters do not vary. In more advanced situations, requests with varying protocol parameters may be made by calling specific overloads of these methods:\n\n- `HttpContext.GetClientAccessTokenAsync()`\n- `IClientCredentialsTokenManagementService.GetAccessTokenAsync()`\n\nThere are overloads of both of these methods that accept a `TokenRequestParameters` object that customizes token request parameters. However, concurrent requests with varying `TokenRequestParameters` will result in the same token for all concurrent calls.\n\n\n### Upgrading\nMost users can simply update the NuGet package to the latest version. Customizations of the `IClientCredentialsTokenCache` that derive from the default implementation (`DistributedClientCredentialsTokenCache`) will require a small code change, as its constructor was changed to add a dependency on the `ITokenRequestSynchronization` service. The synchronization service will need to be injected into the derived class and passed to the base constructor.\n\n### Impact\nThe impact of this vulnerability depends on how Duende.AccessTokenManagement is used and on the security architecture of the solution. Most users will not be vulnerable to this issue. More advanced users may run into this issue by calling the methods specified above with customized token request parameters. The impact of obtaining an access token with different than intended protocol parameters will vary depending on application logic, security architecture, and the authorization policy of the resource servers.\n\nThank you to **Michael Dimoudis** of **PageUp** for finding this issue and responsibly disclosing it!",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-qxj7-2x7w-3mpp/GHSA-qxj7-2x7w-3mpp.json"
+      },
+      "package": {
+        "ecosystem": "NuGet",
+        "name": "Duende.AccessTokenManagement",
+        "purl": "pkg:nuget/Duende.AccessTokenManagement"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.2.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.1.0",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.1.0",
+        "2.1.1",
+        "2.1.2",
+        "3.0.0",
+        "3.0.1",
+        "3.1.0",
+        "3.1.1"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-26620"
   ],
-  "modified": "2025-02-19T18:12:52.158398Z",
-  "published": "2025-02-19T17:47:19Z",
   "database_specific": {
-    "nvd_published_at": "2025-02-18T18:15:36Z",
     "cwe_ids": [
       "CWE-367"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-02-19T17:47:19Z"
+    "github_reviewed_at": "2025-02-19T17:47:19Z",
+    "nvd_published_at": "2025-02-18T18:15:36Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nDuende.AccessTokenManagement contains a race condition when requesting access tokens using the client credentials flow. Concurrent requests to obtain an access token using differing protocol parameters can return access tokens obtained with the wrong scope, resource indicator, or other protocol parameters. Such usage is somewhat atypical, and only a small percentage of users are likely to be affected.\n\n### Details\nDuende.AccessTokenManagement can request access tokens using the client credentials flow in several ways. In basic usage, the client credentials flow is configured once and the parameters do not vary. In more advanced situations, requests with varying protocol parameters may be made by calling specific overloads of these methods:\n\n- `HttpContext.GetClientAccessTokenAsync()`\n- `IClientCredentialsTokenManagementService.GetAccessTokenAsync()`\n\nThere are overloads of both of these methods that accept a `TokenRequestParameters` object that customizes token request parameters. However, concurrent requests with varying `TokenRequestParameters` will result in the same token for all concurrent calls.\n\n\n### Upgrading\nMost users can simply update the NuGet package to the latest version. Customizations of the `IClientCredentialsTokenCache` that derive from the default implementation (`DistributedClientCredentialsTokenCache`) will require a small code change, as its constructor was changed to add a dependency on the `ITokenRequestSynchronization` service. The synchronization service will need to be injected into the derived class and passed to the base constructor.\n\n### Impact\nThe impact of this vulnerability depends on how Duende.AccessTokenManagement is used and on the security architecture of the solution. Most users will not be vulnerable to this issue. More advanced users may run into this issue by calling the methods specified above with customized token request parameters. The impact of obtaining an access token with different than intended protocol parameters will vary depending on application logic, security architecture, and the authorization policy of the resource servers.\n\nThank you to **Michael Dimoudis** of **PageUp** for finding this issue and responsibly disclosing it!",
+  "id": "GHSA-qxj7-2x7w-3mpp",
+  "modified": "2025-02-19T18:12:52.158398Z",
+  "published": "2025-02-19T17:47:19Z",
   "references": [
     {
       "type": "WEB",
@@ -34,51 +73,12 @@
       "url": "https://github.com/DuendeSoftware/foss"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "Duende.AccessTokenManagement",
-        "ecosystem": "NuGet",
-        "purl": "pkg:nuget/Duende.AccessTokenManagement"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.2.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.0.0",
-        "1.1.0",
-        "2.0.0",
-        "2.0.1",
-        "2.0.2",
-        "2.0.3",
-        "2.1.0",
-        "2.1.1",
-        "2.1.2",
-        "3.0.0",
-        "3.0.1",
-        "3.1.0",
-        "3.1.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-qxj7-2x7w-3mpp/GHSA-qxj7-2x7w-3mpp.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:N/SC:L/SI:L/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:N/SC:L/SI:L/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Duende.AccessTokenManagement race condition when concurrently retrieving customized Client Credentials Access Tokens"
 }

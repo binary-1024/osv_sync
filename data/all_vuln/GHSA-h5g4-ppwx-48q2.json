@@ -1,73 +1,16 @@
 {
-  "id": "GHSA-h5g4-ppwx-48q2",
-  "summary": "Missing validation causes denial of service via `DeleteSessionTensor`",
-  "details": "### Impact\nThe implementation of [`tf.raw_ops.DeleteSessionTensor`](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/session_ops.cc#L128-L144) does not fully validate the input arguments. This results in a `CHECK`-failure which can be used to trigger a denial of service attack:\n\n```python\nimport tensorflow as tf\n\nhandle = tf.constant(\"[]\", shape=[0], dtype=tf.string)\ntf.raw_ops.DeleteSessionTensor(handle=handle)\n```\n  \nThe code assumes `handle` is a scalar but there is no validation for this:\n  \n```cc\n    const Tensor& handle = ctx->input(0);\n    const string& name = handle.scalar<tstring>()();\n```\n\n### Patches\nWe have patched the issue in GitHub commit [cff267650c6a1b266e4b4500f69fbc49cdd773c5](https://github.com/tensorflow/tensorflow/commit/cff267650c6a1b266e4b4500f69fbc49cdd773c5).\n\nThe fix will be included in TensorFlow 2.9.0. We will also cherrypick this commit on TensorFlow 2.8.1, TensorFlow 2.7.2, and TensorFlow 2.6.4, as these are also affected and still in supported range.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported by Neophytos Christou from Secure Systems Lab at Brown University.",
-  "aliases": [
-    "BIT-tensorflow-2022-29194",
-    "CVE-2022-29194"
-  ],
-  "modified": "2023-12-06T01:02:13.407008Z",
-  "published": "2022-05-24T22:06:50Z",
-  "related": [
-    "CVE-2022-29194"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-05-20T21:15:00Z",
-    "github_reviewed_at": "2022-05-24T22:06:50Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-20"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-h5g4-ppwx-48q2"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29194"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/cff267650c6a1b266e4b4500f69fbc49cdd773c5"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/session_ops.cc#L128-L144"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.6.4"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.7.2"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.8.1"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.9.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -75,7 +18,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -145,20 +89,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -166,26 +109,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -193,25 +136,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -219,7 +162,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -251,20 +195,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -272,26 +215,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -299,25 +242,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -325,7 +268,8 @@
             {
               "fixed": "2.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -392,20 +336,19 @@
         "2.6.1",
         "2.6.2",
         "2.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.7.0"
@@ -413,26 +356,26 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -440,22 +383,79 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-h5g4-ppwx-48q2/GHSA-h5g4-ppwx-48q2.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-29194",
+    "CVE-2022-29194"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-20"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-05-24T22:06:50Z",
+    "nvd_published_at": "2022-05-20T21:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nThe implementation of [`tf.raw_ops.DeleteSessionTensor`](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/session_ops.cc#L128-L144) does not fully validate the input arguments. This results in a `CHECK`-failure which can be used to trigger a denial of service attack:\n\n```python\nimport tensorflow as tf\n\nhandle = tf.constant(\"[]\", shape=[0], dtype=tf.string)\ntf.raw_ops.DeleteSessionTensor(handle=handle)\n```\n  \nThe code assumes `handle` is a scalar but there is no validation for this:\n  \n```cc\n    const Tensor& handle = ctx->input(0);\n    const string& name = handle.scalar<tstring>()();\n```\n\n### Patches\nWe have patched the issue in GitHub commit [cff267650c6a1b266e4b4500f69fbc49cdd773c5](https://github.com/tensorflow/tensorflow/commit/cff267650c6a1b266e4b4500f69fbc49cdd773c5).\n\nThe fix will be included in TensorFlow 2.9.0. We will also cherrypick this commit on TensorFlow 2.8.1, TensorFlow 2.7.2, and TensorFlow 2.6.4, as these are also affected and still in supported range.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n### Attribution\nThis vulnerability has been reported by Neophytos Christou from Secure Systems Lab at Brown University.",
+  "id": "GHSA-h5g4-ppwx-48q2",
+  "modified": "2023-12-06T01:02:13.407008Z",
+  "published": "2022-05-24T22:06:50Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-h5g4-ppwx-48q2"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29194"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/cff267650c6a1b266e4b4500f69fbc49cdd773c5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/kernels/session_ops.cc#L128-L144"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.6.4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.7.2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.8.1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.9.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-29194"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Missing validation causes denial of service via `DeleteSessionTensor`"
 }

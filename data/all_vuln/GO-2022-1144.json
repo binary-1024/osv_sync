@@ -1,14 +1,124 @@
 {
-  "id": "GO-2022-1144",
-  "summary": "Excessive memory growth in net/http and golang.org/x/net/http2",
-  "details": "An attacker can cause excessive memory growth in a Go server accepting HTTP/2 requests.\n\nHTTP/2 server connections contain a cache of HTTP header keys sent by the client. While the total number of entries in this cache is capped, an attacker sending very large keys can cause the server to allocate approximately 64 MiB per open connection.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2022-1144.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "net/http",
+            "symbols": [
+              "ListenAndServe",
+              "ListenAndServeTLS",
+              "Serve",
+              "ServeTLS",
+              "Server.ListenAndServe",
+              "Server.ListenAndServeTLS",
+              "Server.Serve",
+              "Server.ServeTLS",
+              "http2Server.ServeConn",
+              "http2serverConn.canonicalHeader"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "stdlib",
+        "purl": "pkg:golang/stdlib"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.9"
+            },
+            {
+              "introduced": "1.19.0-0"
+            },
+            {
+              "fixed": "1.19.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2022-1144.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "golang.org/x/net/http2",
+            "symbols": [
+              "Server.ServeConn",
+              "serverConn.canonicalHeader"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "golang.org/x/net",
+        "purl": "pkg:golang/golang.org/x/net"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.4.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-golang-2022-41717",
     "CVE-2022-41717",
     "GHSA-xrjj-mj9h-534m"
   ],
+  "credits": [
+    {
+      "name": "Josselin Costanzi"
+    }
+  ],
+  "database_specific": {
+    "review_status": "REVIEWED",
+    "url": "https://pkg.go.dev/vuln/GO-2022-1144"
+  },
+  "details": "An attacker can cause excessive memory growth in a Go server accepting HTTP/2 requests.\n\nHTTP/2 server connections contain a cache of HTTP header keys sent by the client. While the total number of entries in this cache is capped, an attacker sending very large keys can cause the server to allocate approximately 64 MiB per open connection.",
+  "id": "GO-2022-1144",
   "modified": "2024-05-20T16:03:47Z",
   "published": "2022-12-08T19:01:21Z",
+  "references": [
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/56350"
+    },
+    {
+      "type": "FIX",
+      "url": "https://go.dev/cl/455717"
+    },
+    {
+      "type": "FIX",
+      "url": "https://go.dev/cl/455635"
+    },
+    {
+      "type": "WEB",
+      "url": "https://groups.google.com/g/golang-announce/c/L_3rmdT0BMU/m/yZDrXjIiBQAJ"
+    }
+  ],
   "related": [
     "RHSA-2023:0328",
     "RHSA-2023:0446",
@@ -39,116 +149,6 @@
     "RHSA-2023:6420",
     "RHSA-2023:6818"
   ],
-  "database_specific": {
-    "review_status": "REVIEWED",
-    "url": "https://pkg.go.dev/vuln/GO-2022-1144"
-  },
-  "references": [
-    {
-      "type": "REPORT",
-      "url": "https://go.dev/issue/56350"
-    },
-    {
-      "type": "FIX",
-      "url": "https://go.dev/cl/455717"
-    },
-    {
-      "type": "FIX",
-      "url": "https://go.dev/cl/455635"
-    },
-    {
-      "type": "WEB",
-      "url": "https://groups.google.com/g/golang-announce/c/L_3rmdT0BMU/m/yZDrXjIiBQAJ"
-    }
-  ],
-  "affected": [
-    {
-      "package": {
-        "name": "stdlib",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/stdlib"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.18.9"
-            },
-            {
-              "introduced": "1.19.0-0"
-            },
-            {
-              "fixed": "1.19.4"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "net/http",
-            "symbols": [
-              "ListenAndServe",
-              "ListenAndServeTLS",
-              "Serve",
-              "ServeTLS",
-              "Server.ListenAndServe",
-              "Server.ListenAndServeTLS",
-              "Server.Serve",
-              "Server.ServeTLS",
-              "http2Server.ServeConn",
-              "http2serverConn.canonicalHeader"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2022-1144.json"
-      }
-    },
-    {
-      "package": {
-        "name": "golang.org/x/net",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/golang.org/x/net"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.4.0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "golang.org/x/net/http2",
-            "symbols": [
-              "Server.ServeConn",
-              "serverConn.canonicalHeader"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2022-1144.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Josselin Costanzi"
-    }
-  ]
+  "summary": "Excessive memory growth in net/http and golang.org/x/net/http2"
 }

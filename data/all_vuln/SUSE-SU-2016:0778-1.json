@@ -1,45 +1,8 @@
 {
-  "id": "SUSE-SU-2016:0778-1",
-  "summary": "Security update for sles11sp4-docker-image",
   "details": "\nThis rebuild for sles11sp4-docker-image fixes several important security issues\ndone in libraries contained inside, for glibc, openssl, curl and openldap2.\n\nglibc security fixes:\n\n- CVE-2015-7547: A stack-based buffer overflow in getaddrinfo allowed remote attackers to cause a crash or execute arbitrary code via crafted and timed DNS responses (bsc#961721)\n- CVE-2015-8777: Insufficient checking of LD_POINTER_GUARD environment variable allowed local attackers to bypass the pointer guarding protection of the dynamic loader on set-user-ID and set-group-ID programs (bsc#950944)\n- CVE-2015-8776: Out-of-range time values passed to the strftime function may cause it to crash, leading to a denial of service, or potentially disclosure information (bsc#962736)\n- CVE-2015-8778: Integer overflow in hcreate and hcreate_r could have caused an out-of-bound memory access. leading to application crashes or, potentially, arbitrary code execution (bsc#962737)\n- CVE-2014-9761: A stack overflow (unbounded alloca) could have caused applications which process long strings with the nan function to crash or, potentially, execute arbitrary code. (bsc#962738)\n- CVE-2015-8779: A stack overflow (unbounded alloca) in the catopen function could have caused applications which pass long strings to the catopen function to crash or, potentially execute arbitrary code. (bsc#962739)\n\nglibc non-security bugfixes:\n\n- bsc#930721: Accept leading and trailing spaces in getdate input string\n- bsc#942317: Recognize power8 platform \n- bsc#950944: Always enable pointer guard\n- bsc#956988: Fix deadlock in __dl_iterate_phdr\n\nopenssl security issues fixed:\n\n- CVE-2016-0800 aka the 'DROWN' attack (bsc#968046):\n  OpenSSL was vulnerable to a cross-protocol attack that could lead to\n  decryption of TLS sessions by using a server supporting SSLv2 and\n  EXPORT cipher suites as a Bleichenbacher RSA padding oracle.\n\n  This update changes the openssl library to:\n\n  * Disable SSLv2 protocol support by default.\n\n    This can be overridden by setting the environment variable\n    'OPENSSL_ALLOW_SSL2' or by using SSL_CTX_clear_options using the\n    SSL_OP_NO_SSLv2 flag.\n\n    Note that various services and clients had already disabled SSL\n    protocol 2 by default previously.\n\n  * Disable all weak EXPORT ciphers by default. These can be reenabled\n    if required by old legacy software using the environment variable\n    'OPENSSL_ALLOW_EXPORT'.\n\n- CVE-2016-0705 (bnc#968047):\n  A double free() bug in the DSA ASN1 parser code was fixed that could\n  be abused to facilitate a denial-of-service attack.\n\n- CVE-2016-0797 (bnc#968048):\n  The BN_hex2bn() and BN_dec2bn() functions had a bug that could result\n  in an attempt to de-reference a NULL pointer leading to crashes.\n  This could have security consequences if these functions were ever\n  called by user applications with large untrusted hex/decimal data. Also,\n  internal usage of these functions in OpenSSL uses data from config files\n  or application command line arguments. If user developed applications\n  generated config file data based on untrusted data, then this could\n  have had security consequences as well.\n\n- CVE-2016-0799 (bnc#968374)\n  On many 64 bit systems, the internal fmtstr() and doapr_outch()\n  functions could miscalculate the length of a string and attempt to\n  access out-of-bounds memory locations. These problems could have\n  enabled attacks where large amounts of untrusted data is passed to\n  the BIO_*printf functions. If applications use these functions in\n  this way then they could have been vulnerable. OpenSSL itself uses\n  these functions when printing out human-readable dumps of ASN.1\n  data. Therefore applications that print this data could have been\n  vulnerable if the data is from untrusted sources. OpenSSL command line\n  applications could also have been vulnerable when they print out ASN.1\n  data, or if untrusted data is passed as command line arguments. Libssl\n  is not considered directly vulnerable.\n\n- CVE-2015-3197 (bsc#963415):\n  The SSLv2 protocol did not block disabled ciphers.\n\nNote that the March 1st 2016 release also references following CVEs\nthat were fixed by us with CVE-2015-0293 in 2015:\n\n- CVE-2016-0703 (bsc#968051): This issue only affected versions of\n  OpenSSL prior to March 19th 2015 at which time the code was refactored\n  to address vulnerability CVE-2015-0293. It would have made the above\n  'DROWN' attack much easier.\n- CVE-2016-0704 (bsc#968053): 'Bleichenbacher oracle in SSLv2'\n  This issue only affected versions of OpenSSL prior to March 19th\n  2015 at which time the code was refactored to address vulnerability\n  CVE-2015-0293. It would have made the above 'DROWN' attack much easier.\n\nopenssl non-security bugs fixed:\n\n- Avoid running OPENSSL_config twice. This avoids breaking\n  engine loading and also fixes a memory leak in libssl. (bsc#952871 bsc#967787)\n\n\ncurl security issues fixed:\n\n- CVE-2016-0755: libcurl would reuse NTLM-authenticated proxy connections without properly making sure that the connection was authenticated with the same credentials as set for this transfer (bsc#962983)\n\ncurl non-security bugs fixed:\n- bsc#926511: Check for errors on the control connection during FTP transfers\n\nopenldap2 security issue fixed:\n\n- CVE-2015-6908. Passing a crafted packet to the function  ber_get_next(),\n  an attacker may cause a remote denial of service, crashing the OpenLDAP server (bsc#945582).\n",
+  "id": "SUSE-SU-2016:0778-1",
   "modified": "2025-05-02T04:04:16.340308Z",
   "published": "2016-03-15T17:01:49Z",
-  "related": [
-    "CVE-2014-9761",
-    "CVE-2015-3197",
-    "CVE-2015-6908",
-    "CVE-2015-7547",
-    "CVE-2015-8776",
-    "CVE-2015-8777",
-    "CVE-2015-8778",
-    "CVE-2015-8779",
-    "CVE-2016-0702",
-    "CVE-2016-0703",
-    "CVE-2016-0704",
-    "CVE-2016-0705",
-    "CVE-2016-0755",
-    "CVE-2016-0797",
-    "CVE-2016-0799",
-    "CVE-2016-0800"
-  ],
-  "upstream": [
-    "CVE-2014-9761",
-    "CVE-2015-3197",
-    "CVE-2015-6908",
-    "CVE-2015-7547",
-    "CVE-2015-8776",
-    "CVE-2015-8777",
-    "CVE-2015-8778",
-    "CVE-2015-8779",
-    "CVE-2016-0702",
-    "CVE-2016-0703",
-    "CVE-2016-0704",
-    "CVE-2016-0705",
-    "CVE-2016-0755",
-    "CVE-2016-0797",
-    "CVE-2016-0799",
-    "CVE-2016-0800"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -114,5 +77,42 @@
       "url": "https://www.suse.com/security/cve/CVE-2016-0800"
     }
   ],
-  "schema_version": "1.6.0"
+  "related": [
+    "CVE-2014-9761",
+    "CVE-2015-3197",
+    "CVE-2015-6908",
+    "CVE-2015-7547",
+    "CVE-2015-8776",
+    "CVE-2015-8777",
+    "CVE-2015-8778",
+    "CVE-2015-8779",
+    "CVE-2016-0702",
+    "CVE-2016-0703",
+    "CVE-2016-0704",
+    "CVE-2016-0705",
+    "CVE-2016-0755",
+    "CVE-2016-0797",
+    "CVE-2016-0799",
+    "CVE-2016-0800"
+  ],
+  "schema_version": "1.6.0",
+  "summary": "Security update for sles11sp4-docker-image",
+  "upstream": [
+    "CVE-2014-9761",
+    "CVE-2015-3197",
+    "CVE-2015-6908",
+    "CVE-2015-7547",
+    "CVE-2015-8776",
+    "CVE-2015-8777",
+    "CVE-2015-8778",
+    "CVE-2015-8779",
+    "CVE-2016-0702",
+    "CVE-2016-0703",
+    "CVE-2016-0704",
+    "CVE-2016-0705",
+    "CVE-2016-0755",
+    "CVE-2016-0797",
+    "CVE-2016-0799",
+    "CVE-2016-0800"
+  ]
 }

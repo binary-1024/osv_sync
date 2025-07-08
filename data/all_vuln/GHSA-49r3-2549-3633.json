@@ -1,24 +1,51 @@
 {
-  "id": "GHSA-49r3-2549-3633",
-  "summary": "omniauth-apple allows attacker to fake their email address during authentication",
-  "details": "### Impact\n\nThis vulnerability impacts applications using the [omniauth-apple](https://github.com/nhosoya/omniauth-apple) strategy of OmniAuth and using the `info.email` field of OmniAuth's [Auth Hash Schema](https://github.com/omniauth/omniauth/wiki/Auth-Hash-Schema) for any kind of identification.  The value of this field may be set to any value of the attacker's choice including email addresses of other users.\n\nFor example, an application using omniauth-apple with the following code will be impacted:\n```ruby\ndef omniauth_callback\n    auth_hash = request.env['omniauth.auth']\n    @authenticated_user = User.find_by(email: auth_hash.info.email)\nend\n```\n\nApplications not using `info.email` for identification but are instead using the `uid` field are not impacted in the same manner.  Note, these applications may still be negatively affected if the value of `info.email` is being used for other purposes.\n\n### Patches\n\nApplications using affected versions of omniauth-apple are advised to upgrade to omniauth-apple version 1.0.1 or later.\n\n### Workarounds\n\nIf unable to upgrade to a patched version, monkey patching `OmniAuth::Strategies::Apple#email` as follows is advised as a workaround:\n\n```ruby\nmodule OmniAuth\n  module Strategies\n    class Apple\n      def email\n        id_info['email']\n      end\n    end\n  end\nend\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/12/GHSA-49r3-2549-3633/GHSA-49r3-2549-3633.json"
+      },
+      "package": {
+        "ecosystem": "RubyGems",
+        "name": "omniauth-apple",
+        "purl": "pkg:gem/omniauth-apple"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "0.0.1",
+        "0.0.2",
+        "0.0.3",
+        "1.0.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-26254"
   ],
-  "modified": "2024-02-16T08:16:25.185804Z",
-  "published": "2020-12-08T14:18:19Z",
-  "related": [
-    "CVE-2020-26254"
-  ],
   "database_specific": {
-    "nvd_published_at": "2020-12-08T15:15:11Z",
     "cwe_ids": [
       "CWE-290"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-12-08T14:17:26Z"
+    "github_reviewed_at": "2020-12-08T14:17:26Z",
+    "nvd_published_at": "2020-12-08T15:15:11Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nThis vulnerability impacts applications using the [omniauth-apple](https://github.com/nhosoya/omniauth-apple) strategy of OmniAuth and using the `info.email` field of OmniAuth's [Auth Hash Schema](https://github.com/omniauth/omniauth/wiki/Auth-Hash-Schema) for any kind of identification.  The value of this field may be set to any value of the attacker's choice including email addresses of other users.\n\nFor example, an application using omniauth-apple with the following code will be impacted:\n```ruby\ndef omniauth_callback\n    auth_hash = request.env['omniauth.auth']\n    @authenticated_user = User.find_by(email: auth_hash.info.email)\nend\n```\n\nApplications not using `info.email` for identification but are instead using the `uid` field are not impacted in the same manner.  Note, these applications may still be negatively affected if the value of `info.email` is being used for other purposes.\n\n### Patches\n\nApplications using affected versions of omniauth-apple are advised to upgrade to omniauth-apple version 1.0.1 or later.\n\n### Workarounds\n\nIf unable to upgrade to a patched version, monkey patching `OmniAuth::Strategies::Apple#email` as follows is advised as a workaround:\n\n```ruby\nmodule OmniAuth\n  module Strategies\n    class Apple\n      def email\n        id_info['email']\n      end\n    end\n  end\nend\n```",
+  "id": "GHSA-49r3-2549-3633",
+  "modified": "2024-02-16T08:16:25.185804Z",
+  "published": "2020-12-08T14:18:19Z",
   "references": [
     {
       "type": "WEB",
@@ -45,42 +72,15 @@
       "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/omniauth-apple/CVE-2020-26254.yml"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "omniauth-apple",
-        "ecosystem": "RubyGems",
-        "purl": "pkg:gem/omniauth-apple"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.0.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "0.0.1",
-        "0.0.2",
-        "0.0.3",
-        "1.0.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/12/GHSA-49r3-2549-3633/GHSA-49r3-2549-3633.json"
-      }
-    }
+  "related": [
+    "CVE-2020-26254"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "omniauth-apple allows attacker to fake their email address during authentication"
 }

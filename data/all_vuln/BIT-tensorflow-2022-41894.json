@@ -1,47 +1,16 @@
 {
-  "id": "BIT-tensorflow-2022-41894",
-  "summary": "Buffer overflow in `CONV_3D_TRANSPOSE` on TFLite",
-  "details": "TensorFlow is an open source platform for machine learning. The reference kernel of the `CONV_3D_TRANSPOSE` TensorFlow Lite operator wrongly increments the data_ptr when adding the bias to the result. Instead of `data_ptr += num_channels;` it should be `data_ptr += output_num_channels;` as if the number of input channels is different than the number of output channels, the wrong result will be returned and a buffer overflow will occur if num_channels > output_num_channels. An attacker can craft a model with a specific number of input channels. It is then possible to write specific values through the bias of the layer outside the bounds of the buffer. This attack only works if the reference kernel resolver is used in the interpreter. We have patched the issue in GitHub commit 72c0bdcb25305b0b36842d746cc61d72658d2941. The fix will be included in TensorFlow 2.11. We will also cherrypick this commit on TensorFlow 2.10.1, 2.9.3, and TensorFlow 2.8.4, as these are also affected and still in supported range.",
-  "aliases": [
-    "CVE-2022-41894",
-    "GHSA-h6q3-vv32-2cq5"
-  ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T11:10:59.811Z",
-  "database_specific": {
-    "cpes": [
-      "cpe:2.3:a:google:tensorflow:*:*:*:*:*:*:*:*"
-    ],
-    "severity": "High"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/091e63f0ea33def7ecad661a5ac01dcafbafa90b/tensorflow/lite/kernels/internal/reference/conv3d_transpose.h#L121"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/72c0bdcb25305b0b36842d746cc61d72658d2941"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-h6q3-vv32-2cq5"
-    },
-    {
-      "type": "WEB",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41894"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2022-41894.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "Bitnami",
+        "name": "tensorflow",
         "purl": "pkg:bitnami/tensorflow"
       },
       "ranges": [
         {
-          "type": "SEMVER",
           "events": [
             {
               "introduced": "0"
@@ -61,19 +30,50 @@
             {
               "fixed": "2.10.1"
             }
-          ]
+          ],
+          "type": "SEMVER"
         }
       ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2022-41894.json"
-      },
       "severity": [
         {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "type": "CVSS_V3"
         }
       ]
     }
   ],
-  "schema_version": "1.6.0"
+  "aliases": [
+    "CVE-2022-41894",
+    "GHSA-h6q3-vv32-2cq5"
+  ],
+  "database_specific": {
+    "cpes": [
+      "cpe:2.3:a:google:tensorflow:*:*:*:*:*:*:*:*"
+    ],
+    "severity": "High"
+  },
+  "details": "TensorFlow is an open source platform for machine learning. The reference kernel of the `CONV_3D_TRANSPOSE` TensorFlow Lite operator wrongly increments the data_ptr when adding the bias to the result. Instead of `data_ptr += num_channels;` it should be `data_ptr += output_num_channels;` as if the number of input channels is different than the number of output channels, the wrong result will be returned and a buffer overflow will occur if num_channels > output_num_channels. An attacker can craft a model with a specific number of input channels. It is then possible to write specific values through the bias of the layer outside the bounds of the buffer. This attack only works if the reference kernel resolver is used in the interpreter. We have patched the issue in GitHub commit 72c0bdcb25305b0b36842d746cc61d72658d2941. The fix will be included in TensorFlow 2.11. We will also cherrypick this commit on TensorFlow 2.10.1, 2.9.3, and TensorFlow 2.8.4, as these are also affected and still in supported range.",
+  "id": "BIT-tensorflow-2022-41894",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:10:59.811Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/091e63f0ea33def7ecad661a5ac01dcafbafa90b/tensorflow/lite/kernels/internal/reference/conv3d_transpose.h#L121"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/72c0bdcb25305b0b36842d746cc61d72658d2941"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-h6q3-vv32-2cq5"
+    },
+    {
+      "type": "WEB",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41894"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "summary": "Buffer overflow in `CONV_3D_TRANSPOSE` on TFLite"
 }

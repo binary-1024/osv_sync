@@ -1,21 +1,46 @@
 {
-  "id": "GHSA-3fw8-66wf-pr7m",
-  "summary": "methodOverride Middleware Reflected Cross-Site Scripting in connect",
-  "details": "Connect is a stack of middleware that is executed in order in each request.\n\nThe \"methodOverride\" middleware allows the http post to override the method of the request with the value of the \"_method\" post key or with the header \"x-http-method-override\".\n\nBecause the user post input was not checked, req.method could contain any kind of value. Because the req.method did not match any common method VERB, connect answered with a 404 page containing the \"Cannot `[method]` `[url]`\" content. The method was not properly encoded for output in the browser.\n\n\n###Example:\n```\n~ curl \"localhost:3000\" -d \"_method=<script src=http://nodesecurity.io/xss.js></script>\"\nCannot <SCRIPT SRC=HTTP://NODESECURITY.IO/XSS.JS></SCRIPT> /\n```\n\n## Recommendation\n\nUpdate to the newest version of Connect or disable methodOverride. It is not possible to avoid the vulnerability if you have enabled this middleware in the top of your stack.",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.8.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-3fw8-66wf-pr7m/GHSA-3fw8-66wf-pr7m.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "connect",
+        "purl": "pkg:npm/connect"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.8.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2013-7370"
   ],
-  "modified": "2023-11-08T03:57:28.815077Z",
-  "published": "2020-08-31T22:41:27Z",
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-08-31T18:07:25Z"
+    "github_reviewed_at": "2020-08-31T18:07:25Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
   },
+  "details": "Connect is a stack of middleware that is executed in order in each request.\n\nThe \"methodOverride\" middleware allows the http post to override the method of the request with the value of the \"_method\" post key or with the header \"x-http-method-override\".\n\nBecause the user post input was not checked, req.method could contain any kind of value. Because the req.method did not match any common method VERB, connect answered with a 404 page containing the \"Cannot `[method]` `[url]`\" content. The method was not properly encoded for output in the browser.\n\n\n###Example:\n```\n~ curl \"localhost:3000\" -d \"_method=<script src=http://nodesecurity.io/xss.js></script>\"\nCannot <SCRIPT SRC=HTTP://NODESECURITY.IO/XSS.JS></SCRIPT> /\n```\n\n## Recommendation\n\nUpdate to the newest version of Connect or disable methodOverride. It is not possible to avoid the vulnerability if you have enabled this middleware in the top of your stack.",
+  "id": "GHSA-3fw8-66wf-pr7m",
+  "modified": "2023-11-08T03:57:28.815077Z",
+  "published": "2020-08-31T22:41:27Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -62,31 +87,6 @@
       "url": "http://www.openwall.com/lists/oss-security/2014/05/13/1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "connect",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/connect"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.8.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.8.0",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-3fw8-66wf-pr7m/GHSA-3fw8-66wf-pr7m.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "methodOverride Middleware Reflected Cross-Site Scripting in connect"
 }

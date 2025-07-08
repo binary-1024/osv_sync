@@ -1,25 +1,51 @@
 {
-  "id": "GHSA-cqxx-66wh-8pjw",
-  "summary": "Improper Removal of Sensitive Information Before Storage or Transfer in irrd",
-  "details": "IRRd did not always filter password hashes in query responses relating to `mntner` objects and database exports. This may have allowed adversaries to retrieve some of these hashes, perform a brute-force search for the clear-text passphrase, and use these to make unauthorised changes to affected IRR objects. This issue only affected instances that process password hashes, which means it is limited to IRRd instances that serve authoritative databases. IRRd instances operating solely as mirrors of other IRR databases are not affected.\n\nThe issue occurred:\n* For `mntner` objects where all password hash names (`MD5-PW` and `CRYPT-PW`) were in lower or mixed case in the `auth` attribute. For these objects, hashes remained in the output of all queries of any method and all database exports made with the `export_destination` setting. Fortunately, objects in the common public IRR database virtually all use uppercase hash names which means very few of those objects were affected.\n* For any GraphQL queries that queried the `auth` field on `mntner` objects.\n* For any GraphQL queries that queried the `objectText` field on the `journal` field on `mntner` objects, if the `nrtm_access_list` setting permitted journal access.\n\nThe two GraphQL cases are visible in logs, allowing users to determine whether any existing objects had their hashes exposed.\nThis has been fixed in IRRd 4.2.3 and the main branch. Versions in the 4.1.x series never were affected. Users of the 4.2.x series are strongly recommended to upgrade. All users running a more recent version from the main branch should update to the latest version. Alternatively, but not recommended, apply the patch manually [for 4.2.x]",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/04/GHSA-cqxx-66wh-8pjw/GHSA-cqxx-66wh-8pjw.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "irrd",
+        "purl": "pkg:pypi/irrd"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.2.0"
+            },
+            {
+              "fixed": "4.2.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.2.0",
+        "4.2.1",
+        "4.2.2"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-24798",
     "PYSEC-2022-178"
   ],
-  "modified": "2024-09-24T21:23:27.780198Z",
-  "published": "2022-04-01T13:59:17Z",
-  "related": [
-    "CVE-2022-24798"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-03-31T23:15:00Z",
     "cwe_ids": [
       "CWE-212"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-04-01T13:59:17Z"
+    "github_reviewed_at": "2022-04-01T13:59:17Z",
+    "nvd_published_at": "2022-03-31T23:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "IRRd did not always filter password hashes in query responses relating to `mntner` objects and database exports. This may have allowed adversaries to retrieve some of these hashes, perform a brute-force search for the clear-text passphrase, and use these to make unauthorised changes to affected IRR objects. This issue only affected instances that process password hashes, which means it is limited to IRRd instances that serve authoritative databases. IRRd instances operating solely as mirrors of other IRR databases are not affected.\n\nThe issue occurred:\n* For `mntner` objects where all password hash names (`MD5-PW` and `CRYPT-PW`) were in lower or mixed case in the `auth` attribute. For these objects, hashes remained in the output of all queries of any method and all database exports made with the `export_destination` setting. Fortunately, objects in the common public IRR database virtually all use uppercase hash names which means very few of those objects were affected.\n* For any GraphQL queries that queried the `auth` field on `mntner` objects.\n* For any GraphQL queries that queried the `objectText` field on the `journal` field on `mntner` objects, if the `nrtm_access_list` setting permitted journal access.\n\nThe two GraphQL cases are visible in logs, allowing users to determine whether any existing objects had their hashes exposed.\nThis has been fixed in IRRd 4.2.3 and the main branch. Versions in the 4.1.x series never were affected. Users of the 4.2.x series are strongly recommended to upgrade. All users running a more recent version from the main branch should update to the latest version. Alternatively, but not recommended, apply the patch manually [for 4.2.x]",
+  "id": "GHSA-cqxx-66wh-8pjw",
+  "modified": "2024-09-24T21:23:27.780198Z",
+  "published": "2022-04-01T13:59:17Z",
   "references": [
     {
       "type": "WEB",
@@ -50,45 +76,19 @@
       "url": "https://irrd.readthedocs.io/en/stable/releases/4.2.3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "irrd",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/irrd"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "4.2.0"
-            },
-            {
-              "fixed": "4.2.3"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "4.2.0",
-        "4.2.1",
-        "4.2.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/04/GHSA-cqxx-66wh-8pjw/GHSA-cqxx-66wh-8pjw.json"
-      }
-    }
+  "related": [
+    "CVE-2022-24798"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Improper Removal of Sensitive Information Before Storage or Transfer in irrd"
 }

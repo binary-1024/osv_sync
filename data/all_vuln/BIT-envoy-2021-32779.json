@@ -1,43 +1,16 @@
 {
-  "id": "BIT-envoy-2021-32779",
-  "summary": "Incorrectly handling of URI '#fragment' element as part of the path element",
-  "details": "Envoy is an open source L7 proxy and communication bus designed for large modern service oriented architectures. In affected versions envoy incorrectly handled a URI '#fragment' element as part of the path element. Envoy is configured with an RBAC filter for authorization or similar mechanism with an explicit case of a final \"/admin\" path element, or is using a negative assertion with final path element of \"/admin\". The client sends request to \"/app1/admin#foo\". In Envoy prior to 1.18.0, or 1.18.0+ configured with path_normalization=false. Envoy treats fragment as a suffix of the query string when present, or as a suffix of the path when query string is absent, so it evaluates the final path element as \"/admin#foo\" and mismatches with the configured \"/admin\" path element. In Envoy 1.18.0+ configured with path_normalization=true. Envoy transforms this to /app1/admin%23foo and mismatches with the configured /admin prefix. The resulting URI is sent to the next server-agent with the offending \"#foo\" fragment which violates RFC3986 or with the nonsensical \"%23foo\" text appended. A specifically constructed request with URI containing '#fragment' element delivered by an untrusted client in the presence of path based request authorization resulting in escalation of Privileges when path based request authorization extensions. Envoy versions 1.19.1, 1.18.4, 1.17.4, 1.16.5 contain fixes that removes fragment from URI path in incoming requests.",
-  "aliases": [
-    "CVE-2021-32779"
-  ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T10:58:04.972Z",
-  "database_specific": {
-    "cpes": [
-      "cpe:2.3:a:envoyproxy:envoy:*:*:*:*:*:*:*:*",
-      "cpe:2.3:a:envoyproxy:envoy:1.19.0:*:*:*:*:*:*:*"
-    ],
-    "severity": "High"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/envoyproxy/envoy/security/advisories/GHSA-r222-74fw-jqr9"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.envoyproxy.io/docs/envoy/v1.19.0/version_history/version_history"
-    },
-    {
-      "type": "WEB",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-32779"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/envoy/BIT-envoy-2021-32779.json"
+      },
       "package": {
-        "name": "envoy",
         "ecosystem": "Bitnami",
+        "name": "envoy",
         "purl": "pkg:bitnami/envoy"
       },
       "ranges": [
         {
-          "type": "SEMVER",
           "events": [
             {
               "introduced": "1.16.0"
@@ -63,19 +36,46 @@
             {
               "fixed": "1.19.1"
             }
-          ]
+          ],
+          "type": "SEMVER"
         }
       ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/envoy/BIT-envoy-2021-32779.json"
-      },
       "severity": [
         {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:L"
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:L",
+          "type": "CVSS_V3"
         }
       ]
     }
   ],
-  "schema_version": "1.6.0"
+  "aliases": [
+    "CVE-2021-32779"
+  ],
+  "database_specific": {
+    "cpes": [
+      "cpe:2.3:a:envoyproxy:envoy:*:*:*:*:*:*:*:*",
+      "cpe:2.3:a:envoyproxy:envoy:1.19.0:*:*:*:*:*:*:*"
+    ],
+    "severity": "High"
+  },
+  "details": "Envoy is an open source L7 proxy and communication bus designed for large modern service oriented architectures. In affected versions envoy incorrectly handled a URI '#fragment' element as part of the path element. Envoy is configured with an RBAC filter for authorization or similar mechanism with an explicit case of a final \"/admin\" path element, or is using a negative assertion with final path element of \"/admin\". The client sends request to \"/app1/admin#foo\". In Envoy prior to 1.18.0, or 1.18.0+ configured with path_normalization=false. Envoy treats fragment as a suffix of the query string when present, or as a suffix of the path when query string is absent, so it evaluates the final path element as \"/admin#foo\" and mismatches with the configured \"/admin\" path element. In Envoy 1.18.0+ configured with path_normalization=true. Envoy transforms this to /app1/admin%23foo and mismatches with the configured /admin prefix. The resulting URI is sent to the next server-agent with the offending \"#foo\" fragment which violates RFC3986 or with the nonsensical \"%23foo\" text appended. A specifically constructed request with URI containing '#fragment' element delivered by an untrusted client in the presence of path based request authorization resulting in escalation of Privileges when path based request authorization extensions. Envoy versions 1.19.1, 1.18.4, 1.17.4, 1.16.5 contain fixes that removes fragment from URI path in incoming requests.",
+  "id": "BIT-envoy-2021-32779",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T10:58:04.972Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/envoyproxy/envoy/security/advisories/GHSA-r222-74fw-jqr9"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.envoyproxy.io/docs/envoy/v1.19.0/version_history/version_history"
+    },
+    {
+      "type": "WEB",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-32779"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "summary": "Incorrectly handling of URI '#fragment' element as part of the path element"
 }

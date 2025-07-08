@@ -1,24 +1,78 @@
 {
-  "id": "GHSA-mh8g-hprg-8363",
-  "summary": "Hard-Coded Key Used For Remember-me Token in Opencast",
-  "details": "### Impact\n\nThe security configuration in `etc/security/mh_default_org.xml` enables a remember-me cookie based on a hash created from the [username, password, and an additional system key](https://docs.spring.io/spring-security/site/docs/3.0.x/reference/remember-me.html). Opencast has hard-coded this system key in the large XML file and never mentions to change this, basically ensuring that all systems use the same key:\n\n```xml\n<sec:remember-me key=\"opencast\" user-service-ref=\"userDetailsService\" />\n```\n\nThis means that an attacker getting access to a remember-me token for one server can get access to all servers which allow log-in using the same credentials without ever needing the credentials. For example, a remember-me token obtained from develop.opencast.org can be used on stable.opencast.org without actually knowing the log-in credentials.\n\nSuch an attack will usually not work on different installations \u2013 assuming that safe, unique passwords are used \u2013 but it is basically guaranteed to work to get access to all machines of one cluster if a token from one machine is compromised.\n\n### Patches\n\nThis problem is fixed in Opencast 7.6 and Opencast 8.1\n\n### Workarounds\n\nWe strongly recommend updating to the patched version. Still, as a workaround for older versions, in `etc/security/mh_default_org.xml`, set a custom key for each server:\n\n```xml\n<sec:remember-me key=\"CUSTOM_RANDOM_KEY\" user-service-ref=\"userDetailsService\" />\n```\n\n### References\n\n- [Relevant lines in the security configuration](https://github.com/opencast/opencast/blob/161ee619382f144dc35eea211fc6b556025b98e1/etc/security/mh_default_org.xml#L335-L336)\n- [Spring Security Remember-Me Authentication Documentation](https://docs.spring.io/spring-security/site/docs/3.0.x/reference/remember-me.html#remember-me-hash-token)\n\n### For more information\nIf you have any questions or comments about this advisory:\n- Open an issue in [opencast/opencast](https://github.com/opencast/opencast/issues)\n- For security-relevant information, email us at [security@opencast.org](mailto:security@opencast.org)\n\n### Thanks\nThanks to @LukasKalbertodt for reporting the issue.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-mh8g-hprg-8363/GHSA-mh8g-hprg-8363.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.opencastproject:opencast-kernel",
+        "purl": "pkg:maven/org.opencastproject/opencast-kernel"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "6.6",
+        "7.2",
+        "7.3",
+        "7.4",
+        "7.5"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-mh8g-hprg-8363/GHSA-mh8g-hprg-8363.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.opencastproject:opencast-kernel",
+        "purl": "pkg:maven/org.opencastproject/opencast-kernel"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "8.0"
+            },
+            {
+              "fixed": "8.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "8.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-5222"
   ],
-  "modified": "2023-11-08T04:03:51.678642Z",
-  "published": "2020-01-30T21:21:44Z",
-  "related": [
-    "CVE-2020-5222"
-  ],
   "database_specific": {
-    "nvd_published_at": null,
-    "github_reviewed_at": "2020-01-30T20:48:17Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-798"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-01-30T20:48:17Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nThe security configuration in `etc/security/mh_default_org.xml` enables a remember-me cookie based on a hash created from the [username, password, and an additional system key](https://docs.spring.io/spring-security/site/docs/3.0.x/reference/remember-me.html). Opencast has hard-coded this system key in the large XML file and never mentions to change this, basically ensuring that all systems use the same key:\n\n```xml\n<sec:remember-me key=\"opencast\" user-service-ref=\"userDetailsService\" />\n```\n\nThis means that an attacker getting access to a remember-me token for one server can get access to all servers which allow log-in using the same credentials without ever needing the credentials. For example, a remember-me token obtained from develop.opencast.org can be used on stable.opencast.org without actually knowing the log-in credentials.\n\nSuch an attack will usually not work on different installations \u2013 assuming that safe, unique passwords are used \u2013 but it is basically guaranteed to work to get access to all machines of one cluster if a token from one machine is compromised.\n\n### Patches\n\nThis problem is fixed in Opencast 7.6 and Opencast 8.1\n\n### Workarounds\n\nWe strongly recommend updating to the patched version. Still, as a workaround for older versions, in `etc/security/mh_default_org.xml`, set a custom key for each server:\n\n```xml\n<sec:remember-me key=\"CUSTOM_RANDOM_KEY\" user-service-ref=\"userDetailsService\" />\n```\n\n### References\n\n- [Relevant lines in the security configuration](https://github.com/opencast/opencast/blob/161ee619382f144dc35eea211fc6b556025b98e1/etc/security/mh_default_org.xml#L335-L336)\n- [Spring Security Remember-Me Authentication Documentation](https://docs.spring.io/spring-security/site/docs/3.0.x/reference/remember-me.html#remember-me-hash-token)\n\n### For more information\nIf you have any questions or comments about this advisory:\n- Open an issue in [opencast/opencast](https://github.com/opencast/opencast/issues)\n- For security-relevant information, email us at [security@opencast.org](mailto:security@opencast.org)\n\n### Thanks\nThanks to @LukasKalbertodt for reporting the issue.",
+  "id": "GHSA-mh8g-hprg-8363",
+  "modified": "2023-11-08T04:03:51.678642Z",
+  "published": "2020-01-30T21:21:44Z",
   "references": [
     {
       "type": "WEB",
@@ -33,69 +87,15 @@
       "url": "https://github.com/opencast/opencast/commit/1a7172c95af8d542a77ae5b153e4c834dd4788a6"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.opencastproject:opencast-kernel",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.opencastproject/opencast-kernel"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "7.6"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "6.6",
-        "7.2",
-        "7.3",
-        "7.4",
-        "7.5"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-mh8g-hprg-8363/GHSA-mh8g-hprg-8363.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.opencastproject:opencast-kernel",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.opencastproject/opencast-kernel"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "8.0"
-            },
-            {
-              "fixed": "8.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/01/GHSA-mh8g-hprg-8363/GHSA-mh8g-hprg-8363.json"
-      }
-    }
+  "related": [
+    "CVE-2020-5222"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Hard-Coded Key Used For Remember-me Token in Opencast"
 }

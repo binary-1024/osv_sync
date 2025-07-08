@@ -1,14 +1,52 @@
 {
-  "id": "BIT-redis-2023-45145",
-  "summary": "Redis Unix-domain socket may have be exposed with the wrong permissions for a short time window.",
-  "details": "Redis is an in-memory database that persists on disk. On startup, Redis begins listening on a Unix socket before adjusting its permissions to the user-provided configuration. If a permissive umask(2) is used, this creates a race condition that enables, during a short period of time, another process to establish an otherwise unauthorized connection. This problem has existed since Redis 2.6.0-RC1. This issue has been addressed in Redis versions 7.2.2, 7.0.14 and 6.2.14. Users are advised to upgrade. For users unable to upgrade, it is possible to work around the problem by disabling Unix sockets, starting Redis with a restrictive umask, or storing the Unix socket file in a protected directory.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/redis/BIT-redis-2023-45145.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "redis",
+        "purl": "pkg:bitnami/redis"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.6.0"
+            },
+            {
+              "fixed": "6.2.14"
+            },
+            {
+              "introduced": "7.0.0"
+            },
+            {
+              "fixed": "7.0.14"
+            },
+            {
+              "introduced": "7.2.0"
+            },
+            {
+              "fixed": "7.2.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-keydb-2023-45145",
     "BIT-valkey-2023-45145",
     "CVE-2023-45145"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T11:03:25.305Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
@@ -16,6 +54,10 @@
     ],
     "severity": "Low"
   },
+  "details": "Redis is an in-memory database that persists on disk. On startup, Redis begins listening on a Unix socket before adjusting its permissions to the user-provided configuration. If a permissive umask(2) is used, this creates a race condition that enables, during a short period of time, another process to establish an otherwise unauthorized connection. This problem has existed since Redis 2.6.0-RC1. This issue has been addressed in Redis versions 7.2.2, 7.0.14 and 6.2.14. Users are advised to upgrade. For users unable to upgrade, it is possible to work around the problem by disabling Unix sockets, starting Redis with a restrictive umask, or storing the Unix socket file in a protected directory.",
+  "id": "BIT-redis-2023-45145",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:03:25.305Z",
   "references": [
     {
       "type": "WEB",
@@ -50,48 +92,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-45145"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "redis",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/redis"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.6.0"
-            },
-            {
-              "fixed": "6.2.14"
-            },
-            {
-              "introduced": "7.0.0"
-            },
-            {
-              "fixed": "7.0.14"
-            },
-            {
-              "introduced": "7.2.0"
-            },
-            {
-              "fixed": "7.2.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/redis/BIT-redis-2023-45145.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Redis Unix-domain socket may have be exposed with the wrong permissions for a short time window."
 }

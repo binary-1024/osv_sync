@@ -1,57 +1,16 @@
 {
-  "id": "GHSA-5jjv-x4fq-qjwp",
-  "summary": "Possible timing attack in derivation_endpoint",
-  "details": "### Impact\n\nWhen using the `derivation_endpoint` plugin, it's possible for the attacker to use a timing attack to guess the signature of the derivation URL.\n\n### Patches\n\nThe problem has been fixed by comparing sent and calculated signature in constant time, using `Rack::Utils.secure_compare`. Users using the `derivation_endpoint` plugin are urged to upgrade to Shrine 3.3.0 or greater.\n\n### Workarounds\n\nUsers of older Shrine versions can apply the following monkey-patch after loading the `derivation_endpoint` plugin:\n\n```rb\nclass Shrine\n  class UrlSigner\n    def verify_signature(string, signature)\n      if signature.nil?\n        fail InvalidSignature, \"missing \\\"signature\\\" param\"\n      elsif !Rack::Utils.secure_compare(signature, generate_signature(string))\n        fail InvalidSignature, \"provided signature does not match the calculated signature\"\n      end\n    end\n  end\nend\n```\n\n### References\n\nYou can read more about timing attacks [here](https://en.wikipedia.org/wiki/Timing_attack).",
-  "aliases": [
-    "CVE-2020-15237"
-  ],
-  "modified": "2023-11-08T04:02:34.861843Z",
-  "published": "2020-10-05T15:48:34Z",
-  "related": [
-    "CVE-2020-15237"
-  ],
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-203",
-      "CWE-208"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2020-10-05T15:46:53Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/shrinerb/shrine/security/advisories/GHSA-5jjv-x4fq-qjwp"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15237"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/shrinerb/shrine/commit/1b27090ce31543bf39f186c20ea47c8250fca2f0"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/shrine/CVE-2020-15237.yml"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/shrinerb/shrine"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/10/GHSA-5jjv-x4fq-qjwp/GHSA-5jjv-x4fq-qjwp.json"
+      },
       "package": {
-        "name": "shrine",
         "ecosystem": "RubyGems",
+        "name": "shrine",
         "purl": "pkg:gem/shrine"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -59,7 +18,8 @@
             {
               "fixed": "3.3.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -114,17 +74,57 @@
         "3.2.0",
         "3.2.1",
         "3.2.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/10/GHSA-5jjv-x4fq-qjwp/GHSA-5jjv-x4fq-qjwp.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2020-15237"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-203",
+      "CWE-208"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-10-05T15:46:53Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\n\nWhen using the `derivation_endpoint` plugin, it's possible for the attacker to use a timing attack to guess the signature of the derivation URL.\n\n### Patches\n\nThe problem has been fixed by comparing sent and calculated signature in constant time, using `Rack::Utils.secure_compare`. Users using the `derivation_endpoint` plugin are urged to upgrade to Shrine 3.3.0 or greater.\n\n### Workarounds\n\nUsers of older Shrine versions can apply the following monkey-patch after loading the `derivation_endpoint` plugin:\n\n```rb\nclass Shrine\n  class UrlSigner\n    def verify_signature(string, signature)\n      if signature.nil?\n        fail InvalidSignature, \"missing \\\"signature\\\" param\"\n      elsif !Rack::Utils.secure_compare(signature, generate_signature(string))\n        fail InvalidSignature, \"provided signature does not match the calculated signature\"\n      end\n    end\n  end\nend\n```\n\n### References\n\nYou can read more about timing attacks [here](https://en.wikipedia.org/wiki/Timing_attack).",
+  "id": "GHSA-5jjv-x4fq-qjwp",
+  "modified": "2023-11-08T04:02:34.861843Z",
+  "published": "2020-10-05T15:48:34Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/shrinerb/shrine/security/advisories/GHSA-5jjv-x4fq-qjwp"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15237"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/shrinerb/shrine/commit/1b27090ce31543bf39f186c20ea47c8250fca2f0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/shrine/CVE-2020-15237.yml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/shrinerb/shrine"
+    }
+  ],
+  "related": [
+    "CVE-2020-15237"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Possible timing attack in derivation_endpoint"
 }

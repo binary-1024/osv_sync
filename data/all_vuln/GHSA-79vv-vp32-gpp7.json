@@ -1,25 +1,53 @@
 {
-  "id": "GHSA-79vv-vp32-gpp7",
-  "summary": "Apache Kafka: Potential incorrect access control during migration from ZK mode to KRaft mode",
-  "details": "While an Apache Kafka cluster is being migrated from ZooKeeper mode to KRaft mode, in some cases ACLs will not be correctly enforced.\n\nTwo preconditions are needed to trigger the bug:\n1. The administrator decides to remove an ACL\n2. The resource associated with the removed ACL continues to have two or more other ACLs associated with it after the removal.\n\nWhen those two preconditions are met, Kafka will treat the resource as if it had only one ACL associated with it after the removal, rather than the two or more that would be correct.\n\nThe incorrect condition is cleared by removing all brokers in ZK mode, or by adding a new ACL to the affected resource. Once the migration is completed, there is no metadata loss (the ACLs all remain).\n\nThe full impact depends on the ACLs in use. If only ALLOW ACLs were configured during the migration, the impact would be limited to availability impact. if DENY ACLs were configured, the impact could include confidentiality and integrity impact depending on the ACLs configured, as the DENY ACLs might be ignored due to this vulnerability during the migration period.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-79vv-vp32-gpp7/GHSA-79vv-vp32-gpp7.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.apache.kafka:kafka-metadata",
+        "purl": "pkg:maven/org.apache.kafka/kafka-metadata"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.5.0"
+            },
+            {
+              "fixed": "3.6.2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "3.5.0",
+        "3.5.1",
+        "3.5.2",
+        "3.6.0",
+        "3.6.1"
+      ]
+    }
+  ],
   "aliases": [
     "BIT-kafka-2024-27309",
     "CVE-2024-27309"
   ],
-  "modified": "2025-02-13T19:13:21.276760Z",
-  "published": "2024-04-12T09:33:40Z",
-  "related": [
-    "CGA-8wh3-gh6j-j46h"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-04-12T07:15:08Z",
     "cwe_ids": [
       "CWE-863"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-04-12T21:26:30Z"
+    "github_reviewed_at": "2024-04-12T21:26:30Z",
+    "nvd_published_at": "2024-04-12T07:15:08Z",
+    "severity": "HIGH"
   },
+  "details": "While an Apache Kafka cluster is being migrated from ZooKeeper mode to KRaft mode, in some cases ACLs will not be correctly enforced.\n\nTwo preconditions are needed to trigger the bug:\n1. The administrator decides to remove an ACL\n2. The resource associated with the removed ACL continues to have two or more other ACLs associated with it after the removal.\n\nWhen those two preconditions are met, Kafka will treat the resource as if it had only one ACL associated with it after the removal, rather than the two or more that would be correct.\n\nThe incorrect condition is cleared by removing all brokers in ZK mode, or by adding a new ACL to the affected resource. Once the migration is completed, there is no metadata loss (the ACLs all remain).\n\nThe full impact depends on the ACLs in use. If only ALLOW ACLs were configured during the migration, the impact would be limited to availability impact. if DENY ACLs were configured, the impact could include confidentiality and integrity impact depending on the ACLs configured, as the DENY ACLs might be ignored due to this vulnerability during the migration period.",
+  "id": "GHSA-79vv-vp32-gpp7",
+  "modified": "2025-02-13T19:13:21.276760Z",
+  "published": "2024-04-12T09:33:40Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -46,47 +74,19 @@
       "url": "http://www.openwall.com/lists/oss-security/2024/04/12/3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.apache.kafka:kafka-metadata",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.apache.kafka/kafka-metadata"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.5.0"
-            },
-            {
-              "fixed": "3.6.2"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "3.5.0",
-        "3.5.1",
-        "3.5.2",
-        "3.6.0",
-        "3.6.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-79vv-vp32-gpp7/GHSA-79vv-vp32-gpp7.json"
-      }
-    }
+  "related": [
+    "CGA-8wh3-gh6j-j46h"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:L/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:L/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Apache Kafka: Potential incorrect access control during migration from ZK mode to KRaft mode"
 }

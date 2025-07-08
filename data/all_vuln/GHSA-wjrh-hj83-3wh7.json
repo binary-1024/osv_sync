@@ -1,50 +1,16 @@
 {
-  "id": "GHSA-wjrh-hj83-3wh7",
-  "summary": "Django-Select2 Vulnerable to Widget Instance Secret Cache Key Leaking",
-  "details": "### Impact\n\nInstances of `HeavySelect2Mixin` subclasses like the `ModelSelect2MultipleWidget` and `ModelSelect2Widget` can secret access tokens across requests. This can allow users to access restricted querysets and restricted data.\n\n### Patches\n\nThe problem has been patched in version 8.4.1 and all following versions.\n\n### Workarounds\n\nThis vulnerability is limited use cases where instances of widget classes are created during app loading (not during a request).\n\nExample of affected code:\n```python\nclass MyForm(forms.ModelForm):\n    class Meta:\n        widgets = {\"my_select_field\": Select2ModelWidget()}\n```\n\nDjango allows you to pass just the widget class (not the instance). This can be used to mitigate the session request leak.\n\nExample of affected code:\n```python\nclass MyForm(forms.ModelForm):\n    class Meta:\n        widgets = {\"my_select_field\": Select2ModelWidget}\n```\n\n\n\n### References\n\nThanks to @neartik for reporting this issue. I will address it later. I had to delete your issue, to avoid exploitation of this security issue.",
-  "aliases": [
-    "CVE-2025-48383"
-  ],
-  "modified": "2025-05-27T18:28:28.082747Z",
-  "published": "2025-05-27T18:03:19Z",
-  "database_specific": {
-    "nvd_published_at": "2025-05-27T15:15:35Z",
-    "cwe_ids": [
-      "CWE-402",
-      "CWE-918"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-05-27T18:03:19Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/codingjoe/django-select2/security/advisories/GHSA-wjrh-hj83-3wh7"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-48383"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/codingjoe/django-select2/commit/e5f41e6edba004d35f94915ff5e2559f44853412"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/codingjoe/django-select2"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-wjrh-hj83-3wh7/GHSA-wjrh-hj83-3wh7.json"
+      },
       "package": {
-        "name": "django-select2",
         "ecosystem": "PyPI",
+        "name": "django-select2",
         "purl": "pkg:pypi/django-select2"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -52,7 +18,8 @@
             {
               "fixed": "8.4.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -157,17 +124,50 @@
         "8.2.3",
         "8.3.0",
         "8.4.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/05/GHSA-wjrh-hj83-3wh7/GHSA-wjrh-hj83-3wh7.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-48383"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-402",
+      "CWE-918"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-05-27T18:03:19Z",
+    "nvd_published_at": "2025-05-27T15:15:35Z",
+    "severity": "HIGH"
+  },
+  "details": "### Impact\n\nInstances of `HeavySelect2Mixin` subclasses like the `ModelSelect2MultipleWidget` and `ModelSelect2Widget` can secret access tokens across requests. This can allow users to access restricted querysets and restricted data.\n\n### Patches\n\nThe problem has been patched in version 8.4.1 and all following versions.\n\n### Workarounds\n\nThis vulnerability is limited use cases where instances of widget classes are created during app loading (not during a request).\n\nExample of affected code:\n```python\nclass MyForm(forms.ModelForm):\n    class Meta:\n        widgets = {\"my_select_field\": Select2ModelWidget()}\n```\n\nDjango allows you to pass just the widget class (not the instance). This can be used to mitigate the session request leak.\n\nExample of affected code:\n```python\nclass MyForm(forms.ModelForm):\n    class Meta:\n        widgets = {\"my_select_field\": Select2ModelWidget}\n```\n\n\n\n### References\n\nThanks to @neartik for reporting this issue. I will address it later. I had to delete your issue, to avoid exploitation of this security issue.",
+  "id": "GHSA-wjrh-hj83-3wh7",
+  "modified": "2025-05-27T18:28:28.082747Z",
+  "published": "2025-05-27T18:03:19Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/codingjoe/django-select2/security/advisories/GHSA-wjrh-hj83-3wh7"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-48383"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/codingjoe/django-select2/commit/e5f41e6edba004d35f94915ff5e2559f44853412"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/codingjoe/django-select2"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Django-Select2 Vulnerable to Widget Instance Secret Cache Key Leaking"
 }

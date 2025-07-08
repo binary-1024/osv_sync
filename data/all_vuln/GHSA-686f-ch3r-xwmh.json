@@ -1,23 +1,47 @@
 {
-  "id": "GHSA-686f-ch3r-xwmh",
-  "summary": "Data races in unicycle",
-  "details": "Affected versions of this crate unconditionally implemented `Send` & `Sync` for types `PinSlab<T>` & `Unordered<T, S>`. This allows sending non-Send types to other threads and concurrently accessing non-Sync types from multiple threads.\n\nThis can result in a data race & memory corruption when types that provide internal mutability without synchronization are contained within `PinSlab<T>` or `Unordered<T, S>` and accessed concurrently from multiple threads.\n\nThe flaw was corrected in commits 92f40b4 & 6a6c367 by adding trait bound `T: Send` to `Send` impls for `PinSlab<T>` & `Unordered<T, S>` and adding `T: Sync` to `Sync` impls for `PinSlab<T>` & `Unordered<T, S>`.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-686f-ch3r-xwmh/GHSA-686f-ch3r-xwmh.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "unicycle",
+        "purl": "pkg:cargo/unicycle"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.7.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-36436",
     "RUSTSEC-2020-0116"
   ],
-  "modified": "2023-11-08T04:03:44.721625Z",
-  "published": "2021-08-25T20:58:17Z",
   "database_specific": {
-    "nvd_published_at": "2021-08-08T06:15:00Z",
-    "github_reviewed_at": "2021-08-18T20:15:26Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-119",
       "CWE-362"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-18T20:15:26Z",
+    "nvd_published_at": "2021-08-08T06:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "Affected versions of this crate unconditionally implemented `Send` & `Sync` for types `PinSlab<T>` & `Unordered<T, S>`. This allows sending non-Send types to other threads and concurrently accessing non-Sync types from multiple threads.\n\nThis can result in a data race & memory corruption when types that provide internal mutability without synchronization are contained within `PinSlab<T>` or `Unordered<T, S>` and accessed concurrently from multiple threads.\n\nThe flaw was corrected in commits 92f40b4 & 6a6c367 by adding trait bound `T: Send` to `Send` impls for `PinSlab<T>` & `Unordered<T, S>` and adding `T: Sync` to `Sync` impls for `PinSlab<T>` & `Unordered<T, S>`.",
+  "id": "GHSA-686f-ch3r-xwmh",
+  "modified": "2023-11-08T04:03:44.721625Z",
+  "published": "2021-08-25T20:58:17Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -48,36 +72,12 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2020-0116.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "unicycle",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/unicycle"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.7.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-686f-ch3r-xwmh/GHSA-686f-ch3r-xwmh.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Data races in unicycle"
 }

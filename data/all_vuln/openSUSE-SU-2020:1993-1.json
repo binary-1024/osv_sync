@@ -1,45 +1,43 @@
 {
-  "id": "openSUSE-SU-2020:1993-1",
-  "summary": "Security update for rmt-server",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:1993-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "rmt-server": "2.6.5-lp152.2.3.1",
+            "rmt-server-config": "2.6.5-lp152.2.3.1",
+            "rmt-server-pubcloud": "2.6.5-lp152.2.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "openSUSE:Leap 15.2",
+        "name": "rmt-server",
+        "purl": "pkg:rpm/opensuse/rmt-server&distro=openSUSE%20Leap%2015.2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.6.5-lp152.2.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for rmt-server fixes the following issues:\n\nUpdate to version 2.6.5:\n- Solved potential bug of SCC repository URLs changing over time. RMT\n  now self heals by removing the previous invalid repository and\n  creating the correct one.\n- Add web server settings to /etc/rmt.conf:\n  Now it's possible to configure the minimum and maximum threads count as well\n  the number of web server workers to be booted through /etc/rmt.conf.\n- Instead of using an MD5 of URLs for custom repository friendly_ids,\n  RMT now builds an ID from the name.\n- Fix RMT file caching based on timestamps:\n  Previously, RMT sent GET requests with the header 'If-Modified-Since' to a\n  repository server and if the response had a 304 (Not Modified), it would copy\n  a file from the local cache instead of downloading. However, if the local file\n  timestamp accidentally changed to a date newer than the one on the repository\n  server, RMT would have an outdated file, which caused some errors.\n  Now, RMT makes HEAD requests to the repositories servers and inspect the\n  'Last-Modified' header to decide whether to download a file or copy it from\n  cache, by comparing the equalness of timestamps.\n- Fixed an issue where relative paths supplied to `rmt-cli import repos`\n  caused the command to fail.\n- Friendlier IDs for custom repositories:\n  In an effort to simplify the handling of SCC and custom repositories,\n  RMT now has friendly IDs. For SCC repositories, it's the same SCC ID\n  as before. For custom repositories, it can either be user provided\n  or RMT generated (MD5 of the provided URL).\n  Benefits:\n  * `rmt-cli mirror repositories` now works for custom repositories.\n  * Custom repository IDs can be the same across RMT instances.\n  * No more confusing 'SCC ID' vs 'ID' in `rmt-cli` output.\n  Deprecation Warnings:\n  * RMT now uses a different ID for custom repositories than before.\n    RMT still supports that old ID, but it's recommended to start\n    using the new ID to ensure future compatibility.\n- Updated rails and puma dependencies for security fixes.\n\nThis update was imported from the SUSE:SLE-15-SP2:Update update project.",
+  "id": "openSUSE-SU-2020:1993-1",
   "modified": "2025-05-07T18:10:48.970247Z",
   "published": "2020-11-21T11:23:05Z",
-  "related": [
-    "CVE-2019-16770",
-    "CVE-2019-5418",
-    "CVE-2019-5419",
-    "CVE-2019-5420",
-    "CVE-2020-11076",
-    "CVE-2020-11077",
-    "CVE-2020-15169",
-    "CVE-2020-5247",
-    "CVE-2020-5249",
-    "CVE-2020-5267",
-    "CVE-2020-8164",
-    "CVE-2020-8165",
-    "CVE-2020-8166",
-    "CVE-2020-8167",
-    "CVE-2020-8184",
-    "CVE-2020-8185"
-  ],
-  "upstream": [
-    "CVE-2019-16770",
-    "CVE-2019-5418",
-    "CVE-2019-5419",
-    "CVE-2019-5420",
-    "CVE-2020-11076",
-    "CVE-2020-11077",
-    "CVE-2020-15169",
-    "CVE-2020-5247",
-    "CVE-2020-5249",
-    "CVE-2020-5267",
-    "CVE-2020-8164",
-    "CVE-2020-8165",
-    "CVE-2020-8166",
-    "CVE-2020-8167",
-    "CVE-2020-8184",
-    "CVE-2020-8185"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -138,40 +136,42 @@
       "url": "https://www.suse.com/security/cve/CVE-2020-8185"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "rmt-server",
-        "ecosystem": "openSUSE:Leap 15.2",
-        "purl": "pkg:rpm/opensuse/rmt-server&distro=openSUSE%20Leap%2015.2"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.6.5-lp152.2.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "rmt-server": "2.6.5-lp152.2.3.1",
-            "rmt-server-pubcloud": "2.6.5-lp152.2.3.1",
-            "rmt-server-config": "2.6.5-lp152.2.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:1993-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2019-16770",
+    "CVE-2019-5418",
+    "CVE-2019-5419",
+    "CVE-2019-5420",
+    "CVE-2020-11076",
+    "CVE-2020-11077",
+    "CVE-2020-15169",
+    "CVE-2020-5247",
+    "CVE-2020-5249",
+    "CVE-2020-5267",
+    "CVE-2020-8164",
+    "CVE-2020-8165",
+    "CVE-2020-8166",
+    "CVE-2020-8167",
+    "CVE-2020-8184",
+    "CVE-2020-8185"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for rmt-server",
+  "upstream": [
+    "CVE-2019-16770",
+    "CVE-2019-5418",
+    "CVE-2019-5419",
+    "CVE-2019-5420",
+    "CVE-2020-11076",
+    "CVE-2020-11077",
+    "CVE-2020-15169",
+    "CVE-2020-5247",
+    "CVE-2020-5249",
+    "CVE-2020-5267",
+    "CVE-2020-8164",
+    "CVE-2020-8165",
+    "CVE-2020-8166",
+    "CVE-2020-8167",
+    "CVE-2020-8184",
+    "CVE-2020-8185"
+  ]
 }

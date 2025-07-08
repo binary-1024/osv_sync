@@ -1,19 +1,46 @@
 {
-  "id": "MGASA-2016-0364",
-  "summary": "Updated kernel-tmb package fixes security issues",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2016-0364.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel-tmb",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.26-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This update is based on the upstream 4.4.26 kernel and fixes at least\nthese security issues:\n\nsound/core/timer.c in the Linux kernel through 4.6 does not initialize\ncertain r1 data structures, which allows local users to obtain sensitive\ninformation from kernel stack memory via crafted use of the ALSA timer\ninterface, related to the (1) snd_timer_user_ccallback and (2)\nsnd_timer_user_tinterrupt functions (CVE-2016-4578).\n\nA race condition was found in the way the Linux kernel's memory subsystem\nhandled the copy-on-write (COW) breakage of private read-only memory\nmappings. An unprivileged local user could use this flaw to gain write\naccess to otherwise read-only memory mappings and thus increase their\nprivileges on the system. This could be abused by an attacker to modify\nexisting setuid files with instructions to elevate privileges. An exploit\nusing this technique has been found in the wild (CVE-2016-5195).\n\nThe tipc_nl_compat_link_dump function in net/tipc/netlink_compat.c in the\nLinux kernel through 4.6.3 does not properly copy a certain string, which\nallows local users to obtain sensitive information from kernel stack\nmemory by reading a Netlink message (CVE-2016-5243).\n\nThe rds_inc_info_copy function in net/rds/recv.c in the Linux kernel\nthrough 4.6.3 does not initialize a certain structure member, which\nallows remote attackers to obtain sensitive information from kernel\nstack memory by reading an RDS message (CVE-2016-5244).\n\nMemory leak in the airspy_probe function in\ndrivers/media/usb/airspy/airspy.c in the airspy USB driver in the Linux\nkernel before 4.7 allows local users to cause a denial of service (memory\nconsumption) via a crafted USB device that emulates many VFL_TYPE_SDR or\nVFL_TYPE_SUBDEV devices and performs many connect and disconnect\noperations (CVE-2016-5400).\n\nRace condition in the ioctl_send_fib function in\ndrivers/scsi/aacraid/commctrl.c in the Linux kernel through 4.7 allows\nlocal users to cause a denial of service (out-of-bounds access or system\ncrash) by changing a certain size value, aka a \"double fetch\"\nvulnerability (CVE-2016-6480).\n\nMarco Grassi discovered a use-after-free condition could occur in the TCP\nretransmit queue handling code in the Linux kernel. A local attacker\ncould   use this to cause a denial of service (system crash) or possibly\nexecute arbitrary code. (CVE-2016-6828)\n\nVladimir Bene discovered an unbounded recursion in the VLAN and TEB\nGeneric Receive Offload (GRO) processing implementations in the Linux\nkernel, A remote attacker could use this to cause a stack corruption,\nleading to a denial of service (system crash). (CVE-2016-7039)\n\nThis update also changes the following:\n- enables STRICT_DEVMEM as a security hardening\n- disables FW_LOADER_USER_HELPER_FALLBACK again (un-intentionally \nenabled in 4.4 series upgrade) that slows down boot or even makes\nwireless connection fail with drivers with multiple possible\nfirmwares (mga#19390).\n\nFor other fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2016-0364",
   "modified": "2016-11-04T08:31:57Z",
   "published": "2016-11-04T08:43:04Z",
-  "related": [
-    "CVE-2016-4578",
-    "CVE-2016-5195",
-    "CVE-2016-5243",
-    "CVE-2016-5244",
-    "CVE-2016-5400",
-    "CVE-2016-6480",
-    "CVE-2016-6828",
-    "CVE-2016-7039"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -64,43 +91,16 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.26"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-tmb",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.26-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2016-0364.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-4578",
+    "CVE-2016-5195",
+    "CVE-2016-5243",
+    "CVE-2016-5244",
+    "CVE-2016-5400",
+    "CVE-2016-6480",
+    "CVE-2016-6828",
+    "CVE-2016-7039"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-tmb package fixes security issues"
 }

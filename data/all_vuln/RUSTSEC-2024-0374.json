@@ -1,12 +1,51 @@
 {
-  "id": "RUSTSEC-2024-0374",
-  "summary": "Segmentation fault due to use of uninitialized memory",
-  "details": "When trying to decompress a file using \"ouch\", we can reach the function \"ouch::archive::zip::convert_zip_date_time\".\nIn the function, there is a unsafe function, \"transmute\". Once the \"transmute\" function is called to convert the type of \"month\" object,\nthe address of the object is changed to the uninitialized memory region. \nAfter that, when other function tries to dereference \"month\", segmentation fault occurs.",
-  "modified": "2024-09-22T10:28:31Z",
-  "published": "2024-09-22T12:00:00Z",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [
+          "memory-corruption"
+        ],
+        "cvss": null,
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2024-0374.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [
+            "ouch::archive::zip::convert_zip_date_time"
+          ],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "ouch",
+        "purl": "pkg:cargo/ouch"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.3.2-0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "When trying to decompress a file using \"ouch\", we can reach the function \"ouch::archive::zip::convert_zip_date_time\".\nIn the function, there is a unsafe function, \"transmute\". Once the \"transmute\" function is called to convert the type of \"month\" object,\nthe address of the object is changed to the uninitialized memory region. \nAfter that, when other function tries to dereference \"month\", segmentation fault occurs.",
+  "id": "RUSTSEC-2024-0374",
+  "modified": "2024-09-22T10:28:31Z",
+  "published": "2024-09-22T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -21,45 +60,6 @@
       "url": "https://github.com/ouch-org/ouch/issues/707"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ouch",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/ouch"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            },
-            {
-              "fixed": "0.3.2-0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [
-            "ouch::archive::zip::convert_zip_date_time"
-          ],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": null,
-        "informational": null,
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2024-0374.json",
-        "categories": [
-          "memory-corruption"
-        ]
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Segmentation fault due to use of uninitialized memory"
 }

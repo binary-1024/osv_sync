@@ -1,22 +1,46 @@
 {
-  "id": "GHSA-p9m5-3hj7-cp5r",
-  "summary": "futures_task::noop_waker_ref can segfault due to dereferencing a NULL pointer",
-  "details": "Affected versions of the crate used a UnsafeCell in thread-local storage to return a noop waker reference, assuming that the reference would never be returned from another thread.\n\nThis resulted in a segmentation fault crash if Waker::wake_by_ref() was called on a waker returned from another thread due to it attempting to dereference a pointer that wasn't accessible from the main thread.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-p9m5-3hj7-cp5r/GHSA-p9m5-3hj7-cp5r.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "futures-task",
+        "purl": "pkg:cargo/futures-task"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.3.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-35907",
     "RUSTSEC-2020-0061"
   ],
-  "modified": "2023-11-08T04:03:38.673466Z",
-  "published": "2022-05-24T17:37:49Z",
   "database_specific": {
-    "nvd_published_at": "2020-12-31T09:15:00Z",
     "cwe_ids": [
       "CWE-476"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-06-16T23:58:57Z"
+    "github_reviewed_at": "2022-06-16T23:58:57Z",
+    "nvd_published_at": "2020-12-31T09:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "Affected versions of the crate used a UnsafeCell in thread-local storage to return a noop waker reference, assuming that the reference would never be returned from another thread.\n\nThis resulted in a segmentation fault crash if Waker::wake_by_ref() was called on a waker returned from another thread due to it attempting to dereference a pointer that wasn't accessible from the main thread.",
+  "id": "GHSA-p9m5-3hj7-cp5r",
+  "modified": "2023-11-08T04:03:38.673466Z",
+  "published": "2022-05-24T17:37:49Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -35,36 +59,12 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2020-0061.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "futures-task",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/futures-task"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.3.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-p9m5-3hj7-cp5r/GHSA-p9m5-3hj7-cp5r.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "futures_task::noop_waker_ref can segfault due to dereferencing a NULL pointer"
 }

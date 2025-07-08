@@ -1,26 +1,102 @@
 {
-  "id": "GHSA-hc2f-7r5r-r2hg",
-  "summary": "Heap buffer overflow due to incorrect hash function in TensorFlow",
-  "details": "### Impact\nThe [`TensorKey` hash function](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/framework/tensor_key.h#L53-L64) used total estimated `AllocatedBytes()`, which (a) is an estimate per tensor, and (b) is a very poor hash function for constants (e.g. `int32_t`).  It also tried to access individual tensor bytes through `tensor.data()` of size `AllocatedBytes()`.  This led to ASAN failures because the `AllocatedBytes()` is an estimate of total bytes allocated by a tensor, including any pointed-to constructs (e.g. strings), and does not refer to contiguous bytes in the `.data()` buffer.  We couldn't use this byte vector anyways, since types like `tstring` include pointers, whereas we need to hash the string values themselves.\n\n### Patches\nWe have patched the issue in GitHub commit [1b85a28d395dc91f4d22b5f9e1e9a22e92ccecd6](https://github.com/tensorflow/tensorflow/commit/1b85a28d395dc91f4d22b5f9e1e9a22e92ccecd6).\n\nThe fix will be included in TensorFlow 2.9.0. We will also cherrypick this commit on TensorFlow 2.8.1, which is the only other affected version.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-hc2f-7r5r-r2hg/GHSA-hc2f-7r5r-r2hg.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow",
+        "purl": "pkg:pypi/tensorflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0"
+            },
+            {
+              "fixed": "2.8.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-hc2f-7r5r-r2hg/GHSA-hc2f-7r5r-r2hg.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
+        "purl": "pkg:pypi/tensorflow-cpu"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0"
+            },
+            {
+              "fixed": "2.8.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-hc2f-7r5r-r2hg/GHSA-hc2f-7r5r-r2hg.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
+        "purl": "pkg:pypi/tensorflow-gpu"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0"
+            },
+            {
+              "fixed": "2.8.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0"
+      ]
+    }
+  ],
   "aliases": [
     "BIT-tensorflow-2022-29210",
     "CVE-2022-29210"
   ],
-  "modified": "2024-02-16T08:09:36.089570Z",
-  "published": "2022-05-24T22:15:20Z",
-  "related": [
-    "CVE-2022-29210"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-05-21T00:15:00Z",
     "cwe_ids": [
       "CWE-120",
       "CWE-787"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-05-24T22:15:20Z"
+    "github_reviewed_at": "2022-05-24T22:15:20Z",
+    "nvd_published_at": "2022-05-21T00:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\nThe [`TensorKey` hash function](https://github.com/tensorflow/tensorflow/blob/f3b9bf4c3c0597563b289c0512e98d4ce81f886e/tensorflow/core/framework/tensor_key.h#L53-L64) used total estimated `AllocatedBytes()`, which (a) is an estimate per tensor, and (b) is a very poor hash function for constants (e.g. `int32_t`).  It also tried to access individual tensor bytes through `tensor.data()` of size `AllocatedBytes()`.  This led to ASAN failures because the `AllocatedBytes()` is an estimate of total bytes allocated by a tensor, including any pointed-to constructs (e.g. strings), and does not refer to contiguous bytes in the `.data()` buffer.  We couldn't use this byte vector anyways, since types like `tstring` include pointers, whereas we need to hash the string values themselves.\n\n### Patches\nWe have patched the issue in GitHub commit [1b85a28d395dc91f4d22b5f9e1e9a22e92ccecd6](https://github.com/tensorflow/tensorflow/commit/1b85a28d395dc91f4d22b5f9e1e9a22e92ccecd6).\n\nThe fix will be included in TensorFlow 2.9.0. We will also cherrypick this commit on TensorFlow 2.8.1, which is the only other affected version.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
+  "id": "GHSA-hc2f-7r5r-r2hg",
+  "modified": "2024-02-16T08:09:36.089570Z",
+  "published": "2022-05-24T22:15:20Z",
   "references": [
     {
       "type": "WEB",
@@ -51,91 +127,15 @@
       "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.9.0"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tensorflow",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0"
-            },
-            {
-              "fixed": "2.8.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-hc2f-7r5r-r2hg/GHSA-hc2f-7r5r-r2hg.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tensorflow-cpu",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow-cpu"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0"
-            },
-            {
-              "fixed": "2.8.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-hc2f-7r5r-r2hg/GHSA-hc2f-7r5r-r2hg.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tensorflow-gpu",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow-gpu"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0"
-            },
-            {
-              "fixed": "2.8.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-hc2f-7r5r-r2hg/GHSA-hc2f-7r5r-r2hg.json"
-      }
-    }
+  "related": [
+    "CVE-2022-29210"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Heap buffer overflow due to incorrect hash function in TensorFlow"
 }

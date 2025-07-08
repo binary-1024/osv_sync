@@ -1,20 +1,46 @@
 {
-  "id": "MGASA-2015-0022",
-  "summary": "Updated openssl packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2015-0022.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:4",
+        "name": "openssl",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.1k-1.mga4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "A carefully crafted DTLS message can cause a segmentation fault in\nOpenSSL due to a NULL pointer dereference. This could lead to a Denial\nOf Service attack (CVE-2014-3571).\n\nA memory leak can occur in the dtls1_buffer_record function under\ncertain conditions. In particular this could occur if an attacker\nsent repeated DTLS records with the same sequence number but for the\nnext epoch. The memory leak could be exploited by an attacker in a\nDenial of Service attack through memory exhaustion (CVE-2015-0206).\n\nWhen openssl is built with the no-ssl3 option and a SSL v3 ClientHello\nis received the ssl method would be set to NULL which could later\nresult in a NULL pointer dereference (CVE-2014-3569).\n\nAn OpenSSL client will accept a handshake using an ephemeral ECDH\nciphersuite using an ECDSA certificate if the server key exchange\nmessage is omitted. This effectively removes forward secrecy from\nthe ciphersuite (CVE-2014-3572).\n\nAn OpenSSL client will accept the use of an RSA temporary key in\na non-export RSA key exchange ciphersuite. A server could present\na weak temporary key and downgrade the security of the session\n(CVE-2015-0204).\n\nAn OpenSSL server will accept a DH certificate for client\nauthentication without the certificate verify message. This effectively\nallows a client to authenticate without the use of a private key. This\nonly affects servers which trust a client certificate authority which\nissues certificates containing DH keys: these are extremely rare and\nhardly ever encountered (CVE-2015-0205).\n\nOpenSSL accepts several non-DER-variations of certificate signature\nalgorithm and signature encodings. OpenSSL also does not enforce a\nmatch between the signature algorithm between the signed and unsigned\nportions of the certificate. By modifying the contents of the signature\nalgorithm or the encoding of the signature, it is possible to change\nthe certificate's fingerprint. This does not allow an attacker to\nforge certificates, and does not affect certificate verification or\nOpenSSL servers/clients in any other way. It also does not affect\ncommon revocation mechanisms. Only custom applications that rely\non the uniqueness of the fingerprint (e.g. certificate blacklists)\nmay be affected (CVE-2014-8275).\n\nBignum squaring (BN_sqr) may produce incorrect results on some\nplatforms, including x86_64. This bug occurs at random with a very\nlow probability, and is not known to be exploitable in any way,\nthough its exact impact is difficult to determine (CVE-2014-3570).\n\nThe updated packages have been upgraded to the 1.0.1k version where\nthese security flaws have been fixed.\n",
+  "id": "MGASA-2015-0022",
   "modified": "2015-01-11T19:47:28Z",
   "published": "2015-01-11T19:54:28Z",
-  "related": [
-    "CVE-2014-3569",
-    "CVE-2014-3570",
-    "CVE-2014-3571",
-    "CVE-2014-3572",
-    "CVE-2014-3575",
-    "CVE-2014-8275",
-    "CVE-2015-0204",
-    "CVE-2015-0205",
-    "CVE-2015-0206"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -33,43 +59,17 @@
       "url": "http://www.mandriva.com/en/support/security/advisories/mbs1/MDVSA-2015%3A019/"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "openssl",
-        "ecosystem": "Mageia:4",
-        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.0.1k-1.mga4"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2015-0022.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2014-3569",
+    "CVE-2014-3570",
+    "CVE-2014-3571",
+    "CVE-2014-3572",
+    "CVE-2014-3575",
+    "CVE-2014-8275",
+    "CVE-2015-0204",
+    "CVE-2015-0205",
+    "CVE-2015-0206"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated openssl packages fix security vulnerabilities"
 }

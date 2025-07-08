@@ -1,19 +1,43 @@
 {
-  "id": "GHSA-733v-p3h5-qpq7",
-  "summary": "GraphQL Armor Cost-Limit Plugin Bypass via Introspection Query Obfuscation",
-  "details": "### Summary\nA query cost restriction using the `cost-limit` can be bypassed if `ignoreIntrospection` is enabled (which is the default configuration) by naming your query/fragment `__schema`.\n\n### Details\nAt the start of the `computeComplexity` function, we have the following check for `ignoreIntrospection` option:\n\n```ts\n    if (this.config.ignoreIntrospection && 'name' in node && node.name?.value === '__schema') {\n      return 0;\n    }\n```\n\nHowever, the `node` can be `FieldNode | FragmentDefinitionNode | InlineFragmentNode | OperationDefinitionNode | FragmentSpreadNode`\n\nSo, for example, sending the following query\n\n```gql\nquery hello {\n  books {\n    title\n  }\n}\n```\n\nwould create an `OperationDefinitionNode` with `node.name.value == 'hello'`\n\nThe proper way to handle this would be to check for the `__schema` field, which would create a `FieldNode`.\n\nThe fix is\n\n```ts\n    if (\n      this.config.ignoreIntrospection &&\n      'name' in node &&\n      node.name?.value === '__schema' &&\n      node.kind === Kind.FIELD\n    ) {\n      return 0;\n    }\n```\n\nto assert that the node must be a `FieldNode`\n\n### PoC\n```gql\nquery  {\n  ...__schema\n}\n\nfragment __schema on Query {\n  books {\n    title\n    author\n  }\n}\n```\n\n```gql\nquery __schema {\n  books {\n    title\n    author\n  }\n}\n```\n\n### Impact\nApplications using GraphQL Armor Cost Limit plugin with `ignoreIntrospection` enabled.\n\n### Fix:\nFixed on [772](https://github.com/Escape-Technologies/graphql-armor/pull/772). A quick patch would be to set `ignoreIntrospection` to false.",
-  "modified": "2025-04-29T16:45:56Z",
-  "published": "2025-04-25T15:14:36Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-733v-p3h5-qpq7/GHSA-733v-p3h5-qpq7.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@escape.tech/graphql-armor-cost-limit",
+        "purl": "pkg:npm/%40escape.tech/graphql-armor-cost-limit"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-400",
       "CWE-770"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-25T15:14:36Z"
+    "github_reviewed_at": "2025-04-25T15:14:36Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nA query cost restriction using the `cost-limit` can be bypassed if `ignoreIntrospection` is enabled (which is the default configuration) by naming your query/fragment `__schema`.\n\n### Details\nAt the start of the `computeComplexity` function, we have the following check for `ignoreIntrospection` option:\n\n```ts\n    if (this.config.ignoreIntrospection && 'name' in node && node.name?.value === '__schema') {\n      return 0;\n    }\n```\n\nHowever, the `node` can be `FieldNode | FragmentDefinitionNode | InlineFragmentNode | OperationDefinitionNode | FragmentSpreadNode`\n\nSo, for example, sending the following query\n\n```gql\nquery hello {\n  books {\n    title\n  }\n}\n```\n\nwould create an `OperationDefinitionNode` with `node.name.value == 'hello'`\n\nThe proper way to handle this would be to check for the `__schema` field, which would create a `FieldNode`.\n\nThe fix is\n\n```ts\n    if (\n      this.config.ignoreIntrospection &&\n      'name' in node &&\n      node.name?.value === '__schema' &&\n      node.kind === Kind.FIELD\n    ) {\n      return 0;\n    }\n```\n\nto assert that the node must be a `FieldNode`\n\n### PoC\n```gql\nquery  {\n  ...__schema\n}\n\nfragment __schema on Query {\n  books {\n    title\n    author\n  }\n}\n```\n\n```gql\nquery __schema {\n  books {\n    title\n    author\n  }\n}\n```\n\n### Impact\nApplications using GraphQL Armor Cost Limit plugin with `ignoreIntrospection` enabled.\n\n### Fix:\nFixed on [772](https://github.com/Escape-Technologies/graphql-armor/pull/772). A quick patch would be to set `ignoreIntrospection` to false.",
+  "id": "GHSA-733v-p3h5-qpq7",
+  "modified": "2025-04-29T16:45:56Z",
+  "published": "2025-04-25T15:14:36Z",
   "references": [
     {
       "type": "WEB",
@@ -32,36 +56,12 @@
       "url": "https://github.com/Escape-Technologies/graphql-armor"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@escape.tech/graphql-armor-cost-limit",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40escape.tech/graphql-armor-cost-limit"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.4.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-733v-p3h5-qpq7/GHSA-733v-p3h5-qpq7.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "GraphQL Armor Cost-Limit Plugin Bypass via Introspection Query Obfuscation"
 }

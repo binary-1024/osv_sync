@@ -1,15 +1,105 @@
 {
-  "id": "SUSE-RU-2022:2355-1",
-  "summary": "Recommended update for python-cryptography",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2022:2355-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python3-cryptography": "3.3.2-150400.16.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP4",
+        "name": "python-cryptography",
+        "purl": "pkg:rpm/suse/python-cryptography&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.3.2-150400.16.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2022:2355-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python3-cryptography": "3.3.2-150400.16.3.1",
+            "python3-cryptography-vectors": "3.3.2-150400.7.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "openSUSE:Leap 15.4",
+        "name": "python-cryptography",
+        "purl": "pkg:rpm/opensuse/python-cryptography&distro=openSUSE%20Leap%2015.4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.3.2-150400.16.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2022:2355-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python3-cryptography": "3.3.2-150400.16.3.1",
+            "python3-cryptography-vectors": "3.3.2-150400.7.3.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "openSUSE:Leap 15.4",
+        "name": "python-cryptography-vectors",
+        "purl": "pkg:rpm/opensuse/python-cryptography-vectors&distro=openSUSE%20Leap%2015.4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.3.2-150400.7.3.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "\nThis update for python-cryptography fixes the following issues:\n\npython-cryptography was updated to 3.3.2.\n\nupdate to 3.3.0:\n\n* BACKWARDS INCOMPATIBLE: The GCM and AESGCM now require 64-bit\n  to 1024-bit (8 byte to 128 byte) initialization vectors. This\n  change is to conform with an upcoming OpenSSL release that will\n  no longer support sizes outside this window.\n* BACKWARDS INCOMPATIBLE: When deserializing asymmetric keys we\n  now raise ValueError rather than UnsupportedAlgorithm when an\n  unsupported cipher is used. This change is to conform with an\n  upcoming OpenSSL release that will no longer distinguish\n  between error types.\n* BACKWARDS INCOMPATIBLE: We no longer allow loading of finite\n  field Diffie-Hellman parameters of less than 512 bits in\n  length. This change is to conform with an upcoming OpenSSL\n  release that no longer supports smaller sizes. These keys were\n  already wildly insecure and should not have been used in any\n  application outside of testing.\n* Added the recover_data_from_signature() function to\n  RSAPublicKey for recovering the signed data from an RSA\n  signature. \n\nUpdate to 3.2.1:\n\nDisable blinding on RSA public keys to address an error with\nsome versions of OpenSSL.\n\nupdate to 3.2 (bsc#1178168, CVE-2020-25659):\n\n* CVE-2020-25659: Attempted to make RSA PKCS#1v1.5 decryption more constant time,\n  to protect against Bleichenbacher vulnerabilities. Due to limitations imposed\n  by our API, we cannot completely mitigate this vulnerability.\n* Added basic support for PKCS7 signing (including SMIME) via PKCS7SignatureBuilder.\n\nupdate to 3.1:\n\n* **BACKWARDS INCOMPATIBLE:** Removed support for ``idna`` based\n  :term:`U-label` parsing in various X.509 classes. This support was originally\n  deprecated in version 2.1 and moved to an extra in 2.5.\n* ``backend`` arguments to functions are no longer required and the\n  default backend will automatically be selected if no ``backend`` is provided.\n* Added initial support for parsing certificates from PKCS7 files with\n  :func:`~cryptography.hazmat.primitives.serialization.pkcs7.load_pem_pkcs7_certificates`\n  and\n  :func:`~cryptography.hazmat.primitives.serialization.pkcs7.load_der_pkcs7_certificates`\n  .\n* Calling ``update`` or ``update_into`` on\n  :class:`~cryptography.hazmat.primitives.ciphers.CipherContext` with ``data``\n  longer than 2\\ :sup:`31` bytes no longer raises an ``OverflowError``. This\n  also resolves the same issue in :doc:`/fernet`.\n\nupdate to 3.0:\n\n* RSA generate_private_key() no longer accepts public_exponent values except\n   65537 and 3 (the latter for legacy purposes).\n* X.509 certificate parsing now enforces that the version field contains\n   a valid value, rather than deferring this check until version is accessed.\n* Deprecated support for Python 2\n* Added support for OpenSSH serialization format for ec, ed25519, rsa and dsa\n   private keys: load_ssh_private_key() for loading and OpenSSH for writing.\n* Added support for OpenSSH certificates to load_ssh_public_key().\n* Added encrypt_at_time() and decrypt_at_time() to Fernet.\n* Added support for the SubjectInformationAccess X.509 extension.\n* Added support for parsing SignedCertificateTimestamps in OCSP responses.\n* Added support for parsing attributes in certificate signing requests via get_attribute_for_oid().\n* Added support for encoding attributes in certificate signing requests via add_attribute().\n* On OpenSSL 1.1.1d and higher cryptography now uses OpenSSL\u2019s built-in CSPRNG\n   instead of its own OS random engine because these versions of OpenSSL properly reseed on fork.\n* Added initial support for creating PKCS12 files with serialize_key_and_certificates().\n\nUpdate to 2.9:\n\n* BACKWARDS INCOMPATIBLE: Support for Python 3.4 has been removed due to\n  low usage and maintenance burden.\n* BACKWARDS INCOMPATIBLE: Support for OpenSSL 1.0.1 has been removed.\n  Users on older version of OpenSSL will need to upgrade.\n* BACKWARDS INCOMPATIBLE: Support for LibreSSL 2.6.x has been removed.\n* Removed support for calling public_bytes() with no arguments, as per \n  our deprecation policy. You must now pass encoding and format.\n* BACKWARDS INCOMPATIBLE: Reversed the order in which rfc4514_string()\n  returns the RDNs as required by RFC 4514.\n* Added support for parsing single_extensions in an OCSP response.\n* NameAttribute values can now be empty strings.\n\n",
+  "id": "SUSE-RU-2022:2355-1",
   "modified": "2025-05-02T04:10:05.278273Z",
   "published": "2022-07-11T10:44:27Z",
-  "related": [
-    "CVE-2020-25659"
-  ],
-  "upstream": [
-    "CVE-2020-25659"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -24,102 +114,12 @@
       "url": "https://www.suse.com/security/cve/CVE-2020-25659"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "python-cryptography",
-        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP4",
-        "purl": "pkg:rpm/suse/python-cryptography&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.3.2-150400.16.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "python3-cryptography": "3.3.2-150400.16.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2022:2355-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "python-cryptography",
-        "ecosystem": "openSUSE:Leap 15.4",
-        "purl": "pkg:rpm/opensuse/python-cryptography&distro=openSUSE%20Leap%2015.4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.3.2-150400.16.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "python3-cryptography": "3.3.2-150400.16.3.1",
-            "python3-cryptography-vectors": "3.3.2-150400.7.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2022:2355-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "python-cryptography-vectors",
-        "ecosystem": "openSUSE:Leap 15.4",
-        "purl": "pkg:rpm/opensuse/python-cryptography-vectors&distro=openSUSE%20Leap%2015.4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.3.2-150400.7.3.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "python3-cryptography": "3.3.2-150400.16.3.1",
-            "python3-cryptography-vectors": "3.3.2-150400.7.3.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-RU-2022:2355-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2020-25659"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Recommended update for python-cryptography",
+  "upstream": [
+    "CVE-2020-25659"
+  ]
 }

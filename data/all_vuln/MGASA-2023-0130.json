@@ -1,22 +1,46 @@
 {
-  "id": "MGASA-2023-0130",
-  "summary": "Updated openssl packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0130.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "openssl",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.1t-1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "A read buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs after\ncertificate chain signature verification and requires either a CA to have\nsigned the malicious certificate or for the application to continue\ncertificate verification despite failure to construct a path to a trusted\nissuer. The read buffer overrun might result in a crash which could lead\nto a denial of service attack. In theory it could also result in the\ndisclosure of private memory contents (such as private keys, or sensitive\nplaintext) although we are not aware of any working exploit leading to\nmemory contents disclosure as of the time of release of this advisory. In\na TLS client, this can be triggered by connecting to a malicious server.\nIn a TLS server, this can be triggered if the server requests client\nauthentication and a malicious client connects. (CVE-2022-4203)\n\nA timing based side channel exists in the OpenSSL RSA Decryption\nimplementation which could be sufficient to recover a plaintext across a\nnetwork in a Bleichenbacher style attack. To achieve a successful\ndecryption an attacker would have to be able to send a very large number\nof trial messages for decryption. The vulnerability affects all RSA\npadding modes: PKCS#1 v1.5, RSA-OEAP and RSASVE. For example, in a TLS\nconnection, RSA is commonly used by a client to send an encrypted\npre-master secret to the server. An attacker that had observed a genuine\nconnection between a client and a server could use this flaw to send trial\nmessages to the server and record the time taken to process them. After a\nsufficiently large number of messages the attacker could recover the\npre-master secret used for the original connection and thus be able to\ndecrypt the application data sent over that connection. (CVE-2022-4304)\n\nThe function PEM_read_bio_ex() reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload\ndata. If the function succeeds then the \"name_out\", \"header\" and \"data\"\narguments are populated with pointers to buffers containing the relevant\ndecoded data. The caller is responsible for freeing those buffers. It is\npossible to construct a PEM file that results in 0 bytes of payload data.\nIn this case PEM_read_bio_ex() will return a failure code but will\npopulate the header argument with a pointer to a buffer that has already\nbeen freed. If the caller also frees this buffer then a double free will\noccur. This will most likely lead to a crash. This could be exploited by\nan attacker who has the ability to supply malicious PEM files for parsing\nto achieve a denial of service attack. The functions PEM_read_bio() and\nPEM_read() are simple wrappers around PEM_read_bio_ex() and therefore\nthese functions are also directly affected. These functions are also\ncalled indirectly by a number of other OpenSSL functions including\nPEM_X509_INFO_read_bio_ex() and SSL_CTX_use_serverinfo_file() which are\nalso vulnerable. Some OpenSSL internal uses of these functions are not\nvulnerable because the caller does not free the header argument if\nPEM_read_bio_ex() returns a failure code. These locations include the\nPEM_read_bio_TYPE() functions as well as the decoders introduced in\nOpenSSL 3.0. The OpenSSL asn1parse command line application is also\nimpacted by this issue. (CVE-2022-4450)\n\nThe public API function BIO_new_NDEF is a helper function used for\nstreaming ASN.1 data via a BIO. It is primarily used internally to OpenSSL\nto support the SMIME, CMS and PKCS7 streaming capabilities, but may also\nbe called directly by end user applications. The function receives a BIO\nfrom the caller, prepends a new BIO_f_asn1 filter BIO onto the front of it\nto form a BIO chain, and then returns the new head of the BIO chain to the\ncaller. Under certain conditions, for example if a CMS recipient public\nkey is invalid, the new filter BIO is freed and the function returns a\nNULL result indicating a failure. However, in this case, the BIO chain is\nnot properly cleaned up and the BIO passed by the caller still retains\ninternal pointers to the previously freed filter BIO. If the caller then\ngoes on to call BIO_pop() on the BIO then a use-after-free will occur.\nThis will most likely result in a crash. This scenario occurs directly in\nthe internal function B64_write_ASN1() which may cause BIO_new_NDEF() to\nbe called and will subsequently call BIO_pop() on the BIO. This internal\nfunction is in turn called by the public API functions\nPEM_write_bio_ASN1_stream, PEM_write_bio_CMS_stream,\nPEM_write_bio_PKCS7_stream, SMIME_write_ASN1, SMIME_write_CMS and\nSMIME_write_PKCS7. Other public API functions that may be impacted by this\ninclude i2d_ASN1_bio_stream, BIO_new_CMS, BIO_new_PKCS7,\ni2d_CMS_bio_stream and i2d_PKCS7_bio_stream. The OpenSSL cms and smime\ncommand line applications are similarly affected. (CVE-2023-0215)\n\nAn invalid pointer dereference on read can be triggered when an\napplication tries to load malformed PKCS7 data with the d2i_PKCS7(),\nd2i_PKCS7_bio() or d2i_PKCS7_fp() functions. The result of the dereference\nis an application crash which could lead to a denial of service attack.\nThe TLS implementation in OpenSSL does not call this function however\nthird party applications might call these functions on untrusted data.\n(CVE-2023-0216)\n\nAn invalid pointer dereference on read can be triggered when an\napplication tries to check a malformed DSA public key by the\nEVP_PKEY_public_check() function. This will most likely lead to an\napplication crash. This function can be called on public keys supplied\nfrom untrusted sources which could allow an attacker to cause a denial of\nservice attack. The TLS implementation in OpenSSL does not call this\nfunction but applications might call the function if there are additional\nsecurity requirements imposed by standards such as FIPS 140-3.\n(CVE-2023-0217)\n\nThere is a type confusion vulnerability relating to X.400 address\nprocessing inside an X.509 GeneralName. X.400 addresses were parsed as an\nASN1_STRING but the public structure definition for GENERAL_NAME\nincorrectly specified the type of the x400Address field as ASN1_TYPE. This\nfield is subsequently interpreted by the OpenSSL function GENERAL_NAME_cmp\nas an ASN1_TYPE rather than an ASN1_STRING. When CRL checking is enabled\n(i.e. the application sets the X509_V_FLAG_CRL_CHECK flag), this\nvulnerability may allow an attacker to pass arbitrary pointers to a memcmp\ncall, enabling them to read memory contents or enact a denial of service.\nIn most cases, the attack requires the attacker to provide both the\ncertificate chain and CRL, neither of which need to have a valid\nsignature. If the attacker only controls one of these inputs, the other\ninput must already contain an X.400 address as a CRL distribution point,\nwhich is uncommon. As such, this vulnerability is most likely to only\naffect applications which have implemented their own functionality for\nretrieving CRLs over a network. (CVE-2023-0286)\n\nA NULL pointer can be dereferenced when signatures are being verified on\nPKCS7 signed or signedAndEnveloped data. In case the hash algorithm used\nfor the signature is known to the OpenSSL library but the implementation\nof the hash algorithm is not available the digest initialization will\nfail. There is a missing check for the return value from the\ninitialization function which later leads to invalid usage of the digest\nAPI most likely leading to a crash. The unavailability of an algorithm can\nbe caused by using FIPS enabled configuration of providers or more\ncommonly by not loading the legacy provider. PKCS7 data is processed by\nthe SMIME library calls and also by the time stamp (TS) library calls. The\nTLS implementation in OpenSSL does not call these functions however third\nparty applications would be affected if they call these functions to\nverify signatures on untrusted data. (CVE-2023-0401)\n\nA security vulnerability has been identified in all supported versions of\nOpenSSL related to the verification of X.509 certificate chains that\ninclude policy constraints. Attackers may be able to exploit this\nvulnerability by creating a malicious certificate chain that triggers\nexponential use of computational resources, leading to a denial-of-service\n(DoS) attack on affected systems. Policy processing is disabled by default\nbut can be enabled by passing the `-policy' argument to the command line\nutilities or by calling the `X509_VERIFY_PARAM_set1_policies()' function.\n(CVE-2023-0464)\n\nApplications that use a non-default option when verifying certificates may\nbe vulnerable to an attack from a malicious CA to circumvent certain\nchecks. Invalid certificate policies in leaf certificates are silently\nignored by OpenSSL and other certificate policy checks are skipped for\nthat certificate. A malicious CA could use this to deliberately assert\ninvalid certificate policies in order to circumvent policy checking on the\ncertificate altogether. Policy processing is disabled by default but can\nbe enabled by passing the `-policy' argument to the command line utilities\nor by calling the `X509_VERIFY_PARAM_set1_policies()' function. (CVE-2023-0465)\n\nThe function X509_VERIFY_PARAM_add0_policy() is documented to implicitly\nenable the certificate policy check when doing certificate verification.\nHowever the implementation of the function does not enable the check which\nallows certificates with invalid or incorrect policies to pass the\ncertificate verification. As suddenly enabling the policy check could\nbreak existing deployments it was decided to keep the existing behavior of\nthe X509_VERIFY_PARAM_add0_policy() function. Instead the applications\nthat require OpenSSL to perform certificate policy check need to use\nX509_VERIFY_PARAM_set1_policies() or explicitly enable the policy check by\ncalling X509_VERIFY_PARAM_set_flags() with the X509_V_FLAG_POLICY_CHECK\nflag argument. Certificate policy checks are disabled by default in\nOpenSSL and are not commonly used by applications. (CVE-2023-0466)\n",
+  "id": "MGASA-2023-0130",
   "modified": "2023-04-11T17:53:54Z",
   "published": "2023-04-11T19:02:20Z",
-  "related": [
-    "CVE-2022-4203",
-    "CVE-2022-4304",
-    "CVE-2022-4450",
-    "CVE-2023-0215",
-    "CVE-2023-0216",
-    "CVE-2023-0217",
-    "CVE-2023-0286",
-    "CVE-2023-0401",
-    "CVE-2023-0464",
-    "CVE-2023-0465",
-    "CVE-2023-0466"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -59,43 +83,19 @@
       "url": "https://www.openssl.org/news/secadv/20230328.txt"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "openssl",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.1.1t-1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2023-0130.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-4203",
+    "CVE-2022-4304",
+    "CVE-2022-4450",
+    "CVE-2023-0215",
+    "CVE-2023-0216",
+    "CVE-2023-0217",
+    "CVE-2023-0286",
+    "CVE-2023-0401",
+    "CVE-2023-0464",
+    "CVE-2023-0465",
+    "CVE-2023-0466"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated openssl packages fix security vulnerability"
 }

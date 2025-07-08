@@ -1,61 +1,16 @@
 {
-  "id": "GHSA-h5vq-gw2c-pq47",
-  "summary": "TensorFlow vulnerable to `CHECK` failures in `UnbatchGradOp`",
-  "details": "### Impact\nThe [`UnbatchGradOp`](https://github.com/tensorflow/tensorflow/blob/769eddaf479c8debead9a59a72617d6ed6f0fe10/tensorflow/core/kernels/batch_kernels.cc#L891) function takes an argument `id` that is assumed to be a scalar. A nonscalar `id` can trigger a `CHECK` failure and crash the program.\n```python\nimport numpy as np\nimport tensorflow as tf\n\n# `id` is not scalar\ntf.raw_ops.UnbatchGrad(original_input= tf.constant([1]),batch_index=tf.constant([[0,0,0 ], ], dtype=tf.int64),grad=tf.constant([1,]),id=tf.constant([1,1,], dtype=tf.int64))\n```\nIt also requires its argument `batch_index` to contain three times the number of elements as indicated in its `batch_index.dim_size(0)`. An incorrect `batch_index` can trigger a `CHECK` failure and crash the program.\n```python\nimport numpy as np\nimport tensorflow as tf\n\n# batch_index's size is not 3\ntf.raw_ops.UnbatchGrad(original_input= tf.constant([1]),batch_index=tf.constant([[0,0], ], dtype=tf.int64),grad=tf.constant([1,]),id=tf.constant([1,], dtype=tf.int64))\n```\n\n### Patches\nWe have patched the issue in GitHub commit [5f945fc6409a3c1e90d6970c9292f805f6e6ddf2](https://github.com/tensorflow/tensorflow/commit/5f945fc6409a3c1e90d6970c9292f805f6e6ddf2).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Kang Hong Jin from Singapore Management University and \u5218\u529b\u6e90 from the Information System & Security and Countermeasures Experiments Center, Beijing Institute of Technology\n",
-  "aliases": [
-    "BIT-tensorflow-2022-35952",
-    "CVE-2022-35952"
-  ],
-  "modified": "2023-12-06T01:02:25.946957Z",
-  "published": "2022-09-16T22:12:59Z",
-  "related": [
-    "CVE-2022-35952"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-09-16T20:15:00Z",
-    "github_reviewed_at": "2022-09-16T22:12:59Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-617"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-h5vq-gw2c-pq47"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35952"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/5f945fc6409a3c1e90d6970c9292f805f6e6ddf2"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/769eddaf479c8debead9a59a72617d6ed6f0fe10/tensorflow/core/kernels/batch_kernels.cc#L891"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -63,7 +18,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -139,20 +95,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -160,25 +115,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -186,25 +141,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -212,7 +167,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -248,20 +204,19 @@
         "2.6.5",
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -269,25 +224,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -295,25 +250,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -321,7 +276,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -394,20 +350,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -415,25 +370,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -441,22 +396,67 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-h5vq-gw2c-pq47/GHSA-h5vq-gw2c-pq47.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-35952",
+    "CVE-2022-35952"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-617"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T22:12:59Z",
+    "nvd_published_at": "2022-09-16T20:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nThe [`UnbatchGradOp`](https://github.com/tensorflow/tensorflow/blob/769eddaf479c8debead9a59a72617d6ed6f0fe10/tensorflow/core/kernels/batch_kernels.cc#L891) function takes an argument `id` that is assumed to be a scalar. A nonscalar `id` can trigger a `CHECK` failure and crash the program.\n```python\nimport numpy as np\nimport tensorflow as tf\n\n# `id` is not scalar\ntf.raw_ops.UnbatchGrad(original_input= tf.constant([1]),batch_index=tf.constant([[0,0,0 ], ], dtype=tf.int64),grad=tf.constant([1,]),id=tf.constant([1,1,], dtype=tf.int64))\n```\nIt also requires its argument `batch_index` to contain three times the number of elements as indicated in its `batch_index.dim_size(0)`. An incorrect `batch_index` can trigger a `CHECK` failure and crash the program.\n```python\nimport numpy as np\nimport tensorflow as tf\n\n# batch_index's size is not 3\ntf.raw_ops.UnbatchGrad(original_input= tf.constant([1]),batch_index=tf.constant([[0,0], ], dtype=tf.int64),grad=tf.constant([1,]),id=tf.constant([1,], dtype=tf.int64))\n```\n\n### Patches\nWe have patched the issue in GitHub commit [5f945fc6409a3c1e90d6970c9292f805f6e6ddf2](https://github.com/tensorflow/tensorflow/commit/5f945fc6409a3c1e90d6970c9292f805f6e6ddf2).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Kang Hong Jin from Singapore Management University and \u5218\u529b\u6e90 from the Information System & Security and Countermeasures Experiments Center, Beijing Institute of Technology\n",
+  "id": "GHSA-h5vq-gw2c-pq47",
+  "modified": "2023-12-06T01:02:25.946957Z",
+  "published": "2022-09-16T22:12:59Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-h5vq-gw2c-pq47"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35952"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/5f945fc6409a3c1e90d6970c9292f805f6e6ddf2"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/769eddaf479c8debead9a59a72617d6ed6f0fe10/tensorflow/core/kernels/batch_kernels.cc#L891"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-35952"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to `CHECK` failures in `UnbatchGradOp`"
 }

@@ -1,79 +1,17 @@
 {
-  "id": "GHSA-rggv-cv7r-mw98",
-  "summary": "Connection leaking on idle timeout when TCP congested",
-  "details": "### Impact\nIf an HTTP/2 connection gets TCP congested, when an idle timeout occurs the HTTP/2 session is marked as closed, and then a GOAWAY frame is queued to be written.\nHowever it is not written because the connection is TCP congested.\nWhen another idle timeout period elapses, it is then supposed to hard close the connection, but it delegates to the HTTP/2 session which reports that it has already been closed so it does not attempt to hard close the connection.\n\nThis leaves the connection in ESTABLISHED state (i.e. not closed), TCP congested, and idle.\n\nAn attacker can cause many connections to end up in this state, and the server may run out of file descriptors, eventually causing the server to stop accepting new connections from valid clients.\n\nThe client may also be impacted (if the server does not read causing a TCP congestion), but the issue is more severe for servers.\n\n### Patches\nPatched versions:\n* 9.4.54\n* 10.0.20\n* 11.0.20\n* 12.0.6\n\n### Workarounds\nDisable HTTP/2 and HTTP/3 support until you can upgrade to a patched version of Jetty.\nHTTP/1.x is not affected.\n\n### References\n* https://github.com/jetty/jetty.project/issues/11256.",
-  "aliases": [
-    "CVE-2024-22201"
-  ],
-  "modified": "2025-02-07T21:02:32.212058Z",
-  "published": "2024-02-26T20:13:46Z",
-  "related": [
-    "CGA-5328-2w4x-xrgm",
-    "CGA-fc4g-frm4-jw6v",
-    "CVE-2024-22201"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2024-02-26T16:27:56Z",
-    "cwe_ids": [
-      "CWE-400",
-      "CWE-770"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-02-26T20:13:46Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/jetty/jetty.project/security/advisories/GHSA-rggv-cv7r-mw98"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22201"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jetty/jetty.project/issues/11256"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jetty/jetty.project/issues/11259"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jetty/jetty.project/commit/0839a208cdc3fcfe25206a77af59ba9fda260188"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jetty/jetty.project/commit/b953871c9a5ff4fbca4a2499848f75182dbd9810"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/jetty/jetty.project"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.debian.org/debian-lts-announce/2024/04/msg00002.html"
-    },
-    {
-      "type": "WEB",
-      "url": "https://security.netapp.com/advisory/ntap-20240329-0001"
-    },
-    {
-      "type": "WEB",
-      "url": "http://www.openwall.com/lists/oss-security/2024/03/20/2"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 9.4.53",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty.http2:http2-common",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty.http2:http2-common",
         "purl": "pkg:maven/org.eclipse.jetty.http2/http2-common"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "9.3.0"
@@ -81,7 +19,8 @@
             {
               "fixed": "9.4.54"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -204,21 +143,20 @@
         "9.4.8.v20171121",
         "9.4.8.v20180619",
         "9.4.9.v20180320"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 9.4.53",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 10.0.19",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty.http2:http2-common",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty.http2:http2-common",
         "purl": "pkg:maven/org.eclipse.jetty.http2/http2-common"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "10.0.0"
@@ -226,7 +164,8 @@
             {
               "fixed": "10.0.20"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -250,21 +189,20 @@
         "10.0.7",
         "10.0.8",
         "10.0.9"
-      ],
+      ]
+    },
+    {
       "database_specific": {
         "last_known_affected_version_range": "<= 10.0.19",
         "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
-      }
-    },
-    {
+      },
       "package": {
-        "name": "org.eclipse.jetty.http3:http3-common",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty.http3:http3-common",
         "purl": "pkg:maven/org.eclipse.jetty.http3/http3-common"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "10.0.8"
@@ -272,7 +210,8 @@
             {
               "fixed": "10.0.20"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -288,21 +227,20 @@
         "10.0.19",
         "10.0.8",
         "10.0.9"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 10.0.19",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 11.0.19",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty.http2:http2-common",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty.http2:http2-common",
         "purl": "pkg:maven/org.eclipse.jetty.http2/http2-common"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "11.0.0"
@@ -310,7 +248,8 @@
             {
               "fixed": "11.0.20"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -334,21 +273,20 @@
         "11.0.7",
         "11.0.8",
         "11.0.9"
-      ],
+      ]
+    },
+    {
       "database_specific": {
         "last_known_affected_version_range": "<= 11.0.19",
         "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
-      }
-    },
-    {
+      },
       "package": {
-        "name": "org.eclipse.jetty.http3:http3-common",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty.http3:http3-common",
         "purl": "pkg:maven/org.eclipse.jetty.http3/http3-common"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "11.0.8"
@@ -356,7 +294,8 @@
             {
               "fixed": "11.0.20"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -372,21 +311,20 @@
         "11.0.19",
         "11.0.8",
         "11.0.9"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 11.0.19",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 12.0.5",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty.http2:jetty-http2-common",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty.http2:jetty-http2-common",
         "purl": "pkg:maven/org.eclipse.jetty.http2/jetty-http2-common"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "12.0.0"
@@ -394,7 +332,8 @@
             {
               "fixed": "12.0.6"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -404,21 +343,20 @@
         "12.0.3",
         "12.0.4",
         "12.0.5"
-      ],
+      ]
+    },
+    {
       "database_specific": {
         "last_known_affected_version_range": "<= 12.0.5",
         "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
-      }
-    },
-    {
+      },
       "package": {
-        "name": "org.eclipse.jetty.http3:jetty-http3-common",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty.http3:jetty-http3-common",
         "purl": "pkg:maven/org.eclipse.jetty.http3/jetty-http3-common"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "12.0.0"
@@ -426,7 +364,8 @@
             {
               "fixed": "12.0.6"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -436,18 +375,79 @@
         "12.0.3",
         "12.0.4",
         "12.0.5"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 12.0.5",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-rggv-cv7r-mw98/GHSA-rggv-cv7r-mw98.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2024-22201"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-400",
+      "CWE-770"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-02-26T20:13:46Z",
+    "nvd_published_at": "2024-02-26T16:27:56Z",
+    "severity": "HIGH"
+  },
+  "details": "### Impact\nIf an HTTP/2 connection gets TCP congested, when an idle timeout occurs the HTTP/2 session is marked as closed, and then a GOAWAY frame is queued to be written.\nHowever it is not written because the connection is TCP congested.\nWhen another idle timeout period elapses, it is then supposed to hard close the connection, but it delegates to the HTTP/2 session which reports that it has already been closed so it does not attempt to hard close the connection.\n\nThis leaves the connection in ESTABLISHED state (i.e. not closed), TCP congested, and idle.\n\nAn attacker can cause many connections to end up in this state, and the server may run out of file descriptors, eventually causing the server to stop accepting new connections from valid clients.\n\nThe client may also be impacted (if the server does not read causing a TCP congestion), but the issue is more severe for servers.\n\n### Patches\nPatched versions:\n* 9.4.54\n* 10.0.20\n* 11.0.20\n* 12.0.6\n\n### Workarounds\nDisable HTTP/2 and HTTP/3 support until you can upgrade to a patched version of Jetty.\nHTTP/1.x is not affected.\n\n### References\n* https://github.com/jetty/jetty.project/issues/11256.",
+  "id": "GHSA-rggv-cv7r-mw98",
+  "modified": "2025-02-07T21:02:32.212058Z",
+  "published": "2024-02-26T20:13:46Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/security/advisories/GHSA-rggv-cv7r-mw98"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22201"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/issues/11256"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/issues/11259"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/commit/0839a208cdc3fcfe25206a77af59ba9fda260188"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jetty/jetty.project/commit/b953871c9a5ff4fbca4a2499848f75182dbd9810"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jetty/jetty.project"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2024/04/msg00002.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20240329-0001"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2024/03/20/2"
+    }
+  ],
+  "related": [
+    "CGA-5328-2w4x-xrgm",
+    "CGA-fc4g-frm4-jw6v",
+    "CVE-2024-22201"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Connection leaking on idle timeout when TCP congested"
 }

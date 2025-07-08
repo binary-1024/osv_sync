@@ -1,52 +1,16 @@
 {
-  "id": "GHSA-w6rq-6h34-vh7q",
-  "summary": "Cached redirect poisoning via X-Forwarded-Host header",
-  "details": "A user supplied `X-Forwarded-Host` header can be used to perform cache poisoning of a cache fronting a Ratpack server if the cache key does not include the `X-Forwarded-Host` header as a cache key.\n\nUsers are only vulnerable if they do not configure a custom `PublicAddress` instance. A custom `PublicAddress` can be specified by using [ServerConfigBuilder::publicAddress](https://ratpack.io/manual/current/api/ratpack/server/ServerConfigBuilder.html#publicAddress-java.net.URI-). For versions prior to 1.9.0, by default, Ratpack utilizes an inferring version of `PublicAddress` which is vulnerable.\n\n### Impact\n\nThis can be used to perform redirect cache poisoning where an attacker can force a cached redirect to redirect to their site instead of the intended redirect location.\n\n### Patches\n\nAs of Ratpack 1.9.0, two changes have been made that mitigate this vulnerability:\n\n1. The default PublicAddress implementation no longer infers the address from the request context, instead relying on the configured bind host/port\n2. Relative redirects issued by the application are no longer absolutized; they are passed through as-is\n\n### Workarounds\n\nIn production, ensure that [ServerConfigBuilder::publicAddress](https://ratpack.io/manual/current/api/ratpack/server/ServerConfigBuilder.html#publicAddress-java.net.URI-) correctly configures the server.\n\n### References\n - https://portswigger.net/web-security/web-cache-poisoning",
-  "aliases": [
-    "CVE-2021-29479"
-  ],
-  "modified": "2023-11-08T04:05:35.170526Z",
-  "published": "2021-07-01T17:02:38Z",
-  "related": [
-    "CVE-2021-29479"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2021-06-29T15:15:00Z",
-    "github_reviewed_at": "2021-06-30T17:50:31Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-807"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/ratpack/ratpack/security/advisories/GHSA-w6rq-6h34-vh7q"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29479"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/ratpack/ratpack"
-    },
-    {
-      "type": "WEB",
-      "url": "https://portswigger.net/web-security/web-cache-poisoning"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-w6rq-6h34-vh7q/GHSA-w6rq-6h34-vh7q.json"
+      },
       "package": {
-        "name": "io.ratpack:ratpack-core",
         "ecosystem": "Maven",
+        "name": "io.ratpack:ratpack-core",
         "purl": "pkg:maven/io.ratpack/ratpack-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -54,7 +18,8 @@
             {
               "fixed": "1.9.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -126,17 +91,52 @@
         "1.8.2",
         "1.9.0-rc-1",
         "1.9.0-rc-2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-w6rq-6h34-vh7q/GHSA-w6rq-6h34-vh7q.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2021-29479"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-807"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-06-30T17:50:31Z",
+    "nvd_published_at": "2021-06-29T15:15:00Z",
+    "severity": "HIGH"
+  },
+  "details": "A user supplied `X-Forwarded-Host` header can be used to perform cache poisoning of a cache fronting a Ratpack server if the cache key does not include the `X-Forwarded-Host` header as a cache key.\n\nUsers are only vulnerable if they do not configure a custom `PublicAddress` instance. A custom `PublicAddress` can be specified by using [ServerConfigBuilder::publicAddress](https://ratpack.io/manual/current/api/ratpack/server/ServerConfigBuilder.html#publicAddress-java.net.URI-). For versions prior to 1.9.0, by default, Ratpack utilizes an inferring version of `PublicAddress` which is vulnerable.\n\n### Impact\n\nThis can be used to perform redirect cache poisoning where an attacker can force a cached redirect to redirect to their site instead of the intended redirect location.\n\n### Patches\n\nAs of Ratpack 1.9.0, two changes have been made that mitigate this vulnerability:\n\n1. The default PublicAddress implementation no longer infers the address from the request context, instead relying on the configured bind host/port\n2. Relative redirects issued by the application are no longer absolutized; they are passed through as-is\n\n### Workarounds\n\nIn production, ensure that [ServerConfigBuilder::publicAddress](https://ratpack.io/manual/current/api/ratpack/server/ServerConfigBuilder.html#publicAddress-java.net.URI-) correctly configures the server.\n\n### References\n - https://portswigger.net/web-security/web-cache-poisoning",
+  "id": "GHSA-w6rq-6h34-vh7q",
+  "modified": "2023-11-08T04:05:35.170526Z",
+  "published": "2021-07-01T17:02:38Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/ratpack/ratpack/security/advisories/GHSA-w6rq-6h34-vh7q"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29479"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/ratpack/ratpack"
+    },
+    {
+      "type": "WEB",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning"
+    }
+  ],
+  "related": [
+    "CVE-2021-29479"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:H/A:L"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:H/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Cached redirect poisoning via X-Forwarded-Host header"
 }

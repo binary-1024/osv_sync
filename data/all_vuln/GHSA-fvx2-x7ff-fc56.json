@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-fvx2-x7ff-fc56",
-  "summary": "Unauthenticated Disclosure of PSU HAX CMS Site Listings via haxPsuUsage API Endpoint",
-  "details": "### Summary\nAn **unauthenticated information disclosure vulnerability** exists in the PSU deployment of HAX CMS via the `haxPsuUsage` API endpoint. This allows **any remote unauthenticated user** to retrieve a full list of PSU websites hosted on HAX CMS. When chained with other authorization issues (e.g., HAX-3), this could assist in targeted attacks such as unauthorized content modification or deletion.\n\n---\n\n### Details\nThe endpoint [`https://open-apis.hax.cloud/api/services/stats/haxPsuUsage`](https://open-apis.hax.cloud/api/services/stats/haxPsuUsage) returns a list of websites on the PSU instance of HAX CMS. This endpoint is exposed without any authentication or authorization checks.\n\nThe source of the issue is in the `haxPsuUsage.js` file, which appears to directly serve the site listing without verifying user identity or access level. This enables anyone with the endpoint URL to enumerate all site instances under the PSU deployment.\n\nThis endpoint may have originally been used for internal or statistical purposes but is now publicly accessible, representing a privacy and enumeration risk.\n\n---\n\n### PoC\nTo reproduce this vulnerability:\n\n1. Open a terminal or browser.\n2. Send a GET request to the following endpoint:\n   ```bash\n   curl https://open-apis.hax.cloud/api/services/stats/haxPsuUsage\n\n---\n\n### Impact\n\nThe `haxPsuUsage` endpoint exposes a full list of PSU HAX CMS websites to **any unauthenticated user**, allowing external actors to enumerate all sites under the PSU domain. This alone represents an information disclosure vulnerability.\n\nWhen **chained with the Lack Of Authorization Checks CVE**, which involves missing authorization checks on key API endpoints, the risk escalates significantly. An **authenticated attacker** can:\n\n- Modify or delete other users' sites via:\n  - `createNode()`, `saveNode()`, `deleteNode()`\n- Access sensitive metadata or credentials:\n  - `getConfig()`, `downloadSite()`\n- Clone or remove entire sites:\n  - `cloneSite()`, `deleteSite()`, `archiveSite()`\n\nCombined, these issues allow a low-privileged user to **fully compromise any site** in the PSU HAX CMS instance.\n\nThis vulnerability chain puts **content integrity, availability, and confidentiality** at risk for potentially hundreds of PSU academic, instructional, and departmental sites.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-fvx2-x7ff-fc56/GHSA-fvx2-x7ff-fc56.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@haxtheweb/open-apis",
+        "purl": "pkg:npm/%40haxtheweb/open-apis"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "10.0.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-48996"
   ],
-  "modified": "2025-06-05T01:07:47Z",
-  "published": "2025-06-05T01:07:47Z",
   "database_specific": {
-    "nvd_published_at": "2025-06-02T20:15:23Z",
     "cwe_ids": [
       "CWE-201"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-06-05T01:07:47Z"
+    "github_reviewed_at": "2025-06-05T01:07:47Z",
+    "nvd_published_at": "2025-06-02T20:15:23Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nAn **unauthenticated information disclosure vulnerability** exists in the PSU deployment of HAX CMS via the `haxPsuUsage` API endpoint. This allows **any remote unauthenticated user** to retrieve a full list of PSU websites hosted on HAX CMS. When chained with other authorization issues (e.g., HAX-3), this could assist in targeted attacks such as unauthorized content modification or deletion.\n\n---\n\n### Details\nThe endpoint [`https://open-apis.hax.cloud/api/services/stats/haxPsuUsage`](https://open-apis.hax.cloud/api/services/stats/haxPsuUsage) returns a list of websites on the PSU instance of HAX CMS. This endpoint is exposed without any authentication or authorization checks.\n\nThe source of the issue is in the `haxPsuUsage.js` file, which appears to directly serve the site listing without verifying user identity or access level. This enables anyone with the endpoint URL to enumerate all site instances under the PSU deployment.\n\nThis endpoint may have originally been used for internal or statistical purposes but is now publicly accessible, representing a privacy and enumeration risk.\n\n---\n\n### PoC\nTo reproduce this vulnerability:\n\n1. Open a terminal or browser.\n2. Send a GET request to the following endpoint:\n   ```bash\n   curl https://open-apis.hax.cloud/api/services/stats/haxPsuUsage\n\n---\n\n### Impact\n\nThe `haxPsuUsage` endpoint exposes a full list of PSU HAX CMS websites to **any unauthenticated user**, allowing external actors to enumerate all sites under the PSU domain. This alone represents an information disclosure vulnerability.\n\nWhen **chained with the Lack Of Authorization Checks CVE**, which involves missing authorization checks on key API endpoints, the risk escalates significantly. An **authenticated attacker** can:\n\n- Modify or delete other users' sites via:\n  - `createNode()`, `saveNode()`, `deleteNode()`\n- Access sensitive metadata or credentials:\n  - `getConfig()`, `downloadSite()`\n- Clone or remove entire sites:\n  - `cloneSite()`, `deleteSite()`, `archiveSite()`\n\nCombined, these issues allow a low-privileged user to **fully compromise any site** in the PSU HAX CMS instance.\n\nThis vulnerability chain puts **content integrity, availability, and confidentiality** at risk for potentially hundreds of PSU academic, instructional, and departmental sites.",
+  "id": "GHSA-fvx2-x7ff-fc56",
+  "modified": "2025-06-05T01:07:47Z",
+  "published": "2025-06-05T01:07:47Z",
   "references": [
     {
       "type": "WEB",
@@ -34,36 +58,12 @@
       "url": "https://github.com/haxtheweb/issues"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@haxtheweb/open-apis",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40haxtheweb/open-apis"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "10.0.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-fvx2-x7ff-fc56/GHSA-fvx2-x7ff-fc56.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Unauthenticated Disclosure of PSU HAX CMS Site Listings via haxPsuUsage API Endpoint"
 }

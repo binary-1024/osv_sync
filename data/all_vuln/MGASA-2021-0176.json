@@ -1,13 +1,46 @@
 {
-  "id": "MGASA-2021-0176",
-  "summary": "Updated openssl packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0176.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "openssl",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.1k-1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "An OpenSSL TLS server may crash if sent a maliciously crafted renegotiation\nClientHello message from a client. If a TLSv1.2 renegotiation ClientHello omits\nthe signature_algorithms extension (where it was present in the initial\nClientHello), but includes a signature_algorithms_cert extension then a NULL\npointer dereference will result, leading to a crash and a denial of service\nattack. A server is only vulnerable if it has TLSv1.2 and renegotiation enabled\n(which is the default configuration). OpenSSL TLS clients are not impacted by\nthis issue. (CVE-2021-3449).\n\nThe X509_V_FLAG_X509_STRICT flag enables additional security checks of the\ncertificates present in a certificate chain. It is not set by default.\nStarting from OpenSSL version 1.1.1h a check to disallow certificates in the\nchain that have explicitly encoded elliptic curve parameters was added as an\nadditional strict check. An error in the implementation of this check meant\nthat the result of a previous check to confirm that certificates in the chain\nare valid CA certificates was overwritten. This effectively bypasses the check\nthat non-CA certificates must not be able to issue other certificates. If a\n\"purpose\" has been configured then there is a subsequent opportunity for checks\nthat the certificate is a valid CA. All of the named \"purpose\" values \nimplemented in libcrypto perform this check. Therefore, where a purpose is set\nthe certificate chain will still be rejected even when the strict flag has been\nused. A purpose is set by default in libssl client and server certificate\nverification routines, but it can be overridden or removed by an application.\nIn order to be affected, an application must explicitly set the\nX509_V_FLAG_X509_STRICT verification flag and either not set a purpose for the\ncertificate verification or, in the case of TLS client or server applications,\noverride the default purpose. (CVE-2021-3450).\n",
+  "id": "MGASA-2021-0176",
   "modified": "2021-04-05T15:45:07Z",
   "published": "2021-04-05T15:54:07Z",
-  "related": [
-    "CVE-2021-3449",
-    "CVE-2021-3450"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -22,43 +55,10 @@
       "url": "https://www.openssl.org/news/secadv/20210325.txt"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "openssl",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.1.1k-1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0176.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-3449",
+    "CVE-2021-3450"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated openssl packages fix security vulnerability"
 }

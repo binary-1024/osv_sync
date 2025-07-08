@@ -1,21 +1,94 @@
 {
-  "id": "GHSA-g9jj-75mx-wjcx",
-  "summary": "org.xwiki.platform:xwiki-platform-oldcore allows SQL injection in short form select requests through the script query API",
-  "details": "### Impact\n\nIt is possible for a user with SCRIPT right to escape from the HQL execution context and perform a blind SQL injection to execute arbitrary SQL statements on the database backend.\n\nDepending on the used database backend, the attacker may be able to not only obtain confidential information such as password hashes from the database, but also execute UPDATE/INSERT/DELETE queries.\n\nThe vulnerability may be tested in a default installation of XWIki Standard Flavor, including using the official Docker containers.\n\nFor example, with a MySQL or MariaDB database, you can use the following script (which a user having SCRIPT right but not PROGRAMMING right) to get the content of the xwikistrings table (which contain all the short string fields stored in objects, including passwords):\n\n```\n{{velocity}}\n$services.query.hql(\"where 1<>'1\\'' union select concat(XWS_NAME, XWS_VALUE) from xwikistrings #'\").execute()\n{{/velocity}}\n```\n\n### Patches\n\nThis has been patched in 16.10.1, 16.4.6 and 15.10.16.\n\n### Workarounds\n\nThere is no known workaround, other than upgrading XWiki.\n\nThe protection added to this REST API is the same as the one used to validate complete select queries, making it more consistent. However, while the script API always had this protection for complete queries, it's important to note that it's a very strict protection and some valid, but complex, queries might suddenly require the author to have programming right.\n\n### References\n\nhttps://jira.xwiki.org/browse/XWIKI-22718\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-g9jj-75mx-wjcx/GHSA-g9jj-75mx-wjcx.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-oldcore",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-oldcore"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.6-milestone-1"
+            },
+            {
+              "fixed": "15.10.16"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-g9jj-75mx-wjcx/GHSA-g9jj-75mx-wjcx.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-oldcore",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-oldcore"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "16.0.0-rc-1"
+            },
+            {
+              "fixed": "16.4.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-g9jj-75mx-wjcx/GHSA-g9jj-75mx-wjcx.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-oldcore",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-oldcore"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "16.5.0-rc-1"
+            },
+            {
+              "fixed": "16.10.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2025-32968"
   ],
-  "modified": "2025-04-23T19:15:49Z",
-  "published": "2025-04-23T14:41:54Z",
   "database_specific": {
-    "nvd_published_at": "2025-04-23T16:15:47Z",
     "cwe_ids": [
       "CWE-89"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-23T14:41:54Z"
+    "github_reviewed_at": "2025-04-23T14:41:54Z",
+    "nvd_published_at": "2025-04-23T16:15:47Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nIt is possible for a user with SCRIPT right to escape from the HQL execution context and perform a blind SQL injection to execute arbitrary SQL statements on the database backend.\n\nDepending on the used database backend, the attacker may be able to not only obtain confidential information such as password hashes from the database, but also execute UPDATE/INSERT/DELETE queries.\n\nThe vulnerability may be tested in a default installation of XWIki Standard Flavor, including using the official Docker containers.\n\nFor example, with a MySQL or MariaDB database, you can use the following script (which a user having SCRIPT right but not PROGRAMMING right) to get the content of the xwikistrings table (which contain all the short string fields stored in objects, including passwords):\n\n```\n{{velocity}}\n$services.query.hql(\"where 1<>'1\\'' union select concat(XWS_NAME, XWS_VALUE) from xwikistrings #'\").execute()\n{{/velocity}}\n```\n\n### Patches\n\nThis has been patched in 16.10.1, 16.4.6 and 15.10.16.\n\n### Workarounds\n\nThere is no known workaround, other than upgrading XWiki.\n\nThe protection added to this REST API is the same as the one used to validate complete select queries, making it more consistent. However, while the script API always had this protection for complete queries, it's important to note that it's a very strict protection and some valid, but complex, queries might suddenly require the author to have programming right.\n\n### References\n\nhttps://jira.xwiki.org/browse/XWIKI-22718\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "id": "GHSA-g9jj-75mx-wjcx",
+  "modified": "2025-04-23T19:15:49Z",
+  "published": "2025-04-23T14:41:54Z",
   "references": [
     {
       "type": "WEB",
@@ -34,85 +107,12 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-22718"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-oldcore",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-oldcore"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "1.6-milestone-1"
-            },
-            {
-              "fixed": "15.10.16"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-g9jj-75mx-wjcx/GHSA-g9jj-75mx-wjcx.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-oldcore",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-oldcore"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "16.0.0-rc-1"
-            },
-            {
-              "fixed": "16.4.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-g9jj-75mx-wjcx/GHSA-g9jj-75mx-wjcx.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-oldcore",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-oldcore"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "16.5.0-rc-1"
-            },
-            {
-              "fixed": "16.10.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-g9jj-75mx-wjcx/GHSA-g9jj-75mx-wjcx.json"
-      },
-      "versions": []
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "org.xwiki.platform:xwiki-platform-oldcore allows SQL injection in short form select requests through the script query API"
 }

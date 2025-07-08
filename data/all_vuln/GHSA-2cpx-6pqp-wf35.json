@@ -1,24 +1,46 @@
 {
-  "id": "GHSA-2cpx-6pqp-wf35",
-  "summary": "fs2-io skips mTLS client verification",
-  "details": "### Impact\n\nWhen establishing a server-mode `TLSSocket` using `fs2-io` on Node.js, the parameter `requestCert = true` is ignored, peer certificate verification is skipped, and the connection proceeds.\n\nThe vulnerability is limited to:\n1. `fs2-io` running on Node.js. The JVM TLS implementation is completely independent.\n2. `TLSSocket`s in server-mode. Client-mode `TLSSocket`s are implemented via a different API.\n3. mTLS as enabled via `requestCert = true` in `TLSParameters`. The default setting is `false` for server-mode `TLSSocket`s.\n\nIt was introduced with the initial Node.js implementation of fs2-io in v3.1.0.\n\n### Patches\n\nA patch is released in v3.2.11. The `requestCert = true` parameter is respected and the peer certificate is verified. If verification fails, a `SSLException` is raised.\n\n### Workarounds\n\nIf using an unpatched version on Node.js, do not use a server-mode `TLSSocket` with `requestCert = true` to establish a mTLS connection.\n\n### References\n- https://github.com/nodejs/node/issues/43994\n- https://www.cloudflare.com/learning/access-management/what-is-mutual-tls/\n\n### For more information\nIf you have any questions or comments about this advisory:\n* [Open an issue.](https://github.com/typelevel/fs2/issues/new/choose)\n* Contact the [Typelevel Security Team](https://github.com/typelevel/.github/blob/main/SECURITY.md).\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-2cpx-6pqp-wf35/GHSA-2cpx-6pqp-wf35.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "co.fs2:fs2-io",
+        "purl": "pkg:maven/co.fs2/fs2-io"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.1.0"
+            },
+            {
+              "fixed": "3.2.11"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2022-31183"
   ],
-  "modified": "2023-11-08T04:09:29.197851Z",
-  "published": "2022-07-29T22:24:10Z",
-  "related": [
-    "CVE-2022-31183"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-08-01T20:15:00Z",
-    "github_reviewed_at": "2022-07-29T22:24:10Z",
-    "severity": "CRITICAL",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-295"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-07-29T22:24:10Z",
+    "nvd_published_at": "2022-08-01T20:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\n\nWhen establishing a server-mode `TLSSocket` using `fs2-io` on Node.js, the parameter `requestCert = true` is ignored, peer certificate verification is skipped, and the connection proceeds.\n\nThe vulnerability is limited to:\n1. `fs2-io` running on Node.js. The JVM TLS implementation is completely independent.\n2. `TLSSocket`s in server-mode. Client-mode `TLSSocket`s are implemented via a different API.\n3. mTLS as enabled via `requestCert = true` in `TLSParameters`. The default setting is `false` for server-mode `TLSSocket`s.\n\nIt was introduced with the initial Node.js implementation of fs2-io in v3.1.0.\n\n### Patches\n\nA patch is released in v3.2.11. The `requestCert = true` parameter is respected and the peer certificate is verified. If verification fails, a `SSLException` is raised.\n\n### Workarounds\n\nIf using an unpatched version on Node.js, do not use a server-mode `TLSSocket` with `requestCert = true` to establish a mTLS connection.\n\n### References\n- https://github.com/nodejs/node/issues/43994\n- https://www.cloudflare.com/learning/access-management/what-is-mutual-tls/\n\n### For more information\nIf you have any questions or comments about this advisory:\n* [Open an issue.](https://github.com/typelevel/fs2/issues/new/choose)\n* Contact the [Typelevel Security Team](https://github.com/typelevel/.github/blob/main/SECURITY.md).\n",
+  "id": "GHSA-2cpx-6pqp-wf35",
+  "modified": "2023-11-08T04:09:29.197851Z",
+  "published": "2022-07-29T22:24:10Z",
   "references": [
     {
       "type": "WEB",
@@ -49,37 +71,15 @@
       "url": "https://github.com/typelevel/fs2/releases/tag/v3.2.11"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "co.fs2:fs2-io",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/co.fs2/fs2-io"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.1.0"
-            },
-            {
-              "fixed": "3.2.11"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-2cpx-6pqp-wf35/GHSA-2cpx-6pqp-wf35.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-31183"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "fs2-io skips mTLS client verification"
 }

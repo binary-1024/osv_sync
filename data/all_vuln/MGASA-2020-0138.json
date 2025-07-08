@@ -1,14 +1,46 @@
 {
-  "id": "MGASA-2020-0138",
-  "summary": "Updated tomcat packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0138.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "tomcat",
+        "purl": "pkg:rpm/mageia/tomcat?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.0.31-1.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "The updated packages fix security vulnerabilities:\n\nThe refactoring present in Apache Tomcat 9.0.28 to 9.0.30, 8.5.48 to\n8.5.50 and 7.0.98 to 7.0.99 introduced a regression. The result of the\nregression was that invalid Transfer-Encoding headers were incorrectly\nprocessed leading to a possibility of HTTP Request Smuggling if Tomcat\nwas located behind a reverse proxy that incorrectly handled the invalid\nTransfer-Encoding header in a particular manner. Such a reverse proxy\nis considered unlikely. (CVE-2019-17569)\n\nIn Apache Tomcat 9.0.0.M1 to 9.0.30, 8.5.0 to 8.5.50 and 7.0.0 to 7.0.99\nthe HTTP header parsing code used an approach to end-of-line parsing that\nallowed some invalid HTTP headers to be parsed as valid. This led to a\npossibility of HTTP Request Smuggling if Tomcat was located behind a\nreverse proxy that incorrectly handled the invalid Transfer-Encoding header\nin a particular manner. Such a reverse proxy is considered unlikely.\n(CVE-2020-1935)\n\nWhen using the Apache JServ Protocol (AJP), care must be taken when trusting\nincoming connections to Apache Tomcat. Tomcat treats AJP connections as\nhaving higher trust than, for example, a similar HTTP connection. If such\nconnections are available to an attacker, they can be exploited in ways that\nmay be surprising. In Apache Tomcat 9.0.0.M1 to 9.0.0.30, 8.5.0 to 8.5.50\nand 7.0.0 to 7.0.99, Tomcat shipped with an AJP Connector enabled by default\nthat listened on all configured IP addresses. It was expected (and\nrecommended in the security guide) that this Connector would be disabled if\nnot required. This vulnerability report identified a mechanism that allowed:\n- returning arbitrary files from anywhere in the web application\n- processing any file in the web application as a JSP Further, if the web\n  application allowed file upload and stored those files within the web\n  application (or the attacker was able to control the content of the web\n  application by some other means) then this, along with the ability to\n  process a file as a JSP, made remote code execution possible.\nIt is important to note that mitigation is only required if an AJP port is\naccessible to untrusted users. Users wishing to take a defence-in-depth\napproach and block the vector that permits returning arbitrary files and\nexecution as JSP may upgrade to Apache Tomcat 9.0.31, 8.5.51 or 7.0.100\nor later. A number of changes were made to the default AJP Connector\nconfiguration in 9.0.31 to harden the default configuration. It is likely\nthat users upgrading to 9.0.31, 8.5.51 or 7.0.100 or later will need to\nmake small changes to their configurations. (CVE-2020-1938)\n",
+  "id": "MGASA-2020-0138",
   "modified": "2020-03-10T18:39:25Z",
   "published": "2020-03-10T19:04:50Z",
-  "related": [
-    "CVE-2019-17569",
-    "CVE-2020-1935",
-    "CVE-2020-1938"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -27,43 +59,11 @@
       "url": "http://tomcat.apache.org/security-9.html#Fixed_in_Apache_Tomcat_9.0.31"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tomcat",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/tomcat?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.0.31-1.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2020-0138.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2019-17569",
+    "CVE-2020-1935",
+    "CVE-2020-1938"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated tomcat packages fix security vulnerabilities"
 }

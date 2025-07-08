@@ -1,28 +1,49 @@
 {
-  "id": "GHSA-x7vr-c387-8w57",
-  "summary": "Integer Overflow/Infinite Loop in the http crate",
-  "details": "HeaderMap::reserve() used usize::next_power_of_two() to calculate the increased capacity. However, next_power_of_two() silently overflows to 0 if given a sufficiently large number in release mode.\n\nIf the map was not empty when the overflow happens, the library will invoke self.grow(0) and start infinite probing. This allows an attacker who controls the argument to reserve() to cause a potential denial of service (DoS).\n\nThe flaw was corrected in 0.1.20 release of http crate.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-x7vr-c387-8w57/GHSA-x7vr-c387-8w57.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "http",
+        "purl": "pkg:cargo/http"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.1.20"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2019-25008",
     "CVE-2020-25574",
     "GHSA-xvc9-xwgj-4cq9",
     "RUSTSEC-2019-0033"
   ],
-  "modified": "2023-11-08T04:01:32.294723Z",
-  "published": "2021-08-25T21:01:31Z",
-  "related": [
-    "CGA-mq25-568g-hr6q"
-  ],
   "database_specific": {
-    "nvd_published_at": "2020-09-14T19:15:00Z",
     "cwe_ids": [
       "CWE-190",
       "CWE-835"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-07-26T18:47:31Z"
+    "github_reviewed_at": "2021-07-26T18:47:31Z",
+    "nvd_published_at": "2020-09-14T19:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "HeaderMap::reserve() used usize::next_power_of_two() to calculate the increased capacity. However, next_power_of_two() silently overflows to 0 if given a sufficiently large number in release mode.\n\nIf the map was not empty when the overflow happens, the library will invoke self.grow(0) and start infinite probing. This allows an attacker who controls the argument to reserve() to cause a potential denial of service (DoS).\n\nThe flaw was corrected in 0.1.20 release of http crate.",
+  "id": "GHSA-x7vr-c387-8w57",
+  "modified": "2023-11-08T04:01:32.294723Z",
+  "published": "2021-08-25T21:01:31Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -41,36 +62,15 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2019-0033.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "http",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/http"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.1.20"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-x7vr-c387-8w57/GHSA-x7vr-c387-8w57.json"
-      }
-    }
+  "related": [
+    "CGA-mq25-568g-hr6q"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Integer Overflow/Infinite Loop in the http crate"
 }

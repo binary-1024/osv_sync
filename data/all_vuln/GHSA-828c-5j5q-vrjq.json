@@ -1,61 +1,16 @@
 {
-  "id": "GHSA-828c-5j5q-vrjq",
-  "summary": "TensorFlow vulnerable to null-dereference in `mlir::tfg::GraphDefImporter::ConvertNodeDef`",
-  "details": "### Impact\nWhen [`mlir::tfg::GraphDefImporter::ConvertNodeDef`](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/graphdef_import.cc) tries to convert NodeDefs without an op name, it crashes.\n```cpp\nStatus GraphDefImporter::ConvertNodeDef(OpBuilder &builder, ConversionState &s,\n                                        const NodeDef &node) {\n  VLOG(4) << \"Importing: \" << node.name();\n  OperationState state(ConvertLocation(node), absl::StrCat(\"tfg.\", node.op()));\n\n  // The GraphImporter does light shape inference, but here we will defer all of\n  // that to the shape inference pass.\n  const OpDef *op_def;\n  const OpRegistrationData *op_reg_data = nullptr;\n  if ((op_reg_data = registry_.LookUp(node.op()))) {\n    op_def = &op_reg_data->op_def;\n  } else {\n    auto it = function_op_defs_.find(node.op());\n    if (it == function_op_defs_.end())\n      return InvalidArgument(\"Unable to find OpDef for \", node.op());\n    op_def = it->second;\n  }\n```\n`node.op().empty()` cannot be empty.\n\n\n### Patches\nWe have patched the issue in GitHub commit [a0f0b9a21c9270930457095092f558fbad4c03e5](https://github.com/tensorflow/tensorflow/commit/a0f0b9a21c9270930457095092f558fbad4c03e5).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
-  "aliases": [
-    "BIT-tensorflow-2022-36013",
-    "CVE-2022-36013"
-  ],
-  "modified": "2023-12-06T01:02:28.689479Z",
-  "published": "2022-09-16T22:01:12Z",
-  "related": [
-    "CVE-2022-36013"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-09-16T23:15:00Z",
-    "github_reviewed_at": "2022-09-16T22:01:12Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-476"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-828c-5j5q-vrjq"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36013"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/a0f0b9a21c9270930457095092f558fbad4c03e5"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/graphdef_import.cc"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -63,7 +18,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -139,20 +95,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -160,25 +115,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -186,25 +141,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -212,7 +167,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -248,20 +204,19 @@
         "2.6.5",
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -269,25 +224,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -295,25 +250,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -321,7 +276,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -394,20 +350,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -415,25 +370,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -441,22 +396,67 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-828c-5j5q-vrjq/GHSA-828c-5j5q-vrjq.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-36013",
+    "CVE-2022-36013"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-476"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T22:01:12Z",
+    "nvd_published_at": "2022-09-16T23:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nWhen [`mlir::tfg::GraphDefImporter::ConvertNodeDef`](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/graphdef_import.cc) tries to convert NodeDefs without an op name, it crashes.\n```cpp\nStatus GraphDefImporter::ConvertNodeDef(OpBuilder &builder, ConversionState &s,\n                                        const NodeDef &node) {\n  VLOG(4) << \"Importing: \" << node.name();\n  OperationState state(ConvertLocation(node), absl::StrCat(\"tfg.\", node.op()));\n\n  // The GraphImporter does light shape inference, but here we will defer all of\n  // that to the shape inference pass.\n  const OpDef *op_def;\n  const OpRegistrationData *op_reg_data = nullptr;\n  if ((op_reg_data = registry_.LookUp(node.op()))) {\n    op_def = &op_reg_data->op_def;\n  } else {\n    auto it = function_op_defs_.find(node.op());\n    if (it == function_op_defs_.end())\n      return InvalidArgument(\"Unable to find OpDef for \", node.op());\n    op_def = it->second;\n  }\n```\n`node.op().empty()` cannot be empty.\n\n\n### Patches\nWe have patched the issue in GitHub commit [a0f0b9a21c9270930457095092f558fbad4c03e5](https://github.com/tensorflow/tensorflow/commit/a0f0b9a21c9270930457095092f558fbad4c03e5).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
+  "id": "GHSA-828c-5j5q-vrjq",
+  "modified": "2023-12-06T01:02:28.689479Z",
+  "published": "2022-09-16T22:01:12Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-828c-5j5q-vrjq"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36013"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/a0f0b9a21c9270930457095092f558fbad4c03e5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/graphdef_import.cc"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-36013"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to null-dereference in `mlir::tfg::GraphDefImporter::ConvertNodeDef`"
 }

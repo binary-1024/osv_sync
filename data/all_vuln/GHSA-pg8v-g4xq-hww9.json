@@ -1,21 +1,58 @@
 {
-  "id": "GHSA-pg8v-g4xq-hww9",
-  "summary": "Rails::Html::Sanitizer vulnerable to Cross-site Scripting",
-  "details": "Versions of Rails::Html::Sanitizer prior to version 1.4.3 are vulnerable to XSS with certain configurations of Rails::Html::Sanitizer which  allows an attacker to inject content when the application developer has overridden the sanitizer's allowed tags to allow both `select` and `style` elements. Code is only impacted if allowed tags are being overridden. \n\nThis may be done via application configuration: ```ruby# In config/application.rbconfig.action_view.sanitized_allowed_tags = [\"select\", \"style\"]```\n\nsee https://guides.rubyonrails.org/configuring.html#configuring-action-view\n\nOr it may be done with a `:tags` option to the Action View helper `sanitize`: ```<%= sanitize @comment.body, tags: [\"select\", \"style\"] %>``` \n\nsee https://api.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-sanitize \n\nIt may also be done with Rails::Html::SafeListSanitizer directly: \n```ruby# class-level optionRails::Html::SafeListSanitizer.allowed_tags = [\"select\", \"style\"]```  or with\n```ruby# instance-level optionRails::Html::SafeListSanitizer.new.sanitize(@article.body, tags: [\"select\", \"style\"])```\n\nAll users overriding the allowed tags by any of the above mechanisms to include both \"select\" and \"style\" are recommended to upgrade immediately. A workaround for this issue can be applied by removing either `select` or `style` from the overridden allowed tags.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/06/GHSA-pg8v-g4xq-hww9/GHSA-pg8v-g4xq-hww9.json"
+      },
+      "package": {
+        "ecosystem": "RubyGems",
+        "name": "rails-html-sanitizer",
+        "purl": "pkg:gem/rails-html-sanitizer"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.0.4",
+        "1.1.0",
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-32209"
   ],
-  "modified": "2024-02-20T05:33:53.184548Z",
-  "published": "2022-06-25T00:00:54Z",
   "database_specific": {
-    "nvd_published_at": "2022-06-24T15:15:00Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-07-05T18:10:35Z"
+    "github_reviewed_at": "2022-07-05T18:10:35Z",
+    "nvd_published_at": "2022-06-24T15:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "Versions of Rails::Html::Sanitizer prior to version 1.4.3 are vulnerable to XSS with certain configurations of Rails::Html::Sanitizer which  allows an attacker to inject content when the application developer has overridden the sanitizer's allowed tags to allow both `select` and `style` elements. Code is only impacted if allowed tags are being overridden. \n\nThis may be done via application configuration: ```ruby# In config/application.rbconfig.action_view.sanitized_allowed_tags = [\"select\", \"style\"]```\n\nsee https://guides.rubyonrails.org/configuring.html#configuring-action-view\n\nOr it may be done with a `:tags` option to the Action View helper `sanitize`: ```<%= sanitize @comment.body, tags: [\"select\", \"style\"] %>``` \n\nsee https://api.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-sanitize \n\nIt may also be done with Rails::Html::SafeListSanitizer directly: \n```ruby# class-level optionRails::Html::SafeListSanitizer.allowed_tags = [\"select\", \"style\"]```  or with\n```ruby# instance-level optionRails::Html::SafeListSanitizer.new.sanitize(@article.body, tags: [\"select\", \"style\"])```\n\nAll users overriding the allowed tags by any of the above mechanisms to include both \"select\" and \"style\" are recommended to upgrade immediately. A workaround for this issue can be applied by removing either `select` or `style` from the overridden allowed tags.",
+  "id": "GHSA-pg8v-g4xq-hww9",
+  "modified": "2024-02-20T05:33:53.184548Z",
+  "published": "2022-06-25T00:00:54Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -62,49 +99,12 @@
       "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/NHDACMCLWE32BZZTSNWQPIFUAD5I6Q47"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "rails-html-sanitizer",
-        "ecosystem": "RubyGems",
-        "purl": "pkg:gem/rails-html-sanitizer"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.4.3"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.0.0",
-        "1.0.1",
-        "1.0.2",
-        "1.0.3",
-        "1.0.4",
-        "1.1.0",
-        "1.2.0",
-        "1.3.0",
-        "1.4.0",
-        "1.4.1",
-        "1.4.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/06/GHSA-pg8v-g4xq-hww9/GHSA-pg8v-g4xq-hww9.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Rails::Html::Sanitizer vulnerable to Cross-site Scripting"
 }

@@ -1,26 +1,47 @@
 {
-  "id": "GHSA-grfp-q2mm-hfp6",
-  "summary": "Redirect URL matching ignores character casing",
-  "details": "### Impact\n\nBefore version v0.34.1, the OAuth 2.0 Client's registered redirect URLs and the redirect URL provided at the OAuth2 Authorization Endpoint where compared using `strings.ToLower` while they should have been compared with a simple string match:\n\n1. Registering a client with allowed redirect URL `https://example.com/callback`\n2. Performing OAuth2 flow and requesting redirect URL `https://example.com/CALLBACK`\n3. Instead of an error (invalid redirect URL), the browser is redirected to `https://example.com/CALLBACK` with a potentially successful OAuth2 response, depending on the state of the overall OAuth2 flow (the user might still deny the request for example).",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-grfp-q2mm-hfp6/GHSA-grfp-q2mm-hfp6.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/ory/fosite",
+        "purl": "pkg:golang/github.com/ory/fosite"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.34.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-15234"
   ],
-  "modified": "2023-11-08T04:02:34.800014Z",
-  "published": "2021-05-24T17:00:05Z",
-  "related": [
-    "CVE-2020-15234"
-  ],
   "database_specific": {
-    "nvd_published_at": "2020-10-02T21:15:00Z",
-    "github_reviewed_at": "2021-05-21T22:15:37Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-178",
       "CWE-20",
       "CWE-601"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-05-21T22:15:37Z",
+    "nvd_published_at": "2020-10-02T21:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nBefore version v0.34.1, the OAuth 2.0 Client's registered redirect URLs and the redirect URL provided at the OAuth2 Authorization Endpoint where compared using `strings.ToLower` while they should have been compared with a simple string match:\n\n1. Registering a client with allowed redirect URL `https://example.com/callback`\n2. Performing OAuth2 flow and requesting redirect URL `https://example.com/CALLBACK`\n3. Instead of an error (invalid redirect URL), the browser is redirected to `https://example.com/CALLBACK` with a potentially successful OAuth2 response, depending on the state of the overall OAuth2 flow (the user might still deny the request for example).",
+  "id": "GHSA-grfp-q2mm-hfp6",
+  "modified": "2023-11-08T04:02:34.800014Z",
+  "published": "2021-05-24T17:00:05Z",
   "references": [
     {
       "type": "WEB",
@@ -39,36 +60,15 @@
       "url": "https://github.com/ory/fosite"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/ory/fosite",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/ory/fosite"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.34.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/05/GHSA-grfp-q2mm-hfp6/GHSA-grfp-q2mm-hfp6.json"
-      }
-    }
+  "related": [
+    "CVE-2020-15234"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Redirect URL matching ignores character casing"
 }

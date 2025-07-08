@@ -1,17 +1,49 @@
 {
-  "id": "RUSTSEC-2021-0120",
-  "summary": "abomonation transmutes &T to and from &[u8] without sufficient constraints",
-  "details": "This transmute is at the core of the abomonation crates. It's so easy to use it to violate alignment requirements that no test in the crate's test suite passes under miri.\nThe use of this transmute in serialization/deserialization also incorrectly assumes that the layout of a repr(Rust) type is stable.\nThis transmute can also disclose both the contents of padding bytes which may be an information leak and the contents of pointers, which may be used to defeat ASLR.",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [],
+        "cvss": null,
+        "informational": "unsound",
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2021-0120.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "abomonation",
+        "purl": "pkg:cargo/abomonation"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-45708",
     "GHSA-5vwc-r48g-wj6c",
     "GHSA-hfxp-p695-629x"
   ],
-  "modified": "2023-11-08T04:07:23.115580Z",
-  "published": "2021-10-17T12:00:00Z",
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "This transmute is at the core of the abomonation crates. It's so easy to use it to violate alignment requirements that no test in the crate's test suite passes under miri.\nThe use of this transmute in serialization/deserialization also incorrectly assumes that the layout of a repr(Rust) type is stable.\nThis transmute can also disclose both the contents of padding bytes which may be an information leak and the contents of pointers, which may be used to defeat ASLR.",
+  "id": "RUSTSEC-2021-0120",
+  "modified": "2023-11-08T04:07:23.115580Z",
+  "published": "2021-10-17T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -26,38 +58,6 @@
       "url": "https://github.com/TimelyDataflow/abomonation/issues/23"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "abomonation",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/abomonation"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": null,
-        "informational": "unsound",
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2021-0120.json",
-        "categories": []
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "abomonation transmutes &T to and from &[u8] without sufficient constraints"
 }

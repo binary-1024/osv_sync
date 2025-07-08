@@ -1,22 +1,47 @@
 {
-  "id": "GHSA-r7jx-5m6m-cpg9",
-  "summary": "eazy-logger prototype pollution",
-  "details": "A prototype pollution in the lib.Logger function of eazy-logger v4.0.1 allows attackers to cause a Denial of Service (DoS) via supplying a crafted payload.\n\nAn attacker can supply a payload with `Object.prototype` setter to introduce or modify properties within the global prototype chain, causing denial of service (DoS) a the minimum consequence.\n\nMoreover, the consequences of this vulnerability can escalate to other injection-based attacks, depending on how the library integrates within the application. For instance, if the polluted property propagates to sensitive Node.js APIs (e.g., `child_process.exec`, `eval`), it could enable an attacker to execute arbitrary commands within the application's context.\n\n## Proof of Concept\n\n```js\n(async () => {\nconst lib = await import('eazy-logger');\nvar someObj = {}\nconsole.log(\"Before Attack: \", JSON.stringify({}.__proto__));\ntry {\n// for multiple functions, uncomment only one for each execution.\nlib.Logger (JSON.parse('{\"__proto__\":{\"pollutedKey\":123}}'))\n} catch (e) { }\nconsole.log(\"After Attack: \", JSON.stringify({}.__proto__));\ndelete Object.prototype.pollutedKey;\n})();\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 4.0.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-r7jx-5m6m-cpg9/GHSA-r7jx-5m6m-cpg9.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "eazy-logger",
+        "purl": "pkg:npm/eazy-logger"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.1.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-57075"
   ],
-  "modified": "2025-04-07T12:34:01Z",
-  "published": "2025-02-06T06:31:26Z",
   "database_specific": {
-    "nvd_published_at": "2025-02-05T22:15:31Z",
     "cwe_ids": [
       "CWE-1321",
       "CWE-400"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-02-06T23:31:34Z"
+    "github_reviewed_at": "2025-02-06T23:31:34Z",
+    "nvd_published_at": "2025-02-05T22:15:31Z",
+    "severity": "HIGH"
   },
+  "details": "A prototype pollution in the lib.Logger function of eazy-logger v4.0.1 allows attackers to cause a Denial of Service (DoS) via supplying a crafted payload.\n\nAn attacker can supply a payload with `Object.prototype` setter to introduce or modify properties within the global prototype chain, causing denial of service (DoS) a the minimum consequence.\n\nMoreover, the consequences of this vulnerability can escalate to other injection-based attacks, depending on how the library integrates within the application. For instance, if the polluted property propagates to sensitive Node.js APIs (e.g., `child_process.exec`, `eval`), it could enable an attacker to execute arbitrary commands within the application's context.\n\n## Proof of Concept\n\n```js\n(async () => {\nconst lib = await import('eazy-logger');\nvar someObj = {}\nconsole.log(\"Before Attack: \", JSON.stringify({}.__proto__));\ntry {\n// for multiple functions, uncomment only one for each execution.\nlib.Logger (JSON.parse('{\"__proto__\":{\"pollutedKey\":123}}'))\n} catch (e) { }\nconsole.log(\"After Attack: \", JSON.stringify({}.__proto__));\ndelete Object.prototype.pollutedKey;\n})();\n```",
+  "id": "GHSA-r7jx-5m6m-cpg9",
+  "modified": "2025-04-07T12:34:01Z",
+  "published": "2025-02-06T06:31:26Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -35,37 +60,12 @@
       "url": "https://github.com/shakyShane/eazy-logger"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "eazy-logger",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/eazy-logger"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.1.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 4.0.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-r7jx-5m6m-cpg9/GHSA-r7jx-5m6m-cpg9.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "eazy-logger prototype pollution"
 }

@@ -1,12 +1,48 @@
 {
-  "id": "RUSTSEC-2025-0003",
-  "summary": "Segmentation fault due to lack of bound check",
-  "details": "In this case, the \"fast_float::common::AsciiStr::first\" method within the \"AsciiStr\" struct \nuses the unsafe keyword to reading from memory without performing bounds checking. \nSpecifically, it directly dereferences a pointer offset by \"self.ptr\".\nBecause of the above reason, the method accesses invalid memory address when it takes an empty string as its input.\nThis approach violates Rust\u2019s memory safety guarantees, as it can lead to invalid memory access if empty buffer is provided.\n\nNo patched version for fast-float crate has been released, but a patch is available in the fast-float2 fork.",
-  "modified": "2025-01-29T19:29:35Z",
-  "published": "2025-01-13T12:00:00Z",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [
+          "memory-exposure"
+        ],
+        "cvss": null,
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2025-0003.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [
+            "fast_float::common::AsciiStr::first"
+          ],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "fast-float",
+        "purl": "pkg:cargo/fast-float"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "In this case, the \"fast_float::common::AsciiStr::first\" method within the \"AsciiStr\" struct \nuses the unsafe keyword to reading from memory without performing bounds checking. \nSpecifically, it directly dereferences a pointer offset by \"self.ptr\".\nBecause of the above reason, the method accesses invalid memory address when it takes an empty string as its input.\nThis approach violates Rust\u2019s memory safety guarantees, as it can lead to invalid memory access if empty buffer is provided.\n\nNo patched version for fast-float crate has been released, but a patch is available in the fast-float2 fork.",
+  "id": "RUSTSEC-2025-0003",
+  "modified": "2025-01-29T19:29:35Z",
+  "published": "2025-01-13T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -21,42 +57,6 @@
       "url": "https://github.com/aldanor/fast-float-rust/issues/38"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "fast-float",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/fast-float"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [
-            "fast_float::common::AsciiStr::first"
-          ],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": null,
-        "informational": null,
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2025-0003.json",
-        "categories": [
-          "memory-exposure"
-        ]
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Segmentation fault due to lack of bound check"
 }

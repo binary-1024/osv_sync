@@ -1,18 +1,42 @@
 {
-  "id": "GHSA-9ghp-w2hm-vfpf",
-  "summary": "wasmtime_jit_debug Dumps Undefined Memory by `JitDumpFile`",
-  "details": "The unsound function `dump_code_load_record` uses `from_raw_parts` to directly convert the pointer `addr` and `len` into a slice without any validation and that memory block would be dumped.\n\nThus, the 'safe' function dump_code_load_record is actually 'unsafe' since it requires the caller to guarantee that the addr is valid and len must not overflow. Otherwise, the function could dump the memory into file illegally, causing memory leak.\n\n> **Note**: this is an internal-only crate in the Wasmtime project not intended for external use and is more strongly signaled nowadays as of [bytecodealliance/wasmtime#10963](https://github.com/bytecodealliance/wasmtime/pull/10963). Please open an issue in Wasmtime if you're using this crate directly.",
-  "modified": "2025-06-17T15:37:57Z",
-  "published": "2025-06-17T15:37:56Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-9ghp-w2hm-vfpf/GHSA-9ghp-w2hm-vfpf.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "wasmtime-jit-debug",
+        "purl": "pkg:cargo/wasmtime-jit-debug"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "24.0.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-119"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-06-17T15:37:56Z"
+    "github_reviewed_at": "2025-06-17T15:37:56Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
   },
+  "details": "The unsound function `dump_code_load_record` uses `from_raw_parts` to directly convert the pointer `addr` and `len` into a slice without any validation and that memory block would be dumped.\n\nThus, the 'safe' function dump_code_load_record is actually 'unsafe' since it requires the caller to guarantee that the addr is valid and len must not overflow. Otherwise, the function could dump the memory into file illegally, causing memory leak.\n\n> **Note**: this is an internal-only crate in the Wasmtime project not intended for external use and is more strongly signaled nowadays as of [bytecodealliance/wasmtime#10963](https://github.com/bytecodealliance/wasmtime/pull/10963). Please open an issue in Wasmtime if you're using this crate directly.",
+  "id": "GHSA-9ghp-w2hm-vfpf",
+  "modified": "2025-06-17T15:37:57Z",
+  "published": "2025-06-17T15:37:56Z",
   "references": [
     {
       "type": "WEB",
@@ -31,36 +55,12 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2024-0442.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "wasmtime-jit-debug",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/wasmtime-jit-debug"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "24.0.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-9ghp-w2hm-vfpf/GHSA-9ghp-w2hm-vfpf.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:P"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "wasmtime_jit_debug Dumps Undefined Memory by `JitDumpFile`"
 }

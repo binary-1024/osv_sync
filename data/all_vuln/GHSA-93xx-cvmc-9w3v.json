@@ -1,25 +1,46 @@
 {
-  "id": "GHSA-93xx-cvmc-9w3v",
-  "summary": "On a compromised node, the fluid-csi service account can be used to modify node specs",
-  "details": "### Impact\n\nIf a malicious user gains control of a Kubernetes node running fluid csi pod (controlled by the `csi-nodeplugin-fluid` node-daemonset), he/she can leverage the fluid-csi service account to modify specs of all the nodes in the cluster. However, since this service account lacks \"list node\" permissions, the attacker may need to use other techniques to identify vulnerable nodes.\n\nOnce the attacker identifies and modifies the node specs, he/she can manipulate system-level-privileged components to access all secrets in the cluster or execute pods on other nodes. This allows he/she to elevate privileges beyond the compromised node and potentially gain full privileged access to the whole cluster.\n\nTo exploit this vulnerability, the attacker can make all other nodes unschedulable (for example, patch node with taints) and wait for system-critical components with high privilege to appear on the compromised node. However, this attack requires two prerequisites: a compromised node and identifying all vulnerable nodes through other means. Additionally, since the attack is passive and requires patience and luck, the severity of this finding is considered medium.\n\n### Patches\nFor users who're using version < 0.8.6, >= 0.7.0, upgrade to v0.8.6.\n\n### Workarounds\nDelete the `csi-nodeplugin-fluid` daemonset in `fluid-system` namespace and avoid using CSI mode to mount FUSE file systems. Alternatively using sidecar mode to mount FUSE file systems is recommended. Refer to [the doc](https://github.com/fluid-cloudnative/fluid/blob/master/docs/en/samples/knative.md) to get a full example of how to use sidecar mode.\n\n### References\n\n\nFixed by [Fix rbacs and limit CSI Plugin's node related access](https://github.com/fluid-cloudnative/fluid/commit/77c8110a3d1ec077ae2bce6bd88d296505db1550)\n\n### Credits\nSpecial thanks to the discoverers of this issue:\n\nNanzi Yang ([nzyang@stu.xidian.edu.cn](mailto:nzyang@stu.xidian.edu.cn))\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/05/GHSA-93xx-cvmc-9w3v/GHSA-93xx-cvmc-9w3v.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/fluid-cloudnative/fluid",
+        "purl": "pkg:golang/github.com/fluid-cloudnative/fluid"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.7.0"
+            },
+            {
+              "fixed": "0.8.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-30840",
     "GO-2023-1763"
   ],
-  "modified": "2024-08-20T20:59:00.045356Z",
-  "published": "2023-05-09T19:58:47Z",
-  "related": [
-    "CVE-2023-30840"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-05-08T18:15:14Z",
     "cwe_ids": [
       "CWE-863"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-05-09T19:58:47Z"
+    "github_reviewed_at": "2023-05-09T19:58:47Z",
+    "nvd_published_at": "2023-05-08T18:15:14Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nIf a malicious user gains control of a Kubernetes node running fluid csi pod (controlled by the `csi-nodeplugin-fluid` node-daemonset), he/she can leverage the fluid-csi service account to modify specs of all the nodes in the cluster. However, since this service account lacks \"list node\" permissions, the attacker may need to use other techniques to identify vulnerable nodes.\n\nOnce the attacker identifies and modifies the node specs, he/she can manipulate system-level-privileged components to access all secrets in the cluster or execute pods on other nodes. This allows he/she to elevate privileges beyond the compromised node and potentially gain full privileged access to the whole cluster.\n\nTo exploit this vulnerability, the attacker can make all other nodes unschedulable (for example, patch node with taints) and wait for system-critical components with high privilege to appear on the compromised node. However, this attack requires two prerequisites: a compromised node and identifying all vulnerable nodes through other means. Additionally, since the attack is passive and requires patience and luck, the severity of this finding is considered medium.\n\n### Patches\nFor users who're using version < 0.8.6, >= 0.7.0, upgrade to v0.8.6.\n\n### Workarounds\nDelete the `csi-nodeplugin-fluid` daemonset in `fluid-system` namespace and avoid using CSI mode to mount FUSE file systems. Alternatively using sidecar mode to mount FUSE file systems is recommended. Refer to [the doc](https://github.com/fluid-cloudnative/fluid/blob/master/docs/en/samples/knative.md) to get a full example of how to use sidecar mode.\n\n### References\n\n\nFixed by [Fix rbacs and limit CSI Plugin's node related access](https://github.com/fluid-cloudnative/fluid/commit/77c8110a3d1ec077ae2bce6bd88d296505db1550)\n\n### Credits\nSpecial thanks to the discoverers of this issue:\n\nNanzi Yang ([nzyang@stu.xidian.edu.cn](mailto:nzyang@stu.xidian.edu.cn))\n",
+  "id": "GHSA-93xx-cvmc-9w3v",
+  "modified": "2024-08-20T20:59:00.045356Z",
+  "published": "2023-05-09T19:58:47Z",
   "references": [
     {
       "type": "WEB",
@@ -46,36 +67,15 @@
       "url": "https://github.com/fluid-cloudnative/fluid/releases/tag/v0.8.6"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/fluid-cloudnative/fluid",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/fluid-cloudnative/fluid"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.7.0"
-            },
-            {
-              "fixed": "0.8.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/05/GHSA-93xx-cvmc-9w3v/GHSA-93xx-cvmc-9w3v.json"
-      }
-    }
+  "related": [
+    "CVE-2023-30840"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "On a compromised node, the fluid-csi service account can be used to modify node specs"
 }

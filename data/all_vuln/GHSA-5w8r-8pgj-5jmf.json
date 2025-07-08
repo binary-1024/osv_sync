@@ -1,25 +1,46 @@
 {
-  "id": "GHSA-5w8r-8pgj-5jmf",
-  "summary": "matrix-js-sdk subject to user impersonation due to key/device identifier confusion in SAS verification",
-  "details": "## Impact\n\nAn attacker cooperating with a malicious homeserver could interfere with the verification flow between two users, injecting its own cross-signing user identity in place of one of the users\u2019 identities, leading to the other device trusting/verifying the user identity under the control of the homeserver instead of the intended one.\n\nThe vulnerability is a bug in the matrix-js-sdk, caused by checking and signing user identities and devices in two separate steps, and inadequately fixing the keys to be signed between those steps.\n\nEven though the attack is partly made possible due to the design decision of treating cross-signing user identities as Matrix devices on the server side (with their device ID set to the public part of the user identity key), no other examined implementations were vulnerable.\n\n## Patches\n\nThe matrix-js-sdk has been modified to double check that the key signed is the one that was verified instead of just referencing the key by ID. An additional check has been made to report an error when one of the device ID matches a cross-signing key.\n\n## Workarounds\n\nAs this attack requires coordination between a malicious homeserver and an attacker -- if you trust your homeserver no particular workaround is needed. \n\nAs a potential way of detecting compromise, it\u2019s possible to review your device list or the device list of other users for devices with IDs in the form of a base64 cross-signing key (`5XaczGNlfz0bl8R1IX5qn+tBoue2tWJqLMh+SDUuvCk`) instead of classical device ID (`SEHACYDHMG`).\n\n## References\nBlog post: https://matrix.org/blog/2022/09/28/upgrade-now-to-address-encryption-vulns-in-matrix-sdks-and-clients\n\n## For more information\nIf you have any questions or comments about this advisory, e-mail us at security@matrix.org\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-5w8r-8pgj-5jmf/GHSA-5w8r-8pgj-5jmf.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "matrix-js-sdk",
+        "purl": "pkg:npm/matrix-js-sdk"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "19.7.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-39250"
   ],
-  "modified": "2023-11-08T04:10:16.632776Z",
-  "published": "2022-09-30T22:46:50Z",
-  "related": [
-    "CVE-2022-39250"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-09-29T13:15:00Z",
-    "github_reviewed_at": "2022-09-30T22:46:50Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-287",
       "CWE-322"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-30T22:46:50Z",
+    "nvd_published_at": "2022-09-29T13:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "## Impact\n\nAn attacker cooperating with a malicious homeserver could interfere with the verification flow between two users, injecting its own cross-signing user identity in place of one of the users\u2019 identities, leading to the other device trusting/verifying the user identity under the control of the homeserver instead of the intended one.\n\nThe vulnerability is a bug in the matrix-js-sdk, caused by checking and signing user identities and devices in two separate steps, and inadequately fixing the keys to be signed between those steps.\n\nEven though the attack is partly made possible due to the design decision of treating cross-signing user identities as Matrix devices on the server side (with their device ID set to the public part of the user identity key), no other examined implementations were vulnerable.\n\n## Patches\n\nThe matrix-js-sdk has been modified to double check that the key signed is the one that was verified instead of just referencing the key by ID. An additional check has been made to report an error when one of the device ID matches a cross-signing key.\n\n## Workarounds\n\nAs this attack requires coordination between a malicious homeserver and an attacker -- if you trust your homeserver no particular workaround is needed. \n\nAs a potential way of detecting compromise, it\u2019s possible to review your device list or the device list of other users for devices with IDs in the form of a base64 cross-signing key (`5XaczGNlfz0bl8R1IX5qn+tBoue2tWJqLMh+SDUuvCk`) instead of classical device ID (`SEHACYDHMG`).\n\n## References\nBlog post: https://matrix.org/blog/2022/09/28/upgrade-now-to-address-encryption-vulns-in-matrix-sdks-and-clients\n\n## For more information\nIf you have any questions or comments about this advisory, e-mail us at security@matrix.org\n",
+  "id": "GHSA-5w8r-8pgj-5jmf",
+  "modified": "2023-11-08T04:10:16.632776Z",
+  "published": "2022-09-30T22:46:50Z",
   "references": [
     {
       "type": "WEB",
@@ -50,36 +71,15 @@
       "url": "https://security.gentoo.org/glsa/202210-35"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "matrix-js-sdk",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/matrix-js-sdk"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "19.7.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-5w8r-8pgj-5jmf/GHSA-5w8r-8pgj-5jmf.json"
-      }
-    }
+  "related": [
+    "CVE-2022-39250"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "matrix-js-sdk subject to user impersonation due to key/device identifier confusion in SAS verification"
 }

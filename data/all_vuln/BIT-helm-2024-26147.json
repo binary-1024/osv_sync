@@ -1,14 +1,40 @@
 {
-  "id": "BIT-helm-2024-26147",
-  "summary": "Helm's Missing YAML Content Leads To Panic",
-  "details": "Helm is a package manager for Charts for Kubernetes. Versions prior to 3.14.2 contain an uninitialized variable vulnerability when Helm parses index and plugin yaml files missing expected content. When either an `index.yaml` file or a plugins `plugin.yaml` file were missing all metadata a panic would occur in Helm. In the Helm SDK, this is found when using the `LoadIndexFile` or `DownloadIndexFile` functions in the `repo` package or the `LoadDir` function in the `plugin` package. For the Helm client this impacts functions around adding a repository and all Helm functions if a malicious plugin is added as Helm inspects all known plugins on each invocation. This issue has been resolved in Helm v3.14.2. If a malicious plugin has been added which is causing all Helm client commands to panic, the malicious plugin can be manually removed from the filesystem. If using Helm SDK versions prior to 3.14.2, calls to affected functions can use `recover` to catch the panic.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/helm/BIT-helm-2024-26147.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "helm",
+        "purl": "pkg:bitnami/helm"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.14.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-26147",
     "GHSA-r53h-jv2g-vpx6",
     "GO-2024-2575"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-31T18:18:46.734Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:helm:helm:*:*:*:*:*:*:*:*",
@@ -16,6 +42,10 @@
     ],
     "severity": "High"
   },
+  "details": "Helm is a package manager for Charts for Kubernetes. Versions prior to 3.14.2 contain an uninitialized variable vulnerability when Helm parses index and plugin yaml files missing expected content. When either an `index.yaml` file or a plugins `plugin.yaml` file were missing all metadata a panic would occur in Helm. In the Helm SDK, this is found when using the `LoadIndexFile` or `DownloadIndexFile` functions in the `repo` package or the `LoadDir` function in the `plugin` package. For the Helm client this impacts functions around adding a repository and all Helm functions if a malicious plugin is added as Helm inspects all known plugins on each invocation. This issue has been resolved in Helm v3.14.2. If a malicious plugin has been added which is causing all Helm client commands to panic, the malicious plugin can be manually removed from the filesystem. If using Helm SDK versions prior to 3.14.2, calls to affected functions can use `recover` to catch the panic.",
+  "id": "BIT-helm-2024-26147",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-31T18:18:46.734Z",
   "references": [
     {
       "type": "WEB",
@@ -30,36 +60,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-26147"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "helm",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/helm"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.14.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/helm/BIT-helm-2024-26147.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Helm's Missing YAML Content Leads To Panic"
 }

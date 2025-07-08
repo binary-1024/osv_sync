@@ -1,19 +1,104 @@
 {
-  "id": "SUSE-SU-2024:0319-1",
-  "summary": "Security update for gdb",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:0319-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "gdbserver": "13.2-2.23.1",
+            "gdbserver-32bit": "13.2-2.23.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
+        "name": "gdb",
+        "purl": "pkg:rpm/suse/gdb&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "13.2-2.23.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:0319-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "gdb": "13.2-2.23.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
+        "name": "gdb",
+        "purl": "pkg:rpm/suse/gdb&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "13.2-2.23.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:0319-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "gdb": "13.2-2.23.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
+        "name": "gdb",
+        "purl": "pkg:rpm/suse/gdb&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "13.2-2.23.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for gdb fixes the following issues:\n\n- Drop libdebuginfod1 BuildRequires/Recommends. The former isn't\n  needed because there's a build requirement on libdebuginfod-devel\n  already, which will pull the shared library. And the latter,\n  because it's bogus since RPM auto generated dependency will take\n  care of that requirement.\n\ngdb was released in 13.2:\n\n* This version of GDB includes the following changes and enhancements:\n\n  * Support for the following new targets has been added in both GDB and GDBserver:\n\n        * GNU/Linux/LoongArch (gdbserver) loongarch*-*-linux*\n        * GNU/Linux/CSKY (gdbserver) csky*-*linux* \n\n  * The Windows native target now supports target async.\n  * Floating-point support has now been added on LoongArch GNU/Linux.\n  * New commands:\n\n        * set print nibbles [on|off]\n        * show print nibbles\n\n        * This controls whether the 'print/t' command will display binary values in groups of four bits, known as 'nibbles'. The default is 'off'.\n          Various styling-related commands. See the gdb/NEWS file for more details.\n          Various maintenance commands. These are normally aimed at GDB experts or developers. See the gdb/NEWS file for more details. \n\n  * Python API improvements:\n\n          * New Python API for instruction disassembly.\n\n          * The new attribute 'locations' of gdb.Breakpoint returns a list of gdb.BreakpointLocation objects specifying the locations where the breakpoint is inserted into the debuggee.\n          * New Python type gdb.BreakpointLocation.\n          * New function gdb.format_address(ADDRESS, PROGSPACE, ARCHITECTURE) that formats ADDRESS as 'address '\n          * New function gdb.current_language that returns the name of the current language. Unlike gdb.parameter('language'), this will never return 'auto'.\n          * New function gdb.print_options that returns a dictionary of the prevailing print options, in the form accepted by gdb.Value.format_string.\n          * New method gdb.Frame.language that returns the name of the frame's language.\n          * gdb.Value.format_string now uses the format provided by 'print', if it is called during a 'print' or other similar operation.\n          * gdb.Value.format_string now accepts the 'summary' keyword. This can be used to request a shorter representation of a value, the way that 'set print frame-arguments scalars' does.\n          * The gdb.register_window_type method now restricts the set of acceptable window names. The first character of a window's name must start with a character in the set [a-zA-Z], every subsequent character of a window's name must be in the set [-_.a-zA-Z0-9]. \n   * GDB/MI changes:\n\n          * MI version 1 is deprecated, and will be removed in GDB 14.\n          * The async record stating the stopped reason 'breakpoint-hit' now contains an optional field locno. \n\n   * Miscellaneous improvements:\n\n          * gdb now supports zstd compressed debug sections (ELFCOMPRESS_ZSTD) for ELF.\n          * New convenience variable $_inferior_thread_count contains the number of live threads in the current inferior.\n          * New convenience variables $_hit_bpnum and $_hit_locno, set to the breakpoint number and the breakpoint location number of the breakpoint last hit.\n          * The 'info breakpoints' now displays enabled breakpoint locations of disabled breakpoints as in the 'y-' state.\n          * The format of 'disassemble /r' and 'record instruction-history /r' has changed to match the layout of GNU objdump when disassembling.\n\n          * A new format '/b' has been introduce to provide the old behavior of '/r'.\n          * The TUI no longer styles the source and assembly code highlighted by the current position indicator by default. You can however re-enable styling using the new 'set style tui-current-position' command.\n          * It is now possible to use the 'document' command to document user-defined commands.\n          * Support for memory tag data for AArch64 MTE. \n\n   * Support Removal notices:\n\n          * DBX mode has been removed.\n          * Support for building against Python version 2 has been removed. It is now only possible to build GDB against Python 3.\n          * Support for the following commands has been removed:\n\n          * set debug aix-solib on|off\n          * show debug aix-solib\n          * set debug solib-frv on|off\n          * show debug solib-frv\n\n          * Use the 'set/show debug solib' commands instead. \n\nSee the NEWS file for a more complete and detailed list of what this release includes. \n",
+  "id": "SUSE-SU-2024:0319-1",
   "modified": "2025-05-02T04:29:44.616510Z",
   "published": "2024-02-20T16:52:21Z",
-  "related": [
-    "CVE-2017-16829",
-    "CVE-2018-7208",
-    "CVE-2022-48064"
-  ],
-  "upstream": [
-    "CVE-2017-16829",
-    "CVE-2018-7208",
-    "CVE-2022-48064"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -44,101 +129,16 @@
       "url": "https://www.suse.com/security/cve/CVE-2022-48064"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "gdb",
-        "ecosystem": "SUSE:Linux Enterprise Software Development Kit 12 SP5",
-        "purl": "pkg:rpm/suse/gdb&distro=SUSE%20Linux%20Enterprise%20Software%20Development%20Kit%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "13.2-2.23.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "gdbserver-32bit": "13.2-2.23.1",
-            "gdbserver": "13.2-2.23.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:0319-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "gdb",
-        "ecosystem": "SUSE:Linux Enterprise Server 12 SP5",
-        "purl": "pkg:rpm/suse/gdb&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "13.2-2.23.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "gdb": "13.2-2.23.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:0319-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "gdb",
-        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP5",
-        "purl": "pkg:rpm/suse/gdb&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "13.2-2.23.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "gdb": "13.2-2.23.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2024:0319-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2017-16829",
+    "CVE-2018-7208",
+    "CVE-2022-48064"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for gdb",
+  "upstream": [
+    "CVE-2017-16829",
+    "CVE-2018-7208",
+    "CVE-2022-48064"
+  ]
 }

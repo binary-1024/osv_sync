@@ -1,24 +1,124 @@
 {
-  "id": "GHSA-875x-g8p7-5w27",
-  "summary": "The FIDO2/Webauthn Support for PHP library allows enumeration of valid usernames ",
-  "details": "### Summary\n\nThe ProfileBasedRequestOptionsBuilder method returns allowedCredentials without any credentials if no username was found.\n\n### Details\n\nWhen WebAuthn is used as the first or only authentication method, an attacker can enumerate usernames based on the absence of the `allowedCredentials` property in the assertion options response. This allows enumeration of valid or invalid usernames.\n\n#### Proposal how to resolve it:\n \n```\nreturn $this->publicKeyCredentialRequestOptionsFactory->create(\n            $this->profile,\n            count($allowedCredentials) <= 0 ? self::getRandomCredentials(): $allowedCredentials,\n            $optionsRequest->userVerification,\n            $extensions\n);\n\nprivate static function getRandomCredentials(): array\n{\n        $credentialSources = [];\n        for ($i = 0; $i <= rand(0,1); $i++) {\n            $credentialSources[] = new PublicKeyCredentialSource(\n                random_bytes(32),\n                \"public-key\",\n                [],\n                \"basic\",\n                new EmptyTrustPath(),\n                Uuid::v7(),\n                random_bytes(77),\n                Uuid::v7()->__toString(),\n                rand(0, 6000),\n                null\n            );\n        }\n        return array_map(\n            static fn (PublicKeyCredentialSource $credential): PublicKeyCredentialDescriptor => $credential->getPublicKeyCredentialDescriptor(),\n            $credentialSources\n        );\n}\n```\n\n### PoC\n\ncurl https://example.com/assertion/options \\\n  -H 'content-type: application/json' \\\n  --data-raw '{\"username\":\"NotMeRandomUsername123\"}'\n\n### Impact\n\nBy knowing which usernames are valid, attackers can focus their efforts on a smaller set of potential targets, increasing the efficiency and likelihood of successful attacks.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-875x-g8p7-5w27/GHSA-875x-g8p7-5w27.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "web-auth/webauthn-lib",
+        "purl": "pkg:composer/web-auth/webauthn-lib"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.5.0"
+            },
+            {
+              "fixed": "4.9.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.5.0",
+        "4.5.1",
+        "4.5.2",
+        "4.6.0",
+        "4.6.1",
+        "4.6.2",
+        "4.6.3",
+        "4.6.4",
+        "4.7.0",
+        "4.7.1",
+        "4.7.2",
+        "4.7.3",
+        "4.7.4",
+        "4.7.5",
+        "4.7.6",
+        "4.7.7",
+        "4.7.8",
+        "4.7.9",
+        "4.8.0",
+        "4.8.1",
+        "4.8.2",
+        "4.8.3",
+        "4.8.4",
+        "4.8.5",
+        "4.8.6",
+        "4.8.7"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-875x-g8p7-5w27/GHSA-875x-g8p7-5w27.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "web-auth/webauthn-framework",
+        "purl": "pkg:composer/web-auth/webauthn-framework"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.5.0"
+            },
+            {
+              "fixed": "4.9.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.5.0",
+        "4.5.1",
+        "4.5.2",
+        "4.6.0",
+        "4.6.1",
+        "4.6.2",
+        "4.6.3",
+        "4.6.4",
+        "4.7.0",
+        "4.7.1",
+        "4.7.2",
+        "4.7.3",
+        "4.7.4",
+        "4.7.5",
+        "4.7.6",
+        "4.7.7",
+        "4.7.8",
+        "4.7.9",
+        "4.8.0",
+        "4.8.1",
+        "4.8.2",
+        "4.8.3",
+        "4.8.4",
+        "4.8.5",
+        "4.8.6",
+        "4.8.7"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-39912"
   ],
-  "modified": "2024-07-15T22:24:12.104140Z",
-  "published": "2024-07-15T16:37:49Z",
-  "related": [
-    "CVE-2024-39912"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-07-15T20:15:03Z",
     "cwe_ids": [
       "CWE-204"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-07-15T16:37:49Z"
+    "github_reviewed_at": "2024-07-15T16:37:49Z",
+    "nvd_published_at": "2024-07-15T20:15:03Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\n\nThe ProfileBasedRequestOptionsBuilder method returns allowedCredentials without any credentials if no username was found.\n\n### Details\n\nWhen WebAuthn is used as the first or only authentication method, an attacker can enumerate usernames based on the absence of the `allowedCredentials` property in the assertion options response. This allows enumeration of valid or invalid usernames.\n\n#### Proposal how to resolve it:\n \n```\nreturn $this->publicKeyCredentialRequestOptionsFactory->create(\n            $this->profile,\n            count($allowedCredentials) <= 0 ? self::getRandomCredentials(): $allowedCredentials,\n            $optionsRequest->userVerification,\n            $extensions\n);\n\nprivate static function getRandomCredentials(): array\n{\n        $credentialSources = [];\n        for ($i = 0; $i <= rand(0,1); $i++) {\n            $credentialSources[] = new PublicKeyCredentialSource(\n                random_bytes(32),\n                \"public-key\",\n                [],\n                \"basic\",\n                new EmptyTrustPath(),\n                Uuid::v7(),\n                random_bytes(77),\n                Uuid::v7()->__toString(),\n                rand(0, 6000),\n                null\n            );\n        }\n        return array_map(\n            static fn (PublicKeyCredentialSource $credential): PublicKeyCredentialDescriptor => $credential->getPublicKeyCredentialDescriptor(),\n            $credentialSources\n        );\n}\n```\n\n### PoC\n\ncurl https://example.com/assertion/options \\\n  -H 'content-type: application/json' \\\n  --data-raw '{\"username\":\"NotMeRandomUsername123\"}'\n\n### Impact\n\nBy knowing which usernames are valid, attackers can focus their efforts on a smaller set of potential targets, increasing the efficiency and likelihood of successful attacks.\n",
+  "id": "GHSA-875x-g8p7-5w27",
+  "modified": "2024-07-15T22:24:12.104140Z",
+  "published": "2024-07-15T16:37:49Z",
   "references": [
     {
       "type": "WEB",
@@ -45,119 +145,19 @@
       "url": "https://github.com/web-auth/webauthn-framework"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "web-auth/webauthn-lib",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/web-auth/webauthn-lib"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "4.5.0"
-            },
-            {
-              "fixed": "4.9.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "4.5.0",
-        "4.5.1",
-        "4.5.2",
-        "4.6.0",
-        "4.6.1",
-        "4.6.2",
-        "4.6.3",
-        "4.6.4",
-        "4.7.0",
-        "4.7.1",
-        "4.7.2",
-        "4.7.3",
-        "4.7.4",
-        "4.7.5",
-        "4.7.6",
-        "4.7.7",
-        "4.7.8",
-        "4.7.9",
-        "4.8.0",
-        "4.8.1",
-        "4.8.2",
-        "4.8.3",
-        "4.8.4",
-        "4.8.5",
-        "4.8.6",
-        "4.8.7"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-875x-g8p7-5w27/GHSA-875x-g8p7-5w27.json"
-      }
-    },
-    {
-      "package": {
-        "name": "web-auth/webauthn-framework",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/web-auth/webauthn-framework"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "4.5.0"
-            },
-            {
-              "fixed": "4.9.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "4.5.0",
-        "4.5.1",
-        "4.5.2",
-        "4.6.0",
-        "4.6.1",
-        "4.6.2",
-        "4.6.3",
-        "4.6.4",
-        "4.7.0",
-        "4.7.1",
-        "4.7.2",
-        "4.7.3",
-        "4.7.4",
-        "4.7.5",
-        "4.7.6",
-        "4.7.7",
-        "4.7.8",
-        "4.7.9",
-        "4.8.0",
-        "4.8.1",
-        "4.8.2",
-        "4.8.3",
-        "4.8.4",
-        "4.8.5",
-        "4.8.6",
-        "4.8.7"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-875x-g8p7-5w27/GHSA-875x-g8p7-5w27.json"
-      }
-    }
+  "related": [
+    "CVE-2024-39912"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "The FIDO2/Webauthn Support for PHP library allows enumeration of valid usernames "
 }

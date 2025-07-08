@@ -1,53 +1,16 @@
 {
-  "id": "GHSA-j3f9-p6hm-5w6q",
-  "summary": "Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale",
-  "details": "### Impact\nApplication passing unsanitized user input to `Carbon::setLocale` are at risk of arbitrary file include, if the application allows users to upload files with `.php` extension in an folder that allows `include` or `require` to read it, then they are at risk of arbitrary code ran on their servers.\n\n### Patches\n- [3.8.4](https://github.com/briannesbitt/Carbon/releases/tag/3.8.4)\n- [2.72.6](https://github.com/briannesbitt/Carbon/releases/tag/2.72.6)\n\n### Workarounds\nAny of the below actions can be taken to prevent the issue:\n- Validate input before calling `setLocale()`, for instance by forbidding or removing `/` and `\\`\n- Call `setLocale()` only with a locale from a whitelist of supported locales\n- When uploading files, rename them so they cannot have a `.php` extension (this is recommended even if you're not affected by this issue)\n- Prefer storage system that are not local to the application (remote service, or local service ran by another user so the uploaded files actually live outside of the application basedir)\n\n### References\nhttps://en.wikipedia.org/wiki/File_inclusion_vulnerability\n\n### Credits\nThanks to **Szczepan Ho\u0142yszewski** who reported the issue and to Tidelift to coordinate the resolution",
-  "aliases": [
-    "CVE-2025-22145"
-  ],
-  "modified": "2025-02-25T18:48:28.814404Z",
-  "published": "2025-01-08T21:03:28Z",
-  "database_specific": {
-    "nvd_published_at": "2025-01-08T21:15:13Z",
-    "cwe_ids": [
-      "CWE-98"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-01-08T21:03:28Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/CarbonPHP/carbon/security/advisories/GHSA-j3f9-p6hm-5w6q"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-22145"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/briannesbitt/Carbon/commit/129700ed449b1f02d70272d2ac802357c8c30c58"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/CarbonPHP/carbon"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.debian.org/debian-lts-announce/2025/02/msg00032.html"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-j3f9-p6hm-5w6q/GHSA-j3f9-p6hm-5w6q.json"
+      },
       "package": {
-        "name": "nesbot/carbon",
         "ecosystem": "Packagist",
+        "name": "nesbot/carbon",
         "purl": "pkg:composer/nesbot/carbon"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "3.0.0"
@@ -55,7 +18,8 @@
             {
               "fixed": "3.8.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -79,20 +43,19 @@
         "3.8.1",
         "3.8.2",
         "3.8.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-j3f9-p6hm-5w6q/GHSA-j3f9-p6hm-5w6q.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-j3f9-p6hm-5w6q/GHSA-j3f9-p6hm-5w6q.json"
+      },
       "package": {
-        "name": "nesbot/carbon",
         "ecosystem": "Packagist",
+        "name": "nesbot/carbon",
         "purl": "pkg:composer/nesbot/carbon"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -100,7 +63,8 @@
             {
               "fixed": "2.72.6"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -326,17 +290,53 @@
         "2.8.0",
         "2.9.0",
         "2.9.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-j3f9-p6hm-5w6q/GHSA-j3f9-p6hm-5w6q.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-22145"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-98"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-01-08T21:03:28Z",
+    "nvd_published_at": "2025-01-08T21:15:13Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nApplication passing unsanitized user input to `Carbon::setLocale` are at risk of arbitrary file include, if the application allows users to upload files with `.php` extension in an folder that allows `include` or `require` to read it, then they are at risk of arbitrary code ran on their servers.\n\n### Patches\n- [3.8.4](https://github.com/briannesbitt/Carbon/releases/tag/3.8.4)\n- [2.72.6](https://github.com/briannesbitt/Carbon/releases/tag/2.72.6)\n\n### Workarounds\nAny of the below actions can be taken to prevent the issue:\n- Validate input before calling `setLocale()`, for instance by forbidding or removing `/` and `\\`\n- Call `setLocale()` only with a locale from a whitelist of supported locales\n- When uploading files, rename them so they cannot have a `.php` extension (this is recommended even if you're not affected by this issue)\n- Prefer storage system that are not local to the application (remote service, or local service ran by another user so the uploaded files actually live outside of the application basedir)\n\n### References\nhttps://en.wikipedia.org/wiki/File_inclusion_vulnerability\n\n### Credits\nThanks to **Szczepan Ho\u0142yszewski** who reported the issue and to Tidelift to coordinate the resolution",
+  "id": "GHSA-j3f9-p6hm-5w6q",
+  "modified": "2025-02-25T18:48:28.814404Z",
+  "published": "2025-01-08T21:03:28Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/CarbonPHP/carbon/security/advisories/GHSA-j3f9-p6hm-5w6q"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-22145"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/briannesbitt/Carbon/commit/129700ed449b1f02d70272d2ac802357c8c30c58"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/CarbonPHP/carbon"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2025/02/msg00032.html"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale"
 }

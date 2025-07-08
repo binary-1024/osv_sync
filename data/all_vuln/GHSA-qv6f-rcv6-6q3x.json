@@ -1,50 +1,17 @@
 {
-  "id": "GHSA-qv6f-rcv6-6q3x",
-  "summary": "Improper handling of REST API XML deserialization errors in Jenkins",
-  "details": "Jenkins provides XML REST APIs to configure views, jobs, and other items. When deserialization fails because of invalid data, Jenkins 2.274 and earlier, LTS 2.263.1 and earlier stores invalid object references created through these endpoints in the Old Data Monitor. If an administrator discards the old data, some erroneous data submitted to these endpoints may be persisted.\n\nThis allows attackers with View/Create, Job/Create, Agent/Create, or their respective */Configure permissions to inject crafted content into Old Data Monitor that results in the instantiation of potentially unsafe objects when discarded by an administrator.\\n\\nJenkins 2.275, LTS 2.263.2 does not record submissions from users in Old Data Monitor anymore.\n\nIn case of problems, the [Java system properties](https://www.jenkins.io/doc/book/managing/system-properties/) `hudson.util.RobustReflectionConverter.recordFailuresForAdmins` and `hudson.util.RobustReflectionConverter.recordFailuresForAllAuthentications` can be set to true to record configuration data submissions from administrators or all users, partially or completely disabling this fix.",
-  "aliases": [
-    "BIT-jenkins-2021-21604",
-    "CVE-2021-21604"
-  ],
-  "modified": "2024-02-16T08:24:03.080443Z",
-  "published": "2022-05-24T17:39:12Z",
-  "database_specific": {
-    "nvd_published_at": "2021-01-13T16:15:00Z",
-    "cwe_ids": [
-      "CWE-502"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2022-06-23T06:51:53Z"
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-21604"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/jenkins/commit/f1056bd814fc1f19ea241a101d649b8c143807e7"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/jenkinsci/jenkins"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.jenkins.io/security/advisory/2021-01-13/#SECURITY-1923"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.263.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-qv6f-rcv6-6q3x/GHSA-qv6f-rcv6-6q3x.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:jenkins-core",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:jenkins-core",
         "purl": "pkg:maven/org.jenkins-ci.main/jenkins-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -52,7 +19,8 @@
             {
               "fixed": "2.263.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -712,21 +680,20 @@
         "2.97",
         "2.98",
         "2.99"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.263.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-qv6f-rcv6-6q3x/GHSA-qv6f-rcv6-6q3x.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.274",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-qv6f-rcv6-6q3x/GHSA-qv6f-rcv6-6q3x.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:jenkins-core",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:jenkins-core",
         "purl": "pkg:maven/org.jenkins-ci.main/jenkins-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.264"
@@ -734,7 +701,8 @@
             {
               "fixed": "2.275"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -749,18 +717,50 @@
         "2.272",
         "2.273",
         "2.274"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.274",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-qv6f-rcv6-6q3x/GHSA-qv6f-rcv6-6q3x.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "BIT-jenkins-2021-21604",
+    "CVE-2021-21604"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-502"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-06-23T06:51:53Z",
+    "nvd_published_at": "2021-01-13T16:15:00Z",
+    "severity": "HIGH"
+  },
+  "details": "Jenkins provides XML REST APIs to configure views, jobs, and other items. When deserialization fails because of invalid data, Jenkins 2.274 and earlier, LTS 2.263.1 and earlier stores invalid object references created through these endpoints in the Old Data Monitor. If an administrator discards the old data, some erroneous data submitted to these endpoints may be persisted.\n\nThis allows attackers with View/Create, Job/Create, Agent/Create, or their respective */Configure permissions to inject crafted content into Old Data Monitor that results in the instantiation of potentially unsafe objects when discarded by an administrator.\\n\\nJenkins 2.275, LTS 2.263.2 does not record submissions from users in Old Data Monitor anymore.\n\nIn case of problems, the [Java system properties](https://www.jenkins.io/doc/book/managing/system-properties/) `hudson.util.RobustReflectionConverter.recordFailuresForAdmins` and `hudson.util.RobustReflectionConverter.recordFailuresForAllAuthentications` can be set to true to record configuration data submissions from administrators or all users, partially or completely disabling this fix.",
+  "id": "GHSA-qv6f-rcv6-6q3x",
+  "modified": "2024-02-16T08:24:03.080443Z",
+  "published": "2022-05-24T17:39:12Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-21604"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/jenkins/commit/f1056bd814fc1f19ea241a101d649b8c143807e7"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jenkinsci/jenkins"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.jenkins.io/security/advisory/2021-01-13/#SECURITY-1923"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Improper handling of REST API XML deserialization errors in Jenkins"
 }

@@ -1,24 +1,70 @@
 {
-  "id": "GHSA-p5f8-qf24-24cj",
-  "summary": "Velocity execution without script right through tree macro",
-  "details": "### Impact\n\nIt's possible to execute a Velocity script without script right through the document tree.\n\nTo reproduce:\n\n* As a user without script right, create a document, e.g., named Nasty Title\n* Set the document's title to `$request.requestURI`\n* Click \"Save & View\"\n* Reload the page in the browser\n\nThe navigation panel displays a document named with the current URL, showing that the Velocity code has been executed even though the user doesn't have script right.\n\n### Patches\n\nThis has been patched in XWiki 14.10.7 and 15.2RC1.\n\n### Workarounds\n\nA possible workaround is to:\n* modify the page XWiki.DocumentTreeMacros\n* search for the code `#set ($discard = $translatedDocument.setTitle($translatedDocument.title))`\n* modify it into `#set ($discard = $translatedDocument.setcomment(''))`\n\n### References\n\n* https://jira.xwiki.org/browse/XWIKI-20625\n* https://github.com/xwiki/xwiki-platform/commit/41d7dca2d30084966ca6a7ee537f39ee8354a7e3\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-p5f8-qf24-24cj/GHSA-p5f8-qf24-24cj.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-index-tree-macro",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-index-tree-macro"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "8.3-rc-1"
+            },
+            {
+              "fixed": "14.10.7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-p5f8-qf24-24cj/GHSA-p5f8-qf24-24cj.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-index-tree-macro",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-index-tree-macro"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "15.0-rc-1"
+            },
+            {
+              "fixed": "15.2-rc-1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-50732"
   ],
-  "modified": "2023-12-21T21:58:59Z",
-  "published": "2023-12-19T21:39:31Z",
-  "related": [
-    "CVE-2023-50732"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-12-21T20:15:07Z",
     "cwe_ids": [
       "CWE-863"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-12-19T21:39:31Z"
+    "github_reviewed_at": "2023-12-19T21:39:31Z",
+    "nvd_published_at": "2023-12-21T20:15:07Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nIt's possible to execute a Velocity script without script right through the document tree.\n\nTo reproduce:\n\n* As a user without script right, create a document, e.g., named Nasty Title\n* Set the document's title to `$request.requestURI`\n* Click \"Save & View\"\n* Reload the page in the browser\n\nThe navigation panel displays a document named with the current URL, showing that the Velocity code has been executed even though the user doesn't have script right.\n\n### Patches\n\nThis has been patched in XWiki 14.10.7 and 15.2RC1.\n\n### Workarounds\n\nA possible workaround is to:\n* modify the page XWiki.DocumentTreeMacros\n* search for the code `#set ($discard = $translatedDocument.setTitle($translatedDocument.title))`\n* modify it into `#set ($discard = $translatedDocument.setcomment(''))`\n\n### References\n\n* https://jira.xwiki.org/browse/XWIKI-20625\n* https://github.com/xwiki/xwiki-platform/commit/41d7dca2d30084966ca6a7ee537f39ee8354a7e3\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
+  "id": "GHSA-p5f8-qf24-24cj",
+  "modified": "2023-12-21T21:58:59Z",
+  "published": "2023-12-19T21:39:31Z",
   "references": [
     {
       "type": "WEB",
@@ -41,61 +87,15 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-20625"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-index-tree-macro",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-index-tree-macro"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "8.3-rc-1"
-            },
-            {
-              "fixed": "14.10.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-p5f8-qf24-24cj/GHSA-p5f8-qf24-24cj.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-index-tree-macro",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-index-tree-macro"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "15.0-rc-1"
-            },
-            {
-              "fixed": "15.2-rc-1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-p5f8-qf24-24cj/GHSA-p5f8-qf24-24cj.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-50732"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Velocity execution without script right through tree macro"
 }

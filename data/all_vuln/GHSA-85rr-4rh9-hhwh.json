@@ -1,57 +1,17 @@
 {
-  "id": "GHSA-85rr-4rh9-hhwh",
-  "summary": "Memory leak in Nanopb",
-  "details": "### Impact\nDecoding specifically formed message can leak memory if dynamic allocation is enabled and an oneof field contains a static submessage that contains a dynamic field, and the message being decoded contains the submessage multiple times. This is rare in normal messages, but it is a concern when untrusted data is parsed.\n\n### Patches\nPreliminary patch is [available on git](https://github.com/nanopb/nanopb/commit/edf6dcbffee4d614ac0c2c1b258ab95185bdb6e9) and problem will be patched in versions 0.3.9.7 and 0.4.4 once testing has been completed.\n\n### Workarounds\nFollowing workarounds are available:\n* Set the option `no_unions` for the oneof field. This will generate fields as separate instead of C union, and avoids triggering the problematic code.\n* Set the type of the submessage field inside oneof to `FT_POINTER`. This way the whole submessage will be dynamically allocated and the problematic code is not executed.\n* Use an arena allocator for nanopb, to make sure all memory can be released afterwards.\n\n### References\nBug report: https://github.com/nanopb/nanopb/issues/615\n\n### For more information\nIf you have any questions or comments about this advisory, comment on the bug report linked above.",
-  "aliases": [
-    "CVE-2020-26243"
-  ],
-  "modified": "2023-11-08T04:03:15.888516Z",
-  "published": "2020-11-25T16:53:27Z",
-  "related": [
-    "CVE-2020-26243"
-  ],
-  "database_specific": {
-    "nvd_published_at": null,
-    "github_reviewed_at": "2020-11-25T16:52:43Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-119",
-      "CWE-20"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/nanopb/nanopb/security/advisories/GHSA-85rr-4rh9-hhwh"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-26243"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/nanopb/nanopb/issues/615"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/nanopb/nanopb/commit/4fe23595732b6f1254cfc11a9b8d6da900b55b0c"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/nanopb/nanopb/blob/2b48a361786dfb1f63d229840217a93aae064667/CHANGELOG.txt"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 0.3.9.6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-85rr-4rh9-hhwh/GHSA-85rr-4rh9-hhwh.json"
+      },
       "package": {
-        "name": "nanopb",
         "ecosystem": "PyPI",
+        "name": "nanopb",
         "purl": "pkg:pypi/nanopb"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0.3.2"
@@ -59,28 +19,27 @@
             {
               "fixed": "0.3.9.7"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "0.3.9.4.post3",
         "0.3.9.5",
         "0.3.9.6"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 0.3.9.6",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-85rr-4rh9-hhwh/GHSA-85rr-4rh9-hhwh.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-85rr-4rh9-hhwh/GHSA-85rr-4rh9-hhwh.json"
+      },
       "package": {
-        "name": "nanopb",
         "ecosystem": "PyPI",
+        "name": "nanopb",
         "purl": "pkg:pypi/nanopb"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0.4.0"
@@ -88,7 +47,8 @@
             {
               "fixed": "0.4.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -150,17 +110,57 @@
         "0.4.4.dev1188",
         "0.4.4.dev1192",
         "0.4.4.dev1193"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/11/GHSA-85rr-4rh9-hhwh/GHSA-85rr-4rh9-hhwh.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2020-26243"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-119",
+      "CWE-20"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-11-25T16:52:43Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nDecoding specifically formed message can leak memory if dynamic allocation is enabled and an oneof field contains a static submessage that contains a dynamic field, and the message being decoded contains the submessage multiple times. This is rare in normal messages, but it is a concern when untrusted data is parsed.\n\n### Patches\nPreliminary patch is [available on git](https://github.com/nanopb/nanopb/commit/edf6dcbffee4d614ac0c2c1b258ab95185bdb6e9) and problem will be patched in versions 0.3.9.7 and 0.4.4 once testing has been completed.\n\n### Workarounds\nFollowing workarounds are available:\n* Set the option `no_unions` for the oneof field. This will generate fields as separate instead of C union, and avoids triggering the problematic code.\n* Set the type of the submessage field inside oneof to `FT_POINTER`. This way the whole submessage will be dynamically allocated and the problematic code is not executed.\n* Use an arena allocator for nanopb, to make sure all memory can be released afterwards.\n\n### References\nBug report: https://github.com/nanopb/nanopb/issues/615\n\n### For more information\nIf you have any questions or comments about this advisory, comment on the bug report linked above.",
+  "id": "GHSA-85rr-4rh9-hhwh",
+  "modified": "2023-11-08T04:03:15.888516Z",
+  "published": "2020-11-25T16:53:27Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/nanopb/nanopb/security/advisories/GHSA-85rr-4rh9-hhwh"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-26243"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nanopb/nanopb/issues/615"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nanopb/nanopb/commit/4fe23595732b6f1254cfc11a9b8d6da900b55b0c"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/nanopb/nanopb/blob/2b48a361786dfb1f63d229840217a93aae064667/CHANGELOG.txt"
+    }
+  ],
+  "related": [
+    "CVE-2020-26243"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Memory leak in Nanopb"
 }

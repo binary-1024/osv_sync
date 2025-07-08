@@ -1,13 +1,46 @@
 {
-  "id": "MGASA-2021-0429",
-  "summary": "Updated openssl packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0429.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "openssl",
+        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.1l-1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "In order to decrypt SM2 encrypted data an application is expected to call\nthe API function EVP_PKEY_decrypt(). Typically an application will call\nthis function twice. The first time, on entry, the \"out\" parameter can be\nNULL and, on exit, the \"outlen\" parameter is populated with the buffer\nsize required to hold the decrypted plaintext. The application can then\nallocate a sufficiently sized buffer and call EVP_PKEY_decrypt() again,\nbut this time passing a non-NULL value for the \"out\" parameter. A bug in\nthe implementation of the SM2 decryption code means that the calculation\nof the buffer size required to hold the plaintext returned by the first\ncall to EVP_PKEY_decrypt() can be smaller than the actual size required\nby the second call. This can lead to a buffer overflow when\nEVP_PKEY_decrypt() is called by the application a second time with a\nbuffer that is too small. A malicious attacker who is able present SM2\ncontent for decryption to an application could cause attacker chosen\ndata to overflow the buffer by up to a maximum of 62 bytes altering the\ncontents of other data held after the buffer, possibly changing\napplication behaviour or causing the application to crash. The location\nof the buffer is application dependent but is typically heap allocated.\n(CVE-2021-3711)\n\nASN.1 strings are represented internally within OpenSSL as an ASN1_STRING\nstructure which contains a buffer holding the string data and a field\nholding the buffer length. This contrasts with normal C strings which are\nrepesented as a buffer for the string data which is terminated with a NUL\n(0) byte. Although not a strict requirement, ASN.1 strings that are\nparsed using OpenSSL's own \"d2i\" functions (and other similar parsing\nfunctions) as well as any string whose value has been set with the\nASN1_STRING_set() function will additionally NUL terminate the byte array\nin the ASN1_STRING structure. However, it is possible for applications to\ndirectly construct valid ASN1_STRING structures which do not NUL\nterminate the byte array by directly setting the \"data\" and \"length\"\nfields in the ASN1_STRING array. This can also happen by using the\nASN1_STRING_set0() function. Numerous OpenSSL functions that print ASN.1\ndata have been found to assume that the ASN1_STRING byte array will be\nNUL terminated, even though this is not guaranteed for strings that have\nbeen directly constructed. Where an application requests an ASN.1\nstructure to be printed, and where that ASN.1 structure contains\nASN1_STRINGs that have been directly constructed by the application\nwithout NUL terminating the \"data\" field, then a read buffer overrun can\noccur. The same thing can also occur during name constraints processing\nof certificates (for example if a certificate has been directly\nconstructed by the application instead of loading it via the OpenSSL\nparsing functions, and the certificate contains non NUL terminated\nASN1_STRING structures). It can also occur in the X509_get1_email(),\nX509_REQ_get1_email() and X509_get1_ocsp() functions. If a malicious\nactor can cause an application to directly construct an ASN1_STRING and\nthen process it through one of the affected OpenSSL functions then this\nissue could be hit. This might result in a crash (causing a Denial of\nService attack). It could also result in the disclosure of private\nmemory contents (such as private keys, or sensitive plaintext).\n(CVE-2021-3712)\n",
+  "id": "MGASA-2021-0429",
   "modified": "2021-09-23T04:01:14Z",
   "published": "2021-09-23T04:49:29Z",
-  "related": [
-    "CVE-2021-3711",
-    "CVE-2021-3712"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -30,43 +63,10 @@
       "url": "https://ubuntu.com/security/notices/USN-5051-1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "openssl",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/openssl?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.1.1l-1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0429.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-3711",
+    "CVE-2021-3712"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated openssl packages fix security vulnerability"
 }

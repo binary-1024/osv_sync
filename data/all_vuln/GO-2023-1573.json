@@ -1,17 +1,66 @@
 {
-  "id": "GO-2023-1573",
-  "summary": "Memory exhaustion via OCI image importer in github.com/containerd/containerd",
-  "details": "When importing an OCI image, there was no limit on the number of bytes read from the io.Reader passed into ImportIndex. A large number of bytes could be read from this and could cause a denial of service.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2023-1573.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "github.com/containerd/containerd/images/archive",
+            "symbols": [
+              "ImportIndex",
+              "onUntarJSON"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/containerd/containerd",
+        "purl": "pkg:golang/github.com/containerd/containerd"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.5.18"
+            },
+            {
+              "introduced": "1.6.0"
+            },
+            {
+              "fixed": "1.6.18"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-25153",
     "GHSA-259w-8hf6-59c2"
   ],
-  "modified": "2024-08-21T21:16:43Z",
-  "published": "2023-02-17T19:16:59Z",
+  "credits": [
+    {
+      "name": "@AdamKorcz"
+    },
+    {
+      "name": "@DavidKorczynski"
+    }
+  ],
   "database_specific": {
     "review_status": "REVIEWED",
     "url": "https://pkg.go.dev/vuln/GO-2023-1573"
   },
+  "details": "When importing an OCI image, there was no limit on the number of bytes read from the io.Reader passed into ImportIndex. A large number of bytes could be read from this and could cause a denial of service.",
+  "id": "GO-2023-1573",
+  "modified": "2024-08-21T21:16:43Z",
+  "published": "2023-02-17T19:16:59Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -30,55 +79,6 @@
       "url": "https://github.com/containerd/containerd/releases/tag/v1.6.18"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/containerd/containerd",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/containerd/containerd"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.5.18"
-            },
-            {
-              "introduced": "1.6.0"
-            },
-            {
-              "fixed": "1.6.18"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "github.com/containerd/containerd/images/archive",
-            "symbols": [
-              "ImportIndex",
-              "onUntarJSON"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2023-1573.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "@AdamKorcz"
-    },
-    {
-      "name": "@DavidKorczynski"
-    }
-  ]
+  "summary": "Memory exhaustion via OCI image importer in github.com/containerd/containerd"
 }

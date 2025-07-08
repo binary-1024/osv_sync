@@ -1,19 +1,66 @@
 {
-  "id": "GHSA-m99c-q26r-m7m7",
-  "summary": "Evmos vulnerable to unauthorized account creation with vesting module",
-  "details": "### Impact\n_What kind of vulnerability is it? Who is impacted?_\n\nUsing the vesting module, a malicious attacker can create a new vesting account at a given\naddress, before a contract is created on that address.\n\nAddresses of smart contracts deployed to the EVM are deterministic. Therefore, it would be possible for an attacker to front-run a contract creation and create a vesting account at that address. \nWhen an address has been initialized without any contract code deployed to it, it will not be possible to upload any afterwards. In the described attack, this would mean that a malicious actor could prevent smart contracts from being deployed correctly.\n\nIn order to remediate this, an alternative user flow is being implemented for the vesting module:\n- only the account receiving the vesting funds will be able to create such an account by calling the `CreateClawbackVestingAccount` method and defining a funder address\n- vesting and lockup periods can then be created by that funder address using `FundClawbackAccount`\n\n### Patches\n_Has the problem been patched? What versions should users upgrade to?_\n\n### Workarounds\n_Is there a way for users to fix or remediate the vulnerability without upgrading?_\n\n### References\n_Are there any links users can visit to find out more?_\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-m99c-q26r-m7m7/GHSA-m99c-q26r-m7m7.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/evmos/evmos/v13/x/vesting",
+        "purl": "pkg:golang/github.com/evmos/evmos/v13/x/vesting"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "13.0.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-m99c-q26r-m7m7/GHSA-m99c-q26r-m7m7.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/evmos/evmos/v13",
+        "purl": "pkg:golang/github.com/evmos/evmos/v13"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "13.0.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "GO-2024-2731"
   ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-04-17T17:37:23Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\n_What kind of vulnerability is it? Who is impacted?_\n\nUsing the vesting module, a malicious attacker can create a new vesting account at a given\naddress, before a contract is created on that address.\n\nAddresses of smart contracts deployed to the EVM are deterministic. Therefore, it would be possible for an attacker to front-run a contract creation and create a vesting account at that address. \nWhen an address has been initialized without any contract code deployed to it, it will not be possible to upload any afterwards. In the described attack, this would mean that a malicious actor could prevent smart contracts from being deployed correctly.\n\nIn order to remediate this, an alternative user flow is being implemented for the vesting module:\n- only the account receiving the vesting funds will be able to create such an account by calling the `CreateClawbackVestingAccount` method and defining a funder address\n- vesting and lockup periods can then be created by that funder address using `FundClawbackAccount`\n\n### Patches\n_Has the problem been patched? What versions should users upgrade to?_\n\n### Workarounds\n_Is there a way for users to fix or remediate the vulnerability without upgrading?_\n\n### References\n_Are there any links users can visit to find out more?_\n",
+  "id": "GHSA-m99c-q26r-m7m7",
   "modified": "2024-06-10T20:09:07Z",
   "published": "2024-04-17T17:37:23Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-04-17T17:37:23Z"
-  },
   "references": [
     {
       "type": "WEB",
@@ -28,53 +75,6 @@
       "url": "https://pkg.go.dev/vuln/GO-2024-2731"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/evmos/evmos/v13/x/vesting",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/evmos/evmos/v13/x/vesting"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "13.0.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-m99c-q26r-m7m7/GHSA-m99c-q26r-m7m7.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/evmos/evmos/v13",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/evmos/evmos/v13"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "13.0.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/04/GHSA-m99c-q26r-m7m7/GHSA-m99c-q26r-m7m7.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Evmos vulnerable to unauthorized account creation with vesting module"
 }

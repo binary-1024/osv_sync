@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-f7f6-9jq7-3rqj",
-  "summary": "estree-util-value-to-estree allows prototype pollution in generated ESTree",
-  "details": "### Impact\nWhen generating an ESTree from a value with a property named `__proto__`, `valueToEstree` would generate an object that specifies a prototype instead.\n\nExample:\n\n```js\nimport { generate } from 'astring'\nimport { valueToEstree } from 'estree-util-value-to-estree'\n\nconst estree = valueToEstree({\n  ['__proto__']: {}\n})\nconst code = generate(estree)\nconsole.log(code)\n```\n\nOutput:\n\n```js\n{\n  \"__proto__\": {}\n}\n```\n\n### Patches\nThis was fixed in version [3.3.3](https://github.com/remcohaszing/estree-util-value-to-estree/releases/tag/v3.3.3).\n\n### Workarounds\nIf you control the input, don\u2019t specify a property named `__proto__`. If you don\u2019t control the output, strip any properties named `__proto__` before passing it to `valueToEstree`.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-f7f6-9jq7-3rqj/GHSA-f7f6-9jq7-3rqj.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "estree-util-value-to-estree",
+        "purl": "pkg:npm/estree-util-value-to-estree"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.3.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-32014"
   ],
-  "modified": "2025-04-07T19:57:11.311550Z",
-  "published": "2025-04-07T19:09:48Z",
   "database_specific": {
-    "nvd_published_at": "2025-04-07T15:15:44Z",
     "cwe_ids": [
       "CWE-1321"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-07T19:09:48Z"
+    "github_reviewed_at": "2025-04-07T19:09:48Z",
+    "nvd_published_at": "2025-04-07T15:15:44Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\nWhen generating an ESTree from a value with a property named `__proto__`, `valueToEstree` would generate an object that specifies a prototype instead.\n\nExample:\n\n```js\nimport { generate } from 'astring'\nimport { valueToEstree } from 'estree-util-value-to-estree'\n\nconst estree = valueToEstree({\n  ['__proto__']: {}\n})\nconst code = generate(estree)\nconsole.log(code)\n```\n\nOutput:\n\n```js\n{\n  \"__proto__\": {}\n}\n```\n\n### Patches\nThis was fixed in version [3.3.3](https://github.com/remcohaszing/estree-util-value-to-estree/releases/tag/v3.3.3).\n\n### Workarounds\nIf you control the input, don\u2019t specify a property named `__proto__`. If you don\u2019t control the output, strip any properties named `__proto__` before passing it to `valueToEstree`.",
+  "id": "GHSA-f7f6-9jq7-3rqj",
+  "modified": "2025-04-07T19:57:11.311550Z",
+  "published": "2025-04-07T19:09:48Z",
   "references": [
     {
       "type": "WEB",
@@ -34,36 +58,12 @@
       "url": "https://github.com/remcohaszing/estree-util-value-to-estree"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "estree-util-value-to-estree",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/estree-util-value-to-estree"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.3.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-f7f6-9jq7-3rqj/GHSA-f7f6-9jq7-3rqj.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:L/VA:N/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:L/VA:N/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "estree-util-value-to-estree allows prototype pollution in generated ESTree"
 }

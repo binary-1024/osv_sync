@@ -1,17 +1,46 @@
 {
-  "id": "MGASA-2019-0407",
-  "summary": "Updated apache packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0407.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "apache",
+        "purl": "pkg:rpm/mageia/apache?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.41-1.2.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "The updated packages fix security vulnerabilities:\n\nSome HTTP/2 implementations are vulnerable to unconstrained interal data\nbuffering, potentially leading to a denial of service. The attacker opens\nthe HTTP/2 window so the peer can send without constraint; however, they\nleave the TCP window closed so the peer cannot actually write (many of)\nthe bytes on the wire. The attacker then sends a stream of requests for\na large response object. Depending on how the servers queue the responses,\nthis can consume excess memory, CPU, or both. (CVE-2019-9517)\n\nHTTP/2 (2.4.20 through 2.4.39) very early pushes, for example configured\nwith \"H2PushResource\", could lead to an overwrite of memory in the pushing\nrequest's pool, leading to crashes. The memory copied is that of the\nconfigured push link header values, not data supplied by the client.\n(CVE-2019-10081)\n\nIn Apache HTTP Server 2.4.18-2.4.39, using fuzzed network input, the http/2\nsession handling could be made to read memory after being freed, during\nconnection shutdown. (CVE-2019-10082)\n\nIn Apache HTTP Server 2.4.0-2.4.39, a limited cross-site scripting issue\nwas reported affecting the mod_proxy error page. An attacker could cause\nthe link on the error page to be malformed and instead point to a page of\ntheir choice. This would only be exploitable where a server was set up\nwith proxying enabled but was misconfigured in such a way that the Proxy\nError page was displayed. (CVE-2019-10092)\n\nIn Apache HTTP Server 2.4.32-2.4.39, when mod_remoteip was configured to\nuse a trusted intermediary proxy server using the \"PROXY\" protocol, a\nspecially crafted PROXY header could trigger a stack buffer overflow or\nNULL pointer deference. This vulnerability could only be triggered by a\ntrusted proxy and not by untrusted HTTP clients. (CVE-2019-10097)\n\nIn Apache HTTP server 2.4.0 to 2.4.39, Redirects configured with\nmod_rewrite that were intended to be self-referential might be fooled by\nencoded newlines and redirect instead to an unexpected URL within\nthe request URL. (CVE-2019-10098)\n",
+  "id": "MGASA-2019-0407",
   "modified": "2019-12-25T18:51:42Z",
   "published": "2019-12-25T19:08:41Z",
-  "related": [
-    "CVE-2019-10081",
-    "CVE-2019-10082",
-    "CVE-2019-10092",
-    "CVE-2019-10097",
-    "CVE-2019-10098",
-    "CVE-2019-9517"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -38,43 +67,14 @@
       "url": "https://lists.opensuse.org/opensuse-updates/2019-09/msg00012.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "apache",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/apache?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.4.41-1.2.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0407.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2019-10081",
+    "CVE-2019-10082",
+    "CVE-2019-10092",
+    "CVE-2019-10097",
+    "CVE-2019-10098",
+    "CVE-2019-9517"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated apache packages fix security vulnerabilities"
 }

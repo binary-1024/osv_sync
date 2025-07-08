@@ -1,15 +1,134 @@
 {
-  "id": "SUSE-SU-2020:3737-1",
-  "summary": "Security update for python-pip, python-scripttest",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3737-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python3-pip": "20.0.2-6.12.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP1",
+        "name": "python-pip",
+        "purl": "pkg:rpm/suse/python-pip&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20.0.2-6.12.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3737-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python3-pip": "20.0.2-6.12.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP2",
+        "name": "python-pip",
+        "purl": "pkg:rpm/suse/python-pip&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20.0.2-6.12.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3737-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python2-pip": "20.0.2-6.12.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Module for Python 2 15 SP1",
+        "name": "python-pip",
+        "purl": "pkg:rpm/suse/python-pip&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Python%202%2015%20SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20.0.2-6.12.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3737-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "python2-pip": "20.0.2-6.12.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Module for Python 2 15 SP2",
+        "name": "python-pip",
+        "purl": "pkg:rpm/suse/python-pip&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Python%202%2015%20SP2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20.0.2-6.12.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for python-pip, python-scripttest fixes the following issues:\n\n- Update in SLE-15 (bsc#1175297, jsc#ECO-3035, jsc#PM-2318)\n\npython-pip was updated to 20.0.2:\n\n* Fix a regression in generation of compatibility tags\n* Rename an internal module, to avoid ImportErrors due to improper uninstallation\n* Switch to a dedicated CLI tool for vendoring dependencies.\n* Remove wheel tag calculation from pip and use packaging.tags. This should provide more tags ordered better than in prior releases.\n*  Deprecate setup.py-based builds that do not generate an .egg-info directory.\n*  The pip>=20 wheel cache is not retro-compatible with previous versions. Until pip 21.0, pip will continue to take advantage of existing legacy cache entries.\n*  Deprecate undocumented --skip-requirements-regex option.\n*  Deprecate passing install-location-related options via --install-option.\n*  Use literal 'abi3' for wheel tag on CPython 3.x, to align with PEP 384 which only defines it for this platform.\n*  Remove interpreter-specific major version tag e.g. cp3-none-any from consideration. This behavior was not documented strictly, and this tag in particular is not useful. Anyone with a use case can create an issue with pypa/packaging.\n*  Wheel processing no longer permits wheels containing more than one top-level .dist-info directory.\n*  Support for the git+git@ form of VCS requirement is being deprecated and will be removed in pip 21.0. Switch to git+https:// or git+ssh://. git+git:// also works but its use is discouraged as it is insecure.\n*  Default to doing a user install (as if --user was passed) when the main site-packages directory is not writeable and user site-packages are enabled.\n*  Warn if a path in PATH starts with tilde during pip install.\n*  Cache wheels built from Git requirements that are considered immutable, because they point to a commit hash.\n*  Add option --no-python-version-warning to silence warnings related to deprecation of Python versions.\n*  Cache wheels that pip wheel built locally, matching what pip install does. This particularly helps performance in workflows where pip wheel is used for building before installing. Users desiring the original behavior can use pip wheel --no-cache-dir\n*  Display CA information in pip debug.\n*  Show only the filename (instead of full URL), when downloading from PyPI.\n*  Suggest a more robust command to upgrade pip itself to avoid confusion when the current pip command is not available as pip.\n*  Define all old pip console script entrypoints to prevent import issues in stale wrapper scripts.\n*  The build step of pip wheel now builds all wheels to a cache first, then copies them to the wheel directory all at once. Before, it built them to a temporary directory and moved them to the wheel directory one by one.\n*  Expand ~ prefix to user directory in path options, configs, and environment variables. Values that may be either URL or path are not currently supported, to avoid ambiguity:\n\n   --find-links\n   --constraint, -c\n   --requirement, -r\n   --editable, -e\n\n*  Correctly handle system site-packages, in virtual environments created with venv (PEP 405).\n*  Fix case sensitive comparison of pip freeze when used with -r option.\n*  Enforce PEP 508 requirement format in pyproject.toml build-system.requires.\n*  Make ensure_dir() also ignore ENOTEMPTY as seen on Windows.\n*  Fix building packages which specify backend-path in pyproject.toml.\n*  Do not attempt to run setup.py clean after a pep517 build error, since a setup.py may not exist in that case.\n*  Fix passwords being visible in the index-url in 'Downloading <url>' message.\n*  Change method from shutil.remove to shutil.rmtree in noxfile.py.\n*  Skip running tests which require subversion, when svn isn't installed\n*  Fix not sending client certificates when using --trusted-host.\n*  Make sure pip wheel never outputs pure python wheels with a python implementation tag. Better fix/workaround for #3025 by using a per-implementation wheel cache instead of caching pure python wheels with an implementation tag in their name.\n*  Include subdirectory URL fragments in cache keys.\n*  Fix typo in warning message when any of --build-option, --global-option and --install-option is used in requirements.txt\n*  Fix the logging of cached HTTP response shown as downloading.\n*  Effectively disable the wheel cache when it is not writable, as is the case with the http cache.\n*  Correctly handle relative cache directory provided via --cache-dir.\n",
+  "id": "SUSE-SU-2020:3737-1",
   "modified": "2025-05-02T04:30:11.704369Z",
   "published": "2020-12-09T17:21:03Z",
-  "related": [
-    "CVE-2019-20916"
-  ],
-  "upstream": [
-    "CVE-2019-20916"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -28,131 +147,12 @@
       "url": "https://www.suse.com/security/cve/CVE-2019-20916"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "python-pip",
-        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP1",
-        "purl": "pkg:rpm/suse/python-pip&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP1"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "20.0.2-6.12.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "python3-pip": "20.0.2-6.12.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3737-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "python-pip",
-        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP2",
-        "purl": "pkg:rpm/suse/python-pip&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP2"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "20.0.2-6.12.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "python3-pip": "20.0.2-6.12.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3737-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "python-pip",
-        "ecosystem": "SUSE:Linux Enterprise Module for Python 2 15 SP1",
-        "purl": "pkg:rpm/suse/python-pip&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Python%202%2015%20SP1"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "20.0.2-6.12.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "python2-pip": "20.0.2-6.12.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3737-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "python-pip",
-        "ecosystem": "SUSE:Linux Enterprise Module for Python 2 15 SP2",
-        "purl": "pkg:rpm/suse/python-pip&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Python%202%2015%20SP2"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "20.0.2-6.12.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "python2-pip": "20.0.2-6.12.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2020:3737-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2019-20916"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for python-pip, python-scripttest",
+  "upstream": [
+    "CVE-2019-20916"
+  ]
 }

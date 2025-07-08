@@ -1,25 +1,58 @@
 {
-  "id": "GHSA-jhww-fx2j-3rf7",
-  "summary": "FoodCoopShop Server-Side Request Forgery vulnerability",
-  "details": "There is a potential SSRF vulnerability in foodcoopshop. Since there is no security policy on your Github, I tried to use the emails to contact you.\n\nThe potential issue is in the Network module, where a manufacturer account can use the /api/updateProducts.json endpoint to make the server send a request to arbitrary host.\nFor example, use\n```\ndata[data][0][remoteProductId]=352&data[data][0][image]=http://localhost:8888/\n```\nwill make the server send a request to localhost:8888. This means that it can be used as a proxy into the internal network where the server is.\n\nTo make matters worse, the checks on valid image is not enough. There is time of check time of use issue there.\nFor example, by using a custom server that returns 200 on HEAD requests, then return a valid image on first GET request and then a 302 redirect to final target on second GET request, the server will copy whatever file\nat the redirect destination, making this a full SSRF.\n(An example python server that can do this is at https://pastebin.com/8K5Brwbq This will make the server download whatever at the redirect target)\n\nYou can check https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html for more information on SSRF, their impact and how to properly fix it.\n\nRegards",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-jhww-fx2j-3rf7/GHSA-jhww-fx2j-3rf7.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "foodcoopshop/foodcoopshop",
+        "purl": "pkg:composer/foodcoopshop/foodcoopshop"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.2.0"
+            },
+            {
+              "fixed": "3.6.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "v3.2.0",
+        "v3.2.1",
+        "v3.2.2",
+        "v3.3.0",
+        "v3.4.0",
+        "v3.4.1",
+        "v3.4.2",
+        "v3.5.0",
+        "v3.5.1",
+        "v3.6.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-46725"
   ],
-  "modified": "2024-02-16T08:23:53.682135Z",
-  "published": "2023-11-02T20:53:19Z",
-  "related": [
-    "CVE-2023-46725"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-11-02T15:15:08Z",
     "cwe_ids": [
       "CWE-367",
       "CWE-918"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-11-02T20:53:19Z"
+    "github_reviewed_at": "2023-11-02T20:53:19Z",
+    "nvd_published_at": "2023-11-02T15:15:08Z",
+    "severity": "HIGH"
   },
+  "details": "There is a potential SSRF vulnerability in foodcoopshop. Since there is no security policy on your Github, I tried to use the emails to contact you.\n\nThe potential issue is in the Network module, where a manufacturer account can use the /api/updateProducts.json endpoint to make the server send a request to arbitrary host.\nFor example, use\n```\ndata[data][0][remoteProductId]=352&data[data][0][image]=http://localhost:8888/\n```\nwill make the server send a request to localhost:8888. This means that it can be used as a proxy into the internal network where the server is.\n\nTo make matters worse, the checks on valid image is not enough. There is time of check time of use issue there.\nFor example, by using a custom server that returns 200 on HEAD requests, then return a valid image on first GET request and then a 302 redirect to final target on second GET request, the server will copy whatever file\nat the redirect destination, making this a full SSRF.\n(An example python server that can do this is at https://pastebin.com/8K5Brwbq This will make the server download whatever at the redirect target)\n\nYou can check https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html for more information on SSRF, their impact and how to properly fix it.\n\nRegards",
+  "id": "GHSA-jhww-fx2j-3rf7",
+  "modified": "2024-02-16T08:23:53.682135Z",
+  "published": "2023-11-02T20:53:19Z",
   "references": [
     {
       "type": "WEB",
@@ -46,48 +79,15 @@
       "url": "https://pastebin.com/8K5Brwbq"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "foodcoopshop/foodcoopshop",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/foodcoopshop/foodcoopshop"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.2.0"
-            },
-            {
-              "fixed": "3.6.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "v3.2.0",
-        "v3.2.1",
-        "v3.2.2",
-        "v3.3.0",
-        "v3.4.0",
-        "v3.4.1",
-        "v3.4.2",
-        "v3.5.0",
-        "v3.5.1",
-        "v3.6.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-jhww-fx2j-3rf7/GHSA-jhww-fx2j-3rf7.json"
-      }
-    }
+  "related": [
+    "CVE-2023-46725"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "FoodCoopShop Server-Side Request Forgery vulnerability"
 }

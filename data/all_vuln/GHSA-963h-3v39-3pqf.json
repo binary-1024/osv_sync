@@ -1,22 +1,69 @@
 {
-  "id": "GHSA-963h-3v39-3pqf",
-  "summary": "Vega vulnerable to Cross-site Scripting via RegExp.prototype[@@replace]",
-  "details": "## Impact\n\nUsers running Vega/Vega-lite JSON definitions could run unexpected JavaScript code when drawing graphs, unless the library is used with the `vega-interpreter`.\n\n## Workarounds\n\n- Use `vega` with [expression interpreter](https://vega.github.io/vega/usage/interpreter/)\n- Upgrade to a [newer Vega version](https://github.com/vega/vega/releases/tag/v5.32.0) (`5.32.0`)\n\n### POC Summary\n\nCalling `replace` with a `RegExp`-like pattern calls `RegExp.prototype[@@replace]`, which can then call an attacker-controlled `exec` function.\n\n### POC Details\n\nConsider the function call `replace('foo', {__proto__: /h/.constructor.prototype, global: false})`. Since `pattern` has `RegExp.prototype[@@replace]`, `pattern.exec('foo')` winds up being called.\n\nThe resulting malicious call looks like this:\n```\nreplace(<string argument>, {__proto__: /h/.constructor.prototype, exec: <function>, global: false})\n```\n\nSince functions cannot be returned from this, an attacker that wishes to escalate to XSS must abuse `event.view` to gain access to `eval`.\n\n### Reproduction steps\n\n```\n{\"$schema\":\"https://vega.github.io/schema/vega/v5.json\",\"signals\":[{\"name\":\"a\",\"on\":[{\"events\":\"body:mousemove{99999}\",\"update\":\"replace('alert(1)',{__proto__:/h/.constructor.prototype,exec:event.view.eval,global:false})\"}]}]}\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-963h-3v39-3pqf/GHSA-963h-3v39-3pqf.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vega",
+        "purl": "pkg:npm/vega"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.32.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-963h-3v39-3pqf/GHSA-963h-3v39-3pqf.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vega-functions",
+        "purl": "pkg:npm/vega-functions"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.17.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-27793"
   ],
-  "modified": "2025-03-27T18:08:39.051781Z",
-  "published": "2025-03-27T18:00:24Z",
   "database_specific": {
-    "nvd_published_at": "2025-03-27T14:15:54Z",
     "cwe_ids": [
       "CWE-79",
       "CWE-87"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-03-27T18:00:24Z"
+    "github_reviewed_at": "2025-03-27T18:00:24Z",
+    "nvd_published_at": "2025-03-27T14:15:54Z",
+    "severity": "MODERATE"
   },
+  "details": "## Impact\n\nUsers running Vega/Vega-lite JSON definitions could run unexpected JavaScript code when drawing graphs, unless the library is used with the `vega-interpreter`.\n\n## Workarounds\n\n- Use `vega` with [expression interpreter](https://vega.github.io/vega/usage/interpreter/)\n- Upgrade to a [newer Vega version](https://github.com/vega/vega/releases/tag/v5.32.0) (`5.32.0`)\n\n### POC Summary\n\nCalling `replace` with a `RegExp`-like pattern calls `RegExp.prototype[@@replace]`, which can then call an attacker-controlled `exec` function.\n\n### POC Details\n\nConsider the function call `replace('foo', {__proto__: /h/.constructor.prototype, global: false})`. Since `pattern` has `RegExp.prototype[@@replace]`, `pattern.exec('foo')` winds up being called.\n\nThe resulting malicious call looks like this:\n```\nreplace(<string argument>, {__proto__: /h/.constructor.prototype, exec: <function>, global: false})\n```\n\nSince functions cannot be returned from this, an attacker that wishes to escalate to XSS must abuse `event.view` to gain access to `eval`.\n\n### Reproduction steps\n\n```\n{\"$schema\":\"https://vega.github.io/schema/vega/v5.json\",\"signals\":[{\"name\":\"a\",\"on\":[{\"events\":\"body:mousemove{99999}\",\"update\":\"replace('alert(1)',{__proto__:/h/.constructor.prototype,exec:event.view.eval,global:false})\"}]}]}\n```",
+  "id": "GHSA-963h-3v39-3pqf",
+  "modified": "2025-03-27T18:08:39.051781Z",
+  "published": "2025-03-27T18:00:24Z",
   "references": [
     {
       "type": "WEB",
@@ -43,59 +90,12 @@
       "url": "https://vega.github.io/vega/usage/interpreter"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "vega",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vega"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.32.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-963h-3v39-3pqf/GHSA-963h-3v39-3pqf.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vega-functions",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vega-functions"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.17.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-963h-3v39-3pqf/GHSA-963h-3v39-3pqf.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Vega vulnerable to Cross-site Scripting via RegExp.prototype[@@replace]"
 }

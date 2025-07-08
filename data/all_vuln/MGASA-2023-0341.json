@@ -1,19 +1,46 @@
 {
-  "id": "MGASA-2023-0341",
-  "summary": "Updated vim packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0341.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:9",
+        "name": "vim",
+        "purl": "pkg:rpm/mageia/vim?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.0.2130-2.mga9"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "The updated packages fix security vulnerabilities\n\nWhen closing a window, vim may try to access already freed window\nstructure. Exploitation beyond crashing the application has not been\nshown to be viable. (CVE-2023-48231)\n\nA floating point exception may occur when calculating the line offset\nfor overlong lines and smooth scrolling is enabled and the cpo-settings\ninclude the 'n' flag. This may happen when a window border is present\nand when the wrapped line continues on the next physical line directly\nin the window border because the 'cpo' setting includes the 'n' flag.\nOnly users with non-default settings are affected and the exception\nshould only result in a crash. (CVE-2023-48232)\n\nIf the count after the :s command is larger than what fits into a\n(signed) long variable, abort with e_value_too_large. Impact is low,\nuser interaction is required and a crash may not even happen in all\nsituations. (CVE-2023-48233)\n\nWhen getting the count for a normal mode z command, it may overflow for\nlarge counts given. Impact is low, user interaction is required and a\ncrash may not even happen in all situations. (CVE-2023-48234)\n\nWhen parsing relative ex addresses one may unintentionally cause an\noverflow. Ironically this happens in the existing overflow check,\nbecause the line number becomes negative and LONG_MAX - lnum will cause\nthe overflow. Impact is low, user interaction is required and a crash\nmay not even happen in all situations. (CVE-2023-48235)\n\nWhen using the z= command, the user may overflow the count with values\nlarger than MAX_INT. Impact is low, user interaction is required and a\ncrash may not even happen in all situations. (CVE-2023-48236)\n\nIn affected versions when shifting lines in operator pending mode and\nusing a very large value, it may be possible to overflow the size of\ninteger. Impact is low, user interaction is required and a crash may not\neven happen in all situations. (CVE-2023-48237)\n\nWhen executing a `:s` command for the very first time and using a\nsub-replace-special atom inside the substitution part, it is possible\nthat the recursive `:s` call causes free-ing of memory which may later\nthen be accessed by the initial `:s` command. The user must\nintentionally execute the payload and the whole process is a bit tricky\nto do since it seems to work only reliably for the very first :s\ncommand. It may also cause a crash of Vim. (CVE-2023-48706)\n\nThe update fixes haproxy configuration paths used for syntax coloration.\n",
+  "id": "MGASA-2023-0341",
   "modified": "2023-12-08T10:35:39Z",
   "published": "2023-12-08T10:55:49Z",
-  "related": [
-    "CVE-2023-48231",
-    "CVE-2023-48232",
-    "CVE-2023-48233",
-    "CVE-2023-48234",
-    "CVE-2023-48235",
-    "CVE-2023-48236",
-    "CVE-2023-48237",
-    "CVE-2023-48706"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -32,43 +59,16 @@
       "url": "https://www.openwall.com/lists/oss-security/2023/11/22/3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "vim",
-        "ecosystem": "Mageia:9",
-        "purl": "pkg:rpm/mageia/vim?arch=source&distro=mageia-9"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.0.2130-2.mga9"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2023-0341.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-48231",
+    "CVE-2023-48232",
+    "CVE-2023-48233",
+    "CVE-2023-48234",
+    "CVE-2023-48235",
+    "CVE-2023-48236",
+    "CVE-2023-48237",
+    "CVE-2023-48706"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated vim packages fix security vulnerabilities"
 }

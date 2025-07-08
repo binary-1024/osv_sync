@@ -1,24 +1,46 @@
 {
-  "id": "MGASA-2023-0088",
-  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0088.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.98-1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-linus update is based on upstream 5.15.98 and fixes atleast the\nfollowing security issues:\n\nA regression exists in the Linux Kernel within KVM: nVMX that allowed for\nspeculative execution attacks. L2 can carry out Spectre v2 attacks on L1\ndue to L1 thinking it doesn't need retpolines or IBPB after running L2\ndue to KVM (L0) advertising eIBRS support to L1. An attacker at L2 with\ncode execution can execute code on an indirect branch on the host machine\n(CVE-2022-2196).\n\nA double-free memory flaw was found in the Linux kernel. The Intel GVT-g\ngraphics driver triggers VGA card system resource overload, causing a\nfail in the intel_gvt_dma_map_guest_page function. This issue could allow\na local user to crash the system (CVE-2022-3707).\n\nA flaw was found in the Linux kernel's Layer 2 Tunneling Protocol (L2TP).\nA missing lock when clearing sk_user_data can lead to a race condition\nand NULL pointer dereference. A local user could use this flaw to\npotentially crash the system causing a denial of service (CVE-2022-4129).\n\nA use-after-free flaw caused by a race among the superblock operations in\nthe gadgetfs Linux driver was found. It could be triggered by yanking out\na device that is running the gadgetfs side (CVE-2022-4382).\n\nA flaw NULL Pointer Dereference in the Linux kernel NTFS3 driver function\nattr_punch_hole() was found. A local user could use this flaw to crash\nthe system (CVE-2022-4842).\n\nWhen SMT is enabled, certain AMD processors may speculatively execute\ninstructions using a target from the sibling thread after an SMT mode\nswitch potentially resulting in information disclosure (CVE-2022-27672).\n\nA buffer overflow vulnerability was found in the Netfilter subsystem in\nthe Linux Kernel. This issue could allow the leakage of both stack and\nheap addresses, and potentially allow Local Privilege Escalation to the\nroot user via arbitrary code execution (CVE-2023-0179).\n\nA NULL pointer dereference flaw was found in rawv6_push_pending_frames\nin net/ipv6/raw.c in the network subcomponent in the Linux kernel. This\nflaw causes the system to crash (CVE-2023-0394).\n\nA memory corruption flaw was found in the Linux kernel\u2019s human interface\ndevice (HID) subsystem in how a user inserts a malicious USB device. This\nflaw allows a local user to crash or potentially escalate their privileges\non the system (CVE-2023-1073).\n\nA memory leak flaw was found in the Linux kernel's Stream Control\nTransmission Protocol. This issue may occur when a user starts a malicious\nnetworking service and someone connects to this service. This could allow a\nlocal user to starve resources, causing a denial of service (CVE-2023-1074).\n\nrds: rds_rm_zerocopy_callback() use list_first_entry() (CVE-2023-1078).\n\nAn integer overflow flaw was found in the Linux kernel\u2019s wireless RNDIS\nUSB device driver in how a user installs a malicious USB device. This\nflaw allows a local user to crash or potentially escalate their privileges\non the system (CVE-2023-23559).\n\nThere is a double free in net/mpls/af_mpls.c upon an allocation failure\n(for registering the sysctl table under a new location) during the\nrenaming of a device (CVE-2023-26545).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2023-0088",
   "modified": "2023-03-11T17:55:30Z",
   "published": "2023-03-11T19:00:39Z",
-  "related": [
-    "CVE-2022-2196",
-    "CVE-2022-27672",
-    "CVE-2022-3707",
-    "CVE-2022-4129",
-    "CVE-2022-4382",
-    "CVE-2022-4842",
-    "CVE-2023-0179",
-    "CVE-2023-0394",
-    "CVE-2023-1073",
-    "CVE-2023-1074",
-    "CVE-2023-1078",
-    "CVE-2023-23559",
-    "CVE-2023-26545"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -69,43 +91,21 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.98"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.15.98-1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2023-0088.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-2196",
+    "CVE-2022-27672",
+    "CVE-2022-3707",
+    "CVE-2022-4129",
+    "CVE-2022-4382",
+    "CVE-2022-4842",
+    "CVE-2023-0179",
+    "CVE-2023-0394",
+    "CVE-2023-1073",
+    "CVE-2023-1074",
+    "CVE-2023-1078",
+    "CVE-2023-23559",
+    "CVE-2023-26545"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fix security vulnerabilities"
 }

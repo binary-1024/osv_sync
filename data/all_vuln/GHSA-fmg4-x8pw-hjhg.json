@@ -1,25 +1,46 @@
 {
-  "id": "GHSA-fmg4-x8pw-hjhg",
-  "summary": "Fiber has Insecure CORS Configuration, Allowing Wildcard Origin with Credentials",
-  "details": "The CORS middleware allows for insecure configurations that could potentially expose the application to multiple CORS-related vulnerabilities. Specifically, it allows setting the Access-Control-Allow-Origin header to a wildcard (\"*\") while also having the Access-Control-Allow-Credentials set to true, which goes against recommended security best practices.\n\n## Impact\nThe impact of this misconfiguration is high as it can lead to unauthorized access to sensitive user data and expose the system to various types of attacks listed in the PortSwigger article linked in the references.\n\n## Proof of Concept\nThe code in cors.go allows setting a wildcard in the AllowOrigins while having AllowCredentials set to true, which could lead to various vulnerabilities.\n\n## Potential Solution\nHere is a potential solution to ensure the CORS configuration is secure:\n\n```go\nfunc New(config ...Config) fiber.Handler {\n    if cfg.AllowCredentials && cfg.AllowOrigins == \"*\" {\n        panic(\"[CORS] Insecure setup, 'AllowCredentials' is set to true, and 'AllowOrigins' is set to a wildcard.\")\n    }\n    // Return new handler goes below\n}\n\nThe middleware will not allow insecure configurations when using `AllowCredentials` and `AllowOrigins`.\n```\n\n## Workarounds\nFor the meantime, users are advised to manually validate the CORS configurations in their implementation to ensure that they do not allow a wildcard origin when credentials are enabled. The browser fetch api, browsers and utilities that enforce CORS policies are not affected by this.\n\n## References\n[MDN Web Docs on CORS Errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSNotSupportingCredentials)\n[CodeQL on CORS Misconfiguration](https://codeql.github.com/codeql-query-help/javascript/js-cors-misconfiguration-for-credentials/)\n[PortSwigger on Exploiting CORS Misconfigurations](http://blog.portswigger.net/2016/10/exploiting-cors-misconfigurations-for.html)\n[WhatWG CORS protocol and credentials ](https://fetch.spec.whatwg.org/#cors-protocol-and-credentials)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-fmg4-x8pw-hjhg/GHSA-fmg4-x8pw-hjhg.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/gofiber/fiber/v2",
+        "purl": "pkg:golang/github.com/gofiber/fiber/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.52.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-25124",
     "GO-2024-2574"
   ],
-  "modified": "2024-05-20T20:13:52.203496Z",
-  "published": "2024-02-22T18:25:18Z",
-  "related": [
-    "CVE-2024-25124"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-02-21T21:15:09Z",
     "cwe_ids": [
       "CWE-346"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-02-22T18:25:18Z"
+    "github_reviewed_at": "2024-02-22T18:25:18Z",
+    "nvd_published_at": "2024-02-21T21:15:09Z",
+    "severity": "CRITICAL"
   },
+  "details": "The CORS middleware allows for insecure configurations that could potentially expose the application to multiple CORS-related vulnerabilities. Specifically, it allows setting the Access-Control-Allow-Origin header to a wildcard (\"*\") while also having the Access-Control-Allow-Credentials set to true, which goes against recommended security best practices.\n\n## Impact\nThe impact of this misconfiguration is high as it can lead to unauthorized access to sensitive user data and expose the system to various types of attacks listed in the PortSwigger article linked in the references.\n\n## Proof of Concept\nThe code in cors.go allows setting a wildcard in the AllowOrigins while having AllowCredentials set to true, which could lead to various vulnerabilities.\n\n## Potential Solution\nHere is a potential solution to ensure the CORS configuration is secure:\n\n```go\nfunc New(config ...Config) fiber.Handler {\n    if cfg.AllowCredentials && cfg.AllowOrigins == \"*\" {\n        panic(\"[CORS] Insecure setup, 'AllowCredentials' is set to true, and 'AllowOrigins' is set to a wildcard.\")\n    }\n    // Return new handler goes below\n}\n\nThe middleware will not allow insecure configurations when using `AllowCredentials` and `AllowOrigins`.\n```\n\n## Workarounds\nFor the meantime, users are advised to manually validate the CORS configurations in their implementation to ensure that they do not allow a wildcard origin when credentials are enabled. The browser fetch api, browsers and utilities that enforce CORS policies are not affected by this.\n\n## References\n[MDN Web Docs on CORS Errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSNotSupportingCredentials)\n[CodeQL on CORS Misconfiguration](https://codeql.github.com/codeql-query-help/javascript/js-cors-misconfiguration-for-credentials/)\n[PortSwigger on Exploiting CORS Misconfigurations](http://blog.portswigger.net/2016/10/exploiting-cors-misconfigurations-for.html)\n[WhatWG CORS protocol and credentials ](https://fetch.spec.whatwg.org/#cors-protocol-and-credentials)",
+  "id": "GHSA-fmg4-x8pw-hjhg",
+  "modified": "2024-05-20T20:13:52.203496Z",
+  "published": "2024-02-22T18:25:18Z",
   "references": [
     {
       "type": "WEB",
@@ -62,36 +83,15 @@
       "url": "http://blog.portswigger.net/2016/10/exploiting-cors-misconfigurations-for.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/gofiber/fiber/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/gofiber/fiber/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.52.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-fmg4-x8pw-hjhg/GHSA-fmg4-x8pw-hjhg.json"
-      }
-    }
+  "related": [
+    "CVE-2024-25124"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Fiber has Insecure CORS Configuration, Allowing Wildcard Origin with Credentials"
 }

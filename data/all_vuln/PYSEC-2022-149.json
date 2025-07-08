@@ -1,39 +1,16 @@
 {
-  "id": "PYSEC-2022-149",
-  "details": "Tensorflow is an Open Source Machine Learning Framework. When decoding PNG images TensorFlow can produce a memory leak if the image is invalid. After calling `png::CommonInitDecode(..., &decode)`, the `decode` value contains allocated buffers which can only be freed by calling `png::CommonFreeDecode(&decode)`. However, several error case in the function implementation invoke the `OP_REQUIRES` macro which immediately terminates the execution of the function, without allowing for the memory free to occur. The fix will be included in TensorFlow 2.8.0. We will also cherrypick this commit on TensorFlow 2.7.1, TensorFlow 2.6.3, and TensorFlow 2.5.3, as these are also affected and still in supported range.",
-  "aliases": [
-    "BIT-tensorflow-2022-23585",
-    "CVE-2022-23585",
-    "GHSA-fq6p-6334-8gr4",
-    "PYSEC-2022-94"
-  ],
-  "modified": "2023-12-06T01:02:01.226240Z",
-  "published": "2022-02-04T23:15:00Z",
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-fq6p-6334-8gr4"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/a1320ec1eac186da1d03f033109191f715b2b130/tensorflow/core/kernels/image/decode_image_op.cc#L322-L416"
-    },
-    {
-      "type": "FIX",
-      "url": "https://github.com/tensorflow/tensorflow/commit/ab51e5b813573dc9f51efa335aebcf2994125ee9"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/pypa/advisory-database/blob/main/vulns/tensorflow-gpu/PYSEC-2022-149.yaml"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "GIT",
-          "repo": "https://github.com/tensorflow/tensorflow",
           "events": [
             {
               "introduced": "0"
@@ -41,10 +18,11 @@
             {
               "fixed": "ab51e5b813573dc9f51efa335aebcf2994125ee9"
             }
-          ]
+          ],
+          "repo": "https://github.com/tensorflow/tensorflow",
+          "type": "GIT"
         },
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -58,7 +36,8 @@
             {
               "fixed": "2.6.3"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -123,10 +102,31 @@
         "2.6.0",
         "2.6.1",
         "2.6.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/pypa/advisory-database/blob/main/vulns/tensorflow-gpu/PYSEC-2022-149.yaml"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-23585",
+    "CVE-2022-23585",
+    "GHSA-fq6p-6334-8gr4",
+    "PYSEC-2022-94"
+  ],
+  "details": "Tensorflow is an Open Source Machine Learning Framework. When decoding PNG images TensorFlow can produce a memory leak if the image is invalid. After calling `png::CommonInitDecode(..., &decode)`, the `decode` value contains allocated buffers which can only be freed by calling `png::CommonFreeDecode(&decode)`. However, several error case in the function implementation invoke the `OP_REQUIRES` macro which immediately terminates the execution of the function, without allowing for the memory free to occur. The fix will be included in TensorFlow 2.8.0. We will also cherrypick this commit on TensorFlow 2.7.1, TensorFlow 2.6.3, and TensorFlow 2.5.3, as these are also affected and still in supported range.",
+  "id": "PYSEC-2022-149",
+  "modified": "2023-12-06T01:02:01.226240Z",
+  "published": "2022-02-04T23:15:00Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-fq6p-6334-8gr4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/a1320ec1eac186da1d03f033109191f715b2b130/tensorflow/core/kernels/image/decode_image_op.cc#L322-L416"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/tensorflow/tensorflow/commit/ab51e5b813573dc9f51efa335aebcf2994125ee9"
     }
   ],
   "schema_version": "1.6.0"

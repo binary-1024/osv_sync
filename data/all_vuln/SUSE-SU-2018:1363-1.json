@@ -1,17 +1,97 @@
 {
-  "id": "SUSE-SU-2018:1363-1",
-  "summary": "Security update for qemu",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1363-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "qemu": "2.3.1-33.9.4",
+            "qemu-block-curl": "2.3.1-33.9.4",
+            "qemu-block-rbd": "2.3.1-33.9.4",
+            "qemu-guest-agent": "2.3.1-33.9.4",
+            "qemu-ipxe": "1.0.0-33.9.4",
+            "qemu-kvm": "2.3.1-33.9.4",
+            "qemu-lang": "2.3.1-33.9.4",
+            "qemu-ppc": "2.3.1-33.9.4",
+            "qemu-seabios": "1.8.1-33.9.4",
+            "qemu-sgabios": "8-33.9.4",
+            "qemu-tools": "2.3.1-33.9.4",
+            "qemu-vgabios": "1.8.1-33.9.4",
+            "qemu-x86": "2.3.1-33.9.4"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
+        "name": "qemu",
+        "purl": "pkg:rpm/suse/qemu&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.3.1-33.9.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1363-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "qemu": "2.3.1-33.9.4",
+            "qemu-block-curl": "2.3.1-33.9.4",
+            "qemu-block-rbd": "2.3.1-33.9.4",
+            "qemu-guest-agent": "2.3.1-33.9.4",
+            "qemu-ipxe": "1.0.0-33.9.4",
+            "qemu-kvm": "2.3.1-33.9.4",
+            "qemu-lang": "2.3.1-33.9.4",
+            "qemu-ppc": "2.3.1-33.9.4",
+            "qemu-s390": "2.3.1-33.9.4",
+            "qemu-seabios": "1.8.1-33.9.4",
+            "qemu-sgabios": "8-33.9.4",
+            "qemu-tools": "2.3.1-33.9.4",
+            "qemu-vgabios": "1.8.1-33.9.4",
+            "qemu-x86": "2.3.1-33.9.4"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
+        "name": "qemu",
+        "purl": "pkg:rpm/suse/qemu&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.3.1-33.9.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for qemu fixes several issues.\n\nThis security issue was fixed:\n\n- CVE-2018-3639: Spectre v4 vulnerability mitigation support for KVM guests (bsc#1092885).\n\n  Systems with microprocessors utilizing speculative execution and speculative\n  execution of memory reads before the addresses of all prior memory writes are\n  known may allow unauthorized disclosure of information to an attacker with\n  local user access via a side-channel analysis.\n\n  This patch permits the new x86 cpu feature flag named 'ssbd' to be\n  presented to the guest, given that the host has this feature, and\n  KVM exposes it to the guest as well.\n\n  For this feature to be enabled please use the qemu commandline\n  -cpu $MODEL,+spec-ctrl,+ssbd\n  so the guest OS can take advantage of the feature.\n\n  spec-ctrl and ssbd support is also required in the host.\n- CVE-2017-5715: This update has the next round of Spectre v2 related patches,\n  which now integrates with corresponding changes in libvirt. A January 2018\n  release of qemu initially addressed the Spectre v2 vulnerability for KVM guests\n  by exposing the spec-ctrl feature for all x86 vcpu types. We remove that\n  initial patch and now rely on patches from upstream (bsc#1068032).\n\n  This update defines spec_ctrl and ibpb cpu feature flags as well as new cpu\n  models which are clones of existing models with either -IBRS or -IBPB added to\n  the end of the model name. These new vcpu models explicitly include the new\n  feature(s), whereas the feature flags can be added to the cpu parameter as with\n  other features. In short, for continued Spectre v2 protection, ensure that\n  either the appropriate cpu feature flag is added to the QEMU command-line, or\n  one of the new cpu models is used. Although migration from older versions is\n  supported, the new cpu features won't be properly exposed to the guest until it\n  is restarted with the cpu features explicitly added. A reboot is insufficient.\n- A patch is added to continue to detect Spectre v2 mitigation features (as\n  shown by cpuid), and if found provide that feature to guests, even if running\n  on older KVM (kernel) versions which do not yet expose that feature to QEMU.\n  (bsc#1082276)\n",
+  "id": "SUSE-SU-2018:1363-1",
   "modified": "2025-05-02T04:06:52.278569Z",
   "published": "2018-05-22T08:44:39Z",
-  "related": [
-    "CVE-2017-5715",
-    "CVE-2018-3639"
-  ],
-  "upstream": [
-    "CVE-2017-5715",
-    "CVE-2018-3639"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -38,94 +118,14 @@
       "url": "https://www.suse.com/security/cve/CVE-2018-3639"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "qemu",
-        "ecosystem": "SUSE:Linux Enterprise Server for SAP Applications 12 SP1",
-        "purl": "pkg:rpm/suse/qemu&distro=SUSE%20Linux%20Enterprise%20Server%20for%20SAP%20Applications%2012%20SP1"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.3.1-33.9.4"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "qemu-tools": "2.3.1-33.9.4",
-            "qemu": "2.3.1-33.9.4",
-            "qemu-guest-agent": "2.3.1-33.9.4",
-            "qemu-block-curl": "2.3.1-33.9.4",
-            "qemu-lang": "2.3.1-33.9.4",
-            "qemu-ipxe": "1.0.0-33.9.4",
-            "qemu-kvm": "2.3.1-33.9.4",
-            "qemu-seabios": "1.8.1-33.9.4",
-            "qemu-sgabios": "8-33.9.4",
-            "qemu-vgabios": "1.8.1-33.9.4",
-            "qemu-ppc": "2.3.1-33.9.4",
-            "qemu-x86": "2.3.1-33.9.4",
-            "qemu-block-rbd": "2.3.1-33.9.4"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1363-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "qemu",
-        "ecosystem": "SUSE:Linux Enterprise Server 12 SP1-LTSS",
-        "purl": "pkg:rpm/suse/qemu&distro=SUSE%20Linux%20Enterprise%20Server%2012%20SP1-LTSS"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.3.1-33.9.4"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "qemu-tools": "2.3.1-33.9.4",
-            "qemu-block-curl": "2.3.1-33.9.4",
-            "qemu-guest-agent": "2.3.1-33.9.4",
-            "qemu-lang": "2.3.1-33.9.4",
-            "qemu-seabios": "1.8.1-33.9.4",
-            "qemu-kvm": "2.3.1-33.9.4",
-            "qemu-vgabios": "1.8.1-33.9.4",
-            "qemu-x86": "2.3.1-33.9.4",
-            "qemu-s390": "2.3.1-33.9.4",
-            "qemu": "2.3.1-33.9.4",
-            "qemu-sgabios": "8-33.9.4",
-            "qemu-ipxe": "1.0.0-33.9.4",
-            "qemu-ppc": "2.3.1-33.9.4",
-            "qemu-block-rbd": "2.3.1-33.9.4"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2018:1363-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2017-5715",
+    "CVE-2018-3639"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for qemu",
+  "upstream": [
+    "CVE-2017-5715",
+    "CVE-2018-3639"
+  ]
 }

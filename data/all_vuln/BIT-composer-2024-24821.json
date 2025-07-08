@@ -1,19 +1,55 @@
 {
-  "id": "BIT-composer-2024-24821",
-  "summary": "Code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php in Composer",
-  "details": "Composer is a dependency Manager for the PHP language. In affected versions several files within the local working directory are included during the invocation of Composer and in the context of the executing user. As such, under certain conditions arbitrary code execution may lead to local privilege escalation, provide lateral user movement or malicious code execution when Composer is invoked within a directory with tampered files. All Composer CLI commands are affected, including composer.phar's self-update. The following scenarios are of high risk: Composer being run with sudo, Pipelines which may execute Composer on untrusted projects, Shared environments with developers who run Composer individually on the same project. This vulnerability has been addressed in versions 2.7.0 and 2.2.23. It is advised that the patched versions are applied at the earliest convenience. Where not possible, the following should be addressed: Remove all sudo composer privileges for all users to mitigate root privilege escalation, and avoid running Composer within an untrusted directory, or if needed, verify that the contents of `vendor/composer/InstalledVersions.php` and `vendor/composer/installed.php` do not include untrusted code.  A reset can also be done on these files by the following:```sh\nrm vendor/composer/installed.php vendor/composer/InstalledVersions.php\ncomposer install --no-scripts --no-plugins\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/composer/BIT-composer-2024-24821.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "composer",
+        "purl": "pkg:bitnami/composer"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.2.23"
+            },
+            {
+              "introduced": "2.3.0"
+            },
+            {
+              "fixed": "2.7.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-24821",
     "GHSA-7c6p-848j-wh5h"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T10:50:51.366Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:getcomposer:composer:*:*:*:*:*:*:*:*"
     ],
     "severity": "High"
   },
+  "details": "Composer is a dependency Manager for the PHP language. In affected versions several files within the local working directory are included during the invocation of Composer and in the context of the executing user. As such, under certain conditions arbitrary code execution may lead to local privilege escalation, provide lateral user movement or malicious code execution when Composer is invoked within a directory with tampered files. All Composer CLI commands are affected, including composer.phar's self-update. The following scenarios are of high risk: Composer being run with sudo, Pipelines which may execute Composer on untrusted projects, Shared environments with developers who run Composer individually on the same project. This vulnerability has been addressed in versions 2.7.0 and 2.2.23. It is advised that the patched versions are applied at the earliest convenience. Where not possible, the following should be addressed: Remove all sudo composer privileges for all users to mitigate root privilege escalation, and avoid running Composer within an untrusted directory, or if needed, verify that the contents of `vendor/composer/InstalledVersions.php` and `vendor/composer/installed.php` do not include untrusted code.  A reset can also be done on these files by the following:```sh\nrm vendor/composer/installed.php vendor/composer/InstalledVersions.php\ncomposer install --no-scripts --no-plugins\n```",
+  "id": "BIT-composer-2024-24821",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T10:50:51.366Z",
   "references": [
     {
       "type": "WEB",
@@ -28,42 +64,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24821"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "composer",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/composer"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.0.0"
-            },
-            {
-              "fixed": "2.2.23"
-            },
-            {
-              "introduced": "2.3.0"
-            },
-            {
-              "fixed": "2.7.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/composer/BIT-composer-2024-24821.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php in Composer"
 }

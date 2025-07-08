@@ -1,22 +1,189 @@
 {
-  "id": "GHSA-vh22-6c6h-rm8q",
-  "summary": "jte's HTML templates containing Javascript template strings are subject to XSS",
-  "details": "### Summary\nJte HTML templates with `script` tags or script attributes that include a Javascript template string (backticks) are subject to XSS.\n\n### Details\nThe `javaScriptBlock` and `javaScriptAttribute` methods in the `Escape` class ([source](https://github.com/casid/jte/blob/main/jte-runtime/src/main/java/gg/jte/html/escape/Escape.java#L43-L83)) do not escape backticks, which are used for Javascript [template strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#description). Dollar signs in template strings should also be escaped as well to prevent undesired interpolation.\n\n### PoC\n1. Use the [Jte Gradle Plugin](https://jte.gg/gradle-plugin/) with the following code in `src/jte/xss.jte`:\n    ```html\n    @param String someMessage\n    <!DOCTYPE html>\n    <html lang=\"en\">\n    <head>\n        <title>XSS Test</title>\n        <script>window.someVariable = `${someMessage}`;</script>\n    </head>\n    <body>\n    <h1>XSS Test</h1>\n    </body>\n    </html>\n    ```\n2. Use the following Java code to demonstrate the XSS vulnerability:\n    ```java\n    final StringOutput output = new StringOutput();\n    JtexssGenerated.render(new OwaspHtmlTemplateOutput(output), null, \"` + alert(`xss`) + `\");\n    renderHtml(output);\n    ```\n\n### Impact\nHTML templates rendered by Jte's `OwaspHtmlTemplateOutput` in versions less than or equal to `3.1.15` with `script` tags or script attributes that contain Javascript template strings (backticks) are vulnerable.",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.1.15",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-vh22-6c6h-rm8q/GHSA-vh22-6c6h-rm8q.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "gg.jte:jte",
+        "purl": "pkg:maven/gg.jte/jte"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.1.16"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.1.0",
+        "1.10.0",
+        "1.11.0",
+        "1.11.1",
+        "1.11.2",
+        "1.11.3",
+        "1.11.4",
+        "1.12.0",
+        "1.12.1",
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.5.0",
+        "1.5.1",
+        "1.5.2",
+        "1.6.0",
+        "1.7.0",
+        "1.8.0",
+        "1.9.0",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.0.4",
+        "2.1.0",
+        "2.1.1",
+        "2.1.2",
+        "2.2.0",
+        "2.2.1",
+        "2.2.2",
+        "2.2.3",
+        "2.2.4",
+        "2.2.6",
+        "2.3.0",
+        "2.3.1",
+        "2.3.2",
+        "3.0.0",
+        "3.0.1",
+        "3.0.2",
+        "3.0.3",
+        "3.1.0",
+        "3.1.1",
+        "3.1.10",
+        "3.1.11",
+        "3.1.12",
+        "3.1.13",
+        "3.1.14",
+        "3.1.15",
+        "3.1.2",
+        "3.1.3",
+        "3.1.4",
+        "3.1.5",
+        "3.1.6",
+        "3.1.7",
+        "3.1.8",
+        "3.1.9"
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.1.15",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-vh22-6c6h-rm8q/GHSA-vh22-6c6h-rm8q.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "gg.jte:jte-runtime",
+        "purl": "pkg:maven/gg.jte/jte-runtime"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.1.16"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.1.0",
+        "1.10.0",
+        "1.11.0",
+        "1.11.1",
+        "1.11.2",
+        "1.11.3",
+        "1.11.4",
+        "1.12.0",
+        "1.12.1",
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.5.0",
+        "1.5.1",
+        "1.5.2",
+        "1.6.0",
+        "1.7.0",
+        "1.8.0",
+        "1.9.0",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.0.4",
+        "2.1.0",
+        "2.1.1",
+        "2.1.2",
+        "2.2.0",
+        "2.2.1",
+        "2.2.2",
+        "2.2.3",
+        "2.2.4",
+        "2.2.6",
+        "2.3.0",
+        "2.3.1",
+        "2.3.2",
+        "3.0.0",
+        "3.0.1",
+        "3.0.2",
+        "3.0.3",
+        "3.1.0",
+        "3.1.1",
+        "3.1.10",
+        "3.1.11",
+        "3.1.12",
+        "3.1.13",
+        "3.1.14",
+        "3.1.15",
+        "3.1.2",
+        "3.1.3",
+        "3.1.4",
+        "3.1.5",
+        "3.1.6",
+        "3.1.7",
+        "3.1.8",
+        "3.1.9"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-23026"
   ],
-  "modified": "2025-01-13T22:00:48.611400Z",
-  "published": "2025-01-13T16:57:59Z",
   "database_specific": {
-    "nvd_published_at": "2025-01-13T20:15:30Z",
     "cwe_ids": [
       "CWE-150",
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-01-13T16:57:59Z"
+    "github_reviewed_at": "2025-01-13T16:57:59Z",
+    "nvd_published_at": "2025-01-13T20:15:30Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nJte HTML templates with `script` tags or script attributes that include a Javascript template string (backticks) are subject to XSS.\n\n### Details\nThe `javaScriptBlock` and `javaScriptAttribute` methods in the `Escape` class ([source](https://github.com/casid/jte/blob/main/jte-runtime/src/main/java/gg/jte/html/escape/Escape.java#L43-L83)) do not escape backticks, which are used for Javascript [template strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#description). Dollar signs in template strings should also be escaped as well to prevent undesired interpolation.\n\n### PoC\n1. Use the [Jte Gradle Plugin](https://jte.gg/gradle-plugin/) with the following code in `src/jte/xss.jte`:\n    ```html\n    @param String someMessage\n    <!DOCTYPE html>\n    <html lang=\"en\">\n    <head>\n        <title>XSS Test</title>\n        <script>window.someVariable = `${someMessage}`;</script>\n    </head>\n    <body>\n    <h1>XSS Test</h1>\n    </body>\n    </html>\n    ```\n2. Use the following Java code to demonstrate the XSS vulnerability:\n    ```java\n    final StringOutput output = new StringOutput();\n    JtexssGenerated.render(new OwaspHtmlTemplateOutput(output), null, \"` + alert(`xss`) + `\");\n    renderHtml(output);\n    ```\n\n### Impact\nHTML templates rendered by Jte's `OwaspHtmlTemplateOutput` in versions less than or equal to `3.1.15` with `script` tags or script attributes that contain Javascript template strings (backticks) are vulnerable.",
+  "id": "GHSA-vh22-6c6h-rm8q",
+  "modified": "2025-01-13T22:00:48.611400Z",
+  "published": "2025-01-13T16:57:59Z",
   "references": [
     {
       "type": "WEB",
@@ -43,179 +210,12 @@
       "url": "https://github.com/casid/jte/blob/main/jte-runtime/src/main/java/gg/jte/html/escape/Escape.java#L43-L83"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "gg.jte:jte",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/gg.jte/jte"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.1.16"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.0.0",
-        "1.1.0",
-        "1.10.0",
-        "1.11.0",
-        "1.11.1",
-        "1.11.2",
-        "1.11.3",
-        "1.11.4",
-        "1.12.0",
-        "1.12.1",
-        "1.2.0",
-        "1.3.0",
-        "1.4.0",
-        "1.5.0",
-        "1.5.1",
-        "1.5.2",
-        "1.6.0",
-        "1.7.0",
-        "1.8.0",
-        "1.9.0",
-        "2.0.0",
-        "2.0.1",
-        "2.0.2",
-        "2.0.3",
-        "2.0.4",
-        "2.1.0",
-        "2.1.1",
-        "2.1.2",
-        "2.2.0",
-        "2.2.1",
-        "2.2.2",
-        "2.2.3",
-        "2.2.4",
-        "2.2.6",
-        "2.3.0",
-        "2.3.1",
-        "2.3.2",
-        "3.0.0",
-        "3.0.1",
-        "3.0.2",
-        "3.0.3",
-        "3.1.0",
-        "3.1.1",
-        "3.1.10",
-        "3.1.11",
-        "3.1.12",
-        "3.1.13",
-        "3.1.14",
-        "3.1.15",
-        "3.1.2",
-        "3.1.3",
-        "3.1.4",
-        "3.1.5",
-        "3.1.6",
-        "3.1.7",
-        "3.1.8",
-        "3.1.9"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 3.1.15",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-vh22-6c6h-rm8q/GHSA-vh22-6c6h-rm8q.json"
-      }
-    },
-    {
-      "package": {
-        "name": "gg.jte:jte-runtime",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/gg.jte/jte-runtime"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.1.16"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.0.0",
-        "1.1.0",
-        "1.10.0",
-        "1.11.0",
-        "1.11.1",
-        "1.11.2",
-        "1.11.3",
-        "1.11.4",
-        "1.12.0",
-        "1.12.1",
-        "1.2.0",
-        "1.3.0",
-        "1.4.0",
-        "1.5.0",
-        "1.5.1",
-        "1.5.2",
-        "1.6.0",
-        "1.7.0",
-        "1.8.0",
-        "1.9.0",
-        "2.0.0",
-        "2.0.1",
-        "2.0.2",
-        "2.0.3",
-        "2.0.4",
-        "2.1.0",
-        "2.1.1",
-        "2.1.2",
-        "2.2.0",
-        "2.2.1",
-        "2.2.2",
-        "2.2.3",
-        "2.2.4",
-        "2.2.6",
-        "2.3.0",
-        "2.3.1",
-        "2.3.2",
-        "3.0.0",
-        "3.0.1",
-        "3.0.2",
-        "3.0.3",
-        "3.1.0",
-        "3.1.1",
-        "3.1.10",
-        "3.1.11",
-        "3.1.12",
-        "3.1.13",
-        "3.1.14",
-        "3.1.15",
-        "3.1.2",
-        "3.1.3",
-        "3.1.4",
-        "3.1.5",
-        "3.1.6",
-        "3.1.7",
-        "3.1.8",
-        "3.1.9"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 3.1.15",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-vh22-6c6h-rm8q/GHSA-vh22-6c6h-rm8q.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "jte's HTML templates containing Javascript template strings are subject to XSS"
 }

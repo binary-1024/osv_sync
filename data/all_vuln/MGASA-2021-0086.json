@@ -1,15 +1,46 @@
 {
-  "id": "MGASA-2021-0086",
-  "summary": "Updated mediawiki packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0086.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "mediawiki",
+        "purl": "pkg:rpm/mageia/mediawiki?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.31.12-1.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "In MediaWiki before 1.31.11, the messages userrights-expiry-current and\nuserrights-expiry-none can contain raw HTML. XSS can happen when a user visits\nSpecial:UserRights but does not have rights to change all userrights, and the\ntable on the left side has unchangeable groups in it. The right column with\nthe changeable groups is not affected and is escaped correctly\n(CVE-2020-35475).\n\nMediaWiki before 1.31.11 blocks legitimate attempts to hide log entries in\nsome situations. If one sets MediaWiki:Mainpage to Special:MyLanguage/Main\nPage, visits a log entry on Special:Log, and toggles the \"Change visibility of\nselected log entries\" checkbox (or a tags checkbox) next to it, there is a\nredirection to the main page's action=historysubmit instead of the desired\nbehavior in which a revision-deletion form appears (CVE-2020-35477).\n\nMediaWiki before 1.31.11 allows XSS via BlockLogFormatter.php.\nLanguage::translateBlockExpiry itself does not escape in all code paths. For\nexample, the return of Language::userTimeAndDate is is always unsafe for HTML\nin a month value (CVE-2020-35479).\n\nAn issue was discovered in MediaWiki before 1.31.11. Missing users (accounts\nthat don't exist) and hidden users (accounts that have been explicitly hidden\ndue to being abusive, or similar) that the viewer cannot see are handled\ndifferently, exposing sensitive information about the hidden status to\nunprivileged viewers. This exists on various code paths (CVE-2020-35480).\n",
+  "id": "MGASA-2021-0086",
   "modified": "2021-02-19T09:46:25Z",
   "published": "2021-02-19T10:27:54Z",
-  "related": [
-    "CVE-2020-35475",
-    "CVE-2020-35477",
-    "CVE-2020-35479",
-    "CVE-2020-35480"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -32,43 +63,12 @@
       "url": "https://www.debian.org/security/2020/dsa-4816"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "mediawiki",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/mediawiki?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.31.12-1.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0086.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2020-35475",
+    "CVE-2020-35477",
+    "CVE-2020-35479",
+    "CVE-2020-35480"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated mediawiki packages fix security vulnerability"
 }

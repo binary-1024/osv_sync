@@ -1,46 +1,16 @@
 {
-  "id": "BIT-tensorflow-2021-29518",
-  "summary": "Session operations in eager mode lead to null pointer dereferences",
-  "details": "TensorFlow is an end-to-end open source platform for machine learning. In eager mode (default in TF 2.0 and later), session operations are invalid. However, users could still call the raw ops associated with them and trigger a null pointer dereference. The implementation(https://github.com/tensorflow/tensorflow/blob/eebb96c2830d48597d055d247c0e9aebaea94cd5/tensorflow/core/kernels/session_ops.cc#L104) dereferences the session state pointer without checking if it is valid. Thus, in eager mode, `ctx->session_state()` is nullptr and the call of the member function is undefined behavior. The fix will be included in TensorFlow 2.5.0. We will also cherrypick this commit on TensorFlow 2.4.2, TensorFlow 2.3.3, TensorFlow 2.2.3 and TensorFlow 2.1.4, as these are also affected and still in supported range.",
-  "aliases": [
-    "CVE-2021-29518",
-    "GHSA-62gx-355r-9fhg",
-    "PYSEC-2021-155",
-    "PYSEC-2021-446",
-    "PYSEC-2021-644"
-  ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T11:20:02.329Z",
-  "database_specific": {
-    "cpes": [
-      "cpe:2.3:a:google:tensorflow:*:*:*:*:*:*:*:*"
-    ],
-    "severity": "High"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/ff70c47a396ef1e3cb73c90513da4f5cb71bebba"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-62gx-355r-9fhg"
-    },
-    {
-      "type": "WEB",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29518"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2021-29518.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "Bitnami",
+        "name": "tensorflow",
         "purl": "pkg:bitnami/tensorflow"
       },
       "ranges": [
         {
-          "type": "SEMVER",
           "events": [
             {
               "introduced": "0"
@@ -66,19 +36,49 @@
             {
               "fixed": "2.4.2"
             }
-          ]
+          ],
+          "type": "SEMVER"
         }
       ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/tensorflow/BIT-tensorflow-2021-29518.json"
-      },
       "severity": [
         {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "type": "CVSS_V3"
         }
       ]
     }
   ],
-  "schema_version": "1.6.0"
+  "aliases": [
+    "CVE-2021-29518",
+    "GHSA-62gx-355r-9fhg",
+    "PYSEC-2021-155",
+    "PYSEC-2021-446",
+    "PYSEC-2021-644"
+  ],
+  "database_specific": {
+    "cpes": [
+      "cpe:2.3:a:google:tensorflow:*:*:*:*:*:*:*:*"
+    ],
+    "severity": "High"
+  },
+  "details": "TensorFlow is an end-to-end open source platform for machine learning. In eager mode (default in TF 2.0 and later), session operations are invalid. However, users could still call the raw ops associated with them and trigger a null pointer dereference. The implementation(https://github.com/tensorflow/tensorflow/blob/eebb96c2830d48597d055d247c0e9aebaea94cd5/tensorflow/core/kernels/session_ops.cc#L104) dereferences the session state pointer without checking if it is valid. Thus, in eager mode, `ctx->session_state()` is nullptr and the call of the member function is undefined behavior. The fix will be included in TensorFlow 2.5.0. We will also cherrypick this commit on TensorFlow 2.4.2, TensorFlow 2.3.3, TensorFlow 2.2.3 and TensorFlow 2.1.4, as these are also affected and still in supported range.",
+  "id": "BIT-tensorflow-2021-29518",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T11:20:02.329Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/ff70c47a396ef1e3cb73c90513da4f5cb71bebba"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-62gx-355r-9fhg"
+    },
+    {
+      "type": "WEB",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29518"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "summary": "Session operations in eager mode lead to null pointer dereferences"
 }

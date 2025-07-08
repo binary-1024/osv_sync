@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-p2q6-pwh5-m6jr",
-  "summary": "Apollo Gateway Query Planner Vulnerable to Excessive Resource Consumption via Optimization Bypass",
-  "details": "# Impact\n\n## Summary\n\nA vulnerability in Apollo Gateway allowed queries with deeply nested and reused named fragments to be prohibitively expensive to query plan, specifically due to internal optimizations being frequently bypassed. This could lead to excessive resource consumption and denial of service.\n\n## Details\n\nThe query planner includes an optimization that significantly speeds up planning for applicable GraphQL selections. However, queries with deeply nested and reused named fragments can generate many selections where this optimization does not apply, leading to significantly longer planning times. Because the query planner does not enforce a timeout, a small number of such queries can render gateway inoperable.\n\n## Fix/Mitigation\n\n- A new **Query Optimization Limit** metric has been added:\n  - This metric approximates the number of selections that cannot be skipped by the existing optimization.\n  - The metric is checked against a limit to prevent excessive computation.\n\nGiven the complexity of query planning optimizations, we will continue refining these solutions based on real-world performance and accuracy tests.\n\n# Patches\n\nThis has been remediated in `@apollo/gateway` version 2.10.1.\n\n# Workarounds\n\nNo known direct workarounds exist.\n\n# References\n\n[Query Planning Documentation](https://www.apollographql.com/docs/graphos/reference/federation/query-plans)\n\n## Acknowledgements\n\nWe appreciate the efforts of the security community in identifying and improving the performance and security of query planning mechanisms.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-p2q6-pwh5-m6jr/GHSA-p2q6-pwh5-m6jr.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@apollo/gateway",
+        "purl": "pkg:npm/%40apollo/gateway"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.10.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-32031"
   ],
-  "modified": "2025-04-08T17:50:52Z",
-  "published": "2025-04-07T19:03:16Z",
   "database_specific": {
-    "nvd_published_at": "2025-04-07T21:15:43Z",
     "cwe_ids": [
       "CWE-770"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-07T19:03:16Z"
+    "github_reviewed_at": "2025-04-07T19:03:16Z",
+    "nvd_published_at": "2025-04-07T21:15:43Z",
+    "severity": "HIGH"
   },
+  "details": "# Impact\n\n## Summary\n\nA vulnerability in Apollo Gateway allowed queries with deeply nested and reused named fragments to be prohibitively expensive to query plan, specifically due to internal optimizations being frequently bypassed. This could lead to excessive resource consumption and denial of service.\n\n## Details\n\nThe query planner includes an optimization that significantly speeds up planning for applicable GraphQL selections. However, queries with deeply nested and reused named fragments can generate many selections where this optimization does not apply, leading to significantly longer planning times. Because the query planner does not enforce a timeout, a small number of such queries can render gateway inoperable.\n\n## Fix/Mitigation\n\n- A new **Query Optimization Limit** metric has been added:\n  - This metric approximates the number of selections that cannot be skipped by the existing optimization.\n  - The metric is checked against a limit to prevent excessive computation.\n\nGiven the complexity of query planning optimizations, we will continue refining these solutions based on real-world performance and accuracy tests.\n\n# Patches\n\nThis has been remediated in `@apollo/gateway` version 2.10.1.\n\n# Workarounds\n\nNo known direct workarounds exist.\n\n# References\n\n[Query Planning Documentation](https://www.apollographql.com/docs/graphos/reference/federation/query-plans)\n\n## Acknowledgements\n\nWe appreciate the efforts of the security community in identifying and improving the performance and security of query planning mechanisms.",
+  "id": "GHSA-p2q6-pwh5-m6jr",
+  "modified": "2025-04-08T17:50:52Z",
+  "published": "2025-04-07T19:03:16Z",
   "references": [
     {
       "type": "WEB",
@@ -38,36 +62,12 @@
       "url": "https://github.com/apollographql/federation/releases/tag/%40apollo%2Fgateway%402.10.1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@apollo/gateway",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40apollo/gateway"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.10.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-p2q6-pwh5-m6jr/GHSA-p2q6-pwh5-m6jr.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Apollo Gateway Query Planner Vulnerable to Excessive Resource Consumption via Optimization Bypass"
 }

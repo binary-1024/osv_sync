@@ -1,21 +1,108 @@
 {
-  "id": "SUSE-SU-2022:3767-1",
-  "summary": "Recommended update for bind",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:3767-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "bind-utils": "9.16.33-150400.5.11.1",
+            "python3-bind": "9.16.33-150400.5.11.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP4",
+        "name": "bind",
+        "purl": "pkg:rpm/suse/bind&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.16.33-150400.5.11.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:3767-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "bind": "9.16.33-150400.5.11.1",
+            "bind-doc": "9.16.33-150400.5.11.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Module for Server Applications 15 SP4",
+        "name": "bind",
+        "purl": "pkg:rpm/suse/bind&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Server%20Applications%2015%20SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.16.33-150400.5.11.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:3767-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "bind": "9.16.33-150400.5.11.1",
+            "bind-doc": "9.16.33-150400.5.11.1",
+            "bind-utils": "9.16.33-150400.5.11.1",
+            "python3-bind": "9.16.33-150400.5.11.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "openSUSE:Leap 15.4",
+        "name": "bind",
+        "purl": "pkg:rpm/opensuse/bind&distro=openSUSE%20Leap%2015.4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.16.33-150400.5.11.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for bind fixes the following issues:\n\nUpdate to release 9.16.33:\n\n- CVE-2022-2795: Fixed potential performance degredation due to missing database lookup limits when processing large delegations (bsc#1203614).\n- CVE-2022-3080: Fixed assertion failure when there was a stale CNAME in the cache for the incoming query and the stale-answer-client-timeout option is set to 0 (bsc#1203618).\n- CVE-2022-38177: Fixed a memory leak that could be externally triggered in the DNSSEC verification code for the ECDSA algorithm (bsc#1203619).\n- CVE-2022-38178: Fixed memory leaks that could be externally triggered in the DNSSEC verification code for the EdDSA algorithm (bsc#1203620).\n\n- Add systemd drop-in directory for named service (bsc#1201689).\n- Add modified createNamedConfInclude script and README-bind.chrootenv (bsc#1203250).\n\n- Feature Changes:\n  - Response Rate Limiting (RRL) code now treats all QNAMEs that are\n  subject to wildcard processing within a given zone as the same\n  name, to prevent circumventing the limits enforced by RRL.\n\n  - Zones using dnssec-policy now require dynamic DNS or\n  inline-signing to be configured explicitly.\n\n  - A backward-compatible approach was implemented for encoding\n  internationalized domain names (IDN) in dig and converting the\n  domain to IDNA2008 form; if that fails,\n  BIND tries an IDNA2003 conversion.\n\n  - The DNSSEC algorithms RSASHA1 and NSEC3RSASHA1 are now automatically\n  disabled on systems where they are disallowed by the security policy.\n  Primary zones using those algorithms need to be migrated to new algorithms\n  prior to running on these systems, as graceful migration to different DNSSEC\n  algorithms is not possible when RSASHA1 is disallowed by the operating system.\n\n  - Log messages related to fetch limiting have been improved to provide\n  more complete information. Specifically, the final counts of allowed\n  and spilled fetches are now logged before the counter object is destroyed.\n\n  - Non-dynamic zones that inherit dnssec-policy from the view or options\n  blocks were not marked as inline-signed and therefore never scheduled\n  to be re-signed. This has been fixed.\n\n  - The old max-zone-ttl zone option was meant to be superseded by\n  the max-zone-ttl option in dnssec-policy; however, the latter option\n  was not fully effective. This has been corrected: zones no longer load\n  if they contain TTLs greater than the limit configured in dnssec-policy.\n  For zones with both the old max-zone-ttl option and dnssec-policy\n  configured, the old option is ignored, and a warning is generated.\n\n  - rndc dumpdb -expired was fixed to include expired RRsets,\n  even if stale-cache-enable is set to no and the cache-cleaning time \n  window has passed. (jsc#SLE-24600)\n",
+  "id": "SUSE-SU-2022:3767-1",
   "modified": "2025-05-02T04:33:03.484238Z",
   "published": "2022-10-26T09:49:55Z",
-  "related": [
-    "CVE-2022-2795",
-    "CVE-2022-3080",
-    "CVE-2022-38177",
-    "CVE-2022-38178"
-  ],
-  "upstream": [
-    "CVE-2022-2795",
-    "CVE-2022-3080",
-    "CVE-2022-38177",
-    "CVE-2022-38178"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -62,105 +149,18 @@
       "url": "https://www.suse.com/security/cve/CVE-2022-38178"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "bind",
-        "ecosystem": "SUSE:Linux Enterprise Module for Basesystem 15 SP4",
-        "purl": "pkg:rpm/suse/bind&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Basesystem%2015%20SP4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.16.33-150400.5.11.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "bind-utils": "9.16.33-150400.5.11.1",
-            "python3-bind": "9.16.33-150400.5.11.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:3767-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "bind",
-        "ecosystem": "SUSE:Linux Enterprise Module for Server Applications 15 SP4",
-        "purl": "pkg:rpm/suse/bind&distro=SUSE%20Linux%20Enterprise%20Module%20for%20Server%20Applications%2015%20SP4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.16.33-150400.5.11.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "bind-doc": "9.16.33-150400.5.11.1",
-            "bind": "9.16.33-150400.5.11.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:3767-1.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "bind",
-        "ecosystem": "openSUSE:Leap 15.4",
-        "purl": "pkg:rpm/opensuse/bind&distro=openSUSE%20Leap%2015.4"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.16.33-150400.5.11.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "bind-doc": "9.16.33-150400.5.11.1",
-            "bind": "9.16.33-150400.5.11.1",
-            "bind-utils": "9.16.33-150400.5.11.1",
-            "python3-bind": "9.16.33-150400.5.11.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2022:3767-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-2795",
+    "CVE-2022-3080",
+    "CVE-2022-38177",
+    "CVE-2022-38178"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Recommended update for bind",
+  "upstream": [
+    "CVE-2022-2795",
+    "CVE-2022-3080",
+    "CVE-2022-38177",
+    "CVE-2022-38178"
+  ]
 }

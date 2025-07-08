@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-9jjv-524m-jm98",
-  "summary": "@netlify/ipx vulnerable to Full Response SSRF and Stored XSS via Cache Poisoning and Improper Host Validation",
-  "details": "### Impact\n\nBy sending specially crafted headers an attacker can bypass the source image domain allowlist, causing the handler to load and return arbitrary images. Because the response is cached globally, this image will then be served to visitors without requiring those headers to be set. XSS can be achieved by requesting a malicious SVG with embedded scripts, which would then be served from the site domain. Note that this does not apply to images loaded in `<img>` tags, as scripts do not execute in this context. The image URL can be set in the header independently of the request URL, meaning any site images that have not previously been cached can have their cache poisoned.\n\n### Patches\nThis problem has been fixed in version 1.2.3\n\n### Workarounds\n\nThe problem is no longer exploitable on Netlify as the CDN now sanitizes the relevant header. Cached content can be cleared by re-deploying the site.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-9jjv-524m-jm98/GHSA-9jjv-524m-jm98.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@netlify/ipx",
+        "purl": "pkg:npm/%40netlify/ipx"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.2.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-39239"
   ],
-  "modified": "2023-11-08T04:10:16.203096Z",
-  "published": "2022-09-21T21:42:01Z",
-  "related": [
-    "CVE-2022-39239"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-09-23T08:15:00Z",
-    "github_reviewed_at": "2022-09-21T21:42:01Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-79"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-21T21:42:01Z",
+    "nvd_published_at": "2022-09-23T08:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nBy sending specially crafted headers an attacker can bypass the source image domain allowlist, causing the handler to load and return arbitrary images. Because the response is cached globally, this image will then be served to visitors without requiring those headers to be set. XSS can be achieved by requesting a malicious SVG with embedded scripts, which would then be served from the site domain. Note that this does not apply to images loaded in `<img>` tags, as scripts do not execute in this context. The image URL can be set in the header independently of the request URL, meaning any site images that have not previously been cached can have their cache poisoned.\n\n### Patches\nThis problem has been fixed in version 1.2.3\n\n### Workarounds\n\nThe problem is no longer exploitable on Netlify as the CDN now sanitizes the relevant header. Cached content can be cleared by re-deploying the site.\n",
+  "id": "GHSA-9jjv-524m-jm98",
+  "modified": "2023-11-08T04:10:16.203096Z",
+  "published": "2022-09-21T21:42:01Z",
   "references": [
     {
       "type": "WEB",
@@ -45,36 +66,15 @@
       "url": "https://github.com/netlify/netlify-ipx/releases/tag/v1.2.3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@netlify/ipx",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40netlify/ipx"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.2.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-9jjv-524m-jm98/GHSA-9jjv-524m-jm98.json"
-      }
-    }
+  "related": [
+    "CVE-2022-39239"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "@netlify/ipx vulnerable to Full Response SSRF and Stored XSS via Cache Poisoning and Improper Host Validation"
 }

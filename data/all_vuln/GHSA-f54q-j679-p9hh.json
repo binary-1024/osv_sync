@@ -1,65 +1,17 @@
 {
-  "id": "GHSA-f54q-j679-p9hh",
-  "summary": "copyparty vulnerable to reflected cross-site scripting via k304 parameter",
-  "details": "### Summary\nThe application contains a reflected cross-site scripting via URL-parameter `?k304=...` and `?setck=...`\n\n### Details\nA reflected cross-site scripting (XSS) vulnerability exists in the web interface of the application that could allow an attacker to execute malicious javascript code by tricking users into accessing a malicious link.\n\nThe worst-case outcome of this is being able to move or delete existing files on the server, or upload new files, using the account of the person who clicks the malicious link.\n\nIt is recommended to change the passwords of your copyparty accounts, unless you have inspected your logs and found no trace of attacks.\n\n### Checking for exposure\nif copyparty is running behind a reverse proxy, you can check the access-logs for traces of attacks, by grepping for URLs containing `?hc=` with `<` somewhere in its value, for example using the following command:\n* nginx:\n  ```bash\n  (gzip -dc access.log*.gz; cat access.log) | sed -r 's/\" [0-9]+ .*//' | grep -iE '%0[da]%0[da]%0[da]%0[da]|[?&](hc|pw)=.*[<>]'\n  ```\nthe above commands also check for attacks against GHSA-cw7j-v52w-fp5r\n\n### PoC\n`https://localhost:3923/?k304=y%0D%0A%0D%0A%3Cimg+src%3Dcopyparty+onerror%3Dalert(1)%3E`\n",
-  "aliases": [
-    "CVE-2023-38501",
-    "PYSEC-2023-132"
-  ],
-  "modified": "2024-09-13T18:24:05.971812Z",
-  "published": "2023-07-25T17:49:21Z",
-  "related": [
-    "CVE-2023-38501"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2023-07-25T22:15:10Z",
-    "cwe_ids": [
-      "CWE-79"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-07-25T17:49:21Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/9001/copyparty/security/advisories/GHSA-f54q-j679-p9hh"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-38501"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/9001/copyparty/commit/007d948cb982daa05bc6619cd20ee55b7e834c38"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/9001/copyparty"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/9001/copyparty/releases/tag/v1.8.7"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/copyparty/PYSEC-2023-132.yaml"
-    },
-    {
-      "type": "WEB",
-      "url": "http://packetstormsecurity.com/files/173821/Copyparty-1.8.6-Cross-Site-Scripting.html"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.8.6",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-f54q-j679-p9hh/GHSA-f54q-j679-p9hh.json"
+      },
       "package": {
-        "name": "copyparty",
         "ecosystem": "PyPI",
+        "name": "copyparty",
         "purl": "pkg:pypi/copyparty"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -67,7 +19,8 @@
             {
               "fixed": "1.8.7"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -301,22 +254,69 @@
         "1.8.3",
         "1.8.4",
         "1.8.6"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 1.8.6",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-f54q-j679-p9hh/GHSA-f54q-j679-p9hh.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2023-38501",
+    "PYSEC-2023-132"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-07-25T17:49:21Z",
+    "nvd_published_at": "2023-07-25T22:15:10Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\nThe application contains a reflected cross-site scripting via URL-parameter `?k304=...` and `?setck=...`\n\n### Details\nA reflected cross-site scripting (XSS) vulnerability exists in the web interface of the application that could allow an attacker to execute malicious javascript code by tricking users into accessing a malicious link.\n\nThe worst-case outcome of this is being able to move or delete existing files on the server, or upload new files, using the account of the person who clicks the malicious link.\n\nIt is recommended to change the passwords of your copyparty accounts, unless you have inspected your logs and found no trace of attacks.\n\n### Checking for exposure\nif copyparty is running behind a reverse proxy, you can check the access-logs for traces of attacks, by grepping for URLs containing `?hc=` with `<` somewhere in its value, for example using the following command:\n* nginx:\n  ```bash\n  (gzip -dc access.log*.gz; cat access.log) | sed -r 's/\" [0-9]+ .*//' | grep -iE '%0[da]%0[da]%0[da]%0[da]|[?&](hc|pw)=.*[<>]'\n  ```\nthe above commands also check for attacks against GHSA-cw7j-v52w-fp5r\n\n### PoC\n`https://localhost:3923/?k304=y%0D%0A%0D%0A%3Cimg+src%3Dcopyparty+onerror%3Dalert(1)%3E`\n",
+  "id": "GHSA-f54q-j679-p9hh",
+  "modified": "2024-09-13T18:24:05.971812Z",
+  "published": "2023-07-25T17:49:21Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/9001/copyparty/security/advisories/GHSA-f54q-j679-p9hh"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-38501"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/9001/copyparty/commit/007d948cb982daa05bc6619cd20ee55b7e834c38"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/9001/copyparty"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/9001/copyparty/releases/tag/v1.8.7"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/advisory-database/tree/main/vulns/copyparty/PYSEC-2023-132.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "http://packetstormsecurity.com/files/173821/Copyparty-1.8.6-Cross-Site-Scripting.html"
+    }
+  ],
+  "related": [
+    "CVE-2023-38501"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:P/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:P/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "copyparty vulnerable to reflected cross-site scripting via k304 parameter"
 }

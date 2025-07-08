@@ -1,19 +1,127 @@
 {
-  "id": "MGASA-2014-0222",
-  "summary": "Updated postgresql packages fix multiple vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0222.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:3",
+        "name": "postgresql8.4",
+        "purl": "pkg:rpm/mageia/postgresql8.4?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "8.4.21-1.mga3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0222.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:3",
+        "name": "postgresql9.0",
+        "purl": "pkg:rpm/mageia/postgresql9.0?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.0.17-1.mga3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0222.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:3",
+        "name": "postgresql9.1",
+        "purl": "pkg:rpm/mageia/postgresql9.1?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.1.13-1.mga3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2014-0222.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:3",
+        "name": "postgresql9.2",
+        "purl": "pkg:rpm/mageia/postgresql9.2?arch=source&distro=mageia-3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.2.8-1.mga3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Updated postgresql packages fix security vulnerabilities:\n\nGranting a role without ADMIN OPTION is supposed to prevent the\ngrantee from adding or removing members from the granted role, but\nthis restriction was easily bypassed by doing SET ROLE first. The\nsecurity impact is mostly that a role member can revoke the access\nof others, contrary to the wishes of his grantor. Unapproved role\nmember additions are a lesser concern, since an uncooperative role\nmember could provide most of his rights to others anyway by creating\nviews or SECURITY DEFINER functions (CVE-2014-0060).\n\nThe primary role of PL validator functions is to be called implicitly\nduring CREATE FUNCTION, but they are also normal SQL functions\nthat a user can call explicitly. Calling a validator on a function\nactually written in some other language was not checked for and could\nbe exploited for privilege-escalation purposes. The fix involves\nadding a call to a privilege-checking function in each validator\nfunction. Non-core procedural languages will also need to make this\nchange to their own validator functions, if any (CVE-2014-0061).\n\nIf the name lookups come to different conclusions due to concurrent\nactivity, we might perform some parts of the DDL on a different\ntable than other parts. At least in the case of CREATE INDEX, this\ncan be used to cause the permissions checks to be performed against\na different table than the index creation, allowing for a privilege\nescalation attack (CVE-2014-0062).\n\nThe MAXDATELEN constant was too small for the longest possible value of\ntype interval, allowing a buffer overrun in interval_out(). Although\nthe datetime input functions were more careful about avoiding buffer\noverrun, the limit was short enough to cause them to reject some valid\ninputs, such as input containing a very long timezone name. The ecpg\nlibrary contained these vulnerabilities along with some of its own\n(CVE-2014-0063).\n\nSeveral functions, mostly type input functions, calculated an\nallocation size without checking for overflow. If overflow did\noccur, a too-small buffer would be allocated and then written past\n(CVE-2014-0064).\n\nUse strlcpy() and related functions to provide a clear guarantee\nthat fixed-size buffers are not overrun. Unlike the preceding items,\nit is unclear whether these cases really represent live issues,\nsince in most cases there appear to be previous constraints on the\nsize of the input string. Nonetheless it seems prudent to silence\nall Coverity warnings of this type (CVE-2014-0065).\n\nThere are relatively few scenarios in which crypt() could return NULL,\nbut contrib/chkpass would crash if it did. One practical case in which\nthis could be an issue is if libc is configured to refuse to execute\nunapproved hashing algorithms (e.g., FIPS mode) (CVE-2014-0066).\n\nSince the temporary server started by make check uses trust\nauthentication, another user on the same machine could connect to it\nas database superuser, and then potentially exploit the privileges of\nthe operating-system user who started the tests. A future release will\nprobably incorporate changes in the testing procedure to prevent this\nrisk, but some public discussion is needed first. So for the moment,\njust warn people against using make check when there are untrusted\nusers on the same machine (CVE-2014-0067).\n\nSee the links in the upstream release announcements for more details.\n",
+  "id": "MGASA-2014-0222",
   "modified": "2014-05-17T00:20:39Z",
   "published": "2014-05-17T00:20:42Z",
-  "related": [
-    "CVE-2014-0060",
-    "CVE-2014-0061",
-    "CVE-2014-0062",
-    "CVE-2014-0063",
-    "CVE-2014-0064",
-    "CVE-2014-0065",
-    "CVE-2014-0066",
-    "CVE-2014-0067"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -36,124 +144,16 @@
       "url": "https://bugs.mageia.org/show_bug.cgi?id=13336"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "postgresql8.4",
-        "ecosystem": "Mageia:3",
-        "purl": "pkg:rpm/mageia/postgresql8.4?arch=source&distro=mageia-3"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "8.4.21-1.mga3"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2014-0222.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "postgresql9.0",
-        "ecosystem": "Mageia:3",
-        "purl": "pkg:rpm/mageia/postgresql9.0?arch=source&distro=mageia-3"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.0.17-1.mga3"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2014-0222.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "postgresql9.1",
-        "ecosystem": "Mageia:3",
-        "purl": "pkg:rpm/mageia/postgresql9.1?arch=source&distro=mageia-3"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.1.13-1.mga3"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2014-0222.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "postgresql9.2",
-        "ecosystem": "Mageia:3",
-        "purl": "pkg:rpm/mageia/postgresql9.2?arch=source&distro=mageia-3"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9.2.8-1.mga3"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2014-0222.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2014-0060",
+    "CVE-2014-0061",
+    "CVE-2014-0062",
+    "CVE-2014-0063",
+    "CVE-2014-0064",
+    "CVE-2014-0065",
+    "CVE-2014-0066",
+    "CVE-2014-0067"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated postgresql packages fix multiple vulnerabilities"
 }

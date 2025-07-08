@@ -1,13 +1,46 @@
 {
-  "id": "MGASA-2021-0374",
-  "summary": "Updated netty packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0374.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "netty",
+        "purl": "pkg:rpm/mageia/netty?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.1.51-1.2.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "In Netty (io.netty:netty-codec-http2) before version 4.1.60.Final there is a\nvulnerability that enables request smuggling. If a Content-Length header is\npresent in the original HTTP/2 request, the field is not validated by\n`Http2MultiplexHandler` as it is propagated up. This is fine as long as the\nrequest is not proxied through as HTTP/1.1. If the request comes in as an\nHTTP/2 stream, gets converted into the HTTP/1.1 domain objects (`HttpRequest`,\n`HttpContent`, etc.) via `Http2StreamFrameToHttpObjectCodec `and then sent up\nto the child channel's pipeline and proxied through a remote peer as HTTP/1.1\nthis may result in request smuggling. In a proxy case, users may assume the\ncontent-length is validated somehow, which is not the case. If the request is\nforwarded to a backend channel that is a HTTP/1.1 connection, the Content-\nLength now has meaning and needs to be checked. An attacker can smuggle\nrequests inside the body as it gets downgraded from HTTP/2 to HTTP/1.1. For\nan example attack refer to the linked GitHub Advisory. Users are only affected\nif all of this is true: `HTTP2MultiplexCodec` or `Http2FrameCodec` is used,\n`Http2StreamFrameToHttpObjectCodec` is used to convert to HTTP/1.1 objects,\nand these HTTP/1.1 objects are forwarded to another remote peer. This has been\npatched in 4.1.60.Final As a workaround, the user can do the validation by\nthemselves by implementing a custom `ChannelInboundHandler` that is put in the\n`ChannelPipeline` behind `Http2StreamFrameToHttpObjectCodec`\n(CVE-2021-21295).\n\nIn Netty (io.netty:netty-codec-http2) before version 4.1.61.Final there is a\nvulnerability that enables request smuggling. The content-length header is not\ncorrectly validated if the request only uses a single Http2HeaderFrame with\nthe endStream set to to true. This could lead to request smuggling if the\nrequest is proxied to a remote peer and translated to HTTP/1.1. This is a\nfollowup of GHSA-wm47-8v5p-wjpj/CVE-2021-21295 which did miss to fix this one\ncase. This was fixed as part of 4.1.61.Final\n(CVE-2021-21409).\n",
+  "id": "MGASA-2021-0374",
   "modified": "2021-07-27T19:55:28Z",
   "published": "2021-07-27T20:21:53Z",
-  "related": [
-    "CVE-2021-21295",
-    "CVE-2021-21409"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -22,43 +55,10 @@
       "url": "https://www.debian.org/security/2021/dsa-4885"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "netty",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/netty?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.1.51-1.2.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0374.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-21295",
+    "CVE-2021-21409"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated netty packages fix security vulnerabilities"
 }

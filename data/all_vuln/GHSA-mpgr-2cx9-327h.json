@@ -1,24 +1,48 @@
 {
-  "id": "GHSA-mpgr-2cx9-327h",
-  "summary": "Information disclosure in SSB-DB",
-  "details": "### Impact\n_What kind of vulnerability is it? Who is impacted?_\n\nServers running SSB-DB 20.0.0 (which is packaged with SSB-Server 16.0.0) must upgrade immediately.\n\n**There is no evidence that other SSB apps are vulnerable or that this problem has been exploited in the wild.**\n\nThe `get()` method is supposed to only decrypt messages when you explicitly ask it to, but there's a bug where it's decrypting any message that it can. This means that it's returning the decrypted content of private messages, which a malicious peer could use to get access to private data. This only affects peers running SSB-DB@20.0.0 who also have private messages, and is only known to be exploitable if you're also running SSB-OOO (default in SSB-Server), which exposes a thin wrapper around `get()` to anonymous peers.\n\n### Patches\n_Has the problem been patched? What versions should users upgrade to?_\n\nYes, please upgrade to SSB-DB 20.0.1 (or SSB-Server 16.0.1) immediately.\n\n### Workarounds\n_Is there a way for users to fix or remediate the vulnerability without upgrading?_\n\nYou may be able to disable the most obvious attack vector, SSB-OOO, by disabling the plugin, but you should upgrade immediately anyway.\n\n### For more information\n\nIf you have any questions or comments about this advisory, open an issue in [SSB-DB](https://github.com/ssbc/ssb-db/)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/06/GHSA-mpgr-2cx9-327h/GHSA-mpgr-2cx9-327h.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ssb-db",
+        "purl": "pkg:npm/ssb-db"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "20.0.0"
+            },
+            {
+              "fixed": "20.0.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "versions": [
+        "20.0.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-4045"
   ],
-  "modified": "2023-11-08T04:03:49.895471Z",
-  "published": "2020-06-11T21:09:04Z",
-  "related": [
-    "CVE-2020-4045"
-  ],
   "database_specific": {
-    "nvd_published_at": null,
-    "github_reviewed_at": "2020-06-11T21:08:42Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-200"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-06-11T21:08:42Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "### Impact\n_What kind of vulnerability is it? Who is impacted?_\n\nServers running SSB-DB 20.0.0 (which is packaged with SSB-Server 16.0.0) must upgrade immediately.\n\n**There is no evidence that other SSB apps are vulnerable or that this problem has been exploited in the wild.**\n\nThe `get()` method is supposed to only decrypt messages when you explicitly ask it to, but there's a bug where it's decrypting any message that it can. This means that it's returning the decrypted content of private messages, which a malicious peer could use to get access to private data. This only affects peers running SSB-DB@20.0.0 who also have private messages, and is only known to be exploitable if you're also running SSB-OOO (default in SSB-Server), which exposes a thin wrapper around `get()` to anonymous peers.\n\n### Patches\n_Has the problem been patched? What versions should users upgrade to?_\n\nYes, please upgrade to SSB-DB 20.0.1 (or SSB-Server 16.0.1) immediately.\n\n### Workarounds\n_Is there a way for users to fix or remediate the vulnerability without upgrading?_\n\nYou may be able to disable the most obvious attack vector, SSB-OOO, by disabling the plugin, but you should upgrade immediately anyway.\n\n### For more information\n\nIf you have any questions or comments about this advisory, open an issue in [SSB-DB](https://github.com/ssbc/ssb-db/)",
+  "id": "GHSA-mpgr-2cx9-327h",
+  "modified": "2023-11-08T04:03:49.895471Z",
+  "published": "2020-06-11T21:09:04Z",
   "references": [
     {
       "type": "WEB",
@@ -33,39 +57,15 @@
       "url": "https://github.com/ssbc/ssb-db/commit/43334d0871c9cc6220e0f6d6338499060f7761d4"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ssb-db",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/ssb-db"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "20.0.0"
-            },
-            {
-              "fixed": "20.0.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "20.0.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/06/GHSA-mpgr-2cx9-327h/GHSA-mpgr-2cx9-327h.json"
-      }
-    }
+  "related": [
+    "CVE-2020-4045"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Information disclosure in SSB-DB"
 }

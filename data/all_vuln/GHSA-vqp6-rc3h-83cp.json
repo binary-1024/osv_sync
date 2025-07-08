@@ -1,26 +1,47 @@
 {
-  "id": "GHSA-vqp6-rc3h-83cp",
-  "summary": "Tailscale Windows daemon is vulnerable to RCE via CSRF",
-  "details": "A vulnerability identified in the Tailscale Windows client allows a malicious website to reconfigure the Tailscale daemon `tailscaled`, which can then be used to remotely execute code.\n\n**Affected platforms:** Windows\n**Patched Tailscale client versions:** v1.32.3 or later, v1.33.257 or later (unstable)\n\n### What happened?\nIn the Tailscale Windows client, the local API was bound to a local TCP socket, and communicated with the Windows client GUI in cleartext with no Host header verification. This allowed an attacker-controlled website visited by the node to rebind DNS to an attacker-controlled DNS server, and then make local API requests in the client, including changing the coordination server to an attacker-controlled coordination server.\n\n### Who is affected?\nAll Windows clients prior to version v.1.32.3 are affected.\n\n### What should I do?\nIf you are running Tailscale on Windows, upgrade to v1.32.3 or later to remediate the issue.\n\n### What is the impact?\nAn attacker-controlled coordination server can send malicious URL responses to the client, including pushing executables or installing an SMB share. These allow the attacker to remotely execute code on the node.\n\nReviewing all logs confirms this vulnerability was not triggered or exploited. \n\n### Credits\nWe would like to thank [Emily Trau](https://github.com/emilytrau) and [Jamie McClymont (CyberCX)](https://twitter.com/JJJollyjim) for reporting this issue. Further detail is available in [their blog post](https://emily.id.au/tailscale).\n\n### References\n* [TS-2022-004](https://tailscale.com/security-bulletins/#ts-2022-004)\n* [Researcher blog post](https://emily.id.au/tailscale)\n\n### For more information\nIf you have any questions or comments about this advisory, [contact Tailscale support](https://tailscale.com/contact/support/).\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-vqp6-rc3h-83cp/GHSA-vqp6-rc3h-83cp.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "tailscale.com",
+        "purl": "pkg:golang/tailscale.com"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.32.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-41924",
     "GO-2022-1120"
   ],
-  "modified": "2024-08-21T16:28:33.231826Z",
-  "published": "2022-11-21T22:34:00Z",
-  "related": [
-    "CVE-2022-41924"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-11-23T19:15:00Z",
     "cwe_ids": [
       "CWE-346",
       "CWE-352"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-11-21T22:34:00Z"
+    "github_reviewed_at": "2022-11-21T22:34:00Z",
+    "nvd_published_at": "2022-11-23T19:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "A vulnerability identified in the Tailscale Windows client allows a malicious website to reconfigure the Tailscale daemon `tailscaled`, which can then be used to remotely execute code.\n\n**Affected platforms:** Windows\n**Patched Tailscale client versions:** v1.32.3 or later, v1.33.257 or later (unstable)\n\n### What happened?\nIn the Tailscale Windows client, the local API was bound to a local TCP socket, and communicated with the Windows client GUI in cleartext with no Host header verification. This allowed an attacker-controlled website visited by the node to rebind DNS to an attacker-controlled DNS server, and then make local API requests in the client, including changing the coordination server to an attacker-controlled coordination server.\n\n### Who is affected?\nAll Windows clients prior to version v.1.32.3 are affected.\n\n### What should I do?\nIf you are running Tailscale on Windows, upgrade to v1.32.3 or later to remediate the issue.\n\n### What is the impact?\nAn attacker-controlled coordination server can send malicious URL responses to the client, including pushing executables or installing an SMB share. These allow the attacker to remotely execute code on the node.\n\nReviewing all logs confirms this vulnerability was not triggered or exploited. \n\n### Credits\nWe would like to thank [Emily Trau](https://github.com/emilytrau) and [Jamie McClymont (CyberCX)](https://twitter.com/JJJollyjim) for reporting this issue. Further detail is available in [their blog post](https://emily.id.au/tailscale).\n\n### References\n* [TS-2022-004](https://tailscale.com/security-bulletins/#ts-2022-004)\n* [Researcher blog post](https://emily.id.au/tailscale)\n\n### For more information\nIf you have any questions or comments about this advisory, [contact Tailscale support](https://tailscale.com/contact/support/).\n",
+  "id": "GHSA-vqp6-rc3h-83cp",
+  "modified": "2024-08-21T16:28:33.231826Z",
+  "published": "2022-11-21T22:34:00Z",
   "references": [
     {
       "type": "WEB",
@@ -47,36 +68,15 @@
       "url": "https://tailscale.com/security-bulletins/#ts-2022-004"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tailscale.com",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/tailscale.com"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.32.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/11/GHSA-vqp6-rc3h-83cp/GHSA-vqp6-rc3h-83cp.json"
-      }
-    }
+  "related": [
+    "CVE-2022-41924"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:L/A:H"
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:L/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Tailscale Windows daemon is vulnerable to RCE via CSRF"
 }

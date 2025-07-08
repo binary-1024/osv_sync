@@ -1,7 +1,49 @@
 {
-  "id": "RUSTSEC-2020-0070",
-  "summary": "Some lock_api lock guard objects can cause data races",
-  "details": "Affected versions of lock_api had unsound implementations of the `Send` or\n`Sync` traits for some guard objects, namely:\n\n* MappedMutexGuard\n* MappedRwLockReadGuard\n* MappedRwLockWriteGuard\n* RwLockReadGuard\n* RwLockWriteGuard\n\nThese guards could allow data races through types that are not safe to `Send`\nacross thread boundaries in safe Rust code.\n\nThis issue was fixed by changing the trait bounds on the `Mapped` guard types\nand removing the `Sync` trait for the `RwLock` guards.",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [
+          "memory-corruption",
+          "thread-safety"
+        ],
+        "cvss": null,
+        "informational": "unsound",
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2020-0070.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [
+            "lock_api::MappedMutexGuard",
+            "lock_api::MappedRwLockReadGuard",
+            "lock_api::MappedRwLockWriteGuard",
+            "lock_api::RwLockReadGuard",
+            "lock_api::RwLockWriteGuard"
+          ],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "lock_api",
+        "purl": "pkg:cargo/lock_api"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.4.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-35910",
     "CVE-2020-35911",
@@ -14,11 +56,13 @@
     "GHSA-ppj3-7jw3-8vc4",
     "GHSA-vh4p-6j7g-f4j9"
   ],
-  "modified": "2024-03-15T00:05:20.102470Z",
-  "published": "2020-11-08T12:00:00Z",
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "Affected versions of lock_api had unsound implementations of the `Send` or\n`Sync` traits for some guard objects, namely:\n\n* MappedMutexGuard\n* MappedRwLockReadGuard\n* MappedRwLockWriteGuard\n* RwLockReadGuard\n* RwLockWriteGuard\n\nThese guards could allow data races through types that are not safe to `Send`\nacross thread boundaries in safe Rust code.\n\nThis issue was fixed by changing the trait bounds on the `Mapped` guard types\nand removing the `Sync` trait for the `RwLock` guards.",
+  "id": "RUSTSEC-2020-0070",
+  "modified": "2024-03-15T00:05:20.102470Z",
+  "published": "2020-11-08T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -33,50 +77,6 @@
       "url": "https://github.com/Amanieu/parking_lot/pull/262"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "lock_api",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/lock_api"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            },
-            {
-              "fixed": "0.4.2"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [
-            "lock_api::MappedMutexGuard",
-            "lock_api::MappedRwLockReadGuard",
-            "lock_api::MappedRwLockWriteGuard",
-            "lock_api::RwLockReadGuard",
-            "lock_api::RwLockWriteGuard"
-          ],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": null,
-        "informational": "unsound",
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2020-0070.json",
-        "categories": [
-          "memory-corruption",
-          "thread-safety"
-        ]
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Some lock_api lock guard objects can cause data races"
 }

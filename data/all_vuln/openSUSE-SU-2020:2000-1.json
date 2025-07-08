@@ -1,45 +1,43 @@
 {
-  "id": "openSUSE-SU-2020:2000-1",
-  "summary": "Security update for rmt-server",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2000-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "rmt-server": "2.6.5-lp151.2.18.2",
+            "rmt-server-config": "2.6.5-lp151.2.18.2",
+            "rmt-server-pubcloud": "2.6.5-lp151.2.18.2"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "openSUSE:Leap 15.1",
+        "name": "rmt-server",
+        "purl": "pkg:rpm/opensuse/rmt-server&distro=openSUSE%20Leap%2015.1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.6.5-lp151.2.18.2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "This update for rmt-server fixes the following issues:\n\n- Version 2.6.5\n- Solved potential bug of SCC repository URLs changing over time. RMT\n  now self heals by removing the previous invalid repository and\n  creating the correct one.\n\n- Version 2.6.4\n- Add web server settings to /etc/rmt.conf:\n  Now it's possible to configure the minimum and maximum threads count as well\n  the number of web server workers to be booted through /etc/rmt.conf.\n\n- Version 2.6.3\n- Instead of using an MD5 of URLs for custom repository friendly_ids,\n  RMT now builds an ID from the name.\n\n- Version 2.6.2\n- Fix RMT file caching based on timestamps:\n  Previously, RMT sent GET requests with the header 'If-Modified-Since' to a\n  repository server and if the response had a 304 (Not Modified), it would copy\n  a file from the local cache instead of downloading. However, if the local file\n  timestamp accidentally changed to a date newer than the one on the repository\n  server, RMT would have an outdated file, which caused some errors.\n  Now, RMT makes HEAD requests to the repositories servers and inspect the\n  'Last-Modified' header to decide whether to download a file or copy it from\n  cache, by comparing the equalness of timestamps.\n  \n\n- Version 2.6.1\n- Fixed an issue where relative paths supplied to `rmt-cli import repos`\n  caused the command to fail.\n\n- Version 2.6.0\n- Friendlier IDs for custom repositories:\n  In an effort to simplify the handling of SCC and custom repositories,\n  RMT now has friendly IDs. For SCC repositories, it's the same SCC ID\n  as before. For custom repositories, it can either be user provided\n  or RMT generated (MD5 of the provided URL).\n  Benefits:\n  * `rmt-cli mirror repositories` now works for custom repositories.\n  * Custom repository IDs can be the same across RMT instances.\n  * No more confusing 'SCC ID' vs 'ID' in `rmt-cli` output.\n  Deprecation Warnings:\n  * RMT now uses a different ID for custom repositories than before.\n    RMT still supports that old ID, but it's recommended to start\n    using the new ID to ensure future compatibility.\n\n- Version 2.5.20\n- Updated rails from 6.0.3.2 to 6.0.3.3:\n  - actionview (CVE-2020-15169)\n\n- Version 2.5.19\n- RMT now has the ability to remove local systems with the command\n  `rmt-cli systems remove`.\n\n- Version 2.5.18\n- Fixed exit code for `rmt-cli mirror` and its subcommands. Now it exits with 1\n  whenever an error occurs during mirroring\n- Improved message logging for `rtm-cli mirror`. Instead of logging an error\n  when it occurs, the command summarize all errors at the end of execution. Now\n  log messages have colors to better identify failure/success.\n\n- Version 2.5.17\n- RMT no longer provides the installer updates repository to systems via its\n  zypper service. This repository is used during the installation process, as\n  it provides an up-to-date installation experience, but it has no use on an\n  already installed system.\n\n- Version 2.5.16\n- Updated RMT's rails and puma dependencies.\n  - puma (CVE-2020-11076, CVE-2020-11077, CVE-2020-5249, CVE-2020-5247\n    CVE-2019-16770)\n  - actionpack (CVE-2020-8185, CVE-2020-8164, CVE-2020-8166)\n  - actionview (CVE-2020-8167, CVE-2020-5267, CVE-2019-5418, CVE-2019-5419)\n  - activesupport (CVE-2020-8165)\n  - railties (CVE-2019-5420)\n\n- Version 2.5.15\n- RMT now checks if repositories are fully mirrored during the\n  activation process. Previously, RMT only checked if the repositories\n  were enabled to be mirrored, but not that they were actually mirrored.\n  In this case, RMTs were not able to provide the repository data which\n  systems assumed it had.\n\n- Version 2.5.14\n- Enable 'Installer-Updates' repositories by default\n\n- Fixed deprecation warning when thor encountered an error. Also,\n  instead of returning 0 for thor errors, rmt-cli will return 1\n  instead.\n\n- Version 2.5.13\n- Added `rmt-cli repos clean` command to remove locally mirrored files\n  of repositories which are not marked to be mirrored.\n- Previously, RMT didn't track deduplicated files in its database. Now,\n  to accommodate `rmt-cli repos clean`, RMT will track all mirrored\n  files.\n\n- Move the nginx reload to the configuration package which contain\n  nginx config files, don't reload nginx unconditionally from main\n  package.\n\n- Version 2.5.12\n- Update rack to version 2.2.3 (CVE-2020-8184: bsc#1173351)\n- Update Rails to version 5.2.4.3:\n  - actionpack (CVE-2020-8164: bsc#1172177)\n  - actionpack (CVE-2020-8166: bsc#1172182)\n  - activesupport (CVE-2020-8165: bsc#1172186)\n  - actionview (CVE-2020-8167: bsc#1172184)\n\n- Version 2.5.11\n- rmt-server-pubcloud:\n  - SLES11 EOL\n  - Extension activation verification based on the available subscriptions\n  - Added a manual instance verification script\n\n- Version 2.5.10\n- Support rmt-server to run with Ruby 2.7 (Factory/Tumbleweed):\n  - Bump gem 'config' version from 1.7.2 to 2.2.1 to fix incompatibility Ruby\n    2.7 OpenStruct class;\n  - Bump gem 'typhoeus' version from 1.3.1 to 1.4.0 in order to also bump gem\n    'ethon' version, which caused a 'rb_safe_level' warning on Ruby 2.7;\n  - Fix 'last arg as keyword arg' Ruby 2.7 warning on source code;\n  - Disable 'deprecated' warnings from Ruby 2.7; Rails 5.1 generates a lot of\n    warnings with Ruby 2.7, mainly due to 'capturing the given block with\n    Proc.new', which is deprecated;\n  - Improve RPM spec to consider only the distribution default Ruby version\n    configured in OBS;\n  - Improve RPM spec to remove Ruby 2.7 warnings regarding 'bundler.\n\n- Move nginx/vhosts.d directory to correct sub-package. They\n  are needed together with nginx, not rmt-server.\n- Fix dependencies especially for containerized usage:\n  - mariadb and nginx are not hard requires, could run on another host\n- Fix generic dependencies:\n  - systemd ordering was missing\n  - shadow is required for pre-install\n\n- Version 2.5.9\n- rmt-server-pubcloud: enforce strict authentication\n\n- Version 2.5.8\n- Use repomd_parser gem to remove repository metadata parsing code.\n\nThis update was imported from the SUSE:SLE-15-SP1:Update update project.",
+  "id": "openSUSE-SU-2020:2000-1",
   "modified": "2025-05-07T18:10:49.034372Z",
   "published": "2020-11-23T09:30:24Z",
-  "related": [
-    "CVE-2019-16770",
-    "CVE-2019-5418",
-    "CVE-2019-5419",
-    "CVE-2019-5420",
-    "CVE-2020-11076",
-    "CVE-2020-11077",
-    "CVE-2020-15169",
-    "CVE-2020-5247",
-    "CVE-2020-5249",
-    "CVE-2020-5267",
-    "CVE-2020-8164",
-    "CVE-2020-8165",
-    "CVE-2020-8166",
-    "CVE-2020-8167",
-    "CVE-2020-8184",
-    "CVE-2020-8185"
-  ],
-  "upstream": [
-    "CVE-2019-16770",
-    "CVE-2019-5418",
-    "CVE-2019-5419",
-    "CVE-2019-5420",
-    "CVE-2020-11076",
-    "CVE-2020-11077",
-    "CVE-2020-15169",
-    "CVE-2020-5247",
-    "CVE-2020-5249",
-    "CVE-2020-5267",
-    "CVE-2020-8164",
-    "CVE-2020-8165",
-    "CVE-2020-8166",
-    "CVE-2020-8167",
-    "CVE-2020-8184",
-    "CVE-2020-8185"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -130,40 +128,42 @@
       "url": "https://www.suse.com/security/cve/CVE-2020-8185"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "rmt-server",
-        "ecosystem": "openSUSE:Leap 15.1",
-        "purl": "pkg:rpm/opensuse/rmt-server&distro=openSUSE%20Leap%2015.1"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.6.5-lp151.2.18.2"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "rmt-server": "2.6.5-lp151.2.18.2",
-            "rmt-server-pubcloud": "2.6.5-lp151.2.18.2",
-            "rmt-server-config": "2.6.5-lp151.2.18.2"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/openSUSE-SU-2020:2000-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2019-16770",
+    "CVE-2019-5418",
+    "CVE-2019-5419",
+    "CVE-2019-5420",
+    "CVE-2020-11076",
+    "CVE-2020-11077",
+    "CVE-2020-15169",
+    "CVE-2020-5247",
+    "CVE-2020-5249",
+    "CVE-2020-5267",
+    "CVE-2020-8164",
+    "CVE-2020-8165",
+    "CVE-2020-8166",
+    "CVE-2020-8167",
+    "CVE-2020-8184",
+    "CVE-2020-8185"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for rmt-server",
+  "upstream": [
+    "CVE-2019-16770",
+    "CVE-2019-5418",
+    "CVE-2019-5419",
+    "CVE-2019-5420",
+    "CVE-2020-11076",
+    "CVE-2020-11077",
+    "CVE-2020-15169",
+    "CVE-2020-5247",
+    "CVE-2020-5249",
+    "CVE-2020-5267",
+    "CVE-2020-8164",
+    "CVE-2020-8165",
+    "CVE-2020-8166",
+    "CVE-2020-8167",
+    "CVE-2020-8184",
+    "CVE-2020-8185"
+  ]
 }

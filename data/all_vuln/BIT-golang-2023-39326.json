@@ -1,19 +1,55 @@
 {
-  "id": "BIT-golang-2023-39326",
-  "summary": "Denial of service via chunk extensions in net/http",
-  "details": "A malicious HTTP sender can use chunk extensions to cause a receiver reading from a request or response body to read many more bytes from the network than are in the body. A malicious HTTP client can further exploit this to cause a server to automatically read a large amount of data (up to about 1GiB) when a handler fails to read the entire body of a request. Chunk extensions are a little-used HTTP feature which permit including additional metadata in a request or response body sent using the chunked encoding. The net/http chunked encoding reader discards this metadata. A sender can exploit this by inserting a large metadata segment with each byte transferred. The chunk reader now produces an error if the ratio of real body to encoded bytes grows too small.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/golang/BIT-golang-2023-39326.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "golang",
+        "purl": "pkg:bitnami/golang"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.20.12"
+            },
+            {
+              "introduced": "1.21.0-0"
+            },
+            {
+              "fixed": "1.21.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-39326",
     "GO-2023-2382"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T10:53:23.071Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:golang:go:*:*:*:*:*:*:*:*"
     ],
     "severity": "Medium"
   },
+  "details": "A malicious HTTP sender can use chunk extensions to cause a receiver reading from a request or response body to read many more bytes from the network than are in the body. A malicious HTTP client can further exploit this to cause a server to automatically read a large amount of data (up to about 1GiB) when a handler fails to read the entire body of a request. Chunk extensions are a little-used HTTP feature which permit including additional metadata in a request or response body sent using the chunked encoding. The net/http chunked encoding reader discards this metadata. A sender can exploit this by inserting a large metadata segment with each byte transferred. The chunk reader now produces an error if the ratio of real body to encoded bytes grows too small.",
+  "id": "BIT-golang-2023-39326",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T10:53:23.071Z",
   "references": [
     {
       "type": "WEB",
@@ -40,42 +76,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-39326"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "golang",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/golang"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.20.12"
-            },
-            {
-              "introduced": "1.21.0-0"
-            },
-            {
-              "fixed": "1.21.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/golang/BIT-golang-2023-39326.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Denial of service via chunk extensions in net/http"
 }

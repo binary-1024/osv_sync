@@ -1,27 +1,46 @@
 {
-  "id": "MGASA-2024-0387",
-  "summary": "Updated qemu packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2024-0387.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:9",
+        "name": "qemu",
+        "purl": "pkg:rpm/mageia/qemu?arch=source&distro=mageia-9"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.2.15-1.mga9"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "A flaw was found in the QEMU implementation of VMWare's paravirtual RDMA\ndevice. This flaw allows a crafted guest driver to allocate and\ninitialize a huge number of page tables to be used as a ring of\ndescriptors for CQ and async events, potentially leading to an\nout-of-bounds read and crash of QEMU. (CVE-2023-1544)\nA DMA reentrancy issue leading to a use-after-free error was found in\nthe e1000e NIC emulation code in QEMU. This issue could allow a\nprivileged guest user to crash the QEMU process on the host, resulting\nin a denial of service. (CVE-2023-3019)\nA flaw was found in the QEMU built-in VNC server while processing\nClientCutText messages. A wrong exit condition may lead to an infinite\nloop when inflating an attacker controlled zlib buffer in the\n`inflate_buffer` function. This could allow a remote authenticated\nclient who is able to send a clipboard to the VNC server to trigger a\ndenial of service. (CVE-2023-3255)\nA bug in QEMU could cause a guest I/O operation otherwise addressed to\nan arbitrary disk offset to be targeted to offset 0 instead (potentially\noverwriting the VM's boot code). This could be used, for example, by L2\nguests with a virtual disk (vdiskL2) stored on a virtual disk of an L1\n(vdiskL1) hypervisor to read and/or write data to LBA 0 of vdiskL1,\npotentially gaining control of L1 at its next reboot. (CVE-2023-5088)\nA flaw was found in the QEMU built-in VNC server while processing\nClientCutText messages. The qemu_clipboard_request() function can be\nreached before vnc_server_cut_text_caps() was called and had the chance\nto initialize the clipboard peer, leading to a NULL pointer dereference.\nThis could allow a malicious authenticated VNC client to crash QEMU and\ntrigger a denial of service. (CVE-2023-6683)\nA stack based buffer overflow was found in the virtio-net device of\nQEMU. This issue occurs when flushing TX in the virtio_net_flush_tx\nfunction if guest features VIRTIO_NET_F_HASH_REPORT, VIRTIO_F_VERSION_1\nand VIRTIO_NET_F_MRG_RXBUF are enabled. This could allow a malicious\nuser to overwrite local variables allocated on the stack. Specifically,\nthe `out_sg` variable could be used to read a part of process memory and\nsend it to the wire, causing an information leak. (CVE-2023-6693)\nQEMU through 8.0.0 could trigger a division by zero in scsi_disk_reset\nin hw/scsi/scsi-disk.c because scsi_disk_emulate_mode_select does not\nprevent s->qdev.blocksize from being 256. This stops QEMU and the guest\nimmediately. (CVE-2023-42467)\nQEMU before 8.2.0 has an integer underflow, and resultant buffer\noverflow, via a TI command when an expected non-DMA transfer length is\nless than the length of the available FIFO data. This occurs in\nesp_do_nodma in hw/scsi/esp.c because of an underflow of async_len.\n(CVE-2024-24474)\nAn issue was discovered in QEMU 7.1.0 through 8.2.1. register_vfs in\nhw/pci/pcie_sriov.c mishandles the situation where a guest writes NumVFs\ngreater than TotalVFs, leading to a buffer overflow in VF\nimplementations. (CVE-2024-26327)\nAn issue was discovered in QEMU 7.1.0 through 8.2.1. register_vfs in\nhw/pci/pcie_sriov.c does not set NumVFs to PCI_SRIOV_TOTAL_VF, and thus\ninteraction with hw/nvme/ctrl.c is mishandled. (CVE-2024-26328)\nA double free vulnerability was found in QEMU virtio devices\n(virtio-gpu, virtio-serial-bus, virtio-crypto), where the\nmem_reentrancy_guard flag insufficiently protects against DMA reentrancy\nissues. This issue could allow a malicious privileged guest user to\ncrash the QEMU process on the host, resulting in a denial of service or\nallow arbitrary code execution within the context of the QEMU process on\nthe host. (CVE-2024-3446)\nA heap-based buffer overflow was found in the SDHCI device emulation of\nQEMU. The bug is triggered when both `s->data_count` and the size of\n`s->fifo_buffer` are set to 0x200, leading to an out-of-bound access. A\nmalicious guest could use this flaw to crash the QEMU process on the\nhost, resulting in a denial of service condition. (CVE-2024-3447)\nA flaw was found in the QEMU disk image utility (qemu-img) 'info'\ncommand. A specially crafted image file containing a `json:{}` value\ndescribing block devices in QMP could cause the qemu-img process on the\nhost to consume large amounts of memory or CPU time, leading to denial\nof service or read/write to an existing external file. (CVE-2024-4467)\nA flaw was found in the QEMU NBD Server. This vulnerability allows a\ndenial of service (DoS) attack via improper synchronization during\nsocket closure when a client keeps a socket open as the server is taken\noffline. (CVE-2024-7409)\nA flaw was found in QEMU. An assertion failure was present in the\nusb_ep_get() function in hw/net/core.c when trying to get the USB\nendpoint from a USB device. This flaw may allow a malicious unprivileged\nguest user to crash the QEMU process on the host and cause a denial of\nservice condition. (CVE-2024-8354)\nA flaw was found in QEMU, in the virtio-scsi, virtio-blk, and\nvirtio-crypto devices. The size for virtqueue_push as set in\nvirtio_scsi_complete_req / virtio_blk_req_complete /\nvirito_crypto_req_complete could be larger than the true size of the\ndata which has been sent to guest. Once virtqueue_push() finally calls\ndma_memory_unmap to ummap the in_iov, it may call the\naddress_space_write function to write back the data. Some uninitialized\ndata may exist in the bounce.buffer, leading to an information leak.\n(CVE-2024-8612)\n",
+  "id": "MGASA-2024-0387",
   "modified": "2024-12-04T16:29:57Z",
   "published": "2024-12-04T16:58:15Z",
-  "related": [
-    "CVE-2023-1544",
-    "CVE-2023-3019",
-    "CVE-2023-3255",
-    "CVE-2023-42467",
-    "CVE-2023-5088",
-    "CVE-2023-6683",
-    "CVE-2023-6693",
-    "CVE-2024-24474",
-    "CVE-2024-26327",
-    "CVE-2024-26328",
-    "CVE-2024-3446",
-    "CVE-2024-3447",
-    "CVE-2024-4467",
-    "CVE-2024-7409",
-    "CVE-2024-8354",
-    "CVE-2024-8612"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -52,43 +71,24 @@
       "url": "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/message/HL7L7OSCUZ44UAQCOB6IUOFBWKV6ECP2/"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "qemu",
-        "ecosystem": "Mageia:9",
-        "purl": "pkg:rpm/mageia/qemu?arch=source&distro=mageia-9"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "7.2.15-1.mga9"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2024-0387.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-1544",
+    "CVE-2023-3019",
+    "CVE-2023-3255",
+    "CVE-2023-42467",
+    "CVE-2023-5088",
+    "CVE-2023-6683",
+    "CVE-2023-6693",
+    "CVE-2024-24474",
+    "CVE-2024-26327",
+    "CVE-2024-26328",
+    "CVE-2024-3446",
+    "CVE-2024-3447",
+    "CVE-2024-4467",
+    "CVE-2024-7409",
+    "CVE-2024-8354",
+    "CVE-2024-8612"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated qemu packages fix security vulnerabilities"
 }

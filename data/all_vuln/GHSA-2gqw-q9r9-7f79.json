@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-2gqw-q9r9-7f79",
-  "summary": "Changeset vulnerable to prototype pollution",
-  "details": "### Overview\nPrototype pollution vulnerability in 'changeset' versions 0.0.1 through 0.2.5 allows attackers to cause a denial of service and may lead to remote code execution.\n\n### Details\nThe npm module 'changeset' can be abused by Prototype Pollution vulnerability since the function 'apply()' does not check for the type of object before assigning value to the property. Due to this flaw an attacker could create a non-existent property or able to manipulate the property which leads to Denial of Service or potentially Remote code execution.\n\n### PoC Details\nThe 'apply()' function accepts 'changes, target, modify' as argument. Due to the absence of validation on the values passed into the 'changes' argument, an attacker can supply a malicious value by adjusting the value to include the '__proto__' property. Since there is no validation before assigning the property to check whether the assigned argument is the Object's own property or not, the property 'polluted' will be directly be assigned to the new object thereby polluting the Object prototype. Using the example below, if there is a check to validate 'polluted' the valued later in the code, it would be substituted as \"Yes! Its Polluted\" as it had been polluted.\n\n### PoC Code\n\n```js\nvar changeset = require(\"changeset\") const patch = [{\n    type: 'put',\n    key: [\"__proto__\", \"polluted\"],\n    value: \"Yes! Its Polluted\"\n}];\nconsole.log(\"Before : \" + {}.polluted);\nchangeset.apply(patch, {}, true);\nconsole.log(\"After : \" + {}.polluted);\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-2gqw-q9r9-7f79/GHSA-2gqw-q9r9-7f79.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "changeset",
+        "purl": "pkg:npm/changeset"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.1"
+            },
+            {
+              "fixed": "0.2.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-25915"
   ],
-  "modified": "2023-11-08T04:05:17.224990Z",
-  "published": "2022-05-24T17:44:00Z",
   "database_specific": {
-    "nvd_published_at": "2021-03-09T15:15:00Z",
     "cwe_ids": [
       "CWE-1321"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-10-19T18:27:41Z"
+    "github_reviewed_at": "2023-10-19T18:27:41Z",
+    "nvd_published_at": "2021-03-09T15:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Overview\nPrototype pollution vulnerability in 'changeset' versions 0.0.1 through 0.2.5 allows attackers to cause a denial of service and may lead to remote code execution.\n\n### Details\nThe npm module 'changeset' can be abused by Prototype Pollution vulnerability since the function 'apply()' does not check for the type of object before assigning value to the property. Due to this flaw an attacker could create a non-existent property or able to manipulate the property which leads to Denial of Service or potentially Remote code execution.\n\n### PoC Details\nThe 'apply()' function accepts 'changes, target, modify' as argument. Due to the absence of validation on the values passed into the 'changes' argument, an attacker can supply a malicious value by adjusting the value to include the '__proto__' property. Since there is no validation before assigning the property to check whether the assigned argument is the Object's own property or not, the property 'polluted' will be directly be assigned to the new object thereby polluting the Object prototype. Using the example below, if there is a check to validate 'polluted' the valued later in the code, it would be substituted as \"Yes! Its Polluted\" as it had been polluted.\n\n### PoC Code\n\n```js\nvar changeset = require(\"changeset\") const patch = [{\n    type: 'put',\n    key: [\"__proto__\", \"polluted\"],\n    value: \"Yes! Its Polluted\"\n}];\nconsole.log(\"Before : \" + {}.polluted);\nchangeset.apply(patch, {}, true);\nconsole.log(\"After : \" + {}.polluted);\n```",
+  "id": "GHSA-2gqw-q9r9-7f79",
+  "modified": "2023-11-08T04:05:17.224990Z",
+  "published": "2022-05-24T17:44:00Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -34,36 +58,12 @@
       "url": "https://web.archive.org/web/20210323102946/https://www.whitesourcesoftware.com/vulnerability-database/CVE-2021-25915"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "changeset",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/changeset"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.1"
-            },
-            {
-              "fixed": "0.2.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-2gqw-q9r9-7f79/GHSA-2gqw-q9r9-7f79.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Changeset vulnerable to prototype pollution"
 }

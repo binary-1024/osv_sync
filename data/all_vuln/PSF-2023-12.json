@@ -1,18 +1,59 @@
 {
-  "id": "PSF-2023-12",
-  "summary": "Groups not dropped before running subprocess when using empty 'extra_groups' parameter",
-  "details": "An issue was found in CPython 3.12.0 `subprocess` module on POSIX platforms. The issue was fixed in CPython 3.12.1 and does not affect other stable releases.\n\nWhen using the `extra_groups=` parameter with an empty list as a value (ie `extra_groups=[]`) the logic regressed to not call `setgroups(0, NULL)` before calling `exec()`, thus not dropping the original processes' groups before starting the new process. There is no issue when the parameter isn't used or when any value is used besides an empty list.\n\nThis issue only impacts CPython processes run with sufficient privilege to make the `setgroups` system call (typically `root`).\n\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/psf/advisory-database/blob/main/advisories/python/PSF-2023-12.json"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "124af17b6e49f0f22fbe646fb57800393235d704"
+            },
+            {
+              "fixed": "9fe7655c6ce0b8e9adc229daf681b6d30e6b1610"
+            },
+            {
+              "fixed": "10e9bb13b8dcaa414645b9bd10718d8f7179e82b"
+            },
+            {
+              "fixed": "85bbfa8a4bbdbb61a3a84fbd7cb29a4096ab8a06"
+            }
+          ],
+          "repo": "https://github.com/python/cpython",
+          "type": "GIT"
+        }
+      ],
+      "versions": [
+        "v3.12.0",
+        "v3.12.0a5",
+        "v3.12.0a6",
+        "v3.12.0a7",
+        "v3.12.0b1",
+        "v3.12.0b2",
+        "v3.12.0b3",
+        "v3.12.0b4",
+        "v3.12.0rc1",
+        "v3.12.0rc2",
+        "v3.12.0rc3",
+        "v3.13.0a1",
+        "v3.13.0a2"
+      ]
+    }
+  ],
   "aliases": [
     "BIT-python-2023-6507",
     "BIT-python-min-2023-6507",
     "CVE-2023-6507",
     "PSF-CVE-2023-6507"
   ],
-  "modified": "2025-01-17T17:44:24.074690Z",
-  "published": "2023-12-08T18:20:49.583Z",
   "database_specific": {
     "cwe_ids": []
   },
+  "details": "An issue was found in CPython 3.12.0 `subprocess` module on POSIX platforms. The issue was fixed in CPython 3.12.1 and does not affect other stable releases.\n\nWhen using the `extra_groups=` parameter with an empty list as a value (ie `extra_groups=[]`) the logic regressed to not call `setgroups(0, NULL)` before calling `exec()`, thus not dropping the original processes' groups before starting the new process. There is no issue when the parameter isn't used or when any value is used besides an empty list.\n\nThis issue only impacts CPython processes run with sufficient privilege to make the `setgroups` system call (typically `root`).\n\n",
+  "id": "PSF-2023-12",
+  "modified": "2025-01-17T17:44:24.074690Z",
+  "published": "2023-12-08T18:20:49.583Z",
   "references": [
     {
       "type": "REPORT",
@@ -35,47 +76,6 @@
       "url": "https://github.com/python/cpython/commit/85bbfa8a4bbdbb61a3a84fbd7cb29a4096ab8a06"
     }
   ],
-  "affected": [
-    {
-      "ranges": [
-        {
-          "type": "GIT",
-          "repo": "https://github.com/python/cpython",
-          "events": [
-            {
-              "introduced": "124af17b6e49f0f22fbe646fb57800393235d704"
-            },
-            {
-              "fixed": "9fe7655c6ce0b8e9adc229daf681b6d30e6b1610"
-            },
-            {
-              "fixed": "10e9bb13b8dcaa414645b9bd10718d8f7179e82b"
-            },
-            {
-              "fixed": "85bbfa8a4bbdbb61a3a84fbd7cb29a4096ab8a06"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "v3.12.0",
-        "v3.12.0a5",
-        "v3.12.0a6",
-        "v3.12.0a7",
-        "v3.12.0b1",
-        "v3.12.0b2",
-        "v3.12.0b3",
-        "v3.12.0b4",
-        "v3.12.0rc1",
-        "v3.12.0rc2",
-        "v3.12.0rc3",
-        "v3.13.0a1",
-        "v3.13.0a2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/psf/advisory-database/blob/main/advisories/python/PSF-2023-12.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Groups not dropped before running subprocess when using empty 'extra_groups' parameter"
 }

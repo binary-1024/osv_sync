@@ -1,26 +1,97 @@
 {
-  "id": "GHSA-wc69-rhjr-hc9g",
-  "summary": "Moment.js vulnerable to Inefficient Regular Expression Complexity",
-  "details": "### Impact\n\n* using string-to-date parsing in moment (more specifically rfc2822 parsing, which is tried by default) has quadratic (N^2) complexity on specific inputs\n* noticeable slowdown is observed with inputs above 10k characters\n* users who pass user-provided strings without sanity length checks to moment constructor are vulnerable to (Re)DoS attacks\n\n### Patches\nThe problem is patched in 2.29.4, the patch can be applied to all affected versions with minimal tweaking.\n\n### Workarounds\nIn general, given the proliferation of ReDoS attacks, it makes sense to limit the length of the user input to something sane, like 200 characters or less. I haven't seen legitimate cases of date-time strings longer than that, so all moment users who do pass a user-originating string to constructor are encouraged to apply such a rudimentary filter, that would help with this but also most future ReDoS vulnerabilities.\n\n### References\nThere is an excellent writeup of the issue here: https://github.com/moment/moment/pull/6015#issuecomment-1152961973=\n\n### Details\nThe issue is rooted in the code that removes legacy comments (stuff inside parenthesis) from strings during rfc2822 parsing. `moment(\"(\".repeat(500000))` will take a few minutes to process, which is unacceptable.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-wc69-rhjr-hc9g/GHSA-wc69-rhjr-hc9g.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "moment",
+        "purl": "pkg:npm/moment"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.18.0"
+            },
+            {
+              "fixed": "2.29.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-wc69-rhjr-hc9g/GHSA-wc69-rhjr-hc9g.json"
+      },
+      "package": {
+        "ecosystem": "NuGet",
+        "name": "Moment.js",
+        "purl": "pkg:nuget/Moment.js"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.18.0"
+            },
+            {
+              "fixed": "2.29.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.18.0",
+        "2.18.1",
+        "2.18.2",
+        "2.19.0",
+        "2.19.1",
+        "2.19.2",
+        "2.19.3",
+        "2.19.4",
+        "2.20.0",
+        "2.20.1",
+        "2.21.0",
+        "2.22.0",
+        "2.22.1",
+        "2.22.2",
+        "2.23.0",
+        "2.24.0",
+        "2.25.0",
+        "2.25.1",
+        "2.25.2",
+        "2.26.0",
+        "2.27.0",
+        "2.28.0",
+        "2.29.0",
+        "2.29.1",
+        "2.29.2",
+        "2.29.3"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-31129"
   ],
-  "modified": "2025-02-15T05:45:55.264911Z",
-  "published": "2022-07-06T18:38:49Z",
-  "related": [
-    "CVE-2022-31129",
-    "CVE-2023-22467"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-07-06T18:15:00Z",
     "cwe_ids": [
       "CWE-1333",
       "CWE-400"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-07-06T18:38:49Z"
+    "github_reviewed_at": "2022-07-06T18:38:49Z",
+    "nvd_published_at": "2022-07-06T18:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\n* using string-to-date parsing in moment (more specifically rfc2822 parsing, which is tried by default) has quadratic (N^2) complexity on specific inputs\n* noticeable slowdown is observed with inputs above 10k characters\n* users who pass user-provided strings without sanity length checks to moment constructor are vulnerable to (Re)DoS attacks\n\n### Patches\nThe problem is patched in 2.29.4, the patch can be applied to all affected versions with minimal tweaking.\n\n### Workarounds\nIn general, given the proliferation of ReDoS attacks, it makes sense to limit the length of the user input to something sane, like 200 characters or less. I haven't seen legitimate cases of date-time strings longer than that, so all moment users who do pass a user-originating string to constructor are encouraged to apply such a rudimentary filter, that would help with this but also most future ReDoS vulnerabilities.\n\n### References\nThere is an excellent writeup of the issue here: https://github.com/moment/moment/pull/6015#issuecomment-1152961973=\n\n### Details\nThe issue is rooted in the code that removes legacy comments (stuff inside parenthesis) from strings during rfc2822 parsing. `moment(\"(\".repeat(500000))` will take a few minutes to process, which is unacceptable.",
+  "id": "GHSA-wc69-rhjr-hc9g",
+  "modified": "2025-02-15T05:45:55.264911Z",
+  "published": "2022-07-06T18:38:49Z",
   "references": [
     {
       "type": "WEB",
@@ -83,87 +154,16 @@
       "url": "https://security.netapp.com/advisory/ntap-20221014-0003"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "moment",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/moment"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.18.0"
-            },
-            {
-              "fixed": "2.29.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-wc69-rhjr-hc9g/GHSA-wc69-rhjr-hc9g.json"
-      }
-    },
-    {
-      "package": {
-        "name": "Moment.js",
-        "ecosystem": "NuGet",
-        "purl": "pkg:nuget/Moment.js"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.18.0"
-            },
-            {
-              "fixed": "2.29.4"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.18.0",
-        "2.18.1",
-        "2.18.2",
-        "2.19.0",
-        "2.19.1",
-        "2.19.2",
-        "2.19.3",
-        "2.19.4",
-        "2.20.0",
-        "2.20.1",
-        "2.21.0",
-        "2.22.0",
-        "2.22.1",
-        "2.22.2",
-        "2.23.0",
-        "2.24.0",
-        "2.25.0",
-        "2.25.1",
-        "2.25.2",
-        "2.26.0",
-        "2.27.0",
-        "2.28.0",
-        "2.29.0",
-        "2.29.1",
-        "2.29.2",
-        "2.29.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-wc69-rhjr-hc9g/GHSA-wc69-rhjr-hc9g.json"
-      }
-    }
+  "related": [
+    "CVE-2022-31129",
+    "CVE-2023-22467"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Moment.js vulnerable to Inefficient Regular Expression Complexity"
 }

@@ -1,18 +1,42 @@
 {
-  "id": "GHSA-68gr-cmcp-g3mj",
-  "summary": "Directory Traversal in lactate",
-  "details": "A crafted `GET` request can be leveraged to traverse the directory structure of a host using the lactate web server package, and request arbitrary files outside of the specified web root. This allows for a remote attacker to gain access to arbitrary files on the filesystem that the process has access to read.\n\nMitigating factors:\nOnly files that the user running `lactate` has permission to read will be accessible via this vulnerability.\n\n\n[Proof of concept](https://hackerone.com/reports/296645):\nPlease globally install the `lactate` package and `cd` to a directory you wish to serve assets from. Next, run `lactate -p 8081` to start serving files from this location.\n\nThe following cURL request can be used to demonstrate this vulnerability by requesting the target `/etc/passwd` file:\n\n```\ncurl \"http://127.0.0.1:8081/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd\"\n```\n```\nroot:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\n[...]\n```\n\n\n## Recommendation\n\nAs there is currently no fix for this issue selecting an alternative static web server would be the best choice.",
-  "modified": "2021-08-16T23:34:10Z",
-  "published": "2019-06-14T16:39:31Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2019/06/GHSA-68gr-cmcp-g3mj/GHSA-68gr-cmcp-g3mj.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "lactate",
+        "purl": "pkg:npm/lactate"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "0.13.12"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-22"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2019-06-14T16:39:14Z"
+    "github_reviewed_at": "2019-06-14T16:39:14Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "A crafted `GET` request can be leveraged to traverse the directory structure of a host using the lactate web server package, and request arbitrary files outside of the specified web root. This allows for a remote attacker to gain access to arbitrary files on the filesystem that the process has access to read.\n\nMitigating factors:\nOnly files that the user running `lactate` has permission to read will be accessible via this vulnerability.\n\n\n[Proof of concept](https://hackerone.com/reports/296645):\nPlease globally install the `lactate` package and `cd` to a directory you wish to serve assets from. Next, run `lactate -p 8081` to start serving files from this location.\n\nThe following cURL request can be used to demonstrate this vulnerability by requesting the target `/etc/passwd` file:\n\n```\ncurl \"http://127.0.0.1:8081/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd\"\n```\n```\nroot:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\n[...]\n```\n\n\n## Recommendation\n\nAs there is currently no fix for this issue selecting an alternative static web server would be the best choice.",
+  "id": "GHSA-68gr-cmcp-g3mj",
+  "modified": "2021-08-16T23:34:10Z",
+  "published": "2019-06-14T16:39:31Z",
   "references": [
     {
       "type": "WEB",
@@ -31,36 +55,12 @@
       "url": "https://www.npmjs.com/advisories/560"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "lactate",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/lactate"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "0.13.12"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2019/06/GHSA-68gr-cmcp-g3mj/GHSA-68gr-cmcp-g3mj.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Directory Traversal in lactate"
 }

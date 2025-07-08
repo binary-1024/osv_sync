@@ -1,44 +1,16 @@
 {
-  "id": "GHSA-wqqv-jcfr-9f5g",
-  "summary": "PocketMine-MP has improperly handled dye colour IDs in banner NBT, leading to server crash",
-  "details": "### Impact\n`DyeColorIdMap->fromId()` did not account for the possibility that it might be given invalid input. This means that an undefined offset error would occur whenever this happened.\n\nThis code is indirectly called during [`Banner->deserializeCompoundTag()`](https://github.com/pmmp/PocketMine-MP/blob/38d6284671e8b657ba557e765a6c29b24a7705f5/src/item/Banner.php#L104), which is invoked when deserializing any item NBT, whether from network or disk.\n\nAn attacker could use this bug to crash a server by providing NBT with invalid values for pattern colours in an inventory transaction, or by using `/give` to obtain an item with NBT like this.\n\n### Patches\n08b9495bce2d65a6d1d3eeb76e484499a00765eb\n\n### Workarounds\nThis is quite difficult to work around via a plugin. Theoretically, it's possible to override the `Banner` item class from a plugin and validate the data before it reaches `deserializeCompoundTag()`.\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Email us at [security@pmmp.io](mailto:security@pmmp.io)\n",
-  "modified": "2024-12-05T05:43:30.575468Z",
-  "published": "2023-01-09T20:07:27Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-01-09T20:07:27Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/pmmp/PocketMine-MP/security/advisories/GHSA-wqqv-jcfr-9f5g"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pmmp/PocketMine-MP/commit/08b9495bce2d65a6d1d3eeb76e484499a00765eb"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/pmmp/PocketMine-MP"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/pmmp/PocketMine-MP/blob/38d6284671e8b657ba557e765a6c29b24a7705f5/src/item/Banner.php#L104"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-wqqv-jcfr-9f5g/GHSA-wqqv-jcfr-9f5g.json"
+      },
       "package": {
-        "name": "pocketmine/pocketmine-mp",
         "ecosystem": "Packagist",
+        "name": "pocketmine/pocketmine-mp",
         "purl": "pkg:composer/pocketmine/pocketmine-mp"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -46,7 +18,8 @@
             {
               "fixed": "4.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -262,17 +235,44 @@
         "4.7.2",
         "4.7.3",
         "4.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/01/GHSA-wqqv-jcfr-9f5g/GHSA-wqqv-jcfr-9f5g.json"
-      }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-01-09T20:07:27Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "### Impact\n`DyeColorIdMap->fromId()` did not account for the possibility that it might be given invalid input. This means that an undefined offset error would occur whenever this happened.\n\nThis code is indirectly called during [`Banner->deserializeCompoundTag()`](https://github.com/pmmp/PocketMine-MP/blob/38d6284671e8b657ba557e765a6c29b24a7705f5/src/item/Banner.php#L104), which is invoked when deserializing any item NBT, whether from network or disk.\n\nAn attacker could use this bug to crash a server by providing NBT with invalid values for pattern colours in an inventory transaction, or by using `/give` to obtain an item with NBT like this.\n\n### Patches\n08b9495bce2d65a6d1d3eeb76e484499a00765eb\n\n### Workarounds\nThis is quite difficult to work around via a plugin. Theoretically, it's possible to override the `Banner` item class from a plugin and validate the data before it reaches `deserializeCompoundTag()`.\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Email us at [security@pmmp.io](mailto:security@pmmp.io)\n",
+  "id": "GHSA-wqqv-jcfr-9f5g",
+  "modified": "2024-12-05T05:43:30.575468Z",
+  "published": "2023-01-09T20:07:27Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/pmmp/PocketMine-MP/security/advisories/GHSA-wqqv-jcfr-9f5g"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pmmp/PocketMine-MP/commit/08b9495bce2d65a6d1d3eeb76e484499a00765eb"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/pmmp/PocketMine-MP"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pmmp/PocketMine-MP/blob/38d6284671e8b657ba557e765a6c29b24a7705f5/src/item/Banner.php#L104"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "PocketMine-MP has improperly handled dye colour IDs in banner NBT, leading to server crash"
 }

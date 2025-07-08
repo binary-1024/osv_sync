@@ -1,57 +1,16 @@
 {
-  "id": "GHSA-q5jv-m6qw-5g37",
-  "summary": "TensorFlow vulnerable to floating point exception in `Conv2D`",
-  "details": "### Impact\nIf `Conv2D` is given empty `input` and the `filter` and `padding` sizes are valid, the output is all-zeros. This causes division-by-zero floating point exceptions that can be used to trigger a denial of service attack.\n```python\nimport tensorflow as tf\nimport numpy as np\nwith tf.device(\"CPU\"): # also can be triggerred on GPU\n   input = np.ones([1, 0, 2, 1])\n   filter = np.ones([1, 1, 1, 1])\n   strides = ([1, 1, 1, 1])\n   padding = \"EXPLICIT\"\n   explicit_paddings = [0 , 0, 1, 1, 1, 1, 0, 0]\n   data_format = \"NHWC\"\n   res = tf.raw_ops.Conv2D(\n       input=input,\n       filter=filter,\n       strides=strides,\n       padding=padding,\n        explicit_paddings=explicit_paddings,\n       data_format=data_format,\n  )\n```\n\n### Patches\nWe have patched the issue in GitHub commit [611d80db29dd7b0cfb755772c69d60ae5bca05f9](https://github.com/tensorflow/tensorflow/commit/611d80db29dd7b0cfb755772c69d60ae5bca05f9).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Jingyi Shi.\n",
-  "aliases": [
-    "BIT-tensorflow-2022-35996",
-    "CVE-2022-35996"
-  ],
-  "modified": "2023-12-06T01:02:27.969287Z",
-  "published": "2022-09-16T22:11:10Z",
-  "related": [
-    "CVE-2022-35996"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-09-16T23:15:00Z",
-    "github_reviewed_at": "2022-09-16T22:11:10Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-369"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-q5jv-m6qw-5g37"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35996"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/611d80db29dd7b0cfb755772c69d60ae5bca05f9"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -59,7 +18,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -135,20 +95,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -156,25 +115,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -182,25 +141,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -208,7 +167,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -244,20 +204,19 @@
         "2.6.5",
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -265,25 +224,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -291,25 +250,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -317,7 +276,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -390,20 +350,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -411,25 +370,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -437,22 +396,63 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-q5jv-m6qw-5g37/GHSA-q5jv-m6qw-5g37.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-35996",
+    "CVE-2022-35996"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-369"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T22:11:10Z",
+    "nvd_published_at": "2022-09-16T23:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nIf `Conv2D` is given empty `input` and the `filter` and `padding` sizes are valid, the output is all-zeros. This causes division-by-zero floating point exceptions that can be used to trigger a denial of service attack.\n```python\nimport tensorflow as tf\nimport numpy as np\nwith tf.device(\"CPU\"): # also can be triggerred on GPU\n   input = np.ones([1, 0, 2, 1])\n   filter = np.ones([1, 1, 1, 1])\n   strides = ([1, 1, 1, 1])\n   padding = \"EXPLICIT\"\n   explicit_paddings = [0 , 0, 1, 1, 1, 1, 0, 0]\n   data_format = \"NHWC\"\n   res = tf.raw_ops.Conv2D(\n       input=input,\n       filter=filter,\n       strides=strides,\n       padding=padding,\n        explicit_paddings=explicit_paddings,\n       data_format=data_format,\n  )\n```\n\n### Patches\nWe have patched the issue in GitHub commit [611d80db29dd7b0cfb755772c69d60ae5bca05f9](https://github.com/tensorflow/tensorflow/commit/611d80db29dd7b0cfb755772c69d60ae5bca05f9).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by Jingyi Shi.\n",
+  "id": "GHSA-q5jv-m6qw-5g37",
+  "modified": "2023-12-06T01:02:27.969287Z",
+  "published": "2022-09-16T22:11:10Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-q5jv-m6qw-5g37"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35996"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/611d80db29dd7b0cfb755772c69d60ae5bca05f9"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-35996"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to floating point exception in `Conv2D`"
 }

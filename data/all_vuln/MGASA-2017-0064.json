@@ -1,27 +1,46 @@
 {
-  "id": "MGASA-2017-0064",
-  "summary": "Updated kernel-tmb packages fixes security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0064.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel-tmb",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.50-2.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-tmb update is based on upstream 4.4.50 and fixes at least\nthe following security issues:\n\nThe cgroup offline implementation in the Linux kernel through 4.8.11\nmishandles certain drain operations, which allows local users to cause\na denial of service (system hang) by leveraging access to a container\nenvironment for executing a crafted application, as demonstrated by\ntrinity (CVE-2016-9191).\n\narch/x86/kvm/vmx.c in the Linux kernel through 4.9 mismanages the #BP\nand #OF exceptions, which allows guest OS users to cause a denial of\nservice (guest OS crash) by declining to handle an exception thrown by\nan L2 guest (CVE-2016-9588).\n\nThe sg implementation in the Linux kernel through 4.9 does not properly\nrestrict write operations in situations where the KERNEL_DS option is set,\nwhich allows local users to read or write to arbitrary kernel memory\nlocations or cause a denial of service (use-after-free) by leveraging\naccess to a /dev/sg device, related to block/bsg.c and drivers/scsi/sg.c\n(CVE-2016-10088).\n\nThe ext4_fill_super function in fs/ext4/super.c in the Linux kernel\nthrough 4.9.8 does not properly validate meta block groups, which\nallows physically proximate attackers to cause a denial of service\n(out-of-bounds read and system crash) via a crafted ext4 image\n(CVE-2016-10208).\n\nThe load_segment_descriptor implementation in arch/x86/kvm/emulate.c in\nthe Linux kernel before 4.9.5 improperly emulates a \"MOV SS, NULL\nselector\" instruction, which allows guest OS users to cause a denial of\nservice (guest OS crash) or gain guest OS privileges via a crafted\napplication (CVE-2017-2583).\n\narch/x86/kvm/emulate.c in the Linux kernel through 4.9.3 allows local\nusers to obtain sensitive information from kernel memory or cause a\ndenial of service (use-after-free) via a crafted application that\nleverages instruction emulation for fxrstor, fxsave, sgdt, and sidt\n(CVE-2017-2584).\n\ndrivers/hid/hid-corsair.c in the Linux kernel 4.9.x before 4.9.6\ninteracts incorrectly with the CONFIG_VMAP_STACK option, which allows\nlocal users to cause a denial of service (system crash or memory\ncorruption) or possibly have unspecified other impact by leveraging\nuse of more than one virtual page for a DMA scatterlist (CVE-2017-5547).\n\ndrivers/net/ieee802154/atusb.c in the Linux kernel 4.9.x before 4.9.6\ninteracts incorrectly with the CONFIG_VMAP_STACK option, which allows\nlocal users to cause a denial of service (system crash or memory\ncorruption) or possibly have unspecified other impact by leveraging\nuse of more than one virtual page for a DMA scatterlist (CVE-2017-5548).\n\nThe klsi_105_get_line_state function in drivers/usb/serial/kl5kusb105.c\nin the Linux kernel before 4.9.5 places uninitialized heap-memory\ncontents into a log entry upon a failure to read the line status, which\nallows local users to obtain sensitive information by reading the log\n(CVE-2017-5549).\n\nThe simple_set_acl function in fs/posix_acl.c in the Linux kernel before\n4.9.6 preserves the setgid bit during a setxattr call involving a tmpfs\nfilesystem, which allows local users to gain group privileges by\nleveraging the existence of a setgid program with restrictions on\nexecute permissions (CVE-2017-5551).\n\nAn issue was found in the Linux kernel ipv6 implementation of GRE tunnels\nwhich allows a remote attacker to trigger an out-of-bounds access\n(CVE-2017-5897).\n\nThe ipv4_pktinfo_prepare function in net/ipv4/ip_sockglue.c in the Linux\nkernel through 4.9.9 allows attackers to cause a denial of service\n(system crash) via (1) an application that makes crafted system calls or\npossibly (2) IPv4 traffic with invalid IP options (CVE-2017-5970).\n\nRace condition in the sctp_wait_for_sndbuf function in net/sctp/socket.c\nin the Linux kernel before 4.9.11 allows local users to cause a denial\nof service (assertion failure and panic) via a multithreaded application\nthat peels off an association in a certain buffer-full state\n(CVE-2017-5986).\n\nThe dccp_rcv_state_process function in net/dccp/input.c in the Linux\nkernel through 4.9.11 mishandles DCCP_PKT_REQUEST packet data structures\nin the LISTEN state, which allows local users to obtain root privileges\nor cause a denial of service (double free) via an application that makes\nan IPV6_RECVPKTINFO setsockopt system call (CVE-2017-6074).\n\nThe tcp_splice_read function in net/ipv4/tcp.c in the Linux kernel before\n4.9.11 allows remote attackers to cause a denial of service (infinite loop\nand soft lockup) via vectors involving a TCP packet with the URG flag\n(CVE-2017-6214).\n\nnet/sctp/socket.c in the Linux kernel through 4.10.1 does not properly\nrestrict association peel-off operations during certain wait states, which\nallows local users to cause a denial of service (invalid unlock and double\nfree) via a multithreaded application (CVE-2017-6353).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2017-0064",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2017-02-25T08:29:30Z",
-  "related": [
-    "CVE-2016-10088",
-    "CVE-2016-10208",
-    "CVE-2016-9191",
-    "CVE-2016-9588",
-    "CVE-2017-2583",
-    "CVE-2017-2584",
-    "CVE-2017-5547",
-    "CVE-2017-5548",
-    "CVE-2017-5549",
-    "CVE-2017-5551",
-    "CVE-2017-5897",
-    "CVE-2017-5970",
-    "CVE-2017-5986",
-    "CVE-2017-6074",
-    "CVE-2017-6214",
-    "CVE-2017-6353"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -76,43 +95,24 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.50"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-tmb",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.50-2.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2017-0064.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-10088",
+    "CVE-2016-10208",
+    "CVE-2016-9191",
+    "CVE-2016-9588",
+    "CVE-2017-2583",
+    "CVE-2017-2584",
+    "CVE-2017-5547",
+    "CVE-2017-5548",
+    "CVE-2017-5549",
+    "CVE-2017-5551",
+    "CVE-2017-5897",
+    "CVE-2017-5970",
+    "CVE-2017-5986",
+    "CVE-2017-6074",
+    "CVE-2017-6214",
+    "CVE-2017-6353"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-tmb packages fixes security vulnerabilities"
 }

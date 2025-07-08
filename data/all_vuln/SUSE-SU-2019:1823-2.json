@@ -1,35 +1,45 @@
 {
-  "id": "SUSE-SU-2019:1823-2",
-  "summary": "Security update for the Linux Kernel",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1823-2.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "cluster-md-kmp-default": "4.4.121-92.117.1",
+            "cluster-network-kmp-default": "4.4.121-92.117.1",
+            "dlm-kmp-default": "4.4.121-92.117.1",
+            "gfs2-kmp-default": "4.4.121-92.117.1",
+            "ocfs2-kmp-default": "4.4.121-92.117.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 12 SP2",
+        "name": "kernel-default",
+        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2012%20SP2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.121-92.117.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "\nThe SUSE Linux Enterprise 12 SP 2 kernel was updated to receive various security and bugfixes.\n\nThe following security bugs were fixed:\n\n- CVE-2019-10638: In the Linux kernel, a device could be tracked by an attacker using the IP ID values the kernel produces for connection-less protocols (e.g., UDP and ICMP). When such traffic was sent to multiple destination IP addresses, it was possible to obtain hash collisions (of indices to the counter array) and thereby obtain the hashing key (via enumeration). An attack may be conducted by hosting a crafted web page that uses WebRTC or gQUIC to force UDP traffic to attacker-controlled IP addresses. (bnc#1140575)\n- CVE-2019-10639: The Linux kernel allowed Information Exposure (partial kernel address disclosure), leading to a KASLR bypass. Specifically, it was possible to extract the KASLR kernel image offset using the IP ID values the kernel produces for connection-less protocols (e.g., UDP and ICMP). When such traffic was sent to multiple destination IP addresses, it was possible to obtain hash collisions (of indices to the counter array) and thereby obtain the hashing key (via enumeration). This key contains enough bits from a kernel address (of a static variable) so when the key was extracted (via enumeration), the offset of the kernel image is exposed. This attack can be carried out remotely, by the attacker forcing the target device to send UDP or ICMP (or certain other) traffic to attacker-controlled IP addresses. Forcing a server to send UDP traffic is trivial if the server is a DNS server. ICMP traffic is trivial if the server answers ICMP Echo requests (ping). For client targets, if the target visited the attacker's web page, then WebRTC or gQUIC could be used to force UDP traffic to attacker-controlled IP addresses. NOTE: this attack against KASLR became viable because IP ID generation was changed to have a dependency on an address associated with a network namespace. (bnc#)\n- CVE-2019-10126: A flaw was found in the Linux kernel that might lead to memory corruption in the marvell mwifiex driver. (bnc#1136935)\n- CVE-2018-20836: An issue was discovered in the Linux kernel There was a race condition in smp_task_timedout() and smp_task_done() in drivers/scsi/libsas/sas_expander.c, leading to a use-after-free. (bnc#1134395)\n- CVE-2019-11599: The coredump implementation in the Linux kernel did not use locking or other mechanisms to prevent vma layout or vma flags changes while it ran, which allowed local users to obtain sensitive information, cause a denial of service, or possibly have unspecified other impact by triggering a race condition with mmget_not_zero or get_task_mm calls. This is related to fs/userfaultfd.c, mm/mmap.c, fs/proc/task_mmu.c, and drivers/infiniband/core/uverbs_main.c. (bnc#1133738)\n- CVE-2019-12614: An issue was discovered in dlpar_parse_cc_property in arch/powerpc/platforms/pseries/dlpar.c in the Linux kernel There was an unchecked kstrdup of prop-name, which might allow an attacker to cause a denial of service (NULL pointer dereference and system crash). (bnc#)\n- CVE-2019-12818: An issue was discovered in the Linux kernel The nfc_llcp_build_tlv function in net/nfc/llcp_commands.c may return NULL. If the caller did not check for this, it will trigger a NULL pointer dereference. This will cause denial of service. This affects nfc_llcp_build_gb in net/nfc/llcp_core.c. (bnc#1137194)\n- CVE-2019-12819: An issue was discovered in the Linux kernel The function __mdiobus_register() in drivers/net/phy/mdio_bus.c called put_device(), which would trigger a fixed_mdio_bus_init use-after-free. This would cause a denial of service. (bnc#1138291)\n- CVE-2019-12456 a double-fetch bug in _ctl_ioctl_main() could allow local users to create a denial of service (bsc#1136922).\n- CVE-2019-12380: An issue was discovered in the efi subsystem in the Linux kernel phys_efi_set_virtual_address_map in arch/x86/platform/efi/efi.c and efi_call_phys_prolog in arch/x86/platform/efi/efi_64.c mishandle memory allocation failures. NOTE: This id is disputed as not being an issue because All the code touched by the referenced commit runs only at boot, before any user processes are started. Therefore, there is no possibility for an unprivileged user to control it. (bnc#)\n- CVE-2019-11487: The Linux kernel allowed page-_refcount reference count to overflow, with resultant use-after-free issues, if about 140 GiB of RAM exists. This is related to fs/fuse/dev.c, fs/pipe.c, fs/splice.c, include/linux/mm.h, include/linux/pipe_fs_i.h, kernel/trace/trace.c, mm/gup.c, and mm/hugetlb.c. It can occur with FUSE requests. (bnc#1133190)\n\nThe following non-security bugs were fixed:\n\n- Drop multiversion(kernel) from the KMP template (bsc#1127155).\n- Revert 'KMPs: obsolete older KMPs of the same flavour (bsc#1127155, bsc#1109137).' This reverts commit 4cc83da426b53d47f1fde9328112364eab1e9a19.\n- sched/fair: Avoid divide by zero when rebalancing domains (bsc#1096254).\n- x86/cpu: Unify CPU family, model, stepping calculation (bsc#1134701).\n- x86/entry/64/compat: Fix stack switching for XEN PV (bsc#1108382).\n- x86/microcode/AMD: Fix initrd loading with CONFIG_RANDOMIZE_MEMORY=y (bsc#1134701).\n- x86/microcode/AMD: Fix load of builtin microcode with randomized memory (bsc#1134701).\n- x86/microcode/AMD: Reload proper initrd start address (bsc#1134701).\n- x86/microcode/amd: Hand down the CPU family (bsc#1134701).\n- x86/microcode/amd: Move private inlines to .c and mark local functions static (bsc#1134701).\n- x86/microcode/intel: Drop stashed AP patch pointer optimization (bsc#1134701).\n- x86/microcode/intel: Fix allocation size of struct ucode_patch (bsc#1134701).\n- x86/microcode/intel: Fix initrd loading with CONFIG_RANDOMIZE_MEMORY=y (bsc#1134701).\n- x86/microcode/intel: Remove intel_lib.c (bsc#1134701).\n- x86/microcode/intel: Remove unused arg of get_matching_model_microcode() (bsc#1134701).\n- x86/microcode/intel: Rename load_microcode_early() to find_microcode_patch() (bsc#1134701).\n- x86/microcode/intel: Rename local variables of type struct mc_saved_data (bsc#1134701).\n- x86/microcode/intel: Rename mc_intel variable to mc (bsc#1134701).\n- x86/microcode/intel: Rename mc_saved_in_initrd (bsc#1134701).\n- x86/microcode/intel: Simplify generic_load_microcode() (bsc#1134701).\n- x86/microcode/intel: Unexport save_mc_for_early() (bsc#1134701).\n- x86/microcode/intel: Use correct buffer size for saving microcode data (bsc#1134701).\n- x86/microcode: Collect CPU info on resume (bsc#1134701).\n- x86/microcode: Export the microcode cache linked list (bsc#1134701).\n- x86/microcode: Fix loading precedence (bsc#1134701).\n- x86/microcode: Get rid of find_cpio_data()'s dummy offset arg (bsc#1134701).\n- x86/microcode: Issue the debug printk on resume only on success (bsc#1134701).\n- x86/microcode: Rework microcode loading (bsc#1134701).\n- x86/microcode: Run the AP-loading routine only on the application processors (bsc#1134701).\n",
+  "id": "SUSE-SU-2019:1823-2",
   "modified": "2025-05-02T04:08:10.404593Z",
   "published": "2019-07-15T05:40:50Z",
-  "related": [
-    "CVE-2018-20836",
-    "CVE-2019-10126",
-    "CVE-2019-10638",
-    "CVE-2019-10639",
-    "CVE-2019-11487",
-    "CVE-2019-11599",
-    "CVE-2019-12380",
-    "CVE-2019-12456",
-    "CVE-2019-12614",
-    "CVE-2019-12818",
-    "CVE-2019-12819"
-  ],
-  "upstream": [
-    "CVE-2018-20836",
-    "CVE-2019-10126",
-    "CVE-2019-10638",
-    "CVE-2019-10639",
-    "CVE-2019-11487",
-    "CVE-2019-11599",
-    "CVE-2019-12380",
-    "CVE-2019-12456",
-    "CVE-2019-12614",
-    "CVE-2019-12818",
-    "CVE-2019-12819"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -132,42 +142,32 @@
       "url": "https://www.suse.com/security/cve/CVE-2019-12819"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-default",
-        "ecosystem": "SUSE:Linux Enterprise High Availability Extension 12 SP2",
-        "purl": "pkg:rpm/suse/kernel-default&distro=SUSE%20Linux%20Enterprise%20High%20Availability%20Extension%2012%20SP2"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.121-92.117.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "dlm-kmp-default": "4.4.121-92.117.1",
-            "gfs2-kmp-default": "4.4.121-92.117.1",
-            "cluster-network-kmp-default": "4.4.121-92.117.1",
-            "ocfs2-kmp-default": "4.4.121-92.117.1",
-            "cluster-md-kmp-default": "4.4.121-92.117.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2019:1823-2.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2018-20836",
+    "CVE-2019-10126",
+    "CVE-2019-10638",
+    "CVE-2019-10639",
+    "CVE-2019-11487",
+    "CVE-2019-11599",
+    "CVE-2019-12380",
+    "CVE-2019-12456",
+    "CVE-2019-12614",
+    "CVE-2019-12818",
+    "CVE-2019-12819"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Security update for the Linux Kernel",
+  "upstream": [
+    "CVE-2018-20836",
+    "CVE-2019-10126",
+    "CVE-2019-10638",
+    "CVE-2019-10639",
+    "CVE-2019-11487",
+    "CVE-2019-11599",
+    "CVE-2019-12380",
+    "CVE-2019-12456",
+    "CVE-2019-12614",
+    "CVE-2019-12818",
+    "CVE-2019-12819"
+  ]
 }

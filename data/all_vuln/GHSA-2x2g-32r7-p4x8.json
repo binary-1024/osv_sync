@@ -1,58 +1,16 @@
 {
-  "id": "GHSA-2x2g-32r7-p4x8",
-  "summary": "Apache Kafka Clients: Privilege escalation to filesystem read-access via automatic ConfigProvider",
-  "details": "Files or Directories Accessible to External Parties, Improper Privilege Management vulnerability in Apache Kafka Clients.\n\nApache Kafka Clients accept configuration data for customizing behavior, and includes ConfigProvider plugins in order to manipulate these configurations. Apache Kafka also provides FileConfigProvider, DirectoryConfigProvider, and EnvVarConfigProvider implementations which include the ability to read from disk or environment variables.\nIn applications where Apache Kafka Clients configurations can be specified by an untrusted party, attackers may use these ConfigProviders to read arbitrary contents of the disk and environment variables.\n\nIn particular, this flaw may be used in Apache Kafka Connect to escalate from REST API access to filesystem/environment access, which may be undesirable in certain environments, including SaaS products.\nThis issue affects Apache Kafka Clients: from from 2.3.0 through 3.5.2, 3.6.0 through 3.6.2, and 3.7.0.\n\n\nUsers with affected applications are recommended to upgrade kafka-clients to version >=3.8.0, and set the JVM system property \"org.apache.kafka.automatic.config.providers=none\".\nUsers of Kafka Connect with one of the listed ConfigProvider implementations specified in their worker config are also recommended to add appropriate \"allowlist.pattern\" and \"allowed.paths\" to restrict their operation to appropriate bounds.\n\n\nFor users of Kafka Clients or Kafka Connect in environments that trust users with disk and environment variable access, it is not recommended to set the system property.\nFor users of the Kafka Broker, Kafka MirrorMaker 2.0, Kafka Streams, and Kafka command-line tools, it is not recommended to set the system property.",
-  "aliases": [
-    "CVE-2024-31141"
-  ],
-  "modified": "2025-02-18T21:10:34.646818Z",
-  "published": "2024-11-19T09:30:54Z",
-  "related": [
-    "CGA-5hwv-4v3q-5782",
-    "CGA-cqh5-2339-79w3",
-    "CGA-pf58-92f9-q6fc"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2024-11-19T09:15:03Z",
-    "cwe_ids": [
-      "CWE-269"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-11-19T18:02:57Z"
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-31141"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/apache/kafka"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.apache.org/thread/9whdzfr0zwdhr364604w5ssnzmg4v2lv"
-    },
-    {
-      "type": "WEB",
-      "url": "https://security.netapp.com/advisory/ntap-20250131-0001"
-    },
-    {
-      "type": "WEB",
-      "url": "http://www.openwall.com/lists/oss-security/2024/11/18/5"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-2x2g-32r7-p4x8/GHSA-2x2g-32r7-p4x8.json"
+      },
       "package": {
-        "name": "org.apache.kafka:kafka-clients",
         "ecosystem": "Maven",
+        "name": "org.apache.kafka:kafka-clients",
         "purl": "pkg:maven/org.apache.kafka/kafka-clients"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.3.0"
@@ -60,7 +18,8 @@
             {
               "fixed": "3.7.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -102,21 +61,62 @@
         "3.6.1",
         "3.6.2",
         "3.7.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-2x2g-32r7-p4x8/GHSA-2x2g-32r7-p4x8.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2024-31141"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-269"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-11-19T18:02:57Z",
+    "nvd_published_at": "2024-11-19T09:15:03Z",
+    "severity": "MODERATE"
+  },
+  "details": "Files or Directories Accessible to External Parties, Improper Privilege Management vulnerability in Apache Kafka Clients.\n\nApache Kafka Clients accept configuration data for customizing behavior, and includes ConfigProvider plugins in order to manipulate these configurations. Apache Kafka also provides FileConfigProvider, DirectoryConfigProvider, and EnvVarConfigProvider implementations which include the ability to read from disk or environment variables.\nIn applications where Apache Kafka Clients configurations can be specified by an untrusted party, attackers may use these ConfigProviders to read arbitrary contents of the disk and environment variables.\n\nIn particular, this flaw may be used in Apache Kafka Connect to escalate from REST API access to filesystem/environment access, which may be undesirable in certain environments, including SaaS products.\nThis issue affects Apache Kafka Clients: from from 2.3.0 through 3.5.2, 3.6.0 through 3.6.2, and 3.7.0.\n\n\nUsers with affected applications are recommended to upgrade kafka-clients to version >=3.8.0, and set the JVM system property \"org.apache.kafka.automatic.config.providers=none\".\nUsers of Kafka Connect with one of the listed ConfigProvider implementations specified in their worker config are also recommended to add appropriate \"allowlist.pattern\" and \"allowed.paths\" to restrict their operation to appropriate bounds.\n\n\nFor users of Kafka Clients or Kafka Connect in environments that trust users with disk and environment variable access, it is not recommended to set the system property.\nFor users of the Kafka Broker, Kafka MirrorMaker 2.0, Kafka Streams, and Kafka command-line tools, it is not recommended to set the system property.",
+  "id": "GHSA-2x2g-32r7-p4x8",
+  "modified": "2025-02-18T21:10:34.646818Z",
+  "published": "2024-11-19T09:30:54Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-31141"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/apache/kafka"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.apache.org/thread/9whdzfr0zwdhr364604w5ssnzmg4v2lv"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20250131-0001"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2024/11/18/5"
+    }
+  ],
+  "related": [
+    "CGA-5hwv-4v3q-5782",
+    "CGA-cqh5-2339-79w3",
+    "CGA-pf58-92f9-q6fc"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Apache Kafka Clients: Privilege escalation to filesystem read-access via automatic ConfigProvider"
 }

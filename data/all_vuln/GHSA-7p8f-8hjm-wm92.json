@@ -1,26 +1,50 @@
 {
-  "id": "GHSA-7p8f-8hjm-wm92",
-  "summary": "Lookup operations do not take into account wildcards in SpiceDB",
-  "details": "### Impact\nAny user making use of a wildcard relationship under the right hand branch of an `exclusion` or within an `intersection` operation will see `Lookup`/`LookupResources` return a resource as \"accessible\" if it is *not* accessible by virtue of the inclusion of the wildcard in the intersection or the right side of the exclusion.\n\nFor example, given schema:\n\n```zed\ndefinition user {}\n\ndefinition resource {\n   relation viewer: user\n   relation banned: user | user:*\n   permission view = viewer - banned\n}\n```\n\nIf `user:*` is placed into the `banned` relation for a particular resource, `view` should return false for *all* resources. in `v1.3.0`, the wildcard is ignored entirely in lookup's dispatch, resulting in the `banned` wildcard being ignored in the exclusion.\n\n### Workarounds\nDon't make use of wildcards on the right side of intersections or within exclusions. \n\n### References\nhttps://github.com/authzed/spicedb/issues/358\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [SpiceDB](https://github.com/authzed/spicedb)\n* Ask a question in the [SpiceDB Discord](https://authzed.com/discord)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-7p8f-8hjm-wm92/GHSA-7p8f-8hjm-wm92.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/authzed/spicedb",
+        "purl": "pkg:golang/github.com/authzed/spicedb"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.3.0"
+            },
+            {
+              "fixed": "1.4.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "versions": [
+        "1.3.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-21646",
     "GO-2022-0295"
   ],
-  "modified": "2024-08-21T14:56:50.790866Z",
-  "published": "2022-01-13T15:05:41Z",
-  "related": [
-    "CVE-2022-21646"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-01-11T22:15:00Z",
-    "github_reviewed_at": "2022-01-11T21:06:45Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-155",
       "CWE-20"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-01-11T21:06:45Z",
+    "nvd_published_at": "2022-01-11T22:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nAny user making use of a wildcard relationship under the right hand branch of an `exclusion` or within an `intersection` operation will see `Lookup`/`LookupResources` return a resource as \"accessible\" if it is *not* accessible by virtue of the inclusion of the wildcard in the intersection or the right side of the exclusion.\n\nFor example, given schema:\n\n```zed\ndefinition user {}\n\ndefinition resource {\n   relation viewer: user\n   relation banned: user | user:*\n   permission view = viewer - banned\n}\n```\n\nIf `user:*` is placed into the `banned` relation for a particular resource, `view` should return false for *all* resources. in `v1.3.0`, the wildcard is ignored entirely in lookup's dispatch, resulting in the `banned` wildcard being ignored in the exclusion.\n\n### Workarounds\nDon't make use of wildcards on the right side of intersections or within exclusions. \n\n### References\nhttps://github.com/authzed/spicedb/issues/358\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [SpiceDB](https://github.com/authzed/spicedb)\n* Ask a question in the [SpiceDB Discord](https://authzed.com/discord)\n",
+  "id": "GHSA-7p8f-8hjm-wm92",
+  "modified": "2024-08-21T14:56:50.790866Z",
+  "published": "2022-01-13T15:05:41Z",
   "references": [
     {
       "type": "WEB",
@@ -47,39 +71,15 @@
       "url": "https://github.com/authzed/spicedb/releases/tag/v1.4.0"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/authzed/spicedb",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/authzed/spicedb"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.3.0"
-            },
-            {
-              "fixed": "1.4.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.3.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-7p8f-8hjm-wm92/GHSA-7p8f-8hjm-wm92.json"
-      }
-    }
+  "related": [
+    "CVE-2022-21646"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Lookup operations do not take into account wildcards in SpiceDB"
 }

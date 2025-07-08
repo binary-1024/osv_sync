@@ -1,49 +1,16 @@
 {
-  "id": "GHSA-qx7g-fx8q-545g",
-  "summary": "Para Inserts Sensitive Information into Log File for Facebook authentication",
-  "details": "CWE ID: CWE-532 (Insertion of Sensitive Information into Log File)\nCVSS: 6.2 (Medium)\nVector: CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N\n\n**Affected Component:** Facebook Authentication Logging\n**Version:** Para v1.50.6\n**File Path:** para-1.50.6/para-server/src/main/java/com/erudika/para/server/security/filters/FacebookAuthFilter.java\n**Vulnerable Line(s):** Line 184 (logger.warn(...) with raw access token)\n\nTechnical Details:\n\nThe vulnerability is located in FacebookAuthFilter.java, where a failed request to Facebook\u2019s user profile endpoint triggers the following log statement:\n```java\nlogger.warn(\"Facebook auth request failed: GET \" + PROFILE_URL + accessToken, e);`\n```\n\nHere, `PROFILE_URL` is a constant:\n```java\nprivate static final String PROFILE_URL = \"https://graph.facebook.com/me?fields=name,email,picture.width(400).type(square).height(400)&access_token=\";\n```\nThis results in the full request URL being logged, including the user's access token in plain text. Since WARN-level logs are often retained in production and accessible to operators or log aggregation systems, this poses a risk of token exposure.",
-  "aliases": [
-    "CVE-2025-49009"
-  ],
-  "modified": "2025-06-13T16:14:59.114912Z",
-  "published": "2025-06-06T15:49:58Z",
-  "database_specific": {
-    "nvd_published_at": "2025-06-05T17:15:29Z",
-    "cwe_ids": [
-      "CWE-532"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-06-06T15:49:58Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/Erudika/para/security/advisories/GHSA-qx7g-fx8q-545g"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-49009"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/Erudika/para/commit/46a908d887da02037384193f70a69345f04887cf"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/Erudika/para"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-qx7g-fx8q-545g/GHSA-qx7g-fx8q-545g.json"
+      },
       "package": {
-        "name": "com.erudika:para-server",
         "ecosystem": "Maven",
+        "name": "com.erudika:para-server",
         "purl": "pkg:maven/com.erudika/para-server"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -51,7 +18,8 @@
             {
               "fixed": "1.50.8"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -180,17 +148,49 @@
         "1.50.4",
         "1.50.5",
         "1.50.6"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-qx7g-fx8q-545g/GHSA-qx7g-fx8q-545g.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-49009"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-532"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-06-06T15:49:58Z",
+    "nvd_published_at": "2025-06-05T17:15:29Z",
+    "severity": "MODERATE"
+  },
+  "details": "CWE ID: CWE-532 (Insertion of Sensitive Information into Log File)\nCVSS: 6.2 (Medium)\nVector: CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N\n\n**Affected Component:** Facebook Authentication Logging\n**Version:** Para v1.50.6\n**File Path:** para-1.50.6/para-server/src/main/java/com/erudika/para/server/security/filters/FacebookAuthFilter.java\n**Vulnerable Line(s):** Line 184 (logger.warn(...) with raw access token)\n\nTechnical Details:\n\nThe vulnerability is located in FacebookAuthFilter.java, where a failed request to Facebook\u2019s user profile endpoint triggers the following log statement:\n```java\nlogger.warn(\"Facebook auth request failed: GET \" + PROFILE_URL + accessToken, e);`\n```\n\nHere, `PROFILE_URL` is a constant:\n```java\nprivate static final String PROFILE_URL = \"https://graph.facebook.com/me?fields=name,email,picture.width(400).type(square).height(400)&access_token=\";\n```\nThis results in the full request URL being logged, including the user's access token in plain text. Since WARN-level logs are often retained in production and accessible to operators or log aggregation systems, this poses a risk of token exposure.",
+  "id": "GHSA-qx7g-fx8q-545g",
+  "modified": "2025-06-13T16:14:59.114912Z",
+  "published": "2025-06-06T15:49:58Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Erudika/para/security/advisories/GHSA-qx7g-fx8q-545g"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-49009"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Erudika/para/commit/46a908d887da02037384193f70a69345f04887cf"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Erudika/para"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Para Inserts Sensitive Information into Log File for Facebook authentication"
 }

@@ -1,16 +1,53 @@
 {
-  "id": "RUSTSEC-2020-0088",
-  "summary": "MPMCConsumer/Producer allows sending non-Send type across threads",
-  "details": "Affected versions of this crate unconditionally implemented `Sync` and `Send` traits for `MPMCConsumer` and `MPMCProducer` types.\n\nThis allows users to send types that do not implement `Send` trait across thread boundaries, which can cause a data race.\n\nThe flaw was corrected in the 2.0.1 release by adding `T: Send` bound to affected Sync/Send trait implementations.",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [
+          "thread-safety"
+        ],
+        "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2020-0088.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "magnetic",
+        "purl": "pkg:cargo/magnetic"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "2.0.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-35925",
     "GHSA-wv4p-jp67-jr97"
   ],
-  "modified": "2023-11-08T04:03:39.710071Z",
-  "published": "2020-11-29T12:00:00Z",
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "Affected versions of this crate unconditionally implemented `Sync` and `Send` traits for `MPMCConsumer` and `MPMCProducer` types.\n\nThis allows users to send types that do not implement `Send` trait across thread boundaries, which can cause a data race.\n\nThe flaw was corrected in the 2.0.1 release by adding `T: Send` bound to affected Sync/Send trait implementations.",
+  "id": "RUSTSEC-2020-0088",
+  "modified": "2023-11-08T04:03:39.710071Z",
+  "published": "2020-11-29T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -25,49 +62,12 @@
       "url": "https://github.com/johnshaw/magnetic/issues/9"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "magnetic",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/magnetic"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            },
-            {
-              "fixed": "2.0.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
-        "informational": null,
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2020-0088.json",
-        "categories": [
-          "thread-safety"
-        ]
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "MPMCConsumer/Producer allows sending non-Send type across threads"
 }

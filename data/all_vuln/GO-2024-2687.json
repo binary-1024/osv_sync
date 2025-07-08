@@ -1,94 +1,9 @@
 {
-  "id": "GO-2024-2687",
-  "summary": "HTTP/2 CONTINUATION flood in net/http",
-  "details": "An attacker may cause an HTTP/2 endpoint to read arbitrary amounts of header data by sending an excessive number of CONTINUATION frames.\n\nMaintaining HPACK state requires parsing and processing all HEADERS and CONTINUATION frames on a connection. When a request's headers exceed MaxHeaderBytes, no memory is allocated to store the excess headers, but they are still parsed.\n\nThis permits an attacker to cause an HTTP/2 endpoint to read arbitrary amounts of header data, all associated with a request which is going to be rejected. These headers can include Huffman-encoded data which is significantly more expensive for the receiver to decode than for an attacker to send.\n\nThe fix sets a limit on the amount of excess header frames we will process before closing a connection.",
-  "aliases": [
-    "BIT-golang-2023-45288",
-    "CGA-8q47-wf6v-wqg5",
-    "CGA-grww-v9jg-rhw2",
-    "CVE-2023-45288",
-    "GHSA-4v7x-pqxf-cx7m"
-  ],
-  "modified": "2025-03-31T16:24:22.897568Z",
-  "published": "2024-04-03T21:12:01Z",
-  "related": [
-    "RHEA-2024:4022",
-    "RHSA-2024:1892",
-    "RHSA-2024:1897",
-    "RHSA-2024:1899",
-    "RHSA-2024:1962",
-    "RHSA-2024:1963",
-    "RHSA-2024:2049",
-    "RHSA-2024:2079",
-    "RHSA-2024:2562",
-    "RHSA-2024:2625",
-    "RHSA-2024:2667",
-    "RHSA-2024:2671",
-    "RHSA-2024:2672",
-    "RHSA-2024:2699",
-    "RHSA-2024:2724",
-    "RHSA-2024:2729",
-    "RHSA-2024:2892",
-    "RHSA-2024:2935",
-    "RHSA-2024:2936",
-    "RHSA-2024:3259",
-    "RHSA-2024:3346",
-    "RHSA-2024:3352",
-    "RHSA-2024:3467",
-    "RHSA-2024:3781",
-    "RHSA-2024:4023",
-    "RHSA-2024:4125",
-    "RHSA-2024:4146",
-    "RHSA-2024:4543",
-    "RHSA-2024:4545",
-    "RHSA-2024:4546",
-    "RHSA-2024:4933",
-    "RHSA-2024:4934"
-  ],
-  "database_specific": {
-    "review_status": "REVIEWED",
-    "url": "https://pkg.go.dev/vuln/GO-2024-2687"
-  },
-  "references": [
-    {
-      "type": "REPORT",
-      "url": "https://go.dev/issue/65051"
-    },
-    {
-      "type": "FIX",
-      "url": "https://go.dev/cl/576155"
-    },
-    {
-      "type": "WEB",
-      "url": "https://groups.google.com/g/golang-announce/c/YgW0sx8mN3M"
-    }
-  ],
   "affected": [
     {
-      "package": {
-        "name": "stdlib",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/stdlib"
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2024-2687.json"
       },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.21.9"
-            },
-            {
-              "introduced": "1.22.0-0"
-            },
-            {
-              "fixed": "1.22.2"
-            }
-          ]
-        }
-      ],
       "ecosystem_specific": {
         "imports": [
           {
@@ -288,29 +203,35 @@
           }
         ]
       },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2024-2687.json"
-      }
-    },
-    {
       "package": {
-        "name": "golang.org/x/net",
         "ecosystem": "Go",
-        "purl": "pkg:golang/golang.org/x/net"
+        "name": "stdlib",
+        "purl": "pkg:golang/stdlib"
       },
       "ranges": [
         {
-          "type": "SEMVER",
           "events": [
             {
               "introduced": "0"
             },
             {
-              "fixed": "0.23.0"
+              "fixed": "1.21.9"
+            },
+            {
+              "introduced": "1.22.0-0"
+            },
+            {
+              "fixed": "1.22.2"
             }
-          ]
+          ],
+          "type": "SEMVER"
         }
-      ],
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2024-2687.json"
+      },
       "ecosystem_specific": {
         "imports": [
           {
@@ -392,15 +313,94 @@
           }
         ]
       },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2024-2687.json"
-      }
+      "package": {
+        "ecosystem": "Go",
+        "name": "golang.org/x/net",
+        "purl": "pkg:golang/golang.org/x/net"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.23.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
     }
   ],
-  "schema_version": "1.6.0",
+  "aliases": [
+    "BIT-golang-2023-45288",
+    "CGA-8q47-wf6v-wqg5",
+    "CGA-grww-v9jg-rhw2",
+    "CVE-2023-45288",
+    "GHSA-4v7x-pqxf-cx7m"
+  ],
   "credits": [
     {
       "name": "Bartek Nowotarski (https://nowotarski.info/)"
     }
-  ]
+  ],
+  "database_specific": {
+    "review_status": "REVIEWED",
+    "url": "https://pkg.go.dev/vuln/GO-2024-2687"
+  },
+  "details": "An attacker may cause an HTTP/2 endpoint to read arbitrary amounts of header data by sending an excessive number of CONTINUATION frames.\n\nMaintaining HPACK state requires parsing and processing all HEADERS and CONTINUATION frames on a connection. When a request's headers exceed MaxHeaderBytes, no memory is allocated to store the excess headers, but they are still parsed.\n\nThis permits an attacker to cause an HTTP/2 endpoint to read arbitrary amounts of header data, all associated with a request which is going to be rejected. These headers can include Huffman-encoded data which is significantly more expensive for the receiver to decode than for an attacker to send.\n\nThe fix sets a limit on the amount of excess header frames we will process before closing a connection.",
+  "id": "GO-2024-2687",
+  "modified": "2025-03-31T16:24:22.897568Z",
+  "published": "2024-04-03T21:12:01Z",
+  "references": [
+    {
+      "type": "REPORT",
+      "url": "https://go.dev/issue/65051"
+    },
+    {
+      "type": "FIX",
+      "url": "https://go.dev/cl/576155"
+    },
+    {
+      "type": "WEB",
+      "url": "https://groups.google.com/g/golang-announce/c/YgW0sx8mN3M"
+    }
+  ],
+  "related": [
+    "RHEA-2024:4022",
+    "RHSA-2024:1892",
+    "RHSA-2024:1897",
+    "RHSA-2024:1899",
+    "RHSA-2024:1962",
+    "RHSA-2024:1963",
+    "RHSA-2024:2049",
+    "RHSA-2024:2079",
+    "RHSA-2024:2562",
+    "RHSA-2024:2625",
+    "RHSA-2024:2667",
+    "RHSA-2024:2671",
+    "RHSA-2024:2672",
+    "RHSA-2024:2699",
+    "RHSA-2024:2724",
+    "RHSA-2024:2729",
+    "RHSA-2024:2892",
+    "RHSA-2024:2935",
+    "RHSA-2024:2936",
+    "RHSA-2024:3259",
+    "RHSA-2024:3346",
+    "RHSA-2024:3352",
+    "RHSA-2024:3467",
+    "RHSA-2024:3781",
+    "RHSA-2024:4023",
+    "RHSA-2024:4125",
+    "RHSA-2024:4146",
+    "RHSA-2024:4543",
+    "RHSA-2024:4545",
+    "RHSA-2024:4546",
+    "RHSA-2024:4933",
+    "RHSA-2024:4934"
+  ],
+  "schema_version": "1.6.0",
+  "summary": "HTTP/2 CONTINUATION flood in net/http"
 }

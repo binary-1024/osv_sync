@@ -1,21 +1,68 @@
 {
-  "id": "GHSA-84m6-5m72-45fp",
-  "summary": "Apollo Router Operation Limits Vulnerable to Bypass via Integer Overflow",
-  "details": "# Impact\n\n## Summary\n\nA vulnerability in Apollo Router allowed certain queries to bypass configured operation limits, specifically due to integer overflow.\n\n## Details\n\nThe operation limits plugin uses unsigned 32-bit integers to track limit counters (e.g. for a query's height). If a counter exceeded the maximum value for this data type (4,294,967,295), it wrapped around to 0, unintentionally allowing queries to bypass configured thresholds. This could occur for large queries if the payload limit were sufficiently increased, but could also occur for small queries with deeply nested and reused named fragments.\n\n## Fix/Mitigation\n\nLogic was updated to ensure counter overflow is handled correctly and does not wrap around to 0.\n\n# Patches\n\nThis has been remediated in `apollo-router` versions 1.61.2 and 2.1.1.\n\n# Workarounds\n\nThe only known workaround is \"Safelisting\" or \"Safelisting with IDs only\" per [Safelisting with Persisted Queries - Apollo GraphQL Docs](https://www.apollographql.com/docs/graphos/routing/security/persisted-queries#router-security-levels).\n\n## Acknowledgements\n\nWe appreciate the efforts of the security community in identifying and improving the performance and security of operation limiting mechanisms.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-84m6-5m72-45fp/GHSA-84m6-5m72-45fp.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "apollo-router",
+        "purl": "pkg:cargo/apollo-router"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.61.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-84m6-5m72-45fp/GHSA-84m6-5m72-45fp.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "apollo-router",
+        "purl": "pkg:cargo/apollo-router"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0-alpha.0"
+            },
+            {
+              "fixed": "2.1.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-32033"
   ],
-  "modified": "2025-04-08T17:50:40Z",
-  "published": "2025-04-07T18:59:21Z",
   "database_specific": {
-    "nvd_published_at": "2025-04-07T21:15:43Z",
     "cwe_ids": [
       "CWE-190"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-07T18:59:21Z"
+    "github_reviewed_at": "2025-04-07T18:59:21Z",
+    "nvd_published_at": "2025-04-07T21:15:43Z",
+    "severity": "HIGH"
   },
+  "details": "# Impact\n\n## Summary\n\nA vulnerability in Apollo Router allowed certain queries to bypass configured operation limits, specifically due to integer overflow.\n\n## Details\n\nThe operation limits plugin uses unsigned 32-bit integers to track limit counters (e.g. for a query's height). If a counter exceeded the maximum value for this data type (4,294,967,295), it wrapped around to 0, unintentionally allowing queries to bypass configured thresholds. This could occur for large queries if the payload limit were sufficiently increased, but could also occur for small queries with deeply nested and reused named fragments.\n\n## Fix/Mitigation\n\nLogic was updated to ensure counter overflow is handled correctly and does not wrap around to 0.\n\n# Patches\n\nThis has been remediated in `apollo-router` versions 1.61.2 and 2.1.1.\n\n# Workarounds\n\nThe only known workaround is \"Safelisting\" or \"Safelisting with IDs only\" per [Safelisting with Persisted Queries - Apollo GraphQL Docs](https://www.apollographql.com/docs/graphos/routing/security/persisted-queries#router-security-levels).\n\n## Acknowledgements\n\nWe appreciate the efforts of the security community in identifying and improving the performance and security of operation limiting mechanisms.",
+  "id": "GHSA-84m6-5m72-45fp",
+  "modified": "2025-04-08T17:50:40Z",
+  "published": "2025-04-07T18:59:21Z",
   "references": [
     {
       "type": "WEB",
@@ -38,59 +85,12 @@
       "url": "https://github.com/apollographql/router"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "apollo-router",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/apollo-router"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.61.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-84m6-5m72-45fp/GHSA-84m6-5m72-45fp.json"
-      }
-    },
-    {
-      "package": {
-        "name": "apollo-router",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/apollo-router"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.0.0-alpha.0"
-            },
-            {
-              "fixed": "2.1.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-84m6-5m72-45fp/GHSA-84m6-5m72-45fp.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Apollo Router Operation Limits Vulnerable to Bypass via Integer Overflow"
 }

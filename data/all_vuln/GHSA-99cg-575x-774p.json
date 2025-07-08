@@ -1,22 +1,46 @@
 {
-  "id": "GHSA-99cg-575x-774p",
-  "summary": "Go-Attestation Improper Input Validation with attacker-controlled TPM Quote",
-  "details": "### Impact\n\nAn improper input validation vulnerability in go-attestation before 0.4.0 allows local users to provide a maliciously-formed Quote over no/some PCRs, causing `AKPublic.Verify` to succeed despite the inconsistency. Subsequent use of the same set of PCR values in `Eventlog.Verify` lacks the authentication performed by quote verification, meaning a local attacker could couple this vulnerability with a maliciously-crafted TCG log in `Eventlog.Verify` to spoof events in the TCG log, hence defeating remotely-attested measured-boot.\n\n### Patches\nThis issue is resolved in version 0.4.0. If your usage of this library verifies PCRs using multiple quotes, make sure to use the new method `AKPublic.VerifyAll()` instead of `AKPublic.Verify`.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-99cg-575x-774p/GHSA-99cg-575x-774p.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/google/go-attestation",
+        "purl": "pkg:golang/github.com/google/go-attestation"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.4.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-0317",
     "GO-2022-0294"
   ],
-  "modified": "2023-11-08T04:07:31.995689Z",
-  "published": "2022-02-01T00:43:17Z",
   "database_specific": {
-    "nvd_published_at": "2022-02-04T23:15:00Z",
     "cwe_ids": [
       "CWE-20"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-01-31T22:15:30Z"
+    "github_reviewed_at": "2022-01-31T22:15:30Z",
+    "nvd_published_at": "2022-02-04T23:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nAn improper input validation vulnerability in go-attestation before 0.4.0 allows local users to provide a maliciously-formed Quote over no/some PCRs, causing `AKPublic.Verify` to succeed despite the inconsistency. Subsequent use of the same set of PCR values in `Eventlog.Verify` lacks the authentication performed by quote verification, meaning a local attacker could couple this vulnerability with a maliciously-crafted TCG log in `Eventlog.Verify` to spoof events in the TCG log, hence defeating remotely-attested measured-boot.\n\n### Patches\nThis issue is resolved in version 0.4.0. If your usage of this library verifies PCRs using multiple quotes, make sure to use the new method `AKPublic.VerifyAll()` instead of `AKPublic.Verify`.",
+  "id": "GHSA-99cg-575x-774p",
+  "modified": "2023-11-08T04:07:31.995689Z",
+  "published": "2022-02-01T00:43:17Z",
   "references": [
     {
       "type": "WEB",
@@ -39,36 +63,12 @@
       "url": "https://pkg.go.dev/vuln/GO-2022-0294"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/google/go-attestation",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/google/go-attestation"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.4.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-99cg-575x-774p/GHSA-99cg-575x-774p.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Go-Attestation Improper Input Validation with attacker-controlled TPM Quote"
 }

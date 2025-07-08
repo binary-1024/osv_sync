@@ -1,16 +1,40 @@
 {
-  "id": "GHSA-j35p-q24r-5367",
-  "summary": "Dep Group Remote Memory Exhaustion (Denial of Service) in ckb",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/04/GHSA-j35p-q24r-5367/GHSA-j35p-q24r-5367.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "ckb",
+        "purl": "pkg:cargo/ckb"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.43.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-04-22T20:23:04Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
   "details": "### Impact\nA remote attacker could exploit this vulnerability to exhaust ckb process memory of an affected node.\n\n### Patches\nUpgrade to 0.43.1 or later.\n\n### References\nAfter resolving the outpoints of one dep group, we put the corresponding content into a vec ( https://github.com/nervosnetwork/ckb/blob/v0.42.0/util/types/src/core/cell.rs#L600-L617 ), there is a vulnerability to a memory dos attack because there is no determination of whether the outpoints is duplicated.\n\nPoC:\n```\nbefore send dos tx rss:\n105700\n\nafter rss:\n2306932\n```\n\nDoS cost: 25.6 KB * 150 + dep_tx out_points capacity ( 36 * 150 * 100 = 540000 ) = 4380000 CKB\nSend 50 dos_tx, memory exhausted: (25.6 KB * 150  * 100) * 50 = 19.2 GB\n\n",
+  "id": "GHSA-j35p-q24r-5367",
   "modified": "2022-04-22T20:23:04Z",
   "published": "2022-04-22T20:23:04Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2022-04-22T20:23:04Z"
-  },
   "references": [
     {
       "type": "WEB",
@@ -25,30 +49,6 @@
       "url": "https://github.com/nervosnetwork/ckb/blob/v0.42.0/util/types/src/core/cell.rs#L600-L617"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ckb",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/ckb"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.43.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/04/GHSA-j35p-q24r-5367/GHSA-j35p-q24r-5367.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Dep Group Remote Memory Exhaustion (Denial of Service) in ckb"
 }

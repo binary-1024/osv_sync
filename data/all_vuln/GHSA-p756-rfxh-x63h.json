@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-p756-rfxh-x63h",
-  "summary": "Azure/setup-kubectl: Escalation of privilege vulnerability for v3 and lower",
-  "details": "### Impact\n\nThis vulnerability only impacts versions `v2` and lower. An insecure temporary creation of a file allows other actors on the Actions runner to replace the Kubectl binary created by this action because it is world writable. This Kubectl tool installer runs `fs.chmodSync(kubectlPath, 777)` to set permissions on the Kubectl binary, however, this allows any local user to replace the Kubectl binary. This allows privilege escalation to the user that can also run kubectl, most likely root. This attack is only possible if an attacker somehow breached the GitHub actions runner or if a user is utilizing an Action that maliciously executes this attack.\n\nNo impacted customers have been reported.\n\n### Patches\n\nThis has been fixed and released in all versions `v3` and later. 755 permissions are used instead.\n\n### Workarounds\n\nIf users absolutely cannot upgrade to `v3` or higher than they should be extra diligent of the other GitHub actions they are using in a workflow and ensure that their GitHub actions runner is secure.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-p756-rfxh-x63h/GHSA-p756-rfxh-x63h.json"
+      },
+      "package": {
+        "ecosystem": "GitHub Actions",
+        "name": "Azure/setup-kubectl"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-23939"
   ],
-  "modified": "2023-11-08T04:11:43.337197Z",
-  "published": "2023-03-07T20:07:27Z",
-  "related": [
-    "CVE-2023-23939"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-03-06T19:15:00Z",
-    "github_reviewed_at": "2023-03-07T20:07:27Z",
-    "severity": "LOW",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-732"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-03-07T20:07:27Z",
+    "nvd_published_at": "2023-03-06T19:15:00Z",
+    "severity": "LOW"
   },
+  "details": "### Impact\n\nThis vulnerability only impacts versions `v2` and lower. An insecure temporary creation of a file allows other actors on the Actions runner to replace the Kubectl binary created by this action because it is world writable. This Kubectl tool installer runs `fs.chmodSync(kubectlPath, 777)` to set permissions on the Kubectl binary, however, this allows any local user to replace the Kubectl binary. This allows privilege escalation to the user that can also run kubectl, most likely root. This attack is only possible if an attacker somehow breached the GitHub actions runner or if a user is utilizing an Action that maliciously executes this attack.\n\nNo impacted customers have been reported.\n\n### Patches\n\nThis has been fixed and released in all versions `v3` and later. 755 permissions are used instead.\n\n### Workarounds\n\nIf users absolutely cannot upgrade to `v3` or higher than they should be extra diligent of the other GitHub actions they are using in a workflow and ensure that their GitHub actions runner is secure.\n",
+  "id": "GHSA-p756-rfxh-x63h",
+  "modified": "2023-11-08T04:11:43.337197Z",
+  "published": "2023-03-07T20:07:27Z",
   "references": [
     {
       "type": "WEB",
@@ -37,36 +58,15 @@
       "url": "https://github.com/Azure/setup-kubectl"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "Azure/setup-kubectl",
-        "ecosystem": "GitHub Actions"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-p756-rfxh-x63h/GHSA-p756-rfxh-x63h.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-23939"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:A/AC:H/PR:L/UI:N/S:C/C:N/I:L/A:N"
+      "score": "CVSS:3.1/AV:A/AC:H/PR:L/UI:N/S:C/C:N/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Azure/setup-kubectl: Escalation of privilege vulnerability for v3 and lower"
 }

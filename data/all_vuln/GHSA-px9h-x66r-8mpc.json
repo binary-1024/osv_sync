@@ -1,65 +1,16 @@
 {
-  "id": "GHSA-px9h-x66r-8mpc",
-  "summary": "path traversal in Jooby",
-  "details": "### Impact\nAccess to sensitive information available from classpath. \n\n### Patches\nPatched version: 1.6.7 and 2.8.2\n\nCommit 1.x: https://github.com/jooby-project/jooby/commit/34f526028e6cd0652125baa33936ffb6a8a4a009\n\nCommit 2.x: https://github.com/jooby-project/jooby/commit/c81479de67036993f406ccdec23990b44b0bec32\n\n### Workarounds\n_Is there a way for users to fix or remediate the vulnerability without upgrading?_\n\n### References\n\nLatest 1.x version: 1.6.6\n\n#### Arbitrary class path resource access 1\nWhen sharing a *File System* directory as in:\n\n``` java\nassets(\"/static/**\", Paths.get(\"static\"));\n```\n\nThe class path is also searched for the file (`org.jooby.handlers.AssetHandler.loader`):\n[jooby/AssetHandler.java at 1.x \u00b7 jooby-project/jooby \u00b7 GitHub](https://github.com/jooby-project/jooby/blob/1.x/jooby/src/main/java/org/jooby/handlers/AssetHandler.java)\n\n``` java\n  private static Loader loader(final Path basedir, final ClassLoader classloader) {\n    if (Files.exists(basedir)) {\n      return name -> {\n        Path path = basedir.resolve(name).normalize();\n        if (Files.exists(path) && path.startsWith(basedir)) {\n          try {\n            return path.toUri().toURL();\n          } catch (MalformedURLException x) {\n            // shh\n          }\n        }\n        return classloader.getResource(name);\n      };\n    }\n    return classloader::getResource;\n  }\n```\n\nIf we send `/static/WEB-INF/web.xml` it will fail to load it from the file system but will go into `classloader.getResource(name)` where name equals `/WEB-INF/web.xml` so will succeed and return the requested file. This way we can get any configuration file or even the application class files\n\nIf assets are configured for a certain extension we can still bypass it. eg:\n\n```java\nassets(\"/static/**/*.js\", Paths.get(\"static\"));\n```\n\nWe can send:\n\n```\nhttp://localhost:8080/static/io/yiss/App.class.js\n```\n\n#### Arbitrary class path resource access 2\nThis vulnerability also affects assets configured to access resources from the root of the class path. eg:\n\n```java\nassets(\"/static/**\");\n```\n\nIn this case we can traverse `static` by sending:\n\n```\nhttp://localhost:8080/static/..%252fio/yiss/App.class\n```\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [jooby](https://github.com/jooby-project/jooby/issues)\n* Email us at [support@jooby.io](mailto:support@jooby.io)",
-  "aliases": [
-    "CVE-2020-7647"
-  ],
-  "modified": "2025-01-14T08:57:27.236187Z",
-  "published": "2020-05-13T16:29:26Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "github_reviewed_at": "2020-05-12T20:27:09Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-22"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/jooby-project/jooby/security/advisories/GHSA-px9h-x66r-8mpc"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-7647"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jooby-project/jooby/commit/34f526028e6cd0652125baa33936ffb6a8a4a009"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/jooby-project/jooby"
-    },
-    {
-      "type": "WEB",
-      "url": "https://snyk.io/vuln/SNYK-JAVA-IOJOOBY-568806"
-    },
-    {
-      "type": "WEB",
-      "url": "https://snyk.io/vuln/SNYK-JAVA-IOJOOBY-568806,"
-    },
-    {
-      "type": "WEB",
-      "url": "https://snyk.io/vuln/SNYK-JAVA-ORGJOOBY-568807"
-    },
-    {
-      "type": "WEB",
-      "url": "https://snyk.io/vuln/SNYK-JAVA-ORGJOOBY-568807,"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/05/GHSA-px9h-x66r-8mpc/GHSA-px9h-x66r-8mpc.json"
+      },
       "package": {
-        "name": "io.jooby:jooby",
         "ecosystem": "Maven",
+        "name": "io.jooby:jooby",
         "purl": "pkg:maven/io.jooby/jooby"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -67,7 +18,8 @@
             {
               "fixed": "2.8.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -101,20 +53,19 @@
         "2.7.3",
         "2.8.0",
         "2.8.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/05/GHSA-px9h-x66r-8mpc/GHSA-px9h-x66r-8mpc.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/05/GHSA-px9h-x66r-8mpc/GHSA-px9h-x66r-8mpc.json"
+      },
       "package": {
-        "name": "org.jooby:jooby",
         "ecosystem": "Maven",
+        "name": "org.jooby:jooby",
         "purl": "pkg:maven/org.jooby/jooby"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -122,7 +73,8 @@
             {
               "fixed": "2.8.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -196,17 +148,65 @@
         "1.6.7",
         "1.6.8",
         "1.6.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/05/GHSA-px9h-x66r-8mpc/GHSA-px9h-x66r-8mpc.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2020-7647"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-22"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-05-12T20:27:09Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nAccess to sensitive information available from classpath. \n\n### Patches\nPatched version: 1.6.7 and 2.8.2\n\nCommit 1.x: https://github.com/jooby-project/jooby/commit/34f526028e6cd0652125baa33936ffb6a8a4a009\n\nCommit 2.x: https://github.com/jooby-project/jooby/commit/c81479de67036993f406ccdec23990b44b0bec32\n\n### Workarounds\n_Is there a way for users to fix or remediate the vulnerability without upgrading?_\n\n### References\n\nLatest 1.x version: 1.6.6\n\n#### Arbitrary class path resource access 1\nWhen sharing a *File System* directory as in:\n\n``` java\nassets(\"/static/**\", Paths.get(\"static\"));\n```\n\nThe class path is also searched for the file (`org.jooby.handlers.AssetHandler.loader`):\n[jooby/AssetHandler.java at 1.x \u00b7 jooby-project/jooby \u00b7 GitHub](https://github.com/jooby-project/jooby/blob/1.x/jooby/src/main/java/org/jooby/handlers/AssetHandler.java)\n\n``` java\n  private static Loader loader(final Path basedir, final ClassLoader classloader) {\n    if (Files.exists(basedir)) {\n      return name -> {\n        Path path = basedir.resolve(name).normalize();\n        if (Files.exists(path) && path.startsWith(basedir)) {\n          try {\n            return path.toUri().toURL();\n          } catch (MalformedURLException x) {\n            // shh\n          }\n        }\n        return classloader.getResource(name);\n      };\n    }\n    return classloader::getResource;\n  }\n```\n\nIf we send `/static/WEB-INF/web.xml` it will fail to load it from the file system but will go into `classloader.getResource(name)` where name equals `/WEB-INF/web.xml` so will succeed and return the requested file. This way we can get any configuration file or even the application class files\n\nIf assets are configured for a certain extension we can still bypass it. eg:\n\n```java\nassets(\"/static/**/*.js\", Paths.get(\"static\"));\n```\n\nWe can send:\n\n```\nhttp://localhost:8080/static/io/yiss/App.class.js\n```\n\n#### Arbitrary class path resource access 2\nThis vulnerability also affects assets configured to access resources from the root of the class path. eg:\n\n```java\nassets(\"/static/**\");\n```\n\nIn this case we can traverse `static` by sending:\n\n```\nhttp://localhost:8080/static/..%252fio/yiss/App.class\n```\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [jooby](https://github.com/jooby-project/jooby/issues)\n* Email us at [support@jooby.io](mailto:support@jooby.io)",
+  "id": "GHSA-px9h-x66r-8mpc",
+  "modified": "2025-01-14T08:57:27.236187Z",
+  "published": "2020-05-13T16:29:26Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/jooby-project/jooby/security/advisories/GHSA-px9h-x66r-8mpc"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-7647"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jooby-project/jooby/commit/34f526028e6cd0652125baa33936ffb6a8a4a009"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jooby-project/jooby"
+    },
+    {
+      "type": "WEB",
+      "url": "https://snyk.io/vuln/SNYK-JAVA-IOJOOBY-568806"
+    },
+    {
+      "type": "WEB",
+      "url": "https://snyk.io/vuln/SNYK-JAVA-IOJOOBY-568806,"
+    },
+    {
+      "type": "WEB",
+      "url": "https://snyk.io/vuln/SNYK-JAVA-ORGJOOBY-568807"
+    },
+    {
+      "type": "WEB",
+      "url": "https://snyk.io/vuln/SNYK-JAVA-ORGJOOBY-568807,"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "path traversal in Jooby"
 }

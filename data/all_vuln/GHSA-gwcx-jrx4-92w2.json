@@ -1,27 +1,107 @@
 {
-  "id": "GHSA-gwcx-jrx4-92w2",
-  "summary": "Segfault in `simplifyBroadcast` in Tensorflow",
-  "details": "### Impact\nThe [`simplifyBroadcast` function in the MLIR-TFRT infrastructure in TensorFlow](https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/compiler/mlir/tfrt/jit/transforms/tf_cpurt_symbolic_shape_optimization.cc#L149-L205) is vulnerable to a segfault (hence, denial of service), if called with scalar shapes.\n\n```cc \n  size_t maxRank = 0;\n  for (auto shape : llvm::enumerate(shapes)) {\n    auto found_shape = analysis.dimensionsForShapeTensor(shape.value());\n    if (!found_shape) return {};\n    shapes_found.push_back(*found_shape);\n    maxRank = std::max(maxRank, found_shape->size());\n  }   \n\n  SmallVector<const ShapeComponentAnalysis::SymbolicDimension*>\n      joined_dimensions(maxRank);\n```\n\nIf all shapes are scalar, then `maxRank` is 0, so we build an empty `SmallVector`.\n\n### Patches\nWe have patched the issue in GitHub commit [35f0fabb4c178253a964d7aabdbb15c6a398b69a](https://github.com/tensorflow/tensorflow/commit/35f0fabb4c178253a964d7aabdbb15c6a398b69a).\n\nThe fix will be included in TensorFlow 2.8.0. This is the only affected version.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-gwcx-jrx4-92w2/GHSA-gwcx-jrx4-92w2.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow",
+        "purl": "pkg:pypi/tensorflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0-rc0"
+            },
+            {
+              "fixed": "2.8.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0-rc0",
+        "2.8.0rc0",
+        "2.8.0rc1"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-gwcx-jrx4-92w2/GHSA-gwcx-jrx4-92w2.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
+        "purl": "pkg:pypi/tensorflow-cpu"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0-rc0"
+            },
+            {
+              "fixed": "2.8.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0-rc0"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-gwcx-jrx4-92w2/GHSA-gwcx-jrx4-92w2.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
+        "purl": "pkg:pypi/tensorflow-gpu"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0-rc0"
+            },
+            {
+              "fixed": "2.8.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0-rc0",
+        "2.8.0rc0",
+        "2.8.0rc1"
+      ]
+    }
+  ],
   "aliases": [
     "BIT-tensorflow-2022-23593",
     "CVE-2022-23593",
     "PYSEC-2022-102",
     "PYSEC-2022-157"
   ],
-  "modified": "2024-11-13T22:25:18.516915Z",
-  "published": "2022-02-09T23:32:08Z",
-  "related": [
-    "CVE-2022-23593"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-02-04T23:15:00Z",
     "cwe_ids": [
       "CWE-754"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-02-04T18:15:07Z"
+    "github_reviewed_at": "2022-02-04T18:15:07Z",
+    "nvd_published_at": "2022-02-04T23:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nThe [`simplifyBroadcast` function in the MLIR-TFRT infrastructure in TensorFlow](https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/compiler/mlir/tfrt/jit/transforms/tf_cpurt_symbolic_shape_optimization.cc#L149-L205) is vulnerable to a segfault (hence, denial of service), if called with scalar shapes.\n\n```cc \n  size_t maxRank = 0;\n  for (auto shape : llvm::enumerate(shapes)) {\n    auto found_shape = analysis.dimensionsForShapeTensor(shape.value());\n    if (!found_shape) return {};\n    shapes_found.push_back(*found_shape);\n    maxRank = std::max(maxRank, found_shape->size());\n  }   \n\n  SmallVector<const ShapeComponentAnalysis::SymbolicDimension*>\n      joined_dimensions(maxRank);\n```\n\nIf all shapes are scalar, then `maxRank` is 0, so we build an empty `SmallVector`.\n\n### Patches\nWe have patched the issue in GitHub commit [35f0fabb4c178253a964d7aabdbb15c6a398b69a](https://github.com/tensorflow/tensorflow/commit/35f0fabb4c178253a964d7aabdbb15c6a398b69a).\n\nThe fix will be included in TensorFlow 2.8.0. This is the only affected version.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
+  "id": "GHSA-gwcx-jrx4-92w2",
+  "modified": "2024-11-13T22:25:18.516915Z",
+  "published": "2022-02-09T23:32:08Z",
   "references": [
     {
       "type": "WEB",
@@ -52,99 +132,19 @@
       "url": "https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/compiler/mlir/tfrt/jit/transforms/tf_cpurt_symbolic_shape_optimization.cc#L149-L205"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tensorflow",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0-rc0"
-            },
-            {
-              "fixed": "2.8.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0-rc0",
-        "2.8.0rc0",
-        "2.8.0rc1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-gwcx-jrx4-92w2/GHSA-gwcx-jrx4-92w2.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tensorflow-cpu",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow-cpu"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0-rc0"
-            },
-            {
-              "fixed": "2.8.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0-rc0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-gwcx-jrx4-92w2/GHSA-gwcx-jrx4-92w2.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tensorflow-gpu",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow-gpu"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0-rc0"
-            },
-            {
-              "fixed": "2.8.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0-rc0",
-        "2.8.0rc0",
-        "2.8.0rc1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-gwcx-jrx4-92w2/GHSA-gwcx-jrx4-92w2.json"
-      }
-    }
+  "related": [
+    "CVE-2022-23593"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Segfault in `simplifyBroadcast` in Tensorflow"
 }

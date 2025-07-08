@@ -1,25 +1,95 @@
 {
-  "id": "GHSA-x2qm-r4wx-8gpg",
-  "summary": "org.xwiki.platform:xwiki-platform-flamingo-theme-ui Eval Injection vulnerability",
-  "details": "### Impact\nIt's possible to inject arbitrary wiki syntax including Groovy, Python and Velocity script macros via the `newThemeName` request parameter (URL parameter), in combination with additional parameters `form_token=1&action=create`.\n\nFor instance: [http://127.0.0.1:8080/xwiki/bin/view/FlamingoThemesCode/WebHomeSheet?newThemeName=foo%22%2F%7D%7D%7B%7Basync%20async%3D%22true%22%20cached%3D%22false%22%20context%3D%22doc.reference%22%7D%7D%7B%7Bgroovy%7D%7Dprintln(%22hello%20from%20groovy!%22)%7B%7B%2Fgroovy%7D%7D%7B%7B%2Fasync%7D%7D&form_token=1&action=create](http://127.0.0.1:8080/xwiki/bin/view/FlamingoThemesCode/WebHomeSheet?**newThemeName**=foo%22%2F%7D%7D%7B%7Basync%20async%3D%22true%22%20cached%3D%22false%22%20context%3D%22doc.reference%22%7D%7D%7B%7Bgroovy%7D%7Dprintln(%22hello%20from%20groovy!%22)%7B%7B%2Fgroovy%7D%7D%7B%7B%2Fasync%7D%7D&form_token=1&action=create) will execute the following groovy code: `println(\"hello from groovy!\")` on the server.\n\n### Patches\nThis has been patched in the supported versions 13.10.10, 14.9-rc-1, and 14.4.6.\n\n### Workarounds\nIt is possible to edit `FlamingoThemesCode.WebHomeSheet` and manually perform the changes from [the patch fixing the issue](https://github.com/xwiki/xwiki-platform/commit/ea2e615f50a918802fd60b09ec87aa04bc6ea8e2#diff-e2153fa59f9d92ef67b0afbf27984bd17170921a3b558fac227160003d0dfd2aR283-R284).\n\n### References\n- https://github.com/xwiki/xwiki-platform/commit/ea2e615f50a918802fd60b09ec87aa04bc6ea8e2#diff-e2153fa59f9d92ef67b0afbf27984bd17170921a3b558fac227160003d0dfd2aR283-R284\n- https://jira.xwiki.org/browse/XWIKI-19757\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-x2qm-r4wx-8gpg/GHSA-x2qm-r4wx-8gpg.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-flamingo-theme-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-flamingo-theme-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "6.2.4"
+            },
+            {
+              "fixed": "13.10.10"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-x2qm-r4wx-8gpg/GHSA-x2qm-r4wx-8gpg.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-flamingo-theme-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-flamingo-theme-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.0"
+            },
+            {
+              "fixed": "14.4.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-x2qm-r4wx-8gpg/GHSA-x2qm-r4wx-8gpg.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-flamingo-theme-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-flamingo-theme-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.5"
+            },
+            {
+              "fixed": "14.9-rc-1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-26477"
   ],
-  "modified": "2023-11-08T04:12:01.718825Z",
-  "published": "2023-03-03T22:51:02Z",
-  "related": [
-    "CVE-2023-26477"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-03-02T18:15:00Z",
-    "github_reviewed_at": "2023-03-03T22:51:02Z",
-    "severity": "CRITICAL",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-94",
       "CWE-95"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-03-03T22:51:02Z",
+    "nvd_published_at": "2023-03-02T18:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\nIt's possible to inject arbitrary wiki syntax including Groovy, Python and Velocity script macros via the `newThemeName` request parameter (URL parameter), in combination with additional parameters `form_token=1&action=create`.\n\nFor instance: [http://127.0.0.1:8080/xwiki/bin/view/FlamingoThemesCode/WebHomeSheet?newThemeName=foo%22%2F%7D%7D%7B%7Basync%20async%3D%22true%22%20cached%3D%22false%22%20context%3D%22doc.reference%22%7D%7D%7B%7Bgroovy%7D%7Dprintln(%22hello%20from%20groovy!%22)%7B%7B%2Fgroovy%7D%7D%7B%7B%2Fasync%7D%7D&form_token=1&action=create](http://127.0.0.1:8080/xwiki/bin/view/FlamingoThemesCode/WebHomeSheet?**newThemeName**=foo%22%2F%7D%7D%7B%7Basync%20async%3D%22true%22%20cached%3D%22false%22%20context%3D%22doc.reference%22%7D%7D%7B%7Bgroovy%7D%7Dprintln(%22hello%20from%20groovy!%22)%7B%7B%2Fgroovy%7D%7D%7B%7B%2Fasync%7D%7D&form_token=1&action=create) will execute the following groovy code: `println(\"hello from groovy!\")` on the server.\n\n### Patches\nThis has been patched in the supported versions 13.10.10, 14.9-rc-1, and 14.4.6.\n\n### Workarounds\nIt is possible to edit `FlamingoThemesCode.WebHomeSheet` and manually perform the changes from [the patch fixing the issue](https://github.com/xwiki/xwiki-platform/commit/ea2e615f50a918802fd60b09ec87aa04bc6ea8e2#diff-e2153fa59f9d92ef67b0afbf27984bd17170921a3b558fac227160003d0dfd2aR283-R284).\n\n### References\n- https://github.com/xwiki/xwiki-platform/commit/ea2e615f50a918802fd60b09ec87aa04bc6ea8e2#diff-e2153fa59f9d92ef67b0afbf27984bd17170921a3b558fac227160003d0dfd2aR283-R284\n- https://jira.xwiki.org/browse/XWIKI-19757\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)\n",
+  "id": "GHSA-x2qm-r4wx-8gpg",
+  "modified": "2023-11-08T04:12:01.718825Z",
+  "published": "2023-03-03T22:51:02Z",
   "references": [
     {
       "type": "WEB",
@@ -42,85 +112,15 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-19757"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-flamingo-theme-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-flamingo-theme-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "6.2.4"
-            },
-            {
-              "fixed": "13.10.10"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-x2qm-r4wx-8gpg/GHSA-x2qm-r4wx-8gpg.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-flamingo-theme-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-flamingo-theme-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.0"
-            },
-            {
-              "fixed": "14.4.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-x2qm-r4wx-8gpg/GHSA-x2qm-r4wx-8gpg.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-flamingo-theme-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-flamingo-theme-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.5"
-            },
-            {
-              "fixed": "14.9-rc-1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-x2qm-r4wx-8gpg/GHSA-x2qm-r4wx-8gpg.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-26477"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "org.xwiki.platform:xwiki-platform-flamingo-theme-ui Eval Injection vulnerability"
 }

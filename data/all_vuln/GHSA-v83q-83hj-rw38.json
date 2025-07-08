@@ -1,19 +1,43 @@
 {
-  "id": "GHSA-v83q-83hj-rw38",
-  "summary": "ntpd NTS client denial of service via wrongly sized cookies",
-  "details": "Two denial of service vulnerabilities were found in ntpd-rs related to the handling of NTS cookies in our client functionality. Whenever an NTS source is configured and the server behind that source is sending zero-sized cookies or cookies larger than what would fit in our buffer size, ntpd-rs would crash. Only configured NTS sources can abuse these vulnerabilities. NTP sources or third parties that are not configured cannot make use of these vulnerabilities.\n\nFor zero-sized cookies: a division by zero would force an exit when the number of new cookies that would need to be requested is calculated. In ntpd-rs 1.5.0 a check was added to prevent the division by zero.\n\nFor large cookies: while trying to send a NTP request with the cookie included, the buffer is too small to handle the cookie and an exit of ntpd-rs is forced once a write to the buffer is attempted. The memory outside the buffer would not be written to in this case. In ntpd-rs 1.5.0 a check was added that prevents accepting cookies larger than 350 bytes.\n\nUsers of older versions of ntpd-rs are recommended to update to the latest version. If an update is impossible, it is recommended to only add NTS sources to ntpd-rs that are trusted to not abuse this bug.",
-  "modified": "2025-02-28T17:46:36Z",
-  "published": "2025-02-28T17:46:36Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-v83q-83hj-rw38/GHSA-v83q-83hj-rw38.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "ntpd",
+        "purl": "pkg:cargo/ntpd"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.5.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-369",
       "CWE-703"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-02-28T17:46:36Z"
+    "github_reviewed_at": "2025-02-28T17:46:36Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
   },
+  "details": "Two denial of service vulnerabilities were found in ntpd-rs related to the handling of NTS cookies in our client functionality. Whenever an NTS source is configured and the server behind that source is sending zero-sized cookies or cookies larger than what would fit in our buffer size, ntpd-rs would crash. Only configured NTS sources can abuse these vulnerabilities. NTP sources or third parties that are not configured cannot make use of these vulnerabilities.\n\nFor zero-sized cookies: a division by zero would force an exit when the number of new cookies that would need to be requested is calculated. In ntpd-rs 1.5.0 a check was added to prevent the division by zero.\n\nFor large cookies: while trying to send a NTP request with the cookie included, the buffer is too small to handle the cookie and an exit of ntpd-rs is forced once a write to the buffer is attempted. The memory outside the buffer would not be written to in this case. In ntpd-rs 1.5.0 a check was added that prevents accepting cookies larger than 350 bytes.\n\nUsers of older versions of ntpd-rs are recommended to update to the latest version. If an update is impossible, it is recommended to only add NTS sources to ntpd-rs that are trusted to not abuse this bug.",
+  "id": "GHSA-v83q-83hj-rw38",
+  "modified": "2025-02-28T17:46:36Z",
+  "published": "2025-02-28T17:46:36Z",
   "references": [
     {
       "type": "WEB",
@@ -32,36 +56,12 @@
       "url": "https://github.com/pendulum-project/ntpd-rs"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "ntpd",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/ntpd"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.5.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/02/GHSA-v83q-83hj-rw38/GHSA-v83q-83hj-rw38.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "ntpd NTS client denial of service via wrongly sized cookies"
 }

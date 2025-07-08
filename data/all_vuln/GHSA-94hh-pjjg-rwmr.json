@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-94hh-pjjg-rwmr",
-  "summary": "Padding Oracle Attack due to Observable Timing Discrepancy in jose-browser-runtime",
-  "details": "### Impact\n\n[AES_CBC_HMAC_SHA2 Algorithm](https://tools.ietf.org/html/rfc7518#section-5.2) (A128CBC-HS256, A192CBC-HS384, A256CBC-HS512) decryption would always execute both HMAC tag verification and CBC decryption, if either failed `JWEDecryptionFailed` would be thrown. But a possibly observable difference in timing when padding error would occur while decrypting the ciphertext makes a padding oracle and an adversary might be able to make use of that oracle to decrypt data without knowing the decryption key by issuing on average 128*b calls to the padding oracle (where b is the number of bytes in the ciphertext block).\n\n### Patches\n\nA patch was released which ensures the HMAC tag is verified before performing CBC decryption. The fixed versions are `>=3.11.4`.\n\nUsers should upgrade to `^3.11.4`.\n\n### Credits\nThanks to Morgan Brown of Microsoft for bringing this up and Eva Sarafianou (@esarafianou) for helping to score this advisory.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/04/GHSA-94hh-pjjg-rwmr/GHSA-94hh-pjjg-rwmr.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "jose-browser-runtime",
+        "purl": "pkg:npm/jose-browser-runtime"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.11.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-29444"
   ],
-  "modified": "2023-11-08T04:05:34.260063Z",
-  "published": "2021-04-19T14:58:49Z",
-  "related": [
-    "CVE-2021-29444"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-04-16T22:15:00Z",
-    "github_reviewed_at": "2021-04-16T23:00:49Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-203"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-04-16T23:00:49Z",
+    "nvd_published_at": "2021-04-16T22:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\n[AES_CBC_HMAC_SHA2 Algorithm](https://tools.ietf.org/html/rfc7518#section-5.2) (A128CBC-HS256, A192CBC-HS384, A256CBC-HS512) decryption would always execute both HMAC tag verification and CBC decryption, if either failed `JWEDecryptionFailed` would be thrown. But a possibly observable difference in timing when padding error would occur while decrypting the ciphertext makes a padding oracle and an adversary might be able to make use of that oracle to decrypt data without knowing the decryption key by issuing on average 128*b calls to the padding oracle (where b is the number of bytes in the ciphertext block).\n\n### Patches\n\nA patch was released which ensures the HMAC tag is verified before performing CBC decryption. The fixed versions are `>=3.11.4`.\n\nUsers should upgrade to `^3.11.4`.\n\n### Credits\nThanks to Morgan Brown of Microsoft for bringing this up and Eva Sarafianou (@esarafianou) for helping to score this advisory.",
+  "id": "GHSA-94hh-pjjg-rwmr",
+  "modified": "2023-11-08T04:05:34.260063Z",
+  "published": "2021-04-19T14:58:49Z",
   "references": [
     {
       "type": "WEB",
@@ -37,36 +58,15 @@
       "url": "https://www.npmjs.com/package/jose-browser-runtime"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "jose-browser-runtime",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/jose-browser-runtime"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.11.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/04/GHSA-94hh-pjjg-rwmr/GHSA-94hh-pjjg-rwmr.json"
-      }
-    }
+  "related": [
+    "CVE-2021-29444"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Padding Oracle Attack due to Observable Timing Discrepancy in jose-browser-runtime"
 }

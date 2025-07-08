@@ -1,25 +1,46 @@
 {
-  "id": "GHSA-49hh-fprx-m68g",
-  "summary": "Default functions in VolatileMemory trait lack bounds checks, potentially leading to out-of-bounds memory accesses",
-  "details": "### Impact\nAn issue was discovered in the default implementations of the `VolatileMemory::{get_atomic_ref, aligned_as_ref, aligned_as_mut, get_ref, get_array_ref}` trait functions, which allows out-of-bounds memory access if the `VolatileMemory::get_slice` function returns a `VolatileSlice` whose length is less than the function\u2019s `count` argument. No implementations of `get_slice` provided in `vm_memory` are affected. Users of custom `VolatileMemory` implementations may be impacted if the custom implementation does not adhere to `get_slice`'s documentation.\n\n### Patches\nThe issue started in version 0.1.0 but was fixed in version 0.12.2 by inserting a check that verifies that the `VolatileSlice` returned by `get_slice` is of the correct length.\n\n### Workarounds\nNot Required\n\n### References\nhttps://github.com/rust-vmm/vm-memory/commit/aff1dd4a5259f7deba56692840f7a2d9ca34c9c8\nhttps://crates.io/crates/vm-memory/0.12.2",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-49hh-fprx-m68g/GHSA-49hh-fprx-m68g.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "vm-memory",
+        "purl": "pkg:cargo/vm-memory"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.12.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-41051",
     "RUSTSEC-2023-0056"
   ],
-  "modified": "2025-02-13T19:11:48Z",
-  "published": "2023-09-04T16:35:37Z",
-  "related": [
-    "CVE-2023-41051"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-09-01T19:15:42Z",
     "cwe_ids": [
       "CWE-125"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-09-04T16:35:37Z"
+    "github_reviewed_at": "2023-09-04T16:35:37Z",
+    "nvd_published_at": "2023-09-01T19:15:42Z",
+    "severity": "LOW"
   },
+  "details": "### Impact\nAn issue was discovered in the default implementations of the `VolatileMemory::{get_atomic_ref, aligned_as_ref, aligned_as_mut, get_ref, get_array_ref}` trait functions, which allows out-of-bounds memory access if the `VolatileMemory::get_slice` function returns a `VolatileSlice` whose length is less than the function\u2019s `count` argument. No implementations of `get_slice` provided in `vm_memory` are affected. Users of custom `VolatileMemory` implementations may be impacted if the custom implementation does not adhere to `get_slice`'s documentation.\n\n### Patches\nThe issue started in version 0.1.0 but was fixed in version 0.12.2 by inserting a check that verifies that the `VolatileSlice` returned by `get_slice` is of the correct length.\n\n### Workarounds\nNot Required\n\n### References\nhttps://github.com/rust-vmm/vm-memory/commit/aff1dd4a5259f7deba56692840f7a2d9ca34c9c8\nhttps://crates.io/crates/vm-memory/0.12.2",
+  "id": "GHSA-49hh-fprx-m68g",
+  "modified": "2025-02-13T19:11:48Z",
+  "published": "2023-09-04T16:35:37Z",
   "references": [
     {
       "type": "WEB",
@@ -62,36 +83,15 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2023-0056.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "vm-memory",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/vm-memory"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.12.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-49hh-fprx-m68g/GHSA-49hh-fprx-m68g.json"
-      }
-    }
+  "related": [
+    "CVE-2023-41051"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:L"
+      "score": "CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Default functions in VolatileMemory trait lack bounds checks, potentially leading to out-of-bounds memory accesses"
 }

@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-wqq4-5wpv-mx2g",
-  "summary": "Undici's cookie header not cleared on cross-origin redirect in fetch",
-  "details": "### Impact\n\nUndici clears Authorization headers on cross-origin redirects, but does not clear `Cookie` headers. By design, `cookie` headers are [forbidden request headers](https://fetch.spec.whatwg.org/#forbidden-request-header), disallowing them to be set in `RequestInit.headers` in browser environments. Since Undici handles headers more liberally than the specification, there was a disconnect from the assumptions the spec made, and Undici's implementation of fetch.\n\nAs such this may lead to accidental leakage of cookie to a 3rd-party site or a malicious attacker who can control the redirection target (ie. an open redirector) to leak the cookie to the 3rd party site.\n\n### Patches\n\nThis was patched in [e041de359221ebeae04c469e8aff4145764e6d76](https://github.com/nodejs/undici/commit/e041de359221ebeae04c469e8aff4145764e6d76), which is included in version 5.26.2.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-wqq4-5wpv-mx2g/GHSA-wqq4-5wpv-mx2g.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "undici",
+        "purl": "pkg:npm/undici"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.26.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-45143"
   ],
-  "modified": "2024-12-05T15:42:14.323907Z",
-  "published": "2023-10-16T14:05:37Z",
-  "related": [
-    "CVE-2023-45143"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-10-12T17:15:10Z",
     "cwe_ids": [
       "CWE-200"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-10-16T14:05:37Z"
+    "github_reviewed_at": "2023-10-16T14:05:37Z",
+    "nvd_published_at": "2023-10-12T17:15:10Z",
+    "severity": "LOW"
   },
+  "details": "### Impact\n\nUndici clears Authorization headers on cross-origin redirects, but does not clear `Cookie` headers. By design, `cookie` headers are [forbidden request headers](https://fetch.spec.whatwg.org/#forbidden-request-header), disallowing them to be set in `RequestInit.headers` in browser environments. Since Undici handles headers more liberally than the specification, there was a disconnect from the assumptions the spec made, and Undici's implementation of fetch.\n\nAs such this may lead to accidental leakage of cookie to a 3rd-party site or a malicious attacker who can control the redirection target (ie. an open redirector) to leak the cookie to the 3rd party site.\n\n### Patches\n\nThis was patched in [e041de359221ebeae04c469e8aff4145764e6d76](https://github.com/nodejs/undici/commit/e041de359221ebeae04c469e8aff4145764e6d76), which is included in version 5.26.2.\n",
+  "id": "GHSA-wqq4-5wpv-mx2g",
+  "modified": "2024-12-05T15:42:14.323907Z",
+  "published": "2023-10-16T14:05:37Z",
   "references": [
     {
       "type": "WEB",
@@ -73,36 +94,15 @@
       "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/X6QXN4ORIVF6XBW4WWFE7VNPVC74S45Y"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "undici",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/undici"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.26.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-wqq4-5wpv-mx2g/GHSA-wqq4-5wpv-mx2g.json"
-      }
-    }
+  "related": [
+    "CVE-2023-45143"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Undici's cookie header not cleared on cross-origin redirect in fetch"
 }

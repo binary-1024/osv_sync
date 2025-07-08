@@ -1,13 +1,39 @@
 {
-  "id": "BIT-airflow-2024-29735",
-  "summary": "Apache Airflow: Potentially harmful permission changing by log task handler",
-  "details": "Improper Preservation of Permissions vulnerability in Apache Airflow.This issue affects Apache Airflow from 2.8.2 through 2.8.3.\n\nAirflow's local file task handler in Airflow incorrectly set permissions for all parent folders of log folder, in default configuration adding write access to Unix group\u00a0of the folders. In the case Airflow is run with the root user (not recommended) it added group write permission to all folders up to the root of the filesystem.\n\nIf your log files are stored in the home directory, these permission changes might impact your ability to run SSH operations after your home directory becomes group-writeable.\n\nThis issue does not affect users who use or extend Airflow using Official Airflow Docker reference images ( https://hub.docker.com/r/apache/airflow/ ) - those images require to have group write permission set anyway.\n\nYou are affected only if you install Airflow using local installation / virtualenv or other Docker images, but the issue has no impact if docker containers are used as intended, i.e. where Airflow components do not share containers with other applications and users.\n\nAlso you should not be affected if your umask is 002 (group write enabled) - this is the default on many linux systems.\n\nRecommendation for users using Airflow outside of the containers:\n\n  *  if you are using root to run Airflow, change your Airflow user to use non-root\n  *  upgrade Apache Airflow to 2.8.4 or above\n  *  If you prefer not to upgrade, you can change the  https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#file-task-handler-new-folder-permissions \u00a0to 0o755 (original value 0o775).\n  *  if you already ran Airflow tasks before and your default umask is 022 (group write disabled) you should stop Airflow components, check permissions of AIRFLOW_HOME/logs\u00a0in all your components and all parent directories of this directory and remove group write access for all the parent directories",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/airflow/BIT-airflow-2024-29735.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "airflow",
+        "purl": "pkg:bitnami/airflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.2"
+            },
+            {
+              "fixed": "2.8.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:H/A:N",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-29735",
     "GHSA-cff3-5qrp-hqx7"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-28T07:16:52.369Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:apache:airflow:*:*:*:*:*:*:*:*",
@@ -15,6 +41,10 @@
     ],
     "severity": "Medium"
   },
+  "details": "Improper Preservation of Permissions vulnerability in Apache Airflow.This issue affects Apache Airflow from 2.8.2 through 2.8.3.\n\nAirflow's local file task handler in Airflow incorrectly set permissions for all parent folders of log folder, in default configuration adding write access to Unix group\u00a0of the folders. In the case Airflow is run with the root user (not recommended) it added group write permission to all folders up to the root of the filesystem.\n\nIf your log files are stored in the home directory, these permission changes might impact your ability to run SSH operations after your home directory becomes group-writeable.\n\nThis issue does not affect users who use or extend Airflow using Official Airflow Docker reference images ( https://hub.docker.com/r/apache/airflow/ ) - those images require to have group write permission set anyway.\n\nYou are affected only if you install Airflow using local installation / virtualenv or other Docker images, but the issue has no impact if docker containers are used as intended, i.e. where Airflow components do not share containers with other applications and users.\n\nAlso you should not be affected if your umask is 002 (group write enabled) - this is the default on many linux systems.\n\nRecommendation for users using Airflow outside of the containers:\n\n  *  if you are using root to run Airflow, change your Airflow user to use non-root\n  *  upgrade Apache Airflow to 2.8.4 or above\n  *  If you prefer not to upgrade, you can change the  https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#file-task-handler-new-folder-permissions \u00a0to 0o755 (original value 0o775).\n  *  if you already ran Airflow tasks before and your default umask is 022 (group write disabled) you should stop Airflow components, check permissions of AIRFLOW_HOME/logs\u00a0in all your components and all parent directories of this directory and remove group write access for all the parent directories",
+  "id": "BIT-airflow-2024-29735",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-28T07:16:52.369Z",
   "references": [
     {
       "type": "WEB",
@@ -33,36 +63,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-29735"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "airflow",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/airflow"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.8.2"
-            },
-            {
-              "fixed": "2.8.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/airflow/BIT-airflow-2024-29735.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:H/A:N"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Apache Airflow: Potentially harmful permission changing by log task handler"
 }

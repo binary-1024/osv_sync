@@ -1,54 +1,16 @@
 {
-  "id": "GHSA-m67m-3p5g-cw9j",
-  "summary": "VCS credentials included in URL parameters are potentially logged and saved into browser history as plaintext",
-  "details": "### Summary\n\nWhen creating a new component from an existing component that has a source code repository URL specified in settings, this URL is included in the client's URL parameters during the creation process. If, for example, the source code repository URL contains GitHub credentials, the confidential PAT and username are shown in plaintext and get saved into browser history. Moreover, if the request URL is logged, the credentials are written to the logs in plaintext.\n\nThe problematic URL in question is of this form:\n\n```\nhttps://<HOST>/create/component/vcs/?repo=https%3A%2F%2F<GITHUB USERNAME>%3A<GITHUB PAT>%40github.com%2F<REPOSITORY OWNER>%2F<REPOSITORY NAME>.git&project=1&category=&name=<REDACTED>&slug=<REDACTED>&is_glossary=False&vcs=github&source_language=228&license=&source_component=1#existing\n```\n\nIf using Weblate official Docker image, nginx logs the URL and the token in plaintext:\n\n```\nnginx stdout | 127.0.0.1 - - [04/Apr/2025:10:46:54 +0000] \"GET /create/component/vcs/?repo=https%3A%2F%2F<GITHUB USERNAME>%3A<GITHUB PAT>%40github.com%2F<REPOSITORY OWNER>%2F<REPOSITORY NAME>.git&project=1&category=&name=<REDACTED>&slug=<REDACTED>&is_glossary=False&vcs=github&source_language=228&license=&source_component=1 HTTP/1.1\" 200 17625 \"<REDACTED>\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:136.0) Gecko/20100101 Firefox/136.0\"\n```\n\n### Reproduction\n\n1. In a project, create a component which has the _Repository push URL_ setting configured with, for example, a GitHub repository URL including a username and a PAT.\n2. In the same project, create another component using the _From existing component_ option and selecting the previous component as the source. Click _Continue_.\n3. Observe that the URL parameter `repo` includes the secret PAT configured in the original components settings. The URL with the token is potentially saved as plaintext in browser history and server logs.\n4. Select a translation file to import and click _Continue_.\n5. Observe again the same `repo` parameter in the URL.\n\n### Impact\n\n- If server logs are compromised, the attacker may be able to gain access to private repositories potentially containing sensitive source code.\n- Under common browser settings, the URL containing VCS credentials is saved into browser history. Browser extensions, for example, are often able to read the history and thus offer a realistic attack vector to gain access to the credentials.",
-  "aliases": [
-    "CVE-2025-32021",
-    "PYSEC-2025-35"
-  ],
-  "modified": "2025-04-30T17:56:56.209113Z",
-  "published": "2025-04-15T14:20:38Z",
-  "related": [
-    "CVE-2025-32021",
-    "PYSEC-2025-35"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2025-04-15T21:16:04Z",
-    "cwe_ids": [
-      "CWE-598"
-    ],
-    "severity": "LOW",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-04-15T14:20:38Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/WeblateOrg/weblate/security/advisories/GHSA-m67m-3p5g-cw9j"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-32021"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/WeblateOrg/weblate"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/WeblateOrg/weblate/releases/tag/weblate-5.11"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-m67m-3p5g-cw9j/GHSA-m67m-3p5g-cw9j.json"
+      },
       "package": {
-        "name": "weblate",
         "ecosystem": "PyPI",
+        "name": "weblate",
         "purl": "pkg:pypi/weblate"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -56,7 +18,8 @@
             {
               "fixed": "5.11"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -204,17 +167,54 @@
         "5.9.1",
         "5.9.2",
         "5.9.dev0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-m67m-3p5g-cw9j/GHSA-m67m-3p5g-cw9j.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2025-32021",
+    "PYSEC-2025-35"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-598"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-15T14:20:38Z",
+    "nvd_published_at": "2025-04-15T21:16:04Z",
+    "severity": "LOW"
+  },
+  "details": "### Summary\n\nWhen creating a new component from an existing component that has a source code repository URL specified in settings, this URL is included in the client's URL parameters during the creation process. If, for example, the source code repository URL contains GitHub credentials, the confidential PAT and username are shown in plaintext and get saved into browser history. Moreover, if the request URL is logged, the credentials are written to the logs in plaintext.\n\nThe problematic URL in question is of this form:\n\n```\nhttps://<HOST>/create/component/vcs/?repo=https%3A%2F%2F<GITHUB USERNAME>%3A<GITHUB PAT>%40github.com%2F<REPOSITORY OWNER>%2F<REPOSITORY NAME>.git&project=1&category=&name=<REDACTED>&slug=<REDACTED>&is_glossary=False&vcs=github&source_language=228&license=&source_component=1#existing\n```\n\nIf using Weblate official Docker image, nginx logs the URL and the token in plaintext:\n\n```\nnginx stdout | 127.0.0.1 - - [04/Apr/2025:10:46:54 +0000] \"GET /create/component/vcs/?repo=https%3A%2F%2F<GITHUB USERNAME>%3A<GITHUB PAT>%40github.com%2F<REPOSITORY OWNER>%2F<REPOSITORY NAME>.git&project=1&category=&name=<REDACTED>&slug=<REDACTED>&is_glossary=False&vcs=github&source_language=228&license=&source_component=1 HTTP/1.1\" 200 17625 \"<REDACTED>\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:136.0) Gecko/20100101 Firefox/136.0\"\n```\n\n### Reproduction\n\n1. In a project, create a component which has the _Repository push URL_ setting configured with, for example, a GitHub repository URL including a username and a PAT.\n2. In the same project, create another component using the _From existing component_ option and selecting the previous component as the source. Click _Continue_.\n3. Observe that the URL parameter `repo` includes the secret PAT configured in the original components settings. The URL with the token is potentially saved as plaintext in browser history and server logs.\n4. Select a translation file to import and click _Continue_.\n5. Observe again the same `repo` parameter in the URL.\n\n### Impact\n\n- If server logs are compromised, the attacker may be able to gain access to private repositories potentially containing sensitive source code.\n- Under common browser settings, the URL containing VCS credentials is saved into browser history. Browser extensions, for example, are often able to read the history and thus offer a realistic attack vector to gain access to the credentials.",
+  "id": "GHSA-m67m-3p5g-cw9j",
+  "modified": "2025-04-30T17:56:56.209113Z",
+  "published": "2025-04-15T14:20:38Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/WeblateOrg/weblate/security/advisories/GHSA-m67m-3p5g-cw9j"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-32021"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/WeblateOrg/weblate"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/WeblateOrg/weblate/releases/tag/weblate-5.11"
+    }
+  ],
+  "related": [
+    "CVE-2025-32021",
+    "PYSEC-2025-35"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "VCS credentials included in URL parameters are potentially logged and saved into browser history as plaintext"
 }

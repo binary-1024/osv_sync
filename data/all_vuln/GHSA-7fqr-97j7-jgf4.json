@@ -1,24 +1,70 @@
 {
-  "id": "GHSA-7fqr-97j7-jgf4",
-  "summary": "Whole content of all documents of all wikis exposed to anybody with view right on Solr suggest service",
-  "details": "### Impact\nThe Solr-based search suggestion provider that also duplicates as generic JavaScript API for search results in XWiki exposes the content of all documents of all wikis to anybody who has access to it, by default it is public. This exposes all information stored in the wiki (but not some protected information like password hashes). While there is a right check normally, the right check can be circumvented by explicitly requesting fields from Solr that don't include the data for the right check. This can be reproduced by opening `<xwiki-server>/xwiki/bin/get/XWiki/SuggestSolrService?outputSyntax=plain&media=json&nb=1000&query=q%3D*%3A*%0Aq.op%3DAND%0Afq%3Dtype%3ADOCUMENT%0Afl%3Dtitle_%2C+reference%2C+links%2C+doccontentraw_%2C+objcontent__&input=+` where `<xwiki-server>` is the URL of the XWiki installation. If this displays any results, the wiki is vulnerable.\n\n### Patches\nThis has been fixed in XWiki 15.6RC1, 15.5.1 and 14.10.15 by not listing documents whose rights cannot be checked.\n\n### Workarounds\nWe're not aware of a workaround apart from upgrading to a fixed version.\n\n### References\n* https://jira.xwiki.org/browse/XWIKI-21138\n* https://github.com/xwiki/xwiki-platform/commit/93b8ec702d7075f0f5794bb05dfb651382596764",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-7fqr-97j7-jgf4/GHSA-7fqr-97j7-jgf4.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-search-solr-query",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-search-solr-query"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "6.3-milestone-2"
+            },
+            {
+              "fixed": "14.10.15"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-7fqr-97j7-jgf4/GHSA-7fqr-97j7-jgf4.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-search-solr-query",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-search-solr-query"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "15.0-rc-1"
+            },
+            {
+              "fixed": "15.5.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-48241"
   ],
-  "modified": "2023-11-20T21:27:09.443082Z",
-  "published": "2023-11-20T21:00:44Z",
-  "related": [
-    "CVE-2023-48241"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-11-20T18:15:07Z",
     "cwe_ids": [
       "CWE-285"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-11-20T21:00:44Z"
+    "github_reviewed_at": "2023-11-20T21:00:44Z",
+    "nvd_published_at": "2023-11-20T18:15:07Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nThe Solr-based search suggestion provider that also duplicates as generic JavaScript API for search results in XWiki exposes the content of all documents of all wikis to anybody who has access to it, by default it is public. This exposes all information stored in the wiki (but not some protected information like password hashes). While there is a right check normally, the right check can be circumvented by explicitly requesting fields from Solr that don't include the data for the right check. This can be reproduced by opening `<xwiki-server>/xwiki/bin/get/XWiki/SuggestSolrService?outputSyntax=plain&media=json&nb=1000&query=q%3D*%3A*%0Aq.op%3DAND%0Afq%3Dtype%3ADOCUMENT%0Afl%3Dtitle_%2C+reference%2C+links%2C+doccontentraw_%2C+objcontent__&input=+` where `<xwiki-server>` is the URL of the XWiki installation. If this displays any results, the wiki is vulnerable.\n\n### Patches\nThis has been fixed in XWiki 15.6RC1, 15.5.1 and 14.10.15 by not listing documents whose rights cannot be checked.\n\n### Workarounds\nWe're not aware of a workaround apart from upgrading to a fixed version.\n\n### References\n* https://jira.xwiki.org/browse/XWIKI-21138\n* https://github.com/xwiki/xwiki-platform/commit/93b8ec702d7075f0f5794bb05dfb651382596764",
+  "id": "GHSA-7fqr-97j7-jgf4",
+  "modified": "2023-11-20T21:27:09.443082Z",
+  "published": "2023-11-20T21:00:44Z",
   "references": [
     {
       "type": "WEB",
@@ -41,61 +87,15 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-21138"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-search-solr-query",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-search-solr-query"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "6.3-milestone-2"
-            },
-            {
-              "fixed": "14.10.15"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-7fqr-97j7-jgf4/GHSA-7fqr-97j7-jgf4.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-search-solr-query",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-search-solr-query"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "15.0-rc-1"
-            },
-            {
-              "fixed": "15.5.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-7fqr-97j7-jgf4/GHSA-7fqr-97j7-jgf4.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-48241"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Whole content of all documents of all wikis exposed to anybody with view right on Solr suggest service"
 }

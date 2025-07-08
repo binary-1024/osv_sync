@@ -1,17 +1,181 @@
 {
-  "id": "MGASA-2018-0073",
-  "summary": "Updated kernel packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "dracut",
+        "purl": "pkg:rpm/mageia/dracut?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "038-21.2.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.111-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel-userspace-headers",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.111-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kmod-vboxadditions",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.30-4.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kmod-virtualbox",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.1.30-4.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kmod-xtables-addons",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.10-52.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel update is based on the upstream 4.4.111 and and fixes\nseveral security issues.\n\nThe most important fix in this update is for the security issue named\n\"Meltdown\" that is fixed in theese kernels by enabling kernel Page\nTable Isolation (KTPI). Note that according to AMD, this issue does\nnot effect Amd processors, so it is not enabled by default on systems\nusing Amd CPU.\n\nThe list of known security fixes and mitigations in this kernel:\n\nkvm: vmx: Scrub hardware GPRs at VM-exit. This enables partial mitigation\nin kvm for the security issue named \"Spectre\" (CVE-2017-5715, CVE-2017-5753).\n\nSystems with microprocessors utilizing speculative execution and indirect\nbranch prediction may allow unauthorized disclosure of information to an\nattacker with local user access via a side-channel analysis of the data\ncache (CVE-2017-5754, \"Meltdown\").\n\nA use-after-free vulnerability was found in network namespaces code\naffecting the Linux kernel before 4.14.11. The function get_net_ns_by_id()\nin net/core/net_namespace.c does not check for the net::count value after\nit has found a peer network in netns_ids idr, which could lead to double\nfree and memory corruption. This vulnerability could allow an unprivileged\nlocal user to induce kernel memory corruption on the system, leading to a\ncrash. Due to the nature of the flaw, privilege escalation cannot be fully\nruled out, although it is thought to be unlikely (CVE-2017-15129).\n\nThe KVM implementation in the Linux kernel through 4.14.7 allows attackers\nto obtain potentially sensitive information from kernel memory, aka a\nwrite_mmio stack-based out-of-bounds read, related to arch/x86/kvm/x86.c\nand include/trace/events/kvm.h (CVE-2017-17741).\n\nThe Linux Kernel 2.6.32 and later are affected by a denial of service, by\nflooding the diagnostic port 0x80 an exception can be triggered leading\nto a kernel panic (CVE-2017-1000407).\n\nThe kernels are also fixed to allow loading cpu microcode for Amd\nfamily 17 (Zen) processors, and dracut have been fixed to properly\nsupport early firmware loading on the microcode on all Amd cpus.\n\nFor more info about Meltdown, Spectre and other fixes in this update,\nsee the refences.\n",
+  "id": "MGASA-2018-0073",
   "modified": "2018-03-14T16:44:20Z",
   "published": "2018-01-13T14:28:36Z",
-  "related": [
-    "CVE-2017-1000407",
-    "CVE-2017-15129",
-    "CVE-2017-17741",
-    "CVE-2017-5715",
-    "CVE-2017-5753",
-    "CVE-2017-5754"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -54,178 +218,14 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.111"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "dracut",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/dracut?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "038-21.2.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kernel",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.111-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kernel-userspace-headers",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.111-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-vboxadditions",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.1.30-4.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-virtualbox",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.1.30-4.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-xtables-addons",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.10-52.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0073.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2017-1000407",
+    "CVE-2017-15129",
+    "CVE-2017-17741",
+    "CVE-2017-5715",
+    "CVE-2017-5753",
+    "CVE-2017-5754"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel packages fix security vulnerabilities"
 }

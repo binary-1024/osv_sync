@@ -1,21 +1,50 @@
 {
-  "id": "GHSA-x3c7-22c8-prg7",
-  "summary": "handcraftedinthealps/goodby-csv has Potential Gadget Chain allowing Remote Code Execution",
-  "details": "### Impact\n\ngoodby-csv could be used as part of a chain of methods that is exploitable when an insecure deserialization vulnerability exists in an application. This so-called \"gadget chain\" presents no direct threat but is a vector that can be used to achieve remote code execution if the application deserializes untrusted data due to another vulnerability.\n\n### Patches\n\nHas the problem been patched? What versions should users upgrade to?\n\nThe problem is patched with Version 1.4.3\n\n### Workarounds\n\nPatch `src/Goodby/CSV/Export/Standard/Collection /CallbackCollection.php`:\n\n```diff\n+    public function __wakeup() {\n+       throw new \\BadMethodCallException('Cannot unserialize ' . __CLASS__);\n+    }\n```\n\nHowever, this is not directly exploitable; a separate vulnerability must be present to allow an attacker to pass unsafe input to unserialize(). There are no such known exploits in goodby-csv.\n\n### References\n_Are there any links users can visit to find out more?_",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-x3c7-22c8-prg7/GHSA-x3c7-22c8-prg7.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "handcraftedinthealps/goodby-csv",
+        "purl": "pkg:composer/handcraftedinthealps/goodby-csv"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.4.0",
+        "1.4.1",
+        "1.4.2"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-49597"
   ],
-  "modified": "2025-06-14T00:27:21.994780Z",
-  "published": "2025-06-13T21:09:00Z",
   "database_specific": {
-    "nvd_published_at": "2025-06-13T20:15:23Z",
     "cwe_ids": [
       "CWE-915"
     ],
-    "severity": "LOW",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-06-13T21:09:00Z"
+    "github_reviewed_at": "2025-06-13T21:09:00Z",
+    "nvd_published_at": "2025-06-13T20:15:23Z",
+    "severity": "LOW"
   },
+  "details": "### Impact\n\ngoodby-csv could be used as part of a chain of methods that is exploitable when an insecure deserialization vulnerability exists in an application. This so-called \"gadget chain\" presents no direct threat but is a vector that can be used to achieve remote code execution if the application deserializes untrusted data due to another vulnerability.\n\n### Patches\n\nHas the problem been patched? What versions should users upgrade to?\n\nThe problem is patched with Version 1.4.3\n\n### Workarounds\n\nPatch `src/Goodby/CSV/Export/Standard/Collection /CallbackCollection.php`:\n\n```diff\n+    public function __wakeup() {\n+       throw new \\BadMethodCallException('Cannot unserialize ' . __CLASS__);\n+    }\n```\n\nHowever, this is not directly exploitable; a separate vulnerability must be present to allow an attacker to pass unsafe input to unserialize(). There are no such known exploits in goodby-csv.\n\n### References\n_Are there any links users can visit to find out more?_",
+  "id": "GHSA-x3c7-22c8-prg7",
+  "modified": "2025-06-14T00:27:21.994780Z",
+  "published": "2025-06-13T21:09:00Z",
   "references": [
     {
       "type": "WEB",
@@ -34,41 +63,12 @@
       "url": "https://github.com/handcraftedinthealps/goodby-csv"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "handcraftedinthealps/goodby-csv",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/handcraftedinthealps/goodby-csv"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.4.3"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.4.0",
-        "1.4.1",
-        "1.4.2"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-x3c7-22c8-prg7/GHSA-x3c7-22c8-prg7.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "handcraftedinthealps/goodby-csv has Potential Gadget Chain allowing Remote Code Execution"
 }

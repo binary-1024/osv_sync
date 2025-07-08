@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-4mq4-7rw3-vm5j",
-  "summary": "Wasmer filesystem sandbox not enforced",
-  "details": "### Summary\nAs of Wasmer version v4.2.3, Wasm programs can access the filesystem outside of the sandbox.\n\n### Details\nhttps://github.com/wasmerio/wasmer/issues/4267\n\n### PoC\nA minimal Rust program:\n\n```\nfn main() {\n    let f = std::fs::OpenOptions::new()\n        .write(true)\n        .create_new(true)\n        .open(\"abc\")\n        .unwrap();\n}\n```\n\nThis should be compiled with `cargo build --target wasm32-wasi`. The compiled program, when run with wasmer WITHOUT `--dir`, can still create a file in the working directory.\n\n### Impact\nService providers running untrusted Wasm code on Wasmer can unexpectedly expose the host filesystem.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-4mq4-7rw3-vm5j/GHSA-4mq4-7rw3-vm5j.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "wasmer-cli",
+        "purl": "pkg:cargo/wasmer-cli"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.0.0"
+            },
+            {
+              "fixed": "4.2.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-51661"
   ],
-  "modified": "2024-01-03T16:44:36Z",
-  "published": "2023-12-13T13:32:38Z",
-  "related": [
-    "CVE-2023-51661"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-12-22T15:15:08Z",
     "cwe_ids": [
       "CWE-284"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-12-13T13:32:38Z"
+    "github_reviewed_at": "2023-12-13T13:32:38Z",
+    "nvd_published_at": "2023-12-22T15:15:08Z",
+    "severity": "HIGH"
   },
+  "details": "### Summary\nAs of Wasmer version v4.2.3, Wasm programs can access the filesystem outside of the sandbox.\n\n### Details\nhttps://github.com/wasmerio/wasmer/issues/4267\n\n### PoC\nA minimal Rust program:\n\n```\nfn main() {\n    let f = std::fs::OpenOptions::new()\n        .write(true)\n        .create_new(true)\n        .open(\"abc\")\n        .unwrap();\n}\n```\n\nThis should be compiled with `cargo build --target wasm32-wasi`. The compiled program, when run with wasmer WITHOUT `--dir`, can still create a file in the working directory.\n\n### Impact\nService providers running untrusted Wasm code on Wasmer can unexpectedly expose the host filesystem.",
+  "id": "GHSA-4mq4-7rw3-vm5j",
+  "modified": "2024-01-03T16:44:36Z",
+  "published": "2023-12-13T13:32:38Z",
   "references": [
     {
       "type": "WEB",
@@ -45,36 +66,15 @@
       "url": "https://github.com/wasmerio/wasmer"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "wasmer-cli",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/wasmer-cli"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "3.0.0"
-            },
-            {
-              "fixed": "4.2.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-4mq4-7rw3-vm5j/GHSA-4mq4-7rw3-vm5j.json"
-      }
-    }
+  "related": [
+    "CVE-2023-51661"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Wasmer filesystem sandbox not enforced"
 }

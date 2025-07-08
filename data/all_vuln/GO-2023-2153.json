@@ -1,7 +1,59 @@
 {
-  "id": "GO-2023-2153",
-  "summary": "Denial of service from HTTP/2 Rapid Reset in google.golang.org/grpc",
-  "details": "An attacker can send HTTP/2 requests, cancel them, and send subsequent requests. This is valid by the HTTP/2 protocol, but would cause the gRPC-Go server to launch more concurrent method handlers than the configured maximum stream limit, grpc.MaxConcurrentStreams. This results in a denial of service due to resource consumption.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://vuln.go.dev/ID/GO-2023-2153.json"
+      },
+      "ecosystem_specific": {
+        "imports": [
+          {
+            "path": "google.golang.org/grpc/internal/transport",
+            "symbols": [
+              "NewServerTransport"
+            ]
+          },
+          {
+            "path": "google.golang.org/grpc",
+            "symbols": [
+              "NewServer",
+              "Server.Serve",
+              "Server.initServerWorkers"
+            ]
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "google.golang.org/grpc",
+        "purl": "pkg:golang/google.golang.org/grpc"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.56.3"
+            },
+            {
+              "introduced": "1.57.0"
+            },
+            {
+              "fixed": "1.57.1"
+            },
+            {
+              "introduced": "1.58.0"
+            },
+            {
+              "fixed": "1.58.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-apisix-2023-44487",
     "BIT-aspnet-core-2023-44487",
@@ -29,15 +81,14 @@
     "GHSA-m425-mq94-257g",
     "GHSA-qppj-fm5r-hxr3"
   ],
-  "modified": "2024-12-16T15:26:49.544423Z",
-  "published": "2023-11-01T22:39:27Z",
-  "related": [
-    "CVE-2023-44487"
-  ],
   "database_specific": {
     "review_status": "REVIEWED",
     "url": "https://pkg.go.dev/vuln/GO-2023-2153"
   },
+  "details": "An attacker can send HTTP/2 requests, cancel them, and send subsequent requests. This is valid by the HTTP/2 protocol, but would cause the gRPC-Go server to launch more concurrent method handlers than the configured maximum stream limit, grpc.MaxConcurrentStreams. This results in a denial of service due to resource consumption.",
+  "id": "GO-2023-2153",
+  "modified": "2024-12-16T15:26:49.544423Z",
+  "published": "2023-11-01T22:39:27Z",
   "references": [
     {
       "type": "WEB",
@@ -48,60 +99,9 @@
       "url": "https://github.com/grpc/grpc-go/commit/f2180b4d5403d2210b30b93098eb7da31c05c721"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "google.golang.org/grpc",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/google.golang.org/grpc"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.56.3"
-            },
-            {
-              "introduced": "1.57.0"
-            },
-            {
-              "fixed": "1.57.1"
-            },
-            {
-              "introduced": "1.58.0"
-            },
-            {
-              "fixed": "1.58.3"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "imports": [
-          {
-            "path": "google.golang.org/grpc/internal/transport",
-            "symbols": [
-              "NewServerTransport"
-            ]
-          },
-          {
-            "path": "google.golang.org/grpc",
-            "symbols": [
-              "NewServer",
-              "Server.Serve",
-              "Server.initServerWorkers"
-            ]
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://vuln.go.dev/ID/GO-2023-2153.json"
-      }
-    }
+  "related": [
+    "CVE-2023-44487"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Denial of service from HTTP/2 Rapid Reset in google.golang.org/grpc"
 }

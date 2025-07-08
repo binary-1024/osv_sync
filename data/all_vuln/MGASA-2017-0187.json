@@ -1,23 +1,46 @@
 {
-  "id": "MGASA-2017-0187",
-  "summary": "Updated kernel-tmb packages fixes critical security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0187.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "kernel-tmb",
+        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.4.74-1.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-tmb update is based on upstream 4.4.74 and fixes at least\nthe following security issues:\n\nThe ipxitf_ioctl function in net/ipx/af_ipx.c in the Linux kernel through\n4.11.1 mishandles reference counts, which allows local users to cause a\ndenial of service (use-after-free) or possibly have unspecified other\nimpact via a failed SIOCGIFADDR ioctl call for an IPX interface\n(CVE-2017-7487).\n\nThe inet_csk_clone_lock function in net/ipv4/inet_connection_sock.c in the\nLinux kernel through 4.10.15 allows attackers to cause a denial of service\n(double free) or possibly have unspecified other impact by leveraging use\nof the accept system call (CVE-2017-8890).\n\nThe IPv6 fragmentation implementation in the Linux kernel through 4.11.1\ndoes not consider that the nexthdr field may be associated with an invalid\noption, which allows local users to cause a denial of service (out-of-bounds\nread and BUG) or possibly have unspecified other impact via crafted socket\nand send system calls (CVE-2017-9074).\n\nThe sctp_v6_create_accept_sk function in net/sctp/ipv6.c in the Linux kernel\nthrough 4.11.1 mishandles inheritance, which allows local users to cause a\ndenial of service or possibly have unspecified other impact via crafted\nsystem calls, a related issue to CVE-2017-8890 (CVE-2017-9075).\n\nThe dccp_v6_request_recv_sock function in net/dccp/ipv6.c in the Linux kernel\nthrough 4.11.1 mishandles inheritance, which allows local users to cause a\ndenial of service or possibly have unspecified other impact via crafted\nsystem calls, a related issue to CVE-2017-8890 (CVE-2017-9076).\n\nThe tcp_v6_syn_recv_sock function in net/ipv6/tcp_ipv6.c in the Linux kernel\nthrough 4.11.1 mishandles inheritance, which allows local users to cause a\ndenial of service or possibly have unspecified other impact via crafted\nsystem calls, a related issue to CVE-2017-8890 (CVE-2017-9077).\n\nThe __ip6_append_data function in net/ipv6/ip6_output.c in the Linux kernel\nthrough 4.11.3 is too late in checking whether an overwrite of an skb data\nstructure may occur, which allows local users to cause a denial of service\n(system crash) via crafted system calls (CVE-2017-9242).\n\nThe vmw_gb_surface_define_ioctl function (accessible via\nDRM_IOCTL_VMW_GB_SURFACE_CREATE) in drivers/gpu/drm/vmwgfx/vmwgfx_surface.c\nin the Linux kernel through 4.11.4 defines a backup_handle variable but\ndoes not give it an initial value. If one attempts to create a GB surface,\nwith a previously allocated DMA buffer to be used as a backup buffer, the\nbackup_handle variable does not get written to and is then later returned\nto user space, allowing local users to obtain sensitive information from\nuninitialized kernel memory via a crafted ioctl call (CVE-2017-9605).\n\nA vulnerability was found in the Linux kernel's lp_setup() function where it\ndoesn't apply any bounds checking when passing \"lp=none\". This can result\ninto overflow of the parport_nr[] array. An attacker with control over kernel\ncommand line can overwrite kernel code and data with fixed (0xff) values\n(CVE-2017-1000363).\n\nA flaw was found in the way memory was being allocated on the stack for\nuser space binaries. If heap (or different memory region) and stack memory\nregions were adjacent to each other, an attacker could use this flaw to\njump over the stack guard gap, cause controlled memory corruption on process\nstack or the adjacent memory region, and thus increase their privileges on\nthe system. This is a kernel-side mitigation which increases the stack guard\ngap size from one page to 1 MiB to make successful exploitation of this\nissue more difficult (CVE-2017-1000364).\n\nThe Linux Kernel imposes a size restriction on the arguments and\nenvironmental strings passed through RLIMIT_STACK/RLIM_INFINITY(1/4 of\nthe size), but does not take the argument and environment pointers into\naccount, which allows attackers to bypass this limitation. This affects\nLinux Kernel versions 4.11.5 and earlier (CVE-2017-1000365).\n\nsound/core/timer.c in the Linux kernel before 4.11.5 is vulnerable to a\ndata race in the ALSA /dev/snd/timer driver resulting in local users being\nable to read information belonging to other users, i.e., uninitialized\nmemory contents may be disclosed when a read and an ioctl happen at the\nsame time (CVE-2017-1000380).\n\nThe block interface response structure has some discontiguous fields.\nCertain backends populate the structure fields of an otherwise\nuninitialized instance of this structure on their stacks, leaking\ndata through the (internal or trailing) padding field. A malicious\nunprivileged guest may be able to obtain sensitive information from the\nhost or other guests (XSA-216).\n\nNOTE! The CVE-2017-1000364 and CVE-2017-1000365 issues are part of a set\nof issues known as Stack Clash. The fixes have components in both glibc\nand the kernel. The glibc fix will be included in a separate update\nadvisory (mga#20803).\n\nOther changes in this kernel:\n- add support for rtl8812au wireless (mga#21043)\n- enable support for SMB2 (mga#20886)\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2017-0187",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2017-06-26T21:37:03Z",
-  "related": [
-    "CVE-2017-1000363",
-    "CVE-2017-1000364",
-    "CVE-2017-1000365",
-    "CVE-2017-1000380",
-    "CVE-2017-7487",
-    "CVE-2017-8890",
-    "CVE-2017-9074",
-    "CVE-2017-9075",
-    "CVE-2017-9076",
-    "CVE-2017-9077",
-    "CVE-2017-9242",
-    "CVE-2017-9605"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -68,43 +91,20 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.4.74"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-tmb",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/kernel-tmb?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.4.74-1.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2017-0187.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2017-1000363",
+    "CVE-2017-1000364",
+    "CVE-2017-1000365",
+    "CVE-2017-1000380",
+    "CVE-2017-7487",
+    "CVE-2017-8890",
+    "CVE-2017-9074",
+    "CVE-2017-9075",
+    "CVE-2017-9076",
+    "CVE-2017-9077",
+    "CVE-2017-9242",
+    "CVE-2017-9605"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-tmb packages fixes critical security vulnerabilities"
 }

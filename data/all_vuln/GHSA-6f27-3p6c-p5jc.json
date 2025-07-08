@@ -1,25 +1,46 @@
 {
-  "id": "GHSA-6f27-3p6c-p5jc",
-  "summary": "`cilium-cli` disables etcd authorization for clustermesh clusters",
-  "details": "### Impact\n\n`cilium-cli`, when used to configure cluster mesh functionality, can remove the enforcement of user permissions on the `etcd` store used to mirror local cluster information to remote clusters. \n\nDue to an incorrect mount point specification, the settings specified by the `initContainer` that configures `etcd` users and their permissions are overwritten when using `cilium-cli` to configure a cluster mesh. An attacker who has already gained access to a valid key and certificate for an `etcd` cluster compromised in this manner could then modify state in that `etcd` cluster.\n\n### Patches\n\nThis issue is patched in `cilium-cli` 0.13.2\n\nAll previous versions of `cilium-cli` are affected. Users who have set up cluster meshes using the Cilium Helm chart are not affected.\n\n### Workarounds\n\nUse Cilium's [Helm charts](https://artifacthub.io/packages/helm/cilium/cilium) to create your cluster instead.\n\n### Acknowledgements\n\nThe Cilium community has worked together with members of Isovalent to prepare these mitigations. Special thanks to Marco Iorio for investigating and fixing the issue.\n\n### For more information\nIf you have any questions or comments about this advisory, please reach out on [Slack](https://docs.cilium.io/en/latest/community/community/#slack).\n\nAs usual, if you think you found a related vulnerability, we strongly encourage you to report security vulnerabilities to our private security mailing list: [security@cilium.io](mailto:security@cilium.io) - first, before disclosing them in any public forums. This is a private mailing list where only members of the Cilium internal security team are subscribed to, and is treated as top priority.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-6f27-3p6c-p5jc/GHSA-6f27-3p6c-p5jc.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/cilium/cilium-cli",
+        "purl": "pkg:golang/github.com/cilium/cilium-cli"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.13.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-28114",
     "GO-2023-1653"
   ],
-  "modified": "2024-08-20T20:58:38.328415Z",
-  "published": "2023-03-21T22:30:43Z",
-  "related": [
-    "CVE-2023-28114"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-03-22T19:15:00Z",
-    "github_reviewed_at": "2023-03-21T22:30:43Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-280"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-03-21T22:30:43Z",
+    "nvd_published_at": "2023-03-22T19:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\n`cilium-cli`, when used to configure cluster mesh functionality, can remove the enforcement of user permissions on the `etcd` store used to mirror local cluster information to remote clusters. \n\nDue to an incorrect mount point specification, the settings specified by the `initContainer` that configures `etcd` users and their permissions are overwritten when using `cilium-cli` to configure a cluster mesh. An attacker who has already gained access to a valid key and certificate for an `etcd` cluster compromised in this manner could then modify state in that `etcd` cluster.\n\n### Patches\n\nThis issue is patched in `cilium-cli` 0.13.2\n\nAll previous versions of `cilium-cli` are affected. Users who have set up cluster meshes using the Cilium Helm chart are not affected.\n\n### Workarounds\n\nUse Cilium's [Helm charts](https://artifacthub.io/packages/helm/cilium/cilium) to create your cluster instead.\n\n### Acknowledgements\n\nThe Cilium community has worked together with members of Isovalent to prepare these mitigations. Special thanks to Marco Iorio for investigating and fixing the issue.\n\n### For more information\nIf you have any questions or comments about this advisory, please reach out on [Slack](https://docs.cilium.io/en/latest/community/community/#slack).\n\nAs usual, if you think you found a related vulnerability, we strongly encourage you to report security vulnerabilities to our private security mailing list: [security@cilium.io](mailto:security@cilium.io) - first, before disclosing them in any public forums. This is a private mailing list where only members of the Cilium internal security team are subscribed to, and is treated as top priority.",
+  "id": "GHSA-6f27-3p6c-p5jc",
+  "modified": "2024-08-20T20:58:38.328415Z",
+  "published": "2023-03-21T22:30:43Z",
   "references": [
     {
       "type": "WEB",
@@ -46,36 +67,15 @@
       "url": "https://github.com/cilium/cilium-cli/releases/tag/v0.13.2"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/cilium/cilium-cli",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/cilium/cilium-cli"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.13.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-6f27-3p6c-p5jc/GHSA-6f27-3p6c-p5jc.json"
-      }
-    }
+  "related": [
+    "CVE-2023-28114"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:A/AC:L/PR:H/UI:N/S:C/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:A/AC:L/PR:H/UI:N/S:C/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "`cilium-cli` disables etcd authorization for clustermesh clusters"
 }

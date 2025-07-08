@@ -1,27 +1,100 @@
 {
-  "id": "MGASA-2023-0148",
-  "summary": "Updated kernel packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0148.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "kernel",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.15.106-2.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0148.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "kmod-virtualbox",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.0.6-1.8.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2023-0148.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "kmod-xtables-addons",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.23-1.10.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel update is based on upstream 5.15.106 and fixes atleast the\nfollowing security issues:\n\nA flaw was found in the Linux Kernel. The tun/tap sockets have their socket\nUID hardcoded to 0 due to a type confusion in their initialization function.\nWhile it will be often correct, as tuntap devices require CAP_NET_ADMIN,\nit may not always be the case, e.g., a non-root user only having that\ncapability. This would make tun/tap sockets being incorrectly treated in\nfiltering/routing decisions, possibly bypassing network filters\n(CVE-2023-1076).\n\nIn the Linux kernel, pick_next_rt_entity() may return a type confused entry,\nnot detected by the BUG_ON condition, as the confused entry will not be\nNULL, but list_head.The buggy error condition would lead to a type confused\nentry with the list head,which would then be used as a type confused\nsched_rt_entity,causing memory corruption (CVE-2023-1077).\n\nA flaw was found in the Linux kernel. A use-after-free may be triggered in\nasus_kbd_backlight_set when plugging/disconnecting in a malicious USB device,\nwhich advertises itself as an Asus device. Similarly to the previous known\nCVE-2023-25012, but in asus devices, the work_struct may be scheduled by the\nLED controller while the device is disconnecting, triggering a use-after-free\non the struct asus_kbd_leds *led structure. A malicious USB device may\nexploit the issue to cause memory corruption with controlled data\n(CVE-2023-1079).\n\nA flaw use after free in the Linux kernel integrated infrared receiver/\ntransceiver driver was found in the way user detaching rc device. A local\nuser could use this flaw to crash the system or potentially escalate their\nprivileges on the system (CVE-2023-1118).\n\nA use-after-free flaw was found in btrfs_search_slot in fs/btrfs/ctree.c\nin btrfs in the Linux Kernel.This flaw allows an attacker to crash the\nsystem and possibly cause a kernel information leak (CVE-2023-1611).\n\nA flaw use after free in the Linux kernel Xircom 16-bit PCMCIA (PC-card)\nEthernet driver was found.A local user could use this flaw to crash the\nsystem or potentially escalate their privileges on the system\n(CVE-2023-1670).\n\nA use-after-free vulnerability in the Linux Kernel traffic control index\nfilter (tcindex) can be exploited to achieve local privilege escalation.\nThe tcindex_delete function which does not properly deactivate filters in\ncase of a perfect hashes while deleting the underlying structure which can\nlater lead to double freeing the structure. A local attacker user can use\nthis vulnerability to elevate its privileges to root (CVE-2023-1829).\n\nA use-after-free flaw was found in xgene_hwmon_remove in drivers/hwmon/\nxgene-hwmon.c in the Hardware Monitoring Linux Kernel Driver (xgene-hwmon).\nThis flaw could allow a local attacker to crash the system due to a race\nproblem. This vulnerability could even lead to a kernel information leak\nproblem (CVE-2023-1855).\n\nA use-after-free flaw was found in btsdio_remove in drivers\\bluetooth\\\nbtsdio.c in the Linux Kernel. In this flaw, a call to btsdio_remove with\nan unfinished job, may cause a race problem leading to a UAF on hdev\ndevices (CVE-2023-1989).\n\nA use-after-free flaw was found in ndlc_remove in drivers/nfc/st-nci/ndlc.c\nin the Linux Kernel. This flaw could allow an attacker to crash the system\ndue to a race problem (CVE-2023-1990).\n\nA flaw was found in the Linux kernel Traffic Control (TC) subsystem. Using\na specific networking configuration (redirecting egress packets to ingress\nusing TC action \"mirred\") a local unprivileged user could trigger a CPU\nsoft lockup (ABBA deadlock) when the transport protocol in use (TCP or\nSCTP) does a retransmission, resulting in a denial of service condition\n(CVE-2022-4269).\n\nA use-after-free vulnerability was found in __nfs42_ssc_open() in\nfs/nfs/nfs4file.c in the Linux kernel. This flaw allows an attacker to\nconduct a remote denial of service (CVE-2022-4379).\n\nThe Linux kernel through 6.1.9 has a Use-After-Free in bigben_remove in\ndrivers/hid/hid-bigbenff.c via a crafted USB device because the LED\ncontrollers remain registered for too long (CVE-2023-25012).\n\ndo_tls_getsockopt in net/tls/tls_main.c in the Linux kernel through 6.2.6\nlacks a lock_sock call, leading to a race condition (with a resultant\nuse-after-free or NULL pointer dereference) (CVE-2023-28466).\n\nAn issue was discovered in arch/x86/kvm/vmx/nested.c in the Linux kernel\nbefore 6.2.8. nVMX on x86_64 lacks consistency checks for CR0 and CR4\n(CVE-2023-30456).\n\nThe Linux kernel before 6.2.9 has a race condition and resultant\nuse-after-free in drivers/power/supply/da9150-charger.c if a physically\nproximate attacker unplugs a device (CVE-2023-30772).\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2023-0148",
   "modified": "2023-04-17T18:51:35Z",
   "published": "2023-04-17T19:52:59Z",
-  "related": [
-    "CVE-2022-4269",
-    "CVE-2022-4379",
-    "CVE-2023-1076",
-    "CVE-2023-1077",
-    "CVE-2023-1079",
-    "CVE-2023-1118",
-    "CVE-2023-1611",
-    "CVE-2023-1670",
-    "CVE-2023-1829",
-    "CVE-2023-1855",
-    "CVE-2023-1989",
-    "CVE-2023-1990",
-    "CVE-2023-25012",
-    "CVE-2023-28466",
-    "CVE-2023-30456",
-    "CVE-2023-30772"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -64,97 +137,24 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.106"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.15.106-2.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2023-0148.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-virtualbox",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "7.0.6-1.8.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2023-0148.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-xtables-addons",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3.23-1.10.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2023-0148.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2022-4269",
+    "CVE-2022-4379",
+    "CVE-2023-1076",
+    "CVE-2023-1077",
+    "CVE-2023-1079",
+    "CVE-2023-1118",
+    "CVE-2023-1611",
+    "CVE-2023-1670",
+    "CVE-2023-1829",
+    "CVE-2023-1855",
+    "CVE-2023-1989",
+    "CVE-2023-1990",
+    "CVE-2023-25012",
+    "CVE-2023-28466",
+    "CVE-2023-30456",
+    "CVE-2023-30772"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel packages fix security vulnerability"
 }

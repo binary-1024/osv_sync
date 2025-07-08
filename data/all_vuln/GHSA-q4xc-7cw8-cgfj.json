@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-q4xc-7cw8-cgfj",
-  "summary": "dset vulnerable to prototype pollution",
-  "details": "### Overview\nPrototype pollution vulnerability in 'dset' versions 1.0.0 through 2.0.1 allows attacker to cause a denial of service and may lead to remote code execution.\n\n### Details\nThe NPM module 'dset' can be abused by Prototype Pollution vulnerability since the function \u2018export ()' did not check for the type of object before assigning value to the property. Due to this flaw an attacker could create a non-existent property or able to manipulate the property which leads to Denial of Service or potentially Remote code execution.\n\n### PoC\nThe export function accepts three arguments `obj, keys, val`. Due to the absence of validation, at values passed into `keys, val` arguments, an attacker can supply a malicious value by adjusting the `keys` value to include the `__proto__` property. Since there is no validation before assigning property to check whether the assigned `keys` is the Object's own property or not, the property `isAdmin` will be directly be assigned to the empty obj({}) thereby polluting the Object prototype. Later in the code, if there is a check to validate `isAdmin` the valued would be substituted as \"true\" as it had been polluted.\n\n```js\nconst dset = require('dset');\nvar obj = {}\nconsole.log(\"Before : \" + obj.isAdmin);\ndset(obj, '__proto__.polluted', true);\nconsole.log(\"After : \" + obj.polluted);\n```\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-q4xc-7cw8-cgfj/GHSA-q4xc-7cw8-cgfj.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "dset",
+        "purl": "pkg:npm/dset"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.0.0"
+            },
+            {
+              "fixed": "2.0.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-28277"
   ],
-  "modified": "2024-02-01T21:42:21.637990Z",
-  "published": "2022-05-24T17:37:26Z",
   "database_specific": {
-    "nvd_published_at": "2020-12-29T17:15:00Z",
     "cwe_ids": [
       "CWE-1321"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-02-01T21:04:19Z"
+    "github_reviewed_at": "2024-02-01T21:04:19Z",
+    "nvd_published_at": "2020-12-29T17:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Overview\nPrototype pollution vulnerability in 'dset' versions 1.0.0 through 2.0.1 allows attacker to cause a denial of service and may lead to remote code execution.\n\n### Details\nThe NPM module 'dset' can be abused by Prototype Pollution vulnerability since the function \u2018export ()' did not check for the type of object before assigning value to the property. Due to this flaw an attacker could create a non-existent property or able to manipulate the property which leads to Denial of Service or potentially Remote code execution.\n\n### PoC\nThe export function accepts three arguments `obj, keys, val`. Due to the absence of validation, at values passed into `keys, val` arguments, an attacker can supply a malicious value by adjusting the `keys` value to include the `__proto__` property. Since there is no validation before assigning property to check whether the assigned `keys` is the Object's own property or not, the property `isAdmin` will be directly be assigned to the empty obj({}) thereby polluting the Object prototype. Later in the code, if there is a check to validate `isAdmin` the valued would be substituted as \"true\" as it had been polluted.\n\n```js\nconst dset = require('dset');\nvar obj = {}\nconsole.log(\"Before : \" + obj.isAdmin);\ndset(obj, '__proto__.polluted', true);\nconsole.log(\"After : \" + obj.polluted);\n```\n",
+  "id": "GHSA-q4xc-7cw8-cgfj",
+  "modified": "2024-02-01T21:42:21.637990Z",
+  "published": "2022-05-24T17:37:26Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -38,36 +62,12 @@
       "url": "https://web.archive.org/web/20210104204657/https://www.whitesourcesoftware.com/vulnerability-database/CVE-2020-28277"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "dset",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/dset"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "1.0.0"
-            },
-            {
-              "fixed": "2.0.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-q4xc-7cw8-cgfj/GHSA-q4xc-7cw8-cgfj.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "dset vulnerable to prototype pollution"
 }

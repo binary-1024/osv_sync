@@ -1,46 +1,16 @@
 {
-  "id": "GHSA-ggpf-24jw-3fcw",
-  "summary": "CVE-2025-24357 Malicious model remote code execution fix bypass with PyTorch < 2.6.0",
-  "details": "## Description\n\nhttps://github.com/vllm-project/vllm/security/advisories/GHSA-rh4j-5rhw-hr54 reported a vulnerability where loading a malicious model could result in code execution on the vllm host. The fix applied to specify `weights_only=True` to calls to `torch.load()` did not solve the problem prior to PyTorch 2.6.0.\n\nPyTorch has issued a new CVE about this problem: https://github.com/advisories/GHSA-53q9-r3pm-6pq6\n\nThis means that versions of vLLM using PyTorch before 2.6.0 are vulnerable to this problem.\n## Background Knowledge\nWhen users install VLLM according to the official manual\n![image](https://github.com/user-attachments/assets/d17e0bdb-26f2-46d6-adf6-0b17e5ddf5c7)\n\nBut the version of PyTorch is specified in the requirements. txt file\n![image](https://github.com/user-attachments/assets/94aad622-ad6d-4741-b772-c342727c58c7)\n\nSo by default when the user install VLLM, it will install the PyTorch with version 2.5.1\n![image](https://github.com/user-attachments/assets/04ff31b0-aad1-490a-963d-00fda91da47b)\n\nIn CVE-2025-24357, weights_only=True was used for patching, but we know this is not secure.\nBecause we found that using Weights_only=True in pyTorch before 2.5.1 was unsafe\n\nHere, we use this interface to prove that it is not safe.\n![image](https://github.com/user-attachments/assets/0d86efcd-2aad-42a2-8ac6-cc96b054c925)\n\n\n## Fix\nupdate PyTorch version to 2.6.0\n\n## Credit\nThis vulnerability was found By Ji'an Zhou and Li'shuo Song",
-  "modified": "2025-04-23T02:48:40.091704Z",
-  "published": "2025-04-23T02:26:06Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-1395"
-    ],
-    "severity": "CRITICAL",
-    "github_reviewed": true,
-    "github_reviewed_at": "2025-04-23T02:26:06Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/pytorch/pytorch/security/advisories/GHSA-53q9-r3pm-6pq6"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/vllm-project/vllm/security/advisories/GHSA-ggpf-24jw-3fcw"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/vllm-project/vllm/security/advisories/GHSA-rh4j-5rhw-hr54"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/vllm-project/vllm"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-ggpf-24jw-3fcw/GHSA-ggpf-24jw-3fcw.json"
+      },
       "package": {
-        "name": "vllm",
         "ecosystem": "PyPI",
+        "name": "vllm",
         "purl": "pkg:pypi/vllm"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -48,7 +18,8 @@
             {
               "fixed": "0.8.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -103,17 +74,46 @@
         "0.7.1",
         "0.7.2",
         "0.7.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-ggpf-24jw-3fcw/GHSA-ggpf-24jw-3fcw.json"
-      }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-1395"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-04-23T02:26:06Z",
+    "nvd_published_at": null,
+    "severity": "CRITICAL"
+  },
+  "details": "## Description\n\nhttps://github.com/vllm-project/vllm/security/advisories/GHSA-rh4j-5rhw-hr54 reported a vulnerability where loading a malicious model could result in code execution on the vllm host. The fix applied to specify `weights_only=True` to calls to `torch.load()` did not solve the problem prior to PyTorch 2.6.0.\n\nPyTorch has issued a new CVE about this problem: https://github.com/advisories/GHSA-53q9-r3pm-6pq6\n\nThis means that versions of vLLM using PyTorch before 2.6.0 are vulnerable to this problem.\n## Background Knowledge\nWhen users install VLLM according to the official manual\n![image](https://github.com/user-attachments/assets/d17e0bdb-26f2-46d6-adf6-0b17e5ddf5c7)\n\nBut the version of PyTorch is specified in the requirements. txt file\n![image](https://github.com/user-attachments/assets/94aad622-ad6d-4741-b772-c342727c58c7)\n\nSo by default when the user install VLLM, it will install the PyTorch with version 2.5.1\n![image](https://github.com/user-attachments/assets/04ff31b0-aad1-490a-963d-00fda91da47b)\n\nIn CVE-2025-24357, weights_only=True was used for patching, but we know this is not secure.\nBecause we found that using Weights_only=True in pyTorch before 2.5.1 was unsafe\n\nHere, we use this interface to prove that it is not safe.\n![image](https://github.com/user-attachments/assets/0d86efcd-2aad-42a2-8ac6-cc96b054c925)\n\n\n## Fix\nupdate PyTorch version to 2.6.0\n\n## Credit\nThis vulnerability was found By Ji'an Zhou and Li'shuo Song",
+  "id": "GHSA-ggpf-24jw-3fcw",
+  "modified": "2025-04-23T02:48:40.091704Z",
+  "published": "2025-04-23T02:26:06Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/pytorch/pytorch/security/advisories/GHSA-53q9-r3pm-6pq6"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/vllm-project/vllm/security/advisories/GHSA-ggpf-24jw-3fcw"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/vllm-project/vllm/security/advisories/GHSA-rh4j-5rhw-hr54"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/vllm-project/vllm"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "CVE-2025-24357 Malicious model remote code execution fix bypass with PyTorch < 2.6.0"
 }

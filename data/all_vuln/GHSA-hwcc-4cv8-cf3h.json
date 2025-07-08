@@ -1,24 +1,54 @@
 {
-  "id": "GHSA-hwcc-4cv8-cf3h",
-  "summary": "Snowflake Connector .NET does not properly check the Certificate Revocation List (CRL)",
-  "details": "### Issue\nSnowflake recently received a report about a vulnerability in the Snowflake Connector .NET where the checks against the Certificate Revocation List (CRL) were not performed where the insecureMode flag was set to false, which is the default setting. The vulnerability affects versions between 2.0.25 and 2.1.4 (inclusive). Snowflake fixed the issue in [version 2.1.5](https://docs.snowflake.com/release-notes/clients-drivers/dotnet-2023#version-2-1-5-december-18-2023).\n\n### Attack Scenario\nSnowflake uses CRL to check if a TLS certificate has been revoked before its expiration date. The lack of correct validation of revoked certificates could, in theory, allow an attacker who has both access to the private key of a correctly issued Snowflake certificate and the ability to intercept network traffic to perform a Man-in-the-Middle (MitM) attack in order to compromise Snowflake credentials used by the driver.\n\nThe vulnerability is difficult to exploit given both conditions required and, at the time of this advisory's publication, Snowflake is not aware of any compromise of its certificates, nor unauthorized issuance of such by any publicly trusted Certificate Authority (CA). However, an upgrade to the newest version is recommended to ensure the highest level of security and protection against future unforeseen threats.\n\n### Solution\nOn December 18, 2023, Snowflake released [version 2.1.5](https://docs.snowflake.com/release-notes/clients-drivers/dotnet-2023#version-2-1-5-december-18-2023) of the Snowflake Connector .NET, which fixes the issue, and we recommend users upgrade to [version 2.1.5](https://docs.snowflake.com/release-notes/clients-drivers/dotnet-2023#version-2-1-5-december-18-2023).  Customers continuing to use the impacted versions of the connector should update their insecureMode flag to true. \n\n### Acknowledgement\nSnowflake would like to thank [Timo Vink](https://github.com/TimoVink) for reporting this vulnerability.\n\n### Additional Information\nIf you discover a security vulnerability in one of our products or websites, please report the issue to HackerOne. For more information, please see our [Vulnerability Disclosure Policy](https://hackerone.com/snowflake?type=team).",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.1.4",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-hwcc-4cv8-cf3h/GHSA-hwcc-4cv8-cf3h.json"
+      },
+      "package": {
+        "ecosystem": "NuGet",
+        "name": "Snowflake.Data",
+        "purl": "pkg:nuget/Snowflake.Data"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.25"
+            },
+            {
+              "fixed": "2.1.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.0.25",
+        "2.1.0",
+        "2.1.1",
+        "2.1.2",
+        "2.1.3",
+        "2.1.4"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-51662"
   ],
-  "modified": "2024-02-16T08:22:27.600092Z",
-  "published": "2023-12-22T19:51:09Z",
-  "related": [
-    "CVE-2023-51662"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-12-22T17:15:10Z",
     "cwe_ids": [
       "CWE-295"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-12-22T19:51:09Z"
+    "github_reviewed_at": "2023-12-22T19:51:09Z",
+    "nvd_published_at": "2023-12-22T17:15:10Z",
+    "severity": "MODERATE"
   },
+  "details": "### Issue\nSnowflake recently received a report about a vulnerability in the Snowflake Connector .NET where the checks against the Certificate Revocation List (CRL) were not performed where the insecureMode flag was set to false, which is the default setting. The vulnerability affects versions between 2.0.25 and 2.1.4 (inclusive). Snowflake fixed the issue in [version 2.1.5](https://docs.snowflake.com/release-notes/clients-drivers/dotnet-2023#version-2-1-5-december-18-2023).\n\n### Attack Scenario\nSnowflake uses CRL to check if a TLS certificate has been revoked before its expiration date. The lack of correct validation of revoked certificates could, in theory, allow an attacker who has both access to the private key of a correctly issued Snowflake certificate and the ability to intercept network traffic to perform a Man-in-the-Middle (MitM) attack in order to compromise Snowflake credentials used by the driver.\n\nThe vulnerability is difficult to exploit given both conditions required and, at the time of this advisory's publication, Snowflake is not aware of any compromise of its certificates, nor unauthorized issuance of such by any publicly trusted Certificate Authority (CA). However, an upgrade to the newest version is recommended to ensure the highest level of security and protection against future unforeseen threats.\n\n### Solution\nOn December 18, 2023, Snowflake released [version 2.1.5](https://docs.snowflake.com/release-notes/clients-drivers/dotnet-2023#version-2-1-5-december-18-2023) of the Snowflake Connector .NET, which fixes the issue, and we recommend users upgrade to [version 2.1.5](https://docs.snowflake.com/release-notes/clients-drivers/dotnet-2023#version-2-1-5-december-18-2023).  Customers continuing to use the impacted versions of the connector should update their insecureMode flag to true. \n\n### Acknowledgement\nSnowflake would like to thank [Timo Vink](https://github.com/TimoVink) for reporting this vulnerability.\n\n### Additional Information\nIf you discover a security vulnerability in one of our products or websites, please report the issue to HackerOne. For more information, please see our [Vulnerability Disclosure Policy](https://hackerone.com/snowflake?type=team).",
+  "id": "GHSA-hwcc-4cv8-cf3h",
+  "modified": "2024-02-16T08:22:27.600092Z",
+  "published": "2023-12-22T19:51:09Z",
   "references": [
     {
       "type": "WEB",
@@ -41,45 +71,15 @@
       "url": "https://github.com/snowflakedb/snowflake-connector-net"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "Snowflake.Data",
-        "ecosystem": "NuGet",
-        "purl": "pkg:nuget/Snowflake.Data"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.0.25"
-            },
-            {
-              "fixed": "2.1.5"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.0.25",
-        "2.1.0",
-        "2.1.1",
-        "2.1.2",
-        "2.1.3",
-        "2.1.4"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.1.4",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-hwcc-4cv8-cf3h/GHSA-hwcc-4cv8-cf3h.json"
-      }
-    }
+  "related": [
+    "CVE-2023-51662"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:A/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:L"
+      "score": "CVSS:3.1/AV:A/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Snowflake Connector .NET does not properly check the Certificate Revocation List (CRL)"
 }

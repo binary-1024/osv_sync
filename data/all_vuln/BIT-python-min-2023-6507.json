@@ -1,21 +1,51 @@
 {
-  "id": "BIT-python-min-2023-6507",
-  "summary": "Groups not dropped before running subprocess when using empty 'extra_groups' parameter",
-  "details": "An issue was found in CPython 3.12.0 `subprocess` module on POSIX platforms. The issue was fixed in CPython 3.12.1 and does not affect other stable releases.\n\nWhen using the `extra_groups=` parameter with an empty list as a value (ie `extra_groups=[]`) the logic regressed to not call `setgroups(0, NULL)` before calling `exec()`, thus not dropping the original processes' groups before starting the new process. There is no issue when the parameter isn't used or when any value is used besides an empty list.\n\nThis issue only impacts CPython processes run with sufficient privilege to make the `setgroups` system call (typically `root`).",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/python-min/BIT-python-min-2023-6507.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "python-min",
+        "purl": "pkg:bitnami/python-min"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.12.0"
+            },
+            {
+              "fixed": "3.12.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-python-2023-6507",
     "CVE-2023-6507",
     "PSF-2023-12",
     "PSF-CVE-2023-6507"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2025-01-17T15:06:54.411Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:python:python:*:*:*:*:*:*:*:*"
     ],
     "severity": "Medium"
   },
+  "details": "An issue was found in CPython 3.12.0 `subprocess` module on POSIX platforms. The issue was fixed in CPython 3.12.1 and does not affect other stable releases.\n\nWhen using the `extra_groups=` parameter with an empty list as a value (ie `extra_groups=[]`) the logic regressed to not call `setgroups(0, NULL)` before calling `exec()`, thus not dropping the original processes' groups before starting the new process. There is no issue when the parameter isn't used or when any value is used besides an empty list.\n\nThis issue only impacts CPython processes run with sufficient privilege to make the `setgroups` system call (typically `root`).",
+  "id": "BIT-python-min-2023-6507",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2025-01-17T15:06:54.411Z",
   "references": [
     {
       "type": "WEB",
@@ -42,36 +72,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-6507"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "python-min",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/python-min"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "3.12.0"
-            },
-            {
-              "fixed": "3.12.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/python-min/BIT-python-min-2023-6507.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Groups not dropped before running subprocess when using empty 'extra_groups' parameter"
 }

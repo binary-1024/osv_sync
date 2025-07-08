@@ -1,24 +1,112 @@
 {
-  "id": "GHSA-7322-jrq4-x5hf",
-  "summary": "File reference keys leads to incorrect hashes on HMAC algorithms",
-  "details": "### Impact\n\nUsers of HMAC-based algorithms (HS256, HS384, and HS512) combined with `Lcobucci\\JWT\\Signer\\Key\\LocalFileReference` as key are having their tokens issued/validated using the file path as hashing key - instead of the contents.\n\nThe HMAC hashing functions take any string as input and, since users can issue and validate tokens, people are lead to believe that everything works properly.\n\n### Patches\n\nAll versions have been patched to always load the file contents, deprecated the `Lcobucci\\JWT\\Signer\\Key\\LocalFileReference`, and suggest `Lcobucci\\JWT\\Signer\\Key\\InMemory` as the alternative.\n\n### Workarounds\n\nUse `Lcobucci\\JWT\\Signer\\Key\\InMemory` instead of `Lcobucci\\JWT\\Signer\\Key\\LocalFileReference` to create the instances of your keys:\n\n```diff\n-use Lcobucci\\JWT\\Signer\\Key\\LocalFileReference;\n+use Lcobucci\\JWT\\Signer\\Key\\InMemory;\n\n-$key = LocalFileReference::file(__DIR__ . '/public-key.pem');\n+$key = InMemory::file(__DIR__ . '/public-key.pem');\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-7322-jrq4-x5hf/GHSA-7322-jrq4-x5hf.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "lcobucci/jwt",
+        "purl": "pkg:composer/lcobucci/jwt"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.4.0"
+            },
+            {
+              "fixed": "3.4.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "3.4.0",
+        "3.4.1",
+        "3.4.2",
+        "3.4.3",
+        "3.4.4",
+        "3.4.5"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-7322-jrq4-x5hf/GHSA-7322-jrq4-x5hf.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "lcobucci/jwt",
+        "purl": "pkg:composer/lcobucci/jwt"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.0.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.0.0",
+        "4.0.1",
+        "4.0.2",
+        "4.0.3"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-7322-jrq4-x5hf/GHSA-7322-jrq4-x5hf.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "lcobucci/jwt",
+        "purl": "pkg:composer/lcobucci/jwt"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.1.0"
+            },
+            {
+              "fixed": "4.1.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.1.0",
+        "4.1.1",
+        "4.1.2",
+        "4.1.3",
+        "4.1.4"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-41106"
   ],
-  "modified": "2024-02-16T08:15:03.944377Z",
-  "published": "2021-09-29T17:09:40Z",
-  "related": [
-    "CVE-2021-41106"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-09-28T21:15:00Z",
     "cwe_ids": [
       "CWE-345"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-09-28T21:27:18Z"
+    "github_reviewed_at": "2021-09-28T21:27:18Z",
+    "nvd_published_at": "2021-09-28T21:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\n\nUsers of HMAC-based algorithms (HS256, HS384, and HS512) combined with `Lcobucci\\JWT\\Signer\\Key\\LocalFileReference` as key are having their tokens issued/validated using the file path as hashing key - instead of the contents.\n\nThe HMAC hashing functions take any string as input and, since users can issue and validate tokens, people are lead to believe that everything works properly.\n\n### Patches\n\nAll versions have been patched to always load the file contents, deprecated the `Lcobucci\\JWT\\Signer\\Key\\LocalFileReference`, and suggest `Lcobucci\\JWT\\Signer\\Key\\InMemory` as the alternative.\n\n### Workarounds\n\nUse `Lcobucci\\JWT\\Signer\\Key\\InMemory` instead of `Lcobucci\\JWT\\Signer\\Key\\LocalFileReference` to create the instances of your keys:\n\n```diff\n-use Lcobucci\\JWT\\Signer\\Key\\LocalFileReference;\n+use Lcobucci\\JWT\\Signer\\Key\\InMemory;\n\n-$key = LocalFileReference::file(__DIR__ . '/public-key.pem');\n+$key = InMemory::file(__DIR__ . '/public-key.pem');\n```",
+  "id": "GHSA-7322-jrq4-x5hf",
+  "modified": "2024-02-16T08:15:03.944377Z",
+  "published": "2021-09-29T17:09:40Z",
   "references": [
     {
       "type": "WEB",
@@ -45,103 +133,15 @@
       "url": "https://github.com/lcobucci/jwt"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "lcobucci/jwt",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/lcobucci/jwt"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "3.4.0"
-            },
-            {
-              "fixed": "3.4.6"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "3.4.0",
-        "3.4.1",
-        "3.4.2",
-        "3.4.3",
-        "3.4.4",
-        "3.4.5"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-7322-jrq4-x5hf/GHSA-7322-jrq4-x5hf.json"
-      }
-    },
-    {
-      "package": {
-        "name": "lcobucci/jwt",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/lcobucci/jwt"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "4.0.0"
-            },
-            {
-              "fixed": "4.0.4"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "4.0.0",
-        "4.0.1",
-        "4.0.2",
-        "4.0.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-7322-jrq4-x5hf/GHSA-7322-jrq4-x5hf.json"
-      }
-    },
-    {
-      "package": {
-        "name": "lcobucci/jwt",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/lcobucci/jwt"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "4.1.0"
-            },
-            {
-              "fixed": "4.1.5"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "4.1.0",
-        "4.1.1",
-        "4.1.2",
-        "4.1.3",
-        "4.1.4"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/09/GHSA-7322-jrq4-x5hf/GHSA-7322-jrq4-x5hf.json"
-      }
-    }
+  "related": [
+    "CVE-2021-41106"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "File reference keys leads to incorrect hashes on HMAC algorithms"
 }

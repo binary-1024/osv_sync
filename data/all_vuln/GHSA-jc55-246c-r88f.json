@@ -1,18 +1,65 @@
 {
-  "id": "GHSA-jc55-246c-r88f",
-  "summary": "SurrealDB has an Uncaught Exception Handling Nonexistent Role",
-  "details": "Roles for system users are stored as generic `Ident` values and converted as strings and into the `Role` enum whenever IAM operations are to be performed that require processing the user roles. This conversion expects those identifiers to only contain the values `owner`, `editor` and `viewer` and will return an error otherwise. However, the `unwrap()` method would be called on this result when implementing `std::convert::From<&Ident> for Role`, which would result in a panic where a nonexistent role was used.\n\n### Impact\n\nA privileged user with the `owner` role at any level in SurrealDB would be able to define a user with `DEFINE USER` with an nonexistent role, which would panic when being converted to a `Role` enum in order to perform certain IAM operations with that user. These operations included signing in with the user. This would crash the server, leading to denial of service.\n\n### Patches\n\nUnexistent roles are no longer accepted during parsing when defining a user. Even when successfully associated with a user, referencing unexistent roles will no longer result in a panic and will instead throw an `InvalidRole` error.\n\n- Version 2.1.0 and later are not affected by this issue.\n\n### Workarounds\n\nAffected users who are unable to update may want to limit access to users with the `owner` role at any level to trusted parties only. To limit the impact of the denial of service, SurrealDB administrators may also want to ensure that the SurrealDB process is running so that it can be automatically re-started after a crash.\n\n### References\n\n- #5079\n- #5092",
-  "modified": "2024-11-22T20:11:44Z",
-  "published": "2024-11-22T20:11:44Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-jc55-246c-r88f/GHSA-jc55-246c-r88f.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "surrealdb",
+        "purl": "pkg:cargo/surrealdb"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-jc55-246c-r88f/GHSA-jc55-246c-r88f.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "surrealdb-core",
+        "purl": "pkg:cargo/surrealdb-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-248"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-11-22T20:11:44Z"
+    "github_reviewed_at": "2024-11-22T20:11:44Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
   },
+  "details": "Roles for system users are stored as generic `Ident` values and converted as strings and into the `Role` enum whenever IAM operations are to be performed that require processing the user roles. This conversion expects those identifiers to only contain the values `owner`, `editor` and `viewer` and will return an error otherwise. However, the `unwrap()` method would be called on this result when implementing `std::convert::From<&Ident> for Role`, which would result in a panic where a nonexistent role was used.\n\n### Impact\n\nA privileged user with the `owner` role at any level in SurrealDB would be able to define a user with `DEFINE USER` with an nonexistent role, which would panic when being converted to a `Role` enum in order to perform certain IAM operations with that user. These operations included signing in with the user. This would crash the server, leading to denial of service.\n\n### Patches\n\nUnexistent roles are no longer accepted during parsing when defining a user. Even when successfully associated with a user, referencing unexistent roles will no longer result in a panic and will instead throw an `InvalidRole` error.\n\n- Version 2.1.0 and later are not affected by this issue.\n\n### Workarounds\n\nAffected users who are unable to update may want to limit access to users with the `owner` role at any level to trusted parties only. To limit the impact of the denial of service, SurrealDB administrators may also want to ensure that the SurrealDB process is running so that it can be automatically re-started after a crash.\n\n### References\n\n- #5079\n- #5092",
+  "id": "GHSA-jc55-246c-r88f",
+  "modified": "2024-11-22T20:11:44Z",
+  "published": "2024-11-22T20:11:44Z",
   "references": [
     {
       "type": "WEB",
@@ -31,59 +78,12 @@
       "url": "https://github.com/surrealdb/surrealdb"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "surrealdb",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/surrealdb"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.1.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-jc55-246c-r88f/GHSA-jc55-246c-r88f.json"
-      }
-    },
-    {
-      "package": {
-        "name": "surrealdb-core",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/surrealdb-core"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.1.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-jc55-246c-r88f/GHSA-jc55-246c-r88f.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "SurrealDB has an Uncaught Exception Handling Nonexistent Role"
 }

@@ -1,19 +1,208 @@
 {
-  "id": "MGASA-2019-0097",
-  "summary": "Updated kernel packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "kernel",
+        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.100-1.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "kernel-userspace-headers",
+        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.100-1.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "kmod-vboxadditions",
+        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.24-4.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "kmod-virtualbox",
+        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.2.24-4.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "kmod-xtables-addons",
+        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.13-78.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "ndiswrapper",
+        "purl": "pkg:rpm/mageia/ndiswrapper?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.62-1.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "wireguard-tools",
+        "purl": "pkg:rpm/mageia/wireguard-tools?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.0.20190123-1.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel update is based on the upstream 4.14.100 and fixes at least\nthe following security issues:\n\nA use-after-free issue was found in the way the Linux kernel's KVM\nhypervisor processed posted interrupts when nested(=1) virtualization is\nenabled. In nested_get_vmcs12_pages(), in case of an error while\nprocessing posted interrupt address, it unmaps the 'pi_desc_page' without\nresetting 'pi_desc' descriptor address, which is later used in\npi_test_and_clear_on(). A guest user/process could use this flaw to crash\nthe host kernel resulting in DoS or potentially gain privileged access to\na system (CVE-2018-16882).\n\nA flaw was found in the Linux kernel's NFS41+ subsystem. NFS41+ shares\nmounted in different network namespaces at the same time can make\nbc_svc_process() use wrong back-channel IDs and cause a use-after-free\nvulnerability. Thus a malicious container user can cause a host kernel\nmemory corruption and a system panic. Due to the nature of the flaw,\nprivilege escalation cannot be fully ruled out (CVE-2018-16884).\n\nA flaw was found in the Linux kernel in the function hso_probe() which\nreads if_num value from the USB device (as an u8) and uses it without a\nlength check to index an array, resulting in an OOB memory read in\nhso_probe() or hso_get_config_data(). An attacker with a forged USB\ndevice and physical access to a system (needed to connect such a device)\ncan cause a system crash and a denial of service (CVE-2018-19985).\n\nAn issue was discovered in can_can_gw_rcv in net/can/gw.c in the Linux\nkernel through 4.19.13. The CAN frame modification rules allow bitwise\nlogical operations that can be also applied to the can_dlc field. Because\nof a missing check, the CAN drivers may write arbitrary content beyond\nthe data registers in the CAN controller's I/O memory when processing\ncan-gw manipulated outgoing frames. This is related to cgw_csum_xor_rel.\nAn unprivileged user can trigger a system crash (general protection fault)\n(CVE-2019-3701).\n\nA flaw was found in the Linux kernel in the function hid_debug_events_read()\nin drivers/hid/hid-debug.c file which may enter an infinite loop with\ncertain parameters passed from a userspace. A local privileged user (\"root\")\ncan cause a system lock up and a denial of service (CVE-2019-3819).\n\nIn the Linux kernel before 4.20.8, kvm_ioctl_create_device in\nvirt/kvm/kvm_main.c mishandles reference counting because of a race\ncondition, leading to a use-after-free (CVE-2019-6974).\n\nA use-after-free vulnerability was found in the way the Linux kernel's KVM\nhypervisor emulates a preemption timer for L2 guests when nested (=1)\nvirtualization is enabled. This high resolution timer(hrtimer) runs when\na L2 guest is active. After VM exit, the sync_vmcs12() timer object is\nstopped. The use-after-free occurs if the timer object is freed before\ncalling sync_vmcs12() routine. A guest user/process could use this flaw\nto crash the host kernel resulting in a denial of service or, potentially,\ngain privileged access to a system (CVE-2019-7221).\n\nAn information leakage issue was found in the way Linux kernel's KVM\nhypervisor handled page fault exceptions while emulating instructions\nlike VMXON, VMCLEAR, VMPTRLD, and VMWRITE with memory address as an\noperand. It occurs if the operand is a mmio address, as the returned\nexception object holds uninitialized stack memory contents. A guest\nuser/process could use this flaw to leak host's stack memory contents\nto a guest (CVE-2019-7222).\n\nOther fixes in this update:\n* Ndiswrapper has been updated to 1.62\n* WireGuard has been updated to 0.0.20190123\n\nFor other uptstream fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2019-0097",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2019-02-20T23:50:36Z",
-  "related": [
-    "CVE-2018-16882",
-    "CVE-2018-16884",
-    "CVE-2018-19985",
-    "CVE-2019-3701",
-    "CVE-2019-3819",
-    "CVE-2019-6974",
-    "CVE-2019-7221",
-    "CVE-2019-7222"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -68,205 +257,16 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.100"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/kernel?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.14.100-1.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kernel-userspace-headers",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/kernel-userspace-headers?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.14.100-1.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-vboxadditions",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/kmod-vboxadditions?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.2.24-4.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-virtualbox",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/kmod-virtualbox?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.2.24-4.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "kmod-xtables-addons",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/kmod-xtables-addons?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.13-78.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "ndiswrapper",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/ndiswrapper?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.62-1.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "wireguard-tools",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/wireguard-tools?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.0.20190123-1.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2019-0097.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2018-16882",
+    "CVE-2018-16884",
+    "CVE-2018-19985",
+    "CVE-2019-3701",
+    "CVE-2019-3819",
+    "CVE-2019-6974",
+    "CVE-2019-7221",
+    "CVE-2019-7222"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel packages fix security vulnerabilities"
 }

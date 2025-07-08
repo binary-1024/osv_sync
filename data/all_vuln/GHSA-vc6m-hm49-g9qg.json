@@ -1,25 +1,52 @@
 {
-  "id": "GHSA-vc6m-hm49-g9qg",
-  "summary": "phi4mm: Quadratic Time Complexity in Input Token Processing\u200b leads to denial of service",
-  "details": "### Summary\nA critical performance vulnerability has been identified in the input preprocessing logic of the multimodal tokenizer. The code dynamically replaces placeholder tokens (e.g., <|audio_*|>, <|image_*|>) with repeated tokens based on precomputed lengths. Due to \u200b\u200binefficient list concatenation operations\u200b\u200b, the algorithm exhibits \u200b\u200bquadratic time complexity (O(n\u00b2))\u200b\u200b, allowing malicious actors to trigger resource exhaustion via specially crafted inputs.\n\n### Details\n\u200b\u200bAffected Component\u200b\u200b: input_processor_for_phi4mm function.\nhttps://github.com/vllm-project/vllm/blob/8cac35ba435906fb7eb07e44fe1a8c26e8744f4e/vllm/model_executor/models/phi4mm.py#L1182-L1197\n\nThe code modifies the input_ids list in-place using input_ids = input_ids[:i] + tokens + input_ids[i+1:]. Each concatenation operation copies the entire list, leading to O(n) operations per replacement. For k placeholders expanding to m tokens, total time becomes O(kmn), approximating O(n\u00b2) in worst-case scenarios.\n\n### PoC\nTest data demonstrates exponential time growth:\n```python\ntest_cases = [100, 200, 400, 800, 1600, 3200, 6400]\nrun_times = [0.002, 0.007, 0.028, 0.136, 0.616, 2.707, 11.854]  # seconds\n```\nDoubling input size increases runtime by ~4x (consistent with O(n\u00b2)).\n\n### Impact\n\u200b\u200bDenial-of-Service (DoS):\u200b\u200b An attacker could submit inputs with many placeholders (e.g., 10,000 <|audio_1|> tokens), causing CPU/memory exhaustion.\nExample: 10,000 placeholders \u2192 ~100 million operations.\n\n\n### Remediation Recommendations\u200b\nPrecompute all placeholder positions and expansion lengths upfront.\nReplace dynamic list concatenation with a single preallocated array.\n```python\n# Pseudocode for O(n) solution\nnew_input_ids = []\nfor token in input_ids:\n    if token is placeholder:\n        new_input_ids.extend([token] * precomputed_length)\n    else:\n        new_input_ids.append(token)\n```",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-vc6m-hm49-g9qg/GHSA-vc6m-hm49-g9qg.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "vllm",
+        "purl": "pkg:pypi/vllm"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.8.0"
+            },
+            {
+              "fixed": "0.8.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-46560"
   ],
-  "modified": "2025-04-30T17:55:50.132047Z",
-  "published": "2025-04-29T16:43:10Z",
-  "related": [
-    "CGA-j846-6jf6-fw85",
-    "CVE-2025-46560"
-  ],
   "database_specific": {
-    "nvd_published_at": "2025-04-30T01:15:52Z",
     "cwe_ids": [
       "CWE-1333"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-29T16:43:10Z"
+    "github_reviewed_at": "2025-04-29T16:43:10Z",
+    "nvd_published_at": "2025-04-30T01:15:52Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nA critical performance vulnerability has been identified in the input preprocessing logic of the multimodal tokenizer. The code dynamically replaces placeholder tokens (e.g., <|audio_*|>, <|image_*|>) with repeated tokens based on precomputed lengths. Due to \u200b\u200binefficient list concatenation operations\u200b\u200b, the algorithm exhibits \u200b\u200bquadratic time complexity (O(n\u00b2))\u200b\u200b, allowing malicious actors to trigger resource exhaustion via specially crafted inputs.\n\n### Details\n\u200b\u200bAffected Component\u200b\u200b: input_processor_for_phi4mm function.\nhttps://github.com/vllm-project/vllm/blob/8cac35ba435906fb7eb07e44fe1a8c26e8744f4e/vllm/model_executor/models/phi4mm.py#L1182-L1197\n\nThe code modifies the input_ids list in-place using input_ids = input_ids[:i] + tokens + input_ids[i+1:]. Each concatenation operation copies the entire list, leading to O(n) operations per replacement. For k placeholders expanding to m tokens, total time becomes O(kmn), approximating O(n\u00b2) in worst-case scenarios.\n\n### PoC\nTest data demonstrates exponential time growth:\n```python\ntest_cases = [100, 200, 400, 800, 1600, 3200, 6400]\nrun_times = [0.002, 0.007, 0.028, 0.136, 0.616, 2.707, 11.854]  # seconds\n```\nDoubling input size increases runtime by ~4x (consistent with O(n\u00b2)).\n\n### Impact\n\u200b\u200bDenial-of-Service (DoS):\u200b\u200b An attacker could submit inputs with many placeholders (e.g., 10,000 <|audio_1|> tokens), causing CPU/memory exhaustion.\nExample: 10,000 placeholders \u2192 ~100 million operations.\n\n\n### Remediation Recommendations\u200b\nPrecompute all placeholder positions and expansion lengths upfront.\nReplace dynamic list concatenation with a single preallocated array.\n```python\n# Pseudocode for O(n) solution\nnew_input_ids = []\nfor token in input_ids:\n    if token is placeholder:\n        new_input_ids.extend([token] * precomputed_length)\n    else:\n        new_input_ids.append(token)\n```",
+  "id": "GHSA-vc6m-hm49-g9qg",
+  "modified": "2025-04-30T17:55:50.132047Z",
+  "published": "2025-04-29T16:43:10Z",
   "references": [
     {
       "type": "WEB",
@@ -38,43 +65,16 @@
       "url": "https://github.com/vllm-project/vllm/blob/8cac35ba435906fb7eb07e44fe1a8c26e8744f4e/vllm/model_executor/models/phi4mm.py#L1182-L1197"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "vllm",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/vllm"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0.8.0"
-            },
-            {
-              "fixed": "0.8.5"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "0.8.0",
-        "0.8.1",
-        "0.8.2",
-        "0.8.3",
-        "0.8.4"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-vc6m-hm49-g9qg/GHSA-vc6m-hm49-g9qg.json"
-      }
-    }
+  "related": [
+    "CGA-j846-6jf6-fw85",
+    "CVE-2025-46560"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "phi4mm: Quadratic Time Complexity in Input Token Processing\u200b leads to denial of service"
 }

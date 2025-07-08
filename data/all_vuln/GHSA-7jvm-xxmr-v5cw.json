@@ -1,53 +1,16 @@
 {
-  "id": "GHSA-7jvm-xxmr-v5cw",
-  "summary": "TensorFlow vulnerable to integer overflow in EditDistance",
-  "details": "### Impact\nTFversion 2.11.0 //tensorflow/core/ops/array_ops.cc:1067 const Tensor* hypothesis_shape_t = c->input_tensor(2); std::vector<DimensionHandle> dims(hypothesis_shape_t->NumElements() - 1); for (int i = 0; i < dims.size(); ++i) { dims[i] = c->MakeDim(std::max(h_values(i), t_values(i))); }\n\nif hypothesis_shape_t is empty, hypothesis_shape_t->NumElements() - 1 will be integer overflow, and the it will deadlock\n```python\nimport tensorflow as tf\npara={\n    'hypothesis_indices': [[]],\n    'hypothesis_values': ['tmp/'],\n    'hypothesis_shape': [],\n    'truth_indices': [[]],\n    'truth_values': [''],\n    'truth_shape': [],\n    'normalize': False\n    }\ntf.raw_ops.EditDistance(**para)\n```\n\n### Patches\nWe have patched the issue in GitHub commit [08b8e18643d6dcde00890733b270ff8d9960c56c](https://github.com/tensorflow/tensorflow/commit/08b8e18643d6dcde00890733b270ff8d9960c56c).\n\nThe fix will be included in TensorFlow 2.12.0. We will also cherrypick this commit on TensorFlow 2.11.1\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by r3pwnx",
-  "aliases": [
-    "BIT-tensorflow-2023-25662",
-    "CVE-2023-25662"
-  ],
-  "modified": "2023-12-06T01:02:53.864658Z",
-  "published": "2023-03-24T21:58:31Z",
-  "related": [
-    "CVE-2023-25662"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2023-03-25T00:15:00Z",
-    "github_reviewed_at": "2023-03-24T21:58:31Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-190"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-7jvm-xxmr-v5cw"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-25662"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/08b8e18643d6dcde00890733b270ff8d9960c56c"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-7jvm-xxmr-v5cw/GHSA-7jvm-xxmr-v5cw.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -55,7 +18,8 @@
             {
               "fixed": "2.11.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -158,20 +122,19 @@
         "2.9.1",
         "2.9.2",
         "2.9.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-7jvm-xxmr-v5cw/GHSA-7jvm-xxmr-v5cw.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-7jvm-xxmr-v5cw/GHSA-7jvm-xxmr-v5cw.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -179,7 +142,8 @@
             {
               "fixed": "2.11.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -240,20 +204,19 @@
         "2.9.1",
         "2.9.2",
         "2.9.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-7jvm-xxmr-v5cw/GHSA-7jvm-xxmr-v5cw.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-7jvm-xxmr-v5cw/GHSA-7jvm-xxmr-v5cw.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -261,7 +224,8 @@
             {
               "fixed": "2.11.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -361,17 +325,53 @@
         "2.9.1",
         "2.9.2",
         "2.9.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/03/GHSA-7jvm-xxmr-v5cw/GHSA-7jvm-xxmr-v5cw.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2023-25662",
+    "CVE-2023-25662"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-190"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-03-24T21:58:31Z",
+    "nvd_published_at": "2023-03-25T00:15:00Z",
+    "severity": "HIGH"
+  },
+  "details": "### Impact\nTFversion 2.11.0 //tensorflow/core/ops/array_ops.cc:1067 const Tensor* hypothesis_shape_t = c->input_tensor(2); std::vector<DimensionHandle> dims(hypothesis_shape_t->NumElements() - 1); for (int i = 0; i < dims.size(); ++i) { dims[i] = c->MakeDim(std::max(h_values(i), t_values(i))); }\n\nif hypothesis_shape_t is empty, hypothesis_shape_t->NumElements() - 1 will be integer overflow, and the it will deadlock\n```python\nimport tensorflow as tf\npara={\n    'hypothesis_indices': [[]],\n    'hypothesis_values': ['tmp/'],\n    'hypothesis_shape': [],\n    'truth_indices': [[]],\n    'truth_values': [''],\n    'truth_shape': [],\n    'normalize': False\n    }\ntf.raw_ops.EditDistance(**para)\n```\n\n### Patches\nWe have patched the issue in GitHub commit [08b8e18643d6dcde00890733b270ff8d9960c56c](https://github.com/tensorflow/tensorflow/commit/08b8e18643d6dcde00890733b270ff8d9960c56c).\n\nThe fix will be included in TensorFlow 2.12.0. We will also cherrypick this commit on TensorFlow 2.11.1\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n\n\n### Attribution\nThis vulnerability has been reported by r3pwnx",
+  "id": "GHSA-7jvm-xxmr-v5cw",
+  "modified": "2023-12-06T01:02:53.864658Z",
+  "published": "2023-03-24T21:58:31Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-7jvm-xxmr-v5cw"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-25662"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/08b8e18643d6dcde00890733b270ff8d9960c56c"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    }
+  ],
+  "related": [
+    "CVE-2023-25662"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to integer overflow in EditDistance"
 }

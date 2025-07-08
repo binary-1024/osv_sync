@@ -1,54 +1,17 @@
 {
-  "id": "GHSA-qvhf-3567-pc4v",
-  "summary": "Sandbox bypass vulnerability in Script Security Plugin",
-  "details": "Sandbox protection in Script Security Plugin 1.70 and earlier can be circumvented through:\n- Crafted constructor calls and bodies (due to an incomplete fix of [SECURITY-582](https://www.jenkins.io/security/advisory/2017-08-07/#super-constructor-calls))\n- Crafted method calls on objects that implement `GroovyInterceptable`\n\nThis allows attackers able to specify and run sandboxed scripts to execute arbitrary code in the context of the Jenkins controller JVM.\n\nScript Security Plugin 1.71 has additional restrictions and sanity checks to ensure that super constructors cannot be constructed without being intercepted by the sandbox. In addition, it also intercepts method calls on objects that implement `GroovyInterceptable` as calls to `GroovyObject#invokeMethod(String, Object)`, which is on the list of dangerous signatures and should not be approved for use in the sandbox.",
-  "aliases": [
-    "CVE-2020-2135"
-  ],
-  "modified": "2025-06-19T15:01:59.309954Z",
-  "published": "2022-05-24T17:10:27Z",
-  "database_specific": {
-    "nvd_published_at": "2020-03-09T16:15:00Z",
-    "cwe_ids": [
-      "CWE-693",
-      "CWE-863"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-01-05T20:11:47Z"
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-2135"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/script-security-plugin/commit/5b1969e0bdf5cde04a165b847144756b28495788"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/jenkinsci/script-security-plugin"
-    },
-    {
-      "type": "WEB",
-      "url": "https://jenkins.io/security/advisory/2020-03-09/#SECURITY-1754"
-    },
-    {
-      "type": "WEB",
-      "url": "http://www.openwall.com/lists/oss-security/2020/03/09/1"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.70",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-qvhf-3567-pc4v/GHSA-qvhf-3567-pc4v.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.plugins:script-security",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.plugins:script-security",
         "purl": "pkg:maven/org.jenkins-ci.plugins/script-security"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -56,7 +19,8 @@
             {
               "fixed": "1.71"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -157,18 +121,54 @@
         "1.70",
         "1.8",
         "1.9"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 1.70",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-qvhf-3567-pc4v/GHSA-qvhf-3567-pc4v.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2020-2135"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-693",
+      "CWE-863"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-01-05T20:11:47Z",
+    "nvd_published_at": "2020-03-09T16:15:00Z",
+    "severity": "HIGH"
+  },
+  "details": "Sandbox protection in Script Security Plugin 1.70 and earlier can be circumvented through:\n- Crafted constructor calls and bodies (due to an incomplete fix of [SECURITY-582](https://www.jenkins.io/security/advisory/2017-08-07/#super-constructor-calls))\n- Crafted method calls on objects that implement `GroovyInterceptable`\n\nThis allows attackers able to specify and run sandboxed scripts to execute arbitrary code in the context of the Jenkins controller JVM.\n\nScript Security Plugin 1.71 has additional restrictions and sanity checks to ensure that super constructors cannot be constructed without being intercepted by the sandbox. In addition, it also intercepts method calls on objects that implement `GroovyInterceptable` as calls to `GroovyObject#invokeMethod(String, Object)`, which is on the list of dangerous signatures and should not be approved for use in the sandbox.",
+  "id": "GHSA-qvhf-3567-pc4v",
+  "modified": "2025-06-19T15:01:59.309954Z",
+  "published": "2022-05-24T17:10:27Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-2135"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/script-security-plugin/commit/5b1969e0bdf5cde04a165b847144756b28495788"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jenkinsci/script-security-plugin"
+    },
+    {
+      "type": "WEB",
+      "url": "https://jenkins.io/security/advisory/2020-03-09/#SECURITY-1754"
+    },
+    {
+      "type": "WEB",
+      "url": "http://www.openwall.com/lists/oss-security/2020/03/09/1"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Sandbox bypass vulnerability in Script Security Plugin"
 }

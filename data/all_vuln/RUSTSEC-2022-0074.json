@@ -1,15 +1,50 @@
 {
-  "id": "RUSTSEC-2022-0074",
-  "summary": "Force cast a &Vec<T> to &[T]",
-  "details": "In function `Table::as_ref`, a reference of vector is force cast to slice. There are multiple problems here:\n1. To guarantee the size is correct, we have to first do `Vec::shrink_to_fit`. The function requires a mutable reference, so we have to force cast from immutable to mutable, which is UB.\n2. Even if (1) is sound, `&Vec<T>` and `&[T]` still might not have the same layout. Treating them equally may lead to UB.",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [],
+        "cvss": null,
+        "informational": "unsound",
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2022-0074.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "prettytable-rs",
+        "purl": "pkg:cargo/prettytable-rs"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.10.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "GHSA-gfgm-chr3-x6px"
   ],
-  "modified": "2023-11-08T04:19:29.041635Z",
-  "published": "2022-12-02T12:00:00Z",
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "In function `Table::as_ref`, a reference of vector is force cast to slice. There are multiple problems here:\n1. To guarantee the size is correct, we have to first do `Vec::shrink_to_fit`. The function requires a mutable reference, so we have to force cast from immutable to mutable, which is UB.\n2. Even if (1) is sound, `&Vec<T>` and `&[T]` still might not have the same layout. Treating them equally may lead to UB.",
+  "id": "RUSTSEC-2022-0074",
+  "modified": "2023-11-08T04:19:29.041635Z",
+  "published": "2022-12-02T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -24,41 +59,6 @@
       "url": "https://github.com/phsym/prettytable-rs/issues/145"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "prettytable-rs",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/prettytable-rs"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            },
-            {
-              "fixed": "0.10.0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": null,
-        "informational": "unsound",
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2022-0074.json",
-        "categories": []
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Force cast a &Vec<T> to &[T]"
 }

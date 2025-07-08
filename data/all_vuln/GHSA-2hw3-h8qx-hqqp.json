@@ -1,21 +1,46 @@
 {
-  "id": "GHSA-2hw3-h8qx-hqqp",
-  "summary": "OpenList (frontend) allows XSS Attacks in the built-in Markdown Viewer",
-  "details": "XSS via `.py` file containing script tag interpreted as HTML\n\n## Summary\n\nA vulnerability exists in the file preview/browsing feature of the application, where files with a `.py` extension that contain JavaScript code wrapped in `<script>` tags may be interpreted and executed as HTML in certain modes. This leads to a stored XSS vulnerability.\n\n## Affected Versions\n\n* <= 4.0.0-rc.3\n\n## PoC\n\nCreate a `.py` file with arbitrary JavaScript content wrapped in `<script>` tags. For example:\n\n```javascript\n<script>alert(document.cookie);</script>\n```\n\nWhen a victim views the file in browsing mode (e.g., a rendered preview), the JavaScript is executed in the browser context.\n\n--- \n\n## Attack vector\n\nAn attacker can place such a `.py` file in the system via remote channels, such as:\n* Convincing a webmaster to download or upload the file; \n* Tricking users into accessing a file link via public URLs.\n\n## Required permissions\n\n* None, if public or visitor access is enabled.\n* If the file is uploaded by a user with elevated permissions, potential privilege boundaries may be crossed.\n\n## User interaction\n\nYes. The user must manually click to switch to the browsing or preview mode to trigger the script. And seems only when using `ISO-8859-1` encoding.\n\n## Scope\n\n* Unchanged `(S:U)` - The attack does not cross system or privilege boundaries in general.\n* \u26a0\ufe0f Controversial edge case: If sensitive preview files are accessible due to misconfiguration, scope could be considered Changed `(S:C)`.\n\n## Impact\n\n* Confidentiality: User information including cookies, login state, and localStorage may be accessed. Some files that only can be viewed via this user will leak too.\n* Integrity & Availability: Not directly impacted.\n\n---\n\n## Recommendations\n\n* Treat all previewed file types (including non-HTML like .py) as plain text unless explicitly sanitized.\n* Disable rendering modes that can interpret user-uploaded content as HTML.\n\n## Timeline\n\n| Date | Event |\n|------|-------|\n| 2025-06-17 | Vulnerability reported |\n| 2025-06-17 | Comminuty Manager confirmed |\n| 2025-06-17 | Fixed |\n\n# Credits\n\n* Discovered by: @zyk2507\n* Reported to: [The OpenList Team](https://github.com/OpenListTeam)\n* Analyzed and confirmed by: @jyxjjj\n* Fixed by: @cxw620\n* Fixed in: `4.0.0-rc.4`",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 4.0.0-rc.3",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-2hw3-h8qx-hqqp/GHSA-2hw3-h8qx-hqqp.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openlist-frontend/openlist-frontend",
+        "purl": "pkg:npm/%40openlist-frontend/openlist-frontend"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.0.0-rc.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-50183"
   ],
-  "modified": "2025-06-19T15:19:19Z",
-  "published": "2025-06-18T14:41:25Z",
   "database_specific": {
-    "nvd_published_at": "2025-06-19T03:15:25Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-06-18T14:41:25Z"
+    "github_reviewed_at": "2025-06-18T14:41:25Z",
+    "nvd_published_at": "2025-06-19T03:15:25Z",
+    "severity": "MODERATE"
   },
+  "details": "XSS via `.py` file containing script tag interpreted as HTML\n\n## Summary\n\nA vulnerability exists in the file preview/browsing feature of the application, where files with a `.py` extension that contain JavaScript code wrapped in `<script>` tags may be interpreted and executed as HTML in certain modes. This leads to a stored XSS vulnerability.\n\n## Affected Versions\n\n* <= 4.0.0-rc.3\n\n## PoC\n\nCreate a `.py` file with arbitrary JavaScript content wrapped in `<script>` tags. For example:\n\n```javascript\n<script>alert(document.cookie);</script>\n```\n\nWhen a victim views the file in browsing mode (e.g., a rendered preview), the JavaScript is executed in the browser context.\n\n--- \n\n## Attack vector\n\nAn attacker can place such a `.py` file in the system via remote channels, such as:\n* Convincing a webmaster to download or upload the file; \n* Tricking users into accessing a file link via public URLs.\n\n## Required permissions\n\n* None, if public or visitor access is enabled.\n* If the file is uploaded by a user with elevated permissions, potential privilege boundaries may be crossed.\n\n## User interaction\n\nYes. The user must manually click to switch to the browsing or preview mode to trigger the script. And seems only when using `ISO-8859-1` encoding.\n\n## Scope\n\n* Unchanged `(S:U)` - The attack does not cross system or privilege boundaries in general.\n* \u26a0\ufe0f Controversial edge case: If sensitive preview files are accessible due to misconfiguration, scope could be considered Changed `(S:C)`.\n\n## Impact\n\n* Confidentiality: User information including cookies, login state, and localStorage may be accessed. Some files that only can be viewed via this user will leak too.\n* Integrity & Availability: Not directly impacted.\n\n---\n\n## Recommendations\n\n* Treat all previewed file types (including non-HTML like .py) as plain text unless explicitly sanitized.\n* Disable rendering modes that can interpret user-uploaded content as HTML.\n\n## Timeline\n\n| Date | Event |\n|------|-------|\n| 2025-06-17 | Vulnerability reported |\n| 2025-06-17 | Comminuty Manager confirmed |\n| 2025-06-17 | Fixed |\n\n# Credits\n\n* Discovered by: @zyk2507\n* Reported to: [The OpenList Team](https://github.com/OpenListTeam)\n* Analyzed and confirmed by: @jyxjjj\n* Fixed by: @cxw620\n* Fixed in: `4.0.0-rc.4`",
+  "id": "GHSA-2hw3-h8qx-hqqp",
+  "modified": "2025-06-19T15:19:19Z",
+  "published": "2025-06-18T14:41:25Z",
   "references": [
     {
       "type": "WEB",
@@ -34,37 +59,12 @@
       "url": "https://github.com/OpenListTeam/OpenList"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@openlist-frontend/openlist-frontend",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40openlist-frontend/openlist-frontend"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.0.0-rc.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 4.0.0-rc.3",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-2hw3-h8qx-hqqp/GHSA-2hw3-h8qx-hqqp.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "OpenList (frontend) allows XSS Attacks in the built-in Markdown Viewer"
 }

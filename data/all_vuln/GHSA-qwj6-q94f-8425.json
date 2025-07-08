@@ -1,25 +1,47 @@
 {
-  "id": "GHSA-qwj6-q94f-8425",
-  "summary": "MathLive's Lack of Escaping of HTML allows for XSS",
-  "details": "### Summary\nDespite normal text rendering as LaTeX expressions, preventing XSS, the library also provides users with commands which may modify HTML, such as the `\\htmlData` command, and the lack of escaping leads to XSS.\n\n### Details\nOverall in the code, other than in the `test` folder, no functions escaping HTML can be seen.\n\n### PoC\n1. Go to https://cortexjs.io/mathlive/demo/\n2. Paste either `\\htmlData{><img/onerror=alert(1)\"src=}{}` or `\\htmlData{x=\" ><img/onerror=alert(1) src>}{}` in the LaTeX textarea.\n\n### Impact\nMathLive users who render untrusted mathematical expressions could encounter malicious input using \\htmlData that runs arbitrary JavaScript, or generate invalid HTML.",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 0.103.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-qwj6-q94f-8425/GHSA-qwj6-q94f-8425.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "mathlive",
+        "purl": "pkg:npm/mathlive"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.104.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-29049"
   ],
-  "modified": "2025-04-02T01:12:10.000085Z",
-  "published": "2025-01-21T21:17:52Z",
-  "related": [
-    "CVE-2025-29049"
-  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-116",
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-01-21T21:17:52Z"
+    "github_reviewed_at": "2025-01-21T21:17:52Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
   },
+  "details": "### Summary\nDespite normal text rendering as LaTeX expressions, preventing XSS, the library also provides users with commands which may modify HTML, such as the `\\htmlData` command, and the lack of escaping leads to XSS.\n\n### Details\nOverall in the code, other than in the `test` folder, no functions escaping HTML can be seen.\n\n### PoC\n1. Go to https://cortexjs.io/mathlive/demo/\n2. Paste either `\\htmlData{><img/onerror=alert(1)\"src=}{}` or `\\htmlData{x=\" ><img/onerror=alert(1) src>}{}` in the LaTeX textarea.\n\n### Impact\nMathLive users who render untrusted mathematical expressions could encounter malicious input using \\htmlData that runs arbitrary JavaScript, or generate invalid HTML.",
+  "id": "GHSA-qwj6-q94f-8425",
+  "modified": "2025-04-02T01:12:10.000085Z",
+  "published": "2025-01-21T21:17:52Z",
   "references": [
     {
       "type": "WEB",
@@ -38,37 +60,15 @@
       "url": "https://github.com/arnog/mathlive"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "mathlive",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/mathlive"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.104.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 0.103.0",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/01/GHSA-qwj6-q94f-8425/GHSA-qwj6-q94f-8425.json"
-      }
-    }
+  "related": [
+    "CVE-2025-29049"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "MathLive's Lack of Escaping of HTML allows for XSS"
 }

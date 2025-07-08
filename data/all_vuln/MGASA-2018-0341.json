@@ -1,29 +1,46 @@
 {
-  "id": "MGASA-2018-0341",
-  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0341.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:6",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-6"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.62-1.mga6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-linus update is based on the upstream 4.14.62 and fixes at least\nthe following security issues:\n\nkernel KVM before versions kernel 4.16, kernel 4.16-rc7, kernel 4.17-rc1,\nkernel 4.17-rc2 and kernel 4.17-rc3 is vulnerable to a flaw in the way the\nLinux kernel's KVM hypervisor handled exceptions delivered after a stack\nswitch operation via Mov SS or Pop SS instructions. During the stack switch\noperation, the processor did not deliver interrupts and exceptions, rather\nthey are delivered once the first instruction after the stack switch is\nexecuted. An unprivileged KVM guest user could use this flaw to crash the\nguest or, potentially, escalate their privileges in the guest\n(CVE-2018-1087).\n\nLinux kernel vhost since version 4.8 does not properly initialize memory in\nmessages passed between virtual guests and the host operating system in the\nvhost/vhost.c:vhost_new_msg() function. This can allow local privileged\nusers to read some kernel memory contents when reading from the\n/dev/vhost-net device file (CVE-2018-1118).\n\nSecurity researchers from FICORA have identified a remote denial of\nservice attack against the Linux kernel caused by inefficient\nimplementation of TCP segment reassembly, named \"SegmentSmack\".\nA remote attacker could consume a lot of CPU resources in the kernel\nnetworking stack with just a low bandwidth or single host attack by\nusing lots of small TCP segments packets. Usually large botnets are\nneeded for similar effect. The rate needed for this denial of service\nattack to be effective is several magnitudes lower than the usual\npacket processing capability of the machine, as the attack exploits\nworst case behaviour of existing algorithms (CVE-2018-5390).\nIn the function sbusfb_ioctl_helper() in drivers/video/fbdev/sbuslib.c\nin the Linux kernel through 4.15, an integer signedness error allows\narbitrary information leakage for the FBIOPUTCMAP_SPARC and\nFBIOGETCMAP_SPARC commands (CVE-2018-6412).\n\nIn some circumstances, some operating systems or hypervisors may not expect\nor properly handle an Intel architecture hardware debug exception. The error\nappears to be due to developer interpretation of existing documentation for\ncertain Intel architecture interrupt/exception instructions, namely MOV SS\nand POP SS. An authenticated attacker may be able to read sensitive data in\nmemory or control low-level operating system functions (CVE-2018-8897).\n\nLinux kernel is vulnerable to a heap-based buffer overflow in the \nfs/ext4/xattr.c:ext4_xattr_set_entry() function. An attacker could exploit\nthis by operating on a mounted crafted ext4 image (CVE-2018-10840).\n\nThe kvm functions that were used in the emulation of fxrstor, fxsave,\nsgdt and sidt were originally meant for task switching, and as such they\ndid not check privilege levels. This allowed guest userspace to guest\nkernel write (CVE-2018-10853).\n\nA flaw was found in Linux kernel ext4 File System. A use-after-free in\next4_ext_remove_space() when mounting and operating a crafted ext4 image\n(CVE-2018-10876).\n\nLinux kernel ext4 filesystem is vulnerable to an out-of-bound access in the\next4_ext_drop_refs() function when operating on a crafted ext4 filesystem\nimage (CVE-2018-10877).\n\nA flaw was found in Linux kernel ext4 filesystem. A local user can cause a\nuse-after-free in ext4_xattr_set_entry function and so a denial of service\nor possibly unspecified other impact by when renaming a file in a crafted\next4 filesystem image (CVE-2018-10879).\n\nA flaw was found in Linux kernel ext4 filesystem code. A stack-out-of-bounds\nwrite in ext4_update_inline_data() is possible when mounting and writing to\na crafted ext4 image. An attacker could use this to cause  a system crash\nand a denial of service (CVE-2018-10880).\n\nA flaw was found in Linux kernel ext4 filesystem. A local user can cause an\nout-of-bound access in ext4_get_group_info function and so a denial of\nservice and a system crash by mounting and operating on a crafted ext4\nfilesystem image (CVE-2018-10881).\n\nA flaw was found in Linux kernel ext4 File System. An out-of-bound write\nwhen unmounting a crafted ext4 image in fs/jbd2/transaction.c. An attacker\ncould use this to cause a denial of service (system crash) (CVE-2018-10882).\n\nA flaw was found in Linux kernel ext4 File System. An out-of-bound write in\njbd2_journal_dirty_metadata() that kernel cannot handle when mounting and\noperating a crafted ext4 image. An attacker could use this to cause a\ndenial of service (system crash) (CVE-2018-10883).\n\nIn the Linux kernel 4.13 through 4.16.11, ext4_read_inline_data() in\nfs/ext4/inline.c performs a memcpy with an untrusted length value in certain\ncircumstances involving a crafted filesystem that stores the system.data\nextended attribute value in a dedicated inode (CVE-2018-11412).\n\nIn arch/x86/kvm/vmx.c in the Linux kernel before 4.17.2, when nested\nvirtualization is used, local attackers could cause L1 KVM guests to\nVMEXIT, potentially allowing privilege escalations and denial of service\nattacks due to lack of checking of CPL (CVE-2018-12904).\n\nThe inode_init_owner function in fs/inode.c in the Linux kernel through\n4.17.4 allows local users to create files with an unintended group\nownership, in a scenario where a directory is SGID to a certain group and\nis writable by a user who is not a member of that group. Here, the\nnon-member can trigger creation of a plain file whose group ownership is\nthat group. The intended behavior was that the non-member can trigger\ncreation of a directory (but not a plain file) whose group ownership is\nthat group. The non-member can escalate privileges by making the plain\nfile executable and SGID (CVE-2018-13405).\n\nAn issue was discovered in the Linux kernel through 4.17.11, as used\nin Xen through 4.11.x. The xen_failsafe_callback entry point in \narch/x86/entry/entry_64.S does not properly maintain RBX, which allows\nlocal users to cause a denial of service (uninitialized memory usage\nand system crash). Within Xen, 64-bit x86 PV Linux guest OS users can\ntrigger a guest OS crash or possibly gain privileges (CVE-2018-14678).\n\nOther changes in this update:\n* enable Mellanox5 support (mga#23263)\n* enable SMARTPQI support (mga#23305)\n\nFor other upstream fixes in this update, see the referenced changelogs.\n",
+  "id": "MGASA-2018-0341",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2018-08-15T15:45:26Z",
-  "related": [
-    "CVE-2018-10840",
-    "CVE-2018-10853",
-    "CVE-2018-1087",
-    "CVE-2018-10876",
-    "CVE-2018-10877",
-    "CVE-2018-10879",
-    "CVE-2018-10880",
-    "CVE-2018-10881",
-    "CVE-2018-10882",
-    "CVE-2018-10883",
-    "CVE-2018-1118",
-    "CVE-2018-11412",
-    "CVE-2018-12904",
-    "CVE-2018-13405",
-    "CVE-2018-14678",
-    "CVE-2018-5390",
-    "CVE-2018-6412",
-    "CVE-2018-8897"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -110,43 +127,26 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.14.62"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:6",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-6"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.14.62-1.mga6"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0341.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2018-10840",
+    "CVE-2018-10853",
+    "CVE-2018-1087",
+    "CVE-2018-10876",
+    "CVE-2018-10877",
+    "CVE-2018-10879",
+    "CVE-2018-10880",
+    "CVE-2018-10881",
+    "CVE-2018-10882",
+    "CVE-2018-10883",
+    "CVE-2018-1118",
+    "CVE-2018-11412",
+    "CVE-2018-12904",
+    "CVE-2018-13405",
+    "CVE-2018-14678",
+    "CVE-2018-5390",
+    "CVE-2018-6412",
+    "CVE-2018-8897"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fix security vulnerabilities"
 }

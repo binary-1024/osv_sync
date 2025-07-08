@@ -1,33 +1,42 @@
 {
-  "id": "SUSE-SU-2015:1488-1",
-  "summary": "Live patch for the Linux Kernel",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1488-1.json"
+      },
+      "ecosystem_specific": {
+        "binaries": [
+          {
+            "kgraft-patch-3_12_36-38-default": "3-2.1",
+            "kgraft-patch-3_12_36-38-xen": "3-2.1"
+          }
+        ]
+      },
+      "package": {
+        "ecosystem": "SUSE:Linux Enterprise Live Patching 12",
+        "name": "kgraft-patch-SLE12_Update_2",
+        "purl": "pkg:rpm/suse/kgraft-patch-SLE12_Update_2&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2012"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3-2.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "details": "\nThis update contains a kernel live patch for the 3.12.36-38 SUSE Linux Enterprise\nServer 12 Kernel, fixing following security issues.\n\n- CVE-2015-3339: A race condition in the prepare_binprm function in\n  fs/exec.c in the Linux kernel allowed local users to gain privileges\n  by executing a setuid program at a time instant when a chown to root\n  is in progress, and the ownership is changed but the setuid bit is not\n  yet stripped. (bsc#939263 bsc#939044)\n\n- CVE-2015-1465: The IPv4 implementation in the Linux kernel did not\n  properly consider the length of the Read-Copy Update (RCU) grace period\n  for redirecting lookups in the absence of caching, which allowed remote\n  attackers to cause a denial of service (memory consumption or system\n  crash) via a flood of packets. (bsc#939044 bsc#916225)\n\n- CVE-2015-3636: The ping_unhash function in net/ipv4/ping.c in the\n  Linux kernel did not initialize a certain list data structure during an\n  unhash operation, which allowed local users to gain privileges or cause\n  a denial of service (use-after-free and system crash) by leveraging the\n  ability to make a SOCK_DGRAM socket system call for the IPPROTO_ICMP\n  or IPPROTO_ICMPV6 protocol, and then making a connect system call after\n  a disconnect. (bsc#939277)\n\n- CVE-2015-5364/CVE-2015-5366: Two denial of service attacks via a flood\n  of UDP packets with invalid checksums were fixed that could be used\n  by remote attackers to delay execution. (bsc#939276)\n\n- CVE-2015-1805: The (1) pipe_read and (2) pipe_write implementations in\n  fs/pipe.c in the Linux kernel did not properly consider the side effects\n  of failed __copy_to_user_inatomic and __copy_from_user_inatomic calls,\n  which allowed local users to cause a denial of service (system crash)\n  or possibly gain privileges via a crafted application, aka an 'I/O vector\n  array overrun.' (bsc#939270)\n\n- CVE-2015-4700: A BPF Jit optimization flaw could allow local users\n  to panic the kernel. (bsc#939273)\n\n- CVE-2015-3331: The __driver_rfc4106_decrypt function in\n  arch/x86/crypto/aesni-intel_glue.c in the Linux kernel did not properly\n  determine the memory locations used for encrypted data, which allowed\n  context-dependent attackers to cause a denial of service (buffer overflow\n  and system crash) or possibly execute arbitrary code by triggering a\n  crypto API call, as demonstrated by use of a libkcapi test program with\n  an AF_ALG(aead) socket. (bsc#939262)\n\n- CVE-2014-8159: The InfiniBand (IB) implementation in the Linux kernel\n  did not properly restrict use of User Verbs for registration of memory\n  regions, which allowed local users to access arbitrary physical memory\n  locations, and consequently cause a denial of service (system crash)\n  or gain privileges, by leveraging permissions on a uverbs device under\n  /dev/infiniband/. (bsc#939241)\n\n- CVE-2014-7822: The implementation of certain splice_write file\n  operations in the Linux kernel before 3.16 does not enforce a restriction\n  on the maximum size of a single file, which allows local users to cause\n  a denial of service (system crash) or possibly have unspecified other\n  impact via a crafted splice system call, as demonstrated by use of a\n  file descriptor associated with an ext4 filesystem. (bsc#939240)\n",
+  "id": "SUSE-SU-2015:1488-1",
   "modified": "2025-05-02T04:04:08.931453Z",
   "published": "2015-08-14T09:23:31Z",
-  "related": [
-    "CVE-2014-7822",
-    "CVE-2014-8159",
-    "CVE-2015-1465",
-    "CVE-2015-1805",
-    "CVE-2015-3331",
-    "CVE-2015-3339",
-    "CVE-2015-3636",
-    "CVE-2015-4700",
-    "CVE-2015-5364",
-    "CVE-2015-5366"
-  ],
-  "upstream": [
-    "CVE-2014-7822",
-    "CVE-2014-8159",
-    "CVE-2015-1465",
-    "CVE-2015-1805",
-    "CVE-2015-3331",
-    "CVE-2015-3339",
-    "CVE-2015-3636",
-    "CVE-2015-4700",
-    "CVE-2015-5364",
-    "CVE-2015-5366"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -114,39 +123,30 @@
       "url": "https://www.suse.com/security/cve/CVE-2015-5366"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kgraft-patch-SLE12_Update_2",
-        "ecosystem": "SUSE:Linux Enterprise Live Patching 12",
-        "purl": "pkg:rpm/suse/kgraft-patch-SLE12_Update_2&distro=SUSE%20Linux%20Enterprise%20Live%20Patching%2012"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3-2.1"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "binaries": [
-          {
-            "kgraft-patch-3_12_36-38-xen": "3-2.1",
-            "kgraft-patch-3_12_36-38-default": "3-2.1"
-          }
-        ]
-      },
-      "database_specific": {
-        "source": "https://ftp.suse.com/pub/projects/security/osv/SUSE-SU-2015:1488-1.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2014-7822",
+    "CVE-2014-8159",
+    "CVE-2015-1465",
+    "CVE-2015-1805",
+    "CVE-2015-3331",
+    "CVE-2015-3339",
+    "CVE-2015-3636",
+    "CVE-2015-4700",
+    "CVE-2015-5364",
+    "CVE-2015-5366"
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Live patch for the Linux Kernel",
+  "upstream": [
+    "CVE-2014-7822",
+    "CVE-2014-8159",
+    "CVE-2015-1465",
+    "CVE-2015-1805",
+    "CVE-2015-3331",
+    "CVE-2015-3339",
+    "CVE-2015-3636",
+    "CVE-2015-4700",
+    "CVE-2015-5364",
+    "CVE-2015-5366"
+  ]
 }

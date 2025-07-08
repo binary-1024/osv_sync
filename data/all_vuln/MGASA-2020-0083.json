@@ -1,14 +1,46 @@
 {
-  "id": "MGASA-2020-0083",
-  "summary": "Updated python-waitress packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2020-0083.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:7",
+        "name": "python-waitress",
+        "purl": "pkg:rpm/mageia/python-waitress?arch=source&distro=mageia-7"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.2-1.mga7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "Updated python-waitress packages fix security vulnerabilities:\n\nIf a front-end server does not parse header fields with an LF the same\nway as it does those with a CRLF it can lead to the front-end and the\nback-end server parsing the same HTTP message in two different ways.\nThis can lead to a potential for HTTP request smuggling/splitting whereby\nWaitress may see two requests while the front-end server only sees a\nsingle HTTP message (CVE-2019-16785).\n\nWaitress through version 1.3.1 would parse the Transfer-Encoding header\nand only look for a single string value, if that value was not chunked\nit would fall through and use the Content-Length header instead. This\ncould allow for Waitress to treat a single request as multiple requests\nin the case of HTTP pipelining (CVE-2019-16786).\n\nIn Waitress through version 1.4.0, if a proxy server is used in front of\nwaitress, an invalid request may be sent by an attacker that bypasses the\nfront-end and is parsed differently by waitress leading to a potential for\nHTTP request smuggling. If a front-end server does HTTP pipelining to a\nbackend Waitress server this could lead to HTTP request splitting which\nmay lead to potential cache poisoning or unexpected information disclosure\n(CVE-2019-16789).\n",
+  "id": "MGASA-2020-0083",
   "modified": "2020-02-13T10:26:10Z",
   "published": "2020-02-13T10:49:00Z",
-  "related": [
-    "CVE-2019-16785",
-    "CVE-2019-16786",
-    "CVE-2019-16789"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -23,43 +55,11 @@
       "url": "https://docs.pylonsproject.org/projects/waitress/en/latest/#security-fixes"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "python-waitress",
-        "ecosystem": "Mageia:7",
-        "purl": "pkg:rpm/mageia/python-waitress?arch=source&distro=mageia-7"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.4.2-1.mga7"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2020-0083.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2019-16785",
+    "CVE-2019-16786",
+    "CVE-2019-16789"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated python-waitress packages fix security vulnerabilities"
 }

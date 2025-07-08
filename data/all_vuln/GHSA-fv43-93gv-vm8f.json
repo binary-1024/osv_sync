@@ -1,57 +1,16 @@
 {
-  "id": "GHSA-fv43-93gv-vm8f",
-  "summary": "TensorFlow vulnerable to null dereference on MLIR on empty function attributes",
-  "details": "### Impact\nWhen [`mlir::tfg::ConvertGenericFunctionToFunctionDef`](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/functiondef_import.cc) is given empty function attributes, it gives a null dereference.\n```cpp\n// Import the function attributes with a `tf.` prefix to match the current\n// infrastructure expectations.\nfor (const auto& namedAttr : func.attr()) {\n  const std::string& name = \"tf.\" + namedAttr.first;\n  const AttrValue& tf_attr = namedAttr.second;\n  TF_ASSIGN_OR_RETURN(Attribute attr,\n                      ConvertAttributeValue(tf_attr, builder, tfgDialect));\n  attrs.append(name, attr);\n}\n```\nIf `namedAttr.first` is empty, it will crash.\n\n### Patches\nWe have patched the issue in GitHub commit [1cf45b831eeb0cab8655c9c7c5d06ec6f45fc41b](https://github.com/tensorflow/tensorflow/commit/1cf45b831eeb0cab8655c9c7c5d06ec6f45fc41b).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n",
-  "aliases": [
-    "BIT-tensorflow-2022-36011",
-    "CVE-2022-36011"
-  ],
-  "modified": "2023-12-06T01:02:28.570467Z",
-  "published": "2022-09-16T21:59:08Z",
-  "related": [
-    "CVE-2022-36011"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2022-09-16T23:15:00Z",
-    "github_reviewed_at": "2022-09-16T21:59:08Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-476"
-    ]
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-fv43-93gv-vm8f"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36011"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/commit/1cf45b831eeb0cab8655c9c7c5d06ec6f45fc41b"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/tensorflow/tensorflow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -59,7 +18,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -135,20 +95,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -156,25 +115,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow",
         "ecosystem": "PyPI",
+        "name": "tensorflow",
         "purl": "pkg:pypi/tensorflow"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -182,25 +141,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -208,7 +167,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -244,20 +204,19 @@
         "2.6.5",
         "2.7.0",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -265,25 +224,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow-cpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
         "purl": "pkg:pypi/tensorflow-cpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -291,25 +250,25 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -317,7 +276,8 @@
             {
               "fixed": "2.7.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -390,20 +350,19 @@
         "2.7.0rc0",
         "2.7.0rc1",
         "2.7.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.8.0"
@@ -411,25 +370,25 @@
             {
               "fixed": "2.8.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.8.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
+      },
       "package": {
-        "name": "tensorflow-gpu",
         "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
         "purl": "pkg:pypi/tensorflow-gpu"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.9.0"
@@ -437,22 +396,63 @@
             {
               "fixed": "2.9.1"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-fv43-93gv-vm8f/GHSA-fv43-93gv-vm8f.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "BIT-tensorflow-2022-36011",
+    "CVE-2022-36011"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-476"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-16T21:59:08Z",
+    "nvd_published_at": "2022-09-16T23:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\nWhen [`mlir::tfg::ConvertGenericFunctionToFunctionDef`](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ir/importexport/functiondef_import.cc) is given empty function attributes, it gives a null dereference.\n```cpp\n// Import the function attributes with a `tf.` prefix to match the current\n// infrastructure expectations.\nfor (const auto& namedAttr : func.attr()) {\n  const std::string& name = \"tf.\" + namedAttr.first;\n  const AttrValue& tf_attr = namedAttr.second;\n  TF_ASSIGN_OR_RETURN(Attribute attr,\n                      ConvertAttributeValue(tf_attr, builder, tfgDialect));\n  attrs.append(name, attr);\n}\n```\nIf `namedAttr.first` is empty, it will crash.\n\n### Patches\nWe have patched the issue in GitHub commit [1cf45b831eeb0cab8655c9c7c5d06ec6f45fc41b](https://github.com/tensorflow/tensorflow/commit/1cf45b831eeb0cab8655c9c7c5d06ec6f45fc41b).\n\nThe fix will be included in TensorFlow 2.10.0. We will also cherrypick this commit on TensorFlow 2.9.1, TensorFlow 2.8.1, and TensorFlow 2.7.2, as these are also affected and still in supported range.\n\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.\n",
+  "id": "GHSA-fv43-93gv-vm8f",
+  "modified": "2023-12-06T01:02:28.570467Z",
+  "published": "2022-09-16T21:59:08Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/security/advisories/GHSA-fv43-93gv-vm8f"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36011"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/commit/1cf45b831eeb0cab8655c9c7c5d06ec6f45fc41b"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/tensorflow/tensorflow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0"
+    }
+  ],
+  "related": [
+    "CVE-2022-36011"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "TensorFlow vulnerable to null dereference on MLIR on empty function attributes"
 }

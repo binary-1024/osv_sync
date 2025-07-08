@@ -1,24 +1,92 @@
 {
-  "id": "GHSA-8mpp-f3f7-xc28",
-  "summary": "Jetty SslConnection does not release pooled ByteBuffers in case of errors",
-  "details": "### Impact\n`SslConnection` does not release `ByteBuffer`s in case of error code paths.\nFor example, TLS handshakes that require client-auth with clients that send expired certificates will trigger a TLS handshake errors and the `ByteBuffer`s used to process the TLS handshake will be leaked.\n\n### Workarounds\nConfigure explicitly a `RetainableByteBufferPool` with `max[Heap|Direct]Memory` to limit the amount of memory that is leaked.\nEventually the pool will be full of \"active\" entries (the leaked ones) and will provide `ByteBuffer`s that will be GCed normally.\n\n_With embedded-jetty_\n\n``` java\nint maxBucketSize = 1000;\nlong maxHeapMemory = 128 * 1024L * 1024L; // 128 MB\nlong maxDirectMemory = 128 * 1024L * 1024L; // 128 MB\nRetainableByteBufferPool rbbp = new ArrayRetainableByteBufferPool(0, -1, -1, maxBucketSize, maxHeapMemory, maxDirectMemory);\n\nserver.addBean(rbbp); // make sure the ArrayRetainableByteBufferPool is added before the server is started\nserver.start();\n```\n\n_With jetty-home/jetty-base_\n\nCreate a `${jetty.base}/etc/retainable-byte-buffer-config.xml`\n\n``` xml\n<?xml version=\"1.0\"?>\n<!DOCTYPE Configure PUBLIC \"-//Jetty//Configure//EN\" \"https://www.eclipse.org/jetty/configure_10_0.dtd\">\n\n<Configure id=\"Server\" class=\"org.eclipse.jetty.server.Server\">\n  <Call name=\"addBean\">\n    <Arg>\n      <New class=\"org.eclipse.jetty.io.ArrayRetainableByteBufferPool\">\n        <Arg type=\"int\"><Property name=\"jetty.byteBufferPool.minCapacity\" default=\"0\"/></Arg>\n        <Arg type=\"int\"><Property name=\"jetty.byteBufferPool.factor\" default=\"-1\"/></Arg>\n        <Arg type=\"int\"><Property name=\"jetty.byteBufferPool.maxCapacity\" default=\"-1\"/></Arg>\n        <Arg type=\"int\"><Property name=\"jetty.byteBufferPool.maxBucketSize\" default=\"1000\"/></Arg>\n        <Arg type=\"long\"><Property name=\"jetty.byteBufferPool.maxHeapMemory\" default=\"128000000\"/></Arg>\n        <Arg type=\"long\"><Property name=\"jetty.byteBufferPool.maxDirectMemory\" default=\"128000000\"/></Arg>\n      </New>\n    </Arg>\n  </Call>\n</Configure>\n```\n\nAnd then reference it in `${jetty.base}/start.d/retainable-byte-buffer-config.ini`\n\n```\netc/retainable-byte-buffer-config.xml\n```\n\n\n### References\nhttps://github.com/eclipse/jetty.project/issues/8161\n\n### For more information\n* Email us at [security@webtide.com](mailto:security@webtide.com)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-8mpp-f3f7-xc28/GHSA-8mpp-f3f7-xc28.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.10"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "10.0.0",
+        "10.0.1",
+        "10.0.2",
+        "10.0.3",
+        "10.0.4",
+        "10.0.5",
+        "10.0.6",
+        "10.0.7",
+        "10.0.8",
+        "10.0.9"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-8mpp-f3f7-xc28/GHSA-8mpp-f3f7-xc28.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.0"
+            },
+            {
+              "fixed": "11.0.10"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "11.0.0",
+        "11.0.1",
+        "11.0.2",
+        "11.0.3",
+        "11.0.4",
+        "11.0.5",
+        "11.0.6",
+        "11.0.7",
+        "11.0.8",
+        "11.0.9"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-2191"
   ],
-  "modified": "2024-02-22T05:18:31.237834Z",
-  "published": "2022-07-07T20:55:37Z",
-  "related": [
-    "CVE-2022-2191"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-07-07T21:15:00Z",
     "cwe_ids": [
       "CWE-404"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-07-07T20:55:37Z"
+    "github_reviewed_at": "2022-07-07T20:55:37Z",
+    "nvd_published_at": "2022-07-07T21:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\n`SslConnection` does not release `ByteBuffer`s in case of error code paths.\nFor example, TLS handshakes that require client-auth with clients that send expired certificates will trigger a TLS handshake errors and the `ByteBuffer`s used to process the TLS handshake will be leaked.\n\n### Workarounds\nConfigure explicitly a `RetainableByteBufferPool` with `max[Heap|Direct]Memory` to limit the amount of memory that is leaked.\nEventually the pool will be full of \"active\" entries (the leaked ones) and will provide `ByteBuffer`s that will be GCed normally.\n\n_With embedded-jetty_\n\n``` java\nint maxBucketSize = 1000;\nlong maxHeapMemory = 128 * 1024L * 1024L; // 128 MB\nlong maxDirectMemory = 128 * 1024L * 1024L; // 128 MB\nRetainableByteBufferPool rbbp = new ArrayRetainableByteBufferPool(0, -1, -1, maxBucketSize, maxHeapMemory, maxDirectMemory);\n\nserver.addBean(rbbp); // make sure the ArrayRetainableByteBufferPool is added before the server is started\nserver.start();\n```\n\n_With jetty-home/jetty-base_\n\nCreate a `${jetty.base}/etc/retainable-byte-buffer-config.xml`\n\n``` xml\n<?xml version=\"1.0\"?>\n<!DOCTYPE Configure PUBLIC \"-//Jetty//Configure//EN\" \"https://www.eclipse.org/jetty/configure_10_0.dtd\">\n\n<Configure id=\"Server\" class=\"org.eclipse.jetty.server.Server\">\n  <Call name=\"addBean\">\n    <Arg>\n      <New class=\"org.eclipse.jetty.io.ArrayRetainableByteBufferPool\">\n        <Arg type=\"int\"><Property name=\"jetty.byteBufferPool.minCapacity\" default=\"0\"/></Arg>\n        <Arg type=\"int\"><Property name=\"jetty.byteBufferPool.factor\" default=\"-1\"/></Arg>\n        <Arg type=\"int\"><Property name=\"jetty.byteBufferPool.maxCapacity\" default=\"-1\"/></Arg>\n        <Arg type=\"int\"><Property name=\"jetty.byteBufferPool.maxBucketSize\" default=\"1000\"/></Arg>\n        <Arg type=\"long\"><Property name=\"jetty.byteBufferPool.maxHeapMemory\" default=\"128000000\"/></Arg>\n        <Arg type=\"long\"><Property name=\"jetty.byteBufferPool.maxDirectMemory\" default=\"128000000\"/></Arg>\n      </New>\n    </Arg>\n  </Call>\n</Configure>\n```\n\nAnd then reference it in `${jetty.base}/start.d/retainable-byte-buffer-config.ini`\n\n```\netc/retainable-byte-buffer-config.xml\n```\n\n\n### References\nhttps://github.com/eclipse/jetty.project/issues/8161\n\n### For more information\n* Email us at [security@webtide.com](mailto:security@webtide.com)\n",
+  "id": "GHSA-8mpp-f3f7-xc28",
+  "modified": "2024-02-22T05:18:31.237834Z",
+  "published": "2022-07-07T20:55:37Z",
   "references": [
     {
       "type": "WEB",
@@ -41,83 +109,15 @@
       "url": "https://security.netapp.com/advisory/ntap-20220909-0003"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-server",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "10.0.0"
-            },
-            {
-              "fixed": "10.0.10"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "10.0.0",
-        "10.0.1",
-        "10.0.2",
-        "10.0.3",
-        "10.0.4",
-        "10.0.5",
-        "10.0.6",
-        "10.0.7",
-        "10.0.8",
-        "10.0.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-8mpp-f3f7-xc28/GHSA-8mpp-f3f7-xc28.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-server",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "11.0.0"
-            },
-            {
-              "fixed": "11.0.10"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "11.0.0",
-        "11.0.1",
-        "11.0.2",
-        "11.0.3",
-        "11.0.4",
-        "11.0.5",
-        "11.0.6",
-        "11.0.7",
-        "11.0.8",
-        "11.0.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/07/GHSA-8mpp-f3f7-xc28/GHSA-8mpp-f3f7-xc28.json"
-      }
-    }
+  "related": [
+    "CVE-2022-2191"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Jetty SslConnection does not release pooled ByteBuffers in case of errors"
 }

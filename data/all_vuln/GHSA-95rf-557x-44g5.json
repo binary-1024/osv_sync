@@ -1,53 +1,16 @@
 {
-  "id": "GHSA-95rf-557x-44g5",
-  "summary": "Undertow vulnerable to Dos via Large AJP request",
-  "details": "When a POST request comes through AJP and the request exceeds the max-post-size limit (maxEntitySize), Undertow's AjpServerRequestConduit implementation closes a connection without sending any response to the client/proxy. This behavior results in that a front-end proxy marking the backend worker (application server) as an error state and not forward requests to the worker for a while. In mod_cluster, this continues until the next STATUS request (10 seconds intervals) from the application server updates the server state. So, in the worst case, it can result in \"All workers are in error state\" and mod_cluster responds \"503 Service Unavailable\" for a while (up to 10 seconds). In mod_proxy_balancer, it does not forward requests to the worker until the \"retry\" timeout passes. However, luckily, mod_proxy_balancer has \"forcerecovery\" setting (On by default; this parameter can force the immediate recovery of all workers without considering the retry parameter of the workers if all workers of a balancer are in error state.). So, unlike mod_cluster, mod_proxy_balancer does not result in responding \"503 Service Unavailable\". An attacker could use this behavior to send a malicious request and trigger server errors, resulting in DoS (denial of service). This flaw was fixed in Undertow 2.2.19.Final, Undertow 2.3.0.Alpha2.",
-  "aliases": [
-    "CVE-2022-2053"
-  ],
-  "modified": "2023-11-08T04:08:02.254720Z",
-  "published": "2022-08-06T00:00:46Z",
-  "database_specific": {
-    "nvd_published_at": "2022-08-05T16:15:00Z",
-    "github_reviewed_at": "2022-08-18T18:49:44Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "cwe_ids": [
-      "CWE-400"
-    ]
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-2053"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/undertow-io/undertow/pull/1350"
-    },
-    {
-      "type": "WEB",
-      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=2095862&comment#0"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/undertow-io/undertow"
-    },
-    {
-      "type": "WEB",
-      "url": "https://issues.redhat.com/browse/UNDERTOW-2133"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/08/GHSA-95rf-557x-44g5/GHSA-95rf-557x-44g5.json"
+      },
       "package": {
-        "name": "io.undertow:undertow-core",
         "ecosystem": "Maven",
+        "name": "io.undertow:undertow-core",
         "purl": "pkg:maven/io.undertow/undertow-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -55,7 +18,8 @@
             {
               "fixed": "2.2.19.Final"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -346,20 +310,19 @@
         "2.2.7.Final",
         "2.2.8.Final",
         "2.2.9.Final"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/08/GHSA-95rf-557x-44g5/GHSA-95rf-557x-44g5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/08/GHSA-95rf-557x-44g5/GHSA-95rf-557x-44g5.json"
+      },
       "package": {
-        "name": "io.undertow:undertow-core",
         "ecosystem": "Maven",
+        "name": "io.undertow:undertow-core",
         "purl": "pkg:maven/io.undertow/undertow-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.3.0.Alpha1"
@@ -367,22 +330,59 @@
             {
               "fixed": "2.3.0.Alpha2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "2.3.0.Alpha1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/08/GHSA-95rf-557x-44g5/GHSA-95rf-557x-44g5.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2022-2053"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-400"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-08-18T18:49:44Z",
+    "nvd_published_at": "2022-08-05T16:15:00Z",
+    "severity": "HIGH"
+  },
+  "details": "When a POST request comes through AJP and the request exceeds the max-post-size limit (maxEntitySize), Undertow's AjpServerRequestConduit implementation closes a connection without sending any response to the client/proxy. This behavior results in that a front-end proxy marking the backend worker (application server) as an error state and not forward requests to the worker for a while. In mod_cluster, this continues until the next STATUS request (10 seconds intervals) from the application server updates the server state. So, in the worst case, it can result in \"All workers are in error state\" and mod_cluster responds \"503 Service Unavailable\" for a while (up to 10 seconds). In mod_proxy_balancer, it does not forward requests to the worker until the \"retry\" timeout passes. However, luckily, mod_proxy_balancer has \"forcerecovery\" setting (On by default; this parameter can force the immediate recovery of all workers without considering the retry parameter of the workers if all workers of a balancer are in error state.). So, unlike mod_cluster, mod_proxy_balancer does not result in responding \"503 Service Unavailable\". An attacker could use this behavior to send a malicious request and trigger server errors, resulting in DoS (denial of service). This flaw was fixed in Undertow 2.2.19.Final, Undertow 2.3.0.Alpha2.",
+  "id": "GHSA-95rf-557x-44g5",
+  "modified": "2023-11-08T04:08:02.254720Z",
+  "published": "2022-08-06T00:00:46Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-2053"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/undertow-io/undertow/pull/1350"
+    },
+    {
+      "type": "WEB",
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=2095862&comment#0"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/undertow-io/undertow"
+    },
+    {
+      "type": "WEB",
+      "url": "https://issues.redhat.com/browse/UNDERTOW-2133"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Undertow vulnerable to Dos via Large AJP request"
 }

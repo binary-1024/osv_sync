@@ -1,25 +1,71 @@
 {
-  "id": "GHSA-c5f4-p5wv-2475",
-  "summary": "xwiki.platform:xwiki-platform-panels-ui Eval Injection vulnerability",
-  "details": "### Impact\nAny user with edit rights can execute arbitrary Groovy, Python or Velocity code in XWiki leading to full access to the XWiki installation. The root cause is improper escaping of the included pages in the included documents edit panel.\n\nA proof of concept exploit is to edit a document and add the following code before saving.\n\n```\n{{display reference=\"{{cache~}~}{{groovy~}~}println(~\"Hello from Groovy~\" + ~\" in included document!~\"){{/groovy~}~}{{/cache~}~}\"/}}\n```\n\n**expected**\nThe right had side panels contain:\n```\nOne included page: \n{{cache}}{{groovy}}println(\"Hello from Groovy\" + \" in included document!\"){{/groovy}}{{/cache}}\n```\n\n**actual**\nThe right had side panels contain:\n```\nOne included page:\n    XWiki.Hello from Groovy in included document!\n```\n\n### Patches\nThe problem has been patched on XWiki 14.4.7, and 14.10.\n\n### Workarounds\nThe issue can be fixed manually applying this [patch](https://github.com/xwiki/xwiki-platform/commit/22f249a0eb9f2a64214628217e812a994419b69f#diff-a51a252f0190274464027342b4e3eafc4ae32de4d9c17ef166e54fc5454c5689R214-R217).\n\n### References\n- https://github.com/xwiki/xwiki-platform/commit/22f249a0eb9f2a64214628217e812a994419b69f#diff-a51a252f0190274464027342b4e3eafc4ae32de4d9c17ef166e54fc5454c5689R214-R217\n- https://jira.xwiki.org/browse/XWIKI-20293\n\n### For more information\nIf you have any questions or comments about this advisory:\n\n*    Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n*    Email us at [Security Mailing List](mailto:security@xwiki.org)\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-c5f4-p5wv-2475/GHSA-c5f4-p5wv-2475.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-panels-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-panels-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.0-rc-1"
+            },
+            {
+              "fixed": "14.4.7"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-c5f4-p5wv-2475/GHSA-c5f4-p5wv-2475.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.xwiki.platform:xwiki-platform-panels-ui",
+        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-panels-ui"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "14.5"
+            },
+            {
+              "fixed": "14.10"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
   "aliases": [
     "CVE-2023-29212"
   ],
-  "modified": "2023-11-08T04:12:18.003971Z",
-  "published": "2023-04-12T20:35:37Z",
-  "related": [
-    "CVE-2023-29212"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-04-16T07:15:00Z",
-    "github_reviewed_at": "2023-04-12T20:35:37Z",
-    "severity": "CRITICAL",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-94",
       "CWE-95"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-04-12T20:35:37Z",
+    "nvd_published_at": "2023-04-16T07:15:00Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\nAny user with edit rights can execute arbitrary Groovy, Python or Velocity code in XWiki leading to full access to the XWiki installation. The root cause is improper escaping of the included pages in the included documents edit panel.\n\nA proof of concept exploit is to edit a document and add the following code before saving.\n\n```\n{{display reference=\"{{cache~}~}{{groovy~}~}println(~\"Hello from Groovy~\" + ~\" in included document!~\"){{/groovy~}~}{{/cache~}~}\"/}}\n```\n\n**expected**\nThe right had side panels contain:\n```\nOne included page: \n{{cache}}{{groovy}}println(\"Hello from Groovy\" + \" in included document!\"){{/groovy}}{{/cache}}\n```\n\n**actual**\nThe right had side panels contain:\n```\nOne included page:\n    XWiki.Hello from Groovy in included document!\n```\n\n### Patches\nThe problem has been patched on XWiki 14.4.7, and 14.10.\n\n### Workarounds\nThe issue can be fixed manually applying this [patch](https://github.com/xwiki/xwiki-platform/commit/22f249a0eb9f2a64214628217e812a994419b69f#diff-a51a252f0190274464027342b4e3eafc4ae32de4d9c17ef166e54fc5454c5689R214-R217).\n\n### References\n- https://github.com/xwiki/xwiki-platform/commit/22f249a0eb9f2a64214628217e812a994419b69f#diff-a51a252f0190274464027342b4e3eafc4ae32de4d9c17ef166e54fc5454c5689R214-R217\n- https://jira.xwiki.org/browse/XWIKI-20293\n\n### For more information\nIf you have any questions or comments about this advisory:\n\n*    Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n*    Email us at [Security Mailing List](mailto:security@xwiki.org)\n",
+  "id": "GHSA-c5f4-p5wv-2475",
+  "modified": "2023-11-08T04:12:18.003971Z",
+  "published": "2023-04-12T20:35:37Z",
   "references": [
     {
       "type": "WEB",
@@ -42,61 +88,15 @@
       "url": "https://jira.xwiki.org/browse/XWIKI-20293"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-panels-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-panels-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.0-rc-1"
-            },
-            {
-              "fixed": "14.4.7"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-c5f4-p5wv-2475/GHSA-c5f4-p5wv-2475.json"
-      },
-      "versions": []
-    },
-    {
-      "package": {
-        "name": "org.xwiki.platform:xwiki-platform-panels-ui",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.xwiki.platform/xwiki-platform-panels-ui"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "14.5"
-            },
-            {
-              "fixed": "14.10"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-c5f4-p5wv-2475/GHSA-c5f4-p5wv-2475.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2023-29212"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "xwiki.platform:xwiki-platform-panels-ui Eval Injection vulnerability"
 }

@@ -1,26 +1,115 @@
 {
-  "id": "GHSA-vjv5-gp2w-65vm",
-  "summary": "Encoded URIs can access WEB-INF directory in Eclipse Jetty",
-  "details": "### Description\nURIs can be crafted using some encoded characters to access the content of the `WEB-INF` directory and/or bypass some security constraints.\nThis is a variation of the vulnerability reported in [CVE-2021-28164](https://nvd.nist.gov/vuln/detail/CVE-2021-28164)/[GHSA-v7ff-8wcx-gmc5](https://github.com/eclipse/jetty.project/security/advisories/GHSA-v7ff-8wcx-gmc5).\n\n### Impact\nThe default compliance mode allows requests with URIs that contain a %u002e segment to access protected resources within the WEB-INF directory. For example, a request to `/%u002e/WEB-INF/web.xml` can retrieve the web.xml file. This can reveal sensitive information regarding the implementation of a web application.  Similarly, an encoded null character can prevent correct normalization so that /.%00/WEB-INF/web.xml cal also retrieve the web.xml file.\n\n### Workarounds\nSome Jetty [rewrite rules](https://www.eclipse.org/jetty/documentation/jetty-9/index.html#rewrite-handler) can be deployed to rewrite any request containing encoded dot segments or null characters in the raw request URI, to a known not found resource:\n```xml\n<Call name=\"addRule\">\n  <Arg>\n    <New class=\"org.eclipse.jetty.rewrite.handler.RewriteRegexRule\">\n      <Set name=\"regex\">.*/(?:\\.+/)+.*</Set>\n      <Set name=\"replacement\">/WEB-INF/Not-Found</Set>\n    </New>\n  </Arg>\n</Call>\n<Call name=\"addRule\">\n  <Arg>\n    <New class=\"org.eclipse.jetty.rewrite.handler.ValidUrlRule\"/>\n  </Arg>\n</Call>\n```\n\n### Analysis\nPrior to 9.4.37, Jetty was protected from this style of attack by two lines of defense:\n + URIs were decoded first and then normalized for `.` and `..` sequences. Whilst this is not according to the RFC, it did remove relative segments that were encoded or parameterized and made the resulting URI paths safe from any repeated normalization (often done by URI manipulation and file system mapping).\n + The `FileResource` class treated any difference between absolute path and canonical path of a resource as an alias, and thus the resource would not be served by default.\n\nPrior to 9.4.37, the `FileResource` class was replaced by the `PathResource` class that did not treat normalization differences as aliases.  Then release 9.4.37 updated the URI parsing to be compliant with the RFC, in that normalization is done before decoding.   This allowed various encodings or adornments to relative path segments that would not be normalized by the pure RFC URI normalization, but were normalized by the file system, thus allowing protected resources to be accessed via an alias.  Specifically by decoding URIs after normalization, it left them vulnerable to any subsequent normalization (potentially after checking security constraints) changing the URI singificantly.  Such extra normalization is often down by URI manipulation code and file systems.\n\nWith Jetty releases 9.4.43, 10.0.6, 11.0.6, we have restored several lines of defense:\n + URIs are first decoded and then normalized which is not strictly according to the current RFC.  Since the normalization is done after decoding, the URI paths produced are safe from further normalisation and the referenced resource cannot easily be so changed after passing security constraints.\n + During URI parsing checks are made for some specific segments/characters that are possible to be seen ambiguously by an application (e.g. encode dot segments, encoded separators, empty segments, parameterized dot segments and/or null characters). So even though Jetty code handles these URIs correctly, there is a risk that an application may not do so, thus such requests are rejected with a 400 Bad Request unless a specific compliance mode is set.\n + Once decoded and normalized by initial URI processing, Jetty will not decode or normalize a received URI again within its own resource handling. This avoids to possibility of double decode attacks.\n + The `ContextHandler.getResource(String path)` method always checks that the passed path is normalized, only accepting a non normal path if approved by an AliasChecker.  This is the method that is directly used by Jetty resource serving.\n + The API methods like `ServletContext.getResource(String path)` will normalize the  prior to calling `ContextHandler.getResource(String path)`. This allows applications to use non normal paths.\n + The `PathResource` class now considers any difference in normal/canonical name between a request resource name and the found resource name  to be an alias, which will only be served if approved by an explicit `AliasChecker`\n\nIn summary, the defense is a front line of detection of specific known URI alias attacks, with the last line defense of not allowing any aliasing of resources.\n\nMany thanks to @cangqingzhe from @CloverSecLabs for reporting this issue. ",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-vjv5-gp2w-65vm/GHSA-vjv5-gp2w-65vm.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.4.37"
+            },
+            {
+              "fixed": "9.4.43"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "9.4.37.v20210219",
+        "9.4.38.v20210224",
+        "9.4.39.v20210325",
+        "9.4.40.v20210413",
+        "9.4.41.v20210516",
+        "9.4.42.v20210604"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-vjv5-gp2w-65vm/GHSA-vjv5-gp2w-65vm.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.1"
+            },
+            {
+              "fixed": "10.0.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "10.0.1",
+        "10.0.2",
+        "10.0.3",
+        "10.0.4",
+        "10.0.5"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-vjv5-gp2w-65vm/GHSA-vjv5-gp2w-65vm.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-webapp",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.1"
+            },
+            {
+              "fixed": "11.0.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "11.0.1",
+        "11.0.2",
+        "11.0.3",
+        "11.0.4",
+        "11.0.5"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-34429"
   ],
-  "modified": "2024-03-08T05:16:35.196736Z",
-  "published": "2021-07-19T15:15:24Z",
-  "related": [
-    "CVE-2021-34429"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-07-15T17:15:00Z",
     "cwe_ids": [
       "CWE-200",
       "CWE-551",
       "CWE-863"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-07-15T21:33:21Z"
+    "github_reviewed_at": "2021-07-15T21:33:21Z",
+    "nvd_published_at": "2021-07-15T17:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Description\nURIs can be crafted using some encoded characters to access the content of the `WEB-INF` directory and/or bypass some security constraints.\nThis is a variation of the vulnerability reported in [CVE-2021-28164](https://nvd.nist.gov/vuln/detail/CVE-2021-28164)/[GHSA-v7ff-8wcx-gmc5](https://github.com/eclipse/jetty.project/security/advisories/GHSA-v7ff-8wcx-gmc5).\n\n### Impact\nThe default compliance mode allows requests with URIs that contain a %u002e segment to access protected resources within the WEB-INF directory. For example, a request to `/%u002e/WEB-INF/web.xml` can retrieve the web.xml file. This can reveal sensitive information regarding the implementation of a web application.  Similarly, an encoded null character can prevent correct normalization so that /.%00/WEB-INF/web.xml cal also retrieve the web.xml file.\n\n### Workarounds\nSome Jetty [rewrite rules](https://www.eclipse.org/jetty/documentation/jetty-9/index.html#rewrite-handler) can be deployed to rewrite any request containing encoded dot segments or null characters in the raw request URI, to a known not found resource:\n```xml\n<Call name=\"addRule\">\n  <Arg>\n    <New class=\"org.eclipse.jetty.rewrite.handler.RewriteRegexRule\">\n      <Set name=\"regex\">.*/(?:\\.+/)+.*</Set>\n      <Set name=\"replacement\">/WEB-INF/Not-Found</Set>\n    </New>\n  </Arg>\n</Call>\n<Call name=\"addRule\">\n  <Arg>\n    <New class=\"org.eclipse.jetty.rewrite.handler.ValidUrlRule\"/>\n  </Arg>\n</Call>\n```\n\n### Analysis\nPrior to 9.4.37, Jetty was protected from this style of attack by two lines of defense:\n + URIs were decoded first and then normalized for `.` and `..` sequences. Whilst this is not according to the RFC, it did remove relative segments that were encoded or parameterized and made the resulting URI paths safe from any repeated normalization (often done by URI manipulation and file system mapping).\n + The `FileResource` class treated any difference between absolute path and canonical path of a resource as an alias, and thus the resource would not be served by default.\n\nPrior to 9.4.37, the `FileResource` class was replaced by the `PathResource` class that did not treat normalization differences as aliases.  Then release 9.4.37 updated the URI parsing to be compliant with the RFC, in that normalization is done before decoding.   This allowed various encodings or adornments to relative path segments that would not be normalized by the pure RFC URI normalization, but were normalized by the file system, thus allowing protected resources to be accessed via an alias.  Specifically by decoding URIs after normalization, it left them vulnerable to any subsequent normalization (potentially after checking security constraints) changing the URI singificantly.  Such extra normalization is often down by URI manipulation code and file systems.\n\nWith Jetty releases 9.4.43, 10.0.6, 11.0.6, we have restored several lines of defense:\n + URIs are first decoded and then normalized which is not strictly according to the current RFC.  Since the normalization is done after decoding, the URI paths produced are safe from further normalisation and the referenced resource cannot easily be so changed after passing security constraints.\n + During URI parsing checks are made for some specific segments/characters that are possible to be seen ambiguously by an application (e.g. encode dot segments, encoded separators, empty segments, parameterized dot segments and/or null characters). So even though Jetty code handles these URIs correctly, there is a risk that an application may not do so, thus such requests are rejected with a 400 Bad Request unless a specific compliance mode is set.\n + Once decoded and normalized by initial URI processing, Jetty will not decode or normalize a received URI again within its own resource handling. This avoids to possibility of double decode attacks.\n + The `ContextHandler.getResource(String path)` method always checks that the passed path is normalized, only accepting a non normal path if approved by an AliasChecker.  This is the method that is directly used by Jetty resource serving.\n + The API methods like `ServletContext.getResource(String path)` will normalize the  prior to calling `ContextHandler.getResource(String path)`. This allows applications to use non normal paths.\n + The `PathResource` class now considers any difference in normal/canonical name between a request resource name and the found resource name  to be an alias, which will only be served if approved by an explicit `AliasChecker`\n\nIn summary, the defense is a front line of detection of specific known URI alias attacks, with the last line defense of not allowing any aliasing of resources.\n\nMany thanks to @cangqingzhe from @CloverSecLabs for reporting this issue. ",
+  "id": "GHSA-vjv5-gp2w-65vm",
+  "modified": "2024-03-08T05:16:35.196736Z",
+  "published": "2021-07-19T15:15:24Z",
   "references": [
     {
       "type": "WEB",
@@ -187,104 +276,15 @@
       "url": "https://lists.apache.org/thread.html/r756443e9d50af7e8c3df82e2c45105f452c8e8195ddbc0c00f58d5fe@%3Ccommits.kafka.apache.org%3E"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "9.4.37"
-            },
-            {
-              "fixed": "9.4.43"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "9.4.37.v20210219",
-        "9.4.38.v20210224",
-        "9.4.39.v20210325",
-        "9.4.40.v20210413",
-        "9.4.41.v20210516",
-        "9.4.42.v20210604"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-vjv5-gp2w-65vm/GHSA-vjv5-gp2w-65vm.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "10.0.1"
-            },
-            {
-              "fixed": "10.0.6"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "10.0.1",
-        "10.0.2",
-        "10.0.3",
-        "10.0.4",
-        "10.0.5"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-vjv5-gp2w-65vm/GHSA-vjv5-gp2w-65vm.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-webapp",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-webapp"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "11.0.1"
-            },
-            {
-              "fixed": "11.0.6"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "11.0.1",
-        "11.0.2",
-        "11.0.3",
-        "11.0.4",
-        "11.0.5"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-vjv5-gp2w-65vm/GHSA-vjv5-gp2w-65vm.json"
-      }
-    }
+  "related": [
+    "CVE-2021-34429"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Encoded URIs can access WEB-INF directory in Eclipse Jetty"
 }

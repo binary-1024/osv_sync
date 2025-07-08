@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-558p-m34m-vpmq",
-  "summary": "Potential leak of authentication data to 3rd parties",
-  "details": "### Impact\nUsers of typed-rest-client library version 1.7.3 or lower are vulnerable to leak authentication data to 3rd parties. \n\nThe flow of the vulnerability is as follows:\n\n1. Send any request with `BasicCredentialHandler`, `BearerCredentialHandler` or `PersonalAccessTokenCredentialHandler` \n2. The target host may return a redirection (3xx), with a link to a second host.\n3. The next request will use the credentials to authenticate with the second host, by setting the `Authorization` header.\n\nThe expected behavior is that the next request will *NOT* set the `Authorization` header.\n\n\n### Patches\nThe problem was fixed on April 1st 2020.\n\n\n### Workarounds\nThere is no workaround.\n\n### References\nThis is similar to the following issues in nature:\n1. [HTTP authentication leak in redirects](https://curl.haxx.se/docs/CVE-2018-1000007.html) - I used the same solution as CURL did.\n2. [CVE-2018-1000007](https://nvd.nist.gov/vuln/detail/CVE-2018-1000007).",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-558p-m34m-vpmq/GHSA-558p-m34m-vpmq.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "typed-rest-client",
+        "purl": "pkg:npm/typed-rest-client"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.8.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-30846"
   ],
-  "modified": "2023-11-08T04:12:27.446976Z",
-  "published": "2023-04-27T14:02:11Z",
-  "related": [
-    "CVE-2023-30846"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-04-26T21:15:09Z",
     "cwe_ids": [
       "CWE-522"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-04-27T14:02:11Z"
+    "github_reviewed_at": "2023-04-27T14:02:11Z",
+    "nvd_published_at": "2023-04-26T21:15:09Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\nUsers of typed-rest-client library version 1.7.3 or lower are vulnerable to leak authentication data to 3rd parties. \n\nThe flow of the vulnerability is as follows:\n\n1. Send any request with `BasicCredentialHandler`, `BearerCredentialHandler` or `PersonalAccessTokenCredentialHandler` \n2. The target host may return a redirection (3xx), with a link to a second host.\n3. The next request will use the credentials to authenticate with the second host, by setting the `Authorization` header.\n\nThe expected behavior is that the next request will *NOT* set the `Authorization` header.\n\n\n### Patches\nThe problem was fixed on April 1st 2020.\n\n\n### Workarounds\nThere is no workaround.\n\n### References\nThis is similar to the following issues in nature:\n1. [HTTP authentication leak in redirects](https://curl.haxx.se/docs/CVE-2018-1000007.html) - I used the same solution as CURL did.\n2. [CVE-2018-1000007](https://nvd.nist.gov/vuln/detail/CVE-2018-1000007).",
+  "id": "GHSA-558p-m34m-vpmq",
+  "modified": "2023-11-08T04:12:27.446976Z",
+  "published": "2023-04-27T14:02:11Z",
   "references": [
     {
       "type": "WEB",
@@ -45,36 +66,15 @@
       "url": "https://security.netapp.com/advisory/ntap-20230601-0008"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "typed-rest-client",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/typed-rest-client"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.8.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-558p-m34m-vpmq/GHSA-558p-m34m-vpmq.json"
-      }
-    }
+  "related": [
+    "CVE-2023-30846"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Potential leak of authentication data to 3rd parties"
 }

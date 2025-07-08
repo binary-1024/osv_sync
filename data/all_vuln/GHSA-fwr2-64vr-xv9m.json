@@ -1,27 +1,94 @@
 {
-  "id": "GHSA-fwr2-64vr-xv9m",
-  "summary": "Argo CD cluster secret might leak in cluster details page",
-  "details": "### Impact\n\nArgo CD Cluster secrets might be managed declaratively using Argo CD / kubectl apply. As a result, the full secret body is stored in`kubectl.kubernetes.io/last-applied-configuration` annotation. \n\nhttps://github.com/argoproj/argo-cd/pull/7139 introduced the ability to manage cluster labels and annotations. Since clusters are stored as secrets it also exposes the `kubectl.kubernetes.io/last-applied-configuration` annotation which includes full secret body. In order to view the cluster annotations via the Argo CD API, the user must have `clusters, get` RBAC access.\n\n**Note:** In many cases, cluster secrets do not contain any actually-secret information. But sometimes, as in bearer-token auth, the contents might be very sensitive.\n\n### Patches\n\nThe bug has been patched in the following versions:\n\n* 2.8.3\n* 2.7.14\n* 2.6.15\n\n### Workarounds\n\nUpdate/Deploy cluster secret with `server-side-apply` flag which does not use or rely on `kubectl.kubernetes.io/last-applied-configuration` annotation. Note: annotation for existing secrets will require manual removal.\n\n### For more information\n\n* Open an issue in [the Argo CD issue tracker](https://github.com/argoproj/argo-cd/issues) or [discussions](https://github.com/argoproj/argo-cd/discussions)\n* Join us on [Slack](https://argoproj.github.io/community/join-slack) in channel #argo-cd",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-fwr2-64vr-xv9m/GHSA-fwr2-64vr-xv9m.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/argoproj/argo-cd/v2",
+        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.2.0"
+            },
+            {
+              "fixed": "2.6.15"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-fwr2-64vr-xv9m/GHSA-fwr2-64vr-xv9m.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/argoproj/argo-cd/v2",
+        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.7.0"
+            },
+            {
+              "fixed": "2.7.14"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-fwr2-64vr-xv9m/GHSA-fwr2-64vr-xv9m.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/argoproj/argo-cd/v2",
+        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0"
+            },
+            {
+              "fixed": "2.8.3"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-argo-cd-2023-40029",
     "CVE-2023-40029",
     "GO-2023-2049"
   ],
-  "modified": "2024-08-21T14:41:49.397772Z",
-  "published": "2023-09-11T12:59:30Z",
-  "related": [
-    "CVE-2023-40029"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-09-07T23:15:09Z",
     "cwe_ids": [
       "CWE-200",
       "CWE-532"
     ],
-    "severity": "CRITICAL",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-09-11T12:59:30Z"
+    "github_reviewed_at": "2023-09-11T12:59:30Z",
+    "nvd_published_at": "2023-09-07T23:15:09Z",
+    "severity": "CRITICAL"
   },
+  "details": "### Impact\n\nArgo CD Cluster secrets might be managed declaratively using Argo CD / kubectl apply. As a result, the full secret body is stored in`kubectl.kubernetes.io/last-applied-configuration` annotation. \n\nhttps://github.com/argoproj/argo-cd/pull/7139 introduced the ability to manage cluster labels and annotations. Since clusters are stored as secrets it also exposes the `kubectl.kubernetes.io/last-applied-configuration` annotation which includes full secret body. In order to view the cluster annotations via the Argo CD API, the user must have `clusters, get` RBAC access.\n\n**Note:** In many cases, cluster secrets do not contain any actually-secret information. But sometimes, as in bearer-token auth, the contents might be very sensitive.\n\n### Patches\n\nThe bug has been patched in the following versions:\n\n* 2.8.3\n* 2.7.14\n* 2.6.15\n\n### Workarounds\n\nUpdate/Deploy cluster secret with `server-side-apply` flag which does not use or rely on `kubectl.kubernetes.io/last-applied-configuration` annotation. Note: annotation for existing secrets will require manual removal.\n\n### For more information\n\n* Open an issue in [the Argo CD issue tracker](https://github.com/argoproj/argo-cd/issues) or [discussions](https://github.com/argoproj/argo-cd/discussions)\n* Join us on [Slack](https://argoproj.github.io/community/join-slack) in channel #argo-cd",
+  "id": "GHSA-fwr2-64vr-xv9m",
+  "modified": "2024-08-21T14:41:49.397772Z",
+  "published": "2023-09-11T12:59:30Z",
   "references": [
     {
       "type": "WEB",
@@ -64,82 +131,15 @@
       "url": "https://github.com/argoproj/argo-cd/releases/tag/v2.8.3"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/argoproj/argo-cd/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.2.0"
-            },
-            {
-              "fixed": "2.6.15"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-fwr2-64vr-xv9m/GHSA-fwr2-64vr-xv9m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/argoproj/argo-cd/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.7.0"
-            },
-            {
-              "fixed": "2.7.14"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-fwr2-64vr-xv9m/GHSA-fwr2-64vr-xv9m.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/argoproj/argo-cd/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/argoproj/argo-cd/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.8.0"
-            },
-            {
-              "fixed": "2.8.3"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-fwr2-64vr-xv9m/GHSA-fwr2-64vr-xv9m.json"
-      }
-    }
+  "related": [
+    "CVE-2023-40029"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Argo CD cluster secret might leak in cluster details page"
 }

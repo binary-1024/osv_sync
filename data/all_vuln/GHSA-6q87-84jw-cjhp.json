@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-6q87-84jw-cjhp",
-  "summary": "@sveltejs/kit vulnerable to Cross-site Scripting via tracked search_params",
-  "details": "### Summary\n\nUnsanitized search param names cause XSS vulnerability. You are affected if you iterate over all entries of `event.url.searchParams` inside a server `load` function. Attackers can exploit it by crafting a malicious URL and getting a user to click a link with said URL.\n\n### Details\n\nSvelteKit tracks which parameters in `event.url.searchParams` are read inside server `load` functions. If the application iterates over the these parameters, the `uses.search_params` array included in the boot script (embedded in the server-rendered HTML) will have any search param name included in unsanitized form.\n\n`packages/kit/src/runtime/server/utils.js:150` has the `stringify_uses(node)` function which prints these out.\n\n### Reproduction\n\nIn a `+page.server.js` or `+layout.server.js`:\n\n```js\n/** @type {import('@sveltejs/kit').Load} */\nexport function load(event) {\n  const values = {};\n\n  for (const key of event.url.searchParams.keys()) {\n    values[key] = event.url.searchParams.get(key);\n  }\n}\n```\n\nIf a user visits the page in question via a link containing `?</script/><script>window.pwned%3D1</script/>`, the `</script>` will be included verbatim in the payload, causing the embedded script to be executed.\n\nIt is not necessary to return the parameter value from `load` or render it in the page, only to read it (which causes it to be tracked as a dependency) while `load` is running.\n\n### Impact\n\nAny application that iterates over all values in `event.url.searchParams` in a `load` function in `+page.server.js` or `+layout.server.js` (directly or indirectly) is vulnerable to XSS.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-6q87-84jw-cjhp/GHSA-6q87-84jw-cjhp.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sveltejs/kit",
+        "purl": "pkg:npm/%40sveltejs/kit"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0"
+            },
+            {
+              "fixed": "2.20.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-32388"
   ],
-  "modified": "2025-04-16T00:40:49Z",
-  "published": "2025-04-14T19:10:42Z",
   "database_specific": {
-    "nvd_published_at": "2025-04-15T23:15:42Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-04-14T19:10:42Z"
+    "github_reviewed_at": "2025-04-14T19:10:42Z",
+    "nvd_published_at": "2025-04-15T23:15:42Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\n\nUnsanitized search param names cause XSS vulnerability. You are affected if you iterate over all entries of `event.url.searchParams` inside a server `load` function. Attackers can exploit it by crafting a malicious URL and getting a user to click a link with said URL.\n\n### Details\n\nSvelteKit tracks which parameters in `event.url.searchParams` are read inside server `load` functions. If the application iterates over the these parameters, the `uses.search_params` array included in the boot script (embedded in the server-rendered HTML) will have any search param name included in unsanitized form.\n\n`packages/kit/src/runtime/server/utils.js:150` has the `stringify_uses(node)` function which prints these out.\n\n### Reproduction\n\nIn a `+page.server.js` or `+layout.server.js`:\n\n```js\n/** @type {import('@sveltejs/kit').Load} */\nexport function load(event) {\n  const values = {};\n\n  for (const key of event.url.searchParams.keys()) {\n    values[key] = event.url.searchParams.get(key);\n  }\n}\n```\n\nIf a user visits the page in question via a link containing `?</script/><script>window.pwned%3D1</script/>`, the `</script>` will be included verbatim in the payload, causing the embedded script to be executed.\n\nIt is not necessary to return the parameter value from `load` or render it in the page, only to read it (which causes it to be tracked as a dependency) while `load` is running.\n\n### Impact\n\nAny application that iterates over all values in `event.url.searchParams` in a `load` function in `+page.server.js` or `+layout.server.js` (directly or indirectly) is vulnerable to XSS.",
+  "id": "GHSA-6q87-84jw-cjhp",
+  "modified": "2025-04-16T00:40:49Z",
+  "published": "2025-04-14T19:10:42Z",
   "references": [
     {
       "type": "WEB",
@@ -38,36 +62,12 @@
       "url": "https://github.com/sveltejs/kit/releases/tag/%40sveltejs%2Fkit%402.20.6"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@sveltejs/kit",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40sveltejs/kit"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.0.0"
-            },
-            {
-              "fixed": "2.20.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/04/GHSA-6q87-84jw-cjhp/GHSA-6q87-84jw-cjhp.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "@sveltejs/kit vulnerable to Cross-site Scripting via tracked search_params"
 }

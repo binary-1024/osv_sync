@@ -1,32 +1,73 @@
 {
-  "id": "GHSA-mr45-rx8q-wcm9",
-  "summary": "xkeys seal encryption used fixed key for all encryption",
-  "details": "## Background\n\nNATS.io is a high performance open source pub-sub distributed communication technology, built for the cloud, on-premise, IoT, and edge computing.\n\nThe cryptographic key handling library, nkeys, recently gained support for encryption, not just for signing/authentication.  This is used in nats-server 2.10 (Sep 2023) and newer for authentication callouts.\n\n## Problem Description\n\nThe nkeys library's \"xkeys\" encryption handling logic mistakenly passed an array by value into an internal function, where the function mutated that buffer to populate the encryption key to use.  As a result, all encryption was actually to an all-zeros key.\n\nThis affects encryption only, not signing.  \nFIXME: FILL IN IMPACT ON NATS-SERVER AUTH CALLOUT SECURITY.\n\n## Affected versions\n\nnkeys Go library:\n * 0.4.0 up to and including 0.4.5\n * Fixed with nats-io/nkeys: 0.4.6\n\nNATS Server:\n * 2.10.0 up to and including 2.10.3\n * Fixed with nats-io/nats-server: 2.10.4\n\n## Solution\n\nUpgrade the nats-server.  \nFor any application handling auth callouts in Go, if using the nkeys library, update the dependency, recompile and deploy that in lockstep.\n\n## Credits\n\nProblem reported by Quentin Matillat (GitHub @tinou98).",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 0.4.5",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-mr45-rx8q-wcm9/GHSA-mr45-rx8q-wcm9.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/nats-io/nkeys",
+        "purl": "pkg:golang/github.com/nats-io/nkeys"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.4.0"
+            },
+            {
+              "fixed": "0.4.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.10.3",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-mr45-rx8q-wcm9/GHSA-mr45-rx8q-wcm9.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/nats-io/nats-server/v2",
+        "purl": "pkg:golang/github.com/nats-io/nats-server/v2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.10.0"
+            },
+            {
+              "fixed": "2.10.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "BIT-nats-2023-46129",
     "CVE-2023-46129",
     "GO-2023-2163"
   ],
-  "modified": "2023-11-09T08:11:22.120105Z",
-  "published": "2023-10-31T21:19:02Z",
-  "related": [
-    "CGA-2w78-q45x-gfh2",
-    "CGA-56cg-qwp6-wxr6",
-    "CGA-7jcp-vfhv-643j",
-    "CGA-96wh-4fvq-2h43",
-    "CGA-vr4h-v25q-p87j",
-    "CVE-2023-46129"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-10-31T00:15:09Z",
     "cwe_ids": [
       "CWE-321",
       "CWE-325"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-10-31T21:19:02Z"
+    "github_reviewed_at": "2023-10-31T21:19:02Z",
+    "nvd_published_at": "2023-10-31T00:15:09Z",
+    "severity": "HIGH"
   },
+  "details": "## Background\n\nNATS.io is a high performance open source pub-sub distributed communication technology, built for the cloud, on-premise, IoT, and edge computing.\n\nThe cryptographic key handling library, nkeys, recently gained support for encryption, not just for signing/authentication.  This is used in nats-server 2.10 (Sep 2023) and newer for authentication callouts.\n\n## Problem Description\n\nThe nkeys library's \"xkeys\" encryption handling logic mistakenly passed an array by value into an internal function, where the function mutated that buffer to populate the encryption key to use.  As a result, all encryption was actually to an all-zeros key.\n\nThis affects encryption only, not signing.  \nFIXME: FILL IN IMPACT ON NATS-SERVER AUTH CALLOUT SECURITY.\n\n## Affected versions\n\nnkeys Go library:\n * 0.4.0 up to and including 0.4.5\n * Fixed with nats-io/nkeys: 0.4.6\n\nNATS Server:\n * 2.10.0 up to and including 2.10.3\n * Fixed with nats-io/nats-server: 2.10.4\n\n## Solution\n\nUpgrade the nats-server.  \nFor any application handling auth callouts in Go, if using the nkeys library, update the dependency, recompile and deploy that in lockstep.\n\n## Credits\n\nProblem reported by Quentin Matillat (GitHub @tinou98).",
+  "id": "GHSA-mr45-rx8q-wcm9",
+  "modified": "2023-11-09T08:11:22.120105Z",
+  "published": "2023-10-31T21:19:02Z",
   "references": [
     {
       "type": "WEB",
@@ -57,61 +98,20 @@
       "url": "http://www.openwall.com/lists/oss-security/2023/10/31/1"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "github.com/nats-io/nkeys",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/nats-io/nkeys"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.4.0"
-            },
-            {
-              "fixed": "0.4.6"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 0.4.5",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-mr45-rx8q-wcm9/GHSA-mr45-rx8q-wcm9.json"
-      }
-    },
-    {
-      "package": {
-        "name": "github.com/nats-io/nats-server/v2",
-        "ecosystem": "Go",
-        "purl": "pkg:golang/github.com/nats-io/nats-server/v2"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "2.10.0"
-            },
-            {
-              "fixed": "2.10.4"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.10.3",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-mr45-rx8q-wcm9/GHSA-mr45-rx8q-wcm9.json"
-      }
-    }
+  "related": [
+    "CGA-2w78-q45x-gfh2",
+    "CGA-56cg-qwp6-wxr6",
+    "CGA-7jcp-vfhv-643j",
+    "CGA-96wh-4fvq-2h43",
+    "CGA-vr4h-v25q-p87j",
+    "CVE-2023-46129"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "xkeys seal encryption used fixed key for all encryption"
 }

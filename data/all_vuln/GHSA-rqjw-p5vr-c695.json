@@ -1,25 +1,69 @@
 {
-  "id": "GHSA-rqjw-p5vr-c695",
-  "summary": "Basic-auth app bundle credential exposure in gatsby-source-wordpress",
-  "details": "### Impact\nThe gatsby-source-wordpress plugin prior to versions 4.0.8 and 5.9.2 leaks .htaccess HTTP Basic Authentication variables into the app.js bundle during build-time.  Users who are not initializing basic authentication credentials in the gatsby-config.js are not affected.\n\nExample affected gatsby-config.js:\n```\n      resolve: 'gatsby-source-wordpress',\n        auth: {\n          htaccess: {\n            username: leaked_username\n            password: leaked_password,\n          },\n        },\n```\n\n### Patches\nA patch has been introduced in gatsby-source-wordpress@4.0.8 and gatsby-source-wordpress@5.9.2 which mitigates the issue by filtering all variables specified in the `auth: { }` section.  Users that depend on this functionality are advised to upgrade to the latest release of gatsby-source-wordpress, run `gatsby clean` followed by a `gatsby build`.\n\n\n### Workarounds\nThere is no known workaround at this time, other than manually editing the app.js file post-build.\n\n\n### For more information\nEmail us at [security@gatsbyjs.com](mailto:security@gatsbyjs.com)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-rqjw-p5vr-c695/GHSA-rqjw-p5vr-c695.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "gatsby-source-wordpress",
+        "purl": "pkg:npm/gatsby-source-wordpress"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.0.8"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-rqjw-p5vr-c695/GHSA-rqjw-p5vr-c695.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "gatsby-source-wordpress",
+        "purl": "pkg:npm/gatsby-source-wordpress"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.0.0"
+            },
+            {
+              "fixed": "5.9.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-32770"
   ],
-  "modified": "2023-11-08T04:05:59.846184Z",
-  "published": "2021-07-19T15:21:41Z",
-  "related": [
-    "CVE-2021-32770"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-07-15T19:15:00Z",
-    "github_reviewed_at": "2021-07-15T20:28:20Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-200",
       "CWE-522"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-07-15T20:28:20Z",
+    "nvd_published_at": "2021-07-15T19:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nThe gatsby-source-wordpress plugin prior to versions 4.0.8 and 5.9.2 leaks .htaccess HTTP Basic Authentication variables into the app.js bundle during build-time.  Users who are not initializing basic authentication credentials in the gatsby-config.js are not affected.\n\nExample affected gatsby-config.js:\n```\n      resolve: 'gatsby-source-wordpress',\n        auth: {\n          htaccess: {\n            username: leaked_username\n            password: leaked_password,\n          },\n        },\n```\n\n### Patches\nA patch has been introduced in gatsby-source-wordpress@4.0.8 and gatsby-source-wordpress@5.9.2 which mitigates the issue by filtering all variables specified in the `auth: { }` section.  Users that depend on this functionality are advised to upgrade to the latest release of gatsby-source-wordpress, run `gatsby clean` followed by a `gatsby build`.\n\n\n### Workarounds\nThere is no known workaround at this time, other than manually editing the app.js file post-build.\n\n\n### For more information\nEmail us at [security@gatsbyjs.com](mailto:security@gatsbyjs.com)",
+  "id": "GHSA-rqjw-p5vr-c695",
+  "modified": "2023-11-08T04:05:59.846184Z",
+  "published": "2021-07-19T15:21:41Z",
   "references": [
     {
       "type": "WEB",
@@ -30,59 +74,15 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-32770"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "gatsby-source-wordpress",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/gatsby-source-wordpress"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "4.0.8"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-rqjw-p5vr-c695/GHSA-rqjw-p5vr-c695.json"
-      }
-    },
-    {
-      "package": {
-        "name": "gatsby-source-wordpress",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/gatsby-source-wordpress"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "5.0.0"
-            },
-            {
-              "fixed": "5.9.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/07/GHSA-rqjw-p5vr-c695/GHSA-rqjw-p5vr-c695.json"
-      }
-    }
+  "related": [
+    "CVE-2021-32770"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Basic-auth app bundle credential exposure in gatsby-source-wordpress"
 }

@@ -1,46 +1,16 @@
 {
-  "id": "GHSA-cw7j-v52w-fp5r",
-  "summary": "copyparty vulnerable to reflected cross-site scripting via hc parameter",
-  "details": "### Summary\nThe application contains a reflected cross-site scripting via URL-parameter `?hc=...`\n\n### Details\nA reflected cross-site scripting (XSS) vulnerability exists in the web interface of the application that could allow an attacker to execute malicious javascript code by tricking users into accessing a malicious link.\n\nThe worst-case outcome of this is being able to move or delete existing files on the server, or upload new files, using the account of the person who clicks the malicious link.\n\nIt is recommended to change the passwords of  your copyparty accounts, unless you have inspected your logs and found no trace of attacks.\n\n### Checking for exposure\nif copyparty is running behind a reverse proxy, you can check the access-logs for traces of attacks, by grepping for URLs containing `?hc=` with `<` somewhere in its value, for example using the following command:\n* nginx:\n  ```bash\n  (gzip -dc access.log*.gz; cat access.log) | sed -r 's/\" [0-9]+ .*//' | grep -E '[?&](hc|pw)=.*[<>]'\n  ```\n\n\n### PoC\n* `http://127.0.0.1:3923/?hc=\"><script>alert(1);</script>`\n* `http://127.0.0.1:3923/?pw=<script>alert(1);</script>`",
-  "modified": "2025-02-14T05:29:37.302731Z",
-  "published": "2023-07-21T20:20:56Z",
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-79"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-07-21T20:20:56Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/9001/copyparty/security/advisories/GHSA-cw7j-v52w-fp5r"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/9001/copyparty/commit/0778da6c4d04de870c61f970763a7b619094093c"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/9001/copyparty"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/9001/copyparty/releases/tag/v1.8.6"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-cw7j-v52w-fp5r/GHSA-cw7j-v52w-fp5r.json"
+      },
       "package": {
-        "name": "copyparty",
         "ecosystem": "PyPI",
+        "name": "copyparty",
         "purl": "pkg:pypi/copyparty"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -48,7 +18,8 @@
             {
               "fixed": "1.8.6"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -281,17 +252,46 @@
         "1.8.2",
         "1.8.3",
         "1.8.4"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-cw7j-v52w-fp5r/GHSA-cw7j-v52w-fp5r.json"
-      }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-07-21T20:20:56Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\nThe application contains a reflected cross-site scripting via URL-parameter `?hc=...`\n\n### Details\nA reflected cross-site scripting (XSS) vulnerability exists in the web interface of the application that could allow an attacker to execute malicious javascript code by tricking users into accessing a malicious link.\n\nThe worst-case outcome of this is being able to move or delete existing files on the server, or upload new files, using the account of the person who clicks the malicious link.\n\nIt is recommended to change the passwords of  your copyparty accounts, unless you have inspected your logs and found no trace of attacks.\n\n### Checking for exposure\nif copyparty is running behind a reverse proxy, you can check the access-logs for traces of attacks, by grepping for URLs containing `?hc=` with `<` somewhere in its value, for example using the following command:\n* nginx:\n  ```bash\n  (gzip -dc access.log*.gz; cat access.log) | sed -r 's/\" [0-9]+ .*//' | grep -E '[?&](hc|pw)=.*[<>]'\n  ```\n\n\n### PoC\n* `http://127.0.0.1:3923/?hc=\"><script>alert(1);</script>`\n* `http://127.0.0.1:3923/?pw=<script>alert(1);</script>`",
+  "id": "GHSA-cw7j-v52w-fp5r",
+  "modified": "2025-02-14T05:29:37.302731Z",
+  "published": "2023-07-21T20:20:56Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/9001/copyparty/security/advisories/GHSA-cw7j-v52w-fp5r"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/9001/copyparty/commit/0778da6c4d04de870c61f970763a7b619094093c"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/9001/copyparty"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/9001/copyparty/releases/tag/v1.8.6"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "copyparty vulnerable to reflected cross-site scripting via hc parameter"
 }

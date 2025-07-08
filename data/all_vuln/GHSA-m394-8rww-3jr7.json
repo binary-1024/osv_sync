@@ -1,26 +1,141 @@
 {
-  "id": "GHSA-m394-8rww-3jr7",
-  "summary": "DOS vulnerability for Quoted Quality CSV headers",
-  "details": "### Impact\nWhen Jetty handles a request containing request headers with a large number of \u201cquality\u201d (i.e. q) parameters (such as what are seen on the `Accept`, `Accept-Encoding`, and `Accept-Language` request headers), the server may enter a denial of service (DoS) state due to high CPU usage while sorting the list of values based on their quality values.  A single request can easily consume minutes of CPU time before it is even dispatched to the application.\n\nThe only features within Jetty that can trigger this behavior are:\n\n- Default Error Handling - the `Accept` request header with the `QuotedQualityCSV` is used to determine what kind of content to send back to the client (html, text, json, xml, etc)\n- `StatisticsServlet` - uses the `Accept` request header with the `QuotedQualityCSV` to determine what kind of content to send back to the client (xml, json, text, html, etc)\n- `HttpServletRequest.getLocale()` - uses the `Accept-Language` request header with the `QuotedQualityCSV` to determine which \u201cpreferred\u201d language is returned on this call.\n- `HttpservletRequest.getLocales()` - is similar to the above, but returns an ordered list of locales based on the quality values on the `Accept-Language` request header.\n- `DefaultServlet` - uses the `Accept-Encoding` request header with the `QuotedQualityCSV` to determine which kind of pre-compressed content should be sent back for static content (content that is not matched against a url-pattern in your web app)\n\n### Versions\n`QuotedQualityCSV` was introduced to Jetty 9.3.9.v20160517 and the bug that introduced the vulnerability was in 9.4.6.v20170531. \n\nCurrently, known vulnerable versions include:\n\n- 9.4.6.v20170531 thru to 9.4.36.v20210114\n- 10.0.0\n- 11.0.0\n\n### Workarounds\n\nQuality ordered values are used infrequently by jetty so they can be avoided by:\n\n * Do not use the default error page/handler.\n * Do not deploy the `StatisticsServlet` exposed to the network\n * Do not call `getLocale` API\n * Do not enable precompressed static content in the `DefaultServlet` \n\n### Patches\n\nAll patches are available for download from the Eclipse Jetty website at [https://www.eclipse.org/jetty/download.php](https://www.eclipse.org/jetty/download.php)\n- 9.4.37.v20210219 and greater\n- 10.0.1 and greater \n- 11.0.1 and greater",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/03/GHSA-m394-8rww-3jr7/GHSA-m394-8rww-3jr7.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "9.4.6"
+            },
+            {
+              "fixed": "9.4.37"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "9.4.10.RC0",
+        "9.4.10.RC1",
+        "9.4.10.v20180503",
+        "9.4.11.v20180605",
+        "9.4.12.RC0",
+        "9.4.12.RC1",
+        "9.4.12.RC2",
+        "9.4.12.v20180830",
+        "9.4.13.v20181111",
+        "9.4.14.v20181114",
+        "9.4.15.v20190215",
+        "9.4.16.v20190411",
+        "9.4.17.v20190418",
+        "9.4.18.v20190429",
+        "9.4.19.v20190610",
+        "9.4.20.v20190813",
+        "9.4.21.v20190926",
+        "9.4.22.v20191022",
+        "9.4.23.v20191118",
+        "9.4.24.v20191120",
+        "9.4.25.v20191220",
+        "9.4.26.v20200117",
+        "9.4.27.v20200227",
+        "9.4.28.v20200408",
+        "9.4.29.v20200521",
+        "9.4.30.v20200611",
+        "9.4.31.v20200723",
+        "9.4.32.v20200930",
+        "9.4.33.v20201020",
+        "9.4.34.v20201102",
+        "9.4.35.v20201120",
+        "9.4.36.v20210114",
+        "9.4.6.v20170531",
+        "9.4.6.v20180619",
+        "9.4.7.RC0",
+        "9.4.7.v20170914",
+        "9.4.7.v20180619",
+        "9.4.8.v20171121",
+        "9.4.8.v20180619",
+        "9.4.9.v20180320"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/03/GHSA-m394-8rww-3jr7/GHSA-m394-8rww-3jr7.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "10.0.0"
+            },
+            {
+              "fixed": "10.0.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "10.0.0"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/03/GHSA-m394-8rww-3jr7/GHSA-m394-8rww-3jr7.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
+        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "11.0.0"
+            },
+            {
+              "fixed": "11.0.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "11.0.0"
+      ]
+    }
+  ],
   "aliases": [
     "BIT-solr-2020-27223",
     "BIT-spark-2020-27223",
     "CVE-2020-27223"
   ],
-  "modified": "2024-03-15T05:20:16.796889Z",
-  "published": "2021-03-10T03:46:47Z",
-  "related": [
-    "CVE-2020-27223"
-  ],
   "database_specific": {
-    "nvd_published_at": "2021-02-26T22:15:00Z",
     "cwe_ids": [
       "CWE-400"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2021-03-10T03:46:22Z"
+    "github_reviewed_at": "2021-03-10T03:46:22Z",
+    "nvd_published_at": "2021-02-26T22:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "### Impact\nWhen Jetty handles a request containing request headers with a large number of \u201cquality\u201d (i.e. q) parameters (such as what are seen on the `Accept`, `Accept-Encoding`, and `Accept-Language` request headers), the server may enter a denial of service (DoS) state due to high CPU usage while sorting the list of values based on their quality values.  A single request can easily consume minutes of CPU time before it is even dispatched to the application.\n\nThe only features within Jetty that can trigger this behavior are:\n\n- Default Error Handling - the `Accept` request header with the `QuotedQualityCSV` is used to determine what kind of content to send back to the client (html, text, json, xml, etc)\n- `StatisticsServlet` - uses the `Accept` request header with the `QuotedQualityCSV` to determine what kind of content to send back to the client (xml, json, text, html, etc)\n- `HttpServletRequest.getLocale()` - uses the `Accept-Language` request header with the `QuotedQualityCSV` to determine which \u201cpreferred\u201d language is returned on this call.\n- `HttpservletRequest.getLocales()` - is similar to the above, but returns an ordered list of locales based on the quality values on the `Accept-Language` request header.\n- `DefaultServlet` - uses the `Accept-Encoding` request header with the `QuotedQualityCSV` to determine which kind of pre-compressed content should be sent back for static content (content that is not matched against a url-pattern in your web app)\n\n### Versions\n`QuotedQualityCSV` was introduced to Jetty 9.3.9.v20160517 and the bug that introduced the vulnerability was in 9.4.6.v20170531. \n\nCurrently, known vulnerable versions include:\n\n- 9.4.6.v20170531 thru to 9.4.36.v20210114\n- 10.0.0\n- 11.0.0\n\n### Workarounds\n\nQuality ordered values are used infrequently by jetty so they can be avoided by:\n\n * Do not use the default error page/handler.\n * Do not deploy the `StatisticsServlet` exposed to the network\n * Do not call `getLocale` API\n * Do not enable precompressed static content in the `DefaultServlet` \n\n### Patches\n\nAll patches are available for download from the Eclipse Jetty website at [https://www.eclipse.org/jetty/download.php](https://www.eclipse.org/jetty/download.php)\n- 9.4.37.v20210219 and greater\n- 10.0.1 and greater \n- 11.0.1 and greater",
+  "id": "GHSA-m394-8rww-3jr7",
+  "modified": "2024-03-15T05:20:16.796889Z",
+  "published": "2021-03-10T03:46:47Z",
   "references": [
     {
       "type": "WEB",
@@ -287,130 +402,15 @@
       "url": "https://lists.apache.org/thread.html/r35ab810c0f3016b3fd3a3fa9088a2d2781b354a810780ce74d022b6c@%3Cdev.kafka.apache.org%3E"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-server",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "9.4.6"
-            },
-            {
-              "fixed": "9.4.37"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "9.4.10.RC0",
-        "9.4.10.RC1",
-        "9.4.10.v20180503",
-        "9.4.11.v20180605",
-        "9.4.12.RC0",
-        "9.4.12.RC1",
-        "9.4.12.RC2",
-        "9.4.12.v20180830",
-        "9.4.13.v20181111",
-        "9.4.14.v20181114",
-        "9.4.15.v20190215",
-        "9.4.16.v20190411",
-        "9.4.17.v20190418",
-        "9.4.18.v20190429",
-        "9.4.19.v20190610",
-        "9.4.20.v20190813",
-        "9.4.21.v20190926",
-        "9.4.22.v20191022",
-        "9.4.23.v20191118",
-        "9.4.24.v20191120",
-        "9.4.25.v20191220",
-        "9.4.26.v20200117",
-        "9.4.27.v20200227",
-        "9.4.28.v20200408",
-        "9.4.29.v20200521",
-        "9.4.30.v20200611",
-        "9.4.31.v20200723",
-        "9.4.32.v20200930",
-        "9.4.33.v20201020",
-        "9.4.34.v20201102",
-        "9.4.35.v20201120",
-        "9.4.36.v20210114",
-        "9.4.6.v20170531",
-        "9.4.6.v20180619",
-        "9.4.7.RC0",
-        "9.4.7.v20170914",
-        "9.4.7.v20180619",
-        "9.4.8.v20171121",
-        "9.4.8.v20180619",
-        "9.4.9.v20180320"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/03/GHSA-m394-8rww-3jr7/GHSA-m394-8rww-3jr7.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-server",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "10.0.0"
-            },
-            {
-              "fixed": "10.0.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "10.0.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/03/GHSA-m394-8rww-3jr7/GHSA-m394-8rww-3jr7.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.eclipse.jetty:jetty-server",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "11.0.0"
-            },
-            {
-              "fixed": "11.0.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "11.0.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/03/GHSA-m394-8rww-3jr7/GHSA-m394-8rww-3jr7.json"
-      }
-    }
+  "related": [
+    "CVE-2020-27223"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "DOS vulnerability for Quoted Quality CSV headers"
 }

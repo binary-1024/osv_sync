@@ -1,23 +1,47 @@
 {
-  "id": "GHSA-686h-j8r8-wmfm",
-  "summary": "Data races in rcu_cell",
-  "details": "Affected versions of this crate unconditionally implement Send/Sync for `RcuCell<T>`.\nThis allows users to send `T: !Send` to other threads (while `T` enclosed within `RcuCell<T>`), and allows users to concurrently access `T: !Sync` by using the APIs of `RcuCell<T>` that provide access to `&T`.\n\nThis can result in memory corruption caused by data races.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-686h-j8r8-wmfm/GHSA-686h-j8r8-wmfm.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "rcu_cell",
+        "purl": "pkg:cargo/rcu_cell"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.1.9"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2020-36451",
     "RUSTSEC-2020-0131"
   ],
-  "modified": "2023-11-08T04:03:45.643060Z",
-  "published": "2021-08-25T20:57:14Z",
   "database_specific": {
-    "nvd_published_at": "2021-08-08T06:15:00Z",
-    "github_reviewed_at": "2021-08-18T20:29:49Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-362",
       "CWE-77"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2021-08-18T20:29:49Z",
+    "nvd_published_at": "2021-08-08T06:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "Affected versions of this crate unconditionally implement Send/Sync for `RcuCell<T>`.\nThis allows users to send `T: !Send` to other threads (while `T` enclosed within `RcuCell<T>`), and allows users to concurrently access `T: !Sync` by using the APIs of `RcuCell<T>` that provide access to `&T`.\n\nThis can result in memory corruption caused by data races.",
+  "id": "GHSA-686h-j8r8-wmfm",
+  "modified": "2023-11-08T04:03:45.643060Z",
+  "published": "2021-08-25T20:57:14Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -44,36 +68,12 @@
       "url": "https://rustsec.org/advisories/RUSTSEC-2020-0131.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "rcu_cell",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/rcu_cell"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0.1.9"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/08/GHSA-686h-j8r8-wmfm/GHSA-686h-j8r8-wmfm.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Data races in rcu_cell"
 }

@@ -1,50 +1,16 @@
 {
-  "id": "GHSA-227w-wv4j-67h4",
-  "summary": "Class Loading Vulnerability in Artemis",
-  "details": "### Impact\nThis affects all Artemis users who test Java assignments. **Ares is not required.**\nStudents code that gets automatically tested can run arbitrary code in the container,\nor arbitrary code on the machine of an assessor in case of manual correction.\n\n### Patches\nThe problem cannot be resolved easily in Ares itself. Use the Maven Enforcer Plugin as follows:\n\n```xml\n<plugin>\n    <groupId>org.apache.maven.plugins</groupId>\n    <artifactId>maven-enforcer-plugin</artifactId>\n    <version>3.0.0</version>\n    <executions>\n        <execution>\n            <id>enforce-no-student-code-in-trusted-packages</id>\n            <phase>process-classes</phase>\n            <goals>\n                <goal>enforce</goal>\n            </goals>\n        </execution>\n    </executions>\n    <configuration>\n        <rules>\n            <requireFilesDontExist>\n                <files>\n                    <!-- ADD HERE THE RULES ARES TELLS YOU ARE MISSING -->\n                </files>\n            </requireFilesDontExist>\n        </rules>\n    </configuration>\n</plugin>\n```\n\nThis fails the build if student classes reside in such packages that Ares trusts. Trusted packages added in Ares using `@AddTrustedPackage` should be added as well.\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open a discussion https://github.com/ls1intum/Ares/discussions\n* Open an issue in https://github.com/ls1intum/Ares/issues\n* Email us, see https://github.com/ls1intum/Ares/security/policy\n\n### References\nSee the assignment of Julius that passes the tests in TUM Artemis course: \"Test - Praktikum: Grundlagen der Programmierung (Testkurs f\u00fcr Tutoren) - Security Tests\" (if that still exists in 2022).\n\nAlso see #15 for almost the same problem.\n",
-  "modified": "2024-12-05T05:41:30.091155Z",
-  "published": "2022-02-09T22:30:30Z",
-  "related": [
-    "CVE-2024-23682"
-  ],
-  "database_specific": {
-    "nvd_published_at": null,
-    "cwe_ids": [
-      "CWE-501",
-      "CWE-653"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2022-02-09T22:30:30Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/ls1intum/Ares/security/advisories/GHSA-227w-wv4j-67h4"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/ls1intum/Ares/issues/15"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/ls1intum/Ares"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/ls1intum/Ares/releases/tag/1.8.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-227w-wv4j-67h4/GHSA-227w-wv4j-67h4.json"
+      },
       "package": {
-        "name": "de.tum.in.ase:artemis-java-test-sandbox",
         "ecosystem": "Maven",
+        "name": "de.tum.in.ase:artemis-java-test-sandbox",
         "purl": "pkg:maven/de.tum.in.ase/artemis-java-test-sandbox"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -52,7 +18,8 @@
             {
               "fixed": "1.8.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -89,17 +56,50 @@
         "1.7.3",
         "1.7.5",
         "1.7.6"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-227w-wv4j-67h4/GHSA-227w-wv4j-67h4.json"
-      }
+      ]
     }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-501",
+      "CWE-653"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-02-09T22:30:30Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "### Impact\nThis affects all Artemis users who test Java assignments. **Ares is not required.**\nStudents code that gets automatically tested can run arbitrary code in the container,\nor arbitrary code on the machine of an assessor in case of manual correction.\n\n### Patches\nThe problem cannot be resolved easily in Ares itself. Use the Maven Enforcer Plugin as follows:\n\n```xml\n<plugin>\n    <groupId>org.apache.maven.plugins</groupId>\n    <artifactId>maven-enforcer-plugin</artifactId>\n    <version>3.0.0</version>\n    <executions>\n        <execution>\n            <id>enforce-no-student-code-in-trusted-packages</id>\n            <phase>process-classes</phase>\n            <goals>\n                <goal>enforce</goal>\n            </goals>\n        </execution>\n    </executions>\n    <configuration>\n        <rules>\n            <requireFilesDontExist>\n                <files>\n                    <!-- ADD HERE THE RULES ARES TELLS YOU ARE MISSING -->\n                </files>\n            </requireFilesDontExist>\n        </rules>\n    </configuration>\n</plugin>\n```\n\nThis fails the build if student classes reside in such packages that Ares trusts. Trusted packages added in Ares using `@AddTrustedPackage` should be added as well.\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open a discussion https://github.com/ls1intum/Ares/discussions\n* Open an issue in https://github.com/ls1intum/Ares/issues\n* Email us, see https://github.com/ls1intum/Ares/security/policy\n\n### References\nSee the assignment of Julius that passes the tests in TUM Artemis course: \"Test - Praktikum: Grundlagen der Programmierung (Testkurs f\u00fcr Tutoren) - Security Tests\" (if that still exists in 2022).\n\nAlso see #15 for almost the same problem.\n",
+  "id": "GHSA-227w-wv4j-67h4",
+  "modified": "2024-12-05T05:41:30.091155Z",
+  "published": "2022-02-09T22:30:30Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/ls1intum/Ares/security/advisories/GHSA-227w-wv4j-67h4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/ls1intum/Ares/issues/15"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/ls1intum/Ares"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/ls1intum/Ares/releases/tag/1.8.0"
+    }
+  ],
+  "related": [
+    "CVE-2024-23682"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Class Loading Vulnerability in Artemis"
 }

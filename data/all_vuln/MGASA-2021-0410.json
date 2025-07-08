@@ -1,15 +1,46 @@
 {
-  "id": "MGASA-2021-0410",
-  "summary": "Updated kernel-linus packages fix security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2021-0410.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:8",
+        "name": "kernel-linus",
+        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.60-1.mga8"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "This kernel-linus update is based on upstream 5.10.60 and fixes at least\nthe following security issues:\n\nA missing validation of the \"int_ctl\" VMCB field allows a malicious L1\nguest to enable AVIC support (Advanced Virtual Interrupt Controller)\nfor the L2 guest. The L2 guest is able to write to a limited but still\nrelatively large subset of the host physical memory, resulting in a\ncrash of the entire system, leak of sensitive data or potential\nguest-to-host escape (CVE-2021-3653).\n\nA missing validation of the the \"virt_ext\" VMCB field and allows a\nmalicious L1 guest to disable both VMLOAD/VMSAVE intercepts and VLS\n(Virtual VMLOAD/VMSAVE) for the L2 guest. Under these circumstances,\nthe L2 guest is able to run VMLOAD/VMSAVE unintercepted, and thus\nread/write portions of the host physical memory, resulting in a\ncrash of the entire system, leak of sensitive data or potential\nguest-to-host escape (CVE-2021-3656).\n\nIn kernel/bpf/hashtab.c in the Linux kernel through 5.13.8, there is\nan integer overflow and out-of-bounds write when many elements are\nplaced in a single bucket (CVE-2021-38166).\n\ndrivers/net/ethernet/xilinx/xilinx_emaclite.c in the Linux kernel before\n5.13.3 makes it easier for attackers to defeat an ASLR protection\nmechanism because it prints a kernel pointer (CVE-2021-38205).\n\nFor other upstream fixes, see the referenced changelogs.\n",
+  "id": "MGASA-2021-0410",
   "modified": "2022-02-17T18:21:47Z",
   "published": "2021-08-23T05:28:48Z",
-  "related": [
-    "CVE-2021-3653",
-    "CVE-2021-3656",
-    "CVE-2021-38166",
-    "CVE-2021-38205"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -36,43 +67,12 @@
       "url": "https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.60"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "kernel-linus",
-        "ecosystem": "Mageia:8",
-        "purl": "pkg:rpm/mageia/kernel-linus?arch=source&distro=mageia-8"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5.10.60-1.mga8"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2021-0410.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2021-3653",
+    "CVE-2021-3656",
+    "CVE-2021-38166",
+    "CVE-2021-38205"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated kernel-linus packages fix security vulnerabilities"
 }

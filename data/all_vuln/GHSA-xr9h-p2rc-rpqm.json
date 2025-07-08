@@ -1,24 +1,54 @@
 {
-  "id": "GHSA-xr9h-p2rc-rpqm",
-  "summary": "WWBN/AVideo stored XSS vulnerability leads to takeover of any user's account, including admin's account",
-  "details": "In AVideo, a normal user can make a Meeting Schedule where the user can invite another user in that Meeting, but I found out that it did not properly sanitize the malicious characters when creating a Meeting Room. This leads the attacker to put malicious scripts.\n\nImpact:\n\nSince any USER including the ADMIN can see the meeting room that was created by the attacker this can lead to cookie hijacking and takeover of any accounts without user interaction.\n\nStep to Reproduce:\n\n1. As normal USER go to Meet -> Schedule\n\nhttps://demo.avideo.com/plugin/Meet/\n\n2. In \"Meet topic\" field put XSS payload\n\nExample: \"><img src=x onerror=alert('Pawned+by+Gonz')>\n\n3. Then click Save\n\n4. Now as ADMIN go to Meet -> Schedule -> Upcoming\n\nhttps://demo.avideo.com/plugin/Meet/\n\n5. Then the XSS payload that normal USER created will be executed\n\n\n\nVideo POC: https://youtu.be/Nke0Bmv5F-o",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/05/GHSA-xr9h-p2rc-rpqm/GHSA-xr9h-p2rc-rpqm.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "wwbn/avideo",
+        "purl": "pkg:composer/wwbn/avideo"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "12.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "10.4",
+        "10.8",
+        "11",
+        "11.1",
+        "11.1.1",
+        "11.5",
+        "11.6"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-30860"
   ],
-  "modified": "2024-02-16T08:11:21.848104Z",
-  "published": "2023-05-01T22:30:28Z",
-  "related": [
-    "CVE-2023-30860"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-05-08T19:15:12Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-05-01T22:30:28Z"
+    "github_reviewed_at": "2023-05-01T22:30:28Z",
+    "nvd_published_at": "2023-05-08T19:15:12Z",
+    "severity": "HIGH"
   },
+  "details": "In AVideo, a normal user can make a Meeting Schedule where the user can invite another user in that Meeting, but I found out that it did not properly sanitize the malicious characters when creating a Meeting Room. This leads the attacker to put malicious scripts.\n\nImpact:\n\nSince any USER including the ADMIN can see the meeting room that was created by the attacker this can lead to cookie hijacking and takeover of any accounts without user interaction.\n\nStep to Reproduce:\n\n1. As normal USER go to Meet -> Schedule\n\nhttps://demo.avideo.com/plugin/Meet/\n\n2. In \"Meet topic\" field put XSS payload\n\nExample: \"><img src=x onerror=alert('Pawned+by+Gonz')>\n\n3. Then click Save\n\n4. Now as ADMIN go to Meet -> Schedule -> Upcoming\n\nhttps://demo.avideo.com/plugin/Meet/\n\n5. Then the XSS payload that normal USER created will be executed\n\n\n\nVideo POC: https://youtu.be/Nke0Bmv5F-o",
+  "id": "GHSA-xr9h-p2rc-rpqm",
+  "modified": "2024-02-16T08:11:21.848104Z",
+  "published": "2023-05-01T22:30:28Z",
   "references": [
     {
       "type": "WEB",
@@ -37,45 +67,15 @@
       "url": "https://youtu.be/Nke0Bmv5F-o"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "wwbn/avideo",
-        "ecosystem": "Packagist",
-        "purl": "pkg:composer/wwbn/avideo"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "12.4"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "10.4",
-        "10.8",
-        "11",
-        "11.1",
-        "11.1.1",
-        "11.5",
-        "11.6"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/05/GHSA-xr9h-p2rc-rpqm/GHSA-xr9h-p2rc-rpqm.json"
-      }
-    }
+  "related": [
+    "CVE-2023-30860"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "WWBN/AVideo stored XSS vulnerability leads to takeover of any user's account, including admin's account"
 }

@@ -1,57 +1,16 @@
 {
-  "id": "GHSA-h6m7-j4h3-9rf5",
-  "summary": "Remote Code Execution in SyliusResourceBundle",
-  "details": "### Impact\n\nRequest parameters injected inside an expression evaluated by `symfony/expression-language` package haven't been sanitized properly. This allows the attacker to access any public service by manipulating that request parameter, allowing for Remote Code Execution.\n\nThe vulnerable versions include: `<=1.3.13 || >=1.4.0 <=1.4.6 || >=1.5.0 <=1.5.1 || >=1.6.0 <=1.6.3`.\n\n### Example\n\n```yaml\nsylius_grid:\n    grids:\n        foo:\n            fields:\n                bar:\n                    options:\n                        baz: \"expr:service('sylius.repository.product').find($id)\"\n```\n\nIn this case, `$id` can be prepared in a way that calls other services. \n\nIf you visit `/route?id=\"~service('doctrine').getManager().getConnection().executeQuery(\"DELETE * FROM TABLE\")~\"`, it will result in a following expression `expr:service('repository').find(\"\"~service('doctrine').getManager().getConnection().executeQuery(\"DELETE * FROM TABLE\")~\"\")`, which will execute a query on the currently connected database.\n\nTo find a vulnerability in your application, look for any routing definition that uses request parameters inside expression language.\n\n### Patches\n\nThis issue has been patched for versions 1.3.14, 1.4.7, 1.5.2 and 1.6.4. Versions prior to 1.3 were not patched.\n\n### Workarounds\n\nThe fix requires adding `addslashes` in `OptionsParser::parseOptionExpression` to sanitize user input before evaluating it using the expression language.\n\n```php\n- return is_string($variable) ? sprintf('\"%s\"', $variable) : $variable;\n+ return is_string($variable) ? sprintf('\"%s\"', addslashes($variable)) : $variable;\n```\n\n### Acknowledgements\n\nThis security issue has been reported by Craig Blanchette (@isometriks), thanks a lot!\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Email us at [security@sylius.com](mailto:security@sylius.com)",
-  "aliases": [
-    "CVE-2020-15146"
-  ],
-  "modified": "2024-02-16T08:22:03.089065Z",
-  "published": "2020-08-19T19:52:30Z",
-  "related": [
-    "CVE-2020-15146"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2020-08-20T01:17:00Z",
-    "cwe_ids": [
-      "CWE-74",
-      "CWE-917"
-    ],
-    "severity": "CRITICAL",
-    "github_reviewed": true,
-    "github_reviewed_at": "2020-08-19T19:50:49Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/Sylius/SyliusResourceBundle/security/advisories/GHSA-h6m7-j4h3-9rf5"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15146"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/Sylius/SyliusResourceBundle/commit/73d9aba182947473a5935b31caf65ca263091e00"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/sylius/resource-bundle/CVE-2020-15146.yaml"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/Sylius/SyliusResourceBundle"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-h6m7-j4h3-9rf5/GHSA-h6m7-j4h3-9rf5.json"
+      },
       "package": {
-        "name": "sylius/resource-bundle",
         "ecosystem": "Packagist",
+        "name": "sylius/resource-bundle",
         "purl": "pkg:composer/sylius/resource-bundle"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "1.4.0"
@@ -59,7 +18,8 @@
             {
               "fixed": "1.4.7"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -70,20 +30,19 @@
         "v1.4.4",
         "v1.4.5",
         "v1.4.6"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-h6m7-j4h3-9rf5/GHSA-h6m7-j4h3-9rf5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-h6m7-j4h3-9rf5/GHSA-h6m7-j4h3-9rf5.json"
+      },
       "package": {
-        "name": "sylius/resource-bundle",
         "ecosystem": "Packagist",
+        "name": "sylius/resource-bundle",
         "purl": "pkg:composer/sylius/resource-bundle"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "1.5.0"
@@ -91,26 +50,26 @@
             {
               "fixed": "1.5.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
         "v1.5.0",
         "v1.5.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-h6m7-j4h3-9rf5/GHSA-h6m7-j4h3-9rf5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-h6m7-j4h3-9rf5/GHSA-h6m7-j4h3-9rf5.json"
+      },
       "package": {
-        "name": "sylius/resource-bundle",
         "ecosystem": "Packagist",
+        "name": "sylius/resource-bundle",
         "purl": "pkg:composer/sylius/resource-bundle"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "1.6.0"
@@ -118,7 +77,8 @@
             {
               "fixed": "1.6.4"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -126,20 +86,19 @@
         "v1.6.1",
         "v1.6.2",
         "v1.6.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-h6m7-j4h3-9rf5/GHSA-h6m7-j4h3-9rf5.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-h6m7-j4h3-9rf5/GHSA-h6m7-j4h3-9rf5.json"
+      },
       "package": {
-        "name": "sylius/resource-bundle",
         "ecosystem": "Packagist",
+        "name": "sylius/resource-bundle",
         "purl": "pkg:composer/sylius/resource-bundle"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "1.0.0"
@@ -147,7 +106,8 @@
             {
               "fixed": "1.3.14"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -224,17 +184,57 @@
         "v1.3.7",
         "v1.3.8",
         "v1.3.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2020/08/GHSA-h6m7-j4h3-9rf5/GHSA-h6m7-j4h3-9rf5.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2020-15146"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-74",
+      "CWE-917"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2020-08-19T19:50:49Z",
+    "nvd_published_at": "2020-08-20T01:17:00Z",
+    "severity": "CRITICAL"
+  },
+  "details": "### Impact\n\nRequest parameters injected inside an expression evaluated by `symfony/expression-language` package haven't been sanitized properly. This allows the attacker to access any public service by manipulating that request parameter, allowing for Remote Code Execution.\n\nThe vulnerable versions include: `<=1.3.13 || >=1.4.0 <=1.4.6 || >=1.5.0 <=1.5.1 || >=1.6.0 <=1.6.3`.\n\n### Example\n\n```yaml\nsylius_grid:\n    grids:\n        foo:\n            fields:\n                bar:\n                    options:\n                        baz: \"expr:service('sylius.repository.product').find($id)\"\n```\n\nIn this case, `$id` can be prepared in a way that calls other services. \n\nIf you visit `/route?id=\"~service('doctrine').getManager().getConnection().executeQuery(\"DELETE * FROM TABLE\")~\"`, it will result in a following expression `expr:service('repository').find(\"\"~service('doctrine').getManager().getConnection().executeQuery(\"DELETE * FROM TABLE\")~\"\")`, which will execute a query on the currently connected database.\n\nTo find a vulnerability in your application, look for any routing definition that uses request parameters inside expression language.\n\n### Patches\n\nThis issue has been patched for versions 1.3.14, 1.4.7, 1.5.2 and 1.6.4. Versions prior to 1.3 were not patched.\n\n### Workarounds\n\nThe fix requires adding `addslashes` in `OptionsParser::parseOptionExpression` to sanitize user input before evaluating it using the expression language.\n\n```php\n- return is_string($variable) ? sprintf('\"%s\"', $variable) : $variable;\n+ return is_string($variable) ? sprintf('\"%s\"', addslashes($variable)) : $variable;\n```\n\n### Acknowledgements\n\nThis security issue has been reported by Craig Blanchette (@isometriks), thanks a lot!\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n* Email us at [security@sylius.com](mailto:security@sylius.com)",
+  "id": "GHSA-h6m7-j4h3-9rf5",
+  "modified": "2024-02-16T08:22:03.089065Z",
+  "published": "2020-08-19T19:52:30Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/SyliusResourceBundle/security/advisories/GHSA-h6m7-j4h3-9rf5"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15146"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Sylius/SyliusResourceBundle/commit/73d9aba182947473a5935b31caf65ca263091e00"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/sylius/resource-bundle/CVE-2020-15146.yaml"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Sylius/SyliusResourceBundle"
+    }
+  ],
+  "related": [
+    "CVE-2020-15146"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Remote Code Execution in SyliusResourceBundle"
 }

@@ -1,12 +1,47 @@
 {
-  "id": "RUSTSEC-2023-0087",
-  "summary": "`MaybeUninit` misuse in `simd-json-derive`",
-  "details": "An invalid use of `MaybeUninit::uninit().assume_init()` in `simd-json-derive`'s derive macro can cause undefined behavior. The original code used `MaybeUninit` to avoid initialisation of the struct and then set the fields using `ptr::write`. The undefined behavior triggered by this misuse of `MaybeUninit` can lead to invlaid memory access and panics in binaries compiled in release mode (aka simd-json-derive prior to version 0.12 has UB and optimizes into some nonsense)\n\nThe `0.12.0` removes this section of code, avoiding the use of MaybeUninit alltogether.",
-  "modified": "2024-11-10T15:02:31Z",
-  "published": "2023-10-14T12:00:00Z",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [],
+        "cvss": null,
+        "informational": "unsound",
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2023-0087.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "simd-json-derive",
+        "purl": "pkg:cargo/simd-json-derive"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "0.12.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "An invalid use of `MaybeUninit::uninit().assume_init()` in `simd-json-derive`'s derive macro can cause undefined behavior. The original code used `MaybeUninit` to avoid initialisation of the struct and then set the fields using `ptr::write`. The undefined behavior triggered by this misuse of `MaybeUninit` can lead to invlaid memory access and panics in binaries compiled in release mode (aka simd-json-derive prior to version 0.12 has UB and optimizes into some nonsense)\n\nThe `0.12.0` removes this section of code, avoiding the use of MaybeUninit alltogether.",
+  "id": "RUSTSEC-2023-0087",
+  "modified": "2024-11-10T15:02:31Z",
+  "published": "2023-10-14T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -21,41 +56,6 @@
       "url": "https://github.com/simd-lite/simd-json-derive/issues/67"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "simd-json-derive",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/simd-json-derive"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            },
-            {
-              "fixed": "0.12.0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": null,
-        "informational": "unsound",
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2023-0087.json",
-        "categories": []
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "`MaybeUninit` misuse in `simd-json-derive`"
 }

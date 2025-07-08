@@ -1,21 +1,77 @@
 {
-  "id": "GHSA-vhrg-v3cv-p247",
-  "summary": "Deserialization of Untrusted Data in Spring Security",
-  "details": "An issue was discovered in Pivotal Spring Security 4.2.0.RELEASE through 4.2.2.RELEASE, and Spring Security 5.0.0.M1. When configured to enable default typing, Jackson contained a deserialization vulnerability that could lead to arbitrary code execution. Jackson fixed this vulnerability by blacklisting known \"deserialization gadgets.\" Spring Security configures Jackson with global default typing enabled, which means that (through the previous exploit) arbitrary code could be executed if all of the following is true: (1) Spring Security's Jackson support is being leveraged by invoking SecurityJackson2Modules.getModules(ClassLoader) or SecurityJackson2Modules.enableDefaultTyping(ObjectMapper); (2) Jackson is used to deserialize data that is not trusted (Spring Security does not perform deserialization using Jackson, so this is an explicit choice of the user); and (3) there is an unknown (Jackson is not blacklisting it already) \"deserialization gadget\" that allows code execution present on the classpath. Jackson provides a blacklisting approach to protecting against this type of attack, but Spring Security should be proactive against blocking unknown \"deserialization gadgets\" when Spring Security enables default typing.",
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 4.2.2.RELEASE",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-vhrg-v3cv-p247/GHSA-vhrg-v3cv-p247.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.springframework.security:spring-security-core",
+        "purl": "pkg:maven/org.springframework.security/spring-security-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.2.0.RELEASE"
+            },
+            {
+              "fixed": "4.2.3.RELEASE"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.2.0.RELEASE",
+        "4.2.1.RELEASE",
+        "4.2.2.RELEASE"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-vhrg-v3cv-p247/GHSA-vhrg-v3cv-p247.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.springframework.security:spring-security-core",
+        "purl": "pkg:maven/org.springframework.security/spring-security-core"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.0.0.M1"
+            },
+            {
+              "fixed": "5.0.0.M2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "5.0.0.M1"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2017-4995"
   ],
-  "modified": "2024-03-05T22:16:02.821772Z",
-  "published": "2022-05-13T01:02:16Z",
   "database_specific": {
-    "nvd_published_at": "2017-11-27T10:29:00Z",
     "cwe_ids": [
       "CWE-502"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-06-30T19:40:27Z"
+    "github_reviewed_at": "2022-06-30T19:40:27Z",
+    "nvd_published_at": "2017-11-27T10:29:00Z",
+    "severity": "HIGH"
   },
+  "details": "An issue was discovered in Pivotal Spring Security 4.2.0.RELEASE through 4.2.2.RELEASE, and Spring Security 5.0.0.M1. When configured to enable default typing, Jackson contained a deserialization vulnerability that could lead to arbitrary code execution. Jackson fixed this vulnerability by blacklisting known \"deserialization gadgets.\" Spring Security configures Jackson with global default typing enabled, which means that (through the previous exploit) arbitrary code could be executed if all of the following is true: (1) Spring Security's Jackson support is being leveraged by invoking SecurityJackson2Modules.getModules(ClassLoader) or SecurityJackson2Modules.enableDefaultTyping(ObjectMapper); (2) Jackson is used to deserialize data that is not trusted (Spring Security does not perform deserialization using Jackson, so this is an explicit choice of the user); and (3) there is an unknown (Jackson is not blacklisting it already) \"deserialization gadget\" that allows code execution present on the classpath. Jackson provides a blacklisting approach to protecting against this type of attack, but Spring Security should be proactive against blocking unknown \"deserialization gadgets\" when Spring Security enables default typing.",
+  "id": "GHSA-vhrg-v3cv-p247",
+  "modified": "2024-03-05T22:16:02.821772Z",
+  "published": "2022-05-13T01:02:16Z",
   "references": [
     {
       "type": "ADVISORY",
@@ -54,68 +110,12 @@
       "url": "https://pivotal.io/security/cve-2017-4995"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "org.springframework.security:spring-security-core",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.springframework.security/spring-security-core"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "4.2.0.RELEASE"
-            },
-            {
-              "fixed": "4.2.3.RELEASE"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "4.2.0.RELEASE",
-        "4.2.1.RELEASE",
-        "4.2.2.RELEASE"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 4.2.2.RELEASE",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-vhrg-v3cv-p247/GHSA-vhrg-v3cv-p247.json"
-      }
-    },
-    {
-      "package": {
-        "name": "org.springframework.security:spring-security-core",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/org.springframework.security/spring-security-core"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "5.0.0.M1"
-            },
-            {
-              "fixed": "5.0.0.M2"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "5.0.0.M1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-vhrg-v3cv-p247/GHSA-vhrg-v3cv-p247.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Deserialization of Untrusted Data in Spring Security"
 }

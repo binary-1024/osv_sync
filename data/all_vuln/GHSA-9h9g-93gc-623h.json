@@ -1,24 +1,59 @@
 {
-  "id": "GHSA-9h9g-93gc-623h",
-  "summary": "Possible XSS vulnerability with certain configurations of rails-html-sanitizer",
-  "details": "## Summary\n\nThere is a possible XSS vulnerability with certain configurations of Rails::Html::Sanitizer.\n\n- Versions affected: ALL\n- Not affected: NONE\n- Fixed versions: 1.4.4\n\n\n## Impact\n\nA possible XSS vulnerability with certain configurations of Rails::Html::Sanitizer may allow an attacker to inject content if the application developer has overridden the sanitizer's allowed tags in either of the following ways:\n\n- allow both \"math\" and \"style\" elements,\n- or allow both \"svg\" and \"style\" elements\n\nCode is only impacted if allowed tags are being overridden. Applications may be doing this in four different ways:\n\n1. using application configuration:\n\n  ```ruby\n  # In config/application.rb\n  config.action_view.sanitized_allowed_tags = [\"math\", \"style\"]\n  # or\n  config.action_view.sanitized_allowed_tags = [\"svg\", \"style\"]\n  ```\n\n  see https://guides.rubyonrails.org/configuring.html#configuring-action-view\n\n2. using a `:tags` option to the Action View helper `sanitize`:\n\n  ```\n  <%= sanitize @comment.body, tags: [\"math\", \"style\"] %>\n  <%# or %>\n  <%= sanitize @comment.body, tags: [\"svg\", \"style\"] %>\n  ```\n\n  see https://api.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-sanitize\n\n3. using Rails::Html::SafeListSanitizer class method `allowed_tags=`:\n\n  ```ruby\n  # class-level option\n  Rails::Html::SafeListSanitizer.allowed_tags = [\"math\", \"style\"]\n  # or\n  Rails::Html::SafeListSanitizer.allowed_tags = [\"svg\", \"style\"]\n  ```\n\n4. using a `:tags` options to the Rails::Html::SafeListSanitizer instance method `sanitize`:\n\n  ```ruby\n  # instance-level option\n  Rails::Html::SafeListSanitizer.new.sanitize(@article.body, tags: [\"math\", \"style\"])\n  # or\n  Rails::Html::SafeListSanitizer.new.sanitize(@article.body, tags: [\"svg\", \"style\"])\n  ```\n\nAll users overriding the allowed tags by any of the above mechanisms to include ((\"math\" or \"svg\") and \"style\") should either upgrade or use one of the workarounds immediately.\n\n\n## Workarounds\n\nRemove \"style\" from the overridden allowed tags, or remove \"math\" and \"svg\" from the overridden allowed tags.\n\n\n## References\n\n- [CWE - CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') (4.9)](https://cwe.mitre.org/data/definitions/79.html)\n- https://hackerone.com/reports/1656627\n\n\n## Credit\n\nThis vulnerability was responsibly reported by Dominic Breuker.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-9h9g-93gc-623h/GHSA-9h9g-93gc-623h.json"
+      },
+      "package": {
+        "ecosystem": "RubyGems",
+        "name": "rails-html-sanitizer",
+        "purl": "pkg:gem/rails-html-sanitizer"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.0.4",
+        "1.1.0",
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2",
+        "1.4.3"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-23519"
   ],
-  "modified": "2025-02-13T19:01:32.647900Z",
-  "published": "2022-12-13T17:50:25Z",
-  "related": [
-    "CVE-2022-23519"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-12-14T17:15:00Z",
     "cwe_ids": [
       "CWE-79"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-12-13T17:50:25Z"
+    "github_reviewed_at": "2022-12-13T17:50:25Z",
+    "nvd_published_at": "2022-12-14T17:15:00Z",
+    "severity": "MODERATE"
   },
+  "details": "## Summary\n\nThere is a possible XSS vulnerability with certain configurations of Rails::Html::Sanitizer.\n\n- Versions affected: ALL\n- Not affected: NONE\n- Fixed versions: 1.4.4\n\n\n## Impact\n\nA possible XSS vulnerability with certain configurations of Rails::Html::Sanitizer may allow an attacker to inject content if the application developer has overridden the sanitizer's allowed tags in either of the following ways:\n\n- allow both \"math\" and \"style\" elements,\n- or allow both \"svg\" and \"style\" elements\n\nCode is only impacted if allowed tags are being overridden. Applications may be doing this in four different ways:\n\n1. using application configuration:\n\n  ```ruby\n  # In config/application.rb\n  config.action_view.sanitized_allowed_tags = [\"math\", \"style\"]\n  # or\n  config.action_view.sanitized_allowed_tags = [\"svg\", \"style\"]\n  ```\n\n  see https://guides.rubyonrails.org/configuring.html#configuring-action-view\n\n2. using a `:tags` option to the Action View helper `sanitize`:\n\n  ```\n  <%= sanitize @comment.body, tags: [\"math\", \"style\"] %>\n  <%# or %>\n  <%= sanitize @comment.body, tags: [\"svg\", \"style\"] %>\n  ```\n\n  see https://api.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-sanitize\n\n3. using Rails::Html::SafeListSanitizer class method `allowed_tags=`:\n\n  ```ruby\n  # class-level option\n  Rails::Html::SafeListSanitizer.allowed_tags = [\"math\", \"style\"]\n  # or\n  Rails::Html::SafeListSanitizer.allowed_tags = [\"svg\", \"style\"]\n  ```\n\n4. using a `:tags` options to the Rails::Html::SafeListSanitizer instance method `sanitize`:\n\n  ```ruby\n  # instance-level option\n  Rails::Html::SafeListSanitizer.new.sanitize(@article.body, tags: [\"math\", \"style\"])\n  # or\n  Rails::Html::SafeListSanitizer.new.sanitize(@article.body, tags: [\"svg\", \"style\"])\n  ```\n\nAll users overriding the allowed tags by any of the above mechanisms to include ((\"math\" or \"svg\") and \"style\") should either upgrade or use one of the workarounds immediately.\n\n\n## Workarounds\n\nRemove \"style\" from the overridden allowed tags, or remove \"math\" and \"svg\" from the overridden allowed tags.\n\n\n## References\n\n- [CWE - CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') (4.9)](https://cwe.mitre.org/data/definitions/79.html)\n- https://hackerone.com/reports/1656627\n\n\n## Credit\n\nThis vulnerability was responsibly reported by Dominic Breuker.",
+  "id": "GHSA-9h9g-93gc-623h",
+  "modified": "2025-02-13T19:01:32.647900Z",
+  "published": "2022-12-13T17:50:25Z",
   "references": [
     {
       "type": "WEB",
@@ -45,50 +80,15 @@
       "url": "https://lists.debian.org/debian-lts-announce/2023/09/msg00012.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "rails-html-sanitizer",
-        "ecosystem": "RubyGems",
-        "purl": "pkg:gem/rails-html-sanitizer"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.4.4"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.0.0",
-        "1.0.1",
-        "1.0.2",
-        "1.0.3",
-        "1.0.4",
-        "1.1.0",
-        "1.2.0",
-        "1.3.0",
-        "1.4.0",
-        "1.4.1",
-        "1.4.2",
-        "1.4.3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-9h9g-93gc-623h/GHSA-9h9g-93gc-623h.json"
-      }
-    }
+  "related": [
+    "CVE-2022-23519"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Possible XSS vulnerability with certain configurations of rails-html-sanitizer"
 }

@@ -1,18 +1,48 @@
 {
-  "id": "BIT-gradle-2021-29428",
-  "summary": "Local privilege escalation through system temporary directory",
-  "details": "In Gradle before version 7.0, on Unix-like systems, the system temporary directory can be created with open permissions that allow multiple users to create and delete files within it. Gradle builds could be vulnerable to a local privilege escalation from an attacker quickly deleting and recreating files in the system temporary directory. This vulnerability impacted builds using precompiled script plugins written in Kotlin DSL and tests for Gradle plugins written using ProjectBuilder or TestKit. If you are on Windows or modern versions of macOS, you are not vulnerable. If you are on a Unix-like operating system with the \"sticky\" bit set on your system temporary directory, you are not vulnerable. The problem has been patched and released with Gradle 7.0. As a workaround, on Unix-like operating systems, ensure that the \"sticky\" bit is set. This only allows the original user (or root) to delete a file. If you are unable to change the permissions of the system temporary directory, you can move the Java temporary directory by setting the System Property `java.io.tmpdir`. The new path needs to limit permissions to the build user only. For additional details refer to the referenced GitHub Security Advisory.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/bitnami/vulndb/tree/main/data/gradle/BIT-gradle-2021-29428.json"
+      },
+      "package": {
+        "ecosystem": "Bitnami",
+        "name": "gradle",
+        "purl": "pkg:bitnami/gradle"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.0.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ],
+      "severity": [
+        {
+          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "type": "CVSS_V3"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2021-29428"
   ],
-  "modified": "2025-05-20T10:02:07.006Z",
-  "published": "2024-03-06T10:54:54.311Z",
   "database_specific": {
     "cpes": [
       "cpe:2.3:a:gradle:gradle:*:*:*:*:*:*:*:*"
     ],
     "severity": "High"
   },
+  "details": "In Gradle before version 7.0, on Unix-like systems, the system temporary directory can be created with open permissions that allow multiple users to create and delete files within it. Gradle builds could be vulnerable to a local privilege escalation from an attacker quickly deleting and recreating files in the system temporary directory. This vulnerability impacted builds using precompiled script plugins written in Kotlin DSL and tests for Gradle plugins written using ProjectBuilder or TestKit. If you are on Windows or modern versions of macOS, you are not vulnerable. If you are on a Unix-like operating system with the \"sticky\" bit set on your system temporary directory, you are not vulnerable. The problem has been patched and released with Gradle 7.0. As a workaround, on Unix-like operating systems, ensure that the \"sticky\" bit is set. This only allows the original user (or root) to delete a file. If you are unable to change the permissions of the system temporary directory, you can move the Java temporary directory by setting the System Property `java.io.tmpdir`. The new path needs to limit permissions to the build user only. For additional details refer to the referenced GitHub Security Advisory.",
+  "id": "BIT-gradle-2021-29428",
+  "modified": "2025-05-20T10:02:07.006Z",
+  "published": "2024-03-06T10:54:54.311Z",
   "references": [
     {
       "type": "WEB",
@@ -35,36 +65,6 @@
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-29428"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "gradle",
-        "ecosystem": "Bitnami",
-        "purl": "pkg:bitnami/gradle"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "7.0.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/bitnami/vulndb/tree/main/data/gradle/BIT-gradle-2021-29428.json"
-      },
-      "severity": [
-        {
-          "type": "CVSS_V3",
-          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
-        }
-      ]
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Local privilege escalation through system temporary directory"
 }

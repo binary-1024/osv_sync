@@ -1,24 +1,45 @@
 {
-  "id": "GHSA-9w5f-mw3p-pj47",
-  "summary": "Prototype Pollution(PP) vulnerability in setByPath",
-  "details": "### Summary\nThere is a Prototype Pollution(PP) vulnerability in dot-diver. It can leads to RCE.\n\n### Details\n```javascript\n//https://github.com/clickbar/dot-diver/tree/main/src/index.ts:277\n\n// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access\n  objectToSet[lastKey] = value\n```\nIn this code, there is no validation for Prototpye Pollution.\n\n### PoC\n```javascript\nimport { getByPath, setByPath } from '@clickbar/dot-diver'\n\nconsole.log({}.polluted); // undefined\nsetByPath({},'constructor.prototype.polluted', 'foo');\nconsole.log({}.polluted); // foo\n```\n\n### Impact\nIt is Prototype Pollution(PP) and it can leads to Dos, RCE, etc.\n\n### Credits\nTeam : NodeBoB\n\n\ucd5c\uc9c0\ud601   ( Jihyeok Choi )\n\n\uc774\ub3d9\ud558\u2003( Lee Dong Ha of ZeroPointer Lab )\n\n\uac15\uc131\ud604 \u00a0\u00a0\u00a0( kang seonghyeun )\n\n\ubc15\uc131\uc9c4\u00a0\u00a0\u00a0 ( sungjin park )\n\n\uae40\ucc2c\ud638\u00a0\u00a0\u00a0 ( Chanho Kim )\n\n\uc774\uc218\uc601 \u00a0\u00a0\u00a0( Lee Su Young )\n\n\uae40\ubbfc\uc6b1 \u00a0\u00a0\u00a0( MinUk Kim )\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-9w5f-mw3p-pj47/GHSA-9w5f-mw3p-pj47.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@clickbar/dot-diver",
+        "purl": "pkg:npm/%40clickbar/dot-diver"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-45827"
   ],
-  "modified": "2023-11-08T04:13:40.209911Z",
-  "published": "2023-11-03T19:03:40Z",
-  "related": [
-    "CVE-2023-45827"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-11-06T18:15:08Z",
     "cwe_ids": [
       "CWE-1321"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-11-03T19:03:40Z"
+    "github_reviewed_at": "2023-11-03T19:03:40Z",
+    "nvd_published_at": "2023-11-06T18:15:08Z",
+    "severity": "HIGH"
   },
+  "details": "### Summary\nThere is a Prototype Pollution(PP) vulnerability in dot-diver. It can leads to RCE.\n\n### Details\n```javascript\n//https://github.com/clickbar/dot-diver/tree/main/src/index.ts:277\n\n// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access\n  objectToSet[lastKey] = value\n```\nIn this code, there is no validation for Prototpye Pollution.\n\n### PoC\n```javascript\nimport { getByPath, setByPath } from '@clickbar/dot-diver'\n\nconsole.log({}.polluted); // undefined\nsetByPath({},'constructor.prototype.polluted', 'foo');\nconsole.log({}.polluted); // foo\n```\n\n### Impact\nIt is Prototype Pollution(PP) and it can leads to Dos, RCE, etc.\n\n### Credits\nTeam : NodeBoB\n\n\ucd5c\uc9c0\ud601   ( Jihyeok Choi )\n\n\uc774\ub3d9\ud558\u2003( Lee Dong Ha of ZeroPointer Lab )\n\n\uac15\uc131\ud604 \u00a0\u00a0\u00a0( kang seonghyeun )\n\n\ubc15\uc131\uc9c4\u00a0\u00a0\u00a0 ( sungjin park )\n\n\uae40\ucc2c\ud638\u00a0\u00a0\u00a0 ( Chanho Kim )\n\n\uc774\uc218\uc601 \u00a0\u00a0\u00a0( Lee Su Young )\n\n\uae40\ubbfc\uc6b1 \u00a0\u00a0\u00a0( MinUk Kim )\n",
+  "id": "GHSA-9w5f-mw3p-pj47",
+  "modified": "2023-11-08T04:13:40.209911Z",
+  "published": "2023-11-03T19:03:40Z",
   "references": [
     {
       "type": "WEB",
@@ -41,36 +62,15 @@
       "url": "https://github.com/clickbar/dot-diver"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@clickbar/dot-diver",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40clickbar/dot-diver"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1.0.2"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-9w5f-mw3p-pj47/GHSA-9w5f-mw3p-pj47.json"
-      }
-    }
+  "related": [
+    "CVE-2023-45827"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Prototype Pollution(PP) vulnerability in setByPath"
 }

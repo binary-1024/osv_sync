@@ -1,24 +1,59 @@
 {
-  "id": "GHSA-cxgf-v2p8-7ph7",
-  "summary": "NuProcess vulnerable to command-line injection through insertion of NUL character(s)",
-  "details": "### Impact\nIn all the versions of NuProcess where it forks processes by using the JVM's Java_java_lang_UNIXProcess_forkAndExec method (1.2.0+), attackers can use NUL characters in their strings to perform command line injection. Java's ProcessBuilder isn't vulnerable because of a check in ProcessBuilder.start. NuProcess is missing that check.\n\nThis vulnerability can only be exploited to inject command line arguments on Linux.\n- On macOS, any argument with a NUL character is truncated at that character. This means the malicious arguments are never seen by the started process.\n- On Windows, the entire command line is truncated at the first NUL character. This means the malicious arguments, and any intentional arguments provided after them, are never seen by the started process.\n\n### Patches\n2.0.5\n\n### Workarounds\nUsers of the library can sanitize command strings to remove NUL characters prior to passing them to NuProcess for execution.\n\n### References\nNone.\n",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-cxgf-v2p8-7ph7/GHSA-cxgf-v2p8-7ph7.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "com.zaxxer:nuprocess",
+        "purl": "pkg:maven/com.zaxxer/nuprocess"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.2.0"
+            },
+            {
+              "fixed": "2.0.5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.2.0",
+        "1.2.1",
+        "1.2.2",
+        "1.2.3",
+        "1.2.4",
+        "1.2.5",
+        "1.2.6",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.0.4"
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2022-39243"
   ],
-  "modified": "2023-11-08T04:10:16.389553Z",
-  "published": "2022-09-30T04:29:11Z",
-  "related": [
-    "CVE-2022-39243"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-09-26T14:15:00Z",
-    "github_reviewed_at": "2022-09-30T04:29:11Z",
-    "severity": "HIGH",
-    "github_reviewed": true,
     "cwe_ids": [
       "CWE-77"
-    ]
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-09-30T04:29:11Z",
+    "nvd_published_at": "2022-09-26T14:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nIn all the versions of NuProcess where it forks processes by using the JVM's Java_java_lang_UNIXProcess_forkAndExec method (1.2.0+), attackers can use NUL characters in their strings to perform command line injection. Java's ProcessBuilder isn't vulnerable because of a check in ProcessBuilder.start. NuProcess is missing that check.\n\nThis vulnerability can only be exploited to inject command line arguments on Linux.\n- On macOS, any argument with a NUL character is truncated at that character. This means the malicious arguments are never seen by the started process.\n- On Windows, the entire command line is truncated at the first NUL character. This means the malicious arguments, and any intentional arguments provided after them, are never seen by the started process.\n\n### Patches\n2.0.5\n\n### Workarounds\nUsers of the library can sanitize command strings to remove NUL characters prior to passing them to NuProcess for execution.\n\n### References\nNone.\n",
+  "id": "GHSA-cxgf-v2p8-7ph7",
+  "modified": "2023-11-08T04:10:16.389553Z",
+  "published": "2022-09-30T04:29:11Z",
   "references": [
     {
       "type": "WEB",
@@ -41,50 +76,15 @@
       "url": "https://github.com/brettwooldridge/NuProcess"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "com.zaxxer:nuprocess",
-        "ecosystem": "Maven",
-        "purl": "pkg:maven/com.zaxxer/nuprocess"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "1.2.0"
-            },
-            {
-              "fixed": "2.0.5"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "1.2.0",
-        "1.2.1",
-        "1.2.2",
-        "1.2.3",
-        "1.2.4",
-        "1.2.5",
-        "1.2.6",
-        "2.0.0",
-        "2.0.1",
-        "2.0.2",
-        "2.0.3",
-        "2.0.4"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-cxgf-v2p8-7ph7/GHSA-cxgf-v2p8-7ph7.json"
-      }
-    }
+  "related": [
+    "CVE-2022-39243"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "NuProcess vulnerable to command-line injection through insertion of NUL character(s)"
 }

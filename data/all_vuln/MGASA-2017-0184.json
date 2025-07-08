@@ -1,13 +1,46 @@
 {
-  "id": "MGASA-2017-0184",
-  "summary": "Updated glibc packages fixes critical security vulnerabilities",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2017-0184.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "glibc",
+        "purl": "pkg:rpm/mageia/glibc?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.20-25.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "The sunrpc implementation in glibc is vulnerable to a flaw that can cause\nit to be triggered to allocate additional memory until it causes a crash,\nsimilar to CVE-2017-8779 (CVE-2017-8804).\n\nA flaw was found in the way memory was being allocated on the stack for\nuser space binaries. If heap (or different memory region) and stack memory\nregions were adjacent to each other, an attacker could use this flaw to\njump over the stack guard gap, cause controlled memory corruption on\nprocess stack or the adjacent memory region, and thus increase their\nprivileges on the system. This is glibc-side mitigation which blocks\nprocessing of LD_LIBRARY_PATH for programs running in secure-execution\nmode and reduces the number of allocations performed by the processing\nof LD_AUDIT, LD_PRELOAD, and LD_HWCAP_MASK, making successful exploitation\nof this issue more difficult (CVE-2017-1000366).\n\nThe CVE-2017-1000366 issue is part of a set of issues known as Stack Clash.\nThe fixes have components in both glibc and the kernel. The kernel fix will\nbe included in a separate update advisory (mga#21141)  \n",
+  "id": "MGASA-2017-0184",
   "modified": "2017-06-26T21:15:25Z",
   "published": "2017-06-26T21:37:03Z",
-  "related": [
-    "CVE-2017-1000366",
-    "CVE-2017-8804"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -30,43 +63,10 @@
       "url": "https://rhn.redhat.com/errata/RHSA-2017-1481.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "glibc",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/glibc?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.20-25.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2017-0184.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2017-1000366",
+    "CVE-2017-8804"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated glibc packages fixes critical security vulnerabilities"
 }

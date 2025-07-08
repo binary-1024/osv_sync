@@ -1,81 +1,16 @@
 {
-  "id": "GHSA-p26g-97m4-6q7c",
-  "summary": "Eclipse Jetty's cookie parsing of quoted values can exfiltrate values from other cookies",
-  "details": "Nonstandard cookie parsing in Jetty may allow an attacker to smuggle cookies within other cookies, or otherwise perform unintended behavior by tampering with the cookie parsing mechanism.\n\nIf Jetty sees a cookie VALUE that starts with `\"` (double quote), it will continue to read the cookie string until it sees a closing quote -- even if a semicolon is encountered.\n\nSo, a cookie header such as:\n\n`DISPLAY_LANGUAGE=\"b; JSESSIONID=1337; c=d\"` will be parsed as one cookie, with the name `DISPLAY_LANGUAGE` and a value of `b; JSESSIONID=1337; c=d`\n\ninstead of 3 separate cookies.\n\n### Impact\nThis has security implications because if, say, `JSESSIONID` is an `HttpOnly` cookie, and the `DISPLAY_LANGUAGE` cookie value is rendered on the page, an attacker can smuggle the `JSESSIONID` cookie into the `DISPLAY_LANGUAGE` cookie and thereby exfiltrate it. This is significant when an intermediary is enacting some policy based on cookies, so a smuggled cookie can bypass that policy yet still be seen by the Jetty server.\n\n### Patches\n* 9.4.51.v20230217 - via PR #9352\n* 10.0.15 - via PR #9339\n* 11.0.15 - via PR #9339\n\n### Workarounds\nNo workarounds\n\n### References\n* https://www.rfc-editor.org/rfc/rfc2965\n* https://www.rfc-editor.org/rfc/rfc6265\n",
-  "aliases": [
-    "CVE-2023-26049"
-  ],
-  "modified": "2024-02-20T05:30:22.058149Z",
-  "published": "2023-04-18T22:19:57Z",
-  "related": [
-    "CGA-6jj8-gqq9-qj3c",
-    "CVE-2023-26049"
-  ],
-  "database_specific": {
-    "nvd_published_at": "2023-04-18T21:15:09Z",
-    "cwe_ids": [
-      "CWE-200"
-    ],
-    "severity": "LOW",
-    "github_reviewed": true,
-    "github_reviewed_at": "2023-04-18T22:19:57Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/eclipse/jetty.project/security/advisories/GHSA-p26g-97m4-6q7c"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-26049"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/eclipse/jetty.project/pull/9339"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/eclipse/jetty.project/pull/9352"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/eclipse/jetty.project"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/eclipse/jetty.project/releases/tag/jetty-9.4.51.v20230217"
-    },
-    {
-      "type": "WEB",
-      "url": "https://lists.debian.org/debian-lts-announce/2023/09/msg00039.html"
-    },
-    {
-      "type": "WEB",
-      "url": "https://security.netapp.com/advisory/ntap-20230526-0001"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.debian.org/security/2023/dsa-5507"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.rfc-editor.org/rfc/rfc2965"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.rfc-editor.org/rfc/rfc6265"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-p26g-97m4-6q7c/GHSA-p26g-97m4-6q7c.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty:jetty-server",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
         "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -83,7 +18,8 @@
             {
               "fixed": "9.4.51.v20230217"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -385,20 +321,19 @@
         "9.4.8.v20171121",
         "9.4.8.v20180619",
         "9.4.9.v20180320"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-p26g-97m4-6q7c/GHSA-p26g-97m4-6q7c.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-p26g-97m4-6q7c/GHSA-p26g-97m4-6q7c.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty:jetty-server",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
         "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "10.0.0"
@@ -406,7 +341,8 @@
             {
               "fixed": "10.0.14"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -424,20 +360,19 @@
         "10.0.7",
         "10.0.8",
         "10.0.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-p26g-97m4-6q7c/GHSA-p26g-97m4-6q7c.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-p26g-97m4-6q7c/GHSA-p26g-97m4-6q7c.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty:jetty-server",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
         "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "11.0.0"
@@ -445,7 +380,8 @@
             {
               "fixed": "11.0.14"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -463,20 +399,19 @@
         "11.0.7",
         "11.0.8",
         "11.0.9"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-p26g-97m4-6q7c/GHSA-p26g-97m4-6q7c.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-p26g-97m4-6q7c/GHSA-p26g-97m4-6q7c.json"
+      },
       "package": {
-        "name": "org.eclipse.jetty:jetty-server",
         "ecosystem": "Maven",
+        "name": "org.eclipse.jetty:jetty-server",
         "purl": "pkg:maven/org.eclipse.jetty/jetty-server"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "12.0.0alpha0"
@@ -484,7 +419,8 @@
             {
               "fixed": "12.0.0.beta0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -492,17 +428,81 @@
         "12.0.0.alpha1",
         "12.0.0.alpha2",
         "12.0.0.alpha3"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/04/GHSA-p26g-97m4-6q7c/GHSA-p26g-97m4-6q7c.json"
-      }
+      ]
     }
+  ],
+  "aliases": [
+    "CVE-2023-26049"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-200"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2023-04-18T22:19:57Z",
+    "nvd_published_at": "2023-04-18T21:15:09Z",
+    "severity": "LOW"
+  },
+  "details": "Nonstandard cookie parsing in Jetty may allow an attacker to smuggle cookies within other cookies, or otherwise perform unintended behavior by tampering with the cookie parsing mechanism.\n\nIf Jetty sees a cookie VALUE that starts with `\"` (double quote), it will continue to read the cookie string until it sees a closing quote -- even if a semicolon is encountered.\n\nSo, a cookie header such as:\n\n`DISPLAY_LANGUAGE=\"b; JSESSIONID=1337; c=d\"` will be parsed as one cookie, with the name `DISPLAY_LANGUAGE` and a value of `b; JSESSIONID=1337; c=d`\n\ninstead of 3 separate cookies.\n\n### Impact\nThis has security implications because if, say, `JSESSIONID` is an `HttpOnly` cookie, and the `DISPLAY_LANGUAGE` cookie value is rendered on the page, an attacker can smuggle the `JSESSIONID` cookie into the `DISPLAY_LANGUAGE` cookie and thereby exfiltrate it. This is significant when an intermediary is enacting some policy based on cookies, so a smuggled cookie can bypass that policy yet still be seen by the Jetty server.\n\n### Patches\n* 9.4.51.v20230217 - via PR #9352\n* 10.0.15 - via PR #9339\n* 11.0.15 - via PR #9339\n\n### Workarounds\nNo workarounds\n\n### References\n* https://www.rfc-editor.org/rfc/rfc2965\n* https://www.rfc-editor.org/rfc/rfc6265\n",
+  "id": "GHSA-p26g-97m4-6q7c",
+  "modified": "2024-02-20T05:30:22.058149Z",
+  "published": "2023-04-18T22:19:57Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse/jetty.project/security/advisories/GHSA-p26g-97m4-6q7c"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-26049"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse/jetty.project/pull/9339"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse/jetty.project/pull/9352"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/eclipse/jetty.project"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/eclipse/jetty.project/releases/tag/jetty-9.4.51.v20230217"
+    },
+    {
+      "type": "WEB",
+      "url": "https://lists.debian.org/debian-lts-announce/2023/09/msg00039.html"
+    },
+    {
+      "type": "WEB",
+      "url": "https://security.netapp.com/advisory/ntap-20230526-0001"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.debian.org/security/2023/dsa-5507"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.rfc-editor.org/rfc/rfc2965"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.rfc-editor.org/rfc/rfc6265"
+    }
+  ],
+  "related": [
+    "CGA-6jj8-gqq9-qj3c",
+    "CVE-2023-26049"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Eclipse Jetty's cookie parsing of quoted values can exfiltrate values from other cookies"
 }

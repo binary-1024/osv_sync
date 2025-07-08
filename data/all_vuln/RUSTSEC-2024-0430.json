@@ -1,12 +1,46 @@
 {
-  "id": "RUSTSEC-2024-0430",
-  "summary": "Use of insecure cryptographic algorithms",
-  "details": "This crate uses a number of cryptographic algorithms that are no longer\nconsidered secure and it uses them in ways that do not guarantee the integrity\nof the encrypted data.\n\n`MagicCrypt64` uses the insecure DES block cipher in CBC mode without\nauthentication. This allows for practical brute force and padding oracle\nattacks and does not protect the integrity of the encrypted data. Key and IV\nare generated from user input using CRC64, which is not at all a key derivation\nfunction.\n\n`MagicCrypt64`, `MagicCrypt128`, `MagicCrypt192`, and `MagicCrypt256` are all\nvulnerable to padding-oracle attacks. None of them protect the integrity of the\nciphertext. Furthermore, none use password-based key derivation functions, even\nthough the key is intended to be generated from a password.\n\nEach of the implementations are unsound in that they use uninitialized memory\nwithout `MaybeUninit` or equivalent structures.\n\nFor more information, visit the [issue](https://github.com/magiclen/rust-magiccrypt/issues/17).",
-  "modified": "2024-12-28T17:33:55Z",
-  "published": "2024-12-28T12:00:00Z",
+  "affected": [
+    {
+      "database_specific": {
+        "categories": [
+          "crypto-failure"
+        ],
+        "cvss": null,
+        "informational": null,
+        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2024-0430.json"
+      },
+      "ecosystem_specific": {
+        "affected_functions": null,
+        "affects": {
+          "arch": [],
+          "functions": [],
+          "os": []
+        }
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "magic-crypt",
+        "purl": "pkg:cargo/magic-crypt"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "database_specific": {
     "license": "CC0-1.0"
   },
+  "details": "This crate uses a number of cryptographic algorithms that are no longer\nconsidered secure and it uses them in ways that do not guarantee the integrity\nof the encrypted data.\n\n`MagicCrypt64` uses the insecure DES block cipher in CBC mode without\nauthentication. This allows for practical brute force and padding oracle\nattacks and does not protect the integrity of the encrypted data. Key and IV\nare generated from user input using CRC64, which is not at all a key derivation\nfunction.\n\n`MagicCrypt64`, `MagicCrypt128`, `MagicCrypt192`, and `MagicCrypt256` are all\nvulnerable to padding-oracle attacks. None of them protect the integrity of the\nciphertext. Furthermore, none use password-based key derivation functions, even\nthough the key is intended to be generated from a password.\n\nEach of the implementations are unsound in that they use uninitialized memory\nwithout `MaybeUninit` or equivalent structures.\n\nFor more information, visit the [issue](https://github.com/magiclen/rust-magiccrypt/issues/17).",
+  "id": "RUSTSEC-2024-0430",
+  "modified": "2024-12-28T17:33:55Z",
+  "published": "2024-12-28T12:00:00Z",
   "references": [
     {
       "type": "PACKAGE",
@@ -21,40 +55,6 @@
       "url": "https://github.com/magiclen/rust-magiccrypt/issues/17"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "magic-crypt",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/magic-crypt"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.0.0-0"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "affected_functions": null,
-        "affects": {
-          "os": [],
-          "functions": [],
-          "arch": []
-        }
-      },
-      "database_specific": {
-        "cvss": null,
-        "informational": null,
-        "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2024-0430.json",
-        "categories": [
-          "crypto-failure"
-        ]
-      }
-    }
-  ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "summary": "Use of insecure cryptographic algorithms"
 }

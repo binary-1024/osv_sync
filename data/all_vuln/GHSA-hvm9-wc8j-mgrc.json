@@ -1,20 +1,53 @@
 {
-  "id": "GHSA-hvm9-wc8j-mgrc",
-  "summary": "TShock Security Escalation Exploit",
-  "details": "### Impact\nAn issue with the way OTAPI manages client connections results in stale UUIDs remaining on `RemoteClient` instances after a player disconnects.\n\nBecause of this, if the following conditions are met a player may assume the login state of a previously connected player:\n1. The server has UUID login enabled\n2. An authenticated player disconnects\n3. A subsequent player connects with a modified client that does not send the `ClientUUID#68` packet during connection\n4. The server assigns the same `RemoteClient` object that belonged to the originally authenticated player to the newly connected player\n\n\n### Patches\nTShock 5.2.1 hotfixes this issue. A more robust fix will be made to OTAPI itself.\n\n### Workarounds\nImplement a RemoteClient reset event handler in a plugin like so:\n```csharp\npublic override void Initialize()\n{\n        On.Terraria.RemoteClient.Reset += RemoteClient_Reset;\n}\n\nprivate static void RemoteClient_Reset(On.Terraria.RemoteClient.orig_Reset orig, RemoteClient client)\n{\n\tclient.ClientUUID = null;\n        orig(client);\n}\n```\n\n",
-  "modified": "2024-12-18T18:46:35.452868Z",
-  "published": "2024-12-18T18:19:12Z",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hvm9-wc8j-mgrc/GHSA-hvm9-wc8j-mgrc.json"
+      },
+      "package": {
+        "ecosystem": "NuGet",
+        "name": "TShock",
+        "purl": "pkg:nuget/TShock"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.3.21"
+            },
+            {
+              "fixed": "5.2.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "5.0.0",
+        "5.0.0-beta",
+        "5.1.0",
+        "5.1.1",
+        "5.1.2",
+        "5.1.3",
+        "5.2.0"
+      ]
+    }
+  ],
   "database_specific": {
-    "nvd_published_at": null,
     "cwe_ids": [
       "CWE-305",
       "CWE-613",
       "CWE-863"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2024-12-18T18:19:12Z"
+    "github_reviewed_at": "2024-12-18T18:19:12Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
   },
+  "details": "### Impact\nAn issue with the way OTAPI manages client connections results in stale UUIDs remaining on `RemoteClient` instances after a player disconnects.\n\nBecause of this, if the following conditions are met a player may assume the login state of a previously connected player:\n1. The server has UUID login enabled\n2. An authenticated player disconnects\n3. A subsequent player connects with a modified client that does not send the `ClientUUID#68` packet during connection\n4. The server assigns the same `RemoteClient` object that belonged to the originally authenticated player to the newly connected player\n\n\n### Patches\nTShock 5.2.1 hotfixes this issue. A more robust fix will be made to OTAPI itself.\n\n### Workarounds\nImplement a RemoteClient reset event handler in a plugin like so:\n```csharp\npublic override void Initialize()\n{\n        On.Terraria.RemoteClient.Reset += RemoteClient_Reset;\n}\n\nprivate static void RemoteClient_Reset(On.Terraria.RemoteClient.orig_Reset orig, RemoteClient client)\n{\n\tclient.ClientUUID = null;\n        orig(client);\n}\n```\n\n",
+  "id": "GHSA-hvm9-wc8j-mgrc",
+  "modified": "2024-12-18T18:46:35.452868Z",
+  "published": "2024-12-18T18:19:12Z",
   "references": [
     {
       "type": "WEB",
@@ -29,45 +62,12 @@
       "url": "https://github.com/Pryaxis/TShock"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "TShock",
-        "ecosystem": "NuGet",
-        "purl": "pkg:nuget/TShock"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "4.3.21"
-            },
-            {
-              "fixed": "5.2.1"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "5.0.0",
-        "5.0.0-beta",
-        "5.1.0",
-        "5.1.1",
-        "5.1.2",
-        "5.1.3",
-        "5.2.0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/12/GHSA-hvm9-wc8j-mgrc/GHSA-hvm9-wc8j-mgrc.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:H/VI:H/VA:H/SC:L/SI:H/SA:H"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:H/VI:H/VA:H/SC:L/SI:H/SA:H",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "TShock Security Escalation Exploit"
 }

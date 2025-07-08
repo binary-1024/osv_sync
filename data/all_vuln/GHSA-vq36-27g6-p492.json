@@ -1,27 +1,107 @@
 {
-  "id": "GHSA-vq36-27g6-p492",
-  "summary": "Out of bounds read in Tensorflow",
-  "details": "### Impact\nTensorFlow's [type inference](https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/core/graph/graph.cc#L223-L229) can cause a heap OOB read as the bounds checking is done in a `DCHECK` (which is a no-op during production):\n\n```cc\nif (node_t.type_id() != TFT_UNSET) {\n  int ix = input_idx[i];\n  DCHECK(ix < node_t.args_size())\n      << \"input \" << i << \" should have an output \" << ix\n      << \" but instead only has \" << node_t.args_size()\n      << \" outputs: \" << node_t.DebugString();\n  input_types.emplace_back(node_t.args(ix));\n  // ...\n}       \n```   \n      \nAn attacker can control `input_idx` such that `ix` would be larger than the number of values in `node_t.args`.\n        \n### Patches\nWe have patched the issue in GitHub commit [c99d98cd189839dcf51aee94e7437b54b31f8abd](https://github.com/tensorflow/tensorflow/commit/c99d98cd189839dcf51aee94e7437b54b31f8abd).\n  \nThe fix will be included in TensorFlow 2.8.0. This is the only affected version.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-vq36-27g6-p492/GHSA-vq36-27g6-p492.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow",
+        "purl": "pkg:pypi/tensorflow"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0-rc0"
+            },
+            {
+              "fixed": "2.8.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0-rc0",
+        "2.8.0rc0",
+        "2.8.0rc1"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-vq36-27g6-p492/GHSA-vq36-27g6-p492.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow-cpu",
+        "purl": "pkg:pypi/tensorflow-cpu"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0-rc0"
+            },
+            {
+              "fixed": "2.8.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0-rc0"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-vq36-27g6-p492/GHSA-vq36-27g6-p492.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "tensorflow-gpu",
+        "purl": "pkg:pypi/tensorflow-gpu"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.8.0-rc0"
+            },
+            {
+              "fixed": "2.8.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0-rc0",
+        "2.8.0rc0",
+        "2.8.0rc1"
+      ]
+    }
+  ],
   "aliases": [
     "BIT-tensorflow-2022-23592",
     "CVE-2022-23592",
     "PYSEC-2022-101",
     "PYSEC-2022-156"
   ],
-  "modified": "2024-11-13T22:22:31.458483Z",
-  "published": "2022-02-09T23:31:48Z",
-  "related": [
-    "CVE-2022-23592"
-  ],
   "database_specific": {
-    "nvd_published_at": "2022-02-04T23:15:00Z",
     "cwe_ids": [
       "CWE-125"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2022-02-04T18:17:17Z"
+    "github_reviewed_at": "2022-02-04T18:17:17Z",
+    "nvd_published_at": "2022-02-04T23:15:00Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nTensorFlow's [type inference](https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/core/graph/graph.cc#L223-L229) can cause a heap OOB read as the bounds checking is done in a `DCHECK` (which is a no-op during production):\n\n```cc\nif (node_t.type_id() != TFT_UNSET) {\n  int ix = input_idx[i];\n  DCHECK(ix < node_t.args_size())\n      << \"input \" << i << \" should have an output \" << ix\n      << \" but instead only has \" << node_t.args_size()\n      << \" outputs: \" << node_t.DebugString();\n  input_types.emplace_back(node_t.args(ix));\n  // ...\n}       \n```   \n      \nAn attacker can control `input_idx` such that `ix` would be larger than the number of values in `node_t.args`.\n        \n### Patches\nWe have patched the issue in GitHub commit [c99d98cd189839dcf51aee94e7437b54b31f8abd](https://github.com/tensorflow/tensorflow/commit/c99d98cd189839dcf51aee94e7437b54b31f8abd).\n  \nThe fix will be included in TensorFlow 2.8.0. This is the only affected version.\n\n### For more information\nPlease consult [our security guide](https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions.",
+  "id": "GHSA-vq36-27g6-p492",
+  "modified": "2024-11-13T22:22:31.458483Z",
+  "published": "2022-02-09T23:31:48Z",
   "references": [
     {
       "type": "WEB",
@@ -52,99 +132,19 @@
       "url": "https://github.com/tensorflow/tensorflow/blob/274df9b02330b790aa8de1cee164b70f72b9b244/tensorflow/core/graph/graph.cc#L223-L229"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "tensorflow",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0-rc0"
-            },
-            {
-              "fixed": "2.8.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0-rc0",
-        "2.8.0rc0",
-        "2.8.0rc1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-vq36-27g6-p492/GHSA-vq36-27g6-p492.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tensorflow-cpu",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow-cpu"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0-rc0"
-            },
-            {
-              "fixed": "2.8.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0-rc0"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-vq36-27g6-p492/GHSA-vq36-27g6-p492.json"
-      }
-    },
-    {
-      "package": {
-        "name": "tensorflow-gpu",
-        "ecosystem": "PyPI",
-        "purl": "pkg:pypi/tensorflow-gpu"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "2.8.0-rc0"
-            },
-            {
-              "fixed": "2.8.0"
-            }
-          ]
-        }
-      ],
-      "versions": [
-        "2.8.0-rc0",
-        "2.8.0rc0",
-        "2.8.0rc1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/02/GHSA-vq36-27g6-p492/GHSA-vq36-27g6-p492.json"
-      }
-    }
+  "related": [
+    "CVE-2022-23592"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:N/VA:H/SC:N/SI:N/SA:N"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Out of bounds read in Tensorflow"
 }

@@ -1,22 +1,46 @@
 {
-  "id": "GHSA-x958-rvg6-956w",
-  "summary": "matrix-sdk-crypto vulnerable to sender of encrypted events being spoofed by homeserver administrator",
-  "details": "### Summary\n\nmatrix-sdk-crypto since version 0.8.0 up to 0.11.0 does not correctly validate the sender of an encrypted event. Accordingly, a malicious homeserver operator can modify events served to clients, making those events appear to the recipient as if they were sent by another user.\n\nAlthough the CVSS score is 4.9 (AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N), we consider this a High Severity security issue.\n\n### Details\n\nThe Matrix specification [requires](https://spec.matrix.org/v1.14/client-server-api/#mmegolmv1aes-sha2) that clients ensure that \"the event\u2019s `sender`, `room_id`, and the recorded `session_id` match a trusted session\". The vulnerable matrix-sdk-crypto versions check that the `room_id` matches that of the session denoted by `session_id`, but do not check the `sender`.\n\n### Patches\n\nThe issue is resolved by [13c1d20](https://github.com/matrix-org/matrix-rust-sdk/commit/13c1d2048286bbabf5e7bc6b015aafee98f04d55), included in versions 0.11.1 and 0.12.0 of matrix-sdk-crypto.\n\n### Workarounds\n\nSince a successful attack requires administrator access to the homeserver, users who trust the administrators of their local homeserver are not affected.\n\n### References\n\n * https://spec.matrix.org/v1.14/client-server-api/#mmegolmv1aes-sha2",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-x958-rvg6-956w/GHSA-x958-rvg6-956w.json"
+      },
+      "package": {
+        "ecosystem": "crates.io",
+        "name": "matrix-sdk-crypto",
+        "purl": "pkg:cargo/matrix-sdk-crypto"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0.8.0"
+            },
+            {
+              "fixed": "0.11.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2025-48937",
     "RUSTSEC-2025-0041"
   ],
-  "modified": "2025-06-12T21:23:37Z",
-  "published": "2025-06-10T20:15:37Z",
   "database_specific": {
-    "nvd_published_at": "2025-06-10T16:15:41Z",
     "cwe_ids": [
       "CWE-290"
     ],
-    "severity": "MODERATE",
     "github_reviewed": true,
-    "github_reviewed_at": "2025-06-10T20:15:37Z"
+    "github_reviewed_at": "2025-06-10T20:15:37Z",
+    "nvd_published_at": "2025-06-10T16:15:41Z",
+    "severity": "MODERATE"
   },
+  "details": "### Summary\n\nmatrix-sdk-crypto since version 0.8.0 up to 0.11.0 does not correctly validate the sender of an encrypted event. Accordingly, a malicious homeserver operator can modify events served to clients, making those events appear to the recipient as if they were sent by another user.\n\nAlthough the CVSS score is 4.9 (AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N), we consider this a High Severity security issue.\n\n### Details\n\nThe Matrix specification [requires](https://spec.matrix.org/v1.14/client-server-api/#mmegolmv1aes-sha2) that clients ensure that \"the event\u2019s `sender`, `room_id`, and the recorded `session_id` match a trusted session\". The vulnerable matrix-sdk-crypto versions check that the `room_id` matches that of the session denoted by `session_id`, but do not check the `sender`.\n\n### Patches\n\nThe issue is resolved by [13c1d20](https://github.com/matrix-org/matrix-rust-sdk/commit/13c1d2048286bbabf5e7bc6b015aafee98f04d55), included in versions 0.11.1 and 0.12.0 of matrix-sdk-crypto.\n\n### Workarounds\n\nSince a successful attack requires administrator access to the homeserver, users who trust the administrators of their local homeserver are not affected.\n\n### References\n\n * https://spec.matrix.org/v1.14/client-server-api/#mmegolmv1aes-sha2",
+  "id": "GHSA-x958-rvg6-956w",
+  "modified": "2025-06-12T21:23:37Z",
+  "published": "2025-06-10T20:15:37Z",
   "references": [
     {
       "type": "WEB",
@@ -47,36 +71,12 @@
       "url": "https://spec.matrix.org/v1.14/client-server-api/#mmegolmv1aes-sha2"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "matrix-sdk-crypto",
-        "ecosystem": "crates.io",
-        "purl": "pkg:cargo/matrix-sdk-crypto"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "0.8.0"
-            },
-            {
-              "fixed": "0.11.1"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-x958-rvg6-956w/GHSA-x958-rvg6-956w.json"
-      }
-    }
-  ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "matrix-sdk-crypto vulnerable to sender of encrypted events being spoofed by homeserver administrator"
 }

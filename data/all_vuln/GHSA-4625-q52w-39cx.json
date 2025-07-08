@@ -1,50 +1,17 @@
 {
-  "id": "GHSA-4625-q52w-39cx",
-  "summary": "Missing permission check for paths with specific prefix in Jenkins",
-  "details": "Jenkins includes a static list of URLs that are always accessible even without Overall/Read permission, such as the login form. These URLs are excluded from an otherwise universal permission check.\n\nJenkins 2.274 and earlier, LTS 2.263.1 and earlier does not correctly compare requested URLs with that list.\n\nThis allows attackers without Overall/Read permission to access plugin-provided URLs with any of the following prefixes if no other permissions are required:\n- `accessDenied`\n- `error`\n- `instance-identity`\n- `login`\n- `logout`\n- `oops`\n- `securityRealm`\n- `signup`\n- `tcpSlaveAgentListener`\n\nFor example, a plugin contributing the path `loginFoo/` would have URLs in that space accessible without the default Overall/Read permission check.\n\nThe Jenkins security team is not aware of any affected plugins as of the publication of this advisory.\n\nThe comparison of requested URLs with the list of always accessible URLs has been fixed to only allow access to the specific listed URLs in Jenkins 2.275, LTS 2.263.2.\n\nIn case this change causes problems, additional paths can be made accessible without Overall/Read permissions: The [Java system property](https://www.jenkins.io/doc/book/managing/system-properties/) `jenkins.model.Jenkins.additionalReadablePaths` is a comma-separated list of additional path prefixes to allow access to.",
-  "aliases": [
-    "BIT-jenkins-2021-21609",
-    "CVE-2021-21609"
-  ],
-  "modified": "2024-02-16T08:24:54.837091Z",
-  "published": "2022-05-24T17:39:12Z",
-  "database_specific": {
-    "nvd_published_at": "2021-01-13T16:15:00Z",
-    "cwe_ids": [
-      "CWE-863"
-    ],
-    "severity": "MODERATE",
-    "github_reviewed": true,
-    "github_reviewed_at": "2022-06-23T06:51:02Z"
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-21609"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/jenkinsci/jenkins/commit/fe9091fc74d55a56fd36544f3038d47c8cb331a4"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/jenkinsci/jenkins"
-    },
-    {
-      "type": "WEB",
-      "url": "https://www.jenkins.io/security/advisory/2021-01-13/#SECURITY-2047"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.263.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-4625-q52w-39cx/GHSA-4625-q52w-39cx.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:jenkins-core",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:jenkins-core",
         "purl": "pkg:maven/org.jenkins-ci.main/jenkins-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -52,7 +19,8 @@
             {
               "fixed": "2.263.2"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -712,21 +680,20 @@
         "2.97",
         "2.98",
         "2.99"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.263.1",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-4625-q52w-39cx/GHSA-4625-q52w-39cx.json"
-      }
+      ]
     },
     {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.274",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-4625-q52w-39cx/GHSA-4625-q52w-39cx.json"
+      },
       "package": {
-        "name": "org.jenkins-ci.main:jenkins-core",
         "ecosystem": "Maven",
+        "name": "org.jenkins-ci.main:jenkins-core",
         "purl": "pkg:maven/org.jenkins-ci.main/jenkins-core"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "2.264"
@@ -734,7 +701,8 @@
             {
               "fixed": "2.275"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -749,18 +717,50 @@
         "2.272",
         "2.273",
         "2.274"
-      ],
-      "database_specific": {
-        "last_known_affected_version_range": "<= 2.274",
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-4625-q52w-39cx/GHSA-4625-q52w-39cx.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "BIT-jenkins-2021-21609",
+    "CVE-2021-21609"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-863"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2022-06-23T06:51:02Z",
+    "nvd_published_at": "2021-01-13T16:15:00Z",
+    "severity": "MODERATE"
+  },
+  "details": "Jenkins includes a static list of URLs that are always accessible even without Overall/Read permission, such as the login form. These URLs are excluded from an otherwise universal permission check.\n\nJenkins 2.274 and earlier, LTS 2.263.1 and earlier does not correctly compare requested URLs with that list.\n\nThis allows attackers without Overall/Read permission to access plugin-provided URLs with any of the following prefixes if no other permissions are required:\n- `accessDenied`\n- `error`\n- `instance-identity`\n- `login`\n- `logout`\n- `oops`\n- `securityRealm`\n- `signup`\n- `tcpSlaveAgentListener`\n\nFor example, a plugin contributing the path `loginFoo/` would have URLs in that space accessible without the default Overall/Read permission check.\n\nThe Jenkins security team is not aware of any affected plugins as of the publication of this advisory.\n\nThe comparison of requested URLs with the list of always accessible URLs has been fixed to only allow access to the specific listed URLs in Jenkins 2.275, LTS 2.263.2.\n\nIn case this change causes problems, additional paths can be made accessible without Overall/Read permissions: The [Java system property](https://www.jenkins.io/doc/book/managing/system-properties/) `jenkins.model.Jenkins.additionalReadablePaths` is a comma-separated list of additional path prefixes to allow access to.",
+  "id": "GHSA-4625-q52w-39cx",
+  "modified": "2024-02-16T08:24:54.837091Z",
+  "published": "2022-05-24T17:39:12Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-21609"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/jenkinsci/jenkins/commit/fe9091fc74d55a56fd36544f3038d47c8cb331a4"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/jenkinsci/jenkins"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.jenkins.io/security/advisory/2021-01-13/#SECURITY-2047"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Missing permission check for paths with specific prefix in Jenkins"
 }

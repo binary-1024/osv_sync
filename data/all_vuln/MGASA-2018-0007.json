@@ -1,20 +1,46 @@
 {
-  "id": "MGASA-2018-0007",
-  "summary": "Updated apache packages fix security vulnerability",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://advisories.mageia.org/MGASA-2018-0007.json"
+      },
+      "ecosystem_specific": {
+        "section": "core"
+      },
+      "package": {
+        "ecosystem": "Mageia:5",
+        "name": "apache",
+        "purl": "pkg:rpm/mageia/apache?arch=source&distro=mageia-5"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.10-16.7.mga5"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "credits": [
+    {
+      "contact": [
+        "https://wiki.mageia.org/en/Packages_Security_Team"
+      ],
+      "name": "Mageia",
+      "type": "COORDINATOR"
+    }
+  ],
   "details": "mod_sessioncrypto was encrypting its data/cookie using the configured ciphers\nwith possibly either CBC or ECB modes of operation (AES256-CBC by default),\nhence no selectable or builtin authenticated encryption. This made it\nvulnerable to padding oracle attacks, particularly with CBC (CVE-2016-0736).\n\nMalicious input to mod_auth_digest will cause the server to crash, and each\ninstance continues to crash even for subsequently valid requests\n(CVE-2016-2161).\n\nEmmanuel Dreyfus reported that the use of ap_get_basic_auth_pw() by third-party\nmodules outside of the authentication phase may lead to authentication\nrequirements being bypassed (CVE-2017-3167).\n\nVasileios Panopoulos of AdNovum Informatik AG discovered that mod_ssl may\ndereference a NULL pointer when third-party modules call\nap_hook_process_connection() during an HTTP request to an HTTPS port leading to\na denial of service (CVE-2017-3169).\n\nJavier Jimenez reported that the HTTP strict parsing contains a flaw leading to\na buffer overread in ap_find_token(). A remote attacker can take advantage of\nthis flaw by carefully crafting a sequence of request headers to cause a\nsegmentation fault, or to force ap_find_token() to return an incorrect value\n(CVE-2017-7668).\n\nChenQin and Hanno Boeck reported that mod_mime can read one byte past the end of\na buffer when sending a malicious Content-Type response header (CVE-2017-7679).\n\nRobert Swiecki reported that mod_auth_digest does not properly initialize or\nreset the value placeholder in [Proxy-]Authorization headers of type \"Digest\"\nbetween successive key=value assignments, leading to information disclosure or\ndenial of service (CVE-2017-9788).\n\nHanno B\u00f6ck discovered that the Apache HTTP Server incorrectly handled Limit\ndirectives in .htaccess files. In certain configurations, a remote attacker\ncould possibly use this issue to read arbitrary server memory, including\nsensitive information. This issue is known as Optionsbleed (CVE-2017-9798).\n",
+  "id": "MGASA-2018-0007",
   "modified": "2018-01-01T10:10:13Z",
   "published": "2018-01-01T10:38:51Z",
-  "related": [
-    "CVE-2016-0736",
-    "CVE-2016-2161",
-    "CVE-2016-8743",
-    "CVE-2017-3167",
-    "CVE-2017-3169",
-    "CVE-2017-7668",
-    "CVE-2017-7679",
-    "CVE-2017-9788",
-    "CVE-2017-9798"
-  ],
   "references": [
     {
       "type": "ADVISORY",
@@ -41,43 +67,17 @@
       "url": "https://httpd.apache.org/security/vulnerabilities_24.html"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "apache",
-        "ecosystem": "Mageia:5",
-        "purl": "pkg:rpm/mageia/apache?arch=source&distro=mageia-5"
-      },
-      "ranges": [
-        {
-          "type": "ECOSYSTEM",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2.4.10-16.7.mga5"
-            }
-          ]
-        }
-      ],
-      "ecosystem_specific": {
-        "section": "core"
-      },
-      "database_specific": {
-        "source": "https://advisories.mageia.org/MGASA-2018-0007.json"
-      },
-      "versions": []
-    }
+  "related": [
+    "CVE-2016-0736",
+    "CVE-2016-2161",
+    "CVE-2016-8743",
+    "CVE-2017-3167",
+    "CVE-2017-3169",
+    "CVE-2017-7668",
+    "CVE-2017-7679",
+    "CVE-2017-9788",
+    "CVE-2017-9798"
   ],
   "schema_version": "1.6.0",
-  "credits": [
-    {
-      "name": "Mageia",
-      "contact": [
-        "https://wiki.mageia.org/en/Packages_Security_Team"
-      ],
-      "type": "COORDINATOR"
-    }
-  ]
+  "summary": "Updated apache packages fix security vulnerability"
 }

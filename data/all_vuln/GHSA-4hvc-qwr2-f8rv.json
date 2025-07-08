@@ -1,49 +1,16 @@
 {
-  "id": "GHSA-4hvc-qwr2-f8rv",
-  "summary": "Redisson vulnerable to Deserialization of Untrusted Data",
-  "details": "Redisson is a Java Redis client that uses the Netty framework. Prior to version 3.22.0, some of the messages received from the Redis server contain Java objects that the client deserializes without further validation. Attackers that manage to trick clients into communicating with a malicious server can include especially crafted objects in its responses that, once deserialized by the client, force it to execute arbitrary code. This can be abused to take control of the machine the client is running in. Version 3.22.0 contains a patch for this issue.\n\nSome post-fix advice is available. Do NOT use `Kryo5Codec` as deserialization codec, as it is still vulnerable to arbitrary object deserialization due to the `setRegistrationRequired(false)` call. On the contrary, `KryoCodec` is safe to use. The fix applied to `SerializationCodec` only consists of adding an optional allowlist of class names, even though making this behavior the default is recommended. When instantiating `SerializationCodec` please use the `SerializationCodec(ClassLoader classLoader, Set<String> allowedClasses)` constructor to restrict the allowed classes for deserialization.",
-  "aliases": [
-    "CVE-2023-42809"
-  ],
-  "modified": "2024-08-05T21:58:56.532751Z",
-  "published": "2024-08-05T21:29:22Z",
-  "database_specific": {
-    "nvd_published_at": "2023-10-04T20:15:10Z",
-    "cwe_ids": [
-      "CWE-502"
-    ],
-    "severity": "CRITICAL",
-    "github_reviewed": true,
-    "github_reviewed_at": "2024-08-05T21:29:22Z"
-  },
-  "references": [
-    {
-      "type": "ADVISORY",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42809"
-    },
-    {
-      "type": "WEB",
-      "url": "https://github.com/redisson/redisson/commit/fe6a2571801656ff1599ef87bdee20f519a5d1fe"
-    },
-    {
-      "type": "PACKAGE",
-      "url": "https://github.com/redisson/redisson"
-    },
-    {
-      "type": "ADVISORY",
-      "url": "https://securitylab.github.com/advisories/GHSL-2023-053_Redisson"
-    }
-  ],
   "affected": [
     {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-4hvc-qwr2-f8rv/GHSA-4hvc-qwr2-f8rv.json"
+      },
       "package": {
-        "name": "org.redisson:redisson",
         "ecosystem": "Maven",
+        "name": "org.redisson:redisson",
         "purl": "pkg:maven/org.redisson/redisson"
       },
       "ranges": [
         {
-          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
@@ -51,7 +18,8 @@
             {
               "fixed": "3.22.0"
             }
-          ]
+          ],
+          "type": "ECOSYSTEM"
         }
       ],
       "versions": [
@@ -261,21 +229,53 @@
         "3.8.2",
         "3.9.0",
         "3.9.1"
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-4hvc-qwr2-f8rv/GHSA-4hvc-qwr2-f8rv.json"
-      }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2023-42809"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-502"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2024-08-05T21:29:22Z",
+    "nvd_published_at": "2023-10-04T20:15:10Z",
+    "severity": "CRITICAL"
+  },
+  "details": "Redisson is a Java Redis client that uses the Netty framework. Prior to version 3.22.0, some of the messages received from the Redis server contain Java objects that the client deserializes without further validation. Attackers that manage to trick clients into communicating with a malicious server can include especially crafted objects in its responses that, once deserialized by the client, force it to execute arbitrary code. This can be abused to take control of the machine the client is running in. Version 3.22.0 contains a patch for this issue.\n\nSome post-fix advice is available. Do NOT use `Kryo5Codec` as deserialization codec, as it is still vulnerable to arbitrary object deserialization due to the `setRegistrationRequired(false)` call. On the contrary, `KryoCodec` is safe to use. The fix applied to `SerializationCodec` only consists of adding an optional allowlist of class names, even though making this behavior the default is recommended. When instantiating `SerializationCodec` please use the `SerializationCodec(ClassLoader classLoader, Set<String> allowedClasses)` constructor to restrict the allowed classes for deserialization.",
+  "id": "GHSA-4hvc-qwr2-f8rv",
+  "modified": "2024-08-05T21:58:56.532751Z",
+  "published": "2024-08-05T21:29:22Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42809"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/redisson/redisson/commit/fe6a2571801656ff1599ef87bdee20f519a5d1fe"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/redisson/redisson"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://securitylab.github.com/advisories/GHSL-2023-053_Redisson"
     }
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
     },
     {
-      "type": "CVSS_V4",
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:A/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:A/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H",
+      "type": "CVSS_V4"
     }
-  ]
+  ],
+  "summary": "Redisson vulnerable to Deserialization of Untrusted Data"
 }

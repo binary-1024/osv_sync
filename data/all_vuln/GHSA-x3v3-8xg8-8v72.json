@@ -1,25 +1,46 @@
 {
-  "id": "GHSA-x3v3-8xg8-8v72",
-  "summary": "Sentry's Astro SDK vulnerable to ReDoS",
-  "details": "### Impact\nA ReDoS (Regular expression Denial of Service) vulnerability has been identified in Sentry's Astro SDK 7.78.0-7.86.0. Under certain conditions, this vulnerability allows an attacker to cause excessive computation times on the server, leading to denial of service (DoS).\n\nApplications that are using Sentry's Astro SDK are affected if:\n\n1. They're using Sentry instrumentation:\n   - they have [manually registered](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#manually-add-server-instrumentation) Sentry Middleware (affected versions 7.78.0-7.86.0);\n   - or [configured](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#configure-server-instrumentation) Astro in SSR (server) or hybrid mode, use Astro 3.5.0 and newer and didn\u2019t [disable the automatic server instrumentation](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#disable-auto-server-instrumentation) (affected versions 7.82.0-7.86.0).\n2. They have configured routes with at least two path params (e.g. `/foo/[p1]/bar/[p2]`).\n\n### Patches\nThe problem has been patched in [@sentry/astro@7.87.0](https://www.npmjs.com/package/@sentry/astro/v/7.87.0).\nThe corresponding PR: https://github.com/getsentry/sentry-javascript/pull/9815\n\n### Workarounds\nWe strongly recommend upgrading to the latest SDK version. However, if it's not possible, the steps to mitigate the vulnerability without upgrade are:\n* [disable auto instrumentation](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#disable-auto-server-instrumentation) if you're using Astro 3.5.0 or newer\n* and remove the manually added Sentry middleware (if it was [added](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#manually-add-server-instrumentation) before).\n\nAfter these changes, Sentry error reporting will still be functional, but some details such as server-side transactions (and consequently, distributed traces between client and server) will be omitted. We therefore still recommend to update to 7.87.0 as soon as you can. \n\n### References\n* [Sentry docs: Manual Setup for Astro](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/)\n* [Release notes: sentry-javascript 7.87.0](https://github.com/getsentry/sentry-javascript/releases/tag/7.87.0)\n* [npm: @sentry/astro@7.87.0](https://www.npmjs.com/package/@sentry/astro/v/7.87.0)",
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-x3v3-8xg8-8v72/GHSA-x3v3-8xg8-8v72.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sentry/astro",
+        "purl": "pkg:npm/%40sentry/astro"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "7.78.0"
+            },
+            {
+              "fixed": "7.87.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
   "aliases": [
     "CVE-2023-50249"
   ],
-  "modified": "2023-12-28T22:03:19Z",
-  "published": "2023-12-18T20:00:55Z",
-  "related": [
-    "CVE-2023-50249"
-  ],
   "database_specific": {
-    "nvd_published_at": "2023-12-20T14:15:21Z",
     "cwe_ids": [
       "CWE-1333",
       "CWE-400"
     ],
-    "severity": "HIGH",
     "github_reviewed": true,
-    "github_reviewed_at": "2023-12-18T20:00:55Z"
+    "github_reviewed_at": "2023-12-18T20:00:55Z",
+    "nvd_published_at": "2023-12-20T14:15:21Z",
+    "severity": "HIGH"
   },
+  "details": "### Impact\nA ReDoS (Regular expression Denial of Service) vulnerability has been identified in Sentry's Astro SDK 7.78.0-7.86.0. Under certain conditions, this vulnerability allows an attacker to cause excessive computation times on the server, leading to denial of service (DoS).\n\nApplications that are using Sentry's Astro SDK are affected if:\n\n1. They're using Sentry instrumentation:\n   - they have [manually registered](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#manually-add-server-instrumentation) Sentry Middleware (affected versions 7.78.0-7.86.0);\n   - or [configured](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#configure-server-instrumentation) Astro in SSR (server) or hybrid mode, use Astro 3.5.0 and newer and didn\u2019t [disable the automatic server instrumentation](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#disable-auto-server-instrumentation) (affected versions 7.82.0-7.86.0).\n2. They have configured routes with at least two path params (e.g. `/foo/[p1]/bar/[p2]`).\n\n### Patches\nThe problem has been patched in [@sentry/astro@7.87.0](https://www.npmjs.com/package/@sentry/astro/v/7.87.0).\nThe corresponding PR: https://github.com/getsentry/sentry-javascript/pull/9815\n\n### Workarounds\nWe strongly recommend upgrading to the latest SDK version. However, if it's not possible, the steps to mitigate the vulnerability without upgrade are:\n* [disable auto instrumentation](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#disable-auto-server-instrumentation) if you're using Astro 3.5.0 or newer\n* and remove the manually added Sentry middleware (if it was [added](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/#manually-add-server-instrumentation) before).\n\nAfter these changes, Sentry error reporting will still be functional, but some details such as server-side transactions (and consequently, distributed traces between client and server) will be omitted. We therefore still recommend to update to 7.87.0 as soon as you can. \n\n### References\n* [Sentry docs: Manual Setup for Astro](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/)\n* [Release notes: sentry-javascript 7.87.0](https://github.com/getsentry/sentry-javascript/releases/tag/7.87.0)\n* [npm: @sentry/astro@7.87.0](https://www.npmjs.com/package/@sentry/astro/v/7.87.0)",
+  "id": "GHSA-x3v3-8xg8-8v72",
+  "modified": "2023-12-28T22:03:19Z",
+  "published": "2023-12-18T20:00:55Z",
   "references": [
     {
       "type": "WEB",
@@ -50,36 +71,15 @@
       "url": "https://www.npmjs.com/package/@sentry/astro/v/7.87.0"
     }
   ],
-  "affected": [
-    {
-      "package": {
-        "name": "@sentry/astro",
-        "ecosystem": "npm",
-        "purl": "pkg:npm/%40sentry/astro"
-      },
-      "ranges": [
-        {
-          "type": "SEMVER",
-          "events": [
-            {
-              "introduced": "7.78.0"
-            },
-            {
-              "fixed": "7.87.0"
-            }
-          ]
-        }
-      ],
-      "database_specific": {
-        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/12/GHSA-x3v3-8xg8-8v72/GHSA-x3v3-8xg8-8v72.json"
-      }
-    }
+  "related": [
+    "CVE-2023-50249"
   ],
   "schema_version": "1.6.0",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "type": "CVSS_V3"
     }
-  ]
+  ],
+  "summary": "Sentry's Astro SDK vulnerable to ReDoS"
 }
