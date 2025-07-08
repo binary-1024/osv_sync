@@ -1,19 +1,37 @@
 {
-  "id": "CVE-2025-34086",
+  "id": "GHSA-p9qc-8jjx-g8cg",
+  "summary": "Bolt CMS vulnerable to authenticated remote code execution",
   "details": "Bolt CMS versions 3.7.0 and earlier contain a chain of vulnerabilities that together allow an authenticated user to achieve remote code execution. A user with valid credentials can inject arbitrary PHP code into the displayname field of the user profile, which is rendered unsanitized in backend templates. The attacker can then list and rename cached session files via the /async/browse/cache/.sessions and /async/folder/rename endpoints. By renaming a .session file to a path under the publicly accessible /files/ directory with a .php extension, the attacker can turn the injected code into an executable web shell. Finally, the attacker triggers the payload via a crafted HTTP GET request to the rogue file.\n\nNOTE: The vendor announced that Bolt 3 reached end-of-life after 31 December 2021.",
   "aliases": [
-    "GHSA-p9qc-8jjx-g8cg"
+    "CVE-2025-34086"
   ],
   "modified": "2025-07-07T20:12:19.778598Z",
-  "published": "2025-07-03T20:15:22Z",
+  "published": "2025-07-03T21:31:25Z",
+  "database_specific": {
+    "nvd_published_at": "2025-07-03T20:15:22Z",
+    "cwe_ids": [
+      "CWE-94"
+    ],
+    "severity": "HIGH",
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-07T19:10:40Z"
+  },
   "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-34086"
+    },
     {
       "type": "WEB",
       "url": "https://boltcms.io/newsitem/major-announcements-bolt-3-eol-bolt-4-2-5-0-releases"
     },
     {
-      "type": "WEB",
+      "type": "PACKAGE",
       "url": "https://github.com/bolt/bolt"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/bolt/bolt/blob/3.7/src/Controller/Backend/Users.php#L279-L311"
     },
     {
       "type": "WEB",
@@ -29,34 +47,37 @@
     },
     {
       "type": "WEB",
-      "url": "https://www.rapid7.com/db/modules/exploit/unix/webapp/bolt_authenticated_rce/"
+      "url": "https://www.rapid7.com/db/modules/exploit/unix/webapp/bolt_authenticated_rce"
     }
   ],
   "affected": [
     {
+      "package": {
+        "name": "bolt/bolt",
+        "ecosystem": "Packagist",
+        "purl": "pkg:composer/bolt/bolt"
+      },
       "ranges": [
         {
-          "type": "GIT",
-          "repo": "https://github.com/bolt/bolt",
+          "type": "ECOSYSTEM",
           "events": [
             {
               "introduced": "0"
             },
             {
-              "fixed": "e46638dc59da2c3f899e9132d455cbcda9260e89"
+              "last_affected": "3.7.0"
             }
           ]
         }
       ],
       "versions": [
         "3.5.7",
-        "ext-edit",
-        "ext-edit-v0.51",
         "v0.8.4",
         "v0.8.5",
         "v0.9.10",
         "v0.9.5",
         "v1.0.0",
+        "v1.0.5",
         "v1.1.2",
         "v1.1.4",
         "v1.2.1",
@@ -69,13 +90,54 @@
         "v1.6.2",
         "v1.6.3",
         "v1.6.3.1",
+        "v1.6.9",
         "v2.0.0",
         "v2.0.1",
         "v2.0.2",
         "v2.0.3",
         "v2.0.4",
         "v2.0.5",
+        "v2.0.6",
         "v2.1.0",
+        "v2.1.1",
+        "v2.1.1-pl1",
+        "v2.1.2",
+        "v2.1.3",
+        "v2.1.3-pl1",
+        "v2.1.4",
+        "v2.1.4-pl1",
+        "v2.1.5",
+        "v2.1.6",
+        "v2.1.7",
+        "v2.1.8",
+        "v2.1.8-pl1",
+        "v2.1.9",
+        "v2.2.0",
+        "v2.2.1",
+        "v2.2.10",
+        "v2.2.11",
+        "v2.2.13",
+        "v2.2.14",
+        "v2.2.15",
+        "v2.2.16",
+        "v2.2.17",
+        "v2.2.18",
+        "v2.2.19",
+        "v2.2.19-pl1",
+        "v2.2.2",
+        "v2.2.20",
+        "v2.2.21",
+        "v2.2.22",
+        "v2.2.23",
+        "v2.2.24",
+        "v2.2.25",
+        "v2.2.3",
+        "v2.2.4",
+        "v2.2.5",
+        "v2.2.6",
+        "v2.2.7",
+        "v2.2.8",
+        "v2.2.9",
         "v3.0.0",
         "v3.0.1",
         "v3.0.10",
@@ -165,9 +227,15 @@
         "v3.7.0"
       ],
       "database_specific": {
-        "source": "https://storage.googleapis.com/cve-osv-conversion/osv-output/CVE-2025-34086.json"
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-p9qc-8jjx-g8cg/GHSA-p9qc-8jjx-g8cg.json"
       }
     }
   ],
-  "schema_version": "1.6.0"
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+    }
+  ]
 }
