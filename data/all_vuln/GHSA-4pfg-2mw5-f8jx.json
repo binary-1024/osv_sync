@@ -1,0 +1,62 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-4pfg-2mw5-f8jx/GHSA-4pfg-2mw5-f8jx.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@cloudflare/vite-plugin",
+        "purl": "pkg:npm/%40cloudflare/vite-plugin"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.6.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-200"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-08T19:07:47Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\n\nNote: [originally posted on H1](https://hackerone.com/reports/3117837) but closed. Cross-posting over to here in abundance of caution instead of a public issue. \n\nWhen utilising the Cloudflare Vite plugin in its default configuration, all files are exposed by the local dev server, including files in the root directory that contain secret information such as:\n- `.env`\n- `.dev.vars`\n\n### PoC\n1. Create a Workers project that utilises the `@cloudflare/vite-plugin`. For example:\n   - `npm create cloudflare@latest` - select Framework Starter -> React\n2. Add any secret files to test if they're accessible. `echo foobar=secret > .dev.vars` for example\n3. Run `npm run dev` to start the dev server (after running `npm ci` if necessary to install dependencies) and then hit the following to expose information:\n\n`curl http://localhost:5173/.env` may expose any secrets in this file\n`curl http://localhost:5173/.dev.vars` may expose any secrets in this file\n`curl http://localhost:5173/package.json` may expose dependencies used by the project, potentially leading to other vulnerabilities\n`curl http://localhost:5173/README.md` may expose internal documentation\n\n### Impact\n\nIf the vite dev server is exposed on a public network, such as when a user simply uses `wrangler` to serve their application and doesn't publish to Cloudflare in production, an attacker may be able to acquire secrets that the user doesn't wish to be exposed. \n\nAnother common scenario where this could happen is when sharing previews of an application using `cloudflared`. `npm run dev` -> share preview with `cloudflared` -> now all secrets are exposed to the public internet.\n\nExposing via vite is possible via:\n\n```\nnpm run dev -- -- --host 0.0.0.0\n```\n\nThe default configuration has no reason to expose information outside of the configured assets directory.\n\nExample:\n\n`curl http://somehost/.env` may expose secrets\n`curl http://somehost/.dev.vars` may expose secrets\n`curl http://somehost/package.json` may expose dependencies used by the project, potentially leading to other vulnerabilities\n`curl http://somehost/README.md` may expose internal documentation\n\netc.\n\nInformation disclosure to anyone on the same network, or if the dev server is exposed such as via `cloudflared` as explored here: https://github.com/cloudflare/workers-sdk/discussions/3455#discussioncomment-6165773",
+  "id": "GHSA-4pfg-2mw5-f8jx",
+  "modified": "2025-07-08T19:07:47Z",
+  "published": "2025-07-08T19:07:47Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/cloudflare/workers-sdk/security/advisories/GHSA-4pfg-2mw5-f8jx"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/cloudflare/workers-sdk/commit/0e500720bf70016fa4ea21fc8959c4bd764ebc38"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/cloudflare/workers-sdk"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "Cloudflare Vite plugin exposes secrets over the built-in dev server"
+}
