@@ -1,0 +1,70 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-54xv-94qv-2gfg/GHSA-54xv-94qv-2gfg.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pdfme/common",
+        "purl": "pkg:npm/%40pdfme/common"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.2.0"
+            },
+            {
+              "fixed": "5.4.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-53626"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-1321",
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-10T17:43:52Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "## Summary\nThe expression evaluation feature in pdfme 5.2.0 to 5.4.0 contains critical vulnerabilities allowing sandbox escape leading to XSS and prototype pollution attacks.\n\n## Details\n\n### 1. Sandbox Escape Leading to XSS\n\nThe expression evaluator's sandbox can be bypassed to execute arbitrary JavaScript code. Attackers can obtain the Function constructor through indirect methods:\n\n```javascript\n// Attack vector 1: Using Object.getOwnPropertyDescriptor\n{ ((f, g) => f(g(Object), \"constructor\").value)(Object.getOwnPropertyDescriptor, Object.getPrototypeOf)(\"alert(location)\")() }\n\n// Attack vector 2: Using object property access\n{ { f: Object.getOwnPropertyDescriptor }.f({ g: Object.getPrototypeOf }.g(Object), \"constructor\").value(\"alert(location)\")() }\n```\n\nBoth payloads bypass the sandbox restrictions and execute `Function(\"alert(location)\")()`.\n\n### 2. Prototype Pollution\n\nThe expression evaluator allows access to prototype accessor methods which can be exploited with Object.assign to pollute the prototype chain:\n- `__lookupGetter__`\n- `__lookupSetter__`\n- `__defineGetter__`\n- `__defineSetter__`\n\n## Impact\n\nThese vulnerabilities allow attackers to:\n- Execute arbitrary JavaScript code in the context of the application\n- Steal sensitive information including cookies and tokens\n- Modify application behavior through prototype pollution\n- Potentially perform actions on behalf of users\n\n## Proof of Concept\n\nLoading the following template in pdfme triggers `alert(location)`:\n\n```json\n{\n  \"schemas\": [[{\n    \"name\": \"field1\",\n    \"type\": \"text\",\n    \"content\": \"{ ((f, g) => f(g(Object), 'constructor').value)(Object.getOwnPropertyDescriptor, Object.getPrototypeOf)('alert(location)')() }\",\n    \"position\": { \"x\": 0, \"y\": 0 },\n    \"width\": 100,\n    \"height\": 100\n  }]],\n  \"basePdf\": { \"width\": 100, \"height\": 100 },\n  \"pdfmeVersion\": \"5.4.0\"\n}\n```",
+  "id": "GHSA-54xv-94qv-2gfg",
+  "modified": "2025-07-10T18:12:21.420746Z",
+  "published": "2025-07-10T17:43:52Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/pdfme/pdfme/security/advisories/GHSA-54xv-94qv-2gfg"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pdfme/pdfme/pull/1117"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/pdfme/pdfme"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pdfme/pdfme/releases/tag/5.4.1"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "@pdfme/common vulnerable to to XSS and Prototype Pollution through its expression evaluation"
+}
