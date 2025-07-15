@@ -357,17 +357,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-07-14T21:40:21Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-07-14T23:15:25Z",
     "severity": "CRITICAL"
   },
   "details": "### Impact\nThe XHTML syntax depended on the `xdom+xml/current` syntax which allows the creation of raw blocks that permit the insertion of arbitrary HTML content including JavaScript. This allows XSS attacks for users who can edit a document like their user profile (enabled by default). The attack works by setting the document's syntax to `xdom+xml/current` and then inserting content like\n```\n<document><p><metadata><metadata><entry><string>syntax</string><org.xwiki.rendering.syntax.Syntax><type><name>XHTML</name><id>xhtml</id><variants class=\"empty-list\"></variants></type><version>5</version></org.xwiki.rendering.syntax.Syntax></entry></metadata></metadata></p><rawtext syntax=\"html/5.0\" content=\"&lt;script&gt;alert(1);&lt;/script&gt;\"></rawtext></document>\n```\n\nThis has been fixed by removing the dependency on the `xdom+xml/current` syntax from the XHTML syntax. Note that the `xdom+xml` syntax is still vulnerable to this attack. As it's main purpose is testing and its use is quite difficult, this syntax shouldn't be installed or used on a regular wiki. We're currently not aware of any further dependencies on it.\n\n### Patches\nThe fix of removing the dependency has been included in XWiki 14.10. It is not released for earlier versions due to the potential breakages, among others this change makes it necessary to update the [Confluence XHTML syntax](https://extensions.xwiki.org/xwiki/bin/view/Extension/Confluence/Syntax%20XHTML/) as it relies on internals that were changed for the fix. Similar XSS fixes were also not applied to the LTS version 13.10.x due to the potential breakages.\n\n### Workarounds\nThere are no known workarounds apart from upgrading.\n\n### References\n* https://jira.xwiki.org/browse/XRENDERING-660\n* https://github.com/xwiki/xwiki-rendering/commit/a4ca31f99f524b9456c64150d6f375984aa81ea7\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [Jira XWiki.org](https://jira.xwiki.org/)\n* Email us at [Security Mailing List](mailto:security@xwiki.org)",
   "id": "GHSA-w3wh-g4m9-783p",
-  "modified": "2025-07-14T22:42:21.071992Z",
+  "modified": "2025-07-15T01:35:17.173939Z",
   "published": "2025-07-14T21:40:21Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/xwiki/xwiki-rendering/security/advisories/GHSA-w3wh-g4m9-783p"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-53835"
     },
     {
       "type": "WEB",
