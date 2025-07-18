@@ -1,0 +1,96 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-9rcw-c2f9-2j55/GHSA-9rcw-c2f9-2j55.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin/contracts",
+        "purl": "pkg:npm/%40openzeppelin/contracts"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.2.0"
+            },
+            {
+              "fixed": "5.4.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-9rcw-c2f9-2j55/GHSA-9rcw-c2f9-2j55.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin/contracts-upgradeable",
+        "purl": "pkg:npm/%40openzeppelin/contracts-upgradeable"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.2.0"
+            },
+            {
+              "fixed": "5.4.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-54070"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-125"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-17T21:19:32Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\n\nThe `lastIndexOf(bytes,byte,uint256)` function of the `Bytes.sol` library may access uninitialized memory when the following two conditions hold: 1) the provided buffer length is empty (i.e. `buffer.length == 0`) and position is not `2**256 - 1` (i.e. `pos != type(uint256).max`).\n\nThe `pos` argument could be used to access arbitrary data outside of the buffer bounds. This could lead to the operation running out of gas, or returning an invalid index (outside of the empty buffer). Processing this invalid result for accessing the `buffer` would cause a revert under normal conditions.\n\nWhen triggered, the function reads memory at offset `buffer + 0x20 + pos`. If memory at that location (outside the\u00a0`buffer`) matches the search pattern, the function would return an out of bound index instead of the expected `type(uint256).max`. This creates unexpected behavior where callers receive a valid-looking index pointing outside buffer bounds.\n\nSubsequent memory accesses that don't check bounds and use the returned index must carefully review the potential impact depending on their setup. Code relying on this function returning `type(uint256).max` for empty buffers or using the returned index without bounds checking could exhibit undefined behavior.\n\n### Patches\n\nUpgrade to 5.4.0",
+  "id": "GHSA-9rcw-c2f9-2j55",
+  "modified": "2025-07-17T21:44:33.282096Z",
+  "published": "2025-07-17T21:19:32Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security/advisories/GHSA-9rcw-c2f9-2j55"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/pull/5797"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/OpenZeppelin/openzeppelin-contracts"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v5.4.0"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:N",
+      "type": "CVSS_V3"
+    },
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "OpenZeppelin Contracts Bytes's lastIndexOf function with position argument performs out-of-bound memory access on empty buffers"
+}
