@@ -1,0 +1,80 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-96c2-h667-9fxp/GHSA-96c2-h667-9fxp.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "marshmallow/nova-tiptap",
+        "purl": "pkg:composer/marshmallow/nova-tiptap"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.7.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "5.0.0",
+        "5.1.0",
+        "5.2.0",
+        "5.2.1",
+        "5.2.2",
+        "5.3.0",
+        "5.4.0",
+        "5.5.0",
+        "5.6.0"
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-54082"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-434"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-21T19:09:21Z",
+    "nvd_published_at": "2025-07-21T17:15:37Z",
+    "severity": "CRITICAL"
+  },
+  "details": "A vulnerability was discovered in the marshmallow-packages/nova-tiptap Laravel Nova package that allows unauthenticated users to upload arbitrary files to any Laravel disk configured in the application.\n\nThe vulnerability is due to:\n\t\u2022\tMissing authentication middleware (Nova and Nova.Auth) on the /nova-tiptap/api/file upload endpoint\n\t\u2022\tLack of validation on uploaded files (no MIME/type or extension restrictions)\n\t\u2022\tAbility for an attacker to choose the disk parameter dynamically\n\nThis means an attacker can craft a custom form and send a POST request to /nova-tiptap/api/file, supplying a valid CSRF token, and upload executable or malicious files (e.g., .php, binaries) to public disks such as local, public, or s3. If a publicly accessible storage path is used (e.g. S3 with public access, or Laravel\u2019s public disk), the attacker may gain the ability to execute or distribute arbitrary files \u2014 amounting to a potential Remote Code Execution (RCE) vector in some environments.",
+  "id": "GHSA-96c2-h667-9fxp",
+  "modified": "2025-07-21T19:42:25.515115Z",
+  "published": "2025-07-21T19:09:21Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/marshmallow-packages/nova-tiptap/security/advisories/GHSA-96c2-h667-9fxp"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54082"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/marshmallow-packages/nova-tiptap/commit/fed42d2f8ebb9e3c74f1ee262c9db33567030756"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/marshmallow-packages/nova-tiptap"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "nova-tiptap has Unauthenticated Arbitrary File Upload Vulnerability"
+}

