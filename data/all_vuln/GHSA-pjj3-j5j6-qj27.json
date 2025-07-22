@@ -35,17 +35,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-07-21T19:52:53Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-07-21T21:15:26Z",
     "severity": "HIGH"
   },
   "details": "### Summary\nThe HAX CMS NodeJS application crashes when an authenticated attacker provides an API request lacking required URL parameters. This vulnerability affects the `listFiles` and `saveFiles` endpoints.\n\n### Details\nThis vulnerability exists because the application does not properly handle exceptions which occur as a result of changes to user-modifiable URL parameters.\n\n#### Affected Resources\n\u2022 [listFiles.js:22](https://github.com/haxtheweb/haxcms-nodejs/blob/main/src/routes/listFiles.js#L22) listFiles()\n\u2022 [saveFile.js:52](https://github.com/haxtheweb/haxcms-nodejs/blob/main/src/routes/saveFile.js#L52) saveFile()\n\u2022 system/api/listFiles\n\u2022 system/api/saveFile\n\n### PoC\n1. Targeting an instance of instance of [HAX CMS NodeJS](https://github.com/haxtheweb/haxcms-nodejs), send a request without parameters to `listFiles` or `saveFiles`. The following screenshot shows the request in Burp Suite.\n![listfilesrequest](https://github.com/user-attachments/assets/477ea4e0-5707-4948-b53c-7f042a0475fb)\n\n2. The server will crash with `ERR_INVALID_ARG_TYPE`.\n![listfilescrash](https://github.com/user-attachments/assets/85424c12-1619-41d3-9bf5-9e029cdaa8c1)\n\n### Impact\nAn authenticated attacker can deny access to the HAX CMS NodeJS application by crashing the backend server. This prevents all users from accessing the backend system. If the backend system is hosting websites, those websites will be unavailable.",
   "id": "GHSA-pjj3-j5j6-qj27",
-  "modified": "2025-07-21T20:31:31Z",
+  "modified": "2025-07-21T22:21:29Z",
   "published": "2025-07-21T19:52:53Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/haxtheweb/issues/security/advisories/GHSA-pjj3-j5j6-qj27"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54134"
     },
     {
       "type": "WEB",
@@ -54,6 +58,14 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/haxtheweb/haxcms-nodejs"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/haxtheweb/haxcms-nodejs/blob/main/src/routes/listFiles.js#L22"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/haxtheweb/haxcms-nodejs/blob/main/src/routes/saveFile.js#L52"
     }
   ],
   "schema_version": "1.6.0",
