@@ -38,6 +38,7 @@
     }
   ],
   "aliases": [
+    "CVE-2022-50237",
     "GHSA-w5vr-6qhr-36cc"
   ],
   "database_specific": {
@@ -45,7 +46,7 @@
   },
   "details": "Versions of `ed25519-dalek` prior to v2.0 model private and public keys as\nseparate types which can be assembled into a `Keypair`, and also provide APIs\nfor serializing and deserializing 64-byte private/public keypairs.\n\nSuch APIs and serializations are inherently unsafe as the public key is one of\nthe inputs used in the deterministic computation of the `S` part of the signature,\nbut not in the `R` value. An adversary could somehow use the signing function as\nan oracle that allows arbitrary public keys as input can obtain two signatures\nfor the same message sharing the same `R` and only differ on the `S` part.\n\nUnfortunately, when this happens, one can easily extract the private key.\n\nRevised public APIs in v2.0 of `ed25519-dalek` do NOT allow a decoupled\nprivate/public keypair as signing input, except as part of specially labeled\n\"hazmat\" APIs which are clearly labeled as being dangerous if misused.",
   "id": "RUSTSEC-2022-0093",
-  "modified": "2023-11-08T04:23:37.976884Z",
+  "modified": "2025-07-28T16:56:53.557286Z",
   "published": "2022-06-11T12:00:00Z",
   "references": [
     {

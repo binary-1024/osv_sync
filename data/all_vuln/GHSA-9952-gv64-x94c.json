@@ -1,0 +1,149 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-9952-gv64-x94c/GHSA-9952-gv64-x94c.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "codeigniter4/framework",
+        "purl": "pkg:composer/codeigniter4/framework"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.6.2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.0.0",
+        "4.0.0-rc.4",
+        "v4.0.0-alpha.3",
+        "v4.0.0-alpha.4",
+        "v4.0.0-alpha.5",
+        "v4.0.0-beta.1",
+        "v4.0.0-beta.2",
+        "v4.0.0-beta.3",
+        "v4.0.0-beta.4",
+        "v4.0.0-rc.1",
+        "v4.0.0-rc.2",
+        "v4.0.0-rc.2.1",
+        "v4.0.0-rc.3",
+        "v4.0.1",
+        "v4.0.2",
+        "v4.0.3",
+        "v4.0.4",
+        "v4.0.5",
+        "v4.1.0",
+        "v4.1.1",
+        "v4.1.2",
+        "v4.1.3",
+        "v4.1.4",
+        "v4.1.5",
+        "v4.1.6",
+        "v4.1.7",
+        "v4.1.8",
+        "v4.1.9",
+        "v4.2.0",
+        "v4.2.1",
+        "v4.2.10",
+        "v4.2.11",
+        "v4.2.12",
+        "v4.2.2",
+        "v4.2.3",
+        "v4.2.4",
+        "v4.2.5",
+        "v4.2.6",
+        "v4.2.7",
+        "v4.2.8",
+        "v4.2.9",
+        "v4.3.0",
+        "v4.3.1",
+        "v4.3.2",
+        "v4.3.3",
+        "v4.3.4",
+        "v4.3.5",
+        "v4.3.6",
+        "v4.3.7",
+        "v4.3.8",
+        "v4.4.0",
+        "v4.4.1",
+        "v4.4.2",
+        "v4.4.3",
+        "v4.4.4",
+        "v4.4.5",
+        "v4.4.6",
+        "v4.4.7",
+        "v4.4.8",
+        "v4.5.0",
+        "v4.5.1",
+        "v4.5.2",
+        "v4.5.3",
+        "v4.5.4",
+        "v4.5.5",
+        "v4.5.6",
+        "v4.5.7",
+        "v4.5.8",
+        "v4.6.0",
+        "v4.6.1"
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-54418"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-78"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-28T16:08:20Z",
+    "nvd_published_at": "2025-07-28T15:15:26Z",
+    "severity": "CRITICAL"
+  },
+  "details": "### Impact\nThis vulnerability affects applications that:\n* Use the ImageMagick handler for image processing (`imagick` as the image library)\n* **AND** either:\n  * Allow file uploads with user-controlled filenames and process uploaded images using the `resize()` method\n  * **OR** use the `text()` method with user-controlled text content or options\n\nAn attacker can:\n* Upload a file with a malicious filename containing shell metacharacters that get executed when the image is processed\n* **OR** provide malicious text content or options that get executed when adding text to images\n\n### Patches\nUpgrade to v4.6.2 or later.\n\n### Workarounds\n* **Switch to the GD image handler** (`gd`, the default handler), which is not affected by either vulnerability\n* **For file upload scenarios**: Instead of using user-provided filenames, generate random names to eliminate the attack vector with `getRandomName()` when using the `move()` method, or use the `store()` method, which automatically generates safe filenames\n* **For text operations**: If you must use ImageMagick with user-controlled text, sanitize the input to only allow safe characters: `preg_replace('/[^a-zA-Z0-9\\s.,!?-]/', '', $text)` and validate/restrict text options\n\n\n### References\n* [OWASP Command Injection Prevention](https://owasp.org/www-community/attacks/Command_Injection)\n* [CWE-78: OS Command Injection](https://cwe.mitre.org/data/definitions/78.html)",
+  "id": "GHSA-9952-gv64-x94c",
+  "modified": "2025-07-28T16:57:16.639171Z",
+  "published": "2025-07-28T16:08:20Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/codeigniter4/CodeIgniter4/security/advisories/GHSA-9952-gv64-x94c"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54418"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/codeigniter4/CodeIgniter4/commit/e18120bff1da691e1d15ffc1bf553ae7411762c0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://cwe.mitre.org/data/definitions/78.html"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/codeigniter4/CodeIgniter4"
+    },
+    {
+      "type": "WEB",
+      "url": "https://owasp.org/www-community/attacks/Command_Injection"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "CodeIgniter4's ImageMagick Handler has Command Injection Vulnerability"
+}

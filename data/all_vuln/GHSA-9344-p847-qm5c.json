@@ -24,6 +24,9 @@
       ]
     }
   ],
+  "aliases": [
+    "CVE-2024-58261"
+  ],
   "database_specific": {
     "cwe_ids": [
       "CWE-835"
@@ -33,11 +36,15 @@
     "nvd_published_at": null,
     "severity": "LOW"
   },
-  "details": "There is a denial-of-service vulnerability in sequoia-openpgp, our\ncrate providing a low-level interface to our OpenPGP implementation.\nWhen triggered, the process will enter an infinite loop.\n\nMany thanks to Andrew Gallagher for disclosing the issue to us.\n\n## Impact\n\nAny software directly or indirectly using the interface\n`sequoia_openpgp::cert::raw::RawCertParser`.  Notably, this includes all\nsoftware using the `sequoia_cert_store` crate.\n\n## Details\n\nThe `RawCertParser` does not advance the input stream when\nencountering unsupported cert (primary key) versions, resulting in an\ninfinite loop.\n\nThe fix introduces a new raw-cert-specific\n`cert::raw::Error::UnuspportedCert`.\n\n## Affected software\n\n- sequoia-openpgp 1.13.0\n- sequoia-openpgp 1.14.0\n- sequoia-openpgp 1.15.0\n- sequoia-openpgp 1.16.0\n- sequoia-openpgp 1.17.0\n- sequoia-openpgp 1.18.0\n- sequoia-openpgp 1.19.0\n- sequoia-openpgp 1.20.0\n- Any software built against a vulnerable version of sequoia-openpgp\n  which is directly or indirectly using the interface\n  sequoia_`openpgp::cert::raw::RawCertParser`.  Notably, this includes\n  all software using the `sequoia_cert_store` crate.\n",
+  "details": "There is a denial-of-service vulnerability in sequoia-openpgp, our crate providing a low-level interface to our OpenPGP implementation. When triggered, the process will enter an infinite loop.\n\nMany thanks to Andrew Gallagher for disclosing the issue to us.\n\n## Impact\n\nAny software directly or indirectly using the interface `sequoia_openpgp::cert::raw::RawCertParser`.  Notably, this includes all\nsoftware using the `sequoia_cert_store` crate.\n\n## Details\n\nThe `RawCertParser` does not advance the input stream when encountering unsupported cert (primary key) versions, resulting in an infinite loop.\n\nThe fix introduces a new raw-cert-specific `cert::raw::Error::UnuspportedCert`.\n\n## Affected software\n\n- sequoia-openpgp 1.13.0\n- sequoia-openpgp 1.14.0\n- sequoia-openpgp 1.15.0\n- sequoia-openpgp 1.16.0\n- sequoia-openpgp 1.17.0\n- sequoia-openpgp 1.18.0\n- sequoia-openpgp 1.19.0\n- sequoia-openpgp 1.20.0\n- Any software built against a vulnerable version of sequoia-openpgp which is directly or indirectly using the interface sequoia_`openpgp::cert::raw::RawCertParser`.  Notably, this includes all software using the `sequoia_cert_store` crate.",
   "id": "GHSA-9344-p847-qm5c",
-  "modified": "2024-06-27T15:50:08Z",
+  "modified": "2025-07-28T16:27:20.914580Z",
   "published": "2024-06-26T19:10:15Z",
   "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-58261"
+    },
     {
       "type": "PACKAGE",
       "url": "https://gitlab.com/sequoia-pgp/sequoia"
@@ -52,5 +59,11 @@
     }
   ],
   "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "type": "CVSS_V3"
+    }
+  ],
   "summary": "Low severity (DoS) vulnerability in sequoia-openpgp"
 }
