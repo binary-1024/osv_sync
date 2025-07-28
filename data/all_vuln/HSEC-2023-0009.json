@@ -2,6 +2,8 @@
   "affected": [
     {
       "database_specific": {
+        "human_link": "https://haskell.github.io/security-advisories/advisory/HSEC-2023-0009.html",
+        "osv": "https://raw.githubusercontent.com/haskell/security-advisories/refs/heads/generated/osv-export/2023/HSEC-2023-0009.json",
         "source": "https://github.com/haskell/security-advisories/blob/generated/osv-export/2023/HSEC-2023-0009.json"
       },
       "package": {
@@ -212,9 +214,14 @@
   "aliases": [
     "CVE-2017-12976"
   ],
+  "database_specific": {
+    "home": "https://haskell.github.io/security-advisories",
+    "osvs": "https://raw.githubusercontent.com/haskell/security-advisories/refs/heads/generated/osv-export",
+    "repository": "https://github.com/haskell/security-advisories"
+  },
   "details": "# *git-annex* command injection via malicious SSH hostname\n\n*git-annex* was vulnerable to the same class of security hole as\ngit's **CVE-2017-1000117**. In several cases, `git-annex` parses a\nrepository URL, and uses it to generate a `ssh` command, with the\nhostname to ssh to coming from the URL. If the hostname it parses is\nsomething like `-eProxyCommand=evil`, this could result in arbitrary\nlocal code execution.\n\nSome details of URL parsing may prevent the exploit working in some\ncases.\n\nExploiting this would involve the attacker tricking the victim into\nadding a remote something like `ssh://-eProxyCommand=evil/blah`.\n\nOne possible avenue for an attacker that avoids exposing the URL to\nthe user is to use `initremote` with an SSH remote, so embedding the\nURL in the *git-annex* branch. Then the victim would enable it with\n`enableremote`.\n\nThis was fixed in version **6.20170818**. Now there's a `SshHost`\ntype that is not allowed to start with a dash, and every invocation\nof `git-annex` uses a function that takes a `SshHost`.\n",
   "id": "HSEC-2023-0009",
-  "modified": "2024-11-25T14:22:10.785307Z",
+  "modified": "2025-07-27T20:43:24.169401Z",
   "published": "2023-07-25T13:25:42Z",
   "references": [
     {
