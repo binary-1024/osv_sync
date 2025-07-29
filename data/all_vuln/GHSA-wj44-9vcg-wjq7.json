@@ -26,7 +26,8 @@
     }
   ],
   "aliases": [
-    "CVE-2024-56731"
+    "CVE-2024-56731",
+    "GO-2025-3776"
   ],
   "database_specific": {
     "cwe_ids": [
@@ -39,7 +40,7 @@
   },
   "details": "### Summary\nDue to the insufficient patch for the CVE-2024-39931, it's still possible to delete files under the `.git` directory and achieve remote command execution.\n\n### Details\nIn the patch for CVE-2024-39931, the following check is added:\nhttps://github.com/gogs/gogs/commit/77a4a945ae9a87f77e392e9066b560edb71b5de9\n\n```diff\n+\t// \ud83d\udea8 SECURITY: Prevent uploading files into the \".git\" directory\n+\tif isRepositoryGitPath(opts.TreePath) {\n+\t\treturn errors.Errorf(\"bad tree path %q\", opts.TreePath)\n+\t}\n```\n\n\nWhile the above code snippet checks if the specified path is a `.git` directory, there are no checks for symbolic links in the later steps. So, by creating a symbolic link that points to the `.git` directory, an attacker can still delete arbitrary files in the `.git` directory and achieve remote command execution.\n\n### Impact\nUnprivileged user accounts can execute arbitrary commands on the Gogs instance with the privileges of the account specified by `RUN_USER` in the configuration. It allows attackers to access and alter any users' code hosted on the same instance.",
   "id": "GHSA-wj44-9vcg-wjq7",
-  "modified": "2025-06-24T20:12:11.571508Z",
+  "modified": "2025-07-28T20:42:04.801588Z",
   "published": "2025-06-24T19:00:20Z",
   "references": [
     {

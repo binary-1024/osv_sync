@@ -353,6 +353,9 @@
       ]
     }
   ],
+  "aliases": [
+    "CVE-2025-54423"
+  ],
   "database_specific": {
     "cwe_ids": [
       "CWE-79"
@@ -364,12 +367,16 @@
   },
   "details": "### Summary\n\nAn unauthenticated attacker is able to execute arbitrary JavaScript code in a victim's browser due to improper sanitization of multimedia tags in music files, including `m3u` files.\n\n### Details\n\nMultimedia metadata is rendered in the web-app without sanitization. This can be exploited in two ways:\n\n* a user which has the necessary permission for uploading files can upload a song with an artist-name such as `<img src=x onerror=alert(document.domain)>`\n* an unauthenticated user can trick another user into clicking a malicious URL, performing this same exploit using an externally-hosted m3u file\n\nThe CVE score and PoC is based on the m3u approach, which results in a higher severity.\n\n### PoC\n1.  Create a file named `song.m3u` with the following content. Host this file on an attacker-controlled web server.\n\n    ```m3u\n    #EXTM3U\n    #EXTINF:1,\"><img src=x onerror=alert(document.domain)> - \"><img src=x onerror=alert(document.domain)>\n    http://example.com/audio.mp3\n    ```\n\n2.  Craft and share the malicious URL:  \n\n    ```\n    http://127.0.0.1:3923/#m3u=https://example.com/song.m3u\n    ```\n\n\n### Impact\nAny user that accesses this malicious URL is impacted.",
   "id": "GHSA-9q4r-x2hj-jmvr",
-  "modified": "2025-07-28T16:46:36.847395Z",
+  "modified": "2025-07-28T20:42:20.513673Z",
   "published": "2025-07-28T16:41:44Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/9001/copyparty/security/advisories/GHSA-9q4r-x2hj-jmvr"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54423"
     },
     {
       "type": "WEB",
