@@ -1,0 +1,91 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-jgmv-j7ww-jx2x/GHSA-jgmv-j7ww-jx2x.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "koa",
+        "purl": "pkg:npm/koa"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-8129"
+  ],
+  "database_specific": {
+    "cwe_ids": [],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-29T19:11:25Z",
+    "nvd_published_at": "2025-07-29T17:15:33Z",
+    "severity": "LOW"
+  },
+  "details": "## Summary\nIn the latest version of Koa, the back method used for redirect operations adopts an insecure implementation, which uses the user-controllable referrer header as the redirect target.\n\n## Details\non the API document https://www.koajs.net/api/response#responseredirecturl-alt, we can see:\n\n**response.redirect(url, [alt])**\n```\nPerforms a [302] redirect to url.\nThe string \"back\" is specially provided for Referrer support, using alt or \"/\" when Referrer does not exist.\n\nctx.redirect('back');\nctx.redirect('back', '/index.html');\nctx.redirect('/login');\nctx.redirect('http://google.com');\n\n```\nhowever, the \"back\" method is insecure:\n\n- https://github.com/koajs/koa/blob/master/lib/response.js#L322\n```\n  back (alt) {\n    const url = this.ctx.get('Referrer') || alt || '/'\n    this.redirect(url)\n  },\n```\nReferrer Header is User-Controlled.\n\n\n## PoC\n\n**there is a demo for POC:**\n```\nconst Koa = require('koa')\nconst serve = require('koa-static')\nconst Router = require('@koa/router')\nconst path = require('path')\n\nconst app = new Koa()\nconst router = new Router()\n\n// Serve static files from the public directory\napp.use(serve(path.join(__dirname, 'public')))\n\n// Define routes\nrouter.get('/test', ctx => {\n  ctx.redirect('back', '/index1.html')\n})\n\nrouter.get('/test2', ctx => {\n  ctx.redirect('back')\n})\n\nrouter.get('/', ctx => {\n  ctx.body = 'Welcome to the home page! Try accessing /test, /test2'\n})\n\napp.use(router.routes())\napp.use(router.allowedMethods())\n\nconst port = 3000\napp.listen(port, () => {\n  console.log(`Server running at http://localhost:${port}`)\n}) \n```\n**Proof Of Concept**\n```\nGET /test HTTP/1.1\nHost: 127.0.0.1:3000\nReferer: http://www.baidu.com\nConnection: close\n\n\nGET /test2 HTTP/1.1\nHost: 127.0.0.1:3000\nReferer: http://www.baidu.com\nConnection: close\n```\n![image](https://github.com/user-attachments/assets/03d1e61b-df97-4b42-a0c4-437bd17144db)\n\n![image](https://github.com/user-attachments/assets/f4e076e0-3853-4b7a-b4c0-bddf5b67631a)\n\n\n## Impact\nhttps://learn.snyk.io/lesson/open-redirect/",
+  "id": "GHSA-jgmv-j7ww-jx2x",
+  "modified": "2025-07-29T19:57:10.059389Z",
+  "published": "2025-07-29T19:11:25Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/koajs/koa/security/advisories/GHSA-jgmv-j7ww-jx2x"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54420"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/koajs/koa/issues/1892"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/koajs/koa/issues/1892#issue-3213028583"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/koajs/koa/commit/422c551c63d00f24e2bbbdf492f262a5935bb1f0"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/koajs/koa"
+    },
+    {
+      "type": "WEB",
+      "url": "https://vuldb.com/?ctiid.317514"
+    },
+    {
+      "type": "WEB",
+      "url": "https://vuldb.com/?id.317514"
+    },
+    {
+      "type": "WEB",
+      "url": "https://vuldb.com/?submit.619741"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:N/I:L/A:N",
+      "type": "CVSS_V3"
+    },
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "Koa Open Redirect via Referrer Header (User-Controlled)"
+}
