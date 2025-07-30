@@ -1,0 +1,167 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-rrqh-93c8-j966/GHSA-rrqh-93c8-j966.json"
+      },
+      "package": {
+        "ecosystem": "RubyGems",
+        "name": "ruby-saml",
+        "purl": "pkg:gem/ruby-saml"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.18.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "0.0.5",
+        "0.0.6",
+        "0.0.7",
+        "0.0.8",
+        "0.2.1",
+        "0.2.2",
+        "0.2.3",
+        "0.3.0",
+        "0.3.1",
+        "0.3.2",
+        "0.3.3",
+        "0.3.4",
+        "0.4.0",
+        "0.4.1",
+        "0.4.2",
+        "0.4.3",
+        "0.4.4",
+        "0.4.5",
+        "0.4.6",
+        "0.4.7",
+        "0.5.0",
+        "0.5.1",
+        "0.5.2",
+        "0.5.3",
+        "0.6.0",
+        "0.7.0",
+        "0.7.1",
+        "0.7.2",
+        "0.7.3",
+        "0.8.0",
+        "0.8.1",
+        "0.8.10",
+        "0.8.11",
+        "0.8.12",
+        "0.8.13",
+        "0.8.14",
+        "0.8.15",
+        "0.8.16",
+        "0.8.17",
+        "0.8.18",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5",
+        "0.8.6",
+        "0.8.7",
+        "0.8.8",
+        "0.8.9",
+        "0.9",
+        "0.9.1",
+        "0.9.2",
+        "0.9.3",
+        "0.9.4",
+        "1.0.0",
+        "1.1.0",
+        "1.1.1",
+        "1.1.2",
+        "1.10.0",
+        "1.10.1",
+        "1.10.2",
+        "1.11.0",
+        "1.12.0",
+        "1.12.1",
+        "1.12.2",
+        "1.12.3",
+        "1.12.4",
+        "1.13.0",
+        "1.14.0",
+        "1.15.0",
+        "1.16.0",
+        "1.17.0",
+        "1.18.0",
+        "1.2.0",
+        "1.3.0",
+        "1.3.1",
+        "1.4.0",
+        "1.4.1",
+        "1.4.2",
+        "1.4.3",
+        "1.5.0",
+        "1.6.0",
+        "1.6.1",
+        "1.6.2",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.8.0",
+        "1.9.0"
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-54572"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-400"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-30T13:20:05Z",
+    "nvd_published_at": "2025-07-30T14:15:29Z",
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\nA denial-of-service vulnerability exists in ruby-saml even with the message_max_bytesize setting configured. The vulnerability occurs because the SAML response is validated for Base64 format prior to checking the message size, leading to potential resource exhaustion.\n\n### Details\n`ruby-saml` includes a `message_max_bytesize` setting intended to prevent DOS attacks and decompression bombs. However, this protection is ineffective in some cases due to the order of operations in the code:\n\nhttps://github.com/SAML-Toolkits/ruby-saml/blob/fbbedc978300deb9355a8e505849666974ef2e67/lib/onelogin/ruby-saml/saml_message.rb\n\n```ruby\n      def decode_raw_saml(saml, settings = nil)\n        return saml unless base64_encoded?(saml) # <--- Issue here. Should be moved after next code block.\n\n        settings = OneLogin::RubySaml::Settings.new if settings.nil?\n        if saml.bytesize > settings.message_max_bytesize\n          raise ValidationError.new(\"Encoded SAML Message exceeds \" + settings.message_max_bytesize.to_s + \" bytes, so was rejected\")\n        end\n\n        decoded = decode(saml)\n        ...\n      end\n```\n\nThe vulnerability is in the execution order. Prior to checking bytesize the `base64_encoded?` function performs regex matching on the entire input string:\n\n```ruby\n!!string.gsub(/[\\r\\n]|\\\\r|\\\\n|\\s/, \"\").match(BASE64_FORMAT)\n```\n\n### Impact\n_What kind of vulnerability is it? Who is impacted?_\n\nWhen successfully exploited, this vulnerability can lead to:\n\n- Excessive memory consumption\n- High CPU utilization\n- Application slowdown or unresponsiveness\n- Complete application crash in severe cases\n- Potential denial of service for legitimate users\n\nAll applications using `ruby-saml` with SAML configured and enabled are vulnerable.\n\n### Potential Solution\n\nReorder the validation steps to ensure max bytesize is checked first\n\n```ruby\ndef decode_raw_saml(saml, settings = nil)\n  settings = OneLogin::RubySaml::Settings.new if settings.nil?\n\n  if saml.bytesize > settings.message_max_bytesize\n    raise ValidationError.new(\"Encoded SAML Message exceeds \" + settings.message_max_bytesize.to_s + \" bytes, so was rejected\")\n  end\n  \n  return saml unless base64_encoded?(saml)\n  decoded = decode(saml)\n  ...\nend\n```",
+  "id": "GHSA-rrqh-93c8-j966",
+  "modified": "2025-07-30T15:53:35.017788Z",
+  "published": "2025-07-30T13:20:05Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/SAML-Toolkits/ruby-saml/security/advisories/GHSA-rrqh-93c8-j966"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54572"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/SAML-Toolkits/ruby-saml/pull/770"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/SAML-Toolkits/ruby-saml/commit/38ef5dd1ce17514e202431f569c4f5633e6c2709"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/SAML-Toolkits/ruby-saml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/SAML-Toolkits/ruby-saml/releases/tag/v1.18.1"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "Ruby SAML DOS vulnerability with large SAML response"
+}

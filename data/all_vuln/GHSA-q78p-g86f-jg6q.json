@@ -143,17 +143,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-07-29T20:13:51Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-07-30T15:15:35Z",
     "severity": "HIGH"
   },
   "details": "## Summary\n\nIn affected versions, ingestion paths construct file locations directly from untrusted `event_id` input without validation. A specially crafted `event_id` can result in paths outside the intended directory, potentially allowing file overwrite or creation in arbitrary locations.\n\nSubmitting such input requires access to a valid DSN. While that limits exposure, DSNs are sometimes discoverable\u2014for example, when included in frontend code\u2014and should not be treated as a strong security boundary.\n\n## Impact\n\nA valid DSN holder can craft an `event_id` that causes the ingestion process to write files outside its designated directory. This allows overwriting files accessible to the user running Bugsink.\n\nIf Bugsink runs in a container, the effect is confined to the container\u2019s filesystem. In non-containerized setups, the overwrite may affect other parts of the system accessible to that user.\n\n## Mitigation\n\nUpdate to version `1.7.4`, `1.6.4`, `1.5.5` or `1.4.3` , which require `event_id` to be a valid UUID and normalizes it before use in file paths.",
   "id": "GHSA-q78p-g86f-jg6q",
-  "modified": "2025-07-29T20:57:16.576577Z",
+  "modified": "2025-07-30T16:07:56.861105Z",
   "published": "2025-07-29T20:13:51Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/bugsink/bugsink/security/advisories/GHSA-q78p-g86f-jg6q"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54433"
     },
     {
       "type": "WEB",
