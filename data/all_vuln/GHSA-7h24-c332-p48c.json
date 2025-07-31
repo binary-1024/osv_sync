@@ -25,6 +25,9 @@
       ]
     }
   ],
+  "aliases": [
+    "CVE-2025-54581"
+  ],
   "database_specific": {
     "cwe_ids": [
       "CWE-369"
@@ -36,7 +39,7 @@
   },
   "details": "### Summary\nUntrusted, user-controlled data from the HTTP Proxy-Authorization header can induce a denial of service state.\n\n### Details\nUntrusted data is extracted from the user-controlled HTTP Proxy-Authorization header and passed to Extension::try_from and flows into parse_ttl_extension where it is parsed as a TTL value. If an attacker supplies a TTL of zero (e.g. by using a username such as 'configuredUser-ttl-0'), the modulo operation 'timestamp % ttl' will cause a division by zero panic, causing the server to crash causing a denial-of-service.\n\nThe code assumed to be responsible for this can be found here: https://github.com/0x676e67/vproxy/blob/ab304c3854bf8480be577039ada0228907ba0923/src/extension.rs#L173-L183\n\n### PoC\n1. Download and run the latest version of vproxy\n2. Send a cUrl request like the following, adjusting address and port as necessary: ```curl -x \"http://test-ttl-0:test@127.0.0.1:8101\" https://google.com```\n3. Wait for a cUrl error indicating \"Proxy CONNECT aborted\"\n4. View logs from the vproxy server\n5. Observe that the vproxy server crashed due to a divide-by-zero panic\n\n### Impact\nThe resulting crash renders the proxy server unusable until it is reset.\n\nFinally, one last note: I'm reporting this on behalf of another researcher at Black Duck. Credit for discovery should be attributed to David Bohannon ([dbohannon](https://github.com/dbohannon))",
   "id": "GHSA-7h24-c332-p48c",
-  "modified": "2025-07-30T19:11:13Z",
+  "modified": "2025-07-30T20:12:26.586685Z",
   "published": "2025-07-30T16:33:41Z",
   "references": [
     {
