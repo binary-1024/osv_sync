@@ -1,0 +1,85 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-2rjv-cv85-xhgm/GHSA-2rjv-cv85-xhgm.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.opensearch.plugin:opensearch-security",
+        "purl": "pkg:maven/org.opensearch.plugin/opensearch-security"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.19.3.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.1.0.0",
+        "2.10.0.0",
+        "2.11.0.0",
+        "2.11.1.0",
+        "2.12.0.0",
+        "2.13.0.0",
+        "2.14.0.0",
+        "2.15.0.0",
+        "2.16.0.0",
+        "2.17.0.0",
+        "2.17.1.0",
+        "2.18.0.0",
+        "2.19.0.0",
+        "2.19.1.0",
+        "2.19.2.0",
+        "2.2.0.0",
+        "2.2.1.0",
+        "2.3.0.0",
+        "2.4.0.0",
+        "2.4.1.0",
+        "2.5.0.0",
+        "2.6.0.0",
+        "2.7.0.0",
+        "2.8.0.0",
+        "2.9.0.0"
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-200"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-01T18:15:03Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\n\nOpenSearch versions 2.19.2 and earlier improperly apply Field Level Security (FLS) rules on fields which are not at the top level of the source document tree (i.e., which are members of a JSON object). \n\nIf an FLS exclusion rule (like `~object`) is applied to an object valued attribute in a source document, the object is properly removed from the `_source` document in search and get results. However, any member attribute of that object remains available to search queries. This allows to reconstruct the original field contents using range queries. \n\n### Patches\n\nThe issue has been resolved in OpenSearch 3.0.0 and OpenSearch 2.19.3.\n\n### Workarounds\n\nIf FLS exclusion rules are used for object valued attributes  (like `~object`), add an additional exclusion rule for the members of the object  (like `~object.*`).",
+  "id": "GHSA-2rjv-cv85-xhgm",
+  "modified": "2025-08-01T18:46:40.945508Z",
+  "published": "2025-08-01T18:15:03Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/opensearch-project/security/security/advisories/GHSA-2rjv-cv85-xhgm"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/opensearch-project/security"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "OpenSearch unauthorized data access on fields protected by field level security if field is a member of an object"
+}

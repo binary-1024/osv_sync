@@ -1,0 +1,85 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-rrmm-wq7q-h4v5/GHSA-rrmm-wq7q-h4v5.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.opensearch.plugin:opensearch-security",
+        "purl": "pkg:maven/org.opensearch.plugin/opensearch-security"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.19.3.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.1.0.0",
+        "2.10.0.0",
+        "2.11.0.0",
+        "2.11.1.0",
+        "2.12.0.0",
+        "2.13.0.0",
+        "2.14.0.0",
+        "2.15.0.0",
+        "2.16.0.0",
+        "2.17.0.0",
+        "2.17.1.0",
+        "2.18.0.0",
+        "2.19.0.0",
+        "2.19.1.0",
+        "2.19.2.0",
+        "2.2.0.0",
+        "2.2.1.0",
+        "2.3.0.0",
+        "2.4.0.0",
+        "2.4.1.0",
+        "2.5.0.0",
+        "2.6.0.0",
+        "2.7.0.0",
+        "2.8.0.0",
+        "2.9.0.0"
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-200"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-01T18:15:00Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Impact\n\nOpenSearch versions 2.19.2 and earlier improperly apply field masking rules on fields of the types `ip`, `geo_point`, `geo_shape`, `xy_point`, `xy_shape`. While the content of these fields is properly redacted in the `_source` document returned by search operations, the original unredacted values remain available to search queries. This allows to reconstruct the original field contents using range queries.\n\nAdditionally, the content of fields of type `geo_point`, `geo_shape`, `xy_point`, `xy_shape` is returned in an unredacted form if requested via the `fields` option of the search API.\n\n### Patches\n\nThe issue has been resolved in OpenSearch 3.0.0 and OpenSearch 2.19.3.\n\n### Workarounds\n\nIf you cannot upgrade immediately, you can avoid the problem by using field level security (FLS) protection on fields of the affected types instead of field masking.",
+  "id": "GHSA-rrmm-wq7q-h4v5",
+  "modified": "2025-08-01T19:00:20.275420Z",
+  "published": "2025-08-01T18:15:00Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/opensearch-project/security/security/advisories/GHSA-rrmm-wq7q-h4v5"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/opensearch-project/security"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "OpenSearch unauthorized data access on fields protected by field masking for fields of type ip, geo_point, geo_shape, xy_point, xy_shape"
+}
