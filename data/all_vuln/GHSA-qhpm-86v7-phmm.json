@@ -1,0 +1,68 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-qhpm-86v7-phmm/GHSA-qhpm-86v7-phmm.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "openexr",
+        "purl": "pkg:pypi/openexr"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.3.2"
+            },
+            {
+              "fixed": "3.3.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "3.3.2"
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-48073"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-476"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-31T19:21:35Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\n\nWhen reading a deep scanline image with a large sample count in `reduceMemory` mode, it is possible to crash a target application with a NULL pointer dereference in a write operation.\n\n### Details\n\nIn the `ScanLineProcess::run_fill`\u00a0function, implemented in `src/lib/OpenEXR/ImfDeepScanLineInputFile.cpp`, the following code is used to write the `fillValue`\u00a0in the sample buffer:\n\n```cpp\n                switch (fills.type)\n                {\n                    case OPENEXR_IMF_INTERNAL_NAMESPACE::UINT:\n                    {\n                        unsigned int fillVal = (unsigned int) (fills.fillValue);\n                        unsigned int* fillptr = static_cast<unsigned int*> (dest);\n\n                        for ( int32_t s = 0; s < samps; ++s )\n                            fillptr[s] = fillVal; // <--- POTENTIAL CRASH HERE\n                        break;\n                    }\n```\n\nHowever, when `reduceMemory` mode is enabled in the `readDeepScanLine` function in `src/lib/OpenEXRUtil/ImfCheckFile.cpp`, with large sample counts, the sample data will not be read, as shown below:\n\n```cpp\n            // limit total number of samples read in reduceMemory mode\n            //\n            if (!reduceMemory ||\n                fileBufferSize + bufferSize < gMaxBytesPerDeepScanline) // <--- CHECK ON LARGE SAMPLE COUNTS AND reduceMemory\n            {\n            // SNIP...\n            try\n                {\n                    in.readPixels (y);\n                }\n```\n\nTherefore, in those cases, the sample buffer would not be allocated, resulting in a potential write operation on a NULL pointer.\n\n### PoC\n\nNOTE: please download the `runfill_crash.exr` file from the following link:\n \nhttps://github.com/ShielderSec/poc/tree/main/CVE-2025-48073\n\n1. Compile the `exrcheck` binary in a macOS or GNU/Linux machine with ASAN.\n2. Open the `runfill_crash.exr` file with the following command:\n\n```\nexrcheck -m runfill_crash.exr\n```\n\n3. Notice that `exrcheck` crashes with ASAN stack-trace.\n\n### Impact\nAn attacker may cause a denial of service by crashing the application.",
+  "id": "GHSA-qhpm-86v7-phmm",
+  "modified": "2025-07-31T19:42:17.303009Z",
+  "published": "2025-07-31T19:21:35Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/AcademySoftwareFoundation/openexr/security/advisories/GHSA-qhpm-86v7-phmm"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/AcademySoftwareFoundation/openexr"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/ShielderSec/poc/tree/main/CVE-2025-48073"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "OpenEXR ScanLineProcess::run_fill NULL Pointer Write In \"reduceMemory\" Mode"
+}

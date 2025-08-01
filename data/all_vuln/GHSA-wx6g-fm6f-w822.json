@@ -1,0 +1,68 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/07/GHSA-wx6g-fm6f-w822/GHSA-wx6g-fm6f-w822.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "materialx",
+        "purl": "pkg:pypi/materialx"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "1.39.2"
+            },
+            {
+              "fixed": "1.39.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "1.39.2"
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-53009"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-121"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-07-31T19:37:48Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\n\nWhen parsing an MTLX file with multiple nested `nodegraph` implementations, the MaterialX XML parsing logic can potentially crash due to stack exhaustion.\n\n### Details\n\nBy specification, multiple kinds of elements in MTLX support nesting other elements, such as in the case of `nodegraph` elements. Parsing these subtrees is implemented via recursion, and since there is no max depth imposed on the XML document, this can lead to a stack overflow when the library parses an MTLX file with an excessively high number of nested elements.\n\n### PoC\n\nPlease download the `recursion_overflow.mtlx` file from the following link: \n\nhttps://github.com/ShielderSec/poc/tree/main/CVE-2025-53009\n\n`build/bin/MaterialXView --material recursion_overflow.mtlx`\n\n\n### Impact\nAn attacker could intentionally crash a target program that uses OpenEXR by sending a malicious MTLX file.",
+  "id": "GHSA-wx6g-fm6f-w822",
+  "modified": "2025-07-31T20:42:31.472238Z",
+  "published": "2025-07-31T19:37:48Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/AcademySoftwareFoundation/MaterialX/security/advisories/GHSA-wx6g-fm6f-w822"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/AcademySoftwareFoundation/MaterialX"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/ShielderSec/poc/tree/main/CVE-2025-53009"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "MaterialX Stack Overflow via Lack of MTLX XML Parsing Recursion Limit "
+}
