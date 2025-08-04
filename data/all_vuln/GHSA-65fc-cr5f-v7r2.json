@@ -1,0 +1,66 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-65fc-cr5f-v7r2/GHSA-65fc-cr5f-v7r2.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "js-toml",
+        "purl": "pkg:npm/js-toml"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-1321"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-04T16:07:05Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "A prototype pollution vulnerability in `js-toml` allows a remote attacker to add or modify properties of the global `Object.prototype` by parsing a maliciously crafted TOML input.\n\n### Impact\n\nThe `js-toml` library is vulnerable to Prototype Pollution. When parsing a TOML string containing the specially crafted key `__proto__`, an attacker can add or modify properties on the global `Object.prototype`.\n\nWhile the `js-toml` library itself does not contain known vulnerable \"gadgets\", this can lead to severe security vulnerabilities in applications that use the library. For example, if the consuming application checks for the existence of a property for authorization purposes (e.g., `user.isAdmin`), this vulnerability could be escalated to an authentication bypass. Other potential impacts in the application include Denial of Service (DoS) or, in some cases, Remote Code Execution (RCE), depending on the application's logic and dependencies.\n\nAny application that uses an affected version of `js-toml` to parse untrusted input is vulnerable. The severity of the impact, ranging from unexpected behavior to a full security compromise, is dependent on the application's specific code and its handling of object properties.\n\n### Patches\n\nThis vulnerability has been patched in version `1.0.2`.\n\nAll users are advised to upgrade to version `1.0.2` or later to mitigate this issue. Users of all prior versions are affected.\n\n### Workarounds\n\nIf you are unable to upgrade to a patched version, the only mitigation is to ensure that any TOML input being passed to the `js-toml` library is from a fully trusted source and has been validated to not contain malicious keys.\n\n### References\n\n- This vulnerability was discovered and responsibly disclosed by [siunam](https://github.com/siunam321).\n\n* The Proof-of-Concept can be found at this Gist: https://gist.github.com/siunam321/f3dc4d21a5a932c67b6c11d0026f5afc\n\n- For more information on Prototype Pollution, see PortSwigger's explanation: https://portswigger.net/web-security/prototype-pollution",
+  "id": "GHSA-65fc-cr5f-v7r2",
+  "modified": "2025-08-04T16:07:05Z",
+  "published": "2025-08-04T16:07:05Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/sunnyadn/js-toml/security/advisories/GHSA-65fc-cr5f-v7r2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sunnyadn/js-toml/commit/b125910a3f094b744c9c3571360d4b9e3a472f66"
+    },
+    {
+      "type": "WEB",
+      "url": "https://gist.github.com/siunam321/f3dc4d21a5a932c67b6c11d0026f5afc"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/sunnyadn/js-toml"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:H/SI:H/SA:H",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "js-toml Prototype Pollution Vulnerability"
+}

