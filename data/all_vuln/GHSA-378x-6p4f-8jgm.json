@@ -1,0 +1,81 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-378x-6p4f-8jgm/GHSA-378x-6p4f-8jgm.json"
+      },
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "skops",
+        "purl": "pkg:pypi/skops"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.13.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "0.1",
+        "0.1.dev0",
+        "0.10.0",
+        "0.11.0",
+        "0.12.0",
+        "0.2",
+        "0.3.0",
+        "0.4.0",
+        "0.5.0",
+        "0.6.0",
+        "0.7.0",
+        "0.7.post0",
+        "0.8.0",
+        "0.9.0"
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-54886"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-502"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-07T16:42:54Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "## Summary\n\nWhen using `Card.get_model`, `skops` allows for arbitrary code execution. This is due to the fact that `Card.get_model` allows both `joblib` and `skops` to be used for loading models, and as is well known, `joblib` allows for arbitrary code execution when loading objects. I do not know if this is intended or not, but I found this really concerning for a library that is founded on security. Even if intended, I kindly ask you to consider the security implications of this, disclose the potential implications through an advisory, and change the behavior of the function in future library versions (see below for possible fixes).\n\n## What is the issue?\n\nThe `Card.get_model` function allows loading models using the `get_model` method. When a `.skops` model is provided, it uses the `load` function from `skops`, which is secure to our knowledge. The `Card` class also allows consistent management of the `trusted` list, allowing it to be passed during instance creation. As expected, if a `skops` model is provided without a `trusted` list, and an untrusted type is found during loading, it will raise an error. This is perfectly fine and consistent with the security principles of `skops`.\n\nThe problem arises when a file format different from a `.zip` file is provided. In this case, as shown in the code snippet below, the `joblib` library is used to load the model. This happens **silently**, without any warning or indication that the model is being loaded using `joblib`. This is a significant security risk, as `joblib` does not enforce the same security measures as `skops`, allowing for arbitrary code execution\n\n```python\n# from `card/_model_card.py:354-358`\ntry:\n    if zipfile.is_zipfile(model_path):\n        model = load(model_path, trusted=trusted)\n    else:\n        model = joblib.load(model_path)\n```\n\nHence, for example, a simple code like the following will execute arbitrary code:\n\n```python\nfrom skops.card import Card\n\ncard = Card(\"model.skops\")\nclf  = card.get_model()\n```\n\nIn this case, despite the name, the `model.skops` file is not a `.zip` file, and thus the `joblib.load` function is called, allowing for arbitrary code execution. This is also difficult to spot for the user, since the check is transparent and performed on the file's nature, not on the file extension or name.\n\n**Note**: this happens despite the `trusted` list being passed during the `Card` instance creation or any other parameter.\n\n## Impact\n\nAn attacker can exploit this vulnerability by crafting a malicious model file that, when loaded using `Card.get_model`, executes arbitrary code on the victim's machine. The attack does not require any special privileges or additional steps from the victim; simply loading the model is sufficient to trigger the execution of the attacker's code. The attack happens silently and at loading time, making it particularly stealthy and difficult to detect. This is particularly concerning if we consider that `Card.get_model` and `skops` are often used in collaborative environments and that `skops` promotes a security-oriented policy.\n\nThank you for your attention to this matter. I hope this report helps improve the security of the `Card.get_model` function and the overall security posture of the `skops` library.",
+  "id": "GHSA-378x-6p4f-8jgm",
+  "modified": "2025-08-07T16:57:30.728504Z",
+  "published": "2025-08-07T16:42:54Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/skops-dev/skops/security/advisories/GHSA-378x-6p4f-8jgm"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/skops-dev/skops/commit/29d61ea8a92f2bde6830e8f32cc72a1a87211cda"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/skops-dev/skops"
+    }
+  ],
+  "schema_version": "1.7.0",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "SKOPS Card.get_model happily allows arbitrary code execution"
+}
