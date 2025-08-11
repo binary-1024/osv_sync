@@ -25,7 +25,8 @@
     }
   ],
   "aliases": [
-    "CVE-2025-53942"
+    "CVE-2025-53942",
+    "GO-2025-3822"
   ],
   "database_specific": {
     "cwe_ids": [
@@ -38,7 +39,7 @@
   },
   "details": "### Summary\n\nDeactivated users that had either enrolled via OAuth/SAML or had their account connected to an OAuth/SAML account can still partially access authentik even if their account is deactivated. They end up in a half-authenticated state where they cannot access the API but crucially they can authorize applications if they know the URL of the application.\n\n### Patches\n\nauthentik 2025.4.4 and 2025.6.4 fix this issue.\n\n### Workarounds\n\nAdding an expression policy to the user login stage on the respective authentication flow with the expression of\n\n```py\nreturn request.context[\"pending_user\"].is_active\n```\n\nThis expression will only activate the user login stage when the user is active.\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n\n- Email us at [security@goauthentik.io](mailto:security@goauthentik.io).",
   "id": "GHSA-9g4j-v8w5-7x42",
-  "modified": "2025-07-23T22:15:09Z",
+  "modified": "2025-08-11T18:14:45.503831Z",
   "published": "2025-07-22T14:31:12Z",
   "references": [
     {
