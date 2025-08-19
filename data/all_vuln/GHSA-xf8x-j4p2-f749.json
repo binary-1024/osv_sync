@@ -1,0 +1,110 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 5.13.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-xf8x-j4p2-f749/GHSA-xf8x-j4p2-f749.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "astro",
+        "purl": "pkg:npm/astro"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "5.0.0-alpha.0"
+            },
+            {
+              "fixed": "5.13.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 9.1.0",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-xf8x-j4p2-f749/GHSA-xf8x-j4p2-f749.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@astrojs/node",
+        "purl": "pkg:npm/%40astrojs/node"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9.1.1"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    },
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 4.16.18",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-xf8x-j4p2-f749/GHSA-xf8x-j4p2-f749.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "astro",
+        "purl": "pkg:npm/astro"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.16.19"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-55303"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-19T15:40:31Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\n\nIn affected versions of `astro`, the image optimization endpoint in projects deployed with on-demand rendering allows images from unauthorized third-party domains to be served.\n\n### Details\n\nOn-demand rendered sites built with Astro include an `/_image` endpoint which returns optimized versions of images.\n\nThe `/_image` endpoint is restricted to processing local images bundled with the site and also supports remote images from domains the site developer has manually authorized (using the [`image.domains`](https://docs.astro.build/en/reference/configuration-reference/#imagedomains) or [`image.remotePatterns`](https://docs.astro.build/en/reference/configuration-reference/#imageremotepatterns) options).\n\nHowever, a bug in impacted versions of `astro` allows an attacker to bypass the third-party domain restrictions by using a protocol-relative URL as the image source, e.g. `/_image?href=//example.com/image.png`.\n\n### Proof of Concept\n\n1. Create a new minimal Astro project (`astro@5.13.0`).\n\n2. Configure it to use the Node adapter (`@astrojs/node@9.1.0` \u2014 newer versions are not impacted):\n\n   ```js\n   // astro.config.mjs\n   import { defineConfig } from 'astro/config';\n   import node from '@astrojs/node';\n\n   export default defineConfig({\n   \tadapter: node({ mode: 'standalone' }),\n   });\n   ```\n\n3. Build the site by running `astro build`.\n\n4. Run the server, e.g. with `astro preview`.\n\n5. Append `/_image?href=//placehold.co/600x400` to the preview URL, e.g. <http://localhost:4321/_image?href=//placehold.co/600x400>\n\n6. The site will serve the image from the unauthorized `placehold.co` origin.\n\n### Impact\n\nAllows a non-authorized third-party to create URLs on an impacted site\u2019s origin that serve unauthorized image content.\nIn the case of SVG images, this could include the risk of cross-site scripting (XSS) if a user followed a link to a maliciously crafted SVG.",
+  "id": "GHSA-xf8x-j4p2-f749",
+  "modified": "2025-08-19T15:57:18.578981Z",
+  "published": "2025-08-19T15:40:31Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/withastro/astro/security/advisories/GHSA-xf8x-j4p2-f749"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/withastro/astro"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:H/SI:H/SA:N",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "Astro allows unauthorized third-party images in _image endpoint"
+}

