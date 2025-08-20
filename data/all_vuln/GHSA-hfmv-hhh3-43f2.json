@@ -33,17 +33,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-08-19T15:33:35Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-08-19T17:15:40Z",
     "severity": "HIGH"
   },
   "details": "### Impact\n\nA stored **Cross-Site Scripting (XSS)** vulnerability was identified in [n8n](https://github.com/n8n-io/n8n), specifically in the **Form Trigger** node's **HTML form element**. An authenticated attacker can inject malicious HTML via an `<iframe>` with a `srcdoc` payload that includes arbitrary JavaScript execution. The attacker can also inject malicious Javascript by using `<video>` coupled `<source>` using an `onerror` event.\n\nWhile using `iframe` or a combination of `video` and `source` tag, this vulnerability allows for Account Takeover (ATO) by exfiltrating `n8n-browserId` and session cookies from authenticated users who visit a maliciously crafted form. Using these tokens and cookies, an attacker can impersonate the victim and change account details such as email addresses, enabling full control over the account\u2014especially if 2FA is not enabled.\n\n### Patches\nThe issue was addressed in [PR #16329](https://github.com/n8n-io/n8n/pull/16329). Users should upgrade to version >=1.98.2.\n\n### Workarounds\nApart from updating to the fixed version, n8n instance administrators can:\n- Configure a reverse proxy to **serve webhook requests from a different domain** [[docs](https://docs.n8n.io/hosting/configuration/configuration-examples/webhook-url/)].\n- Disable or restrict use of the **Form Trigger node**, particularly the **HTML** element type.\n- Use a Content Security Policy (CSP) to block execution of inline scripts and disallow use of `srcdoc`.\n\n### References\n- [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XSS_Prevention_Cheat_Sheet.html)\n- [MDN: iframe `srcdoc` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attr-srcdoc)\n- [HTML: `onerror` attribute](https://html.spec.whatwg.org/multipage/webappapis.html#handler-onerror)",
   "id": "GHSA-hfmv-hhh3-43f2",
-  "modified": "2025-08-19T15:57:18.493389Z",
+  "modified": "2025-08-19T20:58:33Z",
   "published": "2025-08-19T15:33:35Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/n8n-io/n8n/security/advisories/GHSA-hfmv-hhh3-43f2"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-52478"
     },
     {
       "type": "WEB",
