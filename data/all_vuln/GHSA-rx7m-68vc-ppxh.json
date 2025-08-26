@@ -234,17 +234,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-08-25T14:32:32Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-08-25T14:15:33Z",
     "severity": "HIGH"
   },
   "details": "**Product:** PhpSpreadsheet\n**Version:** 3.8.0\n**CWE-ID:** CWE-918: Server-Side Request Forgery (SSRF)\n**CVSS vector v.3.1:** 7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)\n**CVSS vector v.4.0:** 8.7 (AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N)\n**Description:** SSRF occurs when a processed HTML document is read and displayed in the browser\n**Impact:** Server-Side Request Forgery\n**Vulnerable component:** the `PhpOffice\\PhpSpreadsheet\\Worksheet\\Drawing` class, `setPath` method\n**Exploitation conditions:** getting a string from the user that is passed to the HTML reader\n**Mitigation:** improved processing of the `$path` variable of the `setPath` method of the `PhpOffice\\PhpSpreadsheet\\Worksheet\\Drawing` class is needed\n**Researcher: Aleksey Solovev (Positive Technologies)**\n\n# Research\nThe researcher discovered zero-day vulnerability Server-Side Request Forgery (SSRF) (in the `setPath` method of the `PhpOffice\\PhpSpreadsheet\\Worksheet\\Drawing` class) in Phpspreadsheet.\nThe latest version (3.8.0) of the `phpoffice/phpspreadsheet` library was installed. Below are the details of the installation:\n\n*Listing 1. Installing the phpoffice/phpspreadsheet library*\n```\n$ composer require phpoffice/phpspreadsheet --prefer-source\n```\nThe code that processes the HTML string with further rendering and displaying the result in the browser.\n*Listing 2. Executable file index.php using the PhpSpreadsheet library*\n```\n<?php\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$inputFileType = 'Html';\n$reader = \\PhpOffice\\PhpSpreadsheet\\IOFactory::createReader($inputFileType);  \n\n\n$inputFileName = './doc/file.html';\n$spreadsheet = $reader->load($inputFileName); \n\n$writer = new \\PhpOffice\\PhpSpreadsheet\\Writer\\Html($spreadsheet); \nprint($writer->generateHTMLAll());\n```\n\nAlso, the `./doc/file.html` has the following content: the `img` tag with the `src` attribute, which contains the value `http:// 127.0.0.1:1337`\n\n*Listing 3. The ./doc/file.html file*\n```\n<table>\n    <tr>\n        <img src=\"http://127.0.0.1:1337\">\n    </tr>\n</table>\n```\nThe vulnerability lies in the `setPath` method of the `PhpOffice\\PhpSpreadsheet\\Worksheet\\Drawing` class.\n \nFigure 1. The `PhpOffice\\PhpSpreadsheet\\Worksheet\\Drawing` class, `setPath` method.\n\n![fig1](https://github.com/user-attachments/assets/75433f59-fac6-46d5-bcfd-6d0174bfcedd)\n\nFigure 2 below demonstrates the SSRF vulnerability exploitation.\n\n![fig2](https://github.com/user-attachments/assets/3601692b-b077-420f-a2fb-8af0b66b6475)\n\nFigure 2. Demonstration of the SSRF vulnerability exploitation\n\nAlso, there is code on line 154 that could potentially be used by an attacker to perform unsafe deserialization via the `phar` archive and the `file_exists` method.\n \nFigure 3. Opportunity to perform phar deserialization\n![fig3](https://github.com/user-attachments/assets/3d7d4fc2-1b89-4925-82fa-e21c773efd47)\n\n_____________________________________________\n\nPlease, assign all credits to: Aleksey Solovev (Positive Technologies)\n\n# Credit\n\nAleksey Solovev (Positive Technologies)",
   "id": "GHSA-rx7m-68vc-ppxh",
-  "modified": "2025-08-25T15:42:31.062470Z",
+  "modified": "2025-08-26T16:37:00.300418Z",
   "published": "2025-08-25T14:32:32Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/PHPOffice/PhpSpreadsheet/security/advisories/GHSA-rx7m-68vc-ppxh"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-54370"
     },
     {
       "type": "WEB",
