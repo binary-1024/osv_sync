@@ -1,0 +1,67 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 2.4.1",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-hmfr-rx46-4jx2/GHSA-hmfr-rx46-4jx2.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "@escape.tech/graphql-armor-max-depth",
+        "purl": "pkg:npm/%40escape.tech/graphql-armor-max-depth"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-400"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-26T18:42:37Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\nA query depth restriction using the `max-depth` property can be bypassed if `ignoreIntrospection` is enabled (which is the default configuration) by naming your query/fragment `__schema`.\n\n### Details\nAt the start of the `countDepth` function, we have the following check for the `ignoreIntrospection` option:\n\n```typescript\n    if (this.config.ignoreIntrospection && 'name' in node && node.name?.value === '__schema') {\n        return 0;\n    }\n```\n\nHowever, the `node` can be one of: `FieldNode`, `FragmentDefinitionNode`, `InlineFragmentNode`, `OperationDefinitionNode`, `FragmentSpreadNode`.\n\nFor example, consider sending the following query:\n\n```graphql\nquery hello {\n  books {\n    title\n  }\n}\n```\n\nThis would create an `OperationDefinitionNode` where `node.name.value == 'hello'`\n\nThe proper way to handle this is to check explicitly for the `__schema` field, which corresponds to a `FieldNode`.\n\nThe fix is\n\n```typescript\n    if (\n      this.config.ignoreIntrospection &&\n      'name' in node &&\n      node.name?.value === '__schema' &&\n      node.kind === Kind.FIELD\n    ) {\n      return 0;\n    }\n```\n\nThis ensures that the node is explicitly a `FieldNode`.\n\n### PoC\n\nMax depth: `6`\n\n```graphql\nquery {\n  books {\n    author {\n      books {\n        author {\n          ...__schema\n        }\n      }\n    }\n  }\n}\nfragment __schema on Author {\n  books {\n    title\n  }\n}\n```\n\n### Impact\n\nThis issue affects applications using the GraphQL Armor Depth Limit plugin with `ignoreIntrospection` enabled.\n\n### Fix\n\nThis is fixed in [PR#823](https://github.com/Escape-Technologies/graphql-armor/pull/823)",
+  "id": "GHSA-hmfr-rx46-4jx2",
+  "modified": "2025-08-26T18:42:37Z",
+  "published": "2025-08-26T18:42:37Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/Escape-Technologies/graphql-armor/security/advisories/GHSA-hmfr-rx46-4jx2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Escape-Technologies/graphql-armor/pull/823"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/Escape-Technologies/graphql-armor/commit/1f923bc09f5f053f60b6ba2bd419d4b94cbe1db3"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/Escape-Technologies/graphql-armor"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "GraphQL Armor Max-Depth Plugin Bypass via Introspection Query Obfuscation"
+}
