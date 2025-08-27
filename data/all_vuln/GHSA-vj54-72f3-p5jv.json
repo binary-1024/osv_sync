@@ -1,0 +1,65 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/08/GHSA-vj54-72f3-p5jv/GHSA-vj54-72f3-p5jv.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "devalue",
+        "purl": "pkg:npm/devalue"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.3.2"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-57820"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-1321"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-08-26T22:33:14Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "## 1. `devalue.parse` allows `__proto__` to be set\n\nA string passed to `devalue.parse` could represent an object with a `__proto__` property, which would assign a prototype to an object while allowing properties to be overwritten:\n\n```js\nclass Vector {\n  constructor(x, y) {\n    this.x = x;\n    this.y = y;\n  }\n\n  get magnitude() {\n    return (this.x ** 2 + this.y ** 2) ** 0.5;\n  }\n}\n\nconst payload = `[{\"x\":1,\"y\":2,\"magnitude\":3,\"__proto__\":4},3,4,\"nope\",[\"Vector\",5],[6,7],8,9]`;\n\nconst vector = devalue.parse(payload, {\n  Vector: ([x, y]) => new Vector(x, y)\n});\n\nconsole.log(\"Is vector\", vector instanceof Vector); // true\nconsole.log(vector.x) // 3\nconsole.log(vector.y) // 4\nconsole.log(vector.magnitude); // \"nope\" instead of 5\n```\n\n## 2. `devalue.parse` allows array prototype methods to be assigned to object\n\nIn a payload constructed with `devalue.stringify`, values are represented as array indices, where the array contains the 'hydrated' values:\n\n```js\ndevalue.stringify({ message: 'hello' }); // [{\"message\":1},\"hello\"]\n```\n\n`devalue.parse` does not check that an index is numeric, which means that it could assign an array prototype method to a property instead:\n\n```js\nconst object = devalue.parse('[{\"toString\":\"push\"}]');\nobject.toString(); // 0\n```\n\nThis could be used by a creative attacker to bypass server-side validation.",
+  "id": "GHSA-vj54-72f3-p5jv",
+  "modified": "2025-08-26T23:27:27.919993Z",
+  "published": "2025-08-26T22:33:14Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/sveltejs/devalue/security/advisories/GHSA-vj54-72f3-p5jv"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/sveltejs/devalue/commit/0623a47c9555b639c03ff1baea82951b2d9d1132"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/sveltejs/devalue"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:H/SI:H/SA:H",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "devalue prototype pollution vulnerability"
+}
