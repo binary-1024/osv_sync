@@ -48,17 +48,29 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-08-27T16:46:16Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-08-27T17:15:48Z",
     "severity": "MODERATE"
   },
   "details": "### Summary\n\nIt is possible to craft a malformed URL that passes the \"same origin\" check, resulting in the user being redirected to another origin.\n\n### Details\n\nThe google_sign_in gem persists an optional URL for redirection after authentication. If this URL is malformed, it's possible for the user to be redirected to another origin after authentication, possibly resulting in exposure of authentication information such as the token.\n\nNormally the value of this URL is only written and read by the library. If applications are configured to store session information in a database, there is no known vector to exploit this vulnerability. However, applications may be configured to store this information in a session cookie, in which case it may be chained with a session cookie attack to inject a crafted URL.\n\n### Impact\n\nRails applications configured to store the `flash` information in a session cookie may be vulnerable, if this can be chained with an attack that allows injection of arbitrary data into the session cookie.\n\n### Workarounds\n\nIf you are unable to upgrade this library, then you may mitigate the chained attack by explicitly setting `SameSite=Lax` or `SameSite=Strict` on the application session cookie.\n\n### Credits\n\nThis issue was responsibly reported by Hackerone user [muntrive](https://hackerone.com/muntrive?type=user).",
   "id": "GHSA-7pwc-wh6m-44q3",
-  "modified": "2025-08-27T17:27:27.440144Z",
+  "modified": "2025-08-27T20:08:15.577970Z",
   "published": "2025-08-27T16:46:16Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/basecamp/google_sign_in/security/advisories/GHSA-7pwc-wh6m-44q3"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-57821"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/basecamp/google_sign_in/pull/73"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/basecamp/google_sign_in/commit/85903651201257d4f14b97d4582e6d968ac32f15"
     },
     {
       "type": "WEB",
@@ -67,6 +79,10 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/basecamp/google_sign_in"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/basecamp/google_sign_in/releases/tag/v1.3.0"
     }
   ],
   "schema_version": "1.7.3",
