@@ -148,7 +148,7 @@
   },
   "details": "### Impact\n\nRendering `{{ attributes }}` or using any method that returns a `ComponentAttributes` instance (e.g. `only()`, `defaults()`, `without()`) ouputs attribute values directly without escaping. If these values are unsafe (e.g. contain user input), this can lead to HTML attribute injection and XSS vulnerabilities.\n\n### Patches\n\nThe issue is fixed in version `2.25.1` of `symfony/ux-twig-component` by using Twig's `EscaperRuntime` to properly escape HTML attributes in `ComponentAttributes`.  If you use `symfony/ux-live-component`, you must also update it to `2.25.1` to benefit from the fix, as it reuses the `ComponentAttributes` class internally.\n\n### Workarounds\n\nUntil you can upgrade, avoid rendering `{{ attributes }}` or derived objects directly if it may contain untrusted values.\nInstead, use `{{ attributes.render('name') }}` for safe output of individual attributes.\n\n### References\n\nGitHub repository: [symfony/ux](https://github.com/symfony/ux)",
   "id": "GHSA-5j3w-5pcr-f8hg",
-  "modified": "2025-05-19T22:42:04.612953Z",
+  "modified": "2025-08-29T21:46:48.281175Z",
   "published": "2025-05-19T22:24:45Z",
   "references": [
     {
@@ -176,8 +176,20 @@
       "url": "https://github.com/symfony/ux/commit/c2f7738ee0969c31df7514025a7f5fc6e153932d"
     },
     {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/symfony/ux-live-component/CVE-2025-47946.yaml"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/symfony/ux-twig-component/CVE-2025-47946.yaml"
+    },
+    {
       "type": "PACKAGE",
       "url": "https://github.com/symfony/ux"
+    },
+    {
+      "type": "WEB",
+      "url": "https://symfony.com/blog/symfony-ux-cve-2025-47946-unsanitized-html-attribute-injection-via-componentattributes"
     }
   ],
   "schema_version": "1.7.3",

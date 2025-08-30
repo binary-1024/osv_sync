@@ -53,7 +53,7 @@
   },
   "details": "### Summary\n\nIt is possible to craft a malformed URL that passes the \"same origin\" check, resulting in the user being redirected to another origin.\n\n### Details\n\nThe google_sign_in gem persists an optional URL for redirection after authentication. If this URL is malformed, it's possible for the user to be redirected to another origin after authentication, possibly resulting in exposure of authentication information such as the token.\n\nNormally the value of this URL is only written and read by the library. If applications are configured to store session information in a database, there is no known vector to exploit this vulnerability. However, applications may be configured to store this information in a session cookie, in which case it may be chained with a session cookie attack to inject a crafted URL.\n\n### Impact\n\nRails applications configured to store the `flash` information in a session cookie may be vulnerable, if this can be chained with an attack that allows injection of arbitrary data into the session cookie.\n\n### Workarounds\n\nIf you are unable to upgrade this library, then you may mitigate the chained attack by explicitly setting `SameSite=Lax` or `SameSite=Strict` on the application session cookie.\n\n### Credits\n\nThis issue was responsibly reported by Hackerone user [muntrive](https://hackerone.com/muntrive?type=user).",
   "id": "GHSA-7pwc-wh6m-44q3",
-  "modified": "2025-08-27T20:08:15.577970Z",
+  "modified": "2025-08-29T15:49:18.210384Z",
   "published": "2025-08-27T16:46:16Z",
   "references": [
     {
@@ -83,6 +83,10 @@
     {
       "type": "WEB",
       "url": "https://github.com/basecamp/google_sign_in/releases/tag/v1.3.0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/google_sign_in/CVE-2025-57821.yml"
     }
   ],
   "schema_version": "1.7.3",
