@@ -36,17 +36,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-08-29T20:20:13Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-08-29T22:15:32Z",
     "severity": "HIGH"
   },
   "details": "### Impact\n\nFor optimizing the scalar multiplication algorithm in circuit for some curves, gnark uses fake-GLV algorithm in case the curve doesn't support true-GLV. For this to work, we need to compute the scalar decomposition using the Half GCD method in gnark-crypto. However, for some of the inputs the algorithm didn't converge quickly enough.\n\nIn case the prover accepts untrusted witness, it could lead to denial of service as the prover gets stuck in a very slowly converging loop.\n\nThanks to @feltroidprime for reporting the issue and proposing a fix.\n\n### Patches\n\nThe issue has been patched in gnark-crypto commit https://github.com/Consensys/gnark-crypto/commit/56600883e0e9f9b159e9c7000b94e76185ec3d0d. The dependency update is implemented in gnark commit https://github.com/Consensys/gnark/commit/68be6cede36e387ab760725beabd3c96cc94e6dc.\n\n### Workarounds\n\nThis update doesn't require recompiling the circuits as the issue is in the hint function. The users can update the gnark-crypto dependency to the fixed version.\n\n### References\n\n* See bug report https://github.com/Consensys/gnark/issues/1483\n* Fake GLV description https://ethresear.ch/t/fake-glv-you-dont-need-an-efficient-endomorphism-to-implement-glv-like-scalar-multiplication-in-snark-circuits/20394",
   "id": "GHSA-9fvj-xqr2-xwg8",
-  "modified": "2025-08-29T21:12:22.906496Z",
+  "modified": "2025-09-01T20:05:35Z",
   "published": "2025-08-29T20:20:13Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/Consensys/gnark/security/advisories/GHSA-9fvj-xqr2-xwg8"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-58157"
     },
     {
       "type": "WEB",
