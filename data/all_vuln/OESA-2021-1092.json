@@ -1,0 +1,90 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2021-1092.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "squid-debugsource-4.9-6.oe1.aarch64.rpm",
+          "squid-debuginfo-4.9-6.oe1.aarch64.rpm",
+          "squid-4.9-6.oe1.aarch64.rpm"
+        ],
+        "src": [
+          "squid-4.9-6.oe1.src.rpm"
+        ],
+        "x86_64": [
+          "squid-debugsource-4.9-6.oe1.x86_64.rpm",
+          "squid-debuginfo-4.9-6.oe1.x86_64.rpm",
+          "squid-4.9-6.oe1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP1",
+        "name": "squid",
+        "purl": "pkg:rpm/openEuler/squid&distro=openEuler-20.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.9-6.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Critical"
+  },
+  "details": "Squid is a high-performance proxy caching server. It handles all requests in a single, non-blocking, I/O-driven process and keeps meta data and implements negative caching of failed requests.\r\n\r\nSecurity Fix(es):\r\n\r\nAn issue was discovered in Squid before 4.12 and 5.x before 5.0.3. Due to use of a potentially dangerous function, Squid and the default certificate validation helper are vulnerable to a Denial of Service when opening a TLS connection to an attacker-controlled server for HTTPS. This occurs because unrecognized error values are mapped to NULL, but later code expects that each error value is mapped to a valid error string.(CVE-2020-14058)\r\n\r\nAn issue was discovered in Squid before 4.13 and 5.x before 5.0.4. Due to incorrect data validation, HTTP Request Smuggling attacks may succeed against HTTP and HTTPS traffic. This leads to cache poisoning. This allows any client, including browser scripts, to bypass local security and poison the proxy cache and any downstream caches with content from an arbitrary source. When configured for relaxed header parsing (the default), Squid relays headers containing whitespace characters to upstream servers. When this occurs as a prefix to a Content-Length header, the frame length specified will be ignored by Squid (allowing for a conflicting length to be used from another Content-Length header) but relayed upstream.(CVE-2020-15810)\r\n\r\nAn issue was discovered in Squid before 4.13 and 5.x before 5.0.4. Due to incorrect data validation, HTTP Request Splitting attacks may succeed against HTTP and HTTPS traffic. This leads to cache poisoning. This allows any client, including browser scripts, to bypass local security and poison the browser cache and any downstream caches with content from an arbitrary source. Squid uses a string search instead of parsing the Transfer-Encoding header to find chunked encoding. This allows an attacker to hide a second request inside Transfer-Encoding: it is interpreted by Squid as chunked and split out into a second request delivered upstream. Squid will then deliver two distinct responses to the client, corrupting any downstream caches.(CVE-2020-15811)\r\n\r\nSquid before 4.13 and 5.x before 5.0.4 allows a trusted peer to perform Denial of Service by consuming all available CPU cycles during handling of a crafted Cache Digest response message. This only occurs when cache_peer is used with the cache digests feature. The problem exists because peerDigestHandleReply() livelocking in peer_digest.cc mishandles EOF.(CVE-2020-24606)\r\n\r\nAn issue was discovered in Squid before 5.0.2. A remote attacker can replay a sniffed Digest Authentication nonce to gain access to resources that are otherwise forbidden. This occurs because the attacker can overflow the nonce reference counter (a short integer). Remote code execution may occur if the pooled token credentials are freed (instead of replayed as valid credentials).(CVE-2020-11945)\r\n\r\nAn issue was discovered in http/ContentLengthInterpreter.cc in Squid before 4.12 and 5.x before 5.0.3. A Request Smuggling and Poisoning attack can succeed against the HTTP cache. The client sends an HTTP request with a Content-Length header containing &quot;+\\ &quot;-&quot; or an uncommon shell whitespace character prefix to the length field-value.(CVE-2020-15049)",
+  "id": "OESA-2021-1092",
+  "modified": "2025-09-03T06:16:56.792053Z",
+  "published": "2021-03-26T11:02:43Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2021-1092"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-14058"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15810"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15811"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-24606"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-11945"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-15049"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "squid security update",
+  "upstream": [
+    "CVE-2020-11945",
+    "CVE-2020-14058",
+    "CVE-2020-15049",
+    "CVE-2020-15810",
+    "CVE-2020-15811",
+    "CVE-2020-24606"
+  ]
+}

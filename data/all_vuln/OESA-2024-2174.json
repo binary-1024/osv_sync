@@ -1,0 +1,93 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2174.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "nodejs-20.12.1-1.oe2403.aarch64.rpm",
+          "nodejs-debuginfo-20.12.1-1.oe2403.aarch64.rpm",
+          "nodejs-debugsource-20.12.1-1.oe2403.aarch64.rpm",
+          "nodejs-devel-20.12.1-1.oe2403.aarch64.rpm",
+          "nodejs-full-i18n-20.12.1-1.oe2403.aarch64.rpm",
+          "nodejs-libs-20.12.1-1.oe2403.aarch64.rpm",
+          "npm-10.5.0-1.20.12.1.1.oe2403.aarch64.rpm",
+          "v8-devel-11.3.244.8-1.20.12.1.1.oe2403.aarch64.rpm"
+        ],
+        "noarch": [
+          "nodejs-docs-20.12.1-1.oe2403.noarch.rpm"
+        ],
+        "src": [
+          "nodejs-20.12.1-1.oe2403.src.rpm"
+        ],
+        "x86_64": [
+          "nodejs-20.12.1-1.oe2403.x86_64.rpm",
+          "nodejs-debuginfo-20.12.1-1.oe2403.x86_64.rpm",
+          "nodejs-debugsource-20.12.1-1.oe2403.x86_64.rpm",
+          "nodejs-devel-20.12.1-1.oe2403.x86_64.rpm",
+          "nodejs-full-i18n-20.12.1-1.oe2403.x86_64.rpm",
+          "nodejs-libs-20.12.1-1.oe2403.x86_64.rpm",
+          "npm-10.5.0-1.20.12.1.1.oe2403.x86_64.rpm",
+          "v8-devel-11.3.244.8-1.20.12.1.1.oe2403.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:24.03-LTS",
+        "name": "nodejs",
+        "purl": "pkg:rpm/openEuler/nodejs&distro=openEuler-24.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "20.12.1-1.oe2403"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "Node.js is an open-source, cross-platform, JavaScript runtime environment, it executes JavaScript code outside of a browser.\r\n\r\nSecurity Fix(es):\r\n\r\nThe team has identified a critical vulnerability in the http server of the most recent version of Node, where malformed headers can lead to HTTP request smuggling. Specifically, if a space is placed before a content-length header, it is not interpreted correctly, enabling attackers to smuggle in a second request within the body of the first.(CVE-2024-27982)\r\n\r\nAn attacker can make the Node.js HTTP/2 server completely unavailable by sending a small amount of HTTP/2 frames packets with a few HTTP/2 frames inside. It is possible to leave some data in nghttp2 memory after reset when headers with HTTP/2 CONTINUATION frame are sent to the server and then a TCP connection is abruptly closed by the client triggering the Http2Session destructor while header frames are still being processed (and stored in memory) causing a race condition.(CVE-2024-27983)\r\n\r\nUndici is an HTTP/1.1 client, written from scratch for Node.js. Undici cleared Authorization and Proxy-Authorization headers for `fetch()`, but did not clear them for `undici.request()`. This vulnerability was patched in version(s) 5.28.4 and 6.11.1.\n(CVE-2024-30260)\r\n\r\nUndici is an HTTP/1.1 client, written from scratch for Node.js. An attacker can alter the `integrity` option passed to `fetch()`, allowing `fetch()` to accept requests as valid even if they have been tampered. This vulnerability was patched in version(s) 5.28.4 and 6.11.1.(CVE-2024-30261)",
+  "id": "OESA-2024-2174",
+  "modified": "2025-09-03T06:20:09.530340Z",
+  "published": "2024-09-27T11:09:12Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2174"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-27982"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-27983"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-30260"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-30261"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "nodejs security update",
+  "upstream": [
+    "CVE-2024-27982",
+    "CVE-2024-27983",
+    "CVE-2024-30260",
+    "CVE-2024-30261"
+  ]
+}

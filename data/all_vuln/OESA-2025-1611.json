@@ -1,0 +1,65 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1611.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "cpp-httplib-0.14.0-4.oe2403.aarch64.rpm",
+          "cpp-httplib-debuginfo-0.14.0-4.oe2403.aarch64.rpm",
+          "cpp-httplib-debugsource-0.14.0-4.oe2403.aarch64.rpm"
+        ],
+        "src": [
+          "cpp-httplib-0.14.0-4.oe2403.src.rpm"
+        ],
+        "x86_64": [
+          "cpp-httplib-0.14.0-4.oe2403.x86_64.rpm",
+          "cpp-httplib-debuginfo-0.14.0-4.oe2403.x86_64.rpm",
+          "cpp-httplib-debugsource-0.14.0-4.oe2403.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:24.03-LTS",
+        "name": "cpp-httplib",
+        "purl": "pkg:rpm/openEuler/cpp-httplib&distro=openEuler-24.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.14.0-4.oe2403"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "A C++11 single-file header-only cross platform HTTP/HTTPS library. It&amp;apos;s extremely easy to setup. Just include httplib.h file in your code!\r\n\r\nSecurity Fix(es):\n\ncpp-httplib is a C++ header-only HTTP/HTTPS server and client library. Prior to version 0.20.1, the library fails to enforce configured size limits on incoming request bodies when `Transfer-Encoding: chunked` is used or when no `Content-Length` header is provided. A remote attacker can send a chunked request without the terminating zero-length chunk, causing uncontrolled memory allocation on the server. This leads to potential exhaustion of system memory and results in a server crash or unresponsiveness. Version 0.20.1 fixes the issue by enforcing limits during parsing. If the limit is exceeded at any point during reading, the connection is terminated immediately. A short-term workaround through a Reverse Proxy is available. If updating the library immediately is not feasible, deploy a reverse proxy (e.g., Nginx, HAProxy) in front of the `cpp-httplib` application. Configure the proxy to enforce maximum request body size limits, thereby stopping excessively large requests before they reach the vulnerable library code.(CVE-2025-46728)",
+  "id": "OESA-2025-1611",
+  "modified": "2025-09-03T06:31:33.572004Z",
+  "published": "2025-06-06T14:04:24Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1611"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46728"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "cpp-httplib security update",
+  "upstream": [
+    "CVE-2025-46728"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1194.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "edk2-debuginfo-202011-24.oe2203sp3.aarch64.rpm",
+          "edk2-debugsource-202011-24.oe2203sp3.aarch64.rpm",
+          "edk2-devel-202011-24.oe2203sp3.aarch64.rpm"
+        ],
+        "noarch": [
+          "edk2-aarch64-202011-24.oe2203sp3.noarch.rpm",
+          "edk2-help-202011-24.oe2203sp3.noarch.rpm",
+          "edk2-ovmf-202011-24.oe2203sp3.noarch.rpm",
+          "python3-edk2-devel-202011-24.oe2203sp3.noarch.rpm"
+        ],
+        "src": [
+          "edk2-202011-24.oe2203sp3.src.rpm"
+        ],
+        "x86_64": [
+          "edk2-debuginfo-202011-24.oe2203sp3.x86_64.rpm",
+          "edk2-debugsource-202011-24.oe2203sp3.x86_64.rpm",
+          "edk2-devel-202011-24.oe2203sp3.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP3",
+        "name": "edk2",
+        "purl": "pkg:rpm/openEuler/edk2&distro=openEuler-22.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "202011-24.oe2203sp3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "EDK II is a modern, feature-rich, cross-platform firmware development environment for the UEFI and PI specifications.\r\n\r\nSecurity Fix(es):\n\nIssue summary: A timing side-channel which could potentially allow recovering\nthe private key exists in the ECDSA signature computation.\n\nImpact summary: A timing side-channel in ECDSA signature computations\ncould allow recovering the private key by an attacker. However, measuring\nthe timing would require either local access to the signing application or\na very fast network connection with low latency.\n\nThere is a timing signal of around 300 nanoseconds when the top word of\nthe inverted ECDSA nonce value is zero. This can happen with significant\nprobability only for some of the supported elliptic curves. In particular\nthe NIST P-521 curve is affected. To be able to measure this leak, the attacker\nprocess must either be located in the same physical computer or must\nhave a very fast network connection with low latency. For that reason\nthe severity of this vulnerability is Low.(CVE-2024-13176)\n\nIssue summary: Calling the OpenSSL API function SSL_free_buffers may cause\nmemory to be accessed that was previously freed in some situations\n\nImpact summary: A use after free can have a range of potential consequences such\nas the corruption of valid data, crashes or execution of arbitrary code.\nHowever, only applications that directly call the SSL_free_buffers function are\naffected by this issue. Applications that do not call this function are not\nvulnerable. Our investigations indicate that this function is rarely used by\napplications.\n\nThe SSL_free_buffers function is used to free the internal OpenSSL buffer used\nwhen processing an incoming record from the network. The call is only expected\nto succeed if the buffer is not currently in use. However, two scenarios have\nbeen identified where the buffer is freed even when still in use.\n\nThe first scenario occurs where a record header has been received from the\nnetwork and processed by OpenSSL, but the full record body has not yet arrived.\nIn this case calling SSL_free_buffers will succeed even though a record has only\nbeen partially processed and the buffer is still in use.\n\nThe second scenario occurs where a full record containing application data has\nbeen received and processed by OpenSSL but the application has only read part of\nthis data. Again a call to SSL_free_buffers will succeed even though the buffer\nis still in use.\n\nWhile these scenarios could occur accidentally during normal operation a\nmalicious attacker could attempt to engineer a stituation where this occurs.\nWe are not aware of this issue being actively exploited.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.(CVE-2024-4741)",
+  "id": "OESA-2025-1194",
+  "modified": "2025-09-03T06:19:55.080188Z",
+  "published": "2025-02-28T15:32:56Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1194"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-13176"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4741"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "edk2 security update",
+  "upstream": [
+    "CVE-2024-13176",
+    "CVE-2024-4741"
+  ]
+}

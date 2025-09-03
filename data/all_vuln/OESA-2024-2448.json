@@ -1,0 +1,190 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2448.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "kernel-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "kernel-debugsource-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "kernel-devel-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "kernel-headers-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "kernel-source-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "kernel-tools-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "kernel-tools-devel-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "perf-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "perf-debuginfo-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "python3-perf-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-237.0.0.139.oe2203sp3.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-237.0.0.139.oe2203sp3.src.rpm"
+        ],
+        "x86_64": [
+          "kernel-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "kernel-debuginfo-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "kernel-debugsource-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "kernel-devel-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "kernel-headers-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "kernel-source-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "kernel-tools-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "perf-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "perf-debuginfo-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "python3-perf-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-237.0.0.139.oe2203sp3.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP3",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-237.0.0.139.oe2203sp3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  bpf: support non-r10 register spill/fill to/from stack in precision tracking  Use instruction (jump) history to record instructions that performed register spill/fill to/from stack, regardless if this was done through read-only r10 register, or any other register after copying r10 into it *and* potentially adjusting offset.  To make this work reliably, we push extra per-instruction flags into instruction history, encoding stack slot index (spi) and stack frame number in extra 10 bit flags we take away from prev_idx in instruction history. We don&apos;t touch idx field for maximum performance, as it&apos;s checked most frequently during backtracking.  This change removes basically the last remaining practical limitation of precision backtracking logic in BPF verifier. It fixes known deficiencies, but also opens up new opportunities to reduce number of verified states, explored in the subsequent patches.  There are only three differences in selftests&apos; BPF object files according to veristat, all in the positive direction (less states).  File                                    Program        Insns (A)  Insns (B)  Insns  (DIFF)  States (A)  States (B)  States (DIFF) --------------------------------------  -------------  ---------  ---------  -------------  ----------  ----------  ------------- test_cls_redirect_dynptr.bpf.linked3.o  cls_redirect        2987       2864  -123 (-4.12%)         240         231    -9 (-3.75%) xdp_synproxy_kern.bpf.linked3.o         syncookie_tc       82848      82661  -187 (-0.23%)        5107        5073   -34 (-0.67%) xdp_synproxy_kern.bpf.linked3.o         syncookie_xdp      85116      84964  -152 (-0.18%)        5162        5130   -32 (-0.62%)  Note, I avoided renaming jmp_history to more generic insn_hist to minimize number of lines changed and potential merge conflicts between bpf and bpf-next trees.  Notice also cur_hist_entry pointer reset to NULL at the beginning of instruction verification loop. This pointer avoids the problem of relying on last jump history entry&apos;s insn_idx to determine whether we already have entry for current instruction or not. It can happen that we added jump history entry because current instruction is_jmp_point(), but also we need to add instruction flags for stack access. In this case, we don&apos;t want to entries, so we need to reuse last added entry, if it is present.  Relying on insn_idx comparison has the same ambiguity problem as the one that was fixed recently in [0], so we avoid that.    [0] https://patchwork.kernel.org/project/netdevbpf/patch/20231110002638.4168352-3-andrii@kernel.org/(CVE-2023-52920)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ndmaengine: fsl-qdma: Fix a memory leak related to the queue command DMA\r\n\r\nThis dma_alloc_coherent() is undone neither in the remove function, nor in\nthe error handling path of fsl_qdma_probe().\r\n\r\nSwitch to the managed version to fix both issues.(CVE-2024-35833)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nwifi: mac80211: fix NULL dereference at band check in starting tx ba session\r\n\r\nIn MLD connection, link_data/link_conf are dynamically allocated. They\ndon&apos;t point to vif-&gt;bss_conf. So, there will be no chanreq assigned to\nvif-&gt;bss_conf and then the chan will be NULL. Tweak the code to check\nht_supported/vht_supported/has_he/has_eht on sta deflink.\r\n\r\nCrash log (with rtw89 version under MLO development):\n[ 9890.526087] BUG: kernel NULL pointer dereference, address: 0000000000000000\n[ 9890.526102] #PF: supervisor read access in kernel mode\n[ 9890.526105] #PF: error_code(0x0000) - not-present page\n[ 9890.526109] PGD 0 P4D 0\n[ 9890.526114] Oops: 0000 [#1] PREEMPT SMP PTI\n[ 9890.526119] CPU: 2 PID: 6367 Comm: kworker/u16:2 Kdump: loaded Tainted: G           OE      6.9.0 #1\n[ 9890.526123] Hardware name: LENOVO 2356AD1/2356AD1, BIOS G7ETB3WW (2.73 ) 11/28/2018\n[ 9890.526126] Workqueue: phy2 rtw89_core_ba_work [rtw89_core]\n[ 9890.526203] RIP: 0010:ieee80211_start_tx_ba_session (net/mac80211/agg-tx.c:618 (discriminator 1)) mac80211\n[ 9890.526279] Code: f7 e8 d5 93 3e ea 48 83 c4 28 89 d8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 49 8b 84 24 e0 f1 ff ff 48 8b 80 90 1b 00 00 &lt;83&gt; 38 03 0f 84 37 fe ff ff bb ea ff ff ff eb cc 49 8b 84 24 10 f3\nAll code\n========\n   0:\tf7 e8                \timul   %eax\n   2:\td5                   \t(bad)\n   3:\t93                   \txchg   %eax,%ebx\n   4:\t3e ea                \tds (bad)\n   6:\t48 83 c4 28          \tadd    $0x28,%rsp\n   a:\t89 d8                \tmov    %ebx,%eax\n   c:\t5b                   \tpop    %rbx\n   d:\t41 5c                \tpop    %r12\n   f:\t41 5d                \tpop    %r13\n  11:\t41 5e                \tpop    %r14\n  13:\t41 5f                \tpop    %r15\n  15:\t5d                   \tpop    %rbp\n  16:\tc3                   \tretq\n  17:\tcc                   \tint3\n  18:\tcc                   \tint3\n  19:\tcc                   \tint3\n  1a:\tcc                   \tint3\n  1b:\t49 8b 84 24 e0 f1 ff \tmov    -0xe20(%r12),%rax\n  22:\tff\n  23:\t48 8b 80 90 1b 00 00 \tmov    0x1b90(%rax),%rax\n  2a:*\t83 38 03             \tcmpl   $0x3,(%rax)\t\t&lt;-- trapping instruction\n  2d:\t0f 84 37 fe ff ff    \tje     0xfffffffffffffe6a\n  33:\tbb ea ff ff ff       \tmov    $0xffffffea,%ebx\n  38:\teb cc                \tjmp    0x6\n  3a:\t49                   \trex.WB\n  3b:\t8b                   \t.byte 0x8b\n  3c:\t84 24 10             \ttest   %ah,(%rax,%rdx,1)\n  3f:\tf3                   \trepz\r\n\r\nCode starting with the faulting instruction\n===========================================\n   0:\t83 38 03             \tcmpl   $0x3,(%rax)\n   3:\t0f 84 37 fe ff ff    \tje     0xfffffffffffffe40\n   9:\tbb ea ff ff ff       \tmov    $0xffffffea,%ebx\n   e:\teb cc                \tjmp    0xffffffffffffffdc\n  10:\t49                   \trex.WB\n  11:\t8b                   \t.byte 0x8b\n  12:\t84 24 10             \ttest   %ah,(%rax,%rdx,1)\n  15:\tf3                   \trepz\n[ 9890.526285] RSP: 0018:ffffb8db09013d68 EFLAGS: 00010246\n[ 9890.526291] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff9308e0d656c8\n[ 9890.526295] RDX: 0000000000000000 RSI: ffffffffab99460b RDI: ffffffffab9a7685\n[ 9890.526300] RBP: ffffb8db09013db8 R08: 0000000000000000 R09: 0000000000000873\n[ 9890.526304] R10: ffff9308e0d64800 R11: 0000000000000002 R12: ffff9308e5ff6e70\n[ 9890.526308] R13: ffff930952500e20 R14: ffff9309192a8c00 R15: 0000000000000000\n[ 9890.526313] FS:  0000000000000000(0000) GS:ffff930b4e700000(0000) knlGS:0000000000000000\n[ 9890.526316] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033\n[ 9890.526318] CR2: 0000000000000000 CR3: 0000000391c58005 CR4: 00000000001706f0\n[ 9890.526321] Call Trace:\n[ 9890.526324]  &lt;TASK&gt;\n[ 9890.526327] ? show_regs (arch/x86/kernel/dumpstack.c:479)\n[ 9890.526335] ? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434)\n[ 9890.526340] ? page_fault_oops (arch/x86/mm/fault.c:713)\n[ 9890.526347] ? search_module_extables (kernel/module/main.c:3256 (discriminator\n---truncated---(CVE-2024-43911)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nstaging: iio: frequency: ad9834: Validate frequency parameter value\r\n\r\nIn ad9834_write_frequency() clk_get_rate() can return 0. In such case\nad9834_calc_freqreg() call will lead to division by zero. Checking\n&apos;if (fout &gt; (clk_freq / 2))&apos; doesn&apos;t protect in case of &apos;fout&apos; is 0.\nad9834_write_frequency() is called from ad9834_write(), where fout is\ntaken from text buffer, which can contain any value.\r\n\r\nModify parameters checking.\r\n\r\nFound by Linux Verification Center (linuxtesting.org) with SVACE.(CVE-2024-47663)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nscsi: pm80xx: Set phy-&gt;enable_completion only when we wait for it\r\n\r\npm8001_phy_control() populates the enable_completion pointer with a stack\naddress, sends a PHY_LINK_RESET / PHY_HARD_RESET, waits 300 ms, and\nreturns. The problem arises when a phy control response comes late.  After\n300 ms the pm8001_phy_control() function returns and the passed\nenable_completion stack address is no longer valid. Late phy control\nresponse invokes complete() on a dangling enable_completion pointer which\nleads to a kernel crash.(CVE-2024-47666)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  bpf: Zero former ARG_PTR_TO_{LONG,INT} args in case of error  For all non-tracing helpers which formerly had ARG_PTR_TO_{LONG,INT} as input arguments, zero the value for the case of an error as otherwise it could leak memory. For tracing, it is not needed given CAP_PERFMON can already read all kernel memory anyway hence bpf_get_func_arg() and bpf_get_func_ret() is skipped in here.  Also, the MTU helpers mtu_len pointer value is being written but also read. Technically, the MEM_UNINIT should not be there in order to always force init. Removing MEM_UNINIT needs more verifier rework though: MEM_UNINIT right now implies two things actually: i) write into memory, ii) memory does not have to be initialized. If we lift MEM_UNINIT, it then becomes: i) read into memory, ii) memory must be initialized. This means that for bpf_*_check_mtu() we&apos;re readding the issue we&apos;re trying to fix, that is, it would then be able to write back into things like .rodata BPF maps. Follow-up work will rework the MEM_UNINIT semantics such that the intent can be better expressed. For now just clear the *mtu_len on error path which can be lifted later again.(CVE-2024-47728)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drm/amd/display: Add null check for pipe_ctx-&gt;plane_state in dcn20_program_pipe  This commit addresses a null pointer dereference issue in the `dcn20_program_pipe` function. The issue could occur when `pipe_ctx-&gt;plane_state` is null.  The fix adds a check to ensure `pipe_ctx-&gt;plane_state` is not null before accessing. This prevents a null pointer dereference.  Reported by smatch: drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn20/dcn20_hwseq.c:1925 dcn20_program_pipe() error: we previously assumed &apos;pipe_ctx-&gt;plane_state&apos; could be null (see line 1877)(CVE-2024-49914)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  net/ncsi: Disable the ncsi work before freeing the associated structure  The work function can run after the ncsi device is freed, resulting in use-after-free bugs or kernel panic.(CVE-2024-49945)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  mailbox: bcm2835: Fix timeout during suspend mode  During noirq suspend phase the Raspberry Pi power driver suffer of firmware property timeouts. The reason is that the IRQ of the underlying BCM2835 mailbox is disabled and rpi_firmware_property_list() will always run into a timeout [1].  Since the VideoCore side isn&apos;t consider as a wakeup source, set the IRQF_NO_SUSPEND flag for the mailbox IRQ in order to keep it enabled during suspend-resume cycle.  [1] PM: late suspend of devices complete after 1.754 msecs WARNING: CPU: 0 PID: 438 at drivers/firmware/raspberrypi.c:128  rpi_firmware_property_list+0x204/0x22c Firmware transaction 0x00028001 timeout Modules linked in: CPU: 0 PID: 438 Comm: bash Tainted: G         C         6.9.3-dirty #17 Hardware name: BCM2835 Call trace: unwind_backtrace from show_stack+0x18/0x1c show_stack from dump_stack_lvl+0x34/0x44 dump_stack_lvl from __warn+0x88/0xec __warn from warn_slowpath_fmt+0x7c/0xb0 warn_slowpath_fmt from rpi_firmware_property_list+0x204/0x22c rpi_firmware_property_list from rpi_firmware_property+0x68/0x8c rpi_firmware_property from rpi_firmware_set_power+0x54/0xc0 rpi_firmware_set_power from _genpd_power_off+0xe4/0x148 _genpd_power_off from genpd_sync_power_off+0x7c/0x11c genpd_sync_power_off from genpd_finish_suspend+0xcc/0xe0 genpd_finish_suspend from dpm_run_callback+0x78/0xd0 dpm_run_callback from device_suspend_noirq+0xc0/0x238 device_suspend_noirq from dpm_suspend_noirq+0xb0/0x168 dpm_suspend_noirq from suspend_devices_and_enter+0x1b8/0x5ac suspend_devices_and_enter from pm_suspend+0x254/0x2e4 pm_suspend from state_store+0xa8/0xd4 state_store from kernfs_fop_write_iter+0x154/0x1a0 kernfs_fop_write_iter from vfs_write+0x12c/0x184 vfs_write from ksys_write+0x78/0xc0 ksys_write from ret_fast_syscall+0x0/0x54 Exception stack(0xcc93dfa8 to 0xcc93dff0) [...] PM: noirq suspend of devices complete after 3095.584 msecs(CVE-2024-49963)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  aoe: fix the potential use-after-free problem in more places  For fixing CVE-2023-6270, f98364e92662 (&quot;aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts&quot;) makes tx() calling dev_put() instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs into use-after-free.  Then Nicolai Stange found more places in aoe have potential use-after-free problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe() and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push packet to tx queue. So they should also use dev_hold() to increase the refcnt of skb-&gt;dev.  On the other hand, moving dev_put() to tx() causes that the refcnt of skb-&gt;dev be reduced to a negative value, because corresponding dev_hold() are not called in revalidate(), aoecmd_ata_rw(), resend(), probe(), and aoecmd_cfg_rsp(). This patch fixed this issue.(CVE-2024-49982)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  KVM: nSVM: Ignore nCR3[4:0] when loading PDPTEs from memory  Ignore nCR3[4:0] when loading PDPTEs from memory for nested SVM, as bits 4:0 of CR3 are ignored when PAE paging is used, and thus VMRUN doesn&apos;t enforce 32-byte alignment of nCR3.  In the absolute worst case scenario, failure to ignore bits 4:0 can result in an out-of-bounds read, e.g. if the target page is at the end of a memslot, and the VMM isn&apos;t using guard pages.  Per the APM:    The CR3 register points to the base address of the page-directory-pointer   table. The page-directory-pointer table is aligned on a 32-byte boundary,   with the low 5 address bits 4:0 assumed to be 0.  And the SDM&apos;s much more explicit:    4:0    Ignored  Note, KVM gets this right when loading PDPTRs, it&apos;s only the nSVM flow that is broken.(CVE-2024-50115)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  bpf: Use raw_spinlock_t in ringbuf  The function __bpf_ringbuf_reserve is invoked from a tracepoint, which disables preemption. Using spinlock_t in this context can lead to a &quot;sleep in atomic&quot; warning in the RT variant. This issue is illustrated in the example below:  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48 in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 556208, name: test_progs preempt_count: 1, expected: 0 RCU nest depth: 1, expected: 1 INFO: lockdep is turned off. Preemption disabled at: [&lt;ffffd33a5c88ea44&gt;] migrate_enable+0xc0/0x39c CPU: 7 PID: 556208 Comm: test_progs Tainted: G Hardware name: Qualcomm SA8775P Ride (DT) Call trace:  dump_backtrace+0xac/0x130  show_stack+0x1c/0x30  dump_stack_lvl+0xac/0xe8  dump_stack+0x18/0x30  __might_resched+0x3bc/0x4fc  rt_spin_lock+0x8c/0x1a4  __bpf_ringbuf_reserve+0xc4/0x254  bpf_ringbuf_reserve_dynptr+0x5c/0xdc  bpf_prog_ac3d15160d62622a_test_read_write+0x104/0x238  trace_call_bpf+0x238/0x774  perf_call_bpf_enter.isra.0+0x104/0x194  perf_syscall_enter+0x2f8/0x510  trace_sys_enter+0x39c/0x564  syscall_trace_enter+0x220/0x3c0  do_el0_svc+0x138/0x1dc  el0_svc+0x54/0x130  el0t_64_sync_handler+0x134/0x150  el0t_64_sync+0x17c/0x180  Switch the spinlock to raw_spinlock_t to avoid this error.(CVE-2024-50138)\r\n\r\n(CVE-2024-50151)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  scsi: target: core: Fix null-ptr-deref in target_alloc_device()  There is a null-ptr-deref issue reported by KASAN:  BUG: KASAN: null-ptr-deref in target_alloc_device+0xbc4/0xbe0 [target_core_mod] ...  kasan_report+0xb9/0xf0  target_alloc_device+0xbc4/0xbe0 [target_core_mod]  core_dev_setup_virtual_lun0+0xef/0x1f0 [target_core_mod]  target_core_init_configfs+0x205/0x420 [target_core_mod]  do_one_initcall+0xdd/0x4e0 ...  entry_SYSCALL_64_after_hwframe+0x76/0x7e  In target_alloc_device(), if allocing memory for dev queues fails, then dev will be freed by dev-&gt;transport-&gt;free_device(), but dev-&gt;transport is not initialized at that time, which will lead to a null pointer reference problem.  Fixing this bug by freeing dev with hba-&gt;backend-&gt;ops-&gt;free_device().(CVE-2024-50153)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  iio: light: veml6030: fix IIO device retrieval from embedded device  The dev pointer that is received as an argument in the in_illuminance_period_available_show function references the device embedded in the IIO device, not in the i2c client.  dev_to_iio_dev() must be used to accessthe right data. The current implementation leads to a segmentation fault on every attempt to read the attribute because indio_dev gets a NULL assignment.  This bug has been present since the first appearance of the driver, apparently since the last version (V6) before getting applied. A constant attribute was used until then, and the last modifications might have not been tested again.(CVE-2024-50198)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  bpf, arm64: Fix address emission with tag-based KASAN enabled  When BPF_TRAMP_F_CALL_ORIG is enabled, the address of a bpf_tramp_image struct on the stack is passed during the size calculation pass and an address on the heap is passed during code generation. This may cause a heap buffer overflow if the heap address is tagged because emit_a64_mov_i64() will emit longer code than it did during the size calculation pass. The same problem could occur without tag-based KASAN if one of the 16-bit words of the stack address happened to be all-ones during the size calculation pass. Fix the problem by assuming the worst case (4 instructions) when calculating the size of the bpf_tramp_image address emission.(CVE-2024-50203)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower  Avoid potentially crashing in the driver because of uninitialized private data(CVE-2024-50237)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  fs/ntfs3: Additional check in ntfs_file_release(CVE-2024-50242)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  fs/ntfs3: Additional check in ni_clear()  Checking of NTFS_FLAGS_LOG_REPLAYING added to prevent access to uninitialized bitmap during replay process.(CVE-2024-50244)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  fs/ntfs3: Fix possible deadlock in mi_read  Mutex lock with another subclass used in ni_lock_dir().(CVE-2024-50245)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  fs/ntfs3: Add rough attr alloc_size check(CVE-2024-50246)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  fs/ntfs3: Check if more than chunk-size bytes are written  A incorrectly formatted chunk may decompress into more than LZNT_CHUNK_SIZE bytes and a index out of bounds will occur in s_max_off.(CVE-2024-50247)",
+  "id": "OESA-2024-2448",
+  "modified": "2025-09-03T06:19:45.847918Z",
+  "published": "2024-11-22T14:22:54Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2448"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52920"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35833"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-43911"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47663"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47666"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47728"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49914"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49945"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49963"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49982"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50115"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50138"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50151"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50153"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50198"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50203"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50237"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50242"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50244"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50245"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50246"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50247"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2023-52920",
+    "CVE-2024-35833",
+    "CVE-2024-43911",
+    "CVE-2024-47663",
+    "CVE-2024-47666",
+    "CVE-2024-47728",
+    "CVE-2024-49914",
+    "CVE-2024-49945",
+    "CVE-2024-49963",
+    "CVE-2024-49982",
+    "CVE-2024-50115",
+    "CVE-2024-50138",
+    "CVE-2024-50151",
+    "CVE-2024-50153",
+    "CVE-2024-50198",
+    "CVE-2024-50203",
+    "CVE-2024-50237",
+    "CVE-2024-50242",
+    "CVE-2024-50244",
+    "CVE-2024-50245",
+    "CVE-2024-50246",
+    "CVE-2024-50247"
+  ]
+}

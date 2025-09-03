@@ -1,0 +1,96 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-1297.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm",
+          "bpftool-4.19.90-2403.3.0.0270.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2403.3.0.0270.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "python2-perf-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm",
+          "bpftool-4.19.90-2403.3.0.0270.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2403.3.0.0270.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nmedia: pvrusb2: fix use after free on context disconnection\r\n\r\nUpon module load, a kthread is created targeting the\npvr2_context_thread_func function, which may call pvr2_context_destroy\nand thus call kfree() on the context object. However, that might happen\nbefore the usb hub_event handler is able to notify the driver. This\npatch adds a sanity check before the invalid read reported by syzbot,\nwithin the context disconnection call stack.(CVE-2023-52445)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nmtd: Fix gluebi NULL pointer dereference caused by ftl notifier\r\n\r\nIf both ftl.ko and gluebi.ko are loaded, the notifier of ftl\ntriggers NULL pointer dereference when trying to access\n\u2018gluebi-&gt;desc\u2019 in gluebi_read().\r\n\r\nubi_gluebi_init\n  ubi_register_volume_notifier\n    ubi_enumerate_volumes\n      ubi_notify_all\n        gluebi_notify    nb-&gt;notifier_call()\n          gluebi_create\n            mtd_device_register\n              mtd_device_parse_register\n                add_mtd_device\n                  blktrans_notify_add   not-&gt;add()\n                    ftl_add_mtd         tr-&gt;add_mtd()\n                      scan_header\n                        mtd_read\n                          mtd_read_oob\n                            mtd_read_oob_std\n                              gluebi_read   mtd-&gt;read()\n                                gluebi-&gt;desc - NULL\r\n\r\nDetailed reproduction information available at the Link [1],\r\n\r\nIn the normal case, obtain gluebi-&gt;desc in the gluebi_get_device(),\nand access gluebi-&gt;desc in the gluebi_read(). However,\ngluebi_get_device() is not executed in advance in the\nftl_add_mtd() process, which leads to NULL pointer dereference.\r\n\r\nThe solution for the gluebi module is to run jffs2 on the UBI\nvolume without considering working with ftl or mtdblock [2].\nTherefore, this problem can be avoided by preventing gluebi from\ncreating the mtdblock device after creating mtd partition of the\ntype MTD_UBIVOLUME.(CVE-2023-52449)",
+  "id": "OESA-2024-1297",
+  "modified": "2025-09-03T06:19:44.551160Z",
+  "published": "2024-03-22T11:07:14Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2024-1297"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52445"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52449"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2023-52445",
+    "CVE-2023-52449"
+  ]
+}

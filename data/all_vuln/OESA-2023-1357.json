@@ -1,0 +1,75 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2023-1357.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "c-ares-1.16.1-7.oe1.aarch64.rpm",
+          "c-ares-debugsource-1.16.1-7.oe1.aarch64.rpm",
+          "c-ares-debuginfo-1.16.1-7.oe1.aarch64.rpm",
+          "c-ares-devel-1.16.1-7.oe1.aarch64.rpm"
+        ],
+        "noarch": [
+          "c-ares-help-1.16.1-7.oe1.noarch.rpm"
+        ],
+        "src": [
+          "c-ares-1.16.1-7.oe1.src.rpm"
+        ],
+        "x86_64": [
+          "c-ares-devel-1.16.1-7.oe1.x86_64.rpm",
+          "c-ares-debuginfo-1.16.1-7.oe1.x86_64.rpm",
+          "c-ares-1.16.1-7.oe1.x86_64.rpm",
+          "c-ares-debugsource-1.16.1-7.oe1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP1",
+        "name": "c-ares",
+        "purl": "pkg:rpm/openEuler/c-ares&distro=openEuler-20.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.16.1-7.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Medium"
+  },
+  "details": "\n\nSecurity Fix(es):\n\nc-ares is an asynchronous resolver library. ares_inet_net_pton() is vulnerable to a buffer underflow for certain ipv6 addresses, in particular &quot;0::00:00:00/2&quot; was found to cause an issue.  C-ares only uses this function internally for configuration purposes which would require an administrator to configure such an address via ares_set_sortlist(). However, users may externally use ares_inet_net_pton() for other purposes and thus be vulnerable to more severe issues. This issue has been fixed in 1.19.1.\n(CVE-2023-31130)\n\nc-ares is an asynchronous resolver library. When /dev/urandom or RtlGenRandom() are unavailable, c-ares uses rand() to generate random numbers used for DNS query ids. This is not a CSPRNG, and it is also not seeded by srand() so will generate predictable output. Input from the random number generator is fed into a non-compilant RC4 implementation and may not be as strong as the original RC4 implementation. No attempt is made to look for modern OS-provided CSPRNGs like arc4random() that is widely available. This issue has been fixed in version 1.19.1.(CVE-2023-31147)",
+  "id": "OESA-2023-1357",
+  "modified": "2025-09-03T06:19:10.231364Z",
+  "published": "2023-06-17T11:05:24Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2023-1357"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-31130"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-31147"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "c-ares security update",
+  "upstream": [
+    "CVE-2023-31130",
+    "CVE-2023-31147"
+  ]
+}

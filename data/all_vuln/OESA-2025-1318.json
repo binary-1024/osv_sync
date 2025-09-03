@@ -1,0 +1,95 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1318.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "kernel-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "kernel-debugsource-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "kernel-devel-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "kernel-headers-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "kernel-source-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "kernel-tools-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "kernel-tools-devel-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "perf-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "perf-debuginfo-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "python3-perf-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-254.0.0.157.oe2203sp3.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-254.0.0.157.oe2203sp3.src.rpm"
+        ],
+        "x86_64": [
+          "kernel-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "kernel-debuginfo-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "kernel-debugsource-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "kernel-devel-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "kernel-headers-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "kernel-source-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "kernel-tools-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "perf-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "perf-debuginfo-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "python3-perf-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-254.0.0.157.oe2203sp3.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP3",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-254.0.0.157.oe2203sp3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nKVM: x86/mmu: Zap _all_ roots when unmapping gfn range in TDP MMU\n\nZap both valid and invalid roots when zapping/unmapping a gfn range, as\nKVM must ensure it holds no references to the freed page after returning\nfrom the unmap operation.  Most notably, the TDP MMU doesn&apos;t zap invalid\nroots in mmu_notifier callbacks.  This leads to use-after-free and other\nissues if the mmu_notifier runs to completion while an invalid root\nzapper yields as KVM fails to honor the requirement that there must be\n_no_ references to the page after the mmu_notifier returns.\n\nThe bug is most easily reproduced by hacking KVM to cause a collision\nbetween set_nx_huge_pages() and kvm_mmu_notifier_release(), but the bug\nexists between kvm_mmu_notifier_invalidate_range_start() and memslot\nupdates as well.  Invalidating a root ensures pages aren&apos;t accessible by\nthe guest, and KVM won&apos;t read or write page data itself, but KVM will\ntrigger e.g. kvm_set_pfn_dirty() when zapping SPTEs, and thus completing\na zap of an invalid root _after_ the mmu_notifier returns is fatal.\n\n  WARNING: CPU: 24 PID: 1496 at arch/x86/kvm/../../../virt/kvm/kvm_main.c:173 [kvm]\n  RIP: 0010:kvm_is_zone_device_pfn+0x96/0xa0 [kvm]\n  Call Trace:\n   &lt;TASK&gt;\n   kvm_set_pfn_dirty+0xa8/0xe0 [kvm]\n   __handle_changed_spte+0x2ab/0x5e0 [kvm]\n   __handle_changed_spte+0x2ab/0x5e0 [kvm]\n   __handle_changed_spte+0x2ab/0x5e0 [kvm]\n   zap_gfn_range+0x1f3/0x310 [kvm]\n   kvm_tdp_mmu_zap_invalidated_roots+0x50/0x90 [kvm]\n   kvm_mmu_zap_all_fast+0x177/0x1a0 [kvm]\n   set_nx_huge_pages+0xb4/0x190 [kvm]\n   param_attr_store+0x70/0x100\n   module_attr_store+0x19/0x30\n   kernfs_fop_write_iter+0x119/0x1b0\n   new_sync_write+0x11c/0x1b0\n   vfs_write+0x1cc/0x270\n   ksys_write+0x5f/0xe0\n   do_syscall_64+0x38/0xc0\n   entry_SYSCALL_64_after_hwframe+0x44/0xae\n   &lt;/TASK&gt;(CVE-2021-47639)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nubifs: skip dumping tnc tree when zroot is null\n\nClearing slab cache will free all znode in memory and make\nc-&gt;zroot.znode = NULL, then dumping tnc tree will access\nc-&gt;zroot.znode which cause null pointer dereference.(CVE-2024-58058)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nnet/mlx5: Fix variable not being completed when function returns\n\nWhen cmd_alloc_index(), fails cmd_work_handler() needs\nto complete ent-&gt;slotted before returning early.\nOtherwise the task which issued the command may hang:\n\n   mlx5_core 0000:01:00.0: cmd_work_handler:877:(pid 3880418): failed to allocate command entry\n   INFO: task kworker/13:2:4055883 blocked for more than 120 seconds.\n         Not tainted 4.19.90-25.44.v2101.ky10.aarch64 #1\n   &quot;echo 0 &gt; /proc/sys/kernel/hung_task_timeout_secs&quot; disables this message.\n   kworker/13:2    D    0 4055883      2 0x00000228\n   Workqueue: events mlx5e_tx_dim_work [mlx5_core]\n   Call trace:\n      __switch_to+0xe8/0x150\n      __schedule+0x2a8/0x9b8\n      schedule+0x2c/0x88\n      schedule_timeout+0x204/0x478\n      wait_for_common+0x154/0x250\n      wait_for_completion+0x28/0x38\n      cmd_exec+0x7a0/0xa00 [mlx5_core]\n      mlx5_cmd_exec+0x54/0x80 [mlx5_core]\n      mlx5_core_modify_cq+0x6c/0x80 [mlx5_core]\n      mlx5_core_modify_cq_moderation+0xa0/0xb8 [mlx5_core]\n      mlx5e_tx_dim_work+0x54/0x68 [mlx5_core]\n      process_one_work+0x1b0/0x448\n      worker_thread+0x54/0x468\n      kthread+0x134/0x138\n      ret_from_fork+0x10/0x18(CVE-2025-21662)",
+  "id": "OESA-2025-1318",
+  "modified": "2025-09-03T06:31:00.713963Z",
+  "published": "2025-03-21T13:18:36Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1318"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-47639"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-58058"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-21662"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2021-47639",
+    "CVE-2024-58058",
+    "CVE-2025-21662"
+  ]
+}

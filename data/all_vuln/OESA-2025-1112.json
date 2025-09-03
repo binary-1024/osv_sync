@@ -1,0 +1,116 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1112.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2502.2.0.0315.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2502.2.0.0315.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2502.2.0.0315.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nspi: mpc52xx: Add cancel_work_sync before module remove\n\nIf we remove the module which will call mpc52xx_spi_remove\nit will free &apos;ms&apos; through spi_unregister_controller.\nwhile the work ms-&gt;work will be used. The sequence of operations\nthat may lead to a UAF bug.\n\nFix it by ensuring that the work is canceled before proceeding with\nthe cleanup in mpc52xx_spi_remove.(CVE-2024-50051)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nscsi: bfa: Fix use-after-free in bfad_im_module_exit()\n\nBUG: KASAN: slab-use-after-free in __lock_acquire+0x2aca/0x3a20\nRead of size 8 at addr ffff8881082d80c8 by task modprobe/25303\n\nCall Trace:\n &lt;TASK&gt;\n dump_stack_lvl+0x95/0xe0\n print_report+0xcb/0x620\n kasan_report+0xbd/0xf0\n __lock_acquire+0x2aca/0x3a20\n lock_acquire+0x19b/0x520\n _raw_spin_lock+0x2b/0x40\n attribute_container_unregister+0x30/0x160\n fc_release_transport+0x19/0x90 [scsi_transport_fc]\n bfad_im_module_exit+0x23/0x60 [bfa]\n bfad_init+0xdb/0xff0 [bfa]\n do_one_initcall+0xdc/0x550\n do_init_module+0x22d/0x6b0\n load_module+0x4e96/0x5ff0\n init_module_from_file+0xcd/0x130\n idempotent_init_module+0x330/0x620\n __x64_sys_finit_module+0xb3/0x110\n do_syscall_64+0xc1/0x1d0\n entry_SYSCALL_64_after_hwframe+0x77/0x7f\n &lt;/TASK&gt;\n\nAllocated by task 25303:\n kasan_save_stack+0x24/0x50\n kasan_save_track+0x14/0x30\n __kasan_kmalloc+0x7f/0x90\n fc_attach_transport+0x4f/0x4740 [scsi_transport_fc]\n bfad_im_module_init+0x17/0x80 [bfa]\n bfad_init+0x23/0xff0 [bfa]\n do_one_initcall+0xdc/0x550\n do_init_module+0x22d/0x6b0\n load_module+0x4e96/0x5ff0\n init_module_from_file+0xcd/0x130\n idempotent_init_module+0x330/0x620\n __x64_sys_finit_module+0xb3/0x110\n do_syscall_64+0xc1/0x1d0\n entry_SYSCALL_64_after_hwframe+0x77/0x7f\n\nFreed by task 25303:\n kasan_save_stack+0x24/0x50\n kasan_save_track+0x14/0x30\n kasan_save_free_info+0x3b/0x60\n __kasan_slab_free+0x38/0x50\n kfree+0x212/0x480\n bfad_im_module_init+0x7e/0x80 [bfa]\n bfad_init+0x23/0xff0 [bfa]\n do_one_initcall+0xdc/0x550\n do_init_module+0x22d/0x6b0\n load_module+0x4e96/0x5ff0\n init_module_from_file+0xcd/0x130\n idempotent_init_module+0x330/0x620\n __x64_sys_finit_module+0xb3/0x110\n do_syscall_64+0xc1/0x1d0\n entry_SYSCALL_64_after_hwframe+0x77/0x7f\n\nAbove issue happens as follows:\n\nbfad_init\n  error = bfad_im_module_init()\n    fc_release_transport(bfad_im_scsi_transport_template);\n  if (error)\n    goto ext;\n\next:\n  bfad_im_module_exit();\n    fc_release_transport(bfad_im_scsi_transport_template);\n    --&gt; Trigger double release\n\nDon&apos;t call bfad_im_module_exit() if bfad_im_module_init() failed.(CVE-2024-53227)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nBluetooth: RFCOMM: avoid leaving dangling sk pointer in rfcomm_sock_alloc()\n\nbt_sock_alloc() attaches allocated sk object to the provided sock object.\nIf rfcomm_dlc_alloc() fails, we release the sk object, but leave the\ndangling pointer in the sock object, which may cause use-after-free.\n\nFix this by swapping calls to bt_sock_alloc() and rfcomm_dlc_alloc().(CVE-2024-56604)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nBluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()\n\nbt_sock_alloc() allocates the sk object and attaches it to the provided\nsock object. On error l2cap_sock_alloc() frees the sk object, but the\ndangling pointer is still attached to the sock object, which may create\nuse-after-free in other code.(CVE-2024-56605)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\ndrm: adv7511: Fix use-after-free in adv7533_attach_dsi()\n\nThe host_node pointer was assigned and freed in adv7533_parse_dt(), and\nlater, adv7533_attach_dsi() uses the same. Fix this use-after-free issue\nby\u00a0dropping of_node_put() in adv7533_parse_dt() and calling of_node_put()\nin error path of probe() and also in the remove().(CVE-2024-57887)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nALSA: seq: oss: Fix races at processing SysEx messages\n\nOSS sequencer handles the SysEx messages split in 6 bytes packets, and\nALSA sequencer OSS layer tries to combine those.  It stores the data\nin the internal buffer and this access is racy as of now, which may\nlead to the out-of-bounds access.\n\nAs a temporary band-aid fix, introduce a mutex for serializing the\nprocess of the SysEx message packets.(CVE-2024-57893)",
+  "id": "OESA-2025-1112",
+  "modified": "2025-09-03T06:20:34.885520Z",
+  "published": "2025-02-14T12:12:36Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1112"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50051"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53227"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-56604"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-56605"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-57887"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-57893"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2024-50051",
+    "CVE-2024-53227",
+    "CVE-2024-56604",
+    "CVE-2024-56605",
+    "CVE-2024-57887",
+    "CVE-2024-57893"
+  ]
+}

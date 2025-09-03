@@ -1,0 +1,61 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2551.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "etcd-3.4.14-6.oe2203sp4.aarch64.rpm"
+        ],
+        "src": [
+          "etcd-3.4.14-6.oe2203sp4.src.rpm"
+        ],
+        "x86_64": [
+          "etcd-3.4.14-6.oe2203sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP4",
+        "name": "etcd",
+        "purl": "pkg:rpm/openEuler/etcd&distro=openEuler-22.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.4.14-6.oe2203sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Critical"
+  },
+  "details": "%{expand:\r\n\r\nSecurity Fix(es):\r\n\r\nTemplates do not properly consider backticks (`) as Javascript string delimiters, and do not escape them as expected. Backticks are used, since ES6, for JS template literals. If a template contains a Go template action within a Javascript template literal, the contents of the action can be used to terminate the literal, injecting arbitrary Javascript code into the Go template. As ES6 template literals are rather complex, and themselves can do string interpolation, the decision was made to simply disallow Go template actions from being used inside of them (e.g. &quot;var a = {{.}}&quot;), since there is no obviously safe way to allow this behavior. This takes the same approach as github.com/google/safehtml. With fix, Template.Parse returns an Error when it encounters templates like this, with an ErrorCode of value 12. This ErrorCode is currently unexported, but will be exported in the release of Go 1.21. Users who rely on the previous behavior can re-enable it using the GODEBUG flag jstmpllitinterp=1, with the caveat that backticks will now be escaped. This should be used with caution.(CVE-2023-24538)",
+  "id": "OESA-2024-2551",
+  "modified": "2025-09-03T06:18:59.958700Z",
+  "published": "2024-12-13T13:18:55Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2551"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-24538"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "etcd security update",
+  "upstream": [
+    "CVE-2023-24538"
+  ]
+}

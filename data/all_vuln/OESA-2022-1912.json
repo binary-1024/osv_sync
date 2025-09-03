@@ -1,0 +1,149 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1912.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "yajl-2.1.0-16.oe1.aarch64.rpm",
+          "yajl-debugsource-2.1.0-16.oe1.aarch64.rpm",
+          "yajl-devel-2.1.0-16.oe1.aarch64.rpm",
+          "yajl-debuginfo-2.1.0-16.oe1.aarch64.rpm"
+        ],
+        "src": [
+          "yajl-2.1.0-16.oe1.src.rpm"
+        ],
+        "x86_64": [
+          "yajl-2.1.0-16.oe1.x86_64.rpm",
+          "yajl-debuginfo-2.1.0-16.oe1.x86_64.rpm",
+          "yajl-debugsource-2.1.0-16.oe1.x86_64.rpm",
+          "yajl-devel-2.1.0-16.oe1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP1",
+        "name": "yajl",
+        "purl": "pkg:rpm/openEuler/yajl&distro=openEuler-20.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.0-16.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1912.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "yajl-2.1.0-16.oe1.aarch64.rpm",
+          "yajl-debuginfo-2.1.0-16.oe1.aarch64.rpm",
+          "yajl-debugsource-2.1.0-16.oe1.aarch64.rpm",
+          "yajl-devel-2.1.0-16.oe1.aarch64.rpm"
+        ],
+        "src": [
+          "yajl-2.1.0-16.oe1.src.rpm"
+        ],
+        "x86_64": [
+          "yajl-2.1.0-16.oe1.x86_64.rpm",
+          "yajl-debugsource-2.1.0-16.oe1.x86_64.rpm",
+          "yajl-debuginfo-2.1.0-16.oe1.x86_64.rpm",
+          "yajl-devel-2.1.0-16.oe1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP3",
+        "name": "yajl",
+        "purl": "pkg:rpm/openEuler/yajl&distro=openEuler-20.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.0-16.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1912.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "yajl-devel-2.1.0-18.oe2203.aarch64.rpm",
+          "yajl-2.1.0-18.oe2203.aarch64.rpm",
+          "yajl-debuginfo-2.1.0-18.oe2203.aarch64.rpm",
+          "yajl-debugsource-2.1.0-18.oe2203.aarch64.rpm"
+        ],
+        "src": [
+          "yajl-2.1.0-18.oe2203.src.rpm"
+        ],
+        "x86_64": [
+          "yajl-2.1.0-18.oe2203.x86_64.rpm",
+          "yajl-debuginfo-2.1.0-18.oe2203.x86_64.rpm",
+          "yajl-devel-2.1.0-18.oe2203.x86_64.rpm",
+          "yajl-debugsource-2.1.0-18.oe2203.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS",
+        "name": "yajl",
+        "purl": "pkg:rpm/openEuler/yajl&distro=openEuler-22.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.0-18.oe2203"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "yajl is a small event-driven JSON parser written in ANSI C, and a small validating JSON generator.\r\n\r\nSecurity Fix(es):\r\n\r\nyajl-ruby is a C binding to the YAJL JSON parsing and generation library. The 1.x branch and the 2.x branch of `yajl` contain an integer overflow which leads to subsequent heap memory corruption when dealing with large (~2GB) inputs. The reallocation logic at `yajl_buf.c#L64` may result in the `need` 32bit integer wrapping to 0 when `need` approaches a value of 0x80000000 (i.e. ~2GB of data), which results in a reallocation of buf-&gt;alloc into a small heap chunk. These integers are declared as `size_t` in the 2.x branch of `yajl`, which practically prevents the issue from triggering on 64bit platforms, however this does not preclude this issue triggering on 32bit builds on which `size_t` is a 32bit integer. Subsequent population of this under-allocated heap chunk is based on the original buffer size, leading to heap memory corruption. This vulnerability mostly impacts process availability. Maintainers believe exploitation for arbitrary code execution is unlikely. A patch is available and anticipated to be part of yajl-ruby version 1.4.2. As a workaround, avoid passing large inputs to YAJL.(CVE-2022-24795)",
+  "id": "OESA-2022-1912",
+  "modified": "2025-09-03T06:18:07.726665Z",
+  "published": "2022-09-16T11:04:16Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2022-1912"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-24795"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "yajl security update",
+  "upstream": [
+    "CVE-2022-24795"
+  ]
+}

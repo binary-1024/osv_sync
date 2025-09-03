@@ -1,0 +1,91 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1962.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2507.5.0.0338.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2507.5.0.0338.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2507.5.0.0338.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nperf: Fix sample vs do_exit()\n\nBaisheng Gao reported an ARM64 crash, which Mark decoded as being a\nsynchronous external abort -- most likely due to trying to access\nMMIO in bad ways.\n\nThe crash further shows perf trying to do a user stack sample while in\nexit_mmap()&apos;s tlb_finish_mmu() -- i.e. while tearing down the address\nspace it is trying to access.\n\nIt turns out that we stop perf after we tear down the userspace mm; a\nreceipie for disaster, since perf likes to access userspace for\nvarious reasons.\n\nFlip this order by moving up where we stop perf in do_exit().\n\nAdditionally, harden PERF_SAMPLE_CALLCHAIN and PERF_SAMPLE_STACK_USER\nto abort when the current task does not have an mm (exit_mm() makes\nsure to set current-&gt;mm = NULL; before commencing with the actual\nteardown). Such that CPU wide events don&apos;t trip on this same problem.(CVE-2025-38424)",
+  "id": "OESA-2025-1962",
+  "modified": "2025-09-03T06:31:30.483094Z",
+  "published": "2025-08-08T11:15:56Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1962"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-38424"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2025-38424"
+  ]
+}

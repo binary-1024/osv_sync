@@ -1,0 +1,78 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2021-1054.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "unbound-libs-1.11.0-2.oe1.aarch64.rpm",
+          "unbound-devel-1.11.0-2.oe1.aarch64.rpm",
+          "unbound-help-1.11.0-2.oe1.aarch64.rpm",
+          "python3-unbound-1.11.0-2.oe1.aarch64.rpm",
+          "unbound-debugsource-1.11.0-2.oe1.aarch64.rpm",
+          "unbound-debuginfo-1.11.0-2.oe1.aarch64.rpm",
+          "unbound-1.11.0-2.oe1.aarch64.rpm"
+        ],
+        "src": [
+          "unbound-1.11.0-2.oe1.src.rpm"
+        ],
+        "x86_64": [
+          "python3-unbound-1.11.0-2.oe1.x86_64.rpm",
+          "unbound-debuginfo-1.11.0-2.oe1.x86_64.rpm",
+          "unbound-debugsource-1.11.0-2.oe1.x86_64.rpm",
+          "unbound-help-1.11.0-2.oe1.x86_64.rpm",
+          "unbound-devel-1.11.0-2.oe1.x86_64.rpm",
+          "unbound-1.11.0-2.oe1.x86_64.rpm",
+          "unbound-libs-1.11.0-2.oe1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS",
+        "name": "unbound",
+        "purl": "pkg:rpm/openEuler/unbound&distro=openEuler-20.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.11.0-2.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "Unbound is a validating, recursive, caching DNS resolver. It is designed to be fast and lean and incorporates modern features based on open standards. To help increase online privacy, Unbound supports DNS-over-TLS which allows clients to encrypt their communication. Unbound is available for most platforms such as FreeBSD, OpenBSD, NetBSD, MacOS, Linux and Microsoft Windows. Unbound is a totally free, open source software under the BSD license. It doesn't make custom builds or provide specific features to paying customers only.\r\n\r\nSecurity Fix(es):\r\n\r\nNLnet Labs Unbound, up to and including version 1.12.0, and NLnet Labs NSD, up to and including version 4.3.3, contain a local vulnerability that would allow for a local symlink attack. When writing the PID file, Unbound and NSD create the file if it is not there, or open an existing file for writing. In case the file was already present, they would follow symlinks if the file happened to be a symlink instead of a regular file. An additional chown of the file would then take place after it was written, making the user Unbound/NSD is supposed to run as the new owner of the file. If an attacker has local access to the user Unbound/NSD runs as, she could create a symlink in place of the PID file pointing to a file that she would like to erase. If then Unbound/NSD is killed and the PID file is not cleared, upon restarting with root privileges, Unbound/NSD will rewrite any file pointed at by the symlink. This is a local vulnerability that could create a Denial of Service of the system Unbound/NSD is running on. It requires an attacker having access to the limited permission user Unbound/NSD runs as and point through the symlink to a critical file on the system.(CVE-2020-28935)\n\nUnbound 1.6.4 through 1.9.4 contain a vulnerability in the ipsec module that can cause shell code execution after receiving a specially crafted answer. This issue can only be triggered if unbound was compiled with `--enable-ipsecmod` support, and ipsecmod is enabled and used in the configuration.(CVE-2019-18934)",
+  "id": "OESA-2021-1054",
+  "modified": "2025-09-03T06:16:53.603392Z",
+  "published": "2021-03-05T11:02:39Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2021-1054"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-28935"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2019-18934"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "unbound security update",
+  "upstream": [
+    "CVE-2019-18934",
+    "CVE-2020-28935"
+  ]
+}

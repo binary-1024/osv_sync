@@ -1,0 +1,164 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-2162.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "kernel-headers-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "kernel-tools-devel-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "bpftool-debuginfo-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "perf-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "python3-perf-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "kernel-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "kernel-devel-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "bpftool-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "kernel-source-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "kernel-tools-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "perf-debuginfo-5.10.0-60.74.0.98.oe2203.aarch64.rpm",
+          "kernel-debugsource-5.10.0-60.74.0.98.oe2203.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-60.74.0.98.oe2203.src.rpm"
+        ],
+        "x86_64": [
+          "kernel-source-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "kernel-debugsource-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "kernel-debuginfo-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "bpftool-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "bpftool-debuginfo-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "kernel-devel-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "kernel-headers-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "python3-perf-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "kernel-tools-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "perf-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "perf-debuginfo-5.10.0-60.74.0.98.oe2203.x86_64.rpm",
+          "kernel-5.10.0-60.74.0.98.oe2203.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-60.74.0.98.oe2203"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Critical"
+  },
+  "details": "\r\n\r\nSecurity Fix(es):\r\n\r\nA use-after-free flaw was found in Linux kernel before 5.19.2. This issue occurs in cmd_hdl_filter in drivers/staging/rtl8712/rtl8712_cmd.c, allowing an attacker to launch a local denial of service attack and gain escalation of privileges.(CVE-2022-4095)\r\n\r\nThere are null-ptr-deref vulnerabilities in drivers/net/slip of linux that allow attacker to\ncrash linux kernel by simulating slip network card from user-space of linux.\r\n\r\n------------------------------------------\r\n\r\n[Root cause]\r\n\r\nWhen a slip driver is detaching, the slip_close() will act to\ncleanup necessary resources and sl-&gt;tty is set to NULL in\nslip_close(). Meanwhile, the packet we transmit is blocked,\nsl_tx_timeout() will be called. Although slip_close() and\nsl_tx_timeout() use sl-&gt;lock to synchronize, we don`t judge\nwhether sl-&gt;tty equals to NULL in sl_tx_timeout() and the\nnull pointer dereference bug will happen.\r\n\r\n(Thread 1) | (Thread 2)\n| slip_close()\n| spin_lock_bh(&amp;sl-&gt;lock)\n| ...\n... | sl-&gt;tty = NULL //(1)\nsl_tx_timeout() | spin_unlock_bh(&amp;sl-&gt;lock)\nspin_lock(&amp;sl-&gt;lock); |\n... | ...\ntty_chars_in_buffer(sl-&gt;tty)|\nif (tty-&gt;ops-&gt;..) //(2) |\n... | synchronize_rcu()\r\n\r\nWe set NULL to sl-&gt;tty in position (1) and dereference sl-&gt;tty\nin position (2).\r\n\r\n------------------------------------------(CVE-2022-41858)\r\n\r\nA flaw was found in the Linux kernel&apos;s Layer 2 Tunneling Protocol (L2TP). A missing lock when clearing sk_user_data can lead to a race condition and NULL pointer dereference. A local user could use this flaw to potentially crash the system causing a denial of service.(CVE-2022-4129)\r\n\r\nIn (TBD) of (TBD), there is a possible way to corrupt kernel memory due to a use after free. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android kernelAndroid ID: A-220738351References: Upstream kernel(CVE-2022-20568)\r\n\r\nIn l2cap_chan_put of l2cap_core, there is a possible use after free due to improper locking. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android kernelAndroid ID: A-165329981References: Upstream kernel(CVE-2022-20566)\r\n\r\nGuests can trigger NIC interface reset/abort/crash via netback It is possible for a guest to trigger a NIC interface reset/abort/crash in a Linux based network backend by sending certain kinds of packets. It appears to be an (unwritten?) assumption in the rest of the Linux network stack that packet protocol headers are all contained within the linear section of the SKB and some NICs behave badly if this is not the case. This has been reported to occur with Cisco (enic) and Broadcom NetXtrem II BCM5780 (bnx2x) though it may be an issue with other NICs/drivers as well. In case the frontend is sending requests with split headers, netback will forward those violating above mentioned assumption to the networking core, resulting in said misbehavior.(CVE-2022-3643)\r\n\r\nIn verity_target of dm-verity-target.c, there is a possible way to modify read-only files due to a missing permission check. This could lead to local escalation of privilege with System execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android kernelAndroid ID: A-234475629References: Upstream kernel(CVE-2022-20572)\r\n\r\nA stack overflow flaw was found in the Linux kernel&apos;s SYSCTL subsystem in how a user changes certain kernel parameters and variables. This flaw allows a local user to crash or potentially escalate their privileges on the system.(CVE-2022-4378)\n\nIn drivers/media/dvb-core/dmxdev.c in the Linux kernel through 5.19.10, there is a use-after-free caused by refcount races, affecting dvb_demux_open and dvb_dmxdev_release.(CVE-2022-41218)\n\nGuests can trigger deadlock in Linux netback driver T[his CNA information record relates to multiple CVEs; the text explains which aspects/vulnerabilities correspond to which CVE.] The patch for XSA-392 introduced another issue which might result in a deadlock when trying to free the SKB of a packet dropped due to the XSA-392 handling (CVE-2022-42328). Additionally when dropping packages for other reasons the same deadlock could occur in case of netpoll being active for the interface the xen-netback driver is connected to (CVE-2022-42329).(CVE-2022-42328)\n\nGuests can trigger deadlock in Linux netback driver T[his CNA information record relates to multiple CVEs; the text explains which aspects/vulnerabilities correspond to which CVE.] The patch for XSA-392 introduced another issue which might result in a deadlock when trying to free the SKB of a packet dropped due to the XSA-392 handling (CVE-2022-42328). Additionally when dropping packages for other reasons the same deadlock could occur in case of netpoll being active for the interface the xen-netback driver is connected to (CVE-2022-42329).(CVE-2022-42329)\n\nAn issue was discovered in the Linux kernel before 6.0.11. Missing validation of the number of channels in drivers/net/wireless/microchip/wilc1000/cfg80211.c in the WILC1000 wireless driver can trigger a heap-based buffer overflow when copying the list of operating channels from Wi-Fi management frames.(CVE-2022-47518)\n\nAn issue was discovered in the Linux kernel before 6.0.11. Missing validation of IEEE80211_P2P_ATTR_OPER_CHANNEL in drivers/net/wireless/microchip/wilc1000/cfg80211.c in the WILC1000 wireless driver can trigger an out-of-bounds write when parsing the channel list attribute from Wi-Fi management frames.(CVE-2022-47519)\n\nAn issue was discovered in the Linux kernel before 6.0.11. Missing offset validation in drivers/net/wireless/microchip/wilc1000/hif.c in the WILC1000 wireless driver can trigger an out-of-bounds read when parsing a Robust Security Network (RSN) information element from a Netlink packet.(CVE-2022-47520)\n\nAn issue was discovered in the Linux kernel before 6.0.11. Missing validation of IEEE80211_P2P_ATTR_CHANNEL_LIST in drivers/net/wireless/microchip/wilc1000/cfg80211.c in the WILC1000 wireless driver can trigger a heap-based buffer overflow when parsing the operating channel attribute from Wi-Fi management frames.(CVE-2022-47521)\n\nAn issue was discovered in the Linux kernel through 5.16-rc6. kfd_parse_subtype_iolink in drivers/gpu/drm/amd/amdkfd/kfd_crat.c lacks check of the return value of kmemdup().(CVE-2022-3108)",
+  "id": "OESA-2022-2162",
+  "modified": "2025-09-03T06:17:58.689892Z",
+  "published": "2022-12-30T11:04:44Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2022-2162"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-4095"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41858"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-4129"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-20568"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-20566"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-3643"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-20572"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-4378"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41218"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-42328"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-42329"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-47518"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-47519"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-47520"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-47521"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-3108"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2022-20566",
+    "CVE-2022-20568",
+    "CVE-2022-20572",
+    "CVE-2022-3108",
+    "CVE-2022-3643",
+    "CVE-2022-4095",
+    "CVE-2022-41218",
+    "CVE-2022-4129",
+    "CVE-2022-41858",
+    "CVE-2022-42328",
+    "CVE-2022-42329",
+    "CVE-2022-4378",
+    "CVE-2022-47518",
+    "CVE-2022-47519",
+    "CVE-2022-47520",
+    "CVE-2022-47521"
+  ]
+}

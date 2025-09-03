@@ -1,0 +1,106 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2294.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2410.3.0.0300.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2410.3.0.0300.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2410.3.0.0300.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Critical"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nipv6: sr: fix invalid unregister error path\r\n\r\nThe error path of seg6_init() is wrong in case CONFIG_IPV6_SEG6_LWTUNNEL\nis not defined. In that case if seg6_hmac_init() fails, the\ngenl_unregister_family() isn&apos;t called.\r\n\r\nThis issue exist since commit 46738b1317e1 (&quot;ipv6: sr: add option to control\nlwtunnel support&quot;), and commit 5559cea2d5aa (&quot;ipv6: sr: fix possible\nuse-after-free and null-ptr-deref&quot;) replaced unregister_pernet_subsys()\nwith genl_unregister_family() in this error path.(CVE-2024-38612)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ndriver core: Fix uevent_show() vs driver detach race\r\n\r\nuevent_show() wants to de-reference dev-&gt;driver-&gt;name. There is no clean\nway for a device attribute to de-reference dev-&gt;driver unless that\nattribute is defined via (struct device_driver).dev_groups. Instead, the\nanti-pattern of taking the device_lock() in the attribute handler risks\ndeadlocks with code paths that remove device attributes while holding\nthe lock.\r\n\r\nThis deadlock is typically invisible to lockdep given the device_lock()\nis marked lockdep_set_novalidate_class(), but some subsystems allocate a\nlocal lockdep key for @dev-&gt;mutex to reveal reports of the form:\r\n\r\n ======================================================\n WARNING: possible circular locking dependency detected\n 6.10.0-rc7+ #275 Tainted: G           OE    N\n ------------------------------------------------------\n modprobe/2374 is trying to acquire lock:\n ffff8c2270070de0 (kn-&gt;active#6){++++}-{0:0}, at: __kernfs_remove+0xde/0x220\r\n\r\n but task is already holding lock:\n ffff8c22016e88f8 (&amp;cxl_root_key){+.+.}-{3:3}, at: device_release_driver_internal+0x39/0x210\r\n\r\n which lock already depends on the new lock.\r\n\r\n the existing dependency chain (in reverse order) is:\r\n\r\n -&gt; #1 (&amp;cxl_root_key){+.+.}-{3:3}:\n        __mutex_lock+0x99/0xc30\n        uevent_show+0xac/0x130\n        dev_attr_show+0x18/0x40\n        sysfs_kf_seq_show+0xac/0xf0\n        seq_read_iter+0x110/0x450\n        vfs_read+0x25b/0x340\n        ksys_read+0x67/0xf0\n        do_syscall_64+0x75/0x190\n        entry_SYSCALL_64_after_hwframe+0x76/0x7e\r\n\r\n -&gt; #0 (kn-&gt;active#6){++++}-{0:0}:\n        __lock_acquire+0x121a/0x1fa0\n        lock_acquire+0xd6/0x2e0\n        kernfs_drain+0x1e9/0x200\n        __kernfs_remove+0xde/0x220\n        kernfs_remove_by_name_ns+0x5e/0xa0\n        device_del+0x168/0x410\n        device_unregister+0x13/0x60\n        devres_release_all+0xb8/0x110\n        device_unbind_cleanup+0xe/0x70\n        device_release_driver_internal+0x1c7/0x210\n        driver_detach+0x47/0x90\n        bus_remove_driver+0x6c/0xf0\n        cxl_acpi_exit+0xc/0x11 [cxl_acpi]\n        __do_sys_delete_module.isra.0+0x181/0x260\n        do_syscall_64+0x75/0x190\n        entry_SYSCALL_64_after_hwframe+0x76/0x7e\r\n\r\nThe observation though is that driver objects are typically much longer\nlived than device objects. It is reasonable to perform lockless\nde-reference of a @driver pointer even if it is racing detach from a\ndevice. Given the infrequency of driver unregistration, use\nsynchronize_rcu() in module_remove_driver() to close any potential\nraces.  It is potentially overkill to suffer synchronize_rcu() just to\nhandle the rare module removal racing uevent_show() event.\r\n\r\nThanks to Tetsuo Handa for the debug analysis of the syzbot report [1].(CVE-2024-44952)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nhwmon: (nct6775-core) Fix underflows seen when writing limit attributes\r\n\r\nDIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large\nnegative number such as -9223372036854775808 is provided by the user.\nFix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.(CVE-2024-46757)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nELF: fix kernel.randomize_va_space double read\r\n\r\nELF loader uses &quot;randomize_va_space&quot; twice. It is sysctl and can change\nat any moment, so 2 loads could see 2 different values in theory with\nunpredictable consequences.\r\n\r\nIssue exactly one load for consistent value across one exec.(CVE-2024-46826)",
+  "id": "OESA-2024-2294",
+  "modified": "2025-09-03T06:31:13.282150Z",
+  "published": "2024-10-25T11:09:27Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2294"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38612"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-44952"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46757"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46826"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2024-38612",
+    "CVE-2024-44952",
+    "CVE-2024-46757",
+    "CVE-2024-46826"
+  ]
+}

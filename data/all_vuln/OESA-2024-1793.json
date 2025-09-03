@@ -1,0 +1,171 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-1793.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2407.1.0.0284.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2407.1.0.0284.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2407.1.0.0284.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Medium"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnet: ethernet: fix potential use-after-free in ec_bhf_remove\r\n\r\nstatic void ec_bhf_remove(struct pci_dev *dev)\n{\n...\n\tstruct ec_bhf_priv *priv = netdev_priv(net_dev);\r\n\r\n\tunregister_netdev(net_dev);\n\tfree_netdev(net_dev);\r\n\r\n\tpci_iounmap(dev, priv-&gt;dma_io);\n\tpci_iounmap(dev, priv-&gt;io);\n...\n}\r\n\r\npriv is netdev private data, but it is used\nafter free_netdev(). It can cause use-after-free when accessing priv\npointer. So, fix it by moving free_netdev() after pci_iounmap()\ncalls.(CVE-2021-47235)\r\n\r\nRejected reason: This CVE ID has been rejected or withdrawn by its CVE Numbering Authority.(CVE-2021-47285)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nmac80211: track only QoS data frames for admission control\r\n\r\nFor admission control, obviously all of that only works for\nQoS data frames, otherwise we cannot even access the QoS\nfield in the header.\r\n\r\nSyzbot reported (see below) an uninitialized value here due\nto a status of a non-QoS nullfunc packet, which isn&apos;t even\nlong enough to contain the QoS header.\r\n\r\nFix this to only do anything for QoS data packets.(CVE-2021-47602)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nscsi: bnx2fc: Make bnx2fc_recv_frame() mp safe\r\n\r\nRunning tests with a debug kernel shows that bnx2fc_recv_frame() is\nmodifying the per_cpu lport stats counters in a non-mpsafe way.  Just boot\na debug kernel and run the bnx2fc driver with the hardware enabled.\r\n\r\n[ 1391.699147] BUG: using smp_processor_id() in preemptible [00000000] code: bnx2fc_\n[ 1391.699160] caller is bnx2fc_recv_frame+0xbf9/0x1760 [bnx2fc]\n[ 1391.699174] CPU: 2 PID: 4355 Comm: bnx2fc_l2_threa Kdump: loaded Tainted: G    B\n[ 1391.699180] Hardware name: HP ProLiant DL120 G7, BIOS J01 07/01/2013\n[ 1391.699183] Call Trace:\n[ 1391.699188]  dump_stack_lvl+0x57/0x7d\n[ 1391.699198]  check_preemption_disabled+0xc8/0xd0\n[ 1391.699205]  bnx2fc_recv_frame+0xbf9/0x1760 [bnx2fc]\n[ 1391.699215]  ? do_raw_spin_trylock+0xb5/0x180\n[ 1391.699221]  ? bnx2fc_npiv_create_vports.isra.0+0x4e0/0x4e0 [bnx2fc]\n[ 1391.699229]  ? bnx2fc_l2_rcv_thread+0xb7/0x3a0 [bnx2fc]\n[ 1391.699240]  bnx2fc_l2_rcv_thread+0x1af/0x3a0 [bnx2fc]\n[ 1391.699250]  ? bnx2fc_ulp_init+0xc0/0xc0 [bnx2fc]\n[ 1391.699258]  kthread+0x364/0x420\n[ 1391.699263]  ? _raw_spin_unlock_irq+0x24/0x50\n[ 1391.699268]  ? set_kthread_struct+0x100/0x100\n[ 1391.699273]  ret_from_fork+0x22/0x30\r\n\r\nRestore the old get_cpu/put_cpu code with some modifications to reduce the\nsize of the critical section.(CVE-2022-48715)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nrpmsg: char: Fix race between the release of rpmsg_ctrldev and cdev\r\n\r\nstruct rpmsg_ctrldev contains a struct cdev. The current code frees\nthe rpmsg_ctrldev struct in rpmsg_ctrldev_release_device(), but the\ncdev is a managed object, therefore its release is not predictable\nand the rpmsg_ctrldev could be freed before the cdev is entirely\nreleased, as in the backtrace below.\r\n\r\n[   93.625603] ODEBUG: free active (active state 0) object type: timer_list hint: delayed_work_timer_fn+0x0/0x7c\n[   93.636115] WARNING: CPU: 0 PID: 12 at lib/debugobjects.c:488 debug_print_object+0x13c/0x1b0\n[   93.644799] Modules linked in: veth xt_cgroup xt_MASQUERADE rfcomm algif_hash algif_skcipher af_alg uinput ip6table_nat fuse uvcvideo videobuf2_vmalloc venus_enc venus_dec videobuf2_dma_contig hci_uart btandroid btqca snd_soc_rt5682_i2c bluetooth qcom_spmi_temp_alarm snd_soc_rt5682v\n[   93.715175] CPU: 0 PID: 12 Comm: kworker/0:1 Tainted: G    B             5.4.163-lockdep #26\n[   93.723855] Hardware name: Google Lazor (rev3 - 8) with LTE (DT)\n[   93.730055] Workqueue: events kobject_delayed_cleanup\n[   93.735271] pstate: 60c00009 (nZCv daif +PAN +UAO)\n[   93.740216] pc : debug_print_object+0x13c/0x1b0\n[   93.744890] lr : debug_print_object+0x13c/0x1b0\n[   93.749555] sp : ffffffacf5bc7940\n[   93.752978] x29: ffffffacf5bc7940 x28: dfffffd000000000\n[   93.758448] x27: ffffffacdb11a800 x26: dfffffd000000000\n[   93.763916] x25: ffffffd0734f856c x24: dfffffd000000000\n[   93.769389] x23: 0000000000000000 x22: ffffffd0733c35b0\n[   93.774860] x21: ffffffd0751994a0 x20: ffffffd075ec27c0\n[   93.780338] x19: ffffffd075199100 x18: 00000000000276e0\n[   93.785814] x17: 0000000000000000 x16: dfffffd000000000\n[   93.791291] x15: ffffffffffffffff x14: 6e6968207473696c\n[   93.796768] x13: 0000000000000000 x12: ffffffd075e2b000\n[   93.802244] x11: 0000000000000001 x10: 0000000000000000\n[   93.807723] x9 : d13400dff1921900 x8 : d13400dff1921900\n[   93.813200] x7 : 0000000000000000 x6 : 0000000000000000\n[   93.818676] x5 : 0000000000000080 x4 : 0000000000000000\n[   93.824152] x3 : ffffffd0732a0fa4 x2 : 0000000000000001\n[   93.829628] x1 : ffffffacf5bc7580 x0 : 0000000000000061\n[   93.835104] Call trace:\n[   93.837644]  debug_print_object+0x13c/0x1b0\n[   93.841963]  __debug_check_no_obj_freed+0x25c/0x3c0\n[   93.846987]  debug_check_no_obj_freed+0x18/0x20\n[   93.851669]  slab_free_freelist_hook+0xbc/0x1e4\n[   93.856346]  kfree+0xfc/0x2f4\n[   93.859416]  rpmsg_ctrldev_release_device+0x78/0xb8\n[   93.864445]  device_release+0x84/0x168\n[   93.868310]  kobject_cleanup+0x12c/0x298\n[   93.872356]  kobject_delayed_cleanup+0x10/0x18\n[   93.876948]  process_one_work+0x578/0x92c\n[   93.881086]  worker_thread+0x804/0xcf8\n[   93.884963]  kthread+0x2a8/0x314\n[   93.888303]  ret_from_fork+0x10/0x18\r\n\r\nThe cdev_device_add/del() API was created to address this issue (see\ncommit &apos;233ed09d7fda (&quot;chardev: add helper function to register char\ndevs with a struct device&quot;)&apos;), use it instead of cdev add/del().(CVE-2022-48759)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nphonet: fix rtm_phonet_notify() skb allocation\r\n\r\nfill_route() stores three components in the skb:\r\n\r\n- struct rtmsg\n- RTA_DST (u8)\n- RTA_OIF (u32)\r\n\r\nTherefore, rtm_phonet_notify() should use\r\n\r\nNLMSG_ALIGN(sizeof(struct rtmsg)) +\nnla_total_size(1) +\nnla_total_size(4)(CVE-2024-36946)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nvirtio: delete vq in vp_find_vqs_msix() when request_irq() fails\r\n\r\nWhen request_irq() fails, error path calls vp_del_vqs(). There, as vq is\npresent in the list, free_irq() is called for the same vector. That\ncauses following splat:\r\n\r\n[    0.414355] Trying to free already-free IRQ 27\n[    0.414403] WARNING: CPU: 1 PID: 1 at kernel/irq/manage.c:1899 free_irq+0x1a1/0x2d0\n[    0.414510] Modules linked in:\n[    0.414540] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.0-rc4+ #27\n[    0.414540] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014\n[    0.414540] RIP: 0010:free_irq+0x1a1/0x2d0\n[    0.414540] Code: 1e 00 48 83 c4 08 48 89 e8 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 90 8b 74 24 04 48 c7 c7 98 80 6c b1 e8 00 c9 f7 ff 90 &lt;0f&gt; 0b 90 90 48 89 ee 4c 89 ef e8 e0 20 b8 00 49 8b 47 40 48 8b 40\n[    0.414540] RSP: 0000:ffffb71480013ae0 EFLAGS: 00010086\n[    0.414540] RAX: 0000000000000000 RBX: ffffa099c2722000 RCX: 0000000000000000\n[    0.414540] RDX: 0000000000000000 RSI: ffffb71480013998 RDI: 0000000000000001\n[    0.414540] RBP: 0000000000000246 R08: 00000000ffffdfff R09: 0000000000000001\n[    0.414540] R10: 00000000ffffdfff R11: ffffffffb18729c0 R12: ffffa099c1c91760\n[    0.414540] R13: ffffa099c1c916a4 R14: ffffa099c1d2f200 R15: ffffa099c1c91600\n[    0.414540] FS:  0000000000000000(0000) GS:ffffa099fec40000(0000) knlGS:0000000000000000\n[    0.414540] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033\n[    0.414540] CR2: 0000000000000000 CR3: 0000000008e3e001 CR4: 0000000000370ef0\n[    0.414540] Call Trace:\n[    0.414540]  &lt;TASK&gt;\n[    0.414540]  ? __warn+0x80/0x120\n[    0.414540]  ? free_irq+0x1a1/0x2d0\n[    0.414540]  ? report_bug+0x164/0x190\n[    0.414540]  ? handle_bug+0x3b/0x70\n[    0.414540]  ? exc_invalid_op+0x17/0x70\n[    0.414540]  ? asm_exc_invalid_op+0x1a/0x20\n[    0.414540]  ? free_irq+0x1a1/0x2d0\n[    0.414540]  vp_del_vqs+0xc1/0x220\n[    0.414540]  vp_find_vqs_msix+0x305/0x470\n[    0.414540]  vp_find_vqs+0x3e/0x1a0\n[    0.414540]  vp_modern_find_vqs+0x1b/0x70\n[    0.414540]  init_vqs+0x387/0x600\n[    0.414540]  virtnet_probe+0x50a/0xc80\n[    0.414540]  virtio_dev_probe+0x1e0/0x2b0\n[    0.414540]  really_probe+0xc0/0x2c0\n[    0.414540]  ? __pfx___driver_attach+0x10/0x10\n[    0.414540]  __driver_probe_device+0x73/0x120\n[    0.414540]  driver_probe_device+0x1f/0xe0\n[    0.414540]  __driver_attach+0x88/0x180\n[    0.414540]  bus_for_each_dev+0x85/0xd0\n[    0.414540]  bus_add_driver+0xec/0x1f0\n[    0.414540]  driver_register+0x59/0x100\n[    0.414540]  ? __pfx_virtio_net_driver_init+0x10/0x10\n[    0.414540]  virtio_net_driver_init+0x90/0xb0\n[    0.414540]  do_one_initcall+0x58/0x230\n[    0.414540]  kernel_init_freeable+0x1a3/0x2d0\n[    0.414540]  ? __pfx_kernel_init+0x10/0x10\n[    0.414540]  kernel_init+0x1a/0x1c0\n[    0.414540]  ret_from_fork+0x31/0x50\n[    0.414540]  ? __pfx_kernel_init+0x10/0x10\n[    0.414540]  ret_from_fork_asm+0x1a/0x30\n[    0.414540]  &lt;/TASK&gt;\r\n\r\nFix this by calling deleting the current vq when request_irq() fails.(CVE-2024-37353)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ndrm/mediatek: Add 0 size check to mtk_drm_gem_obj\r\n\r\nAdd a check to mtk_drm_gem_init if we attempt to allocate a GEM object\nof 0 bytes. Currently, no such check exists and the kernel will panic if\na userspace application attempts to allocate a 0x0 GBM buffer.\r\n\r\nTested by attempting to allocate a 0x0 GBM buffer on an MT8188 and\nverifying that we now return EINVAL.(CVE-2024-38549)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nscsi: bfa: Ensure the copied buf is NUL terminated\r\n\r\nCurrently, we allocate a nbytes-sized kernel buffer and copy nbytes from\nuserspace to that buffer. Later, we use sscanf on this buffer but we don&apos;t\nensure that the string is terminated inside the buffer, this can lead to\nOOB read when using sscanf. Fix this issue by using memdup_user_nul instead\nof memdup_user.(CVE-2024-38560)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nspeakup: Fix sizeof() vs ARRAY_SIZE() bug\r\n\r\nThe &quot;buf&quot; pointer is an array of u16 values.  This code should be\nusing ARRAY_SIZE() (which is 256) instead of sizeof() (which is 512),\notherwise it can the still got out of bounds.(CVE-2024-38587)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\njffs2: prevent xattr node from overflowing the eraseblock\r\n\r\nAdd a check to make sure that the requested xattr node size is no larger\nthan the eraseblock minus the cleanmarker.\r\n\r\nUnlike the usual inode nodes, the xattr nodes aren&apos;t split into parts\nand spread across multiple eraseblocks, which means that a xattr node\nmust not occupy more than one eraseblock. If the requested xattr value is\ntoo large, the xattr node can spill onto the next eraseblock, overwriting\nthe nodes and causing errors such as:\r\n\r\njffs2: argh. node added in wrong place at 0x0000b050(2)\njffs2: nextblock 0x0000a000, expected at 0000b00c\njffs2: error: (823) do_verify_xattr_datum: node CRC failed at 0x01e050,\nread=0xfc892c93, calc=0x000000\njffs2: notice: (823) jffs2_get_inode_nodes: Node header CRC failed\nat 0x01e00c. {848f,2fc4,0fef511f,59a3d171}\njffs2: Node at 0x0000000c with length 0x00001044 would run over the\nend of the erase block\njffs2: Perhaps the file system was created with the wrong erase size?\njffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found\nat 0x00000010: 0x1044 instead\r\n\r\nThis breaks the filesystem and can lead to KASAN crashes such as:\r\n\r\nBUG: KASAN: slab-out-of-bounds in jffs2_sum_add_kvec+0x125e/0x15d0\nRead of size 4 at addr ffff88802c31e914 by task repro/830\nCPU: 0 PID: 830 Comm: repro Not tainted 6.9.0-rc3+ #1\nHardware name: QEMU Standard PC (i440FX + PIIX, 1996),\nBIOS Arch Linux 1.16.3-1-1 04/01/2014\nCall Trace:\n &lt;TASK&gt;\n dump_stack_lvl+0xc6/0x120\n print_report+0xc4/0x620\n ? __virt_addr_valid+0x308/0x5b0\n kasan_report+0xc1/0xf0\n ? jffs2_sum_add_kvec+0x125e/0x15d0\n ? jffs2_sum_add_kvec+0x125e/0x15d0\n jffs2_sum_add_kvec+0x125e/0x15d0\n jffs2_flash_direct_writev+0xa8/0xd0\n jffs2_flash_writev+0x9c9/0xef0\n ? __x64_sys_setxattr+0xc4/0x160\n ? do_syscall_64+0x69/0x140\n ? entry_SYSCALL_64_after_hwframe+0x76/0x7e\n [...]\r\n\r\nFound by Linux Verification Center (linuxtesting.org) with Syzkaller.(CVE-2024-38599)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nring-buffer: Fix a race between readers and resize checks\r\n\r\nThe reader code in rb_get_reader_page() swaps a new reader page into the\nring buffer by doing cmpxchg on old-&gt;list.prev-&gt;next to point it to the\nnew page. Following that, if the operation is successful,\nold-&gt;list.next-&gt;prev gets updated too. This means the underlying\ndoubly-linked list is temporarily inconsistent, page-&gt;prev-&gt;next or\npage-&gt;next-&gt;prev might not be equal back to page for some page in the\nring buffer.\r\n\r\nThe resize operation in ring_buffer_resize() can be invoked in parallel.\nIt calls rb_check_pages() which can detect the described inconsistency\nand stop further tracing:\r\n\r\n[  190.271762] ------------[ cut here ]------------\n[  190.271771] WARNING: CPU: 1 PID: 6186 at kernel/trace/ring_buffer.c:1467 rb_check_pages.isra.0+0x6a/0xa0\n[  190.271789] Modules linked in: [...]\n[  190.271991] Unloaded tainted modules: intel_uncore_frequency(E):1 skx_edac(E):1\n[  190.272002] CPU: 1 PID: 6186 Comm: cmd.sh Kdump: loaded Tainted: G            E      6.9.0-rc6-default #5 158d3e1e6d0b091c34c3b96bfd99a1c58306d79f\n[  190.272011] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.0-0-gd239552c-rebuilt.opensuse.org 04/01/2014\n[  190.272015] RIP: 0010:rb_check_pages.isra.0+0x6a/0xa0\n[  190.272023] Code: [...]\n[  190.272028] RSP: 0018:ffff9c37463abb70 EFLAGS: 00010206\n[  190.272034] RAX: ffff8eba04b6cb80 RBX: 0000000000000007 RCX: ffff8eba01f13d80\n[  190.272038] RDX: ffff8eba01f130c0 RSI: ffff8eba04b6cd00 RDI: ffff8eba0004c700\n[  190.272042] RBP: ffff8eba0004c700 R08: 0000000000010002 R09: 0000000000000000\n[  190.272045] R10: 00000000ffff7f52 R11: ffff8eba7f600000 R12: ffff8eba0004c720\n[  190.272049] R13: ffff8eba00223a00 R14: 0000000000000008 R15: ffff8eba067a8000\n[  190.272053] FS:  00007f1bd64752c0(0000) GS:ffff8eba7f680000(0000) knlGS:0000000000000000\n[  190.272057] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033\n[  190.272061] CR2: 00007f1bd6662590 CR3: 000000010291e001 CR4: 0000000000370ef0\n[  190.272070] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000\n[  190.272073] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400\n[  190.272077] Call Trace:\n[  190.272098]  &lt;TASK&gt;\n[  190.272189]  ring_buffer_resize+0x2ab/0x460\n[  190.272199]  __tracing_resize_ring_buffer.part.0+0x23/0xa0\n[  190.272206]  tracing_resize_ring_buffer+0x65/0x90\n[  190.272216]  tracing_entries_write+0x74/0xc0\n[  190.272225]  vfs_write+0xf5/0x420\n[  190.272248]  ksys_write+0x67/0xe0\n[  190.272256]  do_syscall_64+0x82/0x170\n[  190.272363]  entry_SYSCALL_64_after_hwframe+0x76/0x7e\n[  190.272373] RIP: 0033:0x7f1bd657d263\n[  190.272381] Code: [...]\n[  190.272385] RSP: 002b:00007ffe72b643f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001\n[  190.272391] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f1bd657d263\n[  190.272395] RDX: 0000000000000002 RSI: 0000555a6eb538e0 RDI: 0000000000000001\n[  190.272398] RBP: 0000555a6eb538e0 R08: 000000000000000a R09: 0000000000000000\n[  190.272401] R10: 0000555a6eb55190 R11: 0000000000000246 R12: 00007f1bd6662500\n[  190.272404] R13: 0000000000000002 R14: 00007f1bd6667c00 R15: 0000000000000002\n[  190.272412]  &lt;/TASK&gt;\n[  190.272414] ---[ end trace 0000000000000000 ]---\r\n\r\nNote that ring_buffer_resize() calls rb_check_pages() only if the parent\ntrace_buffer has recording disabled. Recent commit d78ab792705c\n(&quot;tracing: Stop current tracer when resizing buffer&quot;) causes that it is\nnow always the case which makes it more likely to experience this issue.\r\n\r\nThe window to hit this race is nonetheless very small. To help\nreproducing it, one can add a delay loop in rb_get_reader_page():\r\n\r\n ret = rb_head_page_replace(reader, cpu_buffer-&gt;reader_page);\n if (!ret)\n \tgoto spin;\n for (unsigned i = 0; i &lt; 1U &lt;&lt; 26; i++)  /* inserted delay loop */\n \t__asm__ __volatile__ (&quot;&quot; : : : &quot;memory&quot;);\n rb_list_head(reader-&gt;list.next)-&gt;prev = &amp;cpu_buffer-&gt;reader_page-&gt;list;\r\n\r\n.. \n---truncated---(CVE-2024-38601)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nm68k: Fix spinlock race in kernel thread creation\r\n\r\nContext switching does take care to retain the correct lock owner across\nthe switch from &apos;prev&apos; to &apos;next&apos; tasks.  This does rely on interrupts\nremaining disabled for the entire duration of the switch.\r\n\r\nThis condition is guaranteed for normal process creation and context\nswitching between already running processes, because both &apos;prev&apos; and\n&apos;next&apos; already have interrupts disabled in their saved copies of the\nstatus register.\r\n\r\nThe situation is different for newly created kernel threads.  The status\nregister is set to PS_S in copy_thread(), which does leave the IPL at 0.\nUpon restoring the &apos;next&apos; thread&apos;s status register in switch_to() aka\nresume(), interrupts then become enabled prematurely.  resume() then\nreturns via ret_from_kernel_thread() and schedule_tail() where run queue\nlock is released (see finish_task_switch() and finish_lock_switch()).\r\n\r\nA timer interrupt calling scheduler_tick() before the lock is released\nin finish_task_switch() will find the lock already taken, with the\ncurrent task as lock owner.  This causes a spinlock recursion warning as\nreported by Guenter Roeck.\r\n\r\nAs far as I can ascertain, this race has been opened in commit\n533e6903bea0 (&quot;m68k: split ret_from_fork(), simplify kernel_thread()&quot;)\nbut I haven&apos;t done a detailed study of kernel history so it may well\npredate that commit.\r\n\r\nInterrupts cannot be disabled in the saved status register copy for\nkernel threads (init will complain about interrupts disabled when\nfinally starting user space).  Disable interrupts temporarily when\nswitching the tasks&apos; register sets in resume().\r\n\r\nNote that a simple oriw 0x700,%sr after restoring sr is not enough here\n- this leaves enough of a race for the &apos;spinlock recursion&apos; warning to\nstill be observed.\r\n\r\nTested on ARAnyM and qemu (Quadra 800 emulation).(CVE-2024-38613)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nmedia: stk1160: fix bounds checking in stk1160_copy_video()\r\n\r\nThe subtract in this condition is reversed.  The -&gt;length is the length\nof the buffer.  The -&gt;bytesused is how many bytes we have copied thus\nfar.  When the condition is reversed that means the result of the\nsubtraction is always negative but since it&apos;s unsigned then the result\nis a very high positive value.  That means the overflow check is never\ntrue.\r\n\r\nAdditionally, the -&gt;bytesused doesn&apos;t actually work for this purpose\nbecause we&apos;re not writing to &quot;buf-&gt;mem + buf-&gt;bytesused&quot;.  Instead, the\nmath to calculate the destination where we are writing is a bit\ninvolved.  You calculate the number of full lines already written,\nmultiply by two, skip a line if necessary so that we start on an odd\nnumbered line, and add the offset into the line.\r\n\r\nTo fix this buffer overflow, just take the actual destination where we\nare writing, if the offset is already out of bounds print an error and\nreturn.  Otherwise, write up to buf-&gt;length bytes.(CVE-2024-38621)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nwatchdog: cpu5wdt.c: Fix use-after-free bug caused by cpu5wdt_trigger\r\n\r\nWhen the cpu5wdt module is removing, the origin code uses del_timer() to\nde-activate the timer. If the timer handler is running, del_timer() could\nnot stop it and will return directly. If the port region is released by\nrelease_region() and then the timer handler cpu5wdt_trigger() calls outb()\nto write into the region that is released, the use-after-free bug will\nhappen.\r\n\r\nChange del_timer() to timer_shutdown_sync() in order that the timer handler\ncould be finished before the port region is released.(CVE-2024-38630)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ns390/ap: Fix crash in AP internal function modify_bitmap()\r\n\r\nA system crash like this\r\n\r\n  Failing address: 200000cb7df6f000 TEID: 200000cb7df6f403\n  Fault in home space mode while using kernel ASCE.\n  AS:00000002d71bc007 R3:00000003fe5b8007 S:000000011a446000 P:000000015660c13d\n  Oops: 0038 ilc:3 [#1] PREEMPT SMP\n  Modules linked in: mlx5_ib ...\n  CPU: 8 PID: 7556 Comm: bash Not tainted 6.9.0-rc7 #8\n  Hardware name: IBM 3931 A01 704 (LPAR)\n  Krnl PSW : 0704e00180000000 0000014b75e7b606 (ap_parse_bitmap_str+0x10e/0x1f8)\n  R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3\n  Krnl GPRS: 0000000000000001 ffffffffffffffc0 0000000000000001 00000048f96b75d3\n  000000cb00000100 ffffffffffffffff ffffffffffffffff 000000cb7df6fce0\n  000000cb7df6fce0 00000000ffffffff 000000000000002b 00000048ffffffff\n  000003ff9b2dbc80 200000cb7df6fcd8 0000014bffffffc0 000000cb7df6fbc8\n  Krnl Code: 0000014b75e7b5fc: a7840047            brc     8,0000014b75e7b68a\n  0000014b75e7b600: 18b2                lr      %r11,%r2\n  #0000014b75e7b602: a7f4000a            brc     15,0000014b75e7b616\n  &gt;0000014b75e7b606: eb22d00000e6        laog    %r2,%r2,0(%r13)\n  0000014b75e7b60c: a7680001            lhi     %r6,1\n  0000014b75e7b610: 187b                lr      %r7,%r11\n  0000014b75e7b612: 84960021            brxh    %r9,%r6,0000014b75e7b654\n  0000014b75e7b616: 18e9                lr      %r14,%r9\n  Call Trace:\n  [&lt;0000014b75e7b606&gt;] ap_parse_bitmap_str+0x10e/0x1f8\n  ([&lt;0000014b75e7b5dc&gt;] ap_parse_bitmap_str+0xe4/0x1f8)\n  [&lt;0000014b75e7b758&gt;] apmask_store+0x68/0x140\n  [&lt;0000014b75679196&gt;] kernfs_fop_write_iter+0x14e/0x1e8\n  [&lt;0000014b75598524&gt;] vfs_write+0x1b4/0x448\n  [&lt;0000014b7559894c&gt;] ksys_write+0x74/0x100\n  [&lt;0000014b7618a440&gt;] __do_syscall+0x268/0x328\n  [&lt;0000014b761a3558&gt;] system_call+0x70/0x98\n  INFO: lockdep is turned off.\n  Last Breaking-Event-Address:\n  [&lt;0000014b75e7b636&gt;] ap_parse_bitmap_str+0x13e/0x1f8\n  Kernel panic - not syncing: Fatal exception: panic_on_oops\r\n\r\noccured when /sys/bus/ap/a[pq]mask was updated with a relative mask value\n(like +0x10-0x12,+60,-90) with one of the numeric values exceeding INT_MAX.\r\n\r\nThe fix is simple: use unsigned long values for the internal variables. The\ncorrect checks are already in place in the function but a simple int for\nthe internal variables was used with the possibility to overflow.(CVE-2024-38661)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\num: Add winch to winch_handlers before registering winch IRQ\r\n\r\nRegistering a winch IRQ is racy, an interrupt may occur before the winch is\nadded to the winch_handlers list.\r\n\r\nIf that happens, register_winch_irq() adds to that list a winch that is\nscheduled to be (or has already been) freed, causing a panic later in\nwinch_cleanup().\r\n\r\nAvoid the race by adding the winch to the winch_handlers list before\nregistering the IRQ, and rolling back if um_request_irq() fails.(CVE-2024-39292)",
+  "id": "OESA-2024-1793",
+  "modified": "2025-09-03T06:17:49.149945Z",
+  "published": "2024-07-05T11:08:24Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-1793"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-47235"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-47285"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-47602"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48715"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48759"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-36946"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-37353"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38549"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38560"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38587"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38599"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38601"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38613"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38621"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38630"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38661"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-39292"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2021-47235",
+    "CVE-2021-47285",
+    "CVE-2021-47602",
+    "CVE-2022-48715",
+    "CVE-2022-48759",
+    "CVE-2024-36946",
+    "CVE-2024-37353",
+    "CVE-2024-38549",
+    "CVE-2024-38560",
+    "CVE-2024-38587",
+    "CVE-2024-38599",
+    "CVE-2024-38601",
+    "CVE-2024-38613",
+    "CVE-2024-38621",
+    "CVE-2024-38630",
+    "CVE-2024-38661",
+    "CVE-2024-39292"
+  ]
+}

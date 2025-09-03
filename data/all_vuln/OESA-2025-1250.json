@@ -1,0 +1,92 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1250.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "python-aiohttp-debuginfo-3.7.4-5.oe2003sp4.aarch64.rpm",
+          "python-aiohttp-debugsource-3.7.4-5.oe2003sp4.aarch64.rpm",
+          "python-aiohttp-help-3.7.4-5.oe2003sp4.aarch64.rpm",
+          "python3-aiohttp-3.7.4-5.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "python-aiohttp-3.7.4-5.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "python-aiohttp-debuginfo-3.7.4-5.oe2003sp4.x86_64.rpm",
+          "python-aiohttp-debugsource-3.7.4-5.oe2003sp4.x86_64.rpm",
+          "python-aiohttp-help-3.7.4-5.oe2003sp4.x86_64.rpm",
+          "python3-aiohttp-3.7.4-5.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "python-aiohttp",
+        "purl": "pkg:rpm/openEuler/python-aiohttp&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3.7.4-5.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "Async http client/server framework (asyncio).\r\n\r\nSecurity Fix(es):\n\naiohttp is an asynchronous HTTP client/server framework for asyncio and Python. The HTTP parser in AIOHTTP has numerous problems with header parsing, which could lead to request smuggling. This parser is only used when AIOHTTP_NO_EXTENSIONS is enabled (or not using a prebuilt wheel). These bugs have been addressed in commit `d5c12ba89` which has been included in release version 3.8.6. Users are advised to upgrade. There are no known workarounds for these issues.(CVE-2023-47627)\n\naiohttp is an asynchronous HTTP client/server framework for asyncio and Python. Improper validation makes it possible for an attacker to modify the HTTP request (e.g. insert a new header) or even create a new HTTP request if the attacker controls the HTTP method. The vulnerability occurs only if the attacker can control the HTTP method (GET, POST etc.) of the request. If the attacker can control the HTTP version of the request it will be able to modify the request (request smuggling). This issue has been patched in version 3.9.0.(CVE-2023-49082)\n\naiohttp is an asynchronous HTTP client/server framework for asyncio and Python. When using aiohttp as a web server and configuring static routes, it is necessary to specify the root path for static files. Additionally, the option &apos;follow_symlinks&apos; can be used to determine whether to follow symbolic links outside the static root directory. When &apos;follow_symlinks&apos; is set to True, there is no validation to check if reading a file is within the root directory. This can lead to directory traversal vulnerabilities, resulting in unauthorized access to arbitrary files on the system, even when symlinks are not present.  Disabling follow_symlinks and using a reverse proxy are encouraged mitigations.  Version 3.9.2 fixes this issue.(CVE-2024-23334)\n\naiohttp is an asynchronous HTTP client/server framework for asyncio and Python. Security-sensitive parts of the Python HTTP parser retained minor differences in allowable character sets, that must trigger error handling to robustly match frame boundaries of proxies in order to protect against injection of additional requests. Additionally, validation could trigger exceptions that were not handled consistently with processing of other malformed input.  Being more lenient than internet standards require could, depending on deployment environment, assist in request smuggling. The unhandled exception could cause excessive resource consumption on the application server and/or its logging facilities. This vulnerability exists due to an incomplete fix for CVE-2023-47627. Version 3.9.2 fixes this vulnerability.(CVE-2024-23829)\n\naiohttp is an asynchronous HTTP client/server framework for asyncio and Python. A XSS vulnerability exists on index pages for static file handling. This vulnerability is fixed in 3.9.4. We have always recommended using a reverse proxy server (e.g. nginx) for serving static files. Users following the recommendation are unaffected. Other users can disable `show_index` if unable to upgrade.(CVE-2024-27306)\n\naiohttp is an asynchronous HTTP client/server framework for asyncio and Python. In affected versions an attacker can send a specially crafted POST (multipart/form-data) request. When the aiohttp server processes it, the server will enter an infinite loop and be unable to process any further requests. An attacker can stop the application from serving requests after sending a single request. This issue has been addressed in version 3.9.4. Users are advised to upgrade. Users unable to upgrade may manually apply a patch to their systems. Please see the linked GHSA for instructions.(CVE-2024-30251)",
+  "id": "OESA-2025-1250",
+  "modified": "2025-09-03T06:19:36.701231Z",
+  "published": "2025-03-07T15:27:44Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1250"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-47627"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-49082"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-23334"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-23829"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-27306"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-30251"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "python-aiohttp security update",
+  "upstream": [
+    "CVE-2023-47627",
+    "CVE-2023-49082",
+    "CVE-2024-23334",
+    "CVE-2024-23829",
+    "CVE-2024-27306",
+    "CVE-2024-30251"
+  ]
+}

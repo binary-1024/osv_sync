@@ -1,0 +1,128 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1835.json"
+      },
+      "ecosystem_specific": {
+        "noarch": [
+          "postgresql-jdbc-javadoc-42.4.1-1.oe1.noarch.rpm",
+          "postgresql-jdbc-help-42.4.1-1.oe1.noarch.rpm",
+          "postgresql-jdbc-42.4.1-1.oe1.noarch.rpm"
+        ],
+        "src": [
+          "postgresql-jdbc-42.4.1-1.oe1.src.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP1",
+        "name": "postgresql-jdbc",
+        "purl": "pkg:rpm/openEuler/postgresql-jdbc&distro=openEuler-20.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "42.4.1-1.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1835.json"
+      },
+      "ecosystem_specific": {
+        "noarch": [
+          "postgresql-jdbc-help-42.4.1-1.oe1.noarch.rpm",
+          "postgresql-jdbc-42.4.1-1.oe1.noarch.rpm",
+          "postgresql-jdbc-javadoc-42.4.1-1.oe1.noarch.rpm"
+        ],
+        "src": [
+          "postgresql-jdbc-42.4.1-1.oe1.src.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP3",
+        "name": "postgresql-jdbc",
+        "purl": "pkg:rpm/openEuler/postgresql-jdbc&distro=openEuler-20.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "42.4.1-1.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1835.json"
+      },
+      "ecosystem_specific": {
+        "noarch": [
+          "postgresql-jdbc-42.4.1-1.oe2203.noarch.rpm",
+          "postgresql-jdbc-javadoc-42.4.1-1.oe2203.noarch.rpm",
+          "postgresql-jdbc-help-42.4.1-1.oe2203.noarch.rpm"
+        ],
+        "src": [
+          "postgresql-jdbc-42.4.1-1.oe2203.src.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS",
+        "name": "postgresql-jdbc",
+        "purl": "pkg:rpm/openEuler/postgresql-jdbc&distro=openEuler-22.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "42.4.1-1.oe2203"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "PostgreSQL JDBC Driver (PgJDBC for short) allows Java programs to connect to a PostgreSQL database using standard, database independent Java code. Is an open source JDBC driver written in Pure Java (Type 4), and communicates in the PostgreSQL native network protocol.\r\n\r\nSecurity Fix(es):\r\n\r\nPostgreSQL JDBC Driver (PgJDBC for short) allows Java programs to connect to a PostgreSQL database using standard, database independent Java code. The PGJDBC implementation of the `java.sql.ResultRow.refreshRow()` method is not performing escaping of column names so a malicious column name that contains a statement terminator, e.g. `;`, could lead to SQL injection. This could lead to executing additional SQL commands as the application&apos;s JDBC user. User applications that do not invoke the `ResultSet.refreshRow()` method are not impacted. User application that do invoke that method are impacted if the underlying database that they are querying via their JDBC application may be under the control of an attacker. The attack requires the attacker to trick the user into executing SQL against a table name who&apos;s column names would contain the malicious SQL and subsequently invoke the `refreshRow()` method on the ResultSet. Note that the application&apos;s JDBC user and the schema owner need not be the same. A JDBC application that executes as a privileged user querying database schemas owned by potentially malicious less-privileged users would be vulnerable. In that situation it may be possible for the malicious user to craft a schema that causes the application to execute commands as the privileged user. Patched versions will be released as `42.2.26` and `42.4.1`. Users are advised to upgrade. There are no known workarounds for this issue.(CVE-2022-31197)",
+  "id": "OESA-2022-1835",
+  "modified": "2025-09-03T06:18:15.538550Z",
+  "published": "2022-08-13T11:04:08Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2022-1835"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-31197"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "postgresql-jdbc security update",
+  "upstream": [
+    "CVE-2022-31197"
+  ]
+}

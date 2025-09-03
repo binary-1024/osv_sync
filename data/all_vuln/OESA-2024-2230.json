@@ -1,0 +1,75 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2230.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "redis-4.0.11-20.oe2003sp4.aarch64.rpm",
+          "redis-debuginfo-4.0.11-20.oe2003sp4.aarch64.rpm",
+          "redis-debugsource-4.0.11-20.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "redis-4.0.11-20.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "redis-4.0.11-20.oe2003sp4.x86_64.rpm",
+          "redis-debuginfo-4.0.11-20.oe2003sp4.x86_64.rpm",
+          "redis-debugsource-4.0.11-20.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "redis",
+        "purl": "pkg:rpm/openEuler/redis&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.0.11-20.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "Redis is an advanced key-value store. It is often referred to as a dattructure server since keys can contain strings, hashes ,lists, sets anorted sets.\r\n\r\nSecurity Fix(es):\r\n\r\nRedis is an in-memory database that persists on disk. On startup, Redis begins listening on a Unix socket before adjusting its permissions to the user-provided configuration. If a permissive umask(2) is used, this creates a race condition that enables, during a short period of time, another process to establish an otherwise unauthorized connection. This problem has existed since Redis 2.6.0-RC1. This issue has been addressed in Redis versions 7.2.2, 7.0.14 and 6.2.14. Users are advised to upgrade. For users unable to upgrade, it is possible to work around the problem by disabling Unix sockets, starting Redis with a restrictive umask, or storing the Unix socket file in a protected directory.(CVE-2023-45145)\r\n\r\nRedis is an open source, in-memory database that persists on disk. Authenticated users can trigger a denial-of-service by using specially crafted, long string match patterns on supported commands such as `KEYS`, `SCAN`, `PSUBSCRIBE`, `FUNCTION LIST`, `COMMAND LIST` and ACL definitions. Matching of extremely long patterns may result in unbounded recursion, leading to stack overflow and process crash. This problem has been fixed in Redis versions 6.2.16, 7.2.6, and 7.4.1. Users are advised to upgrade. There are no known workarounds for this vulnerability.(CVE-2024-31228)\r\n\r\nRedis is an open source, in-memory database that persists on disk. An authenticated user may use a specially crafted Lua script to trigger a stack buffer overflow in the bit library, which may potentially lead to remote code execution. The problem exists in all versions of Redis with Lua scripting. This problem has been fixed in Redis versions 6.2.16, 7.2.6, and 7.4.1. Users are advised to upgrade. There are no known workarounds for this vulnerability.(CVE-2024-31449)",
+  "id": "OESA-2024-2230",
+  "modified": "2025-09-03T06:19:30.345948Z",
+  "published": "2024-10-12T11:09:19Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2230"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-45145"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-31228"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-31449"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "redis security update",
+  "upstream": [
+    "CVE-2023-45145",
+    "CVE-2024-31228",
+    "CVE-2024-31449"
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-1286.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "kernel-tools-devel-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "kernel-devel-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "perf-debuginfo-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "kernel-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "kernel-headers-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "kernel-tools-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "python3-perf-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "kernel-source-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "perf-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm",
+          "kernel-debugsource-5.10.0-191.0.0.104.oe2203sp3.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-191.0.0.104.oe2203sp3.src.rpm"
+        ],
+        "x86_64": [
+          "kernel-debuginfo-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "kernel-tools-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "kernel-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "kernel-headers-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "python3-perf-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "kernel-devel-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "perf-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "perf-debuginfo-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "kernel-debugsource-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm",
+          "kernel-source-5.10.0-191.0.0.104.oe2203sp3.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP3",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-191.0.0.104.oe2203sp3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nuio: Fix use-after-free in uio_open\r\n\r\ncore-1\t\t\t\tcore-2\n-------------------------------------------------------\nuio_unregister_device\t\tuio_open\n\t\t\t\tidev = idr_find()\ndevice_unregister(&amp;idev-&gt;dev)\nput_device(&amp;idev-&gt;dev)\nuio_device_release\n\t\t\t\tget_device(&amp;idev-&gt;dev)\nkfree(idev)\nuio_free_minor(minor)\n\t\t\t\tuio_release\n\t\t\t\tput_device(&amp;idev-&gt;dev)\n\t\t\t\tkfree(idev)\n-------------------------------------------------------\r\n\r\nIn the core-1 uio_unregister_device(), the device_unregister will kfree\nidev when the idev-&gt;dev kobject ref is 1. But after core-1\ndevice_unregister, put_device and before doing kfree, the core-2 may\nget_device. Then:\n1. After core-1 kfree idev, the core-2 will do use-after-free for idev.\n2. When core-2 do uio_release and put_device, the idev will be double\n   freed.\r\n\r\nTo address this issue, we can get idev atomic &amp; inc idev reference with\nminor_lock.(CVE-2023-52439)\r\n\r\nNULL Pointer Dereference vulnerability in Linux Linux kernel kernel on Linux, x86, ARM (net, bluetooth modules) allows Overflow Buffers. This vulnerability is associated with program files /net/bluetooth/rfcomm/core.C.\r\n\r\nThis issue affects Linux kernel: v2.6.12-rc2.\r\n\r\n(CVE-2024-22099)\r\n\r\nIn btrfs_get_root_ref in fs/btrfs/disk-io.c in the Linux kernel through 6.7.1, there can be an assertion failure and crash because a subvolume can be read out too soon after its root item is inserted upon subvolume creation.(CVE-2024-23850)\r\n\r\ncopy_params in drivers/md/dm-ioctl.c in the Linux kernel through 6.7.1 can attempt to allocate more than INT_MAX bytes, and crash, because of a missing param_kernel-&gt;data_size check. This is related to ctl_ioctl.(CVE-2024-23851)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ntls: fix race between async notify and socket close\r\n\r\nThe submitting thread (one which called recvmsg/sendmsg)\nmay exit as soon as the async crypto handler calls complete()\nso any code past that point risks touching already freed data.\r\n\r\nTry to avoid the locking and extra flags altogether.\nHave the main thread hold an extra reference, this way\nwe can depend solely on the atomic ref counter for\nsynchronization.\r\n\r\nDon&apos;t futz with reiniting the completion, either, we are now\ntightly controlling when completion fires.(CVE-2024-26583)",
+  "id": "OESA-2024-1286",
+  "modified": "2025-09-03T06:19:44.241631Z",
+  "published": "2024-03-15T11:07:13Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2024-1286"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52439"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22099"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-23850"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-23851"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-26583"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2023-52439",
+    "CVE-2024-22099",
+    "CVE-2024-23850",
+    "CVE-2024-23851",
+    "CVE-2024-26583"
+  ]
+}

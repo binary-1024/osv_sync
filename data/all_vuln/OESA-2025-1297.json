@@ -1,0 +1,59 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1297.json"
+      },
+      "ecosystem_specific": {
+        "noarch": [
+          "python-asteval-help-1.0.6-1.oe2403sp1.noarch.rpm",
+          "python3-asteval-1.0.6-1.oe2403sp1.noarch.rpm"
+        ],
+        "src": [
+          "python-asteval-1.0.6-1.oe2403sp1.src.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:24.03-LTS-SP1",
+        "name": "python-asteval",
+        "purl": "pkg:rpm/openEuler/python-asteval&distro=openEuler-24.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.6-1.oe2403sp1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "ASTEVAL provides a numpy-aware, safe(ish) &amp;apos;eval&amp;apos; function Emphasis is on mathematical expressions, and so numpy ufuncs are used if available.  Symbols are held in the Interpreter symbol table &amp;apos;symtable&amp;apos;:  a simple dictionary supporting a simple, flat namespace. Expressions can be compiled into ast node for later evaluation, using the values in the symbol table current at evaluation time.\r\n\r\nSecurity Fix(es):\n\nASTEVAL is an evaluator of Python expressions and statements. Prior to version 1.0.6, if an attacker can control the input to the `asteval` library, they can bypass asteval&apos;s restrictions and execute arbitrary Python code in the context of the application using the library. The vulnerability is rooted in how `asteval` performs handling of `FormattedValue` AST nodes. In particular, the `on_formattedvalue` value uses the dangerous format method of the str class. The code allows an attacker to manipulate the value of the string used in the dangerous call `fmt.format(__fstring__=val)`. This vulnerability can be exploited to access protected attributes by intentionally triggering an `AttributeError` exception. The attacker can then catch the exception and use its `obj` attribute to gain arbitrary access to sensitive or protected object properties. Version 1.0.6 fixes this issue.(CVE-2025-24359)",
+  "id": "OESA-2025-1297",
+  "modified": "2025-09-03T06:20:52.531850Z",
+  "published": "2025-03-21T13:17:32Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1297"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-24359"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "python-asteval security update",
+  "upstream": [
+    "CVE-2025-24359"
+  ]
+}

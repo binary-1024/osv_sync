@@ -1,0 +1,111 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2589.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2412.4.0.0309.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2412.4.0.0309.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2412.4.0.0309.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nio_uring/io-wq: Use set_bit() and test_bit() at worker-&gt;flags\r\n\r\nUtilize set_bit() and test_bit() on worker-&gt;flags within io_uring/io-wq\nto address potential data races.\r\n\r\nThe structure io_worker-&gt;flags may be accessed through various data\npaths, leading to concurrency issues. When KCSAN is enabled, it reveals\ndata races occurring in io_worker_handle_work and\nio_wq_activate_free_worker functions.\r\n\r\n\t BUG: KCSAN: data-race in io_worker_handle_work / io_wq_activate_free_worker\n\t write to 0xffff8885c4246404 of 4 bytes by task 49071 on cpu 28:\n\t io_worker_handle_work (io_uring/io-wq.c:434 io_uring/io-wq.c:569)\n\t io_wq_worker (io_uring/io-wq.c:?)\n&lt;snip&gt;\r\n\r\n\t read to 0xffff8885c4246404 of 4 bytes by task 49024 on cpu 5:\n\t io_wq_activate_free_worker (io_uring/io-wq.c:? io_uring/io-wq.c:285)\n\t io_wq_enqueue (io_uring/io-wq.c:947)\n\t io_queue_iowq (io_uring/io_uring.c:524)\n\t io_req_task_submit (io_uring/io_uring.c:1511)\n\t io_handle_tw_list (io_uring/io_uring.c:1198)\n&lt;snip&gt;\r\n\r\nLine numbers against commit 18daea77cca6 (&quot;Merge tag &apos;for-linus&apos; of\ngit://git.kernel.org/pub/scm/virt/kvm/kvm&quot;).\r\n\r\nThese races involve writes and reads to the same memory location by\ndifferent tasks running on different CPUs. To mitigate this, refactor\nthe code to use atomic operations such as set_bit(), test_bit(), and\nclear_bit() instead of basic &quot;and&quot; and &quot;or&quot; operations. This ensures\nthread-safe manipulation of worker flags.\r\n\r\nAlso, move `create_index` to avoid holes in the structure.(CVE-2024-39508)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nbtrfs: fix qgroup reserve leaks in cow_file_range\r\n\r\nIn the buffered write path, the dirty page owns the qgroup reserve until\nit creates an ordered_extent.\r\n\r\nTherefore, any errors that occur before the ordered_extent is created\nmust free that reservation, or else the space is leaked. The fstest\ngeneric/475 exercises various IO error paths, and is able to trigger\nerrors in cow_file_range where we fail to get to allocating the ordered\nextent. Note that because we *do* clear delalloc, we are likely to\nremove the inode from the delalloc list, so the inodes/pages to not have\ninvalidate/launder called on them in the commit abort path.\r\n\r\nThis results in failures at the unmount stage of the test that look like:\r\n\r\n  BTRFS: error (device dm-8 state EA) in cleanup_transaction:2018: errno=-5 IO failure\n  BTRFS: error (device dm-8 state EA) in btrfs_replace_file_extents:2416: errno=-5 IO failure\n  BTRFS warning (device dm-8 state EA): qgroup 0/5 has unreleased space, type 0 rsv 28672\n  ------------[ cut here ]------------\n  WARNING: CPU: 3 PID: 22588 at fs/btrfs/disk-io.c:4333 close_ctree+0x222/0x4d0 [btrfs]\n  Modules linked in: btrfs blake2b_generic libcrc32c xor zstd_compress raid6_pq\n  CPU: 3 PID: 22588 Comm: umount Kdump: loaded Tainted: G W          6.10.0-rc7-gab56fde445b8 #21\n  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014\n  RIP: 0010:close_ctree+0x222/0x4d0 [btrfs]\n  RSP: 0018:ffffb4465283be00 EFLAGS: 00010202\n  RAX: 0000000000000001 RBX: ffffa1a1818e1000 RCX: 0000000000000001\n  RDX: 0000000000000000 RSI: ffffb4465283bbe0 RDI: ffffa1a19374fcb8\n  RBP: ffffa1a1818e13c0 R08: 0000000100028b16 R09: 0000000000000000\n  R10: 0000000000000003 R11: 0000000000000003 R12: ffffa1a18ad7972c\n  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000\n  FS:  00007f9168312b80(0000) GS:ffffa1a4afcc0000(0000) knlGS:0000000000000000\n  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033\n  CR2: 00007f91683c9140 CR3: 000000010acaa000 CR4: 00000000000006f0\n  Call Trace:\n   &lt;TASK&gt;\n   ? close_ctree+0x222/0x4d0 [btrfs]\n   ? __warn.cold+0x8e/0xea\n   ? close_ctree+0x222/0x4d0 [btrfs]\n   ? report_bug+0xff/0x140\n   ? handle_bug+0x3b/0x70\n   ? exc_invalid_op+0x17/0x70\n   ? asm_exc_invalid_op+0x1a/0x20\n   ? close_ctree+0x222/0x4d0 [btrfs]\n   generic_shutdown_super+0x70/0x160\n   kill_anon_super+0x11/0x40\n   btrfs_kill_super+0x11/0x20 [btrfs]\n   deactivate_locked_super+0x2e/0xa0\n   cleanup_mnt+0xb5/0x150\n   task_work_run+0x57/0x80\n   syscall_exit_to_user_mode+0x121/0x130\n   do_syscall_64+0xab/0x1a0\n   entry_SYSCALL_64_after_hwframe+0x77/0x7f\n  RIP: 0033:0x7f916847a887\n  ---[ end trace 0000000000000000 ]---\n  BTRFS error (device dm-8 state EA): qgroup reserved space leaked\r\n\r\nCases 2 and 3 in the out_reserve path both pertain to this type of leak\nand must free the reserved qgroup data. Because it is already an error\npath, I opted not to handle the possible errors in\nbtrfs_free_qgroup_data.(CVE-2024-46733)\r\n\r\n(CVE-2024-50194)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow  Syzbot reported a kernel BUG in ocfs2_truncate_inline.  There are two reasons for this: first, the parameter value passed is greater than ocfs2_max_inline_data_with_xattr, second, the start and end parameters of ocfs2_truncate_inline are &quot;unsigned int&quot;.  So, we need to add a sanity check for byte_start and byte_len right before ocfs2_truncate_inline() in ocfs2_remove_inode_range(), if they are greater than ocfs2_max_inline_data_with_xattr return -EINVAL.(CVE-2024-50218)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  smb: client: Fix use-after-free of network namespace.  Recently, we got a customer report that CIFS triggers oops while reconnecting to a server.  [0]  The workload runs on Kubernetes, and some pods mount CIFS servers in non-root network namespaces.  The problem rarely happened, but it was always while the pod was dying.  The root cause is wrong reference counting for network namespace.  CIFS uses kernel sockets, which do not hold refcnt of the netns that the socket belongs to.  That means CIFS must ensure the socket is always freed before its netns; otherwise, use-after-free happens.  The repro steps are roughly:    1. mount CIFS in a non-root netns   2. drop packets from the netns   3. destroy the netns   4. unmount CIFS  We can reproduce the issue quickly with the script [1] below and see the splat [2] if CONFIG_NET_NS_REFCNT_TRACKER is enabled.  When the socket is TCP, it is hard to guarantee the netns lifetime without holding refcnt due to async timers.  Let&apos;s hold netns refcnt for each socket as done for SMC in commit 9744d2bf1976 (&quot;smc: Fix use-after-free in tcp_write_timer_handler().&quot;).  Note that we need to move put_net() from cifs_put_tcp_session() to clean_demultiplex_info(); otherwise, __sock_create() still could touch a freed netns while cifsd tries to reconnect from cifs_demultiplex_thread().  Also, maybe_get_net() cannot be put just before __sock_create() because the code is not under RCU and there is a small chance that the same address happened to be reallocated to another netns.  [0]: CIFS: VFS: \\\\XXXXXXXXXXX has not responded in 15 seconds. Reconnecting... CIFS: Serverclose failed 4 times, giving up Unable to handle kernel paging request at virtual address 14de99e461f84a07 Mem abort info:   ESR = 0x0000000096000004   EC = 0x25: DABT (current EL), IL = 32 bits   SET = 0, FnV = 0   EA = 0, S1PTW = 0   FSC = 0x04: level 0 translation fault Data abort info:   ISV = 0, ISS = 0x00000004   CM = 0, WnR = 0 [14de99e461f84a07] address between user and kernel address ranges Internal error: Oops: 0000000096000004 [#1] SMP Modules linked in: cls_bpf sch_ingress nls_utf8 cifs cifs_arc4 cifs_md4 dns_resolver tcp_diag inet_diag veth xt_state xt_connmark nf_conntrack_netlink xt_nat xt_statistic xt_MASQUERADE xt_mark xt_addrtype ipt_REJECT nf_reject_ipv4 nft_chain_nat nf_nat xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xt_comment nft_compat nf_tables nfnetlink overlay nls_ascii nls_cp437 sunrpc vfat fat aes_ce_blk aes_ce_cipher ghash_ce sm4_ce_cipher sm4 sm3_ce sm3 sha3_ce sha512_ce sha512_arm64 sha1_ce ena button sch_fq_codel loop fuse configfs dmi_sysfs sha2_ce sha256_arm64 dm_mirror dm_region_hash dm_log dm_mod dax efivarfs CPU: 5 PID: 2690970 Comm: cifsd Not tainted 6.1.103-109.184.amzn2023.aarch64 #1 Hardware name: Amazon EC2 r7g.4xlarge/, BIOS 1.0 11/1/2018 pstate: 00400005 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--) pc : fib_rules_lookup+0x44/0x238 lr : __fib_lookup+0x64/0xbc sp : ffff8000265db790 x29: ffff8000265db790 x28: 0000000000000000 x27: 000000000000bd01 x26: 0000000000000000 x25: ffff000b4baf8000 x24: ffff00047b5e4580 x23: ffff8000265db7e0 x22: 0000000000000000 x21: ffff00047b5e4500 x20: ffff0010e3f694f8 x19: 14de99e461f849f7 x18: 0000000000000000 x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000 x14: 0000000000000000 x13: 0000000000000000 x12: 3f92800abd010002 x11: 0000000000000001 x10: ffff0010e3f69420 x9 : ffff800008a6f294 x8 : 0000000000000000 x7 : 0000000000000006 x6 : 0000000000000000 x5 : 0000000000000001 x4 : ffff001924354280 x3 : ffff8000265db7e0 x2 : 0000000000000000 x1 : ffff0010e3f694f8 x0 : ffff00047b5e4500 Call trace:  fib_rules_lookup+0x44/0x238  __fib_lookup+0x64/0xbc  ip_route_output_key_hash_rcu+0x2c4/0x398  ip_route_output_key_hash+0x60/0x8c  tcp_v4_connect+0x290/0x488  __inet_stream_connect+0x108/0x3d0  inet_stream_connect+0x50/0x78  kernel_connect+0x6c/0xac  generic_ip_conne ---truncated---(CVE-2024-53095)",
+  "id": "OESA-2024-2589",
+  "modified": "2025-09-03T06:20:24.467439Z",
+  "published": "2024-12-27T12:32:55Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2589"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-39508"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46733"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50194"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50218"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53095"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2024-39508",
+    "CVE-2024-46733",
+    "CVE-2024-50194",
+    "CVE-2024-50218",
+    "CVE-2024-53095"
+  ]
+}

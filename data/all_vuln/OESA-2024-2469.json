@@ -1,0 +1,107 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2469.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "postgresql-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-contrib-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-debuginfo-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-debugsource-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-docs-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-llvmjit-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-plperl-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-plpython3-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-pltcl-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-private-devel-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-private-libs-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-server-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-server-devel-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-static-13.17-1.oe2203sp1.aarch64.rpm",
+          "postgresql-test-13.17-1.oe2203sp1.aarch64.rpm"
+        ],
+        "noarch": [
+          "postgresql-test-rpm-macros-13.17-1.oe2203sp1.noarch.rpm"
+        ],
+        "src": [
+          "postgresql-13.17-1.oe2203sp1.src.rpm"
+        ],
+        "x86_64": [
+          "postgresql-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-contrib-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-debuginfo-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-debugsource-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-docs-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-llvmjit-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-plperl-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-plpython3-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-pltcl-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-private-devel-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-private-libs-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-server-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-server-devel-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-static-13.17-1.oe2203sp1.x86_64.rpm",
+          "postgresql-test-13.17-1.oe2203sp1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP1",
+        "name": "postgresql",
+        "purl": "pkg:rpm/openEuler/postgresql&distro=openEuler-22.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "13.17-1.oe2203sp1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "PostgreSQL is an advanced Object-Relational database management system (DBMS). The base postgresql package contains the client programs that you&apos;ll need to access a PostgreSQL DBMS server, as well as HTML documentation for the whole system.  These client programs can be located on the same machine as the PostgreSQL server, or on a remote machine that accesses a PostgreSQL server over a network connection.  The PostgreSQL server can be found in the postgresql-server sub-package.\r\n\r\nSecurity Fix(es):PostgreSQL is an advanced Object-Relational database management system (DBMS).\nThe base postgresql package contains the client programs that you&apos;ll need to\naccess a PostgreSQL DBMS server, as well as HTML documentation for the whole\nsystem.  These client programs can be located on the same machine as the\nPostgreSQL server, or on a remote machine that accesses a PostgreSQL server\nover a network connection.  The PostgreSQL server can be found in the\npostgresql-server sub-package.\r\n\r\nSecurity Fix(es):\r\n\r\nIncomplete tracking in PostgreSQL of tables with row security allows a reused query to view or change different rows from those intended.  CVE-2023-2455 and CVE-2016-2193 fixed most interaction between row security and user ID changes.  They missed cases where a subquery, WITH query, security invoker view, or SQL-language function references a table with a row-level security policy.  This has the same consequences as the two earlier CVEs.  That is to say, it leads to potentially incorrect policies being applied in cases where role-specific policies are used and a given query is planned under one role and then executed under other roles.  This scenario can happen under security definer functions or when a common user and query is planned initially and then re-used across multiple SET ROLEs.  Applying an incorrect policy may permit a user to complete otherwise-forbidden reads and modifications.  This affects only databases that have used CREATE POLICY to define a row security policy.  An attacker must tailor an attack to a particular application&apos;s pattern of query plan reuse, user ID changes, and role-specific row security policies.  Versions before PostgreSQL 17.1, 16.5, 15.9, 14.14, 13.17, and 12.21 are affected.(CVE-2024-10976)\r\n\r\nClient use of server error message in PostgreSQL allows a server not trusted under current SSL or GSS settings to furnish arbitrary non-NUL bytes to the libpq application.  For example, a man-in-the-middle attacker could send a long error message that a human or screen-scraper user of psql mistakes for valid query results.  This is probably not a concern for clients where the user interface unambiguously indicates the boundary between one error message and other text.  Versions before PostgreSQL 17.1, 16.5, 15.9, 14.14, 13.17, and 12.21 are affected.(CVE-2024-10977)\r\n\r\nIncorrect privilege assignment in PostgreSQL allows a less-privileged application user to view or change different rows from those intended.  An attack requires the application to use SET ROLE, SET SESSION AUTHORIZATION, or an equivalent feature.  The problem arises when an application query uses parameters from the attacker or conveys query results to the attacker.  If that query reacts to current_setting(&apos;role&apos;) or the current user ID, it may modify or return data as though the session had not used SET ROLE or SET SESSION AUTHORIZATION.  The attacker does not control which incorrect user ID applies.  Query text from less-privileged sources is not a concern here, because SET ROLE and SET SESSION AUTHORIZATION are not sandboxes for unvetted queries.  Versions before PostgreSQL 17.1, 16.5, 15.9, 14.14, 13.17, and 12.21 are affected.(CVE-2024-10978)\r\n\r\nIncorrect control of environment variables in PostgreSQL PL/Perl allows an unprivileged database user to change sensitive process environment variables (e.g. PATH).  That often suffices to enable arbitrary code execution, even if the attacker lacks a database server operating system user.  Versions before PostgreSQL 17.1, 16.5, 15.9, 14.14, 13.17, and 12.21 are affected.(CVE-2024-10979)",
+  "id": "OESA-2024-2469",
+  "modified": "2025-09-03T06:19:52.642267Z",
+  "published": "2024-11-22T14:23:23Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2469"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10976"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10977"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10978"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10979"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "postgresql security update",
+  "upstream": [
+    "CVE-2024-10976",
+    "CVE-2024-10977",
+    "CVE-2024-10978",
+    "CVE-2024-10979"
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-1765.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "perf-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-headers-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-tools-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-source-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-devel-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-debugsource-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "python3-perf-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-tools-devel-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "perf-debuginfo-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-215.0.0.119.oe2203sp3.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-215.0.0.119.oe2203sp3.src.rpm"
+        ],
+        "x86_64": [
+          "kernel-devel-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "kernel-tools-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "kernel-headers-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "kernel-debugsource-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "python3-perf-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "kernel-debuginfo-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "kernel-source-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "perf-debuginfo-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "kernel-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm",
+          "perf-5.10.0-215.0.0.119.oe2203sp3.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP3",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-215.0.0.119.oe2203sp3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nspi: Fix deadlock when adding SPI controllers on SPI buses\r\n\r\nCurrently we have a global spi_add_lock which we take when adding new\ndevices so that we can check that we&apos;re not trying to reuse a chip\nselect that&apos;s already controlled.  This means that if the SPI device is\nitself a SPI controller and triggers the instantiation of further SPI\ndevices we trigger a deadlock as we try to register and instantiate\nthose devices while in the process of doing so for the parent controller\nand hence already holding the global spi_add_lock.  Since we only care\nabout concurrency within a single SPI bus move the lock to be per\ncontroller, avoiding the deadlock.\r\n\r\nThis can be easily triggered in the case of spi-mux.(CVE-2021-47469)\r\n\r\n(CVE-2023-39180)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nhid: cp2112: Fix duplicate workqueue initialization\r\n\r\nPreviously the cp2112 driver called INIT_DELAYED_WORK within\ncp2112_gpio_irq_startup, resulting in duplicate initilizations of the\nworkqueue on subsequent IRQ startups following an initial request. This\nresulted in a warning in set_work_data in workqueue.c, as well as a rare\nNULL dereference within process_one_work in workqueue.c.\r\n\r\nInitialize the workqueue within _probe instead.(CVE-2023-52853)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nksmbd: fix UAF issue in ksmbd_tcp_new_connection()\r\n\r\nThe race is between the handling of a new TCP connection and\nits disconnection. It leads to UAF on `struct tcp_transport` in\nksmbd_tcp_new_connection() function.(CVE-2024-26592)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnetfilter: nf_tables: release mutex after nft_gc_seq_end from abort path\r\n\r\nThe commit mutex should not be released during the critical section\nbetween nft_gc_seq_begin() and nft_gc_seq_end(), otherwise, async GC\nworker could collect expired objects and get the released commit lock\nwithin the same GC sequence.\r\n\r\nnf_tables_module_autoload() temporarily releases the mutex to load\nmodule dependencies, then it goes back to replay the transaction again.\nMove it at the end of the abort phase after nft_gc_seq_end() is called.(CVE-2024-26925)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nwifi: wilc1000: fix RCU usage in connect path\r\n\r\nWith lockdep enabled, calls to the connect function from cfg802.11 layer\nlead to the following warning:\r\n\r\n=============================\nWARNING: suspicious RCU usage\n6.7.0-rc1-wt+ #333 Not tainted\n-----------------------------\ndrivers/net/wireless/microchip/wilc1000/hif.c:386\nsuspicious rcu_dereference_check() usage!\n[...]\nstack backtrace:\nCPU: 0 PID: 100 Comm: wpa_supplicant Not tainted 6.7.0-rc1-wt+ #333\nHardware name: Atmel SAMA5\n unwind_backtrace from show_stack+0x18/0x1c\n show_stack from dump_stack_lvl+0x34/0x48\n dump_stack_lvl from wilc_parse_join_bss_param+0x7dc/0x7f4\n wilc_parse_join_bss_param from connect+0x2c4/0x648\n connect from cfg80211_connect+0x30c/0xb74\n cfg80211_connect from nl80211_connect+0x860/0xa94\n nl80211_connect from genl_rcv_msg+0x3fc/0x59c\n genl_rcv_msg from netlink_rcv_skb+0xd0/0x1f8\n netlink_rcv_skb from genl_rcv+0x2c/0x3c\n genl_rcv from netlink_unicast+0x3b0/0x550\n netlink_unicast from netlink_sendmsg+0x368/0x688\n netlink_sendmsg from ____sys_sendmsg+0x190/0x430\n ____sys_sendmsg from ___sys_sendmsg+0x110/0x158\n ___sys_sendmsg from sys_sendmsg+0xe8/0x150\n sys_sendmsg from ret_fast_syscall+0x0/0x1c\r\n\r\nThis warning is emitted because in the connect path, when trying to parse\ntarget BSS parameters, we dereference a RCU pointer whithout being in RCU\ncritical section.\nFix RCU dereference usage by moving it to a RCU read critical section. To\navoid wrapping the whole wilc_parse_join_bss_param under the critical\nsection, just use the critical section to copy ies data(CVE-2024-27053)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nmedia: tc358743: register v4l2 async device only after successful setup\r\n\r\nEnsure the device has been setup correctly before registering the v4l2\nasync device, thus allowing userspace to access.(CVE-2024-35830)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnet/rds: fix possible cp null dereference\r\n\r\ncp might be null, calling cp-&gt;cp_conn would produce null dereference\r\n\r\n[Simon Horman adds:]\r\n\r\nAnalysis:\r\n\r\n* cp is a parameter of __rds_rdma_map and is not reassigned.\r\n\r\n* The following call-sites pass a NULL cp argument to __rds_rdma_map()\r\n\r\n  - rds_get_mr()\n  - rds_get_mr_for_dest\r\n\r\n* Prior to the code above, the following assumes that cp may be NULL\n  (which is indicative, but could itself be unnecessary)\r\n\r\n\ttrans_private = rs-&gt;rs_transport-&gt;get_mr(\n\t\tsg, nents, rs, &amp;mr-&gt;r_key, cp ? cp-&gt;cp_conn : NULL,\n\t\targs-&gt;vec.addr, args-&gt;vec.bytes,\n\t\tneed_odp ? ODP_ZEROBASED : ODP_NOT_NEEDED);\r\n\r\n* The code modified by this patch is guarded by IS_ERR(trans_private),\n  where trans_private is assigned as per the previous point in this analysis.\r\n\r\n  The only implementation of get_mr that I could locate is rds_ib_get_mr()\n  which can return an ERR_PTR if the conn (4th) argument is NULL.\r\n\r\n* ret is set to PTR_ERR(trans_private).\n  rds_ib_get_mr can return ERR_PTR(-ENODEV) if the conn (4th) argument is NULL.\n  Thus ret may be -ENODEV in which case the code in question will execute.\r\n\r\nConclusion:\n* cp may be NULL at the point where this patch adds a check;\n  this patch does seem to address a possible bug(CVE-2024-35902)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nkprobes: Fix possible use-after-free issue on kprobe registration\r\n\r\nWhen unloading a module, its state is changing MODULE_STATE_LIVE -&gt;\n MODULE_STATE_GOING -&gt; MODULE_STATE_UNFORMED. Each change will take\na time. `is_module_text_address()` and `__module_text_address()`\nworks with MODULE_STATE_LIVE and MODULE_STATE_GOING.\nIf we use `is_module_text_address()` and `__module_text_address()`\nseparately, there is a chance that the first one is succeeded but the\nnext one is failed because module-&gt;state becomes MODULE_STATE_UNFORMED\nbetween those operations.\r\n\r\nIn `check_kprobe_address_safe()`, if the second `__module_text_address()`\nis failed, that is ignored because it expected a kernel_text address.\nBut it may have failed simply because module-&gt;state has been changed\nto MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify\nnon-exist module text address (use-after-free).\r\n\r\nTo fix this problem, we should not use separated `is_module_text_address()`\nand `__module_text_address()`, but use only `__module_text_address()`\nonce and do `try_module_get(module)` which is only available with\nMODULE_STATE_LIVE.(CVE-2024-35955)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nfirewire: ohci: mask bus reset interrupts between ISR and bottom half\r\n\r\nIn the FireWire OHCI interrupt handler, if a bus reset interrupt has\noccurred, mask bus reset interrupts until bus_reset_work has serviced and\ncleared the interrupt.\r\n\r\nNormally, we always leave bus reset interrupts masked. We infer the bus\nreset from the self-ID interrupt that happens shortly thereafter. A\nscenario where we unmask bus reset interrupts was introduced in 2008 in\na007bb857e0b26f5d8b73c2ff90782d9c0972620: If\nOHCI_PARAM_DEBUG_BUSRESETS (8) is set in the debug parameter bitmask, we\nwill unmask bus reset interrupts so we can log them.\r\n\r\nirq_handler logs the bus reset interrupt. However, we can&apos;t clear the bus\nreset event flag in irq_handler, because we won&apos;t service the event until\nlater. irq_handler exits with the event flag still set. If the\ncorresponding interrupt is still unmasked, the first bus reset will\nusually freeze the system due to irq_handler being called again each\ntime it exits. This freeze can be reproduced by loading firewire_ohci\nwith &quot;modprobe firewire_ohci debug=-1&quot; (to enable all debugging output).\nApparently there are also some cases where bus_reset_work will get called\nsoon enough to clear the event, and operation will continue normally.\r\n\r\nThis freeze was first reported a few months after a007bb85 was committed,\nbut until now it was never fixed. The debug level could safely be set\nto -1 through sysfs after the module was loaded, but this would be\nineffectual in logging bus reset interrupts since they were only\nunmasked during initialization.\r\n\r\nirq_handler will now leave the event flag set but mask bus reset\ninterrupts, so irq_handler won&apos;t be called again and there will be no\nfreeze. If OHCI_PARAM_DEBUG_BUSRESETS is enabled, bus_reset_work will\nunmask the interrupt after servicing the event, so future interrupts\nwill be caught as desired.\r\n\r\nAs a side effect to this change, OHCI_PARAM_DEBUG_BUSRESETS can now be\nenabled through sysfs in addition to during initial module loading.\nHowever, when enabled through sysfs, logging of bus reset interrupts will\nbe effective only starting with the second bus reset, after\nbus_reset_work has executed.(CVE-2024-36950)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ndrm/amd/display: Fix division by zero in setup_dsc_config\r\n\r\nWhen slice_height is 0, the division by slice_height in the calculation\nof the number of slices will cause a division by zero driver crash. This\nleaves the kernel in a state that requires a reboot. This patch adds a\ncheck to avoid the division by zero.\r\n\r\nThe stack trace below is for the 6.8.4 Kernel. I reproduced the issue on\na Z16 Gen 2 Lenovo Thinkpad with a Apple Studio Display monitor\nconnected via Thunderbolt. The amdgpu driver crashed with this exception\nwhen I rebooted the system with the monitor connected.\r\n\r\nkernel: ? die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434 arch/x86/kernel/dumpstack.c:447)\nkernel: ? do_trap (arch/x86/kernel/traps.c:113 arch/x86/kernel/traps.c:154)\nkernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu\nkernel: ? do_error_trap (./arch/x86/include/asm/traps.h:58 arch/x86/kernel/traps.c:175)\nkernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu\nkernel: ? exc_divide_error (arch/x86/kernel/traps.c:194 (discriminator 2))\nkernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu\nkernel: ? asm_exc_divide_error (./arch/x86/include/asm/idtentry.h:548)\nkernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu\nkernel: dc_dsc_compute_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1109) amdgpu\r\n\r\nAfter applying this patch, the driver no longer crashes when the monitor\nis connected and the system is rebooted. I believe this is the same\nissue reported for 3113.(CVE-2024-36969)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnet: sched: sch_multiq: fix possible OOB write in multiq_tune()\r\n\r\nq-&gt;bands will be assigned to qopt-&gt;bands to execute subsequent code logic\nafter kmalloc. So the old q-&gt;bands should not be used in kmalloc.\nOtherwise, an out-of-bounds write will occur.(CVE-2024-36978)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nRDMA/hns: Fix UAF for cq async event\r\n\r\nThe refcount of CQ is not protected by locks. When CQ asynchronous\nevents and CQ destruction are concurrent, CQ may have been released,\nwhich will cause UAF.\r\n\r\nUse the xa_lock() to protect the CQ refcount.(CVE-2024-38545)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nftrace: Fix possible use-after-free issue in ftrace_location()\r\n\r\nKASAN reports a bug:\r\n\r\n  BUG: KASAN: use-after-free in ftrace_location+0x90/0x120\n  Read of size 8 at addr ffff888141d40010 by task insmod/424\n  CPU: 8 PID: 424 Comm: insmod Tainted: G        W          6.9.0-rc2+\n  [...]\n  Call Trace:\n   &lt;TASK&gt;\n   dump_stack_lvl+0x68/0xa0\n   print_report+0xcf/0x610\n   kasan_report+0xb5/0xe0\n   ftrace_location+0x90/0x120\n   register_kprobe+0x14b/0xa40\n   kprobe_init+0x2d/0xff0 [kprobe_example]\n   do_one_initcall+0x8f/0x2d0\n   do_init_module+0x13a/0x3c0\n   load_module+0x3082/0x33d0\n   init_module_from_file+0xd2/0x130\n   __x64_sys_finit_module+0x306/0x440\n   do_syscall_64+0x68/0x140\n   entry_SYSCALL_64_after_hwframe+0x71/0x79\r\n\r\nThe root cause is that, in lookup_rec(), ftrace record of some address\nis being searched in ftrace pages of some module, but those ftrace pages\nat the same time is being freed in ftrace_release_mod() as the\ncorresponding module is being deleted:\r\n\r\n           CPU1                       |      CPU2\n  register_kprobes() {                | delete_module() {\n    check_kprobe_address_safe() {     |\n      arch_check_ftrace_location() {  |\n        ftrace_location() {           |\n          lookup_rec() // USE!        |   ftrace_release_mod() // Free!\r\n\r\nTo fix this issue:\n  1. Hold rcu lock as accessing ftrace pages in ftrace_location_range();\n  2. Use ftrace_location_range() instead of lookup_rec() in\n     ftrace_location();\n  3. Call synchronize_rcu() before freeing any ftrace pages both in\n     ftrace_process_locs()/ftrace_release_mod()/ftrace_free_mem().(CVE-2024-38588)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nRDMA/hns: Fix deadlock on SRQ async events.\r\n\r\nxa_lock for SRQ table may be required in AEQ. Use xa_store_irq()/\nxa_erase_irq() to avoid deadlock.(CVE-2024-38591)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\naf_unix: Fix data races in unix_release_sock/unix_stream_sendmsg\r\n\r\nA data-race condition has been identified in af_unix. In one data path,\nthe write function unix_release_sock() atomically writes to\nsk-&gt;sk_shutdown using WRITE_ONCE. However, on the reader side,\nunix_stream_sendmsg() does not read it atomically. Consequently, this\nissue is causing the following KCSAN splat to occur:\r\n\r\n\tBUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg\r\n\r\n\twrite (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:\n\tunix_release_sock (net/unix/af_unix.c:640)\n\tunix_release (net/unix/af_unix.c:1050)\n\tsock_close (net/socket.c:659 net/socket.c:1421)\n\t__fput (fs/file_table.c:422)\n\t__fput_sync (fs/file_table.c:508)\n\t__se_sys_close (fs/open.c:1559 fs/open.c:1541)\n\t__x64_sys_close (fs/open.c:1541)\n\tx64_sys_call (arch/x86/entry/syscall_64.c:33)\n\tdo_syscall_64 (arch/x86/entry/common.c:?)\n\tentry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)\r\n\r\n\tread to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:\n\tunix_stream_sendmsg (net/unix/af_unix.c:2273)\n\t__sock_sendmsg (net/socket.c:730 net/socket.c:745)\n\t____sys_sendmsg (net/socket.c:2584)\n\t__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)\n\t__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)\n\tx64_sys_call (arch/x86/entry/syscall_64.c:33)\n\tdo_syscall_64 (arch/x86/entry/common.c:?)\n\tentry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)\r\n\r\n\tvalue changed: 0x01 -&gt; 0x03\r\n\r\nThe line numbers are related to commit dd5a440a31fa (&quot;Linux 6.9-rc7&quot;).\r\n\r\nCommit e1d09c2c2f57 (&quot;af_unix: Fix data races around sk-&gt;sk_shutdown.&quot;)\naddressed a comparable issue in the past regarding sk-&gt;sk_shutdown.\nHowever, it overlooked resolving this particular data path.\nThis patch only offending unix_stream_sendmsg() function, since the\nother reads seem to be protected by unix_state_lock() as discussed in(CVE-2024-38596)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nring-buffer: Fix a race between readers and resize checks\r\n\r\nThe reader code in rb_get_reader_page() swaps a new reader page into the\nring buffer by doing cmpxchg on old-&gt;list.prev-&gt;next to point it to the\nnew page. Following that, if the operation is successful,\nold-&gt;list.next-&gt;prev gets updated too. This means the underlying\ndoubly-linked list is temporarily inconsistent, page-&gt;prev-&gt;next or\npage-&gt;next-&gt;prev might not be equal back to page for some page in the\nring buffer.\r\n\r\nThe resize operation in ring_buffer_resize() can be invoked in parallel.\nIt calls rb_check_pages() which can detect the described inconsistency\nand stop further tracing:\r\n\r\n[  190.271762] ------------[ cut here ]------------\n[  190.271771] WARNING: CPU: 1 PID: 6186 at kernel/trace/ring_buffer.c:1467 rb_check_pages.isra.0+0x6a/0xa0\n[  190.271789] Modules linked in: [...]\n[  190.271991] Unloaded tainted modules: intel_uncore_frequency(E):1 skx_edac(E):1\n[  190.272002] CPU: 1 PID: 6186 Comm: cmd.sh Kdump: loaded Tainted: G            E      6.9.0-rc6-default #5 158d3e1e6d0b091c34c3b96bfd99a1c58306d79f\n[  190.272011] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.0-0-gd239552c-rebuilt.opensuse.org 04/01/2014\n[  190.272015] RIP: 0010:rb_check_pages.isra.0+0x6a/0xa0\n[  190.272023] Code: [...]\n[  190.272028] RSP: 0018:ffff9c37463abb70 EFLAGS: 00010206\n[  190.272034] RAX: ffff8eba04b6cb80 RBX: 0000000000000007 RCX: ffff8eba01f13d80\n[  190.272038] RDX: ffff8eba01f130c0 RSI: ffff8eba04b6cd00 RDI: ffff8eba0004c700\n[  190.272042] RBP: ffff8eba0004c700 R08: 0000000000010002 R09: 0000000000000000\n[  190.272045] R10: 00000000ffff7f52 R11: ffff8eba7f600000 R12: ffff8eba0004c720\n[  190.272049] R13: ffff8eba00223a00 R14: 0000000000000008 R15: ffff8eba067a8000\n[  190.272053] FS:  00007f1bd64752c0(0000) GS:ffff8eba7f680000(0000) knlGS:0000000000000000\n[  190.272057] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033\n[  190.272061] CR2: 00007f1bd6662590 CR3: 000000010291e001 CR4: 0000000000370ef0\n[  190.272070] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000\n[  190.272073] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400\n[  190.272077] Call Trace:\n[  190.272098]  &lt;TASK&gt;\n[  190.272189]  ring_buffer_resize+0x2ab/0x460\n[  190.272199]  __tracing_resize_ring_buffer.part.0+0x23/0xa0\n[  190.272206]  tracing_resize_ring_buffer+0x65/0x90\n[  190.272216]  tracing_entries_write+0x74/0xc0\n[  190.272225]  vfs_write+0xf5/0x420\n[  190.272248]  ksys_write+0x67/0xe0\n[  190.272256]  do_syscall_64+0x82/0x170\n[  190.272363]  entry_SYSCALL_64_after_hwframe+0x76/0x7e\n[  190.272373] RIP: 0033:0x7f1bd657d263\n[  190.272381] Code: [...]\n[  190.272385] RSP: 002b:00007ffe72b643f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001\n[  190.272391] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f1bd657d263\n[  190.272395] RDX: 0000000000000002 RSI: 0000555a6eb538e0 RDI: 0000000000000001\n[  190.272398] RBP: 0000555a6eb538e0 R08: 000000000000000a R09: 0000000000000000\n[  190.272401] R10: 0000555a6eb55190 R11: 0000000000000246 R12: 00007f1bd6662500\n[  190.272404] R13: 0000000000000002 R14: 00007f1bd6667c00 R15: 0000000000000002\n[  190.272412]  &lt;/TASK&gt;\n[  190.272414] ---[ end trace 0000000000000000 ]---\r\n\r\nNote that ring_buffer_resize() calls rb_check_pages() only if the parent\ntrace_buffer has recording disabled. Recent commit d78ab792705c\n(&quot;tracing: Stop current tracer when resizing buffer&quot;) causes that it is\nnow always the case which makes it more likely to experience this issue.\r\n\r\nThe window to hit this race is nonetheless very small. To help\nreproducing it, one can add a delay loop in rb_get_reader_page():\r\n\r\n ret = rb_head_page_replace(reader, cpu_buffer-&gt;reader_page);\n if (!ret)\n \tgoto spin;\n for (unsigned i = 0; i &lt; 1U &lt;&lt; 26; i++)  /* inserted delay loop */\n \t__asm__ __volatile__ (&quot;&quot; : : : &quot;memory&quot;);\n rb_list_head(reader-&gt;list.next)-&gt;prev = &amp;cpu_buffer-&gt;reader_page-&gt;list;\r\n\r\n.. \n---truncated---(CVE-2024-38601)",
+  "id": "OESA-2024-1765",
+  "modified": "2025-09-03T06:17:50.850661Z",
+  "published": "2024-06-28T11:08:21Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2024-1765"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-47469"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-39180"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52853"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-26592"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-26925"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-27053"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35830"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35902"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35955"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-36950"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-36969"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-36978"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38545"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38588"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38591"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38596"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38601"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2021-47469",
+    "CVE-2023-39180",
+    "CVE-2023-52853",
+    "CVE-2024-26592",
+    "CVE-2024-26925",
+    "CVE-2024-27053",
+    "CVE-2024-35830",
+    "CVE-2024-35902",
+    "CVE-2024-35955",
+    "CVE-2024-36950",
+    "CVE-2024-36969",
+    "CVE-2024-36978",
+    "CVE-2024-38545",
+    "CVE-2024-38588",
+    "CVE-2024-38591",
+    "CVE-2024-38596",
+    "CVE-2024-38601"
+  ]
+}

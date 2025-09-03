@@ -1,0 +1,139 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-1993.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "bpftool-debuginfo-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-debuginfo-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-debugsource-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-devel-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-headers-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-source-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-tools-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-tools-debuginfo-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "kernel-tools-devel-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "perf-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "perf-debuginfo-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "python3-perf-6.6.0-38.0.0.45.oe2403.aarch64.rpm",
+          "python3-perf-debuginfo-6.6.0-38.0.0.45.oe2403.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-6.6.0-38.0.0.45.oe2403.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "bpftool-debuginfo-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-debuginfo-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-debugsource-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-devel-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-headers-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-source-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-tools-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-tools-debuginfo-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "kernel-tools-devel-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "perf-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "perf-debuginfo-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "python3-perf-6.6.0-38.0.0.45.oe2403.x86_64.rpm",
+          "python3-perf-debuginfo-6.6.0-38.0.0.45.oe2403.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:24.03-LTS",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-24.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.6.0-38.0.0.45.oe2403"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nmedia: mediatek: vcodec: Only free buffer VA that is not NULL\r\n\r\nIn the MediaTek vcodec driver, while mtk_vcodec_mem_free() is mostly\ncalled only when the buffer to free exists, there are some instances\nthat didn&apos;t do the check and triggered warnings in practice.\r\n\r\nWe believe those checks were forgotten unintentionally. Add the checks\nback to fix the warnings.(CVE-2023-52888)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nHID: core: remove unnecessary WARN_ON() in implement()\r\n\r\nSyzkaller hit a warning [1] in a call to implement() when trying\nto write a value into a field of smaller size in an output report.\r\n\r\nSince implement() already has a warn message printed out with the\nhelp of hid_warn() and value in question gets trimmed with:\n\t...\n\tvalue &amp;= m;\n\t...\nWARN_ON may be considered superfluous. Remove it to suppress future\nsyzkaller triggers.\r\n\r\n[1]\nWARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 implement drivers/hid/hid-core.c:1451 [inline]\nWARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863\nModules linked in:\nCPU: 0 PID: 5084 Comm: syz-executor424 Not tainted 6.9.0-rc7-syzkaller-00183-gcf87f46fd34d #0\nHardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024\nRIP: 0010:implement drivers/hid/hid-core.c:1451 [inline]\nRIP: 0010:hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863\n...\nCall Trace:\n &lt;TASK&gt;\n __usbhid_submit_report drivers/hid/usbhid/hid-core.c:591 [inline]\n usbhid_submit_report+0x43d/0x9e0 drivers/hid/usbhid/hid-core.c:636\n hiddev_ioctl+0x138b/0x1f00 drivers/hid/usbhid/hiddev.c:726\n vfs_ioctl fs/ioctl.c:51 [inline]\n __do_sys_ioctl fs/ioctl.c:904 [inline]\n __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:890\n do_syscall_x64 arch/x86/entry/common.c:52 [inline]\n do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83\n entry_SYSCALL_64_after_hwframe+0x77/0x7f\n...(CVE-2024-39509)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ndmaengine: idxd: Fix possible Use-After-Free in irq_process_work_list\r\n\r\nUse list_for_each_entry_safe() to allow iterating through the list and\ndeleting the entry in the iteration process. The descriptor is freed via\nidxd_desc_complete() and there&apos;s a slight chance may cause issue for\nthe list iterator when the descriptor is reused by another thread\nwithout it being deleted from the list.(CVE-2024-40956)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nRDMA/mlx5: Add check for srq max_sge attribute\r\n\r\nmax_sge attribute is passed by the user, and is inserted and used\nunchecked, so verify that the value doesn&apos;t exceed maximum allowed value\nbefore using it.(CVE-2024-40990)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nUSB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor\r\n\r\nSyzbot has identified a bug in usbcore (see the Closes: tag below)\ncaused by our assumption that the reserved bits in an endpoint\ndescriptor&apos;s bEndpointAddress field will always be 0.  As a result of\nthe bug, the endpoint_is_duplicate() routine in config.c (and possibly\nother routines as well) may believe that two descriptors are for\ndistinct endpoints, even though they have the same direction and\nendpoint number.  This can lead to confusion, including the bug\nidentified by syzbot (two descriptors with matching endpoint numbers\nand directions, where one was interrupt and the other was bulk).\r\n\r\nTo fix the bug, we will clear the reserved bits in bEndpointAddress\nwhen we parse the descriptor.  (Note that both the USB-2.0 and USB-3.1\nspecs say these bits are &quot;Reserved, reset to zero&quot;.)  This requires us\nto make a copy of the descriptor earlier in usb_parse_endpoint() and\nuse the copy instead of the original when checking for duplicates.(CVE-2024-41035)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnetfilter: nf_tables: prefer nft_chain_validate\r\n\r\nnft_chain_validate already performs loop detection because a cycle will\nresult in a call stack overflow (ctx-&gt;level &gt;= NFT_JUMP_STACK_SIZE).\r\n\r\nIt also follows maps via -&gt;validate callback in nft_lookup, so there\nappears no reason to iterate the maps again.\r\n\r\nnf_tables_check_loops() and all its helper functions can be removed.\nThis improves ruleset load time significantly, from 23s down to 12s.\r\n\r\nThis also fixes a crash bug. Old loop detection code can result in\nunbounded recursion:\r\n\r\nBUG: TASK stack guard page was hit at ....\nOops: stack guard page: 0000 [#1] PREEMPT SMP KASAN\nCPU: 4 PID: 1539 Comm: nft Not tainted 6.10.0-rc5+ #1\n[..]\r\n\r\nwith a suitable ruleset during validation of register stores.\r\n\r\nI can&apos;t see any actual reason to attempt to check for this from\nnft_validate_register_store(), at this point the transaction is still in\nprogress, so we don&apos;t have a full picture of the rule graph.\r\n\r\nFor nf-next it might make sense to either remove it or make this depend\non table-&gt;validate_state in case we could catch an error earlier\n(for improved error reporting to userspace).(CVE-2024-41042)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnet: ethernet: lantiq_etop: fix double free in detach\r\n\r\nThe number of the currently released descriptor is never incremented\nwhich results in the same skb being released multiple times.(CVE-2024-41046)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnilfs2: fix inode number range checks\r\n\r\nPatch series &quot;nilfs2: fix potential issues related to reserved inodes&quot;.\r\n\r\nThis series fixes one use-after-free issue reported by syzbot, caused by\nnilfs2&apos;s internal inode being exposed in the namespace on a corrupted\nfilesystem, and a couple of flaws that cause problems if the starting\nnumber of non-reserved inodes written in the on-disk super block is\nintentionally (or corruptly) changed from its default value.  \r\n\r\n\nThis patch (of 3):\r\n\r\nIn the current implementation of nilfs2, &quot;nilfs-&gt;ns_first_ino&quot;, which\ngives the first non-reserved inode number, is read from the superblock,\nbut its lower limit is not checked.\r\n\r\nAs a result, if a number that overlaps with the inode number range of\nreserved inodes such as the root directory or metadata files is set in the\nsuper block parameter, the inode number test macros (NILFS_MDT_INODE and\nNILFS_VALID_INODE) will not function properly.\r\n\r\nIn addition, these test macros use left bit-shift calculations using with\nthe inode number as the shift count via the BIT macro, but the result of a\nshift calculation that exceeds the bit width of an integer is undefined in\nthe C specification, so if &quot;ns_first_ino&quot; is set to a large value other\nthan the default value NILFS_USER_INO (=11), the macros may potentially\nmalfunction depending on the environment.\r\n\r\nFix these issues by checking the lower bound of &quot;nilfs-&gt;ns_first_ino&quot; and\nby preventing bit shifts equal to or greater than the NILFS_USER_INO\nconstant in the inode number test macros.\r\n\r\nAlso, change the type of &quot;ns_first_ino&quot; from signed integer to unsigned\ninteger to avoid the need for type casting in comparisons such as the\nlower bound check introduced this time.(CVE-2024-42105)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nwifi: cfg80211: restrict NL80211_ATTR_TXQ_QUANTUM values\r\n\r\nsyzbot is able to trigger softlockups, setting NL80211_ATTR_TXQ_QUANTUM\nto 2^31.\r\n\r\nWe had a similar issue in sch_fq, fixed with commit\nd9e15a273306 (&quot;pkt_sched: fq: do not accept silly TCA_FQ_QUANTUM&quot;)\r\n\r\nwatchdog: BUG: soft lockup - CPU#1 stuck for 26s! [kworker/1:0:24]\nModules linked in:\nirq event stamp: 131135\n hardirqs last  enabled at (131134): [&lt;ffff80008ae8778c&gt;] __exit_to_kernel_mode arch/arm64/kernel/entry-common.c:85 [inline]\n hardirqs last  enabled at (131134): [&lt;ffff80008ae8778c&gt;] exit_to_kernel_mode+0xdc/0x10c arch/arm64/kernel/entry-common.c:95\n hardirqs last disabled at (131135): [&lt;ffff80008ae85378&gt;] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]\n hardirqs last disabled at (131135): [&lt;ffff80008ae85378&gt;] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551\n softirqs last  enabled at (125892): [&lt;ffff80008907e82c&gt;] neigh_hh_init net/core/neighbour.c:1538 [inline]\n softirqs last  enabled at (125892): [&lt;ffff80008907e82c&gt;] neigh_resolve_output+0x268/0x658 net/core/neighbour.c:1553\n softirqs last disabled at (125896): [&lt;ffff80008904166c&gt;] local_bh_disable+0x10/0x34 include/linux/bottom_half.h:19\nCPU: 1 PID: 24 Comm: kworker/1:0 Not tainted 6.9.0-rc7-syzkaller-gfda5695d692c #0\nHardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024\nWorkqueue: mld mld_ifc_work\npstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)\n pc : __list_del include/linux/list.h:195 [inline]\n pc : __list_del_entry include/linux/list.h:218 [inline]\n pc : list_move_tail include/linux/list.h:310 [inline]\n pc : fq_tin_dequeue include/net/fq_impl.h:112 [inline]\n pc : ieee80211_tx_dequeue+0x6b8/0x3b4c net/mac80211/tx.c:3854\n lr : __list_del_entry include/linux/list.h:218 [inline]\n lr : list_move_tail include/linux/list.h:310 [inline]\n lr : fq_tin_dequeue include/net/fq_impl.h:112 [inline]\n lr : ieee80211_tx_dequeue+0x67c/0x3b4c net/mac80211/tx.c:3854\nsp : ffff800093d36700\nx29: ffff800093d36a60 x28: ffff800093d36960 x27: dfff800000000000\nx26: ffff0000d800ad50 x25: ffff0000d800abe0 x24: ffff0000d800abf0\nx23: ffff0000e0032468 x22: ffff0000e00324d4 x21: ffff0000d800abf0\nx20: ffff0000d800abf8 x19: ffff0000d800abf0 x18: ffff800093d363c0\nx17: 000000000000d476 x16: ffff8000805519dc x15: ffff7000127a6cc8\nx14: 1ffff000127a6cc8 x13: 0000000000000004 x12: ffffffffffffffff\nx11: ffff7000127a6cc8 x10: 0000000000ff0100 x9 : 0000000000000000\nx8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000\nx5 : ffff80009287aa08 x4 : 0000000000000008 x3 : ffff80008034c7fc\nx2 : ffff0000e0032468 x1 : 00000000da0e46b8 x0 : ffff0000e0032470\nCall trace:\n  __list_del include/linux/list.h:195 [inline]\n  __list_del_entry include/linux/list.h:218 [inline]\n  list_move_tail include/linux/list.h:310 [inline]\n  fq_tin_dequeue include/net/fq_impl.h:112 [inline]\n  ieee80211_tx_dequeue+0x6b8/0x3b4c net/mac80211/tx.c:3854\n  wake_tx_push_queue net/mac80211/util.c:294 [inline]\n  ieee80211_handle_wake_tx_queue+0x118/0x274 net/mac80211/util.c:315\n  drv_wake_tx_queue net/mac80211/driver-ops.h:1350 [inline]\n  schedule_and_wake_txq net/mac80211/driver-ops.h:1357 [inline]\n  ieee80211_queue_skb+0x18e8/0x2244 net/mac80211/tx.c:1664\n  ieee80211_tx+0x260/0x400 net/mac80211/tx.c:1966\n  ieee80211_xmit+0x278/0x354 net/mac80211/tx.c:2062\n  __ieee80211_subif_start_xmit+0xab8/0x122c net/mac80211/tx.c:4338\n  ieee80211_subif_start_xmit+0xe0/0x438 net/mac80211/tx.c:4532\n  __netdev_start_xmit include/linux/netdevice.h:4903 [inline]\n  netdev_start_xmit include/linux/netdevice.h:4917 [inline]\n  xmit_one net/core/dev.c:3531 [inline]\n  dev_hard_start_xmit+0x27c/0x938 net/core/dev.c:3547\n  __dev_queue_xmit+0x1678/0x33fc net/core/dev.c:4341\n  dev_queue_xmit include/linux/netdevice.h:3091 [inline]\n  neigh_resolve_output+0x558/0x658 net/core/neighbour.c:1563\n  neigh_output include/net/neighbour.h:542 [inline]\n  ip6_fini\n---truncated---(CVE-2024-42114)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ns390/pkey: Use kfree_sensitive() to fix Coccinelle warnings\r\n\r\nReplace memzero_explicit() and kfree() with kfree_sensitive() to fix\nwarnings reported by Coccinelle:\r\n\r\nWARNING opportunity for kfree_sensitive/kvfree_sensitive (line 1506)\nWARNING opportunity for kfree_sensitive/kvfree_sensitive (line 1643)\nWARNING opportunity for kfree_sensitive/kvfree_sensitive (line 1770)(CVE-2024-42158)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nmedia: dvb-frontends: tda10048: Fix integer overflow\r\n\r\nstate-&gt;xtal_hz can be up to 16M, so it can overflow a 32 bit integer\nwhen multiplied by pll_mfactor.\r\n\r\nCreate a new 64 bit variable to hold the calculations.(CVE-2024-42223)",
+  "id": "OESA-2024-1993",
+  "modified": "2025-09-03T06:19:45.406994Z",
+  "published": "2024-08-16T11:08:49Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-1993"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52888"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-39509"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-40956"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-40990"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-41035"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-41042"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-41046"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42105"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42114"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42158"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42223"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2023-52888",
+    "CVE-2024-39509",
+    "CVE-2024-40956",
+    "CVE-2024-40990",
+    "CVE-2024-41035",
+    "CVE-2024-41042",
+    "CVE-2024-41046",
+    "CVE-2024-42105",
+    "CVE-2024-42114",
+    "CVE-2024-42158",
+    "CVE-2024-42223"
+  ]
+}

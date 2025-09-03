@@ -1,0 +1,104 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1649.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "bpftool-debuginfo-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-debugsource-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-devel-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-headers-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-source-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-tools-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "kernel-tools-devel-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "perf-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "perf-debuginfo-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "python3-perf-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-268.0.0.171.oe2203sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-268.0.0.171.oe2203sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "bpftool-debuginfo-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-debuginfo-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-debugsource-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-devel-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-headers-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-source-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-tools-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "perf-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "perf-debuginfo-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "python3-perf-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-268.0.0.171.oe2203sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-268.0.0.171.oe2203sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nscsi: target: Fix WRITE_SAME No Data Buffer crash\n\nIn newer version of the SBC specs, we have a NDOB bit that indicates there\nis no data buffer that gets written out. If this bit is set using commands\nlike &quot;sg_write_same --ndob&quot; we will crash in target_core_iblock/file&apos;s\nexecute_write_same handlers when we go to access the se_cmd-&gt;t_data_sg\nbecause its NULL.\n\nThis patch adds a check for the NDOB bit in the common WRITE SAME code\nbecause we don&apos;t support it. And, it adds a check for zero SG elements in\neach handler in case the initiator tries to send a normal WRITE SAME with\nno data buffer.(CVE-2022-21546)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nHID: intel-ish-hid: ipc: Fix potential use-after-free in work function\n\nWhen a reset notify IPC message is received, the ISR schedules a work\nfunction and passes the ISHTP device to it via a global pointer\nishtp_dev. If ish_probe() fails, the devm-managed device resources\nincluding ishtp_dev are freed, but the work is not cancelled, causing a\nuse-after-free when the work function tries to access ishtp_dev. Use\ndevm_work_autocancel() instead, so that the work is automatically\ncancelled if probe fails.(CVE-2023-53039)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nKVM: Explicitly verify target vCPU is online in kvm_get_vcpu()\n\nExplicitly verify the target vCPU is fully online _prior_ to clamping the\nindex in kvm_get_vcpu().  If the index is &quot;bad&quot;, the nospec clamping will\ngenerate &apos;0&apos;, i.e. KVM will return vCPU0 instead of NULL.\n\nIn practice, the bug is unlikely to cause problems, as it will only come\ninto play if userspace or the guest is buggy or misbehaving, e.g. KVM may\nsend interrupts to vCPU0 instead of dropping them on the floor.\n\nHowever, returning vCPU0 when it shouldn&apos;t exist per online_vcpus is\nproblematic now that KVM uses an xarray for the vCPUs array, as KVM needs\nto insert into the xarray before publishing the vCPU to userspace (see\ncommit c5b077549136 (&quot;KVM: Convert the kvm-&gt;vcpus array to a xarray&quot;)),\ni.e. before vCPU creation is guaranteed to succeed.\n\nAs a result, incorrectly providing access to vCPU0 will trigger a\nuse-after-free if vCPU0 is dereferenced and kvm_vm_ioctl_create_vcpu()\nbails out of vCPU creation due to an error and frees vCPU0.  Commit\nafb2acb2e3a3 (&quot;KVM: Fix vcpu_array[0] races&quot;) papered over that issue, but\nin doing so introduced an unsolvable teardown conundrum.  Preventing\naccesses to vCPU0 before it&apos;s fully online will allow reverting commit\nafb2acb2e3a3, without re-introducing the vcpu_array[0] UAF race.(CVE-2024-58083)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nusb: cdc-acm: Check control transfer buffer size before access\n\nIf the first fragment is shorter than struct usb_cdc_notification, we can&apos;t\ncalculate an expected_size. Log an error and discard the notification\ninstead of reading lengths from memory outside the received data, which can\nlead to memory corruption when the expected_size decreases between\nfragments, causing `expected_size - acm-&gt;nb_index` to wrap.\n\nThis issue has been present since the beginning of git history; however,\nit only leads to memory corruption since commit ea2583529cd1\n(&quot;cdc-acm: reassemble fragmented notifications&quot;).\n\nA mitigating factor is that acm_ctrl_irq() can only execute after userspace\nhas opened /dev/ttyACM*; but if ModemManager is running, ModemManager will\ndo that automatically depending on the USB device&apos;s vendor/product IDs and\nits other interfaces.(CVE-2025-21704)",
+  "id": "OESA-2025-1649",
+  "modified": "2025-09-03T06:31:01.180012Z",
+  "published": "2025-06-20T13:26:30Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1649"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-21546"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-53039"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-58083"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-21704"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2022-21546",
+    "CVE-2023-53039",
+    "CVE-2024-58083",
+    "CVE-2025-21704"
+  ]
+}

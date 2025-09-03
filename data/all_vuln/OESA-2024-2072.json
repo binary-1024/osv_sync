@@ -1,0 +1,96 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2072.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "mysql-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-common-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-config-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-debuginfo-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-debugsource-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-devel-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-errmsg-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-help-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-libs-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-server-8.0.38-1.oe2203sp1.aarch64.rpm",
+          "mysql-test-8.0.38-1.oe2203sp1.aarch64.rpm"
+        ],
+        "src": [
+          "mysql-8.0.38-1.oe2203sp1.src.rpm"
+        ],
+        "x86_64": [
+          "mysql-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-common-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-config-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-debuginfo-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-debugsource-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-devel-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-errmsg-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-help-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-libs-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-server-8.0.38-1.oe2203sp1.x86_64.rpm",
+          "mysql-test-8.0.38-1.oe2203sp1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP1",
+        "name": "mysql",
+        "purl": "pkg:rpm/openEuler/mysql&distro=openEuler-22.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "8.0.38-1.oe2203sp1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The MySQL(TM) software delivers a very fast, multi-threaded, multi-user, and robust SQL (Structured Query Language) database server. MySQL Server is intended for mission-critical, heavy-load production systems as well as for embedding into mass-deployed software. MySQL is a trademark of Oracle and/or its affiliates\r\n\r\nSecurity Fix(es):\r\n\r\nThe public API function BIO_new_NDEF is a helper function used for streaming\nASN.1 data via a BIO. It is primarily used internally to OpenSSL to support the\nSMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by\nend user applications.\r\n\r\nThe function receives a BIO from the caller, prepends a new BIO_f_asn1 filter\nBIO onto the front of it to form a BIO chain, and then returns the new head of\nthe BIO chain to the caller. Under certain conditions, for example if a CMS\nrecipient public key is invalid, the new filter BIO is freed and the function\nreturns a NULL result indicating a failure. However, in this case, the BIO chain\nis not properly cleaned up and the BIO passed by the caller still retains\ninternal pointers to the previously freed filter BIO. If the caller then goes on\nto call BIO_pop() on the BIO then a use-after-free will occur. This will most\nlikely result in a crash.\r\n\r\n\r\n\r\nThis scenario occurs directly in the internal function B64_write_ASN1() which\nmay cause BIO_new_NDEF() to be called and will subsequently call BIO_pop() on\nthe BIO. This internal function is in turn called by the public API functions\nPEM_write_bio_ASN1_stream, PEM_write_bio_CMS_stream, PEM_write_bio_PKCS7_stream,\nSMIME_write_ASN1, SMIME_write_CMS and SMIME_write_PKCS7.\r\n\r\nOther public API functions that may be impacted by this include\ni2d_ASN1_bio_stream, BIO_new_CMS, BIO_new_PKCS7, i2d_CMS_bio_stream and\ni2d_PKCS7_bio_stream.\r\n\r\nThe OpenSSL cms and smime command line applications are similarly affected.\r\n\r\n\r\n\r\n(CVE-2023-0215)\r\n\r\nThis flaw makes curl overflow a heap based buffer in the SOCKS5 proxy\nhandshake.\r\n\r\nWhen curl is asked to pass along the host name to the SOCKS5 proxy to allow\nthat to resolve the address instead of it getting done by curl itself, the\nmaximum length that host name can be is 255 bytes.\r\n\r\nIf the host name is detected to be longer, curl switches to local name\nresolving and instead passes on the resolved address only. Due to this bug,\nthe local variable that means &quot;let the host resolve the name&quot; could get the\nwrong value during a slow SOCKS5 handshake, and contrary to the intention,\ncopy the too long host name to the target buffer instead of copying just the\nresolved address there.\r\n\r\nThe target buffer being a heap based buffer, and the host name coming from the\nURL that curl has been told to operate with.\n(CVE-2023-38545)\r\n\r\nVulnerability in the MySQL Server product of Oracle MySQL (component: Server: Optimizer).  Supported versions that are affected are 8.0.35 and prior and  8.2.0 and prior. Easily exploitable vulnerability allows high privileged attacker with network access via multiple protocols to compromise MySQL Server.  Successful attacks of this vulnerability can result in unauthorized ability to cause a hang or frequently repeatable crash (complete DOS) of MySQL Server. CVSS 3.1 Base Score 4.9 (Availability impacts).  CVSS Vector: (CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H).(CVE-2024-21137)\r\n\r\nVulnerability in the MySQL Server product of Oracle MySQL (component: InnoDB).  Supported versions that are affected are 8.0.36 and prior and  8.3.0 and prior. Easily exploitable vulnerability allows high privileged attacker with network access via multiple protocols to compromise MySQL Server.  Successful attacks of this vulnerability can result in unauthorized ability to cause a hang or frequently repeatable crash (complete DOS) of MySQL Server. CVSS 3.1 Base Score 4.9 (Availability impacts).  CVSS Vector: (CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H).(CVE-2024-21159)",
+  "id": "OESA-2024-2072",
+  "modified": "2025-09-03T06:18:45.766984Z",
+  "published": "2024-08-30T11:08:59Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2072"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-0215"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-38545"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-21137"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-21159"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "mysql security update",
+  "upstream": [
+    "CVE-2023-0215",
+    "CVE-2023-38545",
+    "CVE-2024-21137",
+    "CVE-2024-21159"
+  ]
+}

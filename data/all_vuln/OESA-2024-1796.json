@@ -1,0 +1,150 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-1796.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "kernel-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "kernel-debugsource-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "kernel-devel-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "kernel-headers-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "kernel-source-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "kernel-tools-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "kernel-tools-devel-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "perf-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "perf-debuginfo-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "python3-perf-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-136.83.0.164.oe2203sp1.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-136.83.0.164.oe2203sp1.src.rpm"
+        ],
+        "x86_64": [
+          "kernel-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "kernel-debuginfo-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "kernel-debugsource-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "kernel-devel-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "kernel-headers-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "kernel-source-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "kernel-tools-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "perf-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "perf-debuginfo-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "python3-perf-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-136.83.0.164.oe2203sp1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP1",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-136.83.0.164.oe2203sp1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nubifs: Set page uptodate in the correct place\r\n\r\nPage cache reads are lockless, so setting the freshly allocated page\nuptodate before we&apos;ve overwritten it with the data it&apos;s supposed to have\nin it will allow a simultaneous reader to see old data.  Move the call\nto SetPageUptodate into ubifs_write_end(), which is after we copied the\nnew data into the page.(CVE-2024-35821)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nkprobes: Fix possible use-after-free issue on kprobe registration\r\n\r\nWhen unloading a module, its state is changing MODULE_STATE_LIVE -&gt;\n MODULE_STATE_GOING -&gt; MODULE_STATE_UNFORMED. Each change will take\na time. `is_module_text_address()` and `__module_text_address()`\nworks with MODULE_STATE_LIVE and MODULE_STATE_GOING.\nIf we use `is_module_text_address()` and `__module_text_address()`\nseparately, there is a chance that the first one is succeeded but the\nnext one is failed because module-&gt;state becomes MODULE_STATE_UNFORMED\nbetween those operations.\r\n\r\nIn `check_kprobe_address_safe()`, if the second `__module_text_address()`\nis failed, that is ignored because it expected a kernel_text address.\nBut it may have failed simply because module-&gt;state has been changed\nto MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify\nnon-exist module text address (use-after-free).\r\n\r\nTo fix this problem, we should not use separated `is_module_text_address()`\nand `__module_text_address()`, but use only `__module_text_address()`\nonce and do `try_module_get(module)` which is only available with\nMODULE_STATE_LIVE.(CVE-2024-35955)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnet/sched: taprio: always validate TCA_TAPRIO_ATTR_PRIOMAP\r\n\r\nIf one TCA_TAPRIO_ATTR_PRIOMAP attribute has been provided,\ntaprio_parse_mqprio_opt() must validate it, or userspace\ncan inject arbitrary data to the kernel, the second time\ntaprio_change() is called.\r\n\r\nFirst call (with valid attributes) sets dev-&gt;num_tc\nto a non zero value.\r\n\r\nSecond call (with arbitrary mqprio attributes)\nreturns early from taprio_parse_mqprio_opt()\nand bad things can happen.(CVE-2024-36974)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ntcp: Fix shift-out-of-bounds in dctcp_update_alpha().\r\n\r\nIn dctcp_update_alpha(), we use a module parameter dctcp_shift_g\nas follows:\r\n\r\n  alpha -= min_not_zero(alpha, alpha &gt;&gt; dctcp_shift_g);\n  ...\n  delivered_ce &lt;&lt;= (10 - dctcp_shift_g);\r\n\r\nIt seems syzkaller started fuzzing module parameters and triggered\nshift-out-of-bounds [0] by setting 100 to dctcp_shift_g:\r\n\r\n  memcpy((void*)0x20000080,\n         &quot;/sys/module/tcp_dctcp/parameters/dctcp_shift_g\\000&quot;, 47);\n  res = syscall(__NR_openat, /*fd=*/0xffffffffffffff9cul, /*file=*/0x20000080ul,\n                /*flags=*/2ul, /*mode=*/0ul);\n  memcpy((void*)0x20000000, &quot;100\\000&quot;, 4);\n  syscall(__NR_write, /*fd=*/r[0], /*val=*/0x20000000ul, /*len=*/4ul);\r\n\r\nLet&apos;s limit the max value of dctcp_shift_g by param_set_uint_minmax().\r\n\r\nWith this patch:\r\n\r\n  # echo 10 &gt; /sys/module/tcp_dctcp/parameters/dctcp_shift_g\n  # cat /sys/module/tcp_dctcp/parameters/dctcp_shift_g\n  10\n  # echo 11 &gt; /sys/module/tcp_dctcp/parameters/dctcp_shift_g\n  -bash: echo: write error: Invalid argument\r\n\r\n[0]:\nUBSAN: shift-out-of-bounds in net/ipv4/tcp_dctcp.c:143:12\nshift exponent 100 is too large for 32-bit type &apos;u32&apos; (aka &apos;unsigned int&apos;)\nCPU: 0 PID: 8083 Comm: syz-executor345 Not tainted 6.9.0-05151-g1b294a1f3561 #2\nHardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS\n1.13.0-1ubuntu1.1 04/01/2014\nCall Trace:\n &lt;TASK&gt;\n __dump_stack lib/dump_stack.c:88 [inline]\n dump_stack_lvl+0x201/0x300 lib/dump_stack.c:114\n ubsan_epilogue lib/ubsan.c:231 [inline]\n __ubsan_handle_shift_out_of_bounds+0x346/0x3a0 lib/ubsan.c:468\n dctcp_update_alpha+0x540/0x570 net/ipv4/tcp_dctcp.c:143\n tcp_in_ack_event net/ipv4/tcp_input.c:3802 [inline]\n tcp_ack+0x17b1/0x3bc0 net/ipv4/tcp_input.c:3948\n tcp_rcv_state_process+0x57a/0x2290 net/ipv4/tcp_input.c:6711\n tcp_v4_do_rcv+0x764/0xc40 net/ipv4/tcp_ipv4.c:1937\n sk_backlog_rcv include/net/sock.h:1106 [inline]\n __release_sock+0x20f/0x350 net/core/sock.c:2983\n release_sock+0x61/0x1f0 net/core/sock.c:3549\n mptcp_subflow_shutdown+0x3d0/0x620 net/mptcp/protocol.c:2907\n mptcp_check_send_data_fin+0x225/0x410 net/mptcp/protocol.c:2976\n __mptcp_close+0x238/0xad0 net/mptcp/protocol.c:3072\n mptcp_close+0x2a/0x1a0 net/mptcp/protocol.c:3127\n inet_release+0x190/0x1f0 net/ipv4/af_inet.c:437\n __sock_release net/socket.c:659 [inline]\n sock_close+0xc0/0x240 net/socket.c:1421\n __fput+0x41b/0x890 fs/file_table.c:422\n task_work_run+0x23b/0x300 kernel/task_work.c:180\n exit_task_work include/linux/task_work.h:38 [inline]\n do_exit+0x9c8/0x2540 kernel/exit.c:878\n do_group_exit+0x201/0x2b0 kernel/exit.c:1027\n __do_sys_exit_group kernel/exit.c:1038 [inline]\n __se_sys_exit_group kernel/exit.c:1036 [inline]\n __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1036\n do_syscall_x64 arch/x86/entry/common.c:52 [inline]\n do_syscall_64+0xe4/0x240 arch/x86/entry/common.c:83\n entry_SYSCALL_64_after_hwframe+0x67/0x6f\nRIP: 0033:0x7f6c2b5005b6\nCode: Unable to access opcode bytes at 0x7f6c2b50058c.\nRSP: 002b:00007ffe883eb948 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7\nRAX: ffffffffffffffda RBX: 00007f6c2b5862f0 RCX: 00007f6c2b5005b6\nRDX: 0000000000000001 RSI: 000000000000003c RDI: 0000000000000001\nRBP: 0000000000000001 R08: 00000000000000e7 R09: ffffffffffffffc0\nR10: 0000000000000006 R11: 0000000000000246 R12: 00007f6c2b5862f0\nR13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001\n &lt;/TASK&gt;(CVE-2024-37356)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nof: module: add buffer overflow check in of_modalias()\r\n\r\nIn of_modalias(), if the buffer happens to be too small even for the 1st\nsnprintf() call, the len parameter will become negative and str parameter\n(if not NULL initially) will point beyond the buffer&apos;s end. Add the buffer\noverflow check after the 1st snprintf() call and fix such check after the\nstrlen() call (accounting for the terminating NUL char).(CVE-2024-38541)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nnet/mlx5: Add a timeout to acquire the command queue semaphore\r\n\r\nPrevent forced completion handling on an entry that has not yet been\nassigned an index, causing an out of bounds access on idx = -22.\nInstead of waiting indefinitely for the sem, blocking flow now waits for\nindex to be allocated or a sem acquisition timeout before beginning the\ntimer for FW completion.\r\n\r\nKernel log example:\nmlx5_core 0000:06:00.0: wait_func_handle_exec_timeout:1128:(pid 185911): cmd[-22]: CREATE_UCTX(0xa04) No done completion(CVE-2024-38556)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nbpf: Add BPF_PROG_TYPE_CGROUP_SKB attach type enforcement in BPF_LINK_CREATE\r\n\r\nbpf_prog_attach uses attach_type_to_prog_type to enforce proper\nattach type for BPF_PROG_TYPE_CGROUP_SKB. link_create uses\nbpf_prog_get and relies on bpf_prog_attach_check_attach_type\nto properly verify prog_type &lt;&gt; attach_type association.\r\n\r\nAdd missing attach_type enforcement for the link_create case.\nOtherwise, it&apos;s currently possible to attach cgroup_skb prog\ntypes to other cgroup hooks.(CVE-2024-38564)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nftrace: Fix possible use-after-free issue in ftrace_location()\r\n\r\nKASAN reports a bug:\r\n\r\n  BUG: KASAN: use-after-free in ftrace_location+0x90/0x120\n  Read of size 8 at addr ffff888141d40010 by task insmod/424\n  CPU: 8 PID: 424 Comm: insmod Tainted: G        W          6.9.0-rc2+\n  [...]\n  Call Trace:\n   &lt;TASK&gt;\n   dump_stack_lvl+0x68/0xa0\n   print_report+0xcf/0x610\n   kasan_report+0xb5/0xe0\n   ftrace_location+0x90/0x120\n   register_kprobe+0x14b/0xa40\n   kprobe_init+0x2d/0xff0 [kprobe_example]\n   do_one_initcall+0x8f/0x2d0\n   do_init_module+0x13a/0x3c0\n   load_module+0x3082/0x33d0\n   init_module_from_file+0xd2/0x130\n   __x64_sys_finit_module+0x306/0x440\n   do_syscall_64+0x68/0x140\n   entry_SYSCALL_64_after_hwframe+0x71/0x79\r\n\r\nThe root cause is that, in lookup_rec(), ftrace record of some address\nis being searched in ftrace pages of some module, but those ftrace pages\nat the same time is being freed in ftrace_release_mod() as the\ncorresponding module is being deleted:\r\n\r\n           CPU1                       |      CPU2\n  register_kprobes() {                | delete_module() {\n    check_kprobe_address_safe() {     |\n      arch_check_ftrace_location() {  |\n        ftrace_location() {           |\n          lookup_rec() // USE!        |   ftrace_release_mod() // Free!\r\n\r\nTo fix this issue:\n  1. Hold rcu lock as accessing ftrace pages in ftrace_location_range();\n  2. Use ftrace_location_range() instead of lookup_rec() in\n     ftrace_location();\n  3. Call synchronize_rcu() before freeing any ftrace pages both in\n     ftrace_process_locs()/ftrace_release_mod()/ftrace_free_mem().(CVE-2024-38588)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\njffs2: prevent xattr node from overflowing the eraseblock\r\n\r\nAdd a check to make sure that the requested xattr node size is no larger\nthan the eraseblock minus the cleanmarker.\r\n\r\nUnlike the usual inode nodes, the xattr nodes aren&apos;t split into parts\nand spread across multiple eraseblocks, which means that a xattr node\nmust not occupy more than one eraseblock. If the requested xattr value is\ntoo large, the xattr node can spill onto the next eraseblock, overwriting\nthe nodes and causing errors such as:\r\n\r\njffs2: argh. node added in wrong place at 0x0000b050(2)\njffs2: nextblock 0x0000a000, expected at 0000b00c\njffs2: error: (823) do_verify_xattr_datum: node CRC failed at 0x01e050,\nread=0xfc892c93, calc=0x000000\njffs2: notice: (823) jffs2_get_inode_nodes: Node header CRC failed\nat 0x01e00c. {848f,2fc4,0fef511f,59a3d171}\njffs2: Node at 0x0000000c with length 0x00001044 would run over the\nend of the erase block\njffs2: Perhaps the file system was created with the wrong erase size?\njffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found\nat 0x00000010: 0x1044 instead\r\n\r\nThis breaks the filesystem and can lead to KASAN crashes such as:\r\n\r\nBUG: KASAN: slab-out-of-bounds in jffs2_sum_add_kvec+0x125e/0x15d0\nRead of size 4 at addr ffff88802c31e914 by task repro/830\nCPU: 0 PID: 830 Comm: repro Not tainted 6.9.0-rc3+ #1\nHardware name: QEMU Standard PC (i440FX + PIIX, 1996),\nBIOS Arch Linux 1.16.3-1-1 04/01/2014\nCall Trace:\n &lt;TASK&gt;\n dump_stack_lvl+0xc6/0x120\n print_report+0xc4/0x620\n ? __virt_addr_valid+0x308/0x5b0\n kasan_report+0xc1/0xf0\n ? jffs2_sum_add_kvec+0x125e/0x15d0\n ? jffs2_sum_add_kvec+0x125e/0x15d0\n jffs2_sum_add_kvec+0x125e/0x15d0\n jffs2_flash_direct_writev+0xa8/0xd0\n jffs2_flash_writev+0x9c9/0xef0\n ? __x64_sys_setxattr+0xc4/0x160\n ? do_syscall_64+0x69/0x140\n ? entry_SYSCALL_64_after_hwframe+0x76/0x7e\n [...]\r\n\r\nFound by Linux Verification Center (linuxtesting.org) with Syzkaller.(CVE-2024-38599)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nfs/ntfs3: Use variable length array instead of fixed size\r\n\r\nShould fix smatch warning:\n\tntfs_set_label() error: __builtin_memcpy() &apos;uni-&gt;name&apos; too small (20 vs 256)(CVE-2024-38623)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nfs/ntfs3: Use 64 bit variable to avoid 32 bit overflow\r\n\r\nFor example, in the expression:\n\tvbo = 2 * vbo + skip(CVE-2024-38624)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nwatchdog: cpu5wdt.c: Fix use-after-free bug caused by cpu5wdt_trigger\r\n\r\nWhen the cpu5wdt module is removing, the origin code uses del_timer() to\nde-activate the timer. If the timer handler is running, del_timer() could\nnot stop it and will return directly. If the port region is released by\nrelease_region() and then the timer handler cpu5wdt_trigger() calls outb()\nto write into the region that is released, the use-after-free bug will\nhappen.\r\n\r\nChange del_timer() to timer_shutdown_sync() in order that the timer handler\ncould be finished before the port region is released.(CVE-2024-38630)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ns390/ap: Fix crash in AP internal function modify_bitmap()\r\n\r\nA system crash like this\r\n\r\n  Failing address: 200000cb7df6f000 TEID: 200000cb7df6f403\n  Fault in home space mode while using kernel ASCE.\n  AS:00000002d71bc007 R3:00000003fe5b8007 S:000000011a446000 P:000000015660c13d\n  Oops: 0038 ilc:3 [#1] PREEMPT SMP\n  Modules linked in: mlx5_ib ...\n  CPU: 8 PID: 7556 Comm: bash Not tainted 6.9.0-rc7 #8\n  Hardware name: IBM 3931 A01 704 (LPAR)\n  Krnl PSW : 0704e00180000000 0000014b75e7b606 (ap_parse_bitmap_str+0x10e/0x1f8)\n  R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3\n  Krnl GPRS: 0000000000000001 ffffffffffffffc0 0000000000000001 00000048f96b75d3\n  000000cb00000100 ffffffffffffffff ffffffffffffffff 000000cb7df6fce0\n  000000cb7df6fce0 00000000ffffffff 000000000000002b 00000048ffffffff\n  000003ff9b2dbc80 200000cb7df6fcd8 0000014bffffffc0 000000cb7df6fbc8\n  Krnl Code: 0000014b75e7b5fc: a7840047            brc     8,0000014b75e7b68a\n  0000014b75e7b600: 18b2                lr      %r11,%r2\n  #0000014b75e7b602: a7f4000a            brc     15,0000014b75e7b616\n  &gt;0000014b75e7b606: eb22d00000e6        laog    %r2,%r2,0(%r13)\n  0000014b75e7b60c: a7680001            lhi     %r6,1\n  0000014b75e7b610: 187b                lr      %r7,%r11\n  0000014b75e7b612: 84960021            brxh    %r9,%r6,0000014b75e7b654\n  0000014b75e7b616: 18e9                lr      %r14,%r9\n  Call Trace:\n  [&lt;0000014b75e7b606&gt;] ap_parse_bitmap_str+0x10e/0x1f8\n  ([&lt;0000014b75e7b5dc&gt;] ap_parse_bitmap_str+0xe4/0x1f8)\n  [&lt;0000014b75e7b758&gt;] apmask_store+0x68/0x140\n  [&lt;0000014b75679196&gt;] kernfs_fop_write_iter+0x14e/0x1e8\n  [&lt;0000014b75598524&gt;] vfs_write+0x1b4/0x448\n  [&lt;0000014b7559894c&gt;] ksys_write+0x74/0x100\n  [&lt;0000014b7618a440&gt;] __do_syscall+0x268/0x328\n  [&lt;0000014b761a3558&gt;] system_call+0x70/0x98\n  INFO: lockdep is turned off.\n  Last Breaking-Event-Address:\n  [&lt;0000014b75e7b636&gt;] ap_parse_bitmap_str+0x13e/0x1f8\n  Kernel panic - not syncing: Fatal exception: panic_on_oops\r\n\r\noccured when /sys/bus/ap/a[pq]mask was updated with a relative mask value\n(like +0x10-0x12,+60,-90) with one of the numeric values exceeding INT_MAX.\r\n\r\nThe fix is simple: use unsigned long values for the internal variables. The\ncorrect checks are already in place in the function but a simple int for\nthe internal variables was used with the possibility to overflow.(CVE-2024-38661)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\num: Add winch to winch_handlers before registering winch IRQ\r\n\r\nRegistering a winch IRQ is racy, an interrupt may occur before the winch is\nadded to the winch_handlers list.\r\n\r\nIf that happens, register_winch_irq() adds to that list a winch that is\nscheduled to be (or has already been) freed, causing a panic later in\nwinch_cleanup().\r\n\r\nAvoid the race by adding the winch to the winch_handlers list before\nregistering the IRQ, and rolling back if um_request_irq() fails.(CVE-2024-39292)",
+  "id": "OESA-2024-1796",
+  "modified": "2025-09-03T06:20:19.692863Z",
+  "published": "2024-07-05T11:08:25Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-1796"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35821"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35955"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-36974"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-37356"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38541"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38556"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38564"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38588"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38599"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38623"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38624"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38630"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38661"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-39292"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2024-35821",
+    "CVE-2024-35955",
+    "CVE-2024-36974",
+    "CVE-2024-37356",
+    "CVE-2024-38541",
+    "CVE-2024-38556",
+    "CVE-2024-38564",
+    "CVE-2024-38588",
+    "CVE-2024-38599",
+    "CVE-2024-38623",
+    "CVE-2024-38624",
+    "CVE-2024-38630",
+    "CVE-2024-38661",
+    "CVE-2024-39292"
+  ]
+}

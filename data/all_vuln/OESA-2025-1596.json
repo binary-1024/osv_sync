@@ -1,0 +1,101 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1596.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2506.1.0.0330.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2506.1.0.0330.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2506.1.0.0330.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Medium"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nmmc: sdhci-pci: Fix possible memory leak caused by missing pci_dev_put()\n\npci_get_device() will increase the reference count for the returned\npci_dev. We need to use pci_dev_put() to decrease the reference count\nbefore amd_probe() returns. There is no problem for the &apos;smbus_dev ==\nNULL&apos; branch because pci_dev_put() can also handle the NULL input\nparameter case.(CVE-2022-49787)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nmedia: dw2102: Fix null-ptr-deref in dw2102_i2c_transfer()\n\nIn dw2102_i2c_transfer, msg is controlled by user. When msg[i].buf\nis null and msg[i].len is zero, former checks on msg[i].buf would be\npassed. Malicious data finally reach dw2102_i2c_transfer. If accessing\nmsg[i].buf[0] without sanity check, null ptr deref would happen.\nWe add check on msg[i].len to prevent crash.\n\nSimilar commit:\ncommit 950e252cb469\n(&quot;[media] dw2102: limit messages to buffer size&quot;)(CVE-2023-53146)\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\nfs/jfs: Prevent integer overflow in AG size calculation\n\nThe JFS filesystem calculates allocation group (AG) size using 1 &lt;&lt;\nl2agsize in dbExtendFS(). When l2agsize exceeds 31 (possible with &gt;2TB\naggregates on 32-bit systems), this 32-bit shift operation causes undefined\nbehavior and improper AG sizing.\n\nOn 32-bit architectures:\n- Left-shifting 1 by 32+ bits results in 0 due to integer overflow\n- This creates invalid AG sizes (0 or garbage values) in\nsbi-&gt;bmap-&gt;db_agsize\n- Subsequent block allocations would reference invalid AG structures\n- Could lead to:\n  - Filesystem corruption during extend operations\n  - Kernel crashes due to invalid memory accesses\n  - Security vulnerabilities via malformed on-disk structures\n\nFix by casting to s64 before shifting:\nbmp-&gt;db_agsize = (s64)1 &lt;&lt; l2agsize;\n\nThis ensures 64-bit arithmetic even on 32-bit architectures. The cast\nmatches the data type of db_agsize (s64) and follows similar patterns in\nJFS block calculation code.\n\nFound by Linux Verification Center (linuxtesting.org) with SVACE.(CVE-2025-37858)",
+  "id": "OESA-2025-1596",
+  "modified": "2025-09-03T06:31:04.111532Z",
+  "published": "2025-06-06T14:04:03Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1596"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49787"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-53146"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-37858"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2022-49787",
+    "CVE-2023-53146",
+    "CVE-2025-37858"
+  ]
+}

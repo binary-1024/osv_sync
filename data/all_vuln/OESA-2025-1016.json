@@ -1,0 +1,155 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1016.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "kernel-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "kernel-debugsource-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "kernel-devel-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "kernel-headers-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "kernel-source-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "kernel-tools-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "kernel-tools-devel-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "perf-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "perf-debuginfo-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "python3-perf-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-136.107.0.187.oe2203sp1.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-136.107.0.187.oe2203sp1.src.rpm"
+        ],
+        "x86_64": [
+          "kernel-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "kernel-debuginfo-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "kernel-debugsource-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "kernel-devel-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "kernel-headers-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "kernel-source-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "kernel-tools-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "perf-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "perf-debuginfo-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "python3-perf-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-136.107.0.187.oe2203sp1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP1",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-136.107.0.187.oe2203sp1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ndmaengine: idxd: Let probe fail when workqueue cannot be enabled\r\n\r\nThe workqueue is enabled when the appropriate driver is loaded and\ndisabled when the driver is removed. When the driver is removed it\nassumes that the workqueue was enabled successfully and proceeds to\nfree allocations made during workqueue enabling.\r\n\r\nFailure during workqueue enabling does not prevent the driver from\nbeing loaded. This is because the error path within drv_enable_wq()\nreturns success unless a second failure is encountered\nduring the error path. By returning success it is possible to load\nthe driver even if the workqueue cannot be enabled and\nallocations that do not exist are attempted to be freed during\ndriver remove.\r\n\r\nSome examples of problematic flows:\n(a)\r\n\r\n idxd_dmaengine_drv_probe() -&gt; drv_enable_wq() -&gt; idxd_wq_request_irq():\n In above flow, if idxd_wq_request_irq() fails then\n idxd_wq_unmap_portal() is called on error exit path, but\n drv_enable_wq() returns 0 because idxd_wq_disable() succeeds. The\n driver is thus loaded successfully.\r\n\r\n idxd_dmaengine_drv_remove()-&gt;drv_disable_wq()-&gt;idxd_wq_unmap_portal()\n Above flow on driver unload triggers the WARN in devm_iounmap() because\n the device resource has already been removed during error path of\n drv_enable_wq().\r\n\r\n(b)\r\n\r\n idxd_dmaengine_drv_probe() -&gt; drv_enable_wq() -&gt; idxd_wq_request_irq():\n In above flow, if idxd_wq_request_irq() fails then\n idxd_wq_init_percpu_ref() is never called to initialize the percpu\n counter, yet the driver loads successfully because drv_enable_wq()\n returns 0.\r\n\r\n idxd_dmaengine_drv_remove()-&gt;__idxd_wq_quiesce()-&gt;percpu_ref_kill():\n Above flow on driver unload triggers a BUG when attempting to drop the\n initial ref of the uninitialized percpu ref:\n BUG: kernel NULL pointer dereference, address: 0000000000000010\r\n\r\nFix the drv_enable_wq() error path by returning the original error that\nindicates failure of workqueue enabling. This ensures that the probe\nfails when an error is encountered and the driver remove paths are only\nattempted when the workqueue was enabled successfully.(CVE-2022-48868)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  igb: Initialize mailbox message for VF reset  When a MAC address is not assigned to the VF, that portion of the message sent to the VF is not set. The memory, however, is allocated from the stack meaning that information may be leaked to the VM. Initialize the message buffer to 0 so that no information is passed to the VM in this case.(CVE-2022-48949)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  Bluetooth: Fix not cleanup led when bt_init fails  bt_init() calls bt_leds_init() to register led, but if it fails later, bt_leds_cleanup() is not called to unregister it.  This can cause panic if the argument &quot;bluetooth-power&quot; in text is freed and then another led_trigger_register() tries to access it:  BUG: unable to handle page fault for address: ffffffffc06d3bc0 RIP: 0010:strcmp+0xc/0x30   Call Trace:     &lt;TASK&gt;     led_trigger_register+0x10d/0x4f0     led_trigger_register_simple+0x7d/0x100     bt_init+0x39/0xf7 [bluetooth]     do_one_initcall+0xd0/0x4e0(CVE-2022-48971)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  net: tun: Fix use-after-free in tun_detach()  syzbot reported use-after-free in tun_detach() [1].  This causes call trace like below:  ================================================================== BUG: KASAN: use-after-free in notifier_call_chain+0x1ee/0x200 kernel/notifier.c:75 Read of size 8 at addr ffff88807324e2a8 by task syz-executor.0/3673  CPU: 0 PID: 3673 Comm: syz-executor.0 Not tainted 6.1.0-rc5-syzkaller-00044-gcc675d22e422 #0 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022 Call Trace:  &lt;TASK&gt;  __dump_stack lib/dump_stack.c:88 [inline]  dump_stack_lvl+0xd1/0x138 lib/dump_stack.c:106  print_address_description mm/kasan/report.c:284 [inline]  print_report+0x15e/0x461 mm/kasan/report.c:395  kasan_report+0xbf/0x1f0 mm/kasan/report.c:495  notifier_call_chain+0x1ee/0x200 kernel/notifier.c:75  call_netdevice_notifiers_info+0x86/0x130 net/core/dev.c:1942  call_netdevice_notifiers_extack net/core/dev.c:1983 [inline]  call_netdevice_notifiers net/core/dev.c:1997 [inline]  netdev_wait_allrefs_any net/core/dev.c:10237 [inline]  netdev_run_todo+0xbc6/0x1100 net/core/dev.c:10351  tun_detach drivers/net/tun.c:704 [inline]  tun_chr_close+0xe4/0x190 drivers/net/tun.c:3467  __fput+0x27c/0xa90 fs/file_table.c:320  task_work_run+0x16f/0x270 kernel/task_work.c:179  exit_task_work include/linux/task_work.h:38 [inline]  do_exit+0xb3d/0x2a30 kernel/exit.c:820  do_group_exit+0xd4/0x2a0 kernel/exit.c:950  get_signal+0x21b1/0x2440 kernel/signal.c:2858  arch_do_signal_or_restart+0x86/0x2300 arch/x86/kernel/signal.c:869  exit_to_user_mode_loop kernel/entry/common.c:168 [inline]  exit_to_user_mode_prepare+0x15f/0x250 kernel/entry/common.c:203  __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]  syscall_exit_to_user_mode+0x1d/0x50 kernel/entry/common.c:296  do_syscall_64+0x46/0xb0 arch/x86/entry/common.c:86  entry_SYSCALL_64_after_hwframe+0x63/0xcd  The cause of the issue is that sock_put() from __tun_detach() drops last reference count for struct net, and then notifier_call_chain() from netdev_state_change() accesses that struct net.  This patch fixes the issue by calling sock_put() from tun_detach() after all necessary accesses for the struct net has done.(CVE-2022-49014)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  net: hsr: Fix potential use-after-free  The skb is delivered to netif_rx() which may free it, after calling this, dereferencing skb may trigger use-after-free.(CVE-2022-49015)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  wifi: mac8021: fix possible oob access in ieee80211_get_rate_duration  Fix possible out-of-bound access in ieee80211_get_rate_duration routine as reported by the following UBSAN report:  UBSAN: array-index-out-of-bounds in net/mac80211/airtime.c:455:47 index 15 is out of range for type &apos;u16 [12]&apos; CPU: 2 PID: 217 Comm: kworker/u32:10 Not tainted 6.1.0-060100rc3-generic Hardware name: Acer Aspire TC-281/Aspire TC-281, BIOS R01-A2 07/18/2017 Workqueue: mt76 mt76u_tx_status_data [mt76_usb] Call Trace:  &lt;TASK&gt;  show_stack+0x4e/0x61  dump_stack_lvl+0x4a/0x6f  dump_stack+0x10/0x18  ubsan_epilogue+0x9/0x43  __ubsan_handle_out_of_bounds.cold+0x42/0x47 ieee80211_get_rate_duration.constprop.0+0x22f/0x2a0 [mac80211]  ? ieee80211_tx_status_ext+0x32e/0x640 [mac80211]  ieee80211_calc_rx_airtime+0xda/0x120 [mac80211]  ieee80211_calc_tx_airtime+0xb4/0x100 [mac80211]  mt76x02_send_tx_status+0x266/0x480 [mt76x02_lib]  mt76x02_tx_status_data+0x52/0x80 [mt76x02_lib]  mt76u_tx_status_data+0x67/0xd0 [mt76_usb]  process_one_work+0x225/0x400  worker_thread+0x50/0x3e0  ? process_one_work+0x400/0x400  kthread+0xe9/0x110  ? kthread_complete_and_exit+0x20/0x20  ret_from_fork+0x22/0x30(CVE-2022-49022)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ixgbevf: Fix resource leak in ixgbevf_init_module()  ixgbevf_init_module() won&apos;t destroy the workqueue created by create_singlethread_workqueue() when pci_register_driver() failed. Add destroy_workqueue() in fail path to prevent the resource leak.  Similar to the handling of u132_hcd_init in commit f276e002793c (&quot;usb: u132-hcd: fix resource leak&quot;)(CVE-2022-49028)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  can: bcm: Fix UAF in bcm_proc_show()  BUG: KASAN: slab-use-after-free in bcm_proc_show+0x969/0xa80 Read of size 8 at addr ffff888155846230 by task cat/7862  CPU: 1 PID: 7862 Comm: cat Not tainted 6.5.0-rc1-00153-gc8746099c197 #230 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014 Call Trace:  &lt;TASK&gt;  dump_stack_lvl+0xd5/0x150  print_report+0xc1/0x5e0  kasan_report+0xba/0xf0  bcm_proc_show+0x969/0xa80  seq_read_iter+0x4f6/0x1260  seq_read+0x165/0x210  proc_reg_read+0x227/0x300  vfs_read+0x1d5/0x8d0  ksys_read+0x11e/0x240  do_syscall_64+0x35/0xb0  entry_SYSCALL_64_after_hwframe+0x63/0xcd  Allocated by task 7846:  kasan_save_stack+0x1e/0x40  kasan_set_track+0x21/0x30  __kasan_kmalloc+0x9e/0xa0  bcm_sendmsg+0x264b/0x44e0  sock_sendmsg+0xda/0x180  ____sys_sendmsg+0x735/0x920  ___sys_sendmsg+0x11d/0x1b0  __sys_sendmsg+0xfa/0x1d0  do_syscall_64+0x35/0xb0  entry_SYSCALL_64_after_hwframe+0x63/0xcd  Freed by task 7846:  kasan_save_stack+0x1e/0x40  kasan_set_track+0x21/0x30  kasan_save_free_info+0x27/0x40  ____kasan_slab_free+0x161/0x1c0  slab_free_freelist_hook+0x119/0x220  __kmem_cache_free+0xb4/0x2e0  rcu_core+0x809/0x1bd0  bcm_op is freed before procfs entry be removed in bcm_release(), this lead to bcm_proc_show() may read the freed bcm_op.(CVE-2023-52922)\r\n\r\nA flaw was found in the Linux kernel&apos;s NVMe driver. This issue may allow an unauthenticated malicious actor to send a set of crafted TCP packages when using NVMe over TCP, leading the NVMe driver to a NULL pointer dereference in the NVMe driver and causing kernel panic and a denial of service.(CVE-2023-6356)\r\n\r\nA flaw was found in the Linux kernel&apos;s NVMe driver. This issue may allow an unauthenticated malicious actor to send a set of crafted TCP packages when using NVMe over TCP, leading the NVMe driver to a NULL pointer dereference in the NVMe driver, causing kernel panic and a denial of service.(CVE-2023-6535)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nice: protect XDP configuration with a mutex\r\n\r\nThe main threat to data consistency in ice_xdp() is a possible asynchronous\nPF reset. It can be triggered by a user or by TX timeout handler.\r\n\r\nXDP setup and PF reset code access the same resources in the following\nsections:\n* ice_vsi_close() in ice_prepare_for_reset() - already rtnl-locked\n* ice_vsi_rebuild() for the PF VSI - not protected\n* ice_vsi_open() - already rtnl-locked\r\n\r\nWith an unfortunate timing, such accesses can result in a crash such as the\none below:\r\n\r\n[ +1.999878] ice 0000:b1:00.0: Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring 14\n[ +2.002992] ice 0000:b1:00.0: Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring 18\n[Mar15 18:17] ice 0000:b1:00.0 ens801f0np0: NETDEV WATCHDOG: CPU: 38: transmit queue 14 timed out 80692736 ms\n[ +0.000093] ice 0000:b1:00.0 ens801f0np0: tx_timeout: VSI_num: 6, Q 14, NTC: 0x0, HW_HEAD: 0x0, NTU: 0x0, INT: 0x4000001\n[ +0.000012] ice 0000:b1:00.0 ens801f0np0: tx_timeout recovery level 1, txqueue 14\n[ +0.394718] ice 0000:b1:00.0: PTP reset successful\n[ +0.006184] BUG: kernel NULL pointer dereference, address: 0000000000000098\n[ +0.000045] #PF: supervisor read access in kernel mode\n[ +0.000023] #PF: error_code(0x0000) - not-present page\n[ +0.000023] PGD 0 P4D 0\n[ +0.000018] Oops: 0000 [#1] PREEMPT SMP NOPTI\n[ +0.000023] CPU: 38 PID: 7540 Comm: kworker/38:1 Not tainted 6.8.0-rc7 #1\n[ +0.000031] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0014.082620210524 08/26/2021\n[ +0.000036] Workqueue: ice ice_service_task [ice]\n[ +0.000183] RIP: 0010:ice_clean_tx_ring+0xa/0xd0 [ice]\n[...]\n[ +0.000013] Call Trace:\n[ +0.000016] &lt;TASK&gt;\n[ +0.000014] ? __die+0x1f/0x70\n[ +0.000029] ? page_fault_oops+0x171/0x4f0\n[ +0.000029] ? schedule+0x3b/0xd0\n[ +0.000027] ? exc_page_fault+0x7b/0x180\n[ +0.000022] ? asm_exc_page_fault+0x22/0x30\n[ +0.000031] ? ice_clean_tx_ring+0xa/0xd0 [ice]\n[ +0.000194] ice_free_tx_ring+0xe/0x60 [ice]\n[ +0.000186] ice_destroy_xdp_rings+0x157/0x310 [ice]\n[ +0.000151] ice_vsi_decfg+0x53/0xe0 [ice]\n[ +0.000180] ice_vsi_rebuild+0x239/0x540 [ice]\n[ +0.000186] ice_vsi_rebuild_by_type+0x76/0x180 [ice]\n[ +0.000145] ice_rebuild+0x18c/0x840 [ice]\n[ +0.000145] ? delay_tsc+0x4a/0xc0\n[ +0.000022] ? delay_tsc+0x92/0xc0\n[ +0.000020] ice_do_reset+0x140/0x180 [ice]\n[ +0.000886] ice_service_task+0x404/0x1030 [ice]\n[ +0.000824] process_one_work+0x171/0x340\n[ +0.000685] worker_thread+0x277/0x3a0\n[ +0.000675] ? preempt_count_add+0x6a/0xa0\n[ +0.000677] ? _raw_spin_lock_irqsave+0x23/0x50\n[ +0.000679] ? __pfx_worker_thread+0x10/0x10\n[ +0.000653] kthread+0xf0/0x120\n[ +0.000635] ? __pfx_kthread+0x10/0x10\n[ +0.000616] ret_from_fork+0x2d/0x50\n[ +0.000612] ? __pfx_kthread+0x10/0x10\n[ +0.000604] ret_from_fork_asm+0x1b/0x30\n[ +0.000604] &lt;/TASK&gt;\r\n\r\nThe previous way of handling this through returning -EBUSY is not viable,\nparticularly when destroying AF_XDP socket, because the kernel proceeds\nwith removal anyway.\r\n\r\nThere is plenty of code between those calls and there is no need to create\na large critical section that covers all of them, same as there is no need\nto protect ice_vsi_rebuild() with rtnl_lock().\r\n\r\nAdd xdp_state_lock mutex to protect ice_vsi_rebuild() and ice_xdp().\r\n\r\nLeaving unprotected sections in between would result in two states that\nhave to be considered:\n1. when the VSI is closed, but not yet rebuild\n2. when VSI is already rebuild, but not yet open\r\n\r\nThe latter case is actually already handled through !netif_running() case,\nwe just need to adjust flag checking a little. The former one is not as\ntrivial, because between ice_vsi_close() and ice_vsi_rebuild(), a lot of\nhardware interaction happens, this can make adding/deleting rings exit\nwith an error. Luckily, VSI rebuild is pending and can apply new\nconfiguration for us in a managed fashion.\r\n\r\nTherefore, add an additional VSI state flag ICE_VSI_REBUILD_PENDING to\nindicate that ice_x\n---truncated---(CVE-2024-46765)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ksmbd: fix user-after-free from session log off  There is racy issue between smb2 session log off and smb2 session setup. It will cause user-after-free from session log off. This add session_lock when setting SMB2_SESSION_EXPIRED and referece count to session struct not to free session while it is being used.(CVE-2024-50086)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow  Syzbot reported a kernel BUG in ocfs2_truncate_inline.  There are two reasons for this: first, the parameter value passed is greater than ocfs2_max_inline_data_with_xattr, second, the start and end parameters of ocfs2_truncate_inline are &quot;unsigned int&quot;.  So, we need to add a sanity check for byte_start and byte_len right before ocfs2_truncate_inline() in ocfs2_remove_inode_range(), if they are greater than ocfs2_max_inline_data_with_xattr return -EINVAL.(CVE-2024-50218)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  initramfs: avoid filename buffer overrun  The initramfs filename field is defined in Documentation/driver-api/early-userspace/buffer-format.rst as:   37 cpio_file := ALGN(4) + cpio_header + filename + &quot;\\0&quot; + ALGN(4) + data ...  55 ============= ================== =========================  56 Field name    Field size         Meaning  57 ============= ================== ========================= ...  70 c_namesize    8 bytes            Length of filename, including final \\0  When extracting an initramfs cpio archive, the kernel&apos;s do_name() path handler assumes a zero-terminated path at @collected, passing it directly to filp_open() / init_mkdir() / init_mknod().  If a specially crafted cpio entry carries a non-zero-terminated filename and is followed by uninitialized memory, then a file may be created with trailing characters that represent the uninitialized memory. The ability to create an initramfs entry would imply already having full control of the system, so the buffer overrun shouldn&apos;t be considered a security vulnerability.  Append the output of the following bash script to an existing initramfs and observe any created /initramfs_test_fname_overrunAA* path. E.g.   ./reproducer.sh | gzip &gt;&gt; /myinitramfs  It&apos;s easiest to observe non-zero uninitialized memory when the output is gzipped, as it&apos;ll overflow the heap allocated @out_buf in __gunzip(), rather than the initrd_start+initrd_size block.  ---- reproducer.sh ---- nilchar=&quot;A&quot; # change to &quot;\\0&quot; to properly zero terminate / pad magic=&quot;070701&quot; ino=1 mode=$(( 0100777 )) uid=0 gid=0 nlink=1 mtime=1 filesize=0 devmajor=0 devminor=1 rdevmajor=0 rdevminor=0 csum=0 fname=&quot;initramfs_test_fname_overrun&quot; namelen=$(( ${#fname} + 1 )) # plus one to account for terminator  printf &quot;%s%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%s&quot; \\  $magic $ino $mode $uid $gid $nlink $mtime $filesize \\  $devmajor $devminor $rdevmajor $rdevminor $namelen $csum $fname  termpadlen=$(( 1 + ((4 - ((110 + $namelen) &amp; 3)) % 4) )) printf &quot;%.s${nilchar}&quot; $(seq 1 $termpadlen) ---- reproducer.sh ----  Symlink filename fields handled in do_symlink() won&apos;t overrun past the data segment, due to the explicit zero-termination of the symlink target.  Fix filename buffer overrun by aborting the initramfs FSM if any cpio entry doesn&apos;t carry a zero-terminator at the expected (name_len - 1) offset.(CVE-2024-53142)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ALSA: usb-audio: Fix out of bounds reads when finding clock sources  The current USB-audio driver code doesn&apos;t check bLength of each descriptor at traversing for clock descriptors.  That is, when a device provides a bogus descriptor with a shorter bLength, the driver might hit out-of-bounds reads.  For addressing it, this patch adds sanity checks to the validator functions for the clock descriptor traversal.  When the descriptor length is shorter than expected, it&apos;s skipped in the loop.  For the clock source and clock multiplier descriptors, we can just check bLength against the sizeof() of each descriptor type. OTOH, the clock selector descriptor of UAC2 and UAC3 has an array of bNrInPins elements and two more fields at its tail, hence those have to be checked in addition to the sizeof() check.(CVE-2024-53150)",
+  "id": "OESA-2025-1016",
+  "modified": "2025-09-03T06:18:43.460545Z",
+  "published": "2025-01-03T12:54:49Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1016"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48868"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48949"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48971"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49014"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49015"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49022"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49028"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52922"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-6356"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-6535"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46765"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50086"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50218"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53142"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53150"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2022-48868",
+    "CVE-2022-48949",
+    "CVE-2022-48971",
+    "CVE-2022-49014",
+    "CVE-2022-49015",
+    "CVE-2022-49022",
+    "CVE-2022-49028",
+    "CVE-2023-52922",
+    "CVE-2023-6356",
+    "CVE-2023-6535",
+    "CVE-2024-46765",
+    "CVE-2024-50086",
+    "CVE-2024-50218",
+    "CVE-2024-53142",
+    "CVE-2024-53150"
+  ]
+}

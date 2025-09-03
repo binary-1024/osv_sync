@@ -1,0 +1,75 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-1382.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "cri-tools-debugsource-1.22.0-5.oe2203sp3.aarch64.rpm",
+          "cri-tools-debuginfo-1.22.0-5.oe2203sp3.aarch64.rpm",
+          "cri-tools-1.22.0-5.oe2203sp3.aarch64.rpm"
+        ],
+        "src": [
+          "cri-tools-1.22.0-5.oe2203sp3.src.rpm"
+        ],
+        "x86_64": [
+          "cri-tools-debugsource-1.22.0-5.oe2203sp3.x86_64.rpm",
+          "cri-tools-debuginfo-1.22.0-5.oe2203sp3.x86_64.rpm",
+          "cri-tools-1.22.0-5.oe2203sp3.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP3",
+        "name": "cri-tools",
+        "purl": "pkg:rpm/openEuler/cri-tools&distro=openEuler-22.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.22.0-5.oe2203sp3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "CLI and validation tools for Container Runtime Interface\r\n\r\nSecurity Fix(es):\r\n\r\nA maliciously crafted HTTP/2 stream could cause excessive CPU consumption in the HPACK decoder, sufficient to cause a denial of service from a small number of small requests.(CVE-2022-41723)\r\n\r\nA malicious HTTP/2 client which rapidly creates requests and immediately resets them can cause excessive server resource consumption. While the total number of requests is bounded by the http2.Server.MaxConcurrentStreams setting, resetting an in-progress request allows the attacker to create a new request while the existing one is still executing. With the fix applied, HTTP/2 servers now bound the number of simultaneously executing handler goroutines to the stream concurrency limit (MaxConcurrentStreams). New requests arriving when at the limit (which can only happen after the client has reset an existing, in-flight request) will be queued until a handler exits. If the request queue grows too large, the server will terminate the connection. This issue is also fixed in golang.org/x/net/http2 for users manually configuring HTTP/2. The default stream concurrency limit is 250 streams (requests) per HTTP/2 connection. This value may be adjusted using the golang.org/x/net/http2 package; see the Server.MaxConcurrentStreams setting and the ConfigureServer function.(CVE-2023-39325)\r\n\r\nThe protojson.Unmarshal function can enter an infinite loop when unmarshaling certain forms of invalid JSON. This condition can occur when unmarshaling into a message which contains a google.protobuf.Any value, or when the UnmarshalOptions.DiscardUnknown option is set.(CVE-2024-24786)",
+  "id": "OESA-2024-1382",
+  "modified": "2025-09-03T06:18:29.571764Z",
+  "published": "2024-04-12T11:07:36Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2024-1382"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41723"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-39325"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24786"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "cri-tools security update",
+  "upstream": [
+    "CVE-2022-41723",
+    "CVE-2023-39325",
+    "CVE-2024-24786"
+  ]
+}

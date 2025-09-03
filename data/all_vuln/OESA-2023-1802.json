@@ -1,0 +1,88 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2023-1802.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "mod_md-2.4.43-23.oe1.aarch64.rpm",
+          "httpd-debugsource-2.4.43-23.oe1.aarch64.rpm",
+          "mod_ldap-2.4.43-23.oe1.aarch64.rpm",
+          "mod_ssl-2.4.43-23.oe1.aarch64.rpm",
+          "httpd-2.4.43-23.oe1.aarch64.rpm",
+          "httpd-devel-2.4.43-23.oe1.aarch64.rpm",
+          "httpd-tools-2.4.43-23.oe1.aarch64.rpm",
+          "mod_session-2.4.43-23.oe1.aarch64.rpm",
+          "mod_proxy_html-2.4.43-23.oe1.aarch64.rpm",
+          "httpd-debuginfo-2.4.43-23.oe1.aarch64.rpm"
+        ],
+        "noarch": [
+          "httpd-filesystem-2.4.43-23.oe1.noarch.rpm",
+          "httpd-help-2.4.43-23.oe1.noarch.rpm"
+        ],
+        "src": [
+          "httpd-2.4.43-23.oe1.src.rpm"
+        ],
+        "x86_64": [
+          "mod_md-2.4.43-23.oe1.x86_64.rpm",
+          "httpd-debugsource-2.4.43-23.oe1.x86_64.rpm",
+          "mod_ldap-2.4.43-23.oe1.x86_64.rpm",
+          "httpd-2.4.43-23.oe1.x86_64.rpm",
+          "mod_session-2.4.43-23.oe1.x86_64.rpm",
+          "httpd-devel-2.4.43-23.oe1.x86_64.rpm",
+          "httpd-debuginfo-2.4.43-23.oe1.x86_64.rpm",
+          "mod_proxy_html-2.4.43-23.oe1.x86_64.rpm",
+          "httpd-tools-2.4.43-23.oe1.x86_64.rpm",
+          "mod_ssl-2.4.43-23.oe1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP3",
+        "name": "httpd",
+        "purl": "pkg:rpm/openEuler/httpd&distro=openEuler-20.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.4.43-23.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Critical"
+  },
+  "details": "Apache HTTP Server is a powerful and flexible HTTP/1.1 compliant web server.\r\n\r\nSecurity Fix(es):\r\n\r\nOut-of-bounds Read vulnerability in mod_macro of Apache HTTP Server.This issue affects Apache HTTP Server: through 2.4.57.\r\n\r\n(CVE-2023-31122)\r\n\r\nWhen a HTTP/2 stream was reset (RST frame) by a client, there was a time window were the request&apos;s memory resources were not reclaimed immediately. Instead, de-allocation was deferred to connection close. A client could send new requests and resets, keeping the connection busy and open and causing the memory footprint to keep on growing. On connection close, all resources were reclaimed, but the process might run out of memory before that.\r\n\r\nThis was found by the reporter during testing of\u00a0CVE-2023-44487 (HTTP/2 Rapid Reset Exploit) with their own test client. During &quot;normal&quot; HTTP/2 use, the probability to hit this bug is very low. The kept memory would not become noticeable before the connection closes or times out.\r\n\r\nUsers are recommended to upgrade to version 2.4.58, which fixes the issue.\n(CVE-2023-45802)",
+  "id": "OESA-2023-1802",
+  "modified": "2025-09-03T06:19:09.989522Z",
+  "published": "2023-11-10T11:06:15Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2023-1802"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-31122"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-45802"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "httpd security update",
+  "upstream": [
+    "CVE-2023-31122",
+    "CVE-2023-45802"
+  ]
+}

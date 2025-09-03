@@ -1,0 +1,125 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1233.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "grub2-debuginfo-2.06-51.oe2203sp4.aarch64.rpm",
+          "grub2-debugsource-2.06-51.oe2203sp4.aarch64.rpm",
+          "grub2-efi-aa64-2.06-51.oe2203sp4.aarch64.rpm",
+          "grub2-efi-aa64-cdboot-2.06-51.oe2203sp4.aarch64.rpm",
+          "grub2-tools-2.06-51.oe2203sp4.aarch64.rpm",
+          "grub2-tools-extra-2.06-51.oe2203sp4.aarch64.rpm",
+          "grub2-tools-minimal-2.06-51.oe2203sp4.aarch64.rpm"
+        ],
+        "noarch": [
+          "grub2-common-2.06-51.oe2203sp4.noarch.rpm",
+          "grub2-efi-aa64-modules-2.06-51.oe2203sp4.noarch.rpm",
+          "grub2-efi-ia32-modules-2.06-51.oe2203sp4.noarch.rpm",
+          "grub2-efi-x64-modules-2.06-51.oe2203sp4.noarch.rpm",
+          "grub2-help-2.06-51.oe2203sp4.noarch.rpm",
+          "grub2-pc-modules-2.06-51.oe2203sp4.noarch.rpm"
+        ],
+        "src": [
+          "grub2-2.06-51.oe2203sp4.src.rpm"
+        ],
+        "x86_64": [
+          "grub2-debuginfo-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-debugsource-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-efi-ia32-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-efi-ia32-cdboot-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-efi-x64-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-efi-x64-cdboot-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-pc-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-tools-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-tools-efi-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-tools-extra-2.06-51.oe2203sp4.x86_64.rpm",
+          "grub2-tools-minimal-2.06-51.oe2203sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP4",
+        "name": "grub2",
+        "purl": "pkg:rpm/openEuler/grub2&distro=openEuler-22.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.06-51.oe2203sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "GNU GRUB is a Multiboot boot loader. It was derived from GRUB, the GRand Unified Bootloader, which was originally designed and implemented by Erich Stefan Boleyn.\r\n\r\nSecurity Fix(es):\n\nA flaw was found in grub2. A specially crafted JPEG file can cause the JPEG parser of grub2 to incorrectly check the bounds of its internal buffers, resulting in an out-of-bounds write. The possibility of overwriting sensitive information to bypass secure boot protections is not discarded.(CVE-2024-45774)\n\nA stack overflow flaw was found when reading a BFS file system. A crafted BFS filesystem may lead to an uncontrolled loop, causing grub2 to crash.(CVE-2024-45778)\n\nAn integer overflow flaw was found in the BFS file system driver in grub2. When reading a file with an indirect extent map, grub2 fails to validate the number of extent entries to be read. A crafted or corrupted BFS filesystem may cause an integer overflow during the file reading, leading to a heap of bounds read. As a consequence, sensitive data may be leaked, or grub2 will crash.(CVE-2024-45779)\n\nA flaw was found in grub2. When reading tar files, grub2 allocates an internal buffer for the file name. However, it fails to properly verify the allocation against possible integer overflows. It&apos;s possible to cause the allocation length to overflow with a crafted tar file, leading to a heap out-of-bounds write. This flaw eventually allows an attacker to circumvent secure boot protections.(CVE-2024-45780)\n\nGNU GRUB (aka GRUB2) through 2.12 has a heap-based buffer overflow in fs/hfs.c via crafted sblock data in an HFS filesystem.(CVE-2024-56737)\n\nA flaw was found in command/gpg. In some scenarios, hooks created by loaded modules are not removed when the related module is unloaded. This flaw allows an attacker to force grub2 to call the hooks once the module that registered it was unloaded, leading to a use-after-free vulnerability. If correctly exploited, this vulnerability may result in arbitrary code execution, eventually allowing the attacker to bypass secure boot protections.(CVE-2025-0622)\n\nA flaw was found in grub2. During the network boot process, when trying to search for the configuration file, grub copies data from a user controlled environment variable into an internal buffer using the grub_strcpy() function. During this step, it fails to consider the environment variable length when allocating the internal buffer, resulting in an out-of-bounds write. If correctly exploited, this issue may result in remote code execution through the same network segment grub is searching for the boot information, which can be used to by-pass secure boot protections.(CVE-2025-0624)\n\nA flaw was found in grub2. When performing a symlink lookup, the grub&apos;s UFS module checks the inode&apos;s data size to allocate the internal buffer to read the file content, however, it fails to check if the symlink data size has overflown. When this occurs, grub_malloc() may be called with a smaller value than needed. When further reading the data from the disk into the buffer, the grub_ufs_lookup_symlink() function will write past the end of the allocated size. An attack can leverage this by crafting a malicious filesystem, and as a result, it will corrupt data stored in the heap, allowing for arbitrary code execution used to by-pass secure boot mechanisms.(CVE-2025-0677)\n\nWhen reading data from a hfs filesystem, grub&apos;s hfs filesystem module uses user-controlled parameters from the filesystem metadata to calculate the internal buffers size, however it misses to properly check for integer overflows. A maliciouly crafted filesystem may lead some of those buffer size calculation to overflow, causing it to perform a grub_malloc() operation with a smaller size than expected. As a result the hfsplus_open_compressed_real() function will write past of the internal buffer length. This flaw may be leveraged to corrupt grub&apos;s internal critical data and may result in arbitrary code execution by-passing secure boot protections.(CVE-2025-1125)",
+  "id": "OESA-2025-1233",
+  "modified": "2025-09-03T06:20:30.216121Z",
+  "published": "2025-03-07T15:26:40Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1233"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45774"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45778"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45779"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45780"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-56737"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-0622"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-0624"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-0677"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-1125"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "grub2 security update",
+  "upstream": [
+    "CVE-2024-45774",
+    "CVE-2024-45778",
+    "CVE-2024-45779",
+    "CVE-2024-45780",
+    "CVE-2024-56737",
+    "CVE-2025-0622",
+    "CVE-2025-0624",
+    "CVE-2025-0677",
+    "CVE-2025-1125"
+  ]
+}

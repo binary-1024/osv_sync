@@ -1,0 +1,126 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2495.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2411.5.0.0305.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2411.5.0.0305.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2411.5.0.0305.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  tcp/dccp: Don&apos;t use timer_pending() in reqsk_queue_unlink().  Martin KaFai Lau reported use-after-free [0] in reqsk_timer_handler().    &quot;&quot;&quot;   We are seeing a use-after-free from a bpf prog attached to   trace_tcp_retransmit_synack. The program passes the req-&gt;sk to the   bpf_sk_storage_get_tracing kernel helper which does check for null   before using it.   &quot;&quot;&quot;  The commit 83fccfc3940c (&quot;inet: fix potential deadlock in reqsk_queue_unlink()&quot;) added timer_pending() in reqsk_queue_unlink() not to call del_timer_sync() from reqsk_timer_handler(), but it introduced a small race window.  Before the timer is called, expire_timers() calls detach_timer(timer, true) to clear timer-&gt;entry.pprev and marks it as not pending.  If reqsk_queue_unlink() checks timer_pending() just after expire_timers() calls detach_timer(), TCP will miss del_timer_sync(); the reqsk timer will continue running and send multiple SYN+ACKs until it expires.  The reported UAF could happen if req-&gt;sk is close()d earlier than the timer expiration, which is 63s by default.  The scenario would be    1. inet_csk_complete_hashdance() calls inet_csk_reqsk_queue_drop(),      but del_timer_sync() is missed    2. reqsk timer is executed and scheduled again    3. req-&gt;sk is accept()ed and reqsk_put() decrements rsk_refcnt, but      reqsk timer still has another one, and inet_csk_accept() does not      clear req-&gt;sk for non-TFO sockets    4. sk is close()d    5. reqsk timer is executed again, and BPF touches req-&gt;sk  Let&apos;s not use timer_pending() by passing the caller context to __inet_csk_reqsk_queue_drop().  Note that reqsk timer is pinned, so the issue does not happen in most use cases. [1]  [0] BUG: KFENCE: use-after-free read in bpf_sk_storage_get_tracing+0x2e/0x1b0  Use-after-free read at 0x00000000a891fb3a (in kfence-#1): bpf_sk_storage_get_tracing+0x2e/0x1b0 bpf_prog_5ea3e95db6da0438_tcp_retransmit_synack+0x1d20/0x1dda bpf_trace_run2+0x4c/0xc0 tcp_rtx_synack+0xf9/0x100 reqsk_timer_handler+0xda/0x3d0 run_timer_softirq+0x292/0x8a0 irq_exit_rcu+0xf5/0x320 sysvec_apic_timer_interrupt+0x6d/0x80 asm_sysvec_apic_timer_interrupt+0x16/0x20 intel_idle_irq+0x5a/0xa0 cpuidle_enter_state+0x94/0x273 cpu_startup_entry+0x15e/0x260 start_secondary+0x8a/0x90 secondary_startup_64_no_verify+0xfa/0xfb  kfence-#1: 0x00000000a72cc7b6-0x00000000d97616d9, size=2376, cache=TCPv6  allocated by task 0 on cpu 9 at 260507.901592s: sk_prot_alloc+0x35/0x140 sk_clone_lock+0x1f/0x3f0 inet_csk_clone_lock+0x15/0x160 tcp_create_openreq_child+0x1f/0x410 tcp_v6_syn_recv_sock+0x1da/0x700 tcp_check_req+0x1fb/0x510 tcp_v6_rcv+0x98b/0x1420 ipv6_list_rcv+0x2258/0x26e0 napi_complete_done+0x5b1/0x2990 mlx5e_napi_poll+0x2ae/0x8d0 net_rx_action+0x13e/0x590 irq_exit_rcu+0xf5/0x320 common_interrupt+0x80/0x90 asm_common_interrupt+0x22/0x40 cpuidle_enter_state+0xfb/0x273 cpu_startup_entry+0x15e/0x260 start_secondary+0x8a/0x90 secondary_startup_64_no_verify+0xfa/0xfb  freed by task 0 on cpu 9 at 260507.927527s: rcu_core_si+0x4ff/0xf10 irq_exit_rcu+0xf5/0x320 sysvec_apic_timer_interrupt+0x6d/0x80 asm_sysvec_apic_timer_interrupt+0x16/0x20 cpuidle_enter_state+0xfb/0x273 cpu_startup_entry+0x15e/0x260 start_secondary+0x8a/0x90 secondary_startup_64_no_verify+0xfa/0xfb(CVE-2024-50154)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ceph: remove the incorrect Fw reference check when dirtying pages  When doing the direct-io reads it will also try to mark pages dirty, but for the read path it won&apos;t hold the Fw caps and there is case will it get the Fw reference.(CVE-2024-50179)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  nilfs2: propagate directory read errors from nilfs_find_entry()  Syzbot reported that a task hang occurs in vcs_open() during a fuzzing test for nilfs2.  The root cause of this problem is that in nilfs_find_entry(), which searches for directory entries, ignores errors when loading a directory page/folio via nilfs_get_folio() fails.  If the filesystem images is corrupted, and the i_size of the directory inode is large, and the directory page/folio is successfully read but fails the sanity check, for example when it is zero-filled, nilfs_check_folio() may continue to spit out error messages in bursts.  Fix this issue by propagating the error to the callers when loading a page/folio fails in nilfs_find_entry().  The current interface of nilfs_find_entry() and its callers is outdated and cannot propagate error codes such as -EIO and -ENOMEM returned via nilfs_find_entry(), so fix it together.(CVE-2024-50202)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  net: fix crash when config small gso_max_size/gso_ipv4_max_size  Config a small gso_max_size/gso_ipv4_max_size will lead to an underflow in sk_dst_gso_max_size(), which may trigger a BUG_ON crash, because sk-&gt;sk_gso_max_size would be much bigger than device limits. Call Trace: tcp_write_xmit     tso_segs = tcp_init_tso_segs(skb, mss_now);         tcp_set_skb_tso_segs             tcp_skb_pcount_set                 // skb-&gt;len = 524288, mss_now = 8                 // u16 tso_segs = 524288/8 = 65535 -&gt; 0                 tso_segs = DIV_ROUND_UP(skb-&gt;len, mss_now)     BUG_ON(!tso_segs) Add check for the minimum value of gso_max_size and gso_ipv4_max_size.(CVE-2024-50258)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  btrfs: reinitialize delayed ref list after deleting it from the list  At insert_delayed_ref() if we need to update the action of an existing ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head&apos;s ref_add_list using list_del(), which leaves the ref&apos;s add_list member not reinitialized, as list_del() sets the next and prev members of the list to LIST_POISON1 and LIST_POISON2, respectively.  If later we end up calling drop_delayed_ref() against the ref, which can happen during merging or when destroying delayed refs due to a transaction abort, we can trigger a crash since at drop_delayed_ref() we call list_empty() against the ref&apos;s add_list, which returns false since the list was not reinitialized after the list_del() and as a consequence we call list_del() again at drop_delayed_ref(). This results in an invalid list access since the next and prev members are set to poison pointers, resulting in a splat if CONFIG_LIST_HARDENED and CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences otherwise.  So fix this by deleting from the list with list_del_init() instead.(CVE-2024-50273)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  security/keys: fix slab-out-of-bounds in key_task_permission  KASAN reports an out of bounds read: BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36 BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [inline] BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410 security/keys/permission.c:54 Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362  CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ede #15 Call Trace:  __dump_stack lib/dump_stack.c:82 [inline]  dump_stack+0x107/0x167 lib/dump_stack.c:123  print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:400  __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560  kasan_report+0x3a/0x50 mm/kasan/report.c:585  __kuid_val include/linux/uidgid.h:36 [inline]  uid_eq include/linux/uidgid.h:63 [inline]  key_task_permission+0x394/0x410 security/keys/permission.c:54  search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793  This issue was also reported by syzbot.  It can be reproduced by following these steps(more details [1]): 1. Obtain more than 32 inputs that have similar hashes, which ends with the    pattern &apos;0xxxxxxxe6&apos;. 2. Reboot and add the keys obtained in step 1.  The reproducer demonstrates how this issue happened: 1. In the search_nested_keyrings function, when it iterates through the    slots in a node(below tag ascend_to_node), if the slot pointer is meta    and node-&gt;back_pointer != NULL(it means a root), it will proceed to    descend_to_node. However, there is an exception. If node is the root,    and one of the slots points to a shortcut, it will be treated as a    keyring. 2. Whether the ptr is keyring decided by keyring_ptr_is_keyring function.    However, KEYRING_PTR_SUBTYPE is 0x2UL, the same as    ASSOC_ARRAY_PTR_SUBTYPE_MASK. 3. When 32 keys with the similar hashes are added to the tree, the ROOT    has keys with hashes that are not similar (e.g. slot 0) and it splits    NODE A without using a shortcut. When NODE A is filled with keys that    all hashes are xxe6, the keys are similar, NODE A will split with a    shortcut. Finally, it forms the tree as shown below, where slot 6 points    to a shortcut.                        NODE A               +------&gt;+---+       ROOT    |       | 0 | xxe6       +---+   |       +---+  xxxx | 0 | shortcut  :   : xxe6       +---+   |       +---+  xxe6 :   :   |       |   | xxe6       +---+   |       +---+       | 6 |---+       :   : xxe6       +---+           +---+  xxe6 :   :           | f | xxe6       +---+           +---+  xxe6 | f |       +---+  4. As mentioned above, If a slot(slot 6) of the root points to a shortcut,    it may be mistakenly transferred to a key*, leading to a read    out-of-bounds read.  To fix this issue, one should jump to descend_to_node if the ptr is a shortcut, regardless of whether the node is root or not.  [1] https://lore.kernel.org/linux-kernel/1cfa878e-8c7b-4570-8606-21daf5e13ce7@huaweicloud.com/  [jarkko: tweaked the commit message a bit to have an appropriate closes  tag.](CVE-2024-50301)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  media: s5p-jpeg: prevent buffer overflows  The current logic allows word to be less than 2. If this happens, there will be buffer overflows, as reported by smatch. Add extra checks to prevent it.  While here, remove an unused word = 0 assignment.(CVE-2024-53061)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  nfs: Fix KMSAN warning in decode_getfattr_attrs()  Fix the following KMSAN warning:  CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B Tainted: [B]=BAD_PAGE Hardware name: QEMU Standard PC (Q35 + ICH9, 2009) ===================================================== ===================================================== BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90  decode_getfattr_attrs+0x2d6d/0x2f90  decode_getfattr_generic+0x806/0xb00  nfs4_xdr_dec_getattr+0x1de/0x240  rpcauth_unwrap_resp_decode+0xab/0x100  rpcauth_unwrap_resp+0x95/0xc0  call_decode+0x4ff/0xb50  __rpc_execute+0x57b/0x19d0  rpc_execute+0x368/0x5e0  rpc_run_task+0xcfe/0xee0  nfs4_proc_getattr+0x5b5/0x990  __nfs_revalidate_inode+0x477/0xd00  nfs_access_get_cached+0x1021/0x1cc0  nfs_do_access+0x9f/0xae0  nfs_permission+0x1e4/0x8c0  inode_permission+0x356/0x6c0  link_path_walk+0x958/0x1330  path_lookupat+0xce/0x6b0  filename_lookup+0x23e/0x770  vfs_statx+0xe7/0x970  vfs_fstatat+0x1f2/0x2c0  __se_sys_newfstatat+0x67/0x880  __x64_sys_newfstatat+0xbd/0x120  x64_sys_call+0x1826/0x3cf0  do_syscall_64+0xd0/0x1b0  entry_SYSCALL_64_after_hwframe+0x77/0x7f  The KMSAN warning is triggered in decode_getfattr_attrs(), when calling decode_attr_mdsthreshold(). It appears that fattr-&gt;mdsthreshold is not initialized.  Fix the issue by initializing fattr-&gt;mdsthreshold to NULL in nfs_fattr_init().(CVE-2024-53066)",
+  "id": "OESA-2024-2495",
+  "modified": "2025-09-03T06:20:35.258929Z",
+  "published": "2024-11-29T11:58:12Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2495"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50154"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50179"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50202"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50258"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50273"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50301"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53061"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53066"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2024-50154",
+    "CVE-2024-50179",
+    "CVE-2024-50202",
+    "CVE-2024-50258",
+    "CVE-2024-50273",
+    "CVE-2024-50301",
+    "CVE-2024-53061",
+    "CVE-2024-53066"
+  ]
+}

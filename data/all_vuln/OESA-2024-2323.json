@@ -1,0 +1,201 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2323.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2411.1.0.0301.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2411.1.0.0301.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2411.1.0.0301.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "Critical"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  udf: Fix preallocation discarding at indirect extent boundary  When preallocation extent is the first one in the extent block, the code would corrupt extent tree header instead. Fix the problem and use udf_delete_aext() for deleting extent to avoid some code duplication.(CVE-2022-48946)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  NFC: nci: Bounds check struct nfc_target arrays  While running under CONFIG_FORTIFY_SOURCE=y, syzkaller reported:    memcpy: detected field-spanning write (size 129) of single field &quot;target-&gt;sensf_res&quot; at net/nfc/nci/ntf.c:260 (size 18)  This appears to be a legitimate lack of bounds checking in nci_add_new_protocol(). Add the missing checks.(CVE-2022-48967)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  gpio: amd8111: Fix PCI device reference count leak  for_each_pci_dev() is implemented by pci_get_device(). The comment of pci_get_device() says that it will increase the reference count for the returned pci_dev and also decrease the reference count for the input pci_dev @from if it is not NULL.  If we break for_each_pci_dev() loop with pdev not NULL, we need to call pci_dev_put() to decrease the reference count. Add the missing pci_dev_put() after the &apos;out&apos; label. Since pci_dev_put() can handle NULL input parameter, there is no problem for the &apos;Device not found&apos; branch. For the normal path, add pci_dev_put() in amd_gpio_exit().(CVE-2022-48973)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ALSA: seq: Fix function prototype mismatch in snd_seq_expand_var_event  With clang&apos;s kernel control flow integrity (kCFI, CONFIG_CFI_CLANG), indirect call targets are validated against the expected function pointer prototype to make sure the call target is valid to help mitigate ROP attacks. If they are not identical, there is a failure at run time, which manifests as either a kernel panic or thread getting killed.  seq_copy_in_user() and seq_copy_in_kernel() did not have prototypes matching snd_seq_dump_func_t. Adjust this and remove the casts. There are not resulting binary output differences.  This was found as a result of Clang&apos;s new -Wcast-function-type-strict flag, which is more sensitive than the simpler -Wcast-function-type, which only checks for type width mismatches.(CVE-2022-48994)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  nilfs2: fix NULL pointer dereference in nilfs_palloc_commit_free_entry()  Syzbot reported a null-ptr-deref bug:   NILFS (loop0): segctord starting. Construction interval = 5 seconds, CP  frequency &lt; 30 seconds  general protection fault, probably for non-canonical address  0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN  KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]  CPU: 1 PID: 3603 Comm: segctord Not tainted  6.1.0-rc2-syzkaller-00105-gb229b6ca5abb #0  Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google  10/11/2022  RIP: 0010:nilfs_palloc_commit_free_entry+0xe5/0x6b0  fs/nilfs2/alloc.c:608  Code: 00 00 00 00 fc ff df 80 3c 02 00 0f 85 cd 05 00 00 48 b8 00 00 00  00 00 fc ff df 4c 8b 73 08 49 8d 7e 10 48 89 fa 48 c1 ea 03 &lt;80&gt; 3c 02  00 0f 85 26 05 00 00 49 8b 46 10 be a6 00 00 00 48 c7 c7  RSP: 0018:ffffc90003dff830 EFLAGS: 00010212  RAX: dffffc0000000000 RBX: ffff88802594e218 RCX: 000000000000000d  RDX: 0000000000000002 RSI: 0000000000002000 RDI: 0000000000000010  RBP: ffff888071880222 R08: 0000000000000005 R09: 000000000000003f  R10: 000000000000000d R11: 0000000000000000 R12: ffff888071880158  R13: ffff88802594e220 R14: 0000000000000000 R15: 0000000000000004  FS:  0000000000000000(0000) GS:ffff8880b9b00000(0000)  knlGS:0000000000000000  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033  CR2: 00007fb1c08316a8 CR3: 0000000018560000 CR4: 0000000000350ee0  Call Trace:   &lt;TASK&gt;   nilfs_dat_commit_free fs/nilfs2/dat.c:114 [inline]   nilfs_dat_commit_end+0x464/0x5f0 fs/nilfs2/dat.c:193   nilfs_dat_commit_update+0x26/0x40 fs/nilfs2/dat.c:236   nilfs_btree_commit_update_v+0x87/0x4a0 fs/nilfs2/btree.c:1940   nilfs_btree_commit_propagate_v fs/nilfs2/btree.c:2016 [inline]   nilfs_btree_propagate_v fs/nilfs2/btree.c:2046 [inline]   nilfs_btree_propagate+0xa00/0xd60 fs/nilfs2/btree.c:2088   nilfs_bmap_propagate+0x73/0x170 fs/nilfs2/bmap.c:337   nilfs_collect_file_data+0x45/0xd0 fs/nilfs2/segment.c:568   nilfs_segctor_apply_buffers+0x14a/0x470 fs/nilfs2/segment.c:1018   nilfs_segctor_scan_file+0x3f4/0x6f0 fs/nilfs2/segment.c:1067   nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1197 [inline]   nilfs_segctor_collect fs/nilfs2/segment.c:1503 [inline]   nilfs_segctor_do_construct+0x12fc/0x6af0 fs/nilfs2/segment.c:2045   nilfs_segctor_construct+0x8e3/0xb30 fs/nilfs2/segment.c:2379   nilfs_segctor_thread_construct fs/nilfs2/segment.c:2487 [inline]   nilfs_segctor_thread+0x3c3/0xf30 fs/nilfs2/segment.c:2570   kthread+0x2e4/0x3a0 kernel/kthread.c:376   ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306   &lt;/TASK&gt;  ...  If DAT metadata file is corrupted on disk, there is a case where req-&gt;pr_desc_bh is NULL and blocknr is 0 at nilfs_dat_commit_end() during a b-tree operation that cascadingly updates ancestor nodes of the b-tree, because nilfs_dat_commit_alloc() for a lower level block can initialize the blocknr on the same DAT entry between nilfs_dat_prepare_end() and nilfs_dat_commit_end().  If this happens, nilfs_dat_commit_end() calls nilfs_dat_commit_free() without valid buffer heads in req-&gt;pr_desc_bh and req-&gt;pr_bitmap_bh, and causes the NULL pointer dereference above in nilfs_palloc_commit_free_entry() function, which leads to a crash.  Fix this by adding a NULL check on req-&gt;pr_desc_bh and req-&gt;pr_bitmap_bh before nilfs_palloc_commit_free_entry() in nilfs_dat_commit_free().  This also calls nilfs_error() in that case to notify that there is a fatal flaw in the filesystem metadata and prevent further operations.(CVE-2022-49007)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  hwmon: (coretemp) Check for null before removing sysfs attrs  If coretemp_add_core() gets an error then pdata-&gt;core_data[indx] is already NULL and has been kfreed. Don&apos;t pass that to sysfs_remove_group() as that will crash in sysfs_remove_group().  [Shortened for readability] [91854.020159] sysfs: cannot create duplicate filename &apos;/devices/platform/coretemp.0/hwmon/hwmon2/temp20_label&apos; &lt;cpu offline&gt; [91855.126115] BUG: kernel NULL pointer dereference, address: 0000000000000188 [91855.165103] #PF: supervisor read access in kernel mode [91855.194506] #PF: error_code(0x0000) - not-present page [91855.224445] PGD 0 P4D 0 [91855.238508] Oops: 0000 [#1] PREEMPT SMP PTI ... [91855.342716] RIP: 0010:sysfs_remove_group+0xc/0x80 ... [91855.796571] Call Trace: [91855.810524]  coretemp_cpu_offline+0x12b/0x1dd [coretemp] [91855.841738]  ? coretemp_cpu_online+0x180/0x180 [coretemp] [91855.871107]  cpuhp_invoke_callback+0x105/0x4b0 [91855.893432]  cpuhp_thread_fun+0x8e/0x150 ...  Fix this by checking for NULL first.(CVE-2022-49010)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  hwmon: (ibmpex) Fix possible UAF when ibmpex_register_bmc() fails  Smatch report warning as follows:  drivers/hwmon/ibmpex.c:509 ibmpex_register_bmc() warn:   &apos;&amp;data-&gt;list&apos; not removed from list  If ibmpex_find_sensors() fails in ibmpex_register_bmc(), data will be freed, but data-&gt;list will not be removed from driver_data.bmc_data, then list traversal may cause UAF.  Fix by removeing it from driver_data.bmc_data before free().(CVE-2022-49029)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  btrfs: qgroup: fix sleep from invalid context bug in btrfs_qgroup_inherit()  Syzkaller reported BUG as follows:    BUG: sleeping function called from invalid context at        include/linux/sched/mm.h:274   Call Trace:    &lt;TASK&gt;    dump_stack_lvl+0xcd/0x134    __might_resched.cold+0x222/0x26b    kmem_cache_alloc+0x2e7/0x3c0    update_qgroup_limit_item+0xe1/0x390    btrfs_qgroup_inherit+0x147b/0x1ee0    create_subvol+0x4eb/0x1710    btrfs_mksubvol+0xfe5/0x13f0    __btrfs_ioctl_snap_create+0x2b0/0x430    btrfs_ioctl_snap_create_v2+0x25a/0x520    btrfs_ioctl+0x2a1c/0x5ce0    __x64_sys_ioctl+0x193/0x200    do_syscall_64+0x35/0x80  Fix this by calling qgroup_dirty() on @dstqgroup, and update limit item in btrfs_run_qgroups() later outside of the spinlock context.(CVE-2022-49033)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  media: pci: cx23885: check cx23885_vdev_init() return  cx23885_vdev_init() can return a NULL pointer, but that pointer is used in the next line without a check.  Add a NULL pointer check and go to the error unwind if it is NULL.(CVE-2023-52918)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  nfc: nci: fix possible NULL pointer dereference in send_acknowledge()  Handle memory allocation failure from nci_skb_alloc() (calling alloc_skb()) to avoid possible NULL pointer dereference.(CVE-2023-52919)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nusb: dwc3: core: Prevent USB core invalid event buffer address access\r\n\r\nThis commit addresses an issue where the USB core could access an\ninvalid event buffer address during runtime suspend, potentially causing\nSMMU faults and other memory issues in Exynos platforms. The problem\narises from the following sequence.\n        1. In dwc3_gadget_suspend, there is a chance of a timeout when\n        moving the USB core to the halt state after clearing the\n        run/stop bit by software.\n        2. In dwc3_core_exit, the event buffer is cleared regardless of\n        the USB core&apos;s status, which may lead to an SMMU faults and\n        other memory issues. if the USB core tries to access the event\n        buffer address.\r\n\r\nTo prevent this hardware quirk on Exynos platforms, this commit ensures\nthat the event buffer address is not cleared by software  when the USB\ncore is active during runtime suspend by checking its status before\nclearing the buffer address.(CVE-2024-46675)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ngtp: fix a potential NULL pointer dereference\r\n\r\nWhen sockfd_lookup() fails, gtp_encap_enable_socket() returns a\nNULL pointer, but its callers only check for error pointers thus miss\nthe NULL pointer case.\r\n\r\nFix it by returning an error pointer with the error code carried from\nsockfd_lookup().\r\n\r\n(I found this bug during code inspection.)(CVE-2024-46677)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\npinctrl: single: fix potential NULL dereference in pcs_get_function()\r\n\r\npinmux_generic_get_function() can return NULL and the pointer &apos;function&apos;\nwas dereferenced without checking against NULL. Add checking of pointer\n&apos;function&apos; in pcs_get_function().\r\n\r\nFound by code review.(CVE-2024-46685)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\ndrm/amdgpu: Fix out-of-bounds read of df_v1_7_channel_number\r\n\r\nCheck the fb_channel_number range to avoid the array out-of-bounds\nread error(CVE-2024-46724)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:\r\n\r\nof/irq: Prevent device address out-of-bounds read in interrupt map walk\r\n\r\nWhen of_irq_parse_raw() is invoked with a device address smaller than\nthe interrupt parent node (from #address-cells property), KASAN detects\nthe following out-of-bounds read when populating the initial match table\n(dyndbg=&quot;func of_irq_parse_* +p&quot;):\r\n\r\n  OF: of_irq_parse_one: dev=/soc@0/picasso/watchdog, index=0\n  OF:  parent=/soc@0/pci@878000000000/gpio0@17,0, intsize=2\n  OF:  intspec=4\n  OF: of_irq_parse_raw: ipar=/soc@0/pci@878000000000/gpio0@17,0, size=2\n  OF:  -&gt; addrsize=3\n  ==================================================================\n  BUG: KASAN: slab-out-of-bounds in of_irq_parse_raw+0x2b8/0x8d0\n  Read of size 4 at addr ffffff81beca5608 by task bash/764\r\n\r\n  CPU: 1 PID: 764 Comm: bash Tainted: G           O       6.1.67-484c613561-nokia_sm_arm64 #1\n  Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.01-12.24.03-dirty 01/01/2023\n  Call trace:\n   dump_backtrace+0xdc/0x130\n   show_stack+0x1c/0x30\n   dump_stack_lvl+0x6c/0x84\n   print_report+0x150/0x448\n   kasan_report+0x98/0x140\n   __asan_load4+0x78/0xa0\n   of_irq_parse_raw+0x2b8/0x8d0\n   of_irq_parse_one+0x24c/0x270\n   parse_interrupts+0xc0/0x120\n   of_fwnode_add_links+0x100/0x2d0\n   fw_devlink_parse_fwtree+0x64/0xc0\n   device_add+0xb38/0xc30\n   of_device_add+0x64/0x90\n   of_platform_device_create_pdata+0xd0/0x170\n   of_platform_bus_create+0x244/0x600\n   of_platform_notify+0x1b0/0x254\n   blocking_notifier_call_chain+0x9c/0xd0\n   __of_changeset_entry_notify+0x1b8/0x230\n   __of_changeset_apply_notify+0x54/0xe4\n   of_overlay_fdt_apply+0xc04/0xd94\n   ...\r\n\r\n  The buggy address belongs to the object at ffffff81beca5600\n   which belongs to the cache kmalloc-128 of size 128\n  The buggy address is located 8 bytes inside of\n   128-byte region [ffffff81beca5600, ffffff81beca5680)\r\n\r\n  The buggy address belongs to the physical page:\n  page:00000000230d3d03 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1beca4\n  head:00000000230d3d03 order:1 compound_mapcount:0 compound_pincount:0\n  flags: 0x8000000000010200(slab|head|zone=2)\n  raw: 8000000000010200 0000000000000000 dead000000000122 ffffff810000c300\n  raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000\n  page dumped because: kasan: bad access detected\r\n\r\n  Memory state around the buggy address:\n   ffffff81beca5500: 04 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc\n   ffffff81beca5580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc\n  &gt;ffffff81beca5600: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc\n                        ^\n   ffffff81beca5680: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc\n   ffffff81beca5700: 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc fc\n  ==================================================================\n  OF:  -&gt; got it !\r\n\r\nPrevent the out-of-bounds read by copying the device address into a\nbuffer of sufficient size.(CVE-2024-46743)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  netfilter: nf_reject_ipv6: fix nf_reject_ip6_tcphdr_put()  syzbot reported that nf_reject_ip6_tcphdr_put() was possibly sending garbage on the four reserved tcp bits (th-&gt;res1)  Use skb_put_zero() to clear the whole TCP header, as done in nf_reject_ip_tcphdr_put()  BUG: KMSAN: uninit-value in nf_reject_ip6_tcphdr_put+0x688/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:255   nf_reject_ip6_tcphdr_put+0x688/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:255   nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344   nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48   expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]   nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288   nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161   nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]   nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626   nf_hook include/linux/netfilter.h:269 [inline]   NF_HOOK include/linux/netfilter.h:312 [inline]   ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310   __netif_receive_skb_one_core net/core/dev.c:5661 [inline]   __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775   process_backlog+0x4ad/0xa50 net/core/dev.c:6108   __napi_poll+0xe7/0x980 net/core/dev.c:6772   napi_poll net/core/dev.c:6841 [inline]   net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963   handle_softirqs+0x1ce/0x800 kernel/softirq.c:554   __do_softirq+0x14/0x1a kernel/softirq.c:588   do_softirq+0x9a/0x100 kernel/softirq.c:455   __local_bh_enable_ip+0x9f/0xb0 kernel/softirq.c:382   local_bh_enable include/linux/bottom_half.h:33 [inline]   rcu_read_unlock_bh include/linux/rcupdate.h:908 [inline]   __dev_queue_xmit+0x2692/0x5610 net/core/dev.c:4450   dev_queue_xmit include/linux/netdevice.h:3105 [inline]   neigh_resolve_output+0x9ca/0xae0 net/core/neighbour.c:1565   neigh_output include/net/neighbour.h:542 [inline]   ip6_finish_output2+0x2347/0x2ba0 net/ipv6/ip6_output.c:141   __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]   ip6_finish_output+0xbb8/0x14b0 net/ipv6/ip6_output.c:226   NF_HOOK_COND include/linux/netfilter.h:303 [inline]   ip6_output+0x356/0x620 net/ipv6/ip6_output.c:247   dst_output include/net/dst.h:450 [inline]   NF_HOOK include/linux/netfilter.h:314 [inline]   ip6_xmit+0x1ba6/0x25d0 net/ipv6/ip6_output.c:366   inet6_csk_xmit+0x442/0x530 net/ipv6/inet6_connection_sock.c:135   __tcp_transmit_skb+0x3b07/0x4880 net/ipv4/tcp_output.c:1466   tcp_transmit_skb net/ipv4/tcp_output.c:1484 [inline]   tcp_connect+0x35b6/0x7130 net/ipv4/tcp_output.c:4143   tcp_v6_connect+0x1bcc/0x1e40 net/ipv6/tcp_ipv6.c:333   __inet_stream_connect+0x2ef/0x1730 net/ipv4/af_inet.c:679   inet_stream_connect+0x6a/0xd0 net/ipv4/af_inet.c:750   __sys_connect_file net/socket.c:2061 [inline]   __sys_connect+0x606/0x690 net/socket.c:2078   __do_sys_connect net/socket.c:2088 [inline]   __se_sys_connect net/socket.c:2085 [inline]   __x64_sys_connect+0x91/0xe0 net/socket.c:2085   x64_sys_call+0x27a5/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:43   do_syscall_x64 arch/x86/entry/common.c:52 [inline]   do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83  entry_SYSCALL_64_after_hwframe+0x77/0x7f  Uninit was stored to memory at:   nf_reject_ip6_tcphdr_put+0x60c/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:249   nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344   nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48   expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]   nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288   nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161   nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]   nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626   nf_hook include/linux/netfilter.h:269 [inline]   NF_HOOK include/linux/netfilter.h:312 [inline]   ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310   __netif_receive_skb_one_core ---truncated---(CVE-2024-47685)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drivers: media: dvb-frontends/rtl2832: fix an out-of-bounds write error  Ensure index in rtl2832_pid_filter does not exceed 31 to prevent out-of-bounds access.  dev-&gt;filters is a 32-bit value, so set_bit and clear_bit functions should only operate on indices from 0 to 31. If index is 32, it will attempt to access a non-existent 33rd bit, leading to out-of-bounds access. Change the boundary check from index &gt; 32 to index &gt;= 32 to resolve this issue.  [hverkuil: added fixes tag, rtl2830_pid_filter -&gt; rtl2832_pid_filter in logmsg](CVE-2024-47698)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  can: bcm: Clear bo-&gt;bcm_proc_read after remove_proc_entry().  syzbot reported a warning in bcm_release(). [0]  The blamed change fixed another warning that is triggered when connect() is issued again for a socket whose connect()ed device has been unregistered.  However, if the socket is just close()d without the 2nd connect(), the remaining bo-&gt;bcm_proc_read triggers unnecessary remove_proc_entry() in bcm_release().  Let&apos;s clear bo-&gt;bcm_proc_read after remove_proc_entry() in bcm_notify().  [0] name &apos;4986&apos; WARNING: CPU: 0 PID: 5234 at fs/proc/generic.c:711 remove_proc_entry+0x2e7/0x5d0 fs/proc/generic.c:711 Modules linked in: CPU: 0 UID: 0 PID: 5234 Comm: syz-executor606 Not tainted 6.11.0-rc5-syzkaller-00178-g5517ae241919 #0 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024 RIP: 0010:remove_proc_entry+0x2e7/0x5d0 fs/proc/generic.c:711 Code: ff eb 05 e8 cb 1e 5e ff 48 8b 5c 24 10 48 c7 c7 e0 f7 aa 8e e8 2a 38 8e 09 90 48 c7 c7 60 3a 1b 8c 48 89 de e8 da 42 20 ff 90 &lt;0f&gt; 0b 90 90 48 8b 44 24 18 48 c7 44 24 40 0e 36 e0 45 49 c7 04 07 RSP: 0018:ffffc9000345fa20 EFLAGS: 00010246 RAX: 2a2d0aee2eb64600 RBX: ffff888032f1f548 RCX: ffff888029431e00 RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000 RBP: ffffc9000345fb08 R08: ffffffff8155b2f2 R09: 1ffff1101710519a R10: dffffc0000000000 R11: ffffed101710519b R12: ffff888011d38640 R13: 0000000000000004 R14: 0000000000000000 R15: dffffc0000000000 FS:  0000000000000000(0000) GS:ffff8880b8800000(0000) knlGS:0000000000000000 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033 CR2: 00007fcfb52722f0 CR3: 000000000e734000 CR4: 00000000003506f0 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400 Call Trace:  &lt;TASK&gt;  bcm_release+0x250/0x880 net/can/bcm.c:1578  __sock_release net/socket.c:659 [inline]  sock_close+0xbc/0x240 net/socket.c:1421  __fput+0x24a/0x8a0 fs/file_table.c:422  task_work_run+0x24f/0x310 kernel/task_work.c:228  exit_task_work include/linux/task_work.h:40 [inline]  do_exit+0xa2f/0x27f0 kernel/exit.c:882  do_group_exit+0x207/0x2c0 kernel/exit.c:1031  __do_sys_exit_group kernel/exit.c:1042 [inline]  __se_sys_exit_group kernel/exit.c:1040 [inline]  __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1040  x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232  do_syscall_x64 arch/x86/entry/common.c:52 [inline]  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83  entry_SYSCALL_64_after_hwframe+0x77/0x7f RIP: 0033:0x7fcfb51ee969 Code: Unable to access opcode bytes at 0x7fcfb51ee93f. RSP: 002b:00007ffce0109ca8 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7 RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007fcfb51ee969 RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000001 RBP: 00007fcfb526f3b0 R08: ffffffffffffffb8 R09: 0000555500000000 R10: 0000555500000000 R11: 0000000000000246 R12: 00007fcfb526f3b0 R13: 0000000000000000 R14: 00007fcfb5271ee0 R15: 00007fcfb51bf160  &lt;/TASK&gt;(CVE-2024-47709)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  nbd: fix race between timeout and normal completion  If request timetout is handled by nbd_requeue_cmd(), normal completion has to be stopped for avoiding to complete this requeued request, other use-after-free can be triggered.  Fix the race by clearing NBD_CMD_INFLIGHT in nbd_requeue_cmd(), meantime make sure that cmd-&gt;lock is grabbed for clearing the flag and the requeue.(CVE-2024-49855)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drm/amd/display: Fix index out of bounds in degamma hardware format translation  Fixes index out of bounds issue in `cm_helper_translate_curve_to_degamma_hw_format` function. The issue could occur when the index &apos;i&apos; exceeds the number of transfer function points (TRANSFER_FUNC_POINTS).  The fix adds a check to ensure &apos;i&apos; is within bounds before accessing the transfer function points. If &apos;i&apos; is out of bounds the function returns false to indicate an error.  Reported by smatch: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:594 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow &apos;output_tf-&gt;tf_pts.red&apos; 1025 &lt;= s32max drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:595 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow &apos;output_tf-&gt;tf_pts.green&apos; 1025 &lt;= s32max drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:596 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow &apos;output_tf-&gt;tf_pts.blue&apos; 1025 &lt;= s32max(CVE-2024-49894)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  jfs: Fix uninit-value access of new_ea in ea_buffer  syzbot reports that lzo1x_1_do_compress is using uninit-value:  ===================================================== BUG: KMSAN: uninit-value in lzo1x_1_do_compress+0x19f9/0x2510 lib/lzo/lzo1x_compress.c:178  ...  Uninit was stored to memory at:  ea_put fs/jfs/xattr.c:639 [inline]  ...  Local variable ea_buf created at:  __jfs_setxattr+0x5d/0x1ae0 fs/jfs/xattr.c:662  __jfs_xattr_set+0xe6/0x1f0 fs/jfs/xattr.c:934  =====================================================  The reason is ea_buf-&gt;new_ea is not initialized properly.  Fix this by using memset to empty its content at the beginning in ea_get().(CVE-2024-49900)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  jbd2: stop waiting for space when jbd2_cleanup_journal_tail() returns error  In __jbd2_log_wait_for_space(), we might call jbd2_cleanup_journal_tail() to recover some journal space. But if an error occurs while executing jbd2_cleanup_journal_tail() (e.g., an EIO), we don&apos;t stop waiting for free space right away, we try other branches, and if j_committing_transaction is NULL (i.e., the tid is 0), we will get the following complain:  ============================================ JBD2: I/O error when updating journal superblock for sdd-8. __jbd2_log_wait_for_space: needed 256 blocks and only had 217 space available __jbd2_log_wait_for_space: no way to get more journal space in sdd-8 ------------[ cut here ]------------ WARNING: CPU: 2 PID: 139804 at fs/jbd2/checkpoint.c:109 __jbd2_log_wait_for_space+0x251/0x2e0 Modules linked in: CPU: 2 PID: 139804 Comm: kworker/u8:3 Not tainted 6.6.0+ #1 RIP: 0010:__jbd2_log_wait_for_space+0x251/0x2e0 Call Trace:  &lt;TASK&gt;  add_transaction_credits+0x5d1/0x5e0  start_this_handle+0x1ef/0x6a0  jbd2__journal_start+0x18b/0x340  ext4_dirty_inode+0x5d/0xb0  __mark_inode_dirty+0xe4/0x5d0  generic_update_time+0x60/0x70 [...] ============================================  So only if jbd2_cleanup_journal_tail() returns 1, i.e., there is nothing to clean up at the moment, continue to try to reclaim free space in other ways.  Note that this fix relies on commit 6f6a6fda2945 (&quot;jbd2: fix ocfs2 corrupt when updating journal superblock fails&quot;) to make jbd2_cleanup_journal_tail return the correct error code.(CVE-2024-49959)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  net: do not delay dst_entries_add() in dst_release()  dst_entries_add() uses per-cpu data that might be freed at netns dismantle from ip6_route_net_exit() calling dst_entries_destroy()  Before ip6_route_net_exit() can be called, we release all the dsts associated with this netns, via calls to dst_release(), which waits an rcu grace period before calling dst_destroy()  dst_entries_add() use in dst_destroy() is racy, because dst_entries_destroy() could have been called already.  Decrementing the number of dsts must happen sooner.  Notes:  1) in CONFIG_XFRM case, dst_destroy() can call    dst_release_immediate(child), this might also cause UAF    if the child does not have DST_NOCOUNT set.    IPSEC maintainers might take a look and see how to address this.  2) There is also discussion about removing this count of dst,    which might happen in future kernels.(CVE-2024-50036)",
+  "id": "OESA-2024-2323",
+  "modified": "2025-09-03T06:18:44.227666Z",
+  "published": "2024-11-01T11:09:31Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2323"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48946"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48967"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48973"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-48994"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49007"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49010"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49029"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-49033"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52918"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-52919"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46675"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46677"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46685"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46724"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-46743"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47685"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47698"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47709"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49855"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49894"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49900"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49959"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50036"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2022-48946",
+    "CVE-2022-48967",
+    "CVE-2022-48973",
+    "CVE-2022-48994",
+    "CVE-2022-49007",
+    "CVE-2022-49010",
+    "CVE-2022-49029",
+    "CVE-2022-49033",
+    "CVE-2023-52918",
+    "CVE-2023-52919",
+    "CVE-2024-46675",
+    "CVE-2024-46677",
+    "CVE-2024-46685",
+    "CVE-2024-46724",
+    "CVE-2024-46743",
+    "CVE-2024-47685",
+    "CVE-2024-47698",
+    "CVE-2024-47709",
+    "CVE-2024-49855",
+    "CVE-2024-49894",
+    "CVE-2024-49900",
+    "CVE-2024-49959",
+    "CVE-2024-50036"
+  ]
+}

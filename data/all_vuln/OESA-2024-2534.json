@@ -1,0 +1,205 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-2534.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "kernel-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "kernel-debuginfo-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "kernel-debugsource-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "kernel-devel-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "kernel-headers-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "kernel-source-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "kernel-tools-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "kernel-tools-debuginfo-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "kernel-tools-devel-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "perf-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "perf-debuginfo-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "python3-perf-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm",
+          "python3-perf-debuginfo-5.10.0-240.0.0.142.oe2203sp3.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-5.10.0-240.0.0.142.oe2203sp3.src.rpm"
+        ],
+        "x86_64": [
+          "kernel-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "kernel-debuginfo-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "kernel-debugsource-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "kernel-devel-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "kernel-headers-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "kernel-source-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "kernel-tools-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "kernel-tools-debuginfo-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "kernel-tools-devel-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "perf-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "perf-debuginfo-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "python3-perf-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm",
+          "python3-perf-debuginfo-5.10.0-240.0.0.142.oe2203sp3.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP3",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-22.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.10.0-240.0.0.142.oe2203sp3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  xhci: Handle TD clearing for multiple streams case  When multiple streams are in use, multiple TDs might be in flight when an endpoint is stopped. We need to issue a Set TR Dequeue Pointer for each, to ensure everything is reset properly and the caches cleared. Change the logic so that any N&gt;1 TDs found active for different streams are deferred until after the first one is processed, calling xhci_invalidate_cancelled_tds() again from xhci_handle_cmd_set_deq() to queue another command until we are done with all of them. Also change the error/&quot;should never happen&quot; paths to ensure we at least clear any affected TDs, even if we can&apos;t issue a command to clear the hardware cache, and complain loudly with an xhci_warn() if this ever happens.  This problem case dates back to commit e9df17eb1408 (&quot;USB: xhci: Correct assumptions about number of rings per endpoint.&quot;) early on in the XHCI driver&apos;s life, when stream support was first added. It was then identified but not fixed nor made into a warning in commit 674f8438c121 (&quot;xhci: split handling halted endpoints into two steps&quot;), which added a FIXME comment for the problem case (without materially changing the behavior as far as I can tell, though the new logic made the problem more obvious).  Then later, in commit 94f339147fc3 (&quot;xhci: Fix failure to give back some cached cancelled URBs.&quot;), it was acknowledged again.  [Mathias: commit 94f339147fc3 (&quot;xhci: Fix failure to give back some cached cancelled URBs.&quot;) was a targeted regression fix to the previously mentioned patch. Users reported issues with usb stuck after unmounting/disconnecting UAS devices. This rolled back the TD clearing of multiple streams to its original state.]  Apparently the commit author was aware of the problem (yet still chose to submit it): It was still mentioned as a FIXME, an xhci_dbg() was added to log the problem condition, and the remaining issue was mentioned in the commit description. The choice of making the log type xhci_dbg() for what is, at this point, a completely unhandled and known broken condition is puzzling and unfortunate, as it guarantees that no actual users would see the log in production, thereby making it nigh undebuggable (indeed, even if you turn on DEBUG, the message doesn&apos;t really hint at there being a problem at all).  It took me *months* of random xHC crashes to finally find a reliable repro and be able to do a deep dive debug session, which could all have been avoided had this unhandled, broken condition been actually reported with a warning, as it should have been as a bug intentionally left in unfixed (never mind that it shouldn&apos;t have been left in at all).  &gt; Another fix to solve clearing the caches of all stream rings with &gt; cancelled TDs is needed, but not as urgent.  3 years after that statement and 14 years after the original bug was introduced, I think it&apos;s finally time to fix it. And maybe next time let&apos;s not leave bugs unfixed (that are actually worse than the original bug), and let&apos;s actually get people to review kernel commits please.  Fixes xHC crashes and IOMMU faults with UAS devices when handling errors/faults. Easiest repro is to use `hdparm` to mark an early sector (e.g. 1024) on a disk as bad, then `cat /dev/sdX &gt; /dev/null` in a loop. At least in the case of JMicron controllers, the read errors end up having to cancel two TDs (for two queued requests to different streams) and the one that didn&apos;t get cleared properly ends up faulting the xHC entirely when it tries to access DMA pages that have since been unmapped, referred to by the stale TDs. This normally happens quickly (after two or three loops). After this fix, I left the `cat` in a loop running overnight and experienced no xHC failures, with all read errors recovered properly. Repro&apos;d and tested on an Apple M1 Mac Mini (dwc3 host).  On systems without an IOMMU, this bug would instead silently corrupt freed memory, making this a ---truncated---(CVE-2024-40927)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  wifi: mac80211: use two-phase skb reclamation in ieee80211_do_stop()  Since &apos;__dev_queue_xmit()&apos; should be called with interrupts enabled, the following backtrace:  ieee80211_do_stop()  ...  spin_lock_irqsave(&amp;local-&gt;queue_stop_reason_lock, flags)  ...  ieee80211_free_txskb()   ieee80211_report_used_skb()    ieee80211_report_ack_skb()     cfg80211_mgmt_tx_status_ext()      nl80211_frame_tx_status()       genlmsg_multicast_netns()        genlmsg_multicast_netns_filtered()         nlmsg_multicast_filtered()   netlink_broadcast_filtered()    do_one_broadcast()     netlink_broadcast_deliver()      __netlink_sendskb()       netlink_deliver_tap()        __netlink_deliver_tap_skb()         dev_queue_xmit()          __dev_queue_xmit() ; with IRQS disabled  ...  spin_unlock_irqrestore(&amp;local-&gt;queue_stop_reason_lock, flags)  issues the warning (as reported by syzbot reproducer):  WARNING: CPU: 2 PID: 5128 at kernel/softirq.c:362 __local_bh_enable_ip+0xc3/0x120  Fix this by implementing a two-phase skb reclamation in &apos;ieee80211_do_stop()&apos;, where actual work is performed outside of a section with interrupts disabled.(CVE-2024-47713)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  bpf: Fix helper writes to read-only maps  Lonial found an issue that despite user- and BPF-side frozen BPF map (like in case of .rodata), it was still possible to write into it from a BPF program side through specific helpers having ARG_PTR_TO_{LONG,INT} as arguments.  In check_func_arg() when the argument is as mentioned, the meta-&gt;raw_mode is never set. Later, check_helper_mem_access(), under the case of PTR_TO_MAP_VALUE as register base type, it assumes BPF_READ for the subsequent call to check_map_access_type() and given the BPF map is read-only it succeeds.  The helpers really need to be annotated as ARG_PTR_TO_{LONG,INT} | MEM_UNINIT when results are written into them as opposed to read out of them. The latter indicates that it&apos;s okay to pass a pointer to uninitialized memory as the memory is written to anyway.  However, ARG_PTR_TO_{LONG,INT} is a special case of ARG_PTR_TO_FIXED_SIZE_MEM just with additional alignment requirement. So it is better to just get rid of the ARG_PTR_TO_{LONG,INT} special cases altogether and reuse the fixed size memory types. For this, add MEM_ALIGNED to additionally ensure alignment given these helpers write directly into the args via *&lt;ptr&gt; = val. The .arg*_size has been initialized reflecting the actual sizeof(*&lt;ptr&gt;).  MEM_ALIGNED can only be used in combination with MEM_FIXED_SIZE annotated argument types, since in !MEM_FIXED_SIZE cases the verifier does not know the buffer size a priori and therefore cannot blindly write *&lt;ptr&gt; = val.(CVE-2024-49861)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  vhost/scsi: null-ptr-dereference in vhost_scsi_get_req()  Since commit 3f8ca2e115e5 (&quot;vhost/scsi: Extract common handling code from control queue handler&quot;) a null pointer dereference bug can be triggered when guest sends an SCSI AN request.  In vhost_scsi_ctl_handle_vq(), `vc.target` is assigned with `&amp;v_req.tmf.lun[1]` within a switch-case block and is then passed to vhost_scsi_get_req() which extracts `vc-&gt;req` and `tpg`. However, for a `VIRTIO_SCSI_T_AN_*` request, tpg is not required, so `vc.target` is set to NULL in this branch. Later, in vhost_scsi_get_req(), `vc-&gt;target` is dereferenced without being checked, leading to a null pointer dereference bug. This bug can be triggered from guest.  When this bug occurs, the vhost_worker process is killed while holding `vq-&gt;mutex` and the corresponding tpg will remain occupied indefinitely.  Below is the KASAN report: Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007] CPU: 1 PID: 840 Comm: poc Not tainted 6.10.0+ #1 Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014 RIP: 0010:vhost_scsi_get_req+0x165/0x3a0 Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 2b 02 00 00 48 b8 00 00 00 00 00 fc ff df 4d 8b 65 30 4c 89 e2 48 c1 ea 03 &lt;0f&gt; b6 04 02 4c 89 e2 83 e2 07 38 d0 7f 08 84 c0 0f 85 be 01 00 00 RSP: 0018:ffff888017affb50 EFLAGS: 00010246 RAX: dffffc0000000000 RBX: ffff88801b000000 RCX: 0000000000000000 RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888017affcb8 RBP: ffff888017affb80 R08: 0000000000000000 R09: 0000000000000000 R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000 R13: ffff888017affc88 R14: ffff888017affd1c R15: ffff888017993000 FS:  000055556e076500(0000) GS:ffff88806b100000(0000) knlGS:0000000000000000 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033 CR2: 00000000200027c0 CR3: 0000000010ed0004 CR4: 0000000000370ef0 Call Trace:  &lt;TASK&gt;  ? show_regs+0x86/0xa0  ? die_addr+0x4b/0xd0  ? exc_general_protection+0x163/0x260  ? asm_exc_general_protection+0x27/0x30  ? vhost_scsi_get_req+0x165/0x3a0  vhost_scsi_ctl_handle_vq+0x2a4/0xca0  ? __pfx_vhost_scsi_ctl_handle_vq+0x10/0x10  ? __switch_to+0x721/0xeb0  ? __schedule+0xda5/0x5710  ? __kasan_check_write+0x14/0x30  ? _raw_spin_lock+0x82/0xf0  vhost_scsi_ctl_handle_kick+0x52/0x90  vhost_run_work_list+0x134/0x1b0  vhost_task_fn+0x121/0x350 ...  &lt;/TASK&gt; ---[ end trace 0000000000000000 ]---  Let&apos;s add a check in vhost_scsi_get_req.  [whitespace fixes](CVE-2024-49863)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drm/amd/display: Check null pointer before try to access it  [why &amp; how] Change the order of the pipe_ctx-&gt;plane_state check to ensure that plane_state is not null before accessing it.(CVE-2024-49906)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drm/amd/display: Pass non-null to dcn20_validate_apply_pipe_split_flags  [WHAT &amp; HOW] &quot;dcn20_validate_apply_pipe_split_flags&quot; dereferences merge, and thus it cannot be a null pointer. Let&apos;s pass a valid pointer to avoid null dereference.  This fixes 2 FORWARD_NULL issues reported by Coverity.(CVE-2024-49923)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  net: stmmac: Fix zero-division error when disabling tc cbs  The commit b8c43360f6e4 (&quot;net: stmmac: No need to calculate speed divider when offload is disabled&quot;) allows the &quot;port_transmit_rate_kbps&quot; to be set to a value of 0, which is then passed to the &quot;div_s64&quot; function when tc-cbs is disabled. This leads to a zero-division error.  When tc-cbs is disabled, the idleslope, sendslope, and credit values the credit values are not required to be configured. Therefore, adding a return statement after setting the txQ mode to DCB when tc-cbs is disabled would prevent a zero-division error.(CVE-2024-49977)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drm/amdkfd: amdkfd_free_gtt_mem clear the correct pointer  Pass pointer reference to amdgpu_bo_unref to clear the correct pointer, otherwise amdgpu_bo_unref clear the local variable, the original pointer not set to NULL, this could cause use-after-free bug.(CVE-2024-49991)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()  A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could possibly return NULL pointer. NULL Pointer Dereference may be triggerred without addtional check. Add a NULL check for the returned pointer.(CVE-2024-50103)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  nilfs2: fix kernel bug due to missing clearing of buffer delay flag  Syzbot reported that after nilfs2 reads a corrupted file system image and degrades to read-only, the BUG_ON check for the buffer delay flag in submit_bh_wbc() may fail, causing a kernel bug.  This is because the buffer delay flag is not cleared when clearing the buffer state flags to discard a page/folio or a buffer head. So, fix this.  This became necessary when the use of nilfs2&apos;s own page clear routine was expanded.  This state inconsistency does not occur if the buffer is written normally by log writing.(CVE-2024-50116)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  net: sched: fix use-after-free in taprio_change()  In &apos;taprio_change()&apos;, &apos;admin&apos; pointer may become dangling due to sched switch / removal caused by &apos;advance_sched()&apos;, and critical section protected by &apos;q-&gt;current_entry_lock&apos; is too small to prevent from such a scenario (which causes use-after-free detected by KASAN). Fix this by prefer &apos;rcu_replace_pointer()&apos; over &apos;rcu_assign_pointer()&apos; to update &apos;admin&apos; immediately before an attempt to schedule freeing.(CVE-2024-50127)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drm/vboxvideo: Replace fake VLA at end of vbva_mouse_pointer_shape with real VLA  Replace the fake VLA at end of the vbva_mouse_pointer_shape shape with a real VLA to fix a &quot;memcpy: detected field-spanning write error&quot; warning:  [   13.319813] memcpy: detected field-spanning write (size 16896) of single field &quot;p-&gt;data&quot; at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 (size 4) [   13.319841] WARNING: CPU: 0 PID: 1105 at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 hgsmi_update_pointer_shape+0x192/0x1c0 [vboxvideo] [   13.320038] Call Trace: [   13.320173]  hgsmi_update_pointer_shape [vboxvideo] [   13.320184]  vbox_cursor_atomic_update [vboxvideo]  Note as mentioned in the added comment it seems the original length calculation for the allocated and send hgsmi buffer is 4 bytes too large. Changing this is not the goal of this patch, so this behavior is kept.(CVE-2024-50134)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drm/vc4: Stop the active perfmon before being destroyed  Upon closing the file descriptor, the active performance monitor is not stopped. Although all perfmons are destroyed in `vc4_perfmon_close_file()`, the active performance monitor&apos;s pointer (`vc4-&gt;active_perfmon`) is still retained.  If we open a new file descriptor and submit a few jobs with performance monitors, the driver will attempt to stop the active performance monitor using the stale pointer in `vc4-&gt;active_perfmon`. However, this pointer is no longer valid because the previous process has already terminated, and all performance monitors associated with it have been destroyed and freed.  To fix this, when the active performance monitor belongs to a given process, explicitly stop it before destroying and freeing it.(CVE-2024-50187)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  drm/radeon: Fix encoder-&gt;possible_clones  Include the encoder itself in its possible_clones bitmask. In the past nothing validated that drivers were populating possible_clones correctly, but that changed in commit 74d2aacbe840 (&quot;drm: Validate encoder-&gt;possible_clones&quot;). Looks like radeon never got the memo and is still not following the rules 100% correctly.  This results in some warnings during driver initialization: Bogus possible_clones: [ENCODER:46:TV-46] possible_clones=0x4 (full encoder mask=0x7) WARNING: CPU: 0 PID: 170 at drivers/gpu/drm/drm_mode_config.c:615 drm_mode_config_validate+0x113/0x39c ...  (cherry picked from commit 3b6e7d40649c0d75572039aff9d0911864c689db)(CVE-2024-50201)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  USB: serial: io_edgeport: fix use after free in debug printk  The &quot;dev_dbg(&amp;urb-&gt;dev-&gt;dev, ...&quot; which happens after usb_free_urb(urb) is a use after free of the &quot;urb&quot; pointer.  Store the &quot;dev&quot; pointer at the start of the function to avoid this issue.(CVE-2024-50267)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  filemap: Fix bounds checking in filemap_read()  If the caller supplies an iocb-&gt;ki_pos value that is close to the filesystem upper limit, and an iterator with a count that causes us to overflow that limit, then filemap_read() enters an infinite loop.  This behaviour was discovered when testing xfstests generic/525 with the &quot;localio&quot; optimisation for loopback NFS mounts.(CVE-2024-50272)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  dm cache: fix potential out-of-bounds access on the first resume  Out-of-bounds access occurs if the fast device is expanded unexpectedly before the first-time resume of the cache table. This happens because expanding the fast device requires reloading the cache table for cache_create to allocate new in-core data structures that fit the new size, and the check in cache_preresume is not performed during the first resume, leading to the issue.  Reproduce steps:  1. prepare component devices:  dmsetup create cmeta --table &quot;0 8192 linear /dev/sdc 0&quot; dmsetup create cdata --table &quot;0 65536 linear /dev/sdc 8192&quot; dmsetup create corig --table &quot;0 524288 linear /dev/sdc 262144&quot; dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct  2. load a cache table of 512 cache blocks, and deliberately expand the    fast device before resuming the cache, making the in-core data    structures inadequate.  dmsetup create cache --notable dmsetup reload cache --table &quot;0 524288 cache /dev/mapper/cmeta \\ /dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0&quot; dmsetup reload cdata --table &quot;0 131072 linear /dev/sdc 8192&quot; dmsetup resume cdata dmsetup resume cache  3. suspend the cache to write out the in-core dirty bitset and hint    array, leading to out-of-bounds access to the dirty bitset at offset    0x40:  dmsetup suspend cache  KASAN reports:    BUG: KASAN: vmalloc-out-of-bounds in is_dirty_callback+0x2b/0x80   Read of size 8 at addr ffffc90000085040 by task dmsetup/90    (...snip...)   The buggy address belongs to the virtual mapping at    [ffffc90000085000, ffffc90000087000) created by:    cache_ctr+0x176a/0x35f0    (...snip...)   Memory state around the buggy address:    ffffc90000084f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8    ffffc90000084f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8   &gt;ffffc90000085000: 00 00 00 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8                                              ^    ffffc90000085080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8    ffffc90000085100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8  Fix by checking the size change on the first resume.(CVE-2024-50278)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  media: cx24116: prevent overflows on SNR calculus  as reported by Coverity, if reading SNR registers fail, a negative number will be returned, causing an underflow when reading SNR registers.  Prevent that.(CVE-2024-50290)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ASoC: stm32: spdifrx: fix dma channel release in stm32_spdifrx_remove  In case of error when requesting ctrl_chan DMA channel, ctrl_chan is not null. So the release of the dma channel leads to the following issue: [    4.879000] st,stm32-spdifrx 500d0000.audio-controller: dma_request_slave_channel error -19 [    4.888975] Unable to handle kernel NULL pointer dereference at virtual address 000000000000003d [...] [    5.096577] Call trace: [    5.099099]  dma_release_channel+0x24/0x100 [    5.103235]  stm32_spdifrx_remove+0x24/0x60 [snd_soc_stm32_spdifrx] [    5.109494]  stm32_spdifrx_probe+0x320/0x4c4 [snd_soc_stm32_spdifrx]  To avoid this issue, release channel only if the pointer is valid.(CVE-2024-50292)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  HID: core: zero-initialize the report buffer  Since the report buffer is used by all kinds of drivers in various ways, let&apos;s zero-initialize it during allocation to make sure that it can&apos;t be ever used to leak kernel memory via specially-crafted report.(CVE-2024-50302)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format  This can lead to out of bounds writes since frames of this type were not taken into account when calculating the size of the frames buffer in uvc_parse_streaming.(CVE-2024-53104)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  vp_vdpa: fix id_table array not null terminated error  Allocate one extra virtio_device_id as null terminator, otherwise vdpa_mgmtdev_get_classes() may iterate multiple times and visit undefined memory.(CVE-2024-53110)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  ocfs2: uncache inode which has failed entering the group  Syzbot has reported the following BUG:  kernel BUG at fs/ocfs2/uptodate.c:509! ... Call Trace:  &lt;TASK&gt;  ? __die_body+0x5f/0xb0  ? die+0x9e/0xc0  ? do_trap+0x15a/0x3a0  ? ocfs2_set_new_buffer_uptodate+0x145/0x160  ? do_error_trap+0x1dc/0x2c0  ? ocfs2_set_new_buffer_uptodate+0x145/0x160  ? __pfx_do_error_trap+0x10/0x10  ? handle_invalid_op+0x34/0x40  ? ocfs2_set_new_buffer_uptodate+0x145/0x160  ? exc_invalid_op+0x38/0x50  ? asm_exc_invalid_op+0x1a/0x20  ? ocfs2_set_new_buffer_uptodate+0x2e/0x160  ? ocfs2_set_new_buffer_uptodate+0x144/0x160  ? ocfs2_set_new_buffer_uptodate+0x145/0x160  ocfs2_group_add+0x39f/0x15a0  ? __pfx_ocfs2_group_add+0x10/0x10  ? __pfx_lock_acquire+0x10/0x10  ? mnt_get_write_access+0x68/0x2b0  ? __pfx_lock_release+0x10/0x10  ? rcu_read_lock_any_held+0xb7/0x160  ? __pfx_rcu_read_lock_any_held+0x10/0x10  ? smack_log+0x123/0x540  ? mnt_get_write_access+0x68/0x2b0  ? mnt_get_write_access+0x68/0x2b0  ? mnt_get_write_access+0x226/0x2b0  ocfs2_ioctl+0x65e/0x7d0  ? __pfx_ocfs2_ioctl+0x10/0x10  ? smack_file_ioctl+0x29e/0x3a0  ? __pfx_smack_file_ioctl+0x10/0x10  ? lockdep_hardirqs_on_prepare+0x43d/0x780  ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10  ? __pfx_ocfs2_ioctl+0x10/0x10  __se_sys_ioctl+0xfb/0x170  do_syscall_64+0xf3/0x230  entry_SYSCALL_64_after_hwframe+0x77/0x7f ...  &lt;/TASK&gt;  When &apos;ioctl(OCFS2_IOC_GROUP_ADD, ...)&apos; has failed for the particular inode in &apos;ocfs2_verify_group_and_input()&apos;, corresponding buffer head remains cached and subsequent call to the same &apos;ioctl()&apos; for the same inode issues the BUG() in &apos;ocfs2_set_new_buffer_uptodate()&apos; (trying to cache the same buffer head of that inode). Fix this by uncaching the buffer head with &apos;ocfs2_remove_from_cache()&apos; on error path in &apos;ocfs2_group_add()&apos;.(CVE-2024-53112)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  bpf: sync_linked_regs() must preserve subreg_def  Range propagation must not affect subreg_def marks, otherwise the following example is rewritten by verifier incorrectly when BPF_F_TEST_RND_HI32 flag is set:    0: call bpf_ktime_get_ns                   call bpf_ktime_get_ns   1: r0 &amp;= 0x7fffffff       after verifier   r0 &amp;= 0x7fffffff   2: w1 = w0                rewrites         w1 = w0   3: if w0 &lt; 10 goto +0     --------------&gt;  r11 = 0x2f5674a6     (r)   4: r1 &gt;&gt;= 32                               r11 &lt;&lt;= 32           (r)   5: r0 = r1                                 r1 |= r11            (r)   6: exit;                                   if w0 &lt; 0xa goto pc+0                                              r1 &gt;&gt;= 32                                              r0 = r1                                              exit  (or zero extension of w1 at (2) is missing for architectures that  require zero extension for upper register half).  The following happens w/o this patch: - r0 is marked as not a subreg at (0); - w1 is marked as subreg at (2); - w1 subreg_def is overridden at (3) by copy_register_state(); - w1 is read at (5) but mark_insn_zext() does not mark (2)   for zero extension, because w1 subreg_def is not set; - because of BPF_F_TEST_RND_HI32 flag verifier inserts random   value for hi32 bits of (2) (marked (r)); - this random value is read at (5).(CVE-2024-53125)\r\n\r\nIn the Linux kernel, the following vulnerability has been resolved:  nilfs2: fix null-ptr-deref in block_dirty_buffer tracepoint  When using the &quot;block:block_dirty_buffer&quot; tracepoint, mark_buffer_dirty() may cause a NULL pointer dereference, or a general protection fault when KASAN is enabled.  This happens because, since the tracepoint was added in mark_buffer_dirty(), it references the dev_t member bh-&gt;b_bdev-&gt;bd_dev regardless of whether the buffer head has a pointer to a block_device structure.  In the current implementation, nilfs_grab_buffer(), which grabs a buffer to read (or create) a block of metadata, including b-tree node blocks, does not set the block device, but instead does so only if the buffer is not in the &quot;uptodate&quot; state for each of its caller block reading functions.  However, if the uptodate flag is set on a folio/page, and the buffer heads are detached from it by try_to_free_buffers(), and new buffer heads are then attached by create_empty_buffers(), the uptodate flag may be restored to each buffer without the block device being set to bh-&gt;b_bdev, and mark_buffer_dirty() may be called later in that state, resulting in the bug mentioned above.  Fix this issue by making nilfs_grab_buffer() always set the block device of the super block structure to the buffer head, regardless of the state of the buffer&apos;s uptodate flag.(CVE-2024-53130)",
+  "id": "OESA-2024-2534",
+  "modified": "2025-09-03T06:20:25.400462Z",
+  "published": "2024-12-13T13:17:50Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-2534"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-40927"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47713"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49861"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49863"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49906"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49923"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49977"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-49991"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50103"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50116"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50127"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50134"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50187"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50201"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50267"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50272"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50278"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50290"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50292"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50302"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53104"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53110"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53112"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53125"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-53130"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2024-40927",
+    "CVE-2024-47713",
+    "CVE-2024-49861",
+    "CVE-2024-49863",
+    "CVE-2024-49906",
+    "CVE-2024-49923",
+    "CVE-2024-49977",
+    "CVE-2024-49991",
+    "CVE-2024-50103",
+    "CVE-2024-50116",
+    "CVE-2024-50127",
+    "CVE-2024-50134",
+    "CVE-2024-50187",
+    "CVE-2024-50201",
+    "CVE-2024-50267",
+    "CVE-2024-50272",
+    "CVE-2024-50278",
+    "CVE-2024-50290",
+    "CVE-2024-50292",
+    "CVE-2024-50302",
+    "CVE-2024-53104",
+    "CVE-2024-53110",
+    "CVE-2024-53112",
+    "CVE-2024-53125",
+    "CVE-2024-53130"
+  ]
+}

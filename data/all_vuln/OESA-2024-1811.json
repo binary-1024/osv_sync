@@ -1,0 +1,90 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2024-1811.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "cargo-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "clippy-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "rls-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "rust-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "rust-analysis-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "rust-debuginfo-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "rust-debugsource-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "rust-help-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "rust-std-static-1.60.0-4.oe2203sp1.aarch64.rpm",
+          "rustfmt-1.60.0-4.oe2203sp1.aarch64.rpm"
+        ],
+        "noarch": [
+          "rust-debugger-common-1.60.0-4.oe2203sp1.noarch.rpm",
+          "rust-gdb-1.60.0-4.oe2203sp1.noarch.rpm",
+          "rust-lldb-1.60.0-4.oe2203sp1.noarch.rpm",
+          "rust-src-1.60.0-4.oe2203sp1.noarch.rpm"
+        ],
+        "src": [
+          "rust-1.60.0-4.oe2203sp1.src.rpm"
+        ],
+        "x86_64": [
+          "cargo-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "clippy-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "rls-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "rust-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "rust-analysis-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "rust-debuginfo-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "rust-debugsource-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "rust-help-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "rust-std-static-1.60.0-4.oe2203sp1.x86_64.rpm",
+          "rustfmt-1.60.0-4.oe2203sp1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS-SP1",
+        "name": "rust",
+        "purl": "pkg:rpm/openEuler/rust&distro=openEuler-22.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.60.0-4.oe2203sp1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "Rust is a systems programming language focused on three goals:safety, speed,and concurrency.It maintains these goals without having a garbage collector, making it a useful language for a number of use cases other languages are not good at: embedding in other languages, programs with specific space and time requirements,and writing low-level code, like device drivers and operating systems. It improves on current languages targeting this space by having a number of compile-time safety checks that produce no runtime overhead,while eliminating all data races.\r\n\r\nSecurity Fix(es):\r\n\r\nCargo is a package manager for the rust programming language. After a package is downloaded, Cargo extracts its source code in the ~/.cargo folder on disk, making it available to the Rust projects it builds. To record when an extraction is successful, Cargo writes &quot;ok&quot; to the .cargo-ok file at the root of the extracted source code once it extracted all the files. It was discovered that Cargo allowed packages to contain a .cargo-ok symbolic link, which Cargo would extract. Then, when Cargo attempted to write &quot;ok&quot; into .cargo-ok, it would actually replace the first two bytes of the file the symlink pointed to with ok. This would allow an attacker to corrupt one file on the machine using Cargo to extract the package. Note that by design Cargo allows code execution at build time, due to build scripts and procedural macros. The vulnerabilities in this advisory allow performing a subset of the possible damage in a harder to track down way. Your dependencies must still be trusted if you want to be protected from attacks, as it&apos;s possible to perform the same attacks with build scripts and procedural macros. The vulnerability is present in all versions of Cargo. Rust 1.64, to be released on September 22nd, will include a fix for it. Since the vulnerability is just a more limited way to accomplish what a malicious build scripts or procedural macros can do, we decided not to publish Rust point releases backporting the security fix. Patch files are available for Rust 1.63.0 are available in the wg-security-response repository for people building their own toolchain.\nMitigations We recommend users of alternate registries to exercise care in which package they download, by only including trusted dependencies in their projects. Please note that even with these vulnerabilities fixed, by design Cargo allows arbitrary code execution at build time thanks to build scripts and procedural macros: a malicious dependency will be able to cause damage regardless of these vulnerabilities. crates.io implemented server-side checks to reject these kinds of packages years ago, and there are no packages on crates.io exploiting these vulnerabilities. crates.io users still need to exercise care in choosing their dependencies though, as remote code execution is allowed by design there as well.(CVE-2022-36113)\r\n\r\nCargo is a package manager for the rust programming language. It was discovered that Cargo did not limit the amount of data extracted from compressed archives. An attacker could upload to an alternate registry a specially crafted package that extracts way more data than its size (also known as a &quot;zip bomb&quot;), exhausting the disk space on the machine using Cargo to download the package. Note that by design Cargo allows code execution at build time, due to build scripts and procedural macros. The vulnerabilities in this advisory allow performing a subset of the possible damage in a harder to track down way. Your dependencies must still be trusted if you want to be protected from attacks, as it&apos;s possible to perform the same attacks with build scripts and procedural macros. The vulnerability is present in all versions of Cargo. Rust 1.64, to be released on September 22nd, will include a fix for it. Since the vulnerability is just a more limited way to accomplish what a malicious build scripts or procedural macros can do, we decided not to publish Rust point releases backporting the security fix. Patch files are available for Rust 1.63.0 are available in the wg-security-response repository for people building their own toolchain. We recommend users of alternate registries to excercise care in which package they download, by only including trusted dependencies in their projects. Please note that even with these vulnerabilities fixed, by design Cargo allows arbitrary code execution at build time thanks to build scripts and procedural macros: a malicious dependency will be able to cause damage regardless of these vulnerabilities. crates.io implemented server-side checks to reject these kinds of packages years ago, and there are no packages on crates.io exploiting these vulnerabilities. crates.io users still need to excercise care in choosing their dependencies though, as the same concerns about build scripts and procedural macros apply here.(CVE-2022-36114)",
+  "id": "OESA-2024-1811",
+  "modified": "2025-09-03T06:18:21.640211Z",
+  "published": "2024-07-05T11:08:27Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2024-1811"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36113"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36114"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "rust security update",
+  "upstream": [
+    "CVE-2022-36113",
+    "CVE-2022-36114"
+  ]
+}

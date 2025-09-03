@@ -1,0 +1,82 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-2041.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "curl-7.79.1-12.oe2203.aarch64.rpm",
+          "libcurl-devel-7.79.1-12.oe2203.aarch64.rpm",
+          "curl-debuginfo-7.79.1-12.oe2203.aarch64.rpm",
+          "libcurl-7.79.1-12.oe2203.aarch64.rpm",
+          "curl-debugsource-7.79.1-12.oe2203.aarch64.rpm"
+        ],
+        "noarch": [
+          "curl-help-7.79.1-12.oe2203.noarch.rpm"
+        ],
+        "src": [
+          "curl-7.79.1-12.oe2203.src.rpm"
+        ],
+        "x86_64": [
+          "curl-debugsource-7.79.1-12.oe2203.x86_64.rpm",
+          "libcurl-7.79.1-12.oe2203.x86_64.rpm",
+          "libcurl-devel-7.79.1-12.oe2203.x86_64.rpm",
+          "curl-debuginfo-7.79.1-12.oe2203.x86_64.rpm",
+          "curl-7.79.1-12.oe2203.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS",
+        "name": "curl",
+        "purl": "pkg:rpm/openEuler/curl&distro=openEuler-22.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7.79.1-12.oe2203"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "CURL is a computer software project providing a library (libcurl) and command-line tool (curl) for transferring data using various protocols.\r\n\r\nSecurity Fix(es):\r\n\r\ncurl before 7.86.0 has a double free. If curl is told to use an HTTP proxy for a transfer with a non-HTTP(S) URL, it sets up the connection to the remote server by issuing a CONNECT request to the proxy, and then tunnels the rest of the protocol through. An HTTP proxy might refuse this request (HTTP proxies often only allow outgoing connections to specific port numbers, like 443 for HTTPS) and instead return a non-200 status code to the client. Due to flaws in the error/cleanup handling, this could trigger a double free in curl if one of the following schemes were used in the URL for the transfer: dict, gopher, gophers, ldap, ldaps, rtmp, rtmps, or telnet. The earliest affected version is 7.77.0.(CVE-2022-42915)\r\n\r\nA vulnerability was found in curl. The issue occurs when doing HTTP(S) transfers, where curl might erroneously use the read callback (`CURLOPT_READFUNCTION`) to ask for data to send, even when the `CURLOPT_POSTFIELDS` option has been set if it previously used the same handle to issue a `PUT` request which used that callback. This flaw may surprise the application and cause it to misbehave and either send off the wrong data or use memory after free or similar in the subsequent `POST` request.(CVE-2022-32221)\r\n\r\nIn curl before 7.86.0, the HSTS check could be bypassed to trick it into staying with HTTP. Using its HSTS support, curl can be instructed to use HTTPS directly (instead of using an insecure cleartext HTTP step) even when HTTP is provided in the URL. This mechanism could be bypassed if the host name in the given URL uses IDN characters that get replaced with ASCII counterparts as part of the IDN conversion, e.g., using the character UTF-8 U+3002 (IDEOGRAPHIC FULL STOP) instead of the common ASCII full stop of U+002E (.). The earliest affected version is 7.77.0 2021-05-26.(CVE-2022-42916)",
+  "id": "OESA-2022-2041",
+  "modified": "2025-09-03T06:18:17.545323Z",
+  "published": "2022-11-04T11:04:30Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2022-2041"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-42915"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-32221"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-42916"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "curl security update",
+  "upstream": [
+    "CVE-2022-32221",
+    "CVE-2022-42915",
+    "CVE-2022-42916"
+  ]
+}

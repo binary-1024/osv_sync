@@ -1,0 +1,147 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-1335.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "postgresql-13-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-contrib-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-debuginfo-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-debugsource-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-docs-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-llvmjit-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-plperl-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-plpython3-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-pltcl-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-private-devel-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-private-libs-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-server-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-server-devel-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-static-13.20-1.oe2003sp4.aarch64.rpm",
+          "postgresql-13-test-13.20-1.oe2003sp4.aarch64.rpm"
+        ],
+        "noarch": [
+          "postgresql-13-test-rpm-macros-13.20-1.oe2003sp4.noarch.rpm"
+        ],
+        "src": [
+          "postgresql-13-13.20-1.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "postgresql-13-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-contrib-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-debuginfo-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-debugsource-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-docs-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-llvmjit-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-plperl-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-plpython3-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-pltcl-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-private-devel-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-private-libs-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-server-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-server-devel-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-static-13.20-1.oe2003sp4.x86_64.rpm",
+          "postgresql-13-test-13.20-1.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "postgresql-13",
+        "purl": "pkg:rpm/openEuler/postgresql-13&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "13.20-1.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "PostgreSQL is an advanced Object-Relational database management system (DBMS). The base postgresql package contains the client programs that you&amp;apos;ll need to access a PostgreSQL DBMS server, as well as HTML documentation for the whole system.  These client programs can be located on the same machine as the PostgreSQL server, or on a remote machine that accesses a PostgreSQL server over a network connection.  The PostgreSQL server can be found in the postgresql-server sub-package.\r\n\r\nSecurity Fix(es):\n\nA flaw was found in postgresql. A purpose-crafted query can read arbitrary bytes of server memory. In the default configuration, any authenticated database user can complete this attack at will. The attack does not require the ability to create objects. If server settings include max_worker_processes=0, the known versions of this attack are infeasible. However, undiscovered variants of the attack may be independent of that setting.(CVE-2021-3677)\n\nIN THE EXTENSION SCRIPT, a SQL Injection vulnerability was found in PostgreSQL if it uses @extowner@, @extschema@, or @extschema:...@ inside a quoting construct (dollar quoting, &apos;&apos;, or &quot;&quot;). If an administrator has installed files of a vulnerable, trusted, non-bundled extension, an attacker with database-level CREATE privilege can execute arbitrary code as the bootstrap superuser.(CVE-2023-39417)\n\nA memory disclosure vulnerability was found in PostgreSQL that allows remote users to access sensitive information by exploiting certain aggregate function calls with &apos;unknown&apos;-type arguments. Handling &apos;unknown&apos;-type values from string literals without type designation can disclose bytes, potentially revealing notable and confidential information. This issue exists due to excessive data output in aggregate function calls, enabling remote users to read some portion of system memory.(CVE-2023-5868)\n\nA flaw was found in PostgreSQL that allows authenticated database users to execute arbitrary code through missing overflow checks during SQL array value modification. This issue exists due to an integer overflow during array modification where a remote user can trigger the overflow by providing specially crafted data. This enables the execution of arbitrary code on the target system, allowing users to write arbitrary bytes to memory and extensively read the server&apos;s memory.(CVE-2023-5869)\n\nA flaw was found in PostgreSQL involving the pg_cancel_backend role that signals background workers, including the logical replication launcher, autovacuum workers, and the autovacuum launcher. Successful exploitation requires a non-core extension with a less-resilient background worker and would affect that specific background worker only. This issue may allow a remote high privileged user to launch a denial of service (DoS) attack.(CVE-2023-5870)\n\nLate privilege drop in REFRESH MATERIALIZED VIEW CONCURRENTLY in PostgreSQL allows an object creator to execute arbitrary SQL functions as the command issuer. The command intends to run SQL functions as the owner of the materialized view, enabling safe refresh of untrusted materialized views. The victim is a superuser or member of one of the attacker&apos;s roles. The attack requires luring the victim into running REFRESH MATERIALIZED VIEW CONCURRENTLY on the attacker&apos;s materialized view. Versions before PostgreSQL 16.2, 15.6, 14.11, 13.14, and 12.18 are affected.(CVE-2024-0985)\n\nIncomplete tracking in PostgreSQL of tables with row security allows a reused query to view or change different rows from those intended.  CVE-2023-2455 and CVE-2016-2193 fixed most interaction between row security and user ID changes.  They missed cases where a subquery, WITH query, security invoker view, or SQL-language function references a table with a row-level security policy.  This has the same consequences as the two earlier CVEs.  That is to say, it leads to potentially incorrect policies being applied in cases where role-specific policies are used and a given query is planned under one role and then executed under other roles.  This scenario can happen under security definer functions or when a common user and query is planned initially and then re-used across multiple SET ROLEs.  Applying an incorrect policy may permit a user to complete otherwise-forbidden reads and modifications.  This affects only databases that have used CREATE POLICY to define a row security policy.  An attacker must tailor an attack to a particular application&apos;s pattern of query plan reuse, user ID changes, and role-specific row security policies.  Versions before PostgreSQL 17.1, 16.5, 15.9, 14.14, 13.17, and 12.21 are affected.(CVE-2024-10976)\n\nClient use of server error message in PostgreSQL allows a server not trusted under current SSL or GSS settings to furnish arbitrary non-NUL bytes to the libpq application.  For example, a man-in-the-middle attacker could send a long error message that a human or screen-scraper user of psql mistakes for valid query results.  This is probably not a concern for clients where the user interface unambiguously indicates the boundary between one error message and other text.  Versions before PostgreSQL 17.1, 16.5, 15.9, 14.14, 13.17, and 12.21 are affected.(CVE-2024-10977)\n\nIncorrect privilege assignment in PostgreSQL allows a less-privileged application user to view or change different rows from those intended.  An attack requires the application to use SET ROLE, SET SESSION AUTHORIZATION, or an equivalent feature.  The problem arises when an application query uses parameters from the attacker or conveys query results to the attacker.  If that query reacts to current_setting(&apos;role&apos;) or the current user ID, it may modify or return data as though the session had not used SET ROLE or SET SESSION AUTHORIZATION.  The attacker does not control which incorrect user ID applies.  Query text from less-privileged sources is not a concern here, because SET ROLE and SET SESSION AUTHORIZATION are not sandboxes for unvetted queries.  Versions before PostgreSQL 17.1, 16.5, 15.9, 14.14, 13.17, and 12.21 are affected.(CVE-2024-10978)\n\nIncorrect control of environment variables in PostgreSQL PL/Perl allows an unprivileged database user to change sensitive process environment variables (e.g. PATH).  That often suffices to enable arbitrary code execution, even if the attacker lacks a database server operating system user.  Versions before PostgreSQL 17.1, 16.5, 15.9, 14.14, 13.17, and 12.21 are affected.(CVE-2024-10979)\n\nTime-of-check Time-of-use (TOCTOU) race condition in pg_dump in PostgreSQL allows an object creator to execute arbitrary SQL functions as the user running pg_dump, which is often a superuser. The attack involves replacing another relation type with a view or foreign table. The attack requires waiting for pg_dump to start, but winning the race condition is trivial if the attacker retains an open transaction. Versions before PostgreSQL 16.4, 15.8, 14.13, 13.16, and 12.20 are affected.(CVE-2024-7348)\n\nImproper neutralization of quoting syntax in PostgreSQL libpq functions PQescapeLiteral(), PQescapeIdentifier(), PQescapeString(), and PQescapeStringConn() allows a database input provider to achieve SQL injection in certain usage patterns.  Specifically, SQL injection requires the application to use the function result to construct input to psql, the PostgreSQL interactive terminal.  Similarly, improper neutralization of quoting syntax in PostgreSQL command line utility programs allows a source of command line arguments to achieve SQL injection when client_encoding is BIG5 and server_encoding is one of EUC_TW or MULE_INTERNAL.  Versions before PostgreSQL 17.3, 16.7, 15.11, 14.16, and 13.19 are affected.(CVE-2025-1094)",
+  "id": "OESA-2025-1335",
+  "modified": "2025-09-03T06:31:00.001615Z",
+  "published": "2025-03-29T06:22:54Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-1335"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-3677"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-39417"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-5868"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-5869"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-5870"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-0985"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10976"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10977"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10978"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10979"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-7348"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-1094"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "postgresql-13 security update",
+  "upstream": [
+    "CVE-2021-3677",
+    "CVE-2023-39417",
+    "CVE-2023-5868",
+    "CVE-2023-5869",
+    "CVE-2023-5870",
+    "CVE-2024-0985",
+    "CVE-2024-10976",
+    "CVE-2024-10977",
+    "CVE-2024-10978",
+    "CVE-2024-10979",
+    "CVE-2024-7348",
+    "CVE-2025-1094"
+  ]
+}

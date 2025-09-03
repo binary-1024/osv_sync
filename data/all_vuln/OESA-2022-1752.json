@@ -1,0 +1,152 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1752.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "rubygem-yajl-ruby-debugsource-1.4.3-1.oe1.aarch64.rpm",
+          "rubygem-yajl-ruby-1.4.3-1.oe1.aarch64.rpm",
+          "rubygem-yajl-ruby-debuginfo-1.4.3-1.oe1.aarch64.rpm"
+        ],
+        "noarch": [
+          "rubygem-yajl-ruby-help-1.4.3-1.oe1.noarch.rpm"
+        ],
+        "src": [
+          "rubygem-yajl-ruby-1.4.3-1.oe1.src.rpm"
+        ],
+        "x86_64": [
+          "rubygem-yajl-ruby-debuginfo-1.4.3-1.oe1.x86_64.rpm",
+          "rubygem-yajl-ruby-debugsource-1.4.3-1.oe1.x86_64.rpm",
+          "rubygem-yajl-ruby-1.4.3-1.oe1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP1",
+        "name": "rubygem-yajl-ruby",
+        "purl": "pkg:rpm/openEuler/rubygem-yajl-ruby&distro=openEuler-20.03-LTS-SP1"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.3-1.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1752.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "rubygem-yajl-ruby-1.4.3-1.oe1.aarch64.rpm",
+          "rubygem-yajl-ruby-debuginfo-1.4.3-1.oe1.aarch64.rpm",
+          "rubygem-yajl-ruby-debugsource-1.4.3-1.oe1.aarch64.rpm"
+        ],
+        "noarch": [
+          "rubygem-yajl-ruby-help-1.4.3-1.oe1.noarch.rpm"
+        ],
+        "src": [
+          "rubygem-yajl-ruby-1.4.3-1.oe1.src.rpm"
+        ],
+        "x86_64": [
+          "rubygem-yajl-ruby-debugsource-1.4.3-1.oe1.x86_64.rpm",
+          "rubygem-yajl-ruby-1.4.3-1.oe1.x86_64.rpm",
+          "rubygem-yajl-ruby-debuginfo-1.4.3-1.oe1.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP3",
+        "name": "rubygem-yajl-ruby",
+        "purl": "pkg:rpm/openEuler/rubygem-yajl-ruby&distro=openEuler-20.03-LTS-SP3"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.3-1.oe1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    },
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2022-1752.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "rubygem-yajl-ruby-1.4.3-1.oe2203.aarch64.rpm",
+          "rubygem-yajl-ruby-debuginfo-1.4.3-1.oe2203.aarch64.rpm",
+          "rubygem-yajl-ruby-debugsource-1.4.3-1.oe2203.aarch64.rpm"
+        ],
+        "noarch": [
+          "rubygem-yajl-ruby-help-1.4.3-1.oe2203.noarch.rpm"
+        ],
+        "src": [
+          "rubygem-yajl-ruby-1.4.3-1.oe2203.src.rpm"
+        ],
+        "x86_64": [
+          "rubygem-yajl-ruby-debugsource-1.4.3-1.oe2203.x86_64.rpm",
+          "rubygem-yajl-ruby-1.4.3-1.oe2203.x86_64.rpm",
+          "rubygem-yajl-ruby-debuginfo-1.4.3-1.oe2203.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:22.03-LTS",
+        "name": "rubygem-yajl-ruby",
+        "purl": "pkg:rpm/openEuler/rubygem-yajl-ruby&distro=openEuler-22.03-LTS"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.4.3-1.oe2203"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "Ruby C bindings to the excellent Yajl JSON stream-based parser library.\r\n\r\nSecurity Fix(es):\r\n\r\nyajl-ruby is a C binding to the YAJL JSON parsing and generation library. The 1.x branch and the 2.x branch of `yajl` contain an integer overflow which leads to subsequent heap memory corruption when dealing with large (~2GB) inputs. The reallocation logic at `yajl_buf.c#L64` may result in the `need` 32bit integer wrapping to 0 when `need` approaches a value of 0x80000000 (i.e. ~2GB of data), which results in a reallocation of buf-&gt;alloc into a small heap chunk. These integers are declared as `size_t` in the 2.x branch of `yajl`, which practically prevents the issue from triggering on 64bit platforms, however this does not preclude this issue triggering on 32bit builds on which `size_t` is a 32bit integer. Subsequent population of this under-allocated heap chunk is based on the original buffer size, leading to heap memory corruption. This vulnerability mostly impacts process availability. Maintainers believe exploitation for arbitrary code execution is unlikely. A patch is available and anticipated to be part of yajl-ruby version 1.4.2. As a workaround, avoid passing large inputs to YAJL.(CVE-2022-24795)",
+  "id": "OESA-2022-1752",
+  "modified": "2025-09-03T06:18:07.663446Z",
+  "published": "2022-07-15T11:03:59Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2022-1752"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-24795"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "rubygem-yajl-ruby security update",
+  "upstream": [
+    "CVE-2022-24795"
+  ]
+}

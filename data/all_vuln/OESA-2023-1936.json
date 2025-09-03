@@ -1,0 +1,59 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2023-1936.json"
+      },
+      "ecosystem_specific": {
+        "noarch": [
+          "python2-flask-1.1.2-5.oe2003sp4.noarch.rpm",
+          "python3-flask-1.1.2-5.oe2003sp4.noarch.rpm"
+        ],
+        "src": [
+          "python-flask-1.1.2-5.oe2003sp4.src.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "python-flask",
+        "purl": "pkg:rpm/openEuler/python-flask&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.1.2-5.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "Flask is a lightweight WSGI web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications. It began as a simple wrapper around Werkzeug and Jinja and has become one of the most popular Python web application frameworks.\r\n\r\nSecurity Fix(es):\r\n\r\nFlask is a lightweight WSGI web application framework. When all of the following conditions are met, a response containing data intended for one client may be cached and subsequently sent by the proxy to other clients. If the proxy also caches `Set-Cookie` headers, it may send one client&apos;s `session` cookie to other clients. The severity depends on the application&apos;s use of the session and the proxy&apos;s behavior regarding cookies. The risk depends on all these conditions being met.\r\n\r\n1. The application must be hosted behind a caching proxy that does not strip cookies or ignore responses with cookies.\n2. The application sets `session.permanent = True`\n3. The application does not access or modify the session at any point during a request.\n4. `SESSION_REFRESH_EACH_REQUEST` enabled (the default).\n5. The application does not set a `Cache-Control` header to indicate that a page is private or should not be cached.\r\n\r\nThis happens because vulnerable versions of Flask only set the `Vary: Cookie` header when the session is accessed or modified, not when it is refreshed (re-sent to update the expiration) without being accessed or modified. This issue has been fixed in versions 2.3.2 and 2.2.5.(CVE-2023-30861)",
+  "id": "OESA-2023-1936",
+  "modified": "2025-09-03T06:19:09.679983Z",
+  "published": "2023-12-22T11:06:31Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/en/security/safety-bulletin/detail.html?id=openEuler-SA-2023-1936"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-30861"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "python-flask security update",
+  "upstream": [
+    "CVE-2023-30861"
+  ]
+}
