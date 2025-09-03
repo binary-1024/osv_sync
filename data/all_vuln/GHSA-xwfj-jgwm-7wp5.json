@@ -25,7 +25,8 @@
     }
   ],
   "aliases": [
-    "CVE-2025-58160"
+    "CVE-2025-58160",
+    "RUSTSEC-2025-0055"
   ],
   "database_specific": {
     "cwe_ids": [
@@ -38,7 +39,7 @@
   },
   "details": "### Impact\n\nPrevious versions of tracing-subscriber were vulnerable to ANSI escape sequence injection attacks. Untrusted user input containing ANSI escape sequences could be injected into terminal output when logged, potentially allowing attackers to:\n\n- Manipulate terminal title bars\n- Clear screens or modify terminal display\n- Potentially mislead users through terminal manipulation\n\nIn isolation, impact is minimal, however security issues have been found in terminal emulators that enabled an attacker to use ANSI escape sequences via logs to exploit vulnerabilities in the terminal emulator.\n\n### Patches\n\n`tracing-subscriber` version 0.3.20 fixes this vulnerability by escaping ANSI control characters in when writing events to destinations that may be printed to the terminal.\n\n### Workarounds\n\nAvoid printing logs to terminal emulators without escaping ANSI control sequences.\n\n### References\n\nhttps://www.packetlabs.net/posts/weaponizing-ansi-escape-sequences/\n\n\n### Acknowledgments\n\nWe would like to thank [zefr0x](http://github.com/zefr0x) who responsibly reported the issue at `security@tokio.rs`.\n\nIf you believe you have found a security vulnerability in any tokio-rs project, please email us at `security@tokio.rs`.",
   "id": "GHSA-xwfj-jgwm-7wp5",
-  "modified": "2025-09-01T20:05:43Z",
+  "modified": "2025-09-02T16:35:51Z",
   "published": "2025-08-29T20:33:56Z",
   "references": [
     {
@@ -52,6 +53,10 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/tokio-rs/tracing"
+    },
+    {
+      "type": "WEB",
+      "url": "https://rustsec.org/advisories/RUSTSEC-2025-0055.html"
     }
   ],
   "related": [
