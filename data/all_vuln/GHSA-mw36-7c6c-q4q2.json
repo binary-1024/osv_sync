@@ -17,7 +17,7 @@
               "introduced": "0"
             },
             {
-              "fixed": "1.4.14-jdk7"
+              "fixed": "1.4.14-java7"
             }
           ],
           "type": "ECOSYSTEM"
@@ -53,7 +53,6 @@
         "1.4.13",
         "1.4.13-java7",
         "1.4.14",
-        "1.4.14-java7",
         "1.4.2",
         "1.4.3",
         "1.4.4",
@@ -80,7 +79,7 @@
   },
   "details": "### Impact\nThe vulnerability may allow a remote attacker to run arbitrary shell commands only by manipulating the processed input stream.\n\n### Patches\nIf you rely on XStream's default blacklist of the [Security Framework](https://x-stream.github.io/security.html#framework), you will have to use at least version 1.4.14.\n\n### Workarounds\nNo user is affected, who followed the recommendation to setup XStream's Security Framework with a whitelist! Anyone relying on XStream's default blacklist can immediately switch to a whilelist for the allowed types to avoid the vulnerability.\n\nUsers of XStream 1.4.13 or below who still want to use XStream default blacklist can use a workaround depending on their version in use.\n\nUsers of XStream 1.4.13 can simply add two lines to XStream's setup code:\n```Java\nxstream.denyTypes(new String[]{ \"javax.imageio.ImageIO$ContainsFilter\" });\nxstream.denyTypes(new Class[]{ java.lang.ProcessBuilder.class });\n```\nUsers of XStream 1.4.12 to 1.4.7 who want to use XStream with a black list will have to setup such a list from scratch and deny at least the following types: _javax.imageio.ImageIO$ContainsFilter_, _java.beans.EventHandler_, _java.lang.ProcessBuilder_, _java.lang.Void_ and _void_.\n```Java\nxstream.denyTypes(new String[]{ \"javax.imageio.ImageIO$ContainsFilter\" });\nxstream.denyTypes(new Class[]{ java.lang.ProcessBuilder.class, java.beans.EventHandler.class, java.lang.ProcessBuilder.class, java.lang.Void.class, void.class });\n```\nUsers of XStream 1.4.6 or below can register an own converter to prevent the unmarshalling of the currently know critical types of the Java runtime. It is in fact an updated version of the workaround for CVE-2013-7285:\n```Java\nxstream.registerConverter(new Converter() {\n  public boolean canConvert(Class type) {\n    return type != null && (type == java.beans.EventHandler.class || type == java.lang.ProcessBuilder.class || type == java.lang.Void.class || void.class || type.getName().equals(\"javax.imageio.ImageIO$ContainsFilter\") || Proxy.isProxy(type));\n  }\n\n  public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {\n    throw new ConversionException(\"Unsupported type due to security reasons.\");\n  }\n\n  public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {\n    throw new ConversionException(\"Unsupported type due to security reasons.\");\n  }\n}, XStream.PRIORITY_LOW);\n```\n\n### Credits\nChen L found and reported the issue to XStream and provided the required information to reproduce it.  He was supported by Zhihong Tian and Hui Lu, both from Guangzhou University.\n\n### References\nSee full information about the nature of the vulnerability and the steps to reproduce it in XStream's documentation for [CVE-2020-26217](https://x-stream.github.io/CVE-2020-26217.html).\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in [XStream](https://github.com/x-stream/xstream/issues)\n* Contact us at [XStream Google Group](https://groups.google.com/group/xstream-user)",
   "id": "GHSA-mw36-7c6c-q4q2",
-  "modified": "2024-03-15T05:20:35.215393Z",
+  "modified": "2025-09-03T15:49:33.899750Z",
   "published": "2020-11-16T20:07:59Z",
   "references": [
     {

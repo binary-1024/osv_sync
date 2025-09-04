@@ -1,0 +1,69 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-9hp6-4448-45g2/GHSA-9hp6-4448-45g2.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono",
+        "purl": "pkg:npm/hono"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.8.0"
+            },
+            {
+              "fixed": "4.9.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-58362"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-706"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-09-03T21:30:13Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "### Summary\n\nA flaw in the `getPath` utility function could allow path confusion and potential bypass of proxy-level ACLs (e.g. Nginx location blocks).\n\n### Details\n\nThe original implementation relied on fixed character offsets when parsing request URLs. Under certain malformed absolute-form Request-URIs, this could lead to incorrect path extraction.\n\nMost standards-compliant runtimes and reverse proxies reject such malformed requests with a 400 Bad Request, so the impact depends on the application and environment.\n\n### Impact\n\nIf proxy ACLs are used to protect sensitive endpoints such as `/admin`, this flaw could have allowed unauthorized access. The confidentiality impact depends on what data is exposed: if sensitive administrative data is exposed, the impact may be High (CVSS 7.5); otherwise it may be Medium (CVSS 5.3).\n\n### Resolution\n\nThe implementation has been updated to correctly locate the first slash after \"://\", preventing such path confusion.",
+  "id": "GHSA-9hp6-4448-45g2",
+  "modified": "2025-09-03T22:12:25.043768Z",
+  "published": "2025-09-03T21:30:13Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/honojs/hono/security/advisories/GHSA-9hp6-4448-45g2"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/honojs/hono/commit/1d79aedc3f82d8c9969b115fe61bc4bd705ec8de"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/honojs/hono"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/honojs/hono/releases/tag/v4.9.6"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "Hono's flaw in URL path parsing could cause path confusion"
+}

