@@ -1,0 +1,62 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-vxmw-7h4f-hqxh/GHSA-vxmw-7h4f-hqxh.json"
+      },
+      "package": {
+        "ecosystem": "GitHub Actions",
+        "name": "pypa/gh-action-pypi-publish"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.13.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-77"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-09-04T14:07:03Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
+  },
+  "details": "### Summary\n\n`gh-action-pypi-publish` makes use of GitHub Actions expression expansions (i.e. `${{ ... }}`) in contexts that are potentially attacker controllable. Depending on the trigger used to invoke `gh-action-pypi-publish`, this may allow an attacker to execute arbitrary code within the context of a workflow step that invokes `gh-action-pypi-publish`.\n\n### Details\n\n`gh-action-pypi-publish` contains a composite action step, `set-repo-and-ref`, that makes use of expression expansions:\n\n```yaml\n  - name: Set repo and ref from which to run Docker container action\n    id: set-repo-and-ref\n    run: |\n      # Set repo and ref from which to run Docker container action\n      # to handle cases in which `github.action_` context is not set\n      # https://github.com/actions/runner/issues/2473\n      REF=${{ env.ACTION_REF || env.PR_REF || github.ref_name }}\n      REPO=${{ env.ACTION_REPO || env.PR_REPO || github.repository }}\n      REPO_ID=${{ env.PR_REPO_ID || github.repository_id }}\n      echo \"ref=$REF\" >>\"$GITHUB_OUTPUT\"\n      echo \"repo=$REPO\" >>\"$GITHUB_OUTPUT\"\n      echo \"repo-id=$REPO_ID\" >>\"$GITHUB_OUTPUT\"\n    shell: bash\n    env:\n      ACTION_REF: ${{ github.action_ref }}\n      ACTION_REPO: ${{ github.action_repository }}\n      PR_REF: ${{ github.event.pull_request.head.ref }}\n      PR_REPO: ${{ github.event.pull_request.head.repo.full_name }}\n      PR_REPO_ID: ${{ github.event.pull_request.base.repo.id }}\n```\n\nPermalink: https://github.com/pypa/gh-action-pypi-publish/blob/db8f07d3871a0a180efa06b95d467625c19d5d5f/action.yml#L114-L125\n\nIn normal intended operation, these expansions are used to establish a correct priority for outputs like `ref` and `repo-id`. \n\nHowever, these expansions have a side effect: because they're done with `${{ ... }}` and not with `${...}` (i.e. normal shell interpolation), they can *bypass normal shell quoting rules*. In particular, if both `env.ACTION_REF` and `env.PR_REF` evaluate to empty strings, then the expression falls back to `github.ref_name`, which can be an attacker controlled string via a branch or tag name. \n\nFor example, if the attacker is able to set a branch name to something like `innocent;cat${IFS}/etc/passwd`, then the `REF` line may expand as:\n\n```bash\nREF=innocent;cat${IFS}/etc/passwd\n```\n\nwhich would set `REF` to `innocent` and then run the attacker's code.\n\nAdditional information about dangerous expansions can be found in [zizmor's `template-injection` rule documentation](https://woodruffw.github.io/zizmor/audits/#template-injection).\n\n### Impact\n\nThe impact of this vulnerability is very low: the expression in question is unlikely to be evaluated in normal operation, since `env.ACTION_REF` should always take precedence.\n\nIn particular, the action is **not** vulnerable in many popular configurations, i.e. those where `pull_request` or `release` or a `push: tags` event is used to call the action.",
+  "id": "GHSA-vxmw-7h4f-hqxh",
+  "modified": "2025-09-04T14:07:03Z",
+  "published": "2025-09-04T14:07:03Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/gh-action-pypi-publish/security/advisories/GHSA-vxmw-7h4f-hqxh"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/pypa/gh-action-pypi-publish/commit/77db1b7cf7dcea2e403bb4350516284282740dd6"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/pypa/gh-action-pypi-publish"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "PyPI publish GitHub Action vulnerable to injectable expression expansions in action steps"
+}
