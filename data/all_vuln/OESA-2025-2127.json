@@ -1,0 +1,90 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-2127.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "libssh-0.10.5-5.oe2403sp2.aarch64.rpm",
+          "libssh-debuginfo-0.10.5-5.oe2403sp2.aarch64.rpm",
+          "libssh-debugsource-0.10.5-5.oe2403sp2.aarch64.rpm",
+          "libssh-devel-0.10.5-5.oe2403sp2.aarch64.rpm"
+        ],
+        "noarch": [
+          "libssh-help-0.10.5-5.oe2403sp2.noarch.rpm"
+        ],
+        "src": [
+          "libssh-0.10.5-5.oe2403sp2.src.rpm"
+        ],
+        "x86_64": [
+          "libssh-0.10.5-5.oe2403sp2.x86_64.rpm",
+          "libssh-debuginfo-0.10.5-5.oe2403sp2.x86_64.rpm",
+          "libssh-debugsource-0.10.5-5.oe2403sp2.x86_64.rpm",
+          "libssh-devel-0.10.5-5.oe2403sp2.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:24.03-LTS-SP2",
+        "name": "libssh",
+        "purl": "pkg:rpm/openEuler/libssh&distro=openEuler-24.03-LTS-SP2"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.10.5-5.oe2403sp2"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The ssh library was designed to be used by programmers needing a working SSH implementation by the mean of a library. The complete control of the client is made by the programmer. With libssh, you can remotely execute programs, transfer files, use a secure and transparent tunnel for your remote programs. With its Secure FTP implementation, you can play with remote files easily, without third-party programs others than libcrypto (from openssl).\r\n\r\nSecurity Fix(es):\n\nA vulnerability classified as critical was found in libssh up to 0.11.1.The CWE definition for the vulnerability is CWE-119. The product performs operations on a memory buffer, but it can read from or write to a memory location that is outside of the intended boundary of the buffer.As an impact it is known to affect confidentiality, integrity, and availability.Upgrading to version 0.11.2 eliminates this vulnerability.(CVE-2025-4877)\n\nA vulnerability, which was classified as problematic, has been found in libssh up to 0.11.1.Using CWE to declare the problem leads to CWE-824. The product accesses or uses a pointer that has not been initialized.Impacted is confidentiality, integrity, and availability.Upgrading to version 0.11.2 eliminates this vulnerability.(CVE-2025-4878)\n\nA flaw was found in the key export functionality of libssh. The issue occurs in the internal function responsible for converting cryptographic keys into serialized formats. During error handling, a memory structure is freed but not cleared, leading to a potential double free issue if an additional failure occurs later in the function. This condition may result in heap corruption or application instability in low-memory scenarios, posing a risk to system reliability where key export operations are performed.(CVE-2025-5351)\n\nA flaw was found in libssh versions built with OpenSSL versions older than 3.0, specifically in the ssh_kdf() function responsible for key derivation. Due to inconsistent interpretation of return values where OpenSSL uses 0 to indicate failure and libssh uses 0 for success\u2014the function may mistakenly return a success status even when key derivation fails. This results in uninitialized cryptographic key buffers being used in subsequent communication, potentially compromising SSH sessions&apos; confidentiality, integrity, and availability.(CVE-2025-5372)\n\nA flaw was found in libssh when using the ChaCha20 cipher with the OpenSSL library. If an attacker manages to exhaust the heap space, this error is not detected and may lead to libssh using a partially initialized cipher context. This occurs because the OpenSSL error code returned aliases with the SSH_OK code, resulting in libssh not properly detecting the error returned by the OpenSSL library. This issue can lead to undefined behavior, including compromised data confidentiality and integrity or crashes.(CVE-2025-5987)",
+  "id": "OESA-2025-2127",
+  "modified": "2025-09-05T13:18:04.856031Z",
+  "published": "2025-09-05T12:42:04Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-2127"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-4877"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-4878"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-5351"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-5372"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-5987"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "libssh security update",
+  "upstream": [
+    "CVE-2025-4877",
+    "CVE-2025-4878",
+    "CVE-2025-5351",
+    "CVE-2025-5372",
+    "CVE-2025-5987"
+  ]
+}
