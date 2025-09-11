@@ -1,0 +1,72 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-4wcm-7hjf-6xw5/GHSA-4wcm-7hjf-6xw5.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "interactive-git-checkout",
+        "purl": "pkg:npm/interactive-git-checkout"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "1.1.4"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-59046"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-77"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-09-10T21:37:00Z",
+    "nvd_published_at": "2025-09-09T23:15:37Z",
+    "severity": "CRITICAL"
+  },
+  "details": "The npm package `interactive-git-checkout` is an interactive command-line tool that allows users to checkout a git branch while it prompts for the branch name on the command-line. It is available as an npm package and can be installed via `npm install -g interactive-git-checkout`.\n\nResources: \n * Project's npm package: https://www.npmjs.com/package/interactive-git-checkout\n \n## Command Injection Vulnerability\n\nThe `interactive-git-checkout` tool is vulnerable to a command injection vulnerability because it passes the branch name to the `git checkout` command using the Node.js child process module's `exec()` function without proper input validation or sanitization.\n\nThe following vulnerable code snippets demonstrates the issue:\n\n```js\nconst { exec: execCb } = require('child_process');\nconst { promisify } = require('util');\n\nconst exec = promisify(execCb);\n\nmodule.exports = async (targetBranch) => {\n    const { stdout, stderr } = await exec(`git checkout ${targetBranch}`);\n    process.stderr.write(stderr);\n    process.stdout.write(stdout);\n};\n```\n\n## Exploit Proof of Concept\n\n1. Install the `interactive-git-checkout` package (as suggested by the package's README):\n\n```bash\nnpm install --global interactive-git-checkout\n```\n\n2. Run the executable exposed by the installed package:\n\n```bash\n$ igc\n```\n\n3. When prompted, enter the following branch name:\n\n```bash\nhello ; echo 'Command Injection Vulnerability Exploited!' > /tmp/command-injection.txt; #\n```\n\n## Vulnerable versions\n\nAll versions of interactive-git-checkout are vulnerable to this issue, up to and including to the latest version of `1.1.4`.\n\n# Author\n\nLiran Tal",
+  "id": "GHSA-4wcm-7hjf-6xw5",
+  "modified": "2025-09-10T22:28:44.004719Z",
+  "published": "2025-09-10T21:37:00Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/ninofiliu/interactive-git-checkout/security/advisories/GHSA-4wcm-7hjf-6xw5"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-59046"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/ninofiliu/interactive-git-checkout/commit/8dd832dd302af287a61611f4f85e157cd1c6bb41"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/ninofiliu/interactive-git-checkout"
+    }
+  ],
+  "related": [
+    "CVE-2025-59046"
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "interactive-git-checkout has a Command Injection vulnerability"
+}

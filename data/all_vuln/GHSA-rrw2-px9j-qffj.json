@@ -2240,17 +2240,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-09-05T20:58:23Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-09-05T22:15:34Z",
     "severity": "MODERATE"
   },
   "details": "### Impact\nWhen establishing a TLS session using `fs2-io` on the JVM using the `fs2.io.net.tls` package, if one side of the connection shuts down write while the peer side is awaiting more data to progress the TLS handshake, the peer side will spin loop on the socket read, fully utilizing a CPU. This CPU is consumed until the overall connection is closed.\n\nThis could be used as a denial of service attack on an fs2-io powered server -- for example, by opening many connections and putting them in a half-shutdown state.\n\nNote: this issue impacts ember backed http4s servers with HTTPS as a result of ember using fs2's TLS support.\n\n### Patches\nFixed in fs2 3.12.2 and 3.13.0-M7.\n\n### Workarounds\nNo workarounds.\n\n### For more information\n\nIf you have any questions or comments about this advisory:\n\n[Open an issue.](https://github.com/typelevel/fs2/issues/new/choose)\nContact the [Typelevel Security Team](https://github.com/typelevel/.github/blob/main/SECURITY.md).",
   "id": "GHSA-rrw2-px9j-qffj",
-  "modified": "2025-09-05T21:12:20.338521Z",
+  "modified": "2025-09-10T21:04:26.525079Z",
   "published": "2025-09-05T20:58:23Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/typelevel/fs2/security/advisories/GHSA-rrw2-px9j-qffj"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-58369"
     },
     {
       "type": "WEB",
