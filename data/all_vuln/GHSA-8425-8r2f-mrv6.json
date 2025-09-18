@@ -1,0 +1,65 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-8425-8r2f-mrv6/GHSA-8425-8r2f-mrv6.json"
+      },
+      "package": {
+        "ecosystem": "Go",
+        "name": "github.com/dragonflyoss/dragonfly",
+        "purl": "pkg:golang/github.com/dragonflyoss/dragonfly"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.0"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-59349"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-276"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-09-17T19:55:25Z",
+    "nvd_published_at": null,
+    "severity": "LOW"
+  },
+  "details": "### Impact\n\nDragonFly2 uses the os.MkdirAll function to create certain directory paths with specific access permissions. This function does not perform any permission checks when a given directory path already exists. This allows a local attacker to create a directory to be used later by DragonFly2 with broad permissions before DragonFly2 does so, potentially allowing the attacker to tamper with the files.\n\nEve has unprivileged access to the machine where Alice uses DragonFly2. Eve watches the commands executed by Alice and introduces new directories/paths with 0777 permissions before DragonFly2 does so. Eve can then delete and forge files in that directory to change the results of further commands executed by Alice.\n\n### Patches\n\n- Dragonfy v2.1.0 and above.\n\n### Workarounds\n\nThere are no effective workarounds, beyond upgrading.\n\n### References\n\nA third party security audit was performed by Trail of Bits, you can see the [full report](https://github.com/dragonflyoss/dragonfly/blob/main/docs/security/dragonfly-comprehensive-report-2023.pdf).\n\nIf you have any questions or comments about this advisory, please email us at [dragonfly-maintainers@googlegroups.com](mailto:dragonfly-maintainers@googlegroups.com).",
+  "id": "GHSA-8425-8r2f-mrv6",
+  "modified": "2025-09-17T20:27:28.484949Z",
+  "published": "2025-09-17T19:55:25Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/dragonflyoss/dragonfly/security/advisories/GHSA-8425-8r2f-mrv6"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/dragonflyoss/dragonfly"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/dragonflyoss/dragonfly/blob/main/docs/security/dragonfly-comprehensive-report-2023.pdf"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:P",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "Dragonfly's directories created via os.MkdirAll are not checked for permissions"
+}

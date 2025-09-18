@@ -25,7 +25,8 @@
     }
   ],
   "aliases": [
-    "CVE-2025-7445"
+    "CVE-2025-7445",
+    "GO-2025-3939"
   ],
   "database_specific": {
     "cwe_ids": [
@@ -38,7 +39,7 @@
   },
   "details": "Hello Kubernetes Community,\n\nA security issue was discovered in secrets-store-sync-controller where an actor with access to the controller logs could observe service account tokens.  These tokens could then potentially be exchanged with external cloud providers to access secrets stored in cloud vault solutions.  Tokens are only logged when there is a specific error marshaling the `parameters` sent to the providers.\n\n### Am I vulnerable?\n\nTo check if tokens are being logged, examine the manager container log:\n\n```bash\nkubectl logs -l 'app.kubernetes.io/part-of=secrets-store-sync-controller' -c manager -f | grep --line-buffered \"csi.storage.k8s.io/serviceAccount.tokens\"\n```\n\n### Affected Versions\n\n- secrets-store-sync-controller < v0.0.2\n\n### How do I mitigate this vulnerability?\n\nUpgrade to secrets-store-sync-controller v0.0.2+\n\n### Fixed Versions\n\n- secrets-store-sync-controller >= v0.0.2\n\n\n### Detection\n\nExamine cloud provider logs for unexpected token exchanges, as well as unexpected access to cloud vault secrets.\n\nIf you find evidence that this vulnerability has been exploited, please contact [security@kubernetes.io](https://groups.google.com/)\n\n### Acknowledgements\n\nThis vulnerability was reported by Reem Rotenberg and [Kas Dekel](https://github.com/privmickas) from Microsoft.",
   "id": "GHSA-rcw7-pqfp-735x",
-  "modified": "2025-09-05T21:12:20.511822Z",
+  "modified": "2025-09-17T17:27:05.731550Z",
   "published": "2025-09-05T21:02:44Z",
   "references": [
     {
