@@ -33,17 +33,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-09-17T20:10:53Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-09-17T20:15:37Z",
     "severity": "MODERATE"
   },
   "details": "### Impact\nWe found two instances in the DragonFly codebase where the first return value of a function is dereferenced even when the function returns an error (figures 9.1 and 9.2). This can result in a nil dereference, and cause code to panic. The codebase may contain additional instances of the bug.\n\n```golang\nrequest, err := source.NewRequestWithContext(ctx, parentReq.Url,\nparentReq.UrlMeta.Header)\nif err != nil {\n       log.Errorf(\"generate url [%v] request error: %v\", request.URL, err)\n       span.RecordError(err)\n       return err\n}\n```\n\nEve is a malicious actor operating a peer machine. She sends a dfdaemonv1.DownRequest request to her peer Alice. Alice\u2019s machine receives the request, resolves a nil variable in the server.Download method, and panics.\n\n### Patches\n\n- Dragonfy v2.1.0 and above.\n\n### Workarounds\n\nThere are no effective workarounds, beyond upgrading.\n\n### References\n\nA third party security audit was performed by Trail of Bits, you can see the [full report](https://github.com/dragonflyoss/dragonfly/blob/main/docs/security/dragonfly-comprehensive-report-2023.pdf).\n\nIf you have any questions or comments about this advisory, please email us at [dragonfly-maintainers@googlegroups.com](mailto:dragonfly-maintainers@googlegroups.com).",
   "id": "GHSA-4mhv-8rh3-4ghw",
-  "modified": "2025-09-17T21:12:29.912204Z",
+  "modified": "2025-09-18T13:03:59Z",
   "published": "2025-09-17T20:10:53Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/dragonflyoss/dragonfly/security/advisories/GHSA-4mhv-8rh3-4ghw"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-59351"
     },
     {
       "type": "PACKAGE",

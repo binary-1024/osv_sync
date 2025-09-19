@@ -29,21 +29,26 @@
   ],
   "database_specific": {
     "cwe_ids": [
-      "CWE-276"
+      "CWE-276",
+      "CWE-732"
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-09-17T19:55:25Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-09-17T20:15:37Z",
     "severity": "LOW"
   },
   "details": "### Impact\n\nDragonFly2 uses the os.MkdirAll function to create certain directory paths with specific access permissions. This function does not perform any permission checks when a given directory path already exists. This allows a local attacker to create a directory to be used later by DragonFly2 with broad permissions before DragonFly2 does so, potentially allowing the attacker to tamper with the files.\n\nEve has unprivileged access to the machine where Alice uses DragonFly2. Eve watches the commands executed by Alice and introduces new directories/paths with 0777 permissions before DragonFly2 does so. Eve can then delete and forge files in that directory to change the results of further commands executed by Alice.\n\n### Patches\n\n- Dragonfy v2.1.0 and above.\n\n### Workarounds\n\nThere are no effective workarounds, beyond upgrading.\n\n### References\n\nA third party security audit was performed by Trail of Bits, you can see the [full report](https://github.com/dragonflyoss/dragonfly/blob/main/docs/security/dragonfly-comprehensive-report-2023.pdf).\n\nIf you have any questions or comments about this advisory, please email us at [dragonfly-maintainers@googlegroups.com](mailto:dragonfly-maintainers@googlegroups.com).",
   "id": "GHSA-8425-8r2f-mrv6",
-  "modified": "2025-09-17T20:27:28.484949Z",
+  "modified": "2025-09-18T13:03:51Z",
   "published": "2025-09-17T19:55:25Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/dragonflyoss/dragonfly/security/advisories/GHSA-8425-8r2f-mrv6"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-59349"
     },
     {
       "type": "PACKAGE",

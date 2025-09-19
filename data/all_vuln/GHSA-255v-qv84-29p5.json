@@ -33,17 +33,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-09-17T20:11:37Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-09-17T20:15:37Z",
     "severity": "HIGH"
   },
   "details": "### Impact\nA peer can obtain a valid TLS certificate for arbitrary IP addresses, effectively rendering the mTLS authentication useless. The issue is that the Manager\u2019s Certificate gRPC service does not validate if the requested IP addresses \u201cbelong to\u201d the peer requesting the certificate\u2014that is, if the peer connects from the same IP address as the one provided in the certificate request.\n\n```golang\nif addr, ok := p.Addr.(*net.TCPAddr); ok {\n       ip = addr.IP.String()\n} else {\n       ip, _, err = net.SplitHostPort(p.Addr.String())\n       if err != nil {\n             return nil, err\n       }\n}\n// Parse csr.\n[skipped]\n// Check csr signature.\n// TODO check csr common name and so on.\nif err = csr.CheckSignature(); err != nil {\n       return nil, err\n}\n[skipped]\n// TODO only valid for peer ip\n// BTW we need support both of ipv4 and ipv6.\nips := csr.IPAddresses\nif len(ips) == 0 {\n       // Add default connected ip.\n       ips = []net.IP{net.ParseIP(ip)}\n}\n```\n### Patches\n\n- Dragonfy v2.1.0 and above.\n\n### Workarounds\n\nThere are no effective workarounds, beyond upgrading.\n\n### References\n\nA third party security audit was performed by Trail of Bits, you can see the [full report](https://github.com/dragonflyoss/dragonfly/blob/main/docs/security/dragonfly-comprehensive-report-2023.pdf).\n\nIf you have any questions or comments about this advisory, please email us at [dragonfly-maintainers@googlegroups.com](mailto:dragonfly-maintainers@googlegroups.com).",
   "id": "GHSA-255v-qv84-29p5",
-  "modified": "2025-09-17T21:12:29.979682Z",
+  "modified": "2025-09-18T13:04:09Z",
   "published": "2025-09-17T20:11:37Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/dragonflyoss/dragonfly/security/advisories/GHSA-255v-qv84-29p5"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-59353"
     },
     {
       "type": "PACKAGE",
