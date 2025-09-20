@@ -1,0 +1,91 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://repo.openeuler.org/security/data/osv/OESA-2025-2312.json"
+      },
+      "ecosystem_specific": {
+        "aarch64": [
+          "bpftool-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "bpftool-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "kernel-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "kernel-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "kernel-debugsource-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "kernel-devel-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "kernel-source-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "kernel-tools-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "kernel-tools-devel-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "perf-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "perf-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "python2-perf-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "python2-perf-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "python3-perf-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm",
+          "python3-perf-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.aarch64.rpm"
+        ],
+        "src": [
+          "kernel-4.19.90-2509.5.0.0344.oe2003sp4.src.rpm"
+        ],
+        "x86_64": [
+          "bpftool-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "bpftool-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "kernel-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "kernel-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "kernel-debugsource-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "kernel-devel-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "kernel-source-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "kernel-tools-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "kernel-tools-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "kernel-tools-devel-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "perf-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "perf-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "python2-perf-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "python2-perf-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "python3-perf-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm",
+          "python3-perf-debuginfo-4.19.90-2509.5.0.0344.oe2003sp4.x86_64.rpm"
+        ]
+      },
+      "package": {
+        "ecosystem": "openEuler:20.03-LTS-SP4",
+        "name": "kernel",
+        "purl": "pkg:rpm/openEuler/kernel&distro=openEuler-20.03-LTS-SP4"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.19.90-2509.5.0.0344.oe2003sp4"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "severity": "High"
+  },
+  "details": "The Linux Kernel, the operating system core itself.\r\n\r\nSecurity Fix(es):\n\nIn the Linux kernel, the following vulnerability has been resolved:\n\ngfs2: Validate i_depth for exhash directories\n\nA fuzzer test introduced corruption that ends up with a depth of 0 in\ndir_e_read(), causing an undefined shift by 32 at:\n\n  index = hash &gt;&gt; (32 - dip-&gt;i_depth);\n\nAs calculated in an open-coded way in dir_make_exhash(), the minimum\ndepth for an exhash directory is ilog2(sdp-&gt;sd_hash_ptrs) and 0 is\ninvalid as sdp-&gt;sd_hash_ptrs is fixed as sdp-&gt;bsize / 16 at mount time.\n\nSo we can avoid the undefined behaviour by checking for depth values\nlower than the minimum in gfs2_dinode_in(). Values greater than the\nmaximum are already being checked for there.\n\nAlso switch the calculation in dir_make_exhash() to use ilog2() to\nclarify how the depth is calculated.\n\nTested with the syzkaller repro.c and xfstests &apos;-g quick&apos;.(CVE-2025-38710)",
+  "id": "OESA-2025-2312",
+  "modified": "2025-09-19T14:02:44.782771Z",
+  "published": "2025-09-19T13:13:22Z",
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://www.openeuler.org/zh/security/security-bulletins/detail/?id=openEuler-SA-2025-2312"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-38710"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "summary": "kernel security update",
+  "upstream": [
+    "CVE-2025-38710"
+  ]
+}
