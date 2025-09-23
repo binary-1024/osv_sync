@@ -28,6 +28,9 @@
       ]
     }
   ],
+  "aliases": [
+    "CVE-2025-59432"
+  ],
   "database_specific": {
     "cwe_ids": [
       "CWE-208",
@@ -35,17 +38,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-09-16T22:20:08Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-09-22T20:15:38Z",
     "severity": "MODERATE"
   },
   "details": "### Impact\n\nA timing attack vulnerability exists in the SCRAM Java implementation. The issue arises because `Arrays.equals` was used to compare secret values such as client proofs and server signatures. Since `Arrays.equals` performs a short-circuit comparison, the execution time varies depending on how many leading bytes match. This behavior could allow an attacker to perform a timing side-channel attack and potentially infer sensitive authentication material. All users relying on SCRAM authentication are impacted.\n\n### Patches\n\nThis vulnerability has been patched by replacing `Arrays.equals` with `MessageDigest.isEqual`, which ensures constant-time comparison.\n\nUsers should upgrade to version **3.2** or later to mitigate this issue.\n\n### Workarounds\n\nBecause the attack requires high precision and repeated attempts, the risk is limited, but the only reliable mitigation is to upgrade to a patched release (version 3.2 or later).\n\n### References\n\n- [Java `MessageDigest.isEqual` Documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte[],byte[]))",
   "id": "GHSA-3wfh-36rx-9537",
-  "modified": "2025-09-16T23:34:49.337864Z",
+  "modified": "2025-09-22T22:39:42.731036Z",
   "published": "2025-09-16T22:20:08Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/ongres/scram/security/advisories/GHSA-3wfh-36rx-9537"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-59432"
     },
     {
       "type": "WEB",
