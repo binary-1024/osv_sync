@@ -36,9 +36,9 @@
     "nvd_published_at": "2025-09-19T04:16:49Z",
     "severity": "MODERATE"
   },
-  "details": "In the @digitalocean/do-markdownit package through 1.16.1 (in npm), the callout and fence_environment plugins perform .includes substring matching if allowedClasses or allowedEnvironments is a string (instead of an array).",
+  "details": "### Overview\nA type confusion issue exists in the `@digitalocean/do-markdownit` package. In the `callout` and `fence_environment` plugins, the `allowedClasses` and `allowedEnvironments` options are expected to be arrays of strings. If these options are provided as a single string, the code applies `.includes` directly on the string, resulting in substring matching instead of membership checks against an array.\n\n### Affected Versions\nAll versions up to and including 1.16.1 (npm).\n\n### Impact\nSupplying crafted input can bypass intended allow-lists (e.g., class/environment constraints) due to substring checks, which may enable rendering of unintended classes or environments and lead to policy bypass in downstream consumers.\n\n### Mitigation\nUntil an upstream fix is released, ensure configuration normalization before invoking the plugins:\n- Validate that `allowedClasses` and `allowedEnvironments` are arrays (`Array.isArray(...)`), converting single strings into one-element arrays when necessary.\n- Consider sanitizing or strictly validating user-controlled values that influence Markdown rendering.",
   "id": "GHSA-2h8j-8r9p-849f",
-  "modified": "2025-09-19T17:44:33.224857Z",
+  "modified": "2025-09-22T22:55:37Z",
   "published": "2025-09-19T06:31:21Z",
   "references": [
     {
