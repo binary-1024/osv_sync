@@ -146,9 +146,9 @@
     "nvd_published_at": "2025-09-19T09:15:36Z",
     "severity": "HIGH"
   },
-  "details": "The Keras Model.load_model\u00a0method can be exploited to achieve arbitrary code execution, even with safe_mode=True.\n\nOne can create a specially crafted .keras\u00a0model archive that, when loaded via Model.load_model, will trigger arbitrary code to be executed. This is achieved by crafting a special config.json\u00a0(a file within the .keras\u00a0archive) that will invoke keras.config.enable_unsafe_deserialization()\u00a0to disable safe mode. Once safe mode is disable, one can use the Lambda\u00a0layer feature of keras, which allows arbitrary Python code in the form of pickled code. Both can appear in the same archive. Simply the keras.config.enable_unsafe_deserialization()\u00a0needs to appear first in the archive and the Lambda\u00a0with arbitrary code needs to be second.",
+  "details": "### Arbitrary Code Execution in Keras\n\nKeras versions prior to 3.11.0 allow for arbitrary code execution when loading a crafted `.keras` model archive, even when `safe_mode=True`.\n\nThe issue arises because the archive\u2019s `config.json` is parsed before layer deserialization. This can invoke `keras.config.enable_unsafe_deserialization()`, effectively disabling safe mode from within the loading process itself. An attacker can place this call first in the archive and then include a `Lambda` layer whose function is deserialized from a pickle, leading to the execution of attacker-controlled Python code as soon as a victim loads the model file.\n\nExploitation requires a user to open an untrusted model; no additional privileges are needed. The fix in version 3.11.0 enforces safe-mode semantics *before* reading any user-controlled configuration and prevents the toggling of unsafe deserialization via the config file.\n\n**Affected versions:** < 3.11.0\n**Patched version:** 3.11.0\n\nIt is recommended to upgrade to version 3.11.0 or later and to avoid opening untrusted model files.",
   "id": "GHSA-36fq-jgmw-4r9c",
-  "modified": "2025-09-19T17:44:33.301772Z",
+  "modified": "2025-09-23T22:16:41.226671Z",
   "published": "2025-09-19T09:31:14Z",
   "references": [
     {
@@ -166,12 +166,24 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/keras-team/keras"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/keras-team/keras/releases/tag/v3.11.0"
+    },
+    {
+      "type": "WEB",
+      "url": "https://osv.dev/vulnerability/CVE-2025-9906"
     }
   ],
   "schema_version": "1.7.3",
   "severity": [
     {
-      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:P/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+      "type": "CVSS_V3"
+    },
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
       "type": "CVSS_V4"
     }
   ],

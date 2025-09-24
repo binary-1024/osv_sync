@@ -16,7 +16,7 @@
               "introduced": "0"
             },
             {
-              "last_affected": "6.0.0a1"
+              "fixed": "6.7.0"
             }
           ],
           "type": "ECOSYSTEM"
@@ -230,7 +230,41 @@
         "5.9.0rc1",
         "5.9.0rc2",
         "5.9.1",
-        "6.0.0a1"
+        "6.0.0",
+        "6.0.0a1",
+        "6.0.0a10",
+        "6.0.0a2",
+        "6.0.0a3",
+        "6.0.0a4",
+        "6.0.0a5",
+        "6.0.0a6",
+        "6.0.0a8",
+        "6.0.0rc1",
+        "6.0.0rc2",
+        "6.0.0rc3",
+        "6.0.0rc4",
+        "6.0.0rc5",
+        "6.0.1",
+        "6.0.1rc1",
+        "6.0.2",
+        "6.1.0",
+        "6.1.0rc1",
+        "6.1.0rc2",
+        "6.2.0",
+        "6.3.0",
+        "6.3.0a1",
+        "6.3.0rc1",
+        "6.3.0rc2",
+        "6.4.0",
+        "6.4.0rc1",
+        "6.4.0rc2",
+        "6.5.0",
+        "6.5.0rc1",
+        "6.5.1",
+        "6.6.0",
+        "6.6.0rc1",
+        "6.6.0rc2",
+        "6.7.0rc1"
       ]
     }
   ],
@@ -239,21 +273,26 @@
   ],
   "database_specific": {
     "cwe_ids": [
+      "CWE-22",
       "CWE-73"
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-09-18T17:21:19Z",
     "nvd_published_at": "2025-09-18T09:15:35Z",
-    "severity": "HIGH"
+    "severity": "CRITICAL"
   },
-  "details": "A vulnerability in invokeai version v6.0.0a1 and below allows attackers to perform path traversal and arbitrary file deletion via the GET /api/v1/images/download/{bulk_download_item_name} endpoint. By manipulating the filename arguments, attackers can read and delete any files on the server, including critical system files such as SSH keys, databases, and configuration files. This vulnerability results in high confidentiality, integrity, and availability impacts.",
+  "details": "### Path Traversal Vulnerability in InvokeAI\n\nA path traversal vulnerability in **InvokeAI** (versions < 6.7.0) allows an unauthenticated remote attacker to read files outside the intended media directory via the **bulk downloads** API.\n\nThe endpoint accepts a user-controlled file/item name and concatenates it into a filesystem path without proper canonicalization or allow-listing. By supplying sequences such as `../` (or absolute paths), an attacker can cause the server to traverse directories and return arbitrary files.\n\nIn certain storage or back-end configurations, abusing attacker-controlled paths can also lead to unintended overwriting or deletion of files referenced by the crafted path.\n\nThe issue is fixed in **6.7.0**, which normalizes and validates input paths and rejects traversal attempts.\n\n**Affected versions:** `< 6.7.0`\n**Patched version:** `6.7.0`",
   "id": "GHSA-vv9c-xxg7-wmv7",
-  "modified": "2025-09-18T18:28:06.491942Z",
+  "modified": "2025-09-23T22:10:02.877402Z",
   "published": "2025-09-18T09:31:13Z",
   "references": [
     {
       "type": "ADVISORY",
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-6237"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/invoke-ai/InvokeAI/pull/8548/commits/eff565ae6ace1c8458f187245690bff0513f1b9e"
     },
     {
       "type": "PACKAGE",
@@ -262,6 +301,10 @@
     {
       "type": "WEB",
       "url": "https://github.com/invoke-ai/InvokeAI/blob/v6.0.0a1/invokeai/app/api/routers/images.py#L493-L524"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/invoke-ai/InvokeAI/releases/tag/v6.7.0"
     },
     {
       "type": "WEB",
@@ -275,7 +318,7 @@
       "type": "CVSS_V3"
     },
     {
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:P",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
       "type": "CVSS_V4"
     }
   ],
