@@ -1,0 +1,98 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-4j5h-mvj3-m48v/GHSA-4j5h-mvj3-m48v.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "starcitizenwiki/embedvideo",
+        "purl": "pkg:composer/starcitizenwiki/embedvideo"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "4.0.0"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "3.0.0",
+        "3.0.1",
+        "3.0.2",
+        "3.0.3",
+        "3.0.4",
+        "3.0.5",
+        "3.0.6",
+        "3.0.7",
+        "3.0.8",
+        "3.0.9",
+        "3.1.0",
+        "3.2.0",
+        "3.2.1",
+        "3.2.2",
+        "3.2.3",
+        "3.2.4",
+        "3.2.5",
+        "3.2.6",
+        "3.2.7",
+        "3.2.8",
+        "3.3.0",
+        "3.4.0",
+        "3.4.1",
+        "3.4.2",
+        "3.4.3",
+        "4.0.0"
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-09-24T20:11:17Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "### Summary\nThe EmbedVideo extension allows adding arbitrary attributes to an HTML element, allowing for stored XSS through wikitext.\n\n### Details\n\nThe attributes of an iframe are populated with the value of an unreserved data attribute (`data-iframeconfig`) that can be set via wikitext:\nhttps://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo/blob/440fb331a84b2050f4cc084c1d31d58a1d1c202d/resources/ext.embedVideo.videolink.js#L5-L20\nSimilar code is also present here:\nhttps://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo/blob/440fb331a84b2050f4cc084c1d31d58a1d1c202d/resources/modules/iframe.js#L139-L155\n\nIt is possible to execute JS through attributes like `onload` or `onmouseenter`.\n\n### PoC\n\n1. Create a page with the following contents:\n```html\n<div class=\"embedvideo-evl\" data-iframeconfig='{\"onload\": \"alert(1)\"}'>Click me!</div>\n<evlplayer></evlplayer>\n```\n2. Click on the \"Click me!\" text\n3. Click on the \"Load video\" button below\n<img width=\"855\" height=\"404\" alt=\"image\" src=\"https://github.com/user-attachments/assets/afb3839a-012c-4e90-a208-a6137b704ccd\" />\n\n\n### Impact\nArbitrary HTML can be inserted into the DOM by any user, allowing for JavaScript to be executed.",
+  "id": "GHSA-4j5h-mvj3-m48v",
+  "modified": "2025-09-24T20:46:18.732466Z",
+  "published": "2025-09-24T20:11:17Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo/security/advisories/GHSA-4j5h-mvj3-m48v"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo/commit/4e075d3dc9a15a3ee53f449a684d5ab847e52f01"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo/blob/440fb331a84b2050f4cc084c1d31d58a1d1c202d/resources/ext.embedVideo.videolink.js#L5-L20"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo/blob/440fb331a84b2050f4cc084c1d31d58a1d1c202d/resources/modules/iframe.js#L139-L155"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "Star Citizen  EmbedVideo Extension Stored XSS through wikitext caused by usage of non-reserved data attributes"
+}

