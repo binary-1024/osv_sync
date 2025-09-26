@@ -210,9 +210,9 @@
     "nvd_published_at": "2025-05-19T12:15:19Z",
     "severity": "MODERATE"
   },
-  "details": "A vulnerability in the `preprocess_string()` function of the `transformers.testing_utils` module in huggingface/transformers version v4.48.3 allows for a Regular Expression Denial of Service (ReDoS) attack. The regular expression used to process code blocks in docstrings contains nested quantifiers, leading to exponential backtracking when processing input with a large number of newline characters. An attacker can exploit this by providing a specially crafted payload, causing high CPU usage and potential application downtime, effectively resulting in a Denial of Service (DoS) scenario.",
+  "details": "A Regular Expression Denial of Service (ReDoS) exists in the `preprocess_string()` function of the `transformers.testing_utils` module. In versions **before 4.50.0**, the regex used to process code blocks in docstrings contains nested quantifiers that can trigger catastrophic backtracking when given inputs with many newline characters. An attacker who can supply such input to `preprocess_string()` (or code paths that call it) can force excessive CPU usage and degrade availability.\n\n**Fix:** released in **4.50.0**, which rewrites the regex to avoid the inefficient pattern. ([GitHub][1])\n\n*   **Affected:** `< 4.50.0`\n*   **Patched:** `4.50.0`",
   "id": "GHSA-qq3j-4f4f-9583",
-  "modified": "2025-05-22T18:50:32.316656Z",
+  "modified": "2025-09-25T21:51:20.118086Z",
   "published": "2025-05-19T12:30:33Z",
   "references": [
     {
