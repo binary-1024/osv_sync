@@ -29,6 +29,7 @@
   ],
   "database_specific": {
     "cwe_ids": [
+      "CWE-78",
       "CWE-94"
     ],
     "github_reviewed": true,
@@ -36,9 +37,9 @@
     "nvd_published_at": "2025-09-10T16:15:41Z",
     "severity": "HIGH"
   },
-  "details": "At startup, Claude Code executed a command templated in with `git config user.email`. A maliciously configured user email in git could be used to trigger arbitrary code execution before a user accepted the workspace trust dialog. \n\nUsers on standard Claude Code auto-update will have received this fix automatically. Users performing manual updates are advised to update to the latest version.\n\nThank you to the NVIDIA AI Red Team for reporting this issue!",
+  "details": "At startup, Claude Code constructed a shell command that interpolated the value of `git config user.email` from the current workspace. If an attacker controlled the repository\u2019s Git config (e.g., via a malicious `.git/config`) and set `user.email` to a crafted payload, the unescaped interpolation could trigger arbitrary command execution **before** the user accepted the workspace-trust dialog. The issue affects versions prior to `1.0.105`. The fix in `1.0.105` avoids executing commands built from untrusted configuration and properly validates/escapes inputs.\n\n*   **Patches:** Update to `@anthropic-ai/claude-code` `1.0.105` or later.\n*   **Workarounds:** Open only trusted workspaces and inspect repository `.git/config` before launch; avoid inheriting untrusted Git configuration values.\n\n> Thank you to the NVIDIA AI Red Team for reporting this issue!",
   "id": "GHSA-j4h9-wv2m-wrf7",
-  "modified": "2025-09-10T20:42:55.361957Z",
+  "modified": "2025-09-25T23:42:37Z",
   "published": "2025-09-10T20:29:04Z",
   "references": [
     {
@@ -52,12 +53,16 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/anthropics/claude-code"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.npmjs.com/package/@anthropic-ai/claude-code/v/1.0.105"
     }
   ],
   "schema_version": "1.7.3",
   "severity": [
     {
-      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:P/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
       "type": "CVSS_V4"
     }
   ],

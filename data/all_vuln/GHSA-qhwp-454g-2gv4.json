@@ -36,14 +36,18 @@
     "nvd_published_at": "2025-09-14T23:15:37Z",
     "severity": "MODERATE"
   },
-  "details": "The express-xss-sanitizer (aka Express XSS Sanitizer) package through 2.0.0 for Node.js has an unbounded recursion depth in sanitize in lib/sanitize.js for a JSON request body.",
+  "details": "The `express-xss-sanitizer` package for Node.js has an unbounded recursion in the `sanitize` function (`lib/sanitize.js`) when processing JSON request bodies. A remote attacker can send a deeply nested payload to any endpoint that applies this sanitizer, driving excessive recursion and resource consumption (CPU) until the process becomes unresponsive or crashes (e.g., \u201cMaximum call stack size exceeded\u201d). This causes a denial of service. The issue is present through version 2.0.0; no fixed release is available as of this update.",
   "id": "GHSA-qhwp-454g-2gv4",
-  "modified": "2025-09-15T20:57:20.746530Z",
+  "modified": "2025-09-25T23:21:41Z",
   "published": "2025-09-15T00:30:15Z",
   "references": [
     {
       "type": "ADVISORY",
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-59364"
+    },
+    {
+      "type": "WEB",
+      "url": "https://dbugs.ptsecurity.com/vulnerability/PT-2025-37434"
     },
     {
       "type": "WEB",
@@ -56,13 +60,17 @@
     {
       "type": "WEB",
       "url": "https://www.npmjs.com/package/express-xss-sanitizer"
+    },
+    {
+      "type": "WEB",
+      "url": "https://www.tenable.com/cve/CVE-2025-59364"
     }
   ],
   "schema_version": "1.7.3",
   "severity": [
     {
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-      "type": "CVSS_V3"
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+      "type": "CVSS_V4"
     }
   ],
   "summary": "express-xss-sanitizer has an unbounded recursion depth"
