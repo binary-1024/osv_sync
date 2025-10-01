@@ -16,7 +16,7 @@
               "introduced": "0"
             },
             {
-              "fixed": "25.2"
+              "last_affected": "25.2"
             }
           ],
           "type": "ECOSYSTEM"
@@ -144,6 +144,7 @@
         "25.0.1",
         "25.1",
         "25.1.1",
+        "25.2",
         "6.0",
         "6.0.1",
         "6.0.2",
@@ -191,7 +192,7 @@
   },
   "details": "### Summary\n\nIn the fallback extraction path for source distributions, `pip` used Python\u2019s `tarfile` module without verifying that symbolic/hard link targets resolve inside the intended extraction directory. A malicious sdist can include links that escape the target directory and overwrite arbitrary files on the invoking host during `pip install`.\n\n### Impact\n\nSuccessful exploitation enables arbitrary file overwrite outside the build/extraction directory on the machine running `pip`. This can be leveraged to tamper with configuration or startup files and may lead to further code execution depending on the environment, but the direct, guaranteed impact is integrity compromise on the vulnerable system.\n\n### Conditions\n\nThe issue is triggered when installing an attacker-controlled sdist (e.g., from an index or URL) and the fallback extraction code path is used. No special privileges are required beyond running `pip install`; active user action is necessary.\n\n### Remediation\n\nUpgrade to **pip 25.2** or later, which validates member paths and rejects unsafe link targets. Using a Python interpreter that implements the safe-extraction behavior described by **PEP 706** provides additional defense in depth for other `tarfile` issues but is not a substitute for upgrading pip for this specific flaw.",
   "id": "GHSA-4xh5-x5gv-qwph",
-  "modified": "2025-09-26T18:37:20.745725Z",
+  "modified": "2025-09-30T17:44:35.375088Z",
   "published": "2025-09-24T15:31:14Z",
   "references": [
     {
