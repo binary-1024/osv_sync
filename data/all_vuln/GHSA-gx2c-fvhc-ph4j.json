@@ -13,10 +13,38 @@
         {
           "events": [
             {
-              "introduced": "0"
+              "introduced": "3.2.0"
             },
             {
               "fixed": "3.2.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "3.2.0",
+        "3.2.1",
+        "3.2.2"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/04/GHSA-gx2c-fvhc-ph4j/GHSA-gx2c-fvhc-ph4j.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.apache.hadoop:hadoop-common",
+        "purl": "pkg:maven/org.apache.hadoop/hadoop-common"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.10.2"
             }
           ],
           "type": "ECOSYSTEM"
@@ -45,7 +73,6 @@
         "2.1.1-beta",
         "2.10.0",
         "2.10.1",
-        "2.10.2",
         "2.2.0",
         "2.3.0",
         "2.4.0",
@@ -75,24 +102,35 @@
         "2.8.5",
         "2.9.0",
         "2.9.1",
-        "2.9.2",
-        "3.0.0",
-        "3.0.0-alpha1",
-        "3.0.0-alpha2",
-        "3.0.0-alpha3",
-        "3.0.0-alpha4",
-        "3.0.0-beta1",
-        "3.0.1",
-        "3.0.2",
-        "3.0.3",
-        "3.1.0",
-        "3.1.1",
-        "3.1.2",
-        "3.1.3",
-        "3.1.4",
-        "3.2.0",
-        "3.2.1",
-        "3.2.2"
+        "2.9.2"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/04/GHSA-gx2c-fvhc-ph4j/GHSA-gx2c-fvhc-ph4j.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "org.apache.hadoop:hadoop-common",
+        "purl": "pkg:maven/org.apache.hadoop/hadoop-common"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "3.3.0"
+            },
+            {
+              "fixed": "3.3.3"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "3.3.0",
+        "3.3.1",
+        "3.3.2"
       ]
     }
   ],
@@ -108,9 +146,9 @@
     "nvd_published_at": "2022-04-07T19:15:00Z",
     "severity": "CRITICAL"
   },
-  "details": "In Apache Hadoop, The unTar function uses unTarUsingJava function on Windows and the built-in tar utility on Unix and other OSes. As a result, a TAR entry may create a symlink under the expected extraction directory which points to an external directory. A subsequent TAR entry may extract an arbitrary file into the external directory using the symlink name. This however would be caught by the same targetDirPath check on Unix because of the getCanonicalPath call. However on Windows, getCanonicalPath doesn't resolve symbolic links, which bypasses the check. unpackEntries during TAR extraction follows symbolic links which allows writing outside expected base directory on Windows. This was addressed in Apache Hadoop 3.2.3",
+  "details": "In Apache Hadoop, The unTar function uses unTarUsingJava function on Windows and the built-in tar utility on Unix and other OSes. As a result, a TAR entry may create a symlink under the expected extraction directory which points to an external directory. A subsequent TAR entry may extract an arbitrary file into the external directory using the symlink name. This however would be caught by the same targetDirPath check on Unix because of the getCanonicalPath call. However on Windows, getCanonicalPath doesn't resolve symbolic links, which bypasses the check. unpackEntries during TAR extraction follows symbolic links which allows writing outside expected base directory on Windows. This was addressed in Apache Hadoop 2.10.2, 3.2.3, 3.3.3, and 3.4.0.",
   "id": "GHSA-gx2c-fvhc-ph4j",
-  "modified": "2024-02-20T05:34:19.796410Z",
+  "modified": "2025-10-01T14:55:55.727257Z",
   "published": "2022-04-08T00:00:21Z",
   "references": [
     {
@@ -120,6 +158,26 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/apache/hadoop"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/apache/hadoop/commits/rel/release-2.10.2/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/FileUtil.java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/apache/hadoop/commits/rel/release-3.2.3/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/FileUtil.java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/apache/hadoop/commits/rel/release-3.3.3/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/FileUtil.java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/apache/hadoop/commits/rel/release-3.4.0/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/FileUtil.java"
+    },
+    {
+      "type": "WEB",
+      "url": "https://issues.apache.org/jira/browse/HADOOP-18317"
     },
     {
       "type": "WEB",
