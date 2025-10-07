@@ -13,10 +13,36 @@
         {
           "events": [
             {
-              "introduced": "0"
+              "introduced": "2.8.0"
             },
             {
               "fixed": "2.8.1"
+            }
+          ],
+          "type": "ECOSYSTEM"
+        }
+      ],
+      "versions": [
+        "2.8.0"
+      ]
+    },
+    {
+      "database_specific": {
+        "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-m49c-g9wr-hv6v/GHSA-m49c-g9wr-hv6v.json"
+      },
+      "package": {
+        "ecosystem": "Maven",
+        "name": "com.hubspot.jinjava:jinjava",
+        "purl": "pkg:maven/com.hubspot.jinjava/jinjava"
+      },
+      "ranges": [
+        {
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.7.5"
             }
           ],
           "type": "ECOSYSTEM"
@@ -114,8 +140,7 @@
         "2.7.1",
         "2.7.2",
         "2.7.3",
-        "2.7.4",
-        "2.8.0"
+        "2.7.4"
       ]
     }
   ],
@@ -133,7 +158,7 @@
   },
   "details": "### Summary\n\njinjava\u2019s current sandbox restrictions prevent direct access to dangerous methods such as `getClass()`, and block instantiation of Class objects. However, these protections can be bypassed.\n\nBy using mapper.getTypeFactory().constructFromCanonical(), it is possible to instruct the underlying ObjectMapper to deserialize attacker-controlled input into arbitrary classes. This enables the creation of semi-arbitrary class instances without directly invoking restricted methods or class literals.\n\nAs a result, an attacker can escape the sandbox and instantiate classes such as java.net.URL, opening up the ability to access local files and URLs(e.g., file:///etc/passwd). With further chaining, this primitive can potentially lead to remote code execution (RCE).\n\n### Details\n\njinjava templates expose a built-in variable `____int3rpr3t3r____`, which provides direct access to the jinjavaInterpreter instance.\nThis variable was previously abused and protections were added to prevent call method from `JinjavaInterpreter` instances (see [Add interpreter to blacklist](https://github.com/HubSpot/jinjava/commit/1b9aaa4b420c58b4a301cf4b7d26207f1c8d1165)).\nHowever, interacting with the properties of `JinjavaInterpreter` instances remains [unrestricted](https://github.com/HubSpot/jinjava/blob/jinjava-2.8.0/src/main/java/com/hubspot/jinjava/el/ext/JinjavaBeanELResolver.java#L80-L84).\n\nFrom `____int3rpr3t3r____`, it is possible to traverse to the `config` field, which exposes an ObjectMapper. By invoking `readValue(String content, JavaType valueType)` on this ObjectMapper, an attacker can instantiate arbitrary classes specified via `JavaType`.\n\nAlthough jinjava explicitly restricts dangerous classes such as `Class`, `ClassLoader`, and so on inside `JinjavaBeanELResolver`, the `JavaType` class itself is [not restricted](https://github.com/HubSpot/jinjava/blob/jinjava-2.8.0/src/main/java/com/hubspot/jinjava/el/ext/JinjavaBeanELResolver.java#L246-L262). \n\nAs a result, an attacker can leverage `JavaType` construction (`constructFromCanonical`) to instantiate semi-arbitrary classes without directly calling restricted methods.\n\nThis allows sandbox escape and the creation of powerful primitives. \n\n### Impact\nEscape the Jinjava sandbox and instantiate a wide range of classes using JavaType.\nThis capability can be used to read arbitrary files and to perform full read SSRF by creating network-related objects.\nIn certain environments, depending on the available classes, this primitive can even lead to complete remote code execution.",
   "id": "GHSA-m49c-g9wr-hv6v",
-  "modified": "2025-09-22T16:33:36.244748Z",
+  "modified": "2025-10-06T16:52:51.161417Z",
   "published": "2025-09-17T19:56:21Z",
   "references": [
     {
@@ -151,6 +176,10 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/HubSpot/jinjava"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/HubSpot/jinjava/releases/tag/jinjava-2.7.5"
     },
     {
       "type": "WEB",
