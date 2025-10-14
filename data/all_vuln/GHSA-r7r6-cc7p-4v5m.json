@@ -94,17 +94,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-10-10T22:51:28Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-10-10T22:15:37Z",
     "severity": "MODERATE"
   },
   "details": "### Summary\nThe sanitization method `ldap.filter.escape_filter_chars` can be tricked to skip escaping of special characters when a crafted `list` or `dict` is supplied as the `assertion_value` parameter, and the non-default `escape_mode=1` is configured.\n\n### Details\nThe method `ldap.filter.escape_filter_chars` supports 3 different escaping modes. `escape_mode=0` (default) and `escape_mode=2` happen to raise exceptions when a `list` or `dict` object is supplied as the `assertion_value` parameter. However, `escape_mode=1` happily computes without performing adequate logic to ensure a fully escaped return value.\n\n### PoC\n```\n>>> import ldap.filter\n```\n**Exploitable**\n```\n>>> ldap.filter.escape_filter_chars([\"abc@*()/xyz\"], escape_mode=1)\n'abc@*()/xyz'\n>>> ldap.filter.escape_filter_chars({\"abc@*()/xyz\": 1}, escape_mode=1)\n'abc@*()/xyz'\n```\n**Not exploitable**\n```\n>>> ldap.filter.escape_filter_chars(\"abc@*()/xyz\", escape_mode=1)\n'abc@\\\\2a\\\\28\\\\29\\\\2fxyz'\n>>> ldap.filter.escape_filter_chars([\"abc@*()/xyz\"], escape_mode=0)\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/usr/local/lib64/python3.12/site-packages/ldap/filter.py\", line 41, in escape_filter_chars\n    s = assertion_value.replace('\\\\', r'\\5c')\n        ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'replace'\n>>> ldap.filter.escape_filter_chars([\"abc@*()/xyz\"], escape_mode=2)\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/usr/local/lib64/python3.12/site-packages/ldap/filter.py\", line 36, in escape_filter_chars\n    r.append(\"\\\\%02x\" % ord(c))\n                        ^^^^^^\nTypeError: ord() expected a character, but string of length 11 found\n```\n### Impact\nIf an application relies on the vulnerable method in the `python-ldap` library to escape untrusted user input, an attacker might be able to abuse the vulnerability to launch ldap injection attacks which could potentially disclose or manipulate ldap data meant to be inaccessible to them.\n\nWith Python being a dynamically typed language, and the commonly used `JSON` format supporting `list` and `dict`, it is to be expected that Python applications may commonly forward unchecked and potentially malicious `list` and `dict` objects to the vulnerable sanitization method.\n\nThe vulnerable `escape_mode=1` configuration does not appear to be widely used.\n\n### Suggested Fix\nAdd a type check at the start of the `ldap.filter.escape_filter_chars` method to raise an exception when the supplied `assertion_value` parameter is not of type `str`.",
   "id": "GHSA-r7r6-cc7p-4v5m",
-  "modified": "2025-10-10T23:12:31.776685Z",
+  "modified": "2025-10-13T16:01:55.009776Z",
   "published": "2025-10-10T22:51:28Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/python-ldap/python-ldap/security/advisories/GHSA-r7r6-cc7p-4v5m"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-61911"
     },
     {
       "type": "WEB",

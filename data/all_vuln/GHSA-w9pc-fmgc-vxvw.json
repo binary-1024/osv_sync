@@ -228,7 +228,7 @@
   },
   "details": "## Summary\n\n`Rack::Multipart::Parser` stores non-file form fields (parts without a `filename`) entirely in memory as Ruby `String` objects. A single large text field in a multipart/form-data request (hundreds of megabytes or more) can consume equivalent process memory, potentially leading to out-of-memory (OOM) conditions and denial of service (DoS).\n\n## Details\n\nDuring multipart parsing, file parts are streamed to temporary files, but non-file parts are buffered into memory:\n\n```ruby\nbody = String.new  # non-file \u2192 in-RAM buffer\n@mime_parts[mime_index].body << content\n```\n\nThere is no size limit on these in-memory buffers. As a result, any large text field\u2014while technically valid\u2014will be loaded fully into process memory before being added to `params`.\n\n## Impact\n\nAttackers can send large non-file fields to trigger excessive memory usage. Impact scales with request size and concurrency, potentially leading to worker crashes or severe garbage-collection overhead. All Rack applications processing multipart form submissions are affected.\n\n## Mitigation\n\n* **Upgrade:** Use a patched version of Rack that enforces a reasonable size cap for non-file fields (e.g., 2 MiB).\n* **Workarounds:**\n  * Restrict maximum request body size at the web-server or proxy layer (e.g., Nginx `client_max_body_size`).\n  * Validate and reject unusually large form fields at the application level.",
   "id": "GHSA-w9pc-fmgc-vxvw",
-  "modified": "2025-10-07T17:57:22.563251Z",
+  "modified": "2025-10-13T16:10:48.190378Z",
   "published": "2025-10-07T17:27:07Z",
   "references": [
     {
@@ -254,6 +254,10 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/rack/rack"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2025-61771.yml"
     }
   ],
   "related": [

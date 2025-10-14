@@ -249,17 +249,21 @@
     ],
     "github_reviewed": true,
     "github_reviewed_at": "2025-10-10T17:33:35Z",
-    "nvd_published_at": null,
+    "nvd_published_at": "2025-10-10T20:15:37Z",
     "severity": "HIGH"
   },
   "details": "## Summary\n\n`Rack::Request#POST` reads the entire request body into memory for `Content-Type: application/x-www-form-urlencoded`, calling `rack.input.read(nil)` without enforcing a length or cap. Large request bodies can therefore be buffered completely into process memory before parsing, leading to denial of service (DoS) through memory exhaustion.\n\n## Details\n\nWhen handling non-multipart form submissions, Rack\u2019s request parser performs:\n\n```ruby\nform_vars = get_header(RACK_INPUT).read\n```\n\nSince `read` is called with no argument, the entire request body is loaded into a Ruby `String`. This occurs before query parameter parsing or enforcement of any `params_limit`. As a result, Rack applications without an upstream body-size limit can experience unbounded memory allocation proportional to request size.\n\n## Impact\n\nAttackers can send large `application/x-www-form-urlencoded` bodies to consume process memory, causing slowdowns or termination by the operating system (OOM). The effect scales linearly with request size and concurrency. Even with parsing limits configured, the issue occurs *before* those limits are enforced.\n\n## Mitigation\n\n* Update to a patched version of Rack that enforces form parameter limits using `query_parser.bytesize_limit`, preventing unbounded reads of `application/x-www-form-urlencoded` bodies.\n* Enforce strict maximum body size at the proxy or web server layer (e.g., Nginx `client_max_body_size`, Apache `LimitRequestBody`).",
   "id": "GHSA-6xw4-3v39-52mm",
-  "modified": "2025-10-10T18:12:32.993875Z",
+  "modified": "2025-10-13T16:11:45.562087Z",
   "published": "2025-10-10T17:33:35Z",
   "references": [
     {
       "type": "WEB",
       "url": "https://github.com/rack/rack/security/advisories/GHSA-6xw4-3v39-52mm"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-61919"
     },
     {
       "type": "WEB",
@@ -276,6 +280,10 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/rack/rack"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2025-61919.yml"
     }
   ],
   "schema_version": "1.7.3",

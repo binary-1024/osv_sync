@@ -228,7 +228,7 @@
   },
   "details": "## Summary\n\n`Rack::Multipart::Parser` can accumulate unbounded data when a multipart part\u2019s header block never terminates with the required blank line (`CRLFCRLF`). The parser keeps appending incoming bytes to memory without a size cap, allowing a remote attacker to exhaust memory and cause a denial of service (DoS).\n\n## Details\n\nWhile reading multipart headers, the parser waits for `CRLFCRLF` using:\n\n```ruby\n@sbuf.scan_until(/(.*?\\r\\n)\\r\\n/m)\n```\n\nIf the terminator never appears, it continues appending data (`@sbuf.concat(content)`) indefinitely. There is no limit on accumulated header bytes, so a single malformed part can consume memory proportional to the request body size.\n\n## Impact\n\nAttackers can send incomplete multipart headers to trigger high memory use, leading to process termination (OOM) or severe slowdown. The effect scales with request size limits and concurrency. All applications handling multipart uploads may be affected.\n\n## Mitigation\n\n* Upgrade to a patched Rack version that caps per-part header size (e.g., 64 KiB).\n* Until then, restrict maximum request sizes at the proxy or web server layer (e.g., Nginx `client_max_body_size`).",
   "id": "GHSA-wpv5-97wm-hp9c",
-  "modified": "2025-10-07T17:57:22.642163Z",
+  "modified": "2025-10-13T16:07:31.762436Z",
   "published": "2025-10-07T17:28:06Z",
   "references": [
     {
@@ -254,6 +254,10 @@
     {
       "type": "PACKAGE",
       "url": "https://github.com/rack/rack"
+    },
+    {
+      "type": "WEB",
+      "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2025-61772.yml"
     }
   ],
   "related": [

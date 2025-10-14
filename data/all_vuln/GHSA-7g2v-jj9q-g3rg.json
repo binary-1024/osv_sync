@@ -228,7 +228,7 @@
   },
   "details": "## Summary\n\n`Rack::CommonLogger` can be exploited by crafting input that includes newline characters to manipulate log entries. The supplied proof-of-concept demonstrates injecting malicious content into logs.\n\n## Details\n\nWhen a user provides the authorization credentials via `Rack::Auth::Basic`, if success, the username will be put in `env['REMOTE_USER']` and later be used by `Rack::CommonLogger` for logging purposes.\n\nThe issue occurs when a server intentionally or unintentionally allows a user creation with the username contain CRLF and white space characters, or the server just want to log every login attempts. If an attacker enters a username with CRLF character, the logger will log the malicious username with CRLF characters into the logfile.\n\n## Impact\n\nAttackers can break log formats or insert fraudulent entries, potentially obscuring real activity or injecting malicious data into log files.\n\n## Mitigation\n\n- Update to the latest version of Rack.",
   "id": "GHSA-7g2v-jj9q-g3rg",
-  "modified": "2025-02-18T15:10:34.446603Z",
+  "modified": "2025-10-13T16:01:46.551396Z",
   "published": "2025-02-12T19:18:35Z",
   "references": [
     {
@@ -268,6 +268,10 @@
   ],
   "schema_version": "1.7.3",
   "severity": [
+    {
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N",
+      "type": "CVSS_V3"
+    },
     {
       "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N/E:P",
       "type": "CVSS_V4"
