@@ -10,7 +10,7 @@ import os
 import zipfile
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, cast
+from typing import Any, Dict, cast, Sequence
 
 import yaml
 
@@ -55,12 +55,18 @@ def load_config(config_path: str = "config.yaml") -> Dict[str, Any]:
         return cast(Dict[str, Any], yaml.safe_load(f))
 
 
-def unzip_osv_data(zip_path: Path, data_dir: Path) -> None:
+def unzip_osv_data(zip_path: Path, data_dir: Path, exclude_prefixes: Sequence[str] = ()) -> Dict[str, int]:
     """解压缩OSV数据文件
 
     Args:
         zip_path: 压缩包路径
         data_dir: 解压目标目录
+        exclude_prefixes: 文件名以这些前缀开头的条目不解压(config storage.exclude_prefixes)。
+            ★2026-09-07 12:00 起上游 all.zip 一次性多出 41.6 万个 CGA-*(Chainguard,pkg:apk)通告,
+            一次 commit 百万文件,runner 上 commit/push 跑不完,同步连续失败两天;下游不消费 apk 通告。
+
+    Returns:
+        {"extracted": n, "skipped": m}
 
     Raises:
         zipfile.BadZipFile: 如果压缩文件格式无效
@@ -69,10 +75,16 @@ def unzip_osv_data(zip_path: Path, data_dir: Path) -> None:
     # 确保目标目录存在
     all_dir = data_dir / Path("all_vuln")
     all_dir.mkdir(exist_ok=True, parents=True)
+    prefixes = tuple(exclude_prefixes or ())
 
     try:
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
-            zip_ref.extractall(all_dir)
+            if not prefixes:
+                zip_ref.extractall(all_dir)
+                return {"extracted": len(zip_ref.namelist()), "skipped": 0}
+            keep = [n for n in zip_ref.namelist() if not Path(n).name.startswith(prefixes)]
+            zip_ref.extractall(all_dir, members=keep)
+            return {"extracted": len(keep), "skipped": len(zip_ref.namelist()) - len(keep)}
     except zipfile.BadZipFile as e:
         raise zipfile.BadZipFile(f"无效的压缩文件: {zip_path}") from e
     except PermissionError as e:

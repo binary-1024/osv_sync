@@ -57,11 +57,12 @@ def main():
         if sync_result:
             try:
                 unzip_path = data_dir / Path("all.zip")
-                unzip_osv_data(unzip_path, data_dir)
+                exclude = list(config["storage"].get("exclude_prefixes") or [])
+                stats = unzip_osv_data(unzip_path, data_dir, exclude_prefixes=exclude)
             except Exception as e:
                 print(f"解压缩文件失败: {e}")
                 sys.exit(1)
-            logger.info("解压缩文件完成")
+            logger.info("解压缩文件完成: 解压 %s 个, 按前缀 %s 跳过 %s 个", stats["extracted"], exclude, stats["skipped"])
         else:
             logger.info("同步失败, 不进行解压缩")
 

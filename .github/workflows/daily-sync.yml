@@ -101,6 +101,15 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add data/all_vuln/
         git add logs/
+        # ★守卫(2026-09-09):一次变更超过 10 万个文件就是上游异常(2026-09-07 CGA 洪水 41.6 万文件,commit+push 跑 57 分钟后死掉),
+        #   立刻失败并说明,不要把 runner 耗到超时;正常一轮是几千个文件。
+        pending=$(git diff --cached --name-only | wc -l)
+        echo "待提交文件数: $pending"
+        if [ "$pending" -gt 100000 ]; then
+          echo "::error::待提交 $pending 个文件,超过 100000,疑似上游数据异常(见 config.yaml storage.exclude_prefixes);本轮不提交"
+          git diff --cached --name-only | sed -E 's|.*/||; s/-[0-9].*//' | sort | uniq -c | sort -rn | head -10
+          exit 1
+        fi
         git commit -m "自动数据同步 $(date +'%Y-%m-%d')" || echo "没有变更需要提交"
         # 使用环境变量方式处理令牌，更安全
         git push origin HEAD:main || {

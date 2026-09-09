@@ -6,6 +6,9 @@ source:
 storage:
   data_dir: "data"
   logs_dir: "logs"
+  # 文件名以这些前缀开头的通告不解压、不入库(2026-09-07 起上游一次性多出 41.6 万个 CGA-* Chainguard/apk 通告,
+  # 百万文件的 commit 在 runner 上跑不完;下游 data-infra 不消费 pkg:apk)。已在仓里的 4.4 万个 CGA 文件保持不动。
+  exclude_prefixes: ["CGA-"]
 
 recording:
   file_path: "logs/sync_history.csv"
