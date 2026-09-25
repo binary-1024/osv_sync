@@ -55,8 +55,19 @@ def load_config(config_path: str = "config.yaml") -> Dict[str, Any]:
         return cast(Dict[str, Any], yaml.safe_load(f))
 
 
+def shard_of(name: str) -> str:
+    """★2026-09-25 分片键:文件名里第一个 '-' 之前的 id 前缀(CVE / GHSA / MAL / PYSEC …),没有 '-' 的归 OTHER。
+    GitHub 对单个树对象有 50 MB 上限:平铺的 data/all_vuln 到 1,054,541 个文件时树对象 52,848,877 字节,推送被拒
+    (「每日OSV数据同步」自 2026-09-22 起每轮失败)。按前缀分片后最大的 CVE 目录约 24 万文件、树对象 ≈10 MB。"""
+    stem = Path(name).name
+    if stem.endswith(".json"):
+        stem = stem[:-5]
+    head, sep, _ = stem.partition("-")
+    return head if sep and head else "OTHER"
+
+
 def unzip_osv_data(zip_path: Path, data_dir: Path, exclude_prefixes: Sequence[str] = ()) -> Dict[str, int]:
-    """解压缩OSV数据文件
+    """解压缩OSV数据文件到 data/all_vuln/<PREFIX>/<ID>.json(按 id 前缀分片)
 
     Args:
         zip_path: 压缩包路径
@@ -65,26 +76,43 @@ def unzip_osv_data(zip_path: Path, data_dir: Path, exclude_prefixes: Sequence[st
             ★2026-09-07 12:00 起上游 all.zip 一次性多出 41.6 万个 CGA-*(Chainguard,pkg:apk)通告,
             一次 commit 百万文件,runner 上 commit/push 跑不完,同步连续失败两天;下游不消费 apk 通告。
 
+    ★2026-09-25 分片:见 shard_of。首次分片轮会把顶层残留的平铺 *.json 删掉(flat_removed),
+      git 看到的是 D(平铺)+ A(分片)同 id —— 下游 data-infra 的 deleted_record_ids 对 D+A 同 id 不记删除,
+      changed_json_files 会把分片路径当新增重导一次(幂等)。
+
     Returns:
-        {"extracted": n, "skipped": m}
+        {"extracted": n, "skipped": m, "flat_removed": k}
 
     Raises:
         zipfile.BadZipFile: 如果压缩文件格式无效
         PermissionError: 如果没有写入目标目录的权限
     """
-    # 确保目标目录存在
     all_dir = data_dir / Path("all_vuln")
     all_dir.mkdir(exist_ok=True, parents=True)
     prefixes = tuple(exclude_prefixes or ())
-
+    extracted = skipped = 0
     try:
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
-            if not prefixes:
-                zip_ref.extractall(all_dir)
-                return {"extracted": len(zip_ref.namelist()), "skipped": 0}
-            keep = [n for n in zip_ref.namelist() if not Path(n).name.startswith(prefixes)]
-            zip_ref.extractall(all_dir, members=keep)
-            return {"extracted": len(keep), "skipped": len(zip_ref.namelist()) - len(keep)}
+            made: set = set()
+            for member in zip_ref.infolist():
+                if member.is_dir():
+                    continue
+                name = Path(member.filename).name
+                if prefixes and name.startswith(prefixes):
+                    skipped += 1
+                    continue
+                shard_dir = all_dir / shard_of(name)
+                if shard_dir not in made:
+                    shard_dir.mkdir(exist_ok=True)
+                    made.add(shard_dir)
+                with zip_ref.open(member) as src, open(shard_dir / name, "wb") as dst:
+                    dst.write(src.read())
+                extracted += 1
+        flat_removed = 0
+        for stale in all_dir.glob("*.json"):            # 旧平铺布局的残留,只在顶层
+            stale.unlink()
+            flat_removed += 1
+        return {"extracted": extracted, "skipped": skipped, "flat_removed": flat_removed}
     except zipfile.BadZipFile as e:
         raise zipfile.BadZipFile(f"无效的压缩文件: {zip_path}") from e
     except PermissionError as e:

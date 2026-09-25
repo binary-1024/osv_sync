@@ -62,7 +62,7 @@ def main():
             except Exception as e:
                 print(f"解压缩文件失败: {e}")
                 sys.exit(1)
-            logger.info("解压缩文件完成: 解压 %s 个, 按前缀 %s 跳过 %s 个", stats["extracted"], exclude, stats["skipped"])
+            logger.info("解压缩文件完成(按前缀分片): 解压 %s 个, 按前缀 %s 跳过 %s 个, 清理顶层平铺残留 %s 个", stats["extracted"], exclude, stats["skipped"], stats.get("flat_removed", 0))
         else:
             logger.info("同步失败, 不进行解压缩")
 
